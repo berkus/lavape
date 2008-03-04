@@ -165,6 +165,7 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   page->correctMyTabWidget(newTW);
   newTW->setTabText(0,tt);
   newTW->setTabToolTip(0,ttt);
+  SetCurrentTabWindow(newTW);
   page->Activate(true);
   QPushButton *close=new QPushButton(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/close.xpm")),QString());
   close->setToolTip("Close current page");
@@ -187,10 +188,11 @@ void wxMainFrame::MoveToNextTabbedWindow(wxTabWidget *tw,int index){
   page->correctMyTabWidget(nextTW);
   nextTW->setTabToolTip(0,ttt);
   nextTW->setCurrentIndex(0);
+  SetCurrentTabWindow(nextTW);
   page->Activate(true);
   if (tw->count() == 0 && m_ClientArea->count() > 1) {
+    delete tw;
     equalize();
-    tw->deleteLater();
   }
   wxTheApp->updateButtonsMenus();
 }
@@ -205,19 +207,22 @@ void wxMainFrame::MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index){
   page->correctMyTabWidget(precTW);
   precTW->setTabToolTip(0,ttt);
   precTW->setCurrentIndex(0);
+  SetCurrentTabWindow(precTW);
   page->Activate(true);
   if (tw->count() == 0 && m_ClientArea->count() > 1) {
+    delete tw;
     equalize();
-    tw->deleteLater();
   }
   wxTheApp->updateButtonsMenus();
 }
 
 void wxMainFrame::equalize() {
-  QList<int> sz;
-  for (int i=0; i<m_ClientArea->count(); i++)
-    sz.append(3000);
-  m_ClientArea->setSizes(sz);
+  if (m_ClientArea->count()>1) {
+    QList<int> sz;
+    for (int i=0; i<m_ClientArea->count(); i++)
+      sz.append(3000);
+    m_ClientArea->setSizes(sz);
+  }
 }
 
 wxChildFrame::wxChildFrame(QWidget *parent)
@@ -274,7 +279,7 @@ void wxChildFrame::Activate(bool activate, bool windowMenuAction)
 
  if (title.length() && title.at(title.length()-1) == '*')
    title = title.left(title.length()-1);
- wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
+ //wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
  if (activate)
    if (lastActive)
      wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
@@ -324,6 +329,7 @@ void wxChildFrame::RemoveView(wxView *view)
 void wxChildFrame::correctMyTabWidget(wxTabWidget *tw) {
   for (int i=0; i<m_viewList.size(); i++)
     m_viewList.at(i)->myTabWidget = tw;
+  m_tabWidget = tw;
 }
 
 wxChildFrame::~wxChildFrame()
