@@ -1,7 +1,6 @@
 <ui version="4.0" >
  <class>CMainFrame</class>
  <widget class="QMainWindow" name="CMainFrame" >
-  <widget class="QWidget" name="widget" />
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -79,8 +78,6 @@
    <addaction name="cascadeAction" />
    <addaction name="separator" />
    <addaction name="editUndoAction" />
-   <addaction name="insAction" />
-   <addaction name="delAction" />
    <addaction name="toggleCategoryAction" />
   </widget>
   <widget class="QMenuBar" name="menubar" >
