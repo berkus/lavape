@@ -56,7 +56,7 @@ public:
   void mousePressEvent ( QMouseEvent *evt );
 
 public slots:
-  void closePage(bool);
+  void closePage();
 
 private:
   Q_OBJECT

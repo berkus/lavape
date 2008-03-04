@@ -90,10 +90,18 @@ QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
   m_currentTabWidget = new wxTabWidget(m_ClientArea);
   m_currentTabWidget->setTabShape(QTabWidget::Triangular);
   m_currentTabWidget->setUsesScrollButtons(true);
-  QPushButton *close=new QPushButton(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/close.xpm")),QString());
-  close->setToolTip("Close current page");
-  connect(close,SIGNAL(clicked(bool)),m_currentTabWidget,SLOT(closePage(bool)));
+  QToolButton *close = new QToolButton();
+  QPalette pal = palette();
+  pal.setColor(QPalette::Active, QPalette::Button, pal.color(QPalette::Active, QPalette::Window));
+  pal.setColor(QPalette::Disabled, QPalette::Button, pal.color(QPalette::Disabled, QPalette::Window));
+  pal.setColor(QPalette::Inactive, QPalette::Button, pal.color(QPalette::Inactive, QPalette::Window));
+  close->setPalette(pal);
+  close->setCursor(Qt::ArrowCursor);
+  close->setAutoRaise(true);
+  close->setIcon(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/close.xpm")));
   m_currentTabWidget->setCornerWidget(close);
+  close->setToolTip("Close current page");
+  connect(close,SIGNAL(clicked()),m_currentTabWidget,SLOT(closePage()));
   connect(m_currentTabWidget ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   return m_ClientArea;
 }
@@ -167,12 +175,19 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   newTW->setTabToolTip(0,ttt);
   SetCurrentTabWindow(newTW);
   page->Activate(true);
-  QPushButton *close=new QPushButton(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/close.xpm")),QString());
-  close->setToolTip("Close current page");
-  connect(close,SIGNAL(clicked(bool)),newTW,SLOT(closePage(bool)));
+  QToolButton *close = new QToolButton();
+  QPalette pal = palette();
+  pal.setColor(QPalette::Active, QPalette::Button, pal.color(QPalette::Active, QPalette::Window));
+  pal.setColor(QPalette::Disabled, QPalette::Button, pal.color(QPalette::Disabled, QPalette::Window));
+  pal.setColor(QPalette::Inactive, QPalette::Button, pal.color(QPalette::Inactive, QPalette::Window));
+  close->setPalette(pal);
+  close->setIcon(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/close.xpm")));
+  close->setCursor(Qt::ArrowCursor);
+  close->setAutoRaise(true);
   newTW->setCornerWidget(close);
-  int splitterIndex = m_ClientArea->indexOf(tw);
+  connect(close,SIGNAL(clicked()),m_currentTabWidget,SLOT(closePage()));
 
+  int splitterIndex = m_ClientArea->indexOf(tw);
   m_ClientArea->insertWidget(splitterIndex+1,newTW);
   connect(newTW ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   equalize();
@@ -419,7 +434,7 @@ void wxTabWidget::mousePressEvent ( QMouseEvent *evt ) {
   }
 }
 
-void wxTabWidget::closePage(bool) {
+void wxTabWidget::closePage() {
   wxChildFrame *page=(wxChildFrame*)currentWidget();
   int index=currentIndex();
   QSplitter *splitter=(QSplitter*)parentWidget();
