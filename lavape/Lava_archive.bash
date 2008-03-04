@@ -3,6 +3,7 @@ cd /opt/lavape/bin
 mv LavaPE LavaPE.exe
 mv Lava Lava.exe
 mv LPC LPC.exe
+rm -f assistant
 
 cd /opt
 tar -c -j \

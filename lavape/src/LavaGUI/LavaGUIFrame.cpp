@@ -43,7 +43,8 @@ bool CLavaGUIFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 	//resize(500,300);
   myDoc = (CLavaBaseDoc*)doc;
   m_document = (CLavaBaseDoc*)doc;
-  SetTitle(QString(myDoc->GetFilename()));
+  QString str(myDoc->GetFilename());
+  SetTitle(str);
   if (LBaseData->inRuntime)
     if (myDoc->isObject) {
       myView = new CLavaGUIView(this, myDoc);

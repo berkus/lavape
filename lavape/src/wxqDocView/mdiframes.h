@@ -178,4 +178,3 @@ MYSTYLE(Cleanlooks)
 MYSTYLE(CDE)
 
 #endif
-    // _WX_DOCM

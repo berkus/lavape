@@ -1879,7 +1879,8 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   doc->AddChildFrame(this);
   m_document = doc;
   DString title = CalcTitle( (LavaDECL*)((CLavaPEApp*)wxTheApp)->LBaseData.actHint->CommandData1, ((CLavaBaseDoc*)LBaseData->actHint->fromDoc)->IDTable.DocName);
-  SetTitle(QString(title.c));
+  QString str(title.c);
+  SetTitle(str);
   //setWindowIcon(QPixmap((const char**) Lava));
   myDoc = (CLavaBaseDoc*)doc;
 

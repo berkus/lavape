@@ -299,7 +299,8 @@ bool CLavaDoc::OnSaveDocument(const QString& lpszPathName)
   ckd.document = this;
   if (isObject) {
     ObjectPathName = DString(qPrintable(lpszPathName));
-    ((CLavaGUIView*)RuntimeView)->GetParentFrame()->SetTitle(GetTitle());
+    QString str(GetTitle());
+    ((CLavaGUIView*)RuntimeView)->GetParentFrame()->SetTitle(str);
     if (DocObjects[2]) {
       if (RuntimeView) {
         inSaveProc = true;
