@@ -80,8 +80,9 @@ public:
     void updateButtonsMenus();
     virtual void onUpdateUI();
     virtual void customEvent(QEvent *e);
-    //void timerEvent(QTimerEvent *);
-
+    //bool notify (QObject *receiver,QEvent *evt ) {
+    //  return QCoreApplication::notify(receiver,evt);
+    //}
     // set/get the application name
     QString GetAppName() const
     {

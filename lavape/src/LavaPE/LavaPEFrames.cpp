@@ -301,7 +301,9 @@ bool CLavaMainFrame::OnCreate()
   setCentralWidget(m_CentralWidget);
   split->setOrientation(Qt::Vertical);
   CreateWorkspace(split);
-  m_UtilityView = new CUtilityView(split);
+  split->addWidget(m_ClientArea);
+  m_UtilityView = new CUtilityView(0);
+  split->addWidget(m_UtilityView);
   QList<int> list=split->sizes();
   list.replace(0,700);//int(totalW * 0.7));
   list.replace(1,300);//int(totalW * 0.3));
