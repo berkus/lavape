@@ -404,7 +404,6 @@ CTreeItem* MyListView::itemAbove(CTreeItem* item)
     return 0;
 }
 
-
 void MyListView::closeEditor(QWidget* editor, QAbstractItemDelegate::EndEditHint hint)
 {
   if (committed)

@@ -173,6 +173,10 @@ void wxApp::customEvent(QEvent *e)
 {
 }
 
+//bool wxApp::notify (QObject *receiver,QEvent *evt ) {
+//  return QCoreApplication::notify(receiver,evt);
+//}
+
 void wxApp::onUpdateUI()
 {
   QWidget *focView;

@@ -80,9 +80,7 @@ public:
     void updateButtonsMenus();
     virtual void onUpdateUI();
     virtual void customEvent(QEvent *e);
-    //bool notify (QObject *receiver,QEvent *evt ) {
-    //  return QCoreApplication::notify(receiver,evt);
-    //}
+    //bool notify (QObject *receiver,QEvent *evt );
     // set/get the application name
     QString GetAppName() const
     {
@@ -105,7 +103,7 @@ public:
     virtual void OpenDocumentFile (const QString& name) { return;}
     virtual wxView *activeView();
     virtual void OnCloseLastExecView() {}
-    QTimer *idleTimer;
+    //QTimer *idleTimer;
     wxDocManager* m_docManager;
     wxMainFrame *m_appWindow;
 //    QSettings *settings;
