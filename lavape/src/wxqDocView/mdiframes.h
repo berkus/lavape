@@ -108,9 +108,7 @@ private:
 
 class WXDLLEXPORT wxTabWidget : public QTabWidget {
 public:
-  wxTabWidget(QWidget *parent) : QTabWidget(parent) {
-    installEventFilter(wxTheApp->m_appWindow);
-  }
+  wxTabWidget(QWidget *parent) : QTabWidget(parent) {}
 
   void mousePressEvent (QMouseEvent *evt);
 
