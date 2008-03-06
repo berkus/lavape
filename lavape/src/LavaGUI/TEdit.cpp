@@ -127,8 +127,8 @@ void CTEdit::focusInEvent(QFocusEvent *ev)
   GUIProg->ScrollIntoFrame(this);
   if (inError)
     setCursorPosition(int(GUIProg->ErrPos));
-  if (GUIProg->isView)
-    ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
+  //if (GUIProg->isView)
+  //  ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
   QLineEdit::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
 }
@@ -267,8 +267,8 @@ void CMultiLineEdit::focusInEvent(QFocusEvent *ev)
   GUIProg->ScrollIntoFrame(this);
   //if (inError)
   //  setCursorPosition(int(GUIProg->ErrPos), int(GUIProg->ErrPos));
-  if (GUIProg->isView)
-    ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
+  //if (GUIProg->isView)
+  //  ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
   QTextEdit::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
 }

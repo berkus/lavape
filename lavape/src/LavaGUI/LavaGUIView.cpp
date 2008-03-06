@@ -61,12 +61,13 @@ GUIScrollView::GUIScrollView(QWidget *parent, bool fromPopup)
   MaxBottomRight = QRect(0,0,0,0);
 }
 
+/*
 void GUIScrollView::focusInEvent(QFocusEvent *ev)
 {
   QWidget* w = parentWidget();
   if (w->inherits("wxView"))
     ((wxView*)w)->focusInEvent(ev);
-}
+}*/
 
 void GUIScrollView::resizeEvent(QResizeEvent* ev)
 {

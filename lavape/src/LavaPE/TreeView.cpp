@@ -383,12 +383,12 @@ void MyListView::dropEvent(QDropEvent* ev)
   setState(NoState);
 }
 
-
+/*
 void MyListView::focusInEvent ( QFocusEvent * e )
 {
   lavaView->focusInEvent (e);
 
-}
+}*/
 
 CTreeItem* MyListView::itemAtIndex(const QModelIndex& index)
 {

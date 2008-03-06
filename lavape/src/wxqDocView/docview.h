@@ -70,6 +70,7 @@ public:
     bool deletingMainFrame;
     bool isChMaximized;
     bool appExit;
+    bool notify(QObject* o, QEvent* e);
 
     int argc;
     char **argv;
@@ -241,8 +242,8 @@ public:
     wxTabWidget *myTabWidget;
 
     virtual void UpdateUI() {}
-    virtual void focusInEvent ( QFocusEvent * e );
-    virtual void mousePressEvent ( QMouseEvent * e );
+    virtual void focusIn( );
+    //virtual void mousePressEvent ( QMouseEvent * e );
     wxDocument *GetDocument() const { return m_viewDocument; }
     void SetDocument(wxDocument *doc);
 

@@ -382,7 +382,7 @@ public:
 
   bool event(QEvent *ev);
   void keyPressEvent (QKeyEvent *e);
-  void focusInEvent (QFocusEvent *e) { execView->wxView::focusInEvent(e); }
+  //void focusInEvent (QFocusEvent *e) { execView->wxView::focusInEvent(e); }
   QString text(const QPoint &point);
   void paintEvent (QPaintEvent *ev);
   void DrawToken (QPainter &p,CProgText *text,CHETokenNode *tNode,bool inSelection);

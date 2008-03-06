@@ -85,7 +85,7 @@ public:
   void mousePressEvent(QMouseEvent *ev);
   void mouseReleaseEvent(QMouseEvent *ev);
   void mouseMoveEvent(QMouseEvent *ev);
-  void focusInEvent ( QFocusEvent * e );
+  //void focusInEvent ( QFocusEvent * e );
   void ResetSelections();
   //QDrag* dragObject();
   virtual void startDrag(Qt::DropActions supportedActions);

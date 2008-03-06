@@ -893,7 +893,7 @@ void MyScrollView::focusInEvent(QFocusEvent *ev) {
   if (execView->initialUpdateDone
   && !execView->myDoc->deleting)
     execView->SetHelpText();
-  execView->wxView::focusInEvent(ev);
+  //execView->wxView::focusInEvent(ev);
 }
 
 void ExecContents::keyPressEvent (QKeyEvent *e) {

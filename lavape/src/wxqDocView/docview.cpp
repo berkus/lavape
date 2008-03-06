@@ -133,6 +133,17 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
   appExit = false;
 }
 
+bool wxApp::notify(QObject* o, QEvent* e)
+{
+  QWidget* w;
+  if ((e->type() == QEvent::FocusIn) && o->inherits("QWidget")) {
+    for (w=(QWidget*)o; w && !w->inherits("wxView"); w=w->parentWidget());
+    if (w) 
+      ((wxView*)w)->focusIn();
+  }
+  return QApplication::notify(o,e);
+}
+
 wxApp::~wxApp() {
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
@@ -661,12 +672,14 @@ wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : QWidget(par
     ((QMainWindow*)parent)->setCentralWidget(this);
 }
 
+/*
 void wxView::mousePressEvent ( QMouseEvent * e )
 {
   wxDocManager::GetDocumentManager()->SetActiveView(this);
 }
+*/
 
-void wxView::focusInEvent ( QFocusEvent * e )
+void wxView::focusIn( )
 {
   wxTheApp->m_appWindow->SetCurrentTabWindow(myTabWidget);
   wxDocManager::GetDocumentManager()->SetActiveView(this, true);

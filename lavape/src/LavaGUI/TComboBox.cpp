@@ -186,8 +186,8 @@ void CTComboBox::focusInEvent(QFocusEvent *ev)
   GUIProg->setFocNode(myFormNode);
   GUIProg->ActNode = myFormNode;
   GUIProg->ScrollIntoFrame(this);
-  if (GUIProg->isView)
-    ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
+  //if (GUIProg->isView)
+  //  ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
   QComboBox::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
 }

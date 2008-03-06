@@ -97,8 +97,8 @@ void CToggleButton::focusInEvent(QFocusEvent *ev)
   GUIProg->CurPTR = myFormNode;
   GUIProg->ScrollIntoFrame(this);
   //setChecked(ch);
-  if (GUIProg->isView)
-    ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
+  //if (GUIProg->isView)
+  //  ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
   QCheckBox::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
 }
@@ -339,8 +339,8 @@ void CPushButton::focusInEvent(QFocusEvent *ev)
   GUIProg->ScrollIntoFrame(this);
   QPushButton::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
-  if (GUIProg->isView && (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin))
-    ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
+  //if (GUIProg->isView && (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin))
+  //  ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
 }
 
 void CPushButton::focusOutEvent(QFocusEvent *ev) 
@@ -555,8 +555,8 @@ void CRadioButton::contextMenuEvent(QContextMenuEvent * e)
 
 void CRadioButton::focusInEvent(QFocusEvent *ev) 
 {
-  if (GUIProg->isView)
-    ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
+  //if (GUIProg->isView)
+  //  ((wxView*)GUIProg->ViewWin)->focusInEvent(ev);
   if (ev->reason() != Qt::MouseFocusReason) {
     GUIProg->ActNode = myFormNode;
     GUIProg->editNode = 0;
