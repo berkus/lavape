@@ -49,19 +49,6 @@ public:
 };
 
 
-class WXDLLEXPORT wxTabWidget : public QTabWidget {
-public:
-  wxTabWidget(QWidget *parent) : QTabWidget(parent) {}
-
-  void mousePressEvent ( QMouseEvent *evt );
-
-public slots:
-  void closePage();
-
-private:
-  Q_OBJECT
-};
-
 class WXDLLEXPORT wxMainFrame: public QMainWindow
 {
     friend class wxChildFrame;
@@ -82,12 +69,14 @@ public:
 //  bool eventFilter(QObject *obj, QEvent *ev);
   void resizeEvent(QResizeEvent& event);
   void closeEvent (QCloseEvent*);
+  bool eventFilter(QObject *o, QEvent *e);
+
   void OnMRUFile(int histFileIndex);
   void OnMRUWindow(int histWindowIndex);
   void LoadFileHistory();
 	wxHistory *GetWindowHistory () { return m_childFrameHistory; }
   virtual void helpContents(){}
-  virtual QTabWidget* Workspace() {
+  virtual wxTabWidget* Workspace() {
     return m_currentTabWidget;
   }
   void MoveToNewTabbedWindow(wxTabWidget *tw,int index);
@@ -114,6 +103,21 @@ public slots:
 private:
 	virtual void customEvent(QEvent *ev){}
 
+  Q_OBJECT
+};
+
+class WXDLLEXPORT wxTabWidget : public QTabWidget {
+public:
+  wxTabWidget(QWidget *parent) : QTabWidget(parent) {
+    installEventFilter(wxTheApp->m_appWindow);
+  }
+
+  void mousePressEvent (QMouseEvent *evt);
+
+  public slots:
+  void closePage();
+
+private:
   Q_OBJECT
 };
 

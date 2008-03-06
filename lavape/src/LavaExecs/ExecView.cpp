@@ -1278,7 +1278,7 @@ MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
 }
 
 ExecContents::ExecContents (MyScrollView *sv) {
-  setFocusPolicy(Qt::ClickFocus);
+  //setFocusPolicy(Qt::ClickFocus);
   this->sv = sv;
   execView = sv->execView;
   setWhatsThis(tr("No specific help available here"));

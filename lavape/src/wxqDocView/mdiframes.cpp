@@ -62,6 +62,7 @@ wxMainFrame::wxMainFrame() : QMainWindow()
 
   setStatusBar(stb);
   wxTheApp->m_appWindow = this;
+  wxTheApp->installEventFilter(this);
 
   docMan->m_fileHistory = new wxHistory(this);
   connect(docMan->m_fileHistory->m_signalMapper,SIGNAL(mapped(int)),wxTheApp->m_appWindow,SLOT(histFile(int)));
@@ -84,9 +85,14 @@ wxMainFrame::~wxMainFrame()
   delete m_childFrameHistory;
 }
 
+bool wxMainFrame::eventFilter(QObject *o, QEvent *e) {
+  return false;
+}
+
 QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
 {
   m_ClientArea=new QSplitter(parent);
+  m_ClientArea->installEventFilter(this);
   m_currentTabWidget = new wxTabWidget(m_ClientArea);
   m_currentTabWidget->setTabShape(QTabWidget::Triangular);
   m_currentTabWidget->setUsesScrollButtons(true);
