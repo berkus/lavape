@@ -313,13 +313,13 @@ void wxChildFrame::SetTitle(QString &title)
 
   if (title.contains(": ")) {
     tw->setTabText(tw->indexOf(this),title);
-    tooltip = m_document->GetFilename() + ", " + title + "\nNote the context menu on every tab!";
+    tooltip = m_document->GetFilename() + ", " + title + "\nNote the drag/drop support and the context menu on every tab!";
     tw->setTabToolTip(tw->indexOf(this),tooltip);
   }
   else {
     QFileInfo fi(title);
     tw->setTabText(tw->indexOf(this),fi.fileName());
-    tw->setTabToolTip(tw->indexOf(this),m_document->GetFilename() + "\nNote the context menu on every tab!");
+    tw->setTabToolTip(tw->indexOf(this),m_document->GetFilename() + "\nNote the drag/drop support and the context menu on every tab!");
   }
   if (newTitle.at(newTitle.length()-1) == '*')
     newTitle = newTitle.left(newTitle.length()-1);
