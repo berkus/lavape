@@ -48,6 +48,15 @@ public:
 	wxChildFrame *window;
 };
 
+class WXDLLEXPORT wxPostTabData
+{
+public:
+  wxTabWidget* source;
+  int tabIndex;
+  QAction *action;
+  wxPostTabData(wxTabWidget* s, int i, QAction *act) {source = s; tabIndex = i; action = act;}
+};
+
 
 class WXDLLEXPORT wxMainFrame: public QMainWindow
 {
@@ -111,11 +120,16 @@ public:
   wxTabWidget(QWidget *parent) : QTabWidget(parent) {}
 
   void mousePressEvent (QMouseEvent *evt);
-
+  void postTabChange(int index, QAction* triggeredAction);
   public slots:
   void closePage();
 
 private:
+  QAction *closePageAction;
+  QAction *closeFileAction;
+  QAction *newTabWidAction;
+  QAction *movePageRightAction;
+  QAction *movePageLeftAction;
   Q_OBJECT
 };
 

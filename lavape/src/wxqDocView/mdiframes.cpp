@@ -178,7 +178,6 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   newTW->setTabText(0,tt);
   newTW->setTabToolTip(0,ttt);
   SetCurrentTabWindow(newTW);
-  page->Activate(true);
   QToolButton *close = new QToolButton();
   QPalette pal = palette();
   pal.setColor(QPalette::Active, QPalette::Button, pal.color(QPalette::Active, QPalette::Window));
@@ -193,6 +192,7 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
 
   int splitterIndex = m_ClientArea->indexOf(tw);
   m_ClientArea->insertWidget(splitterIndex+1,newTW);
+  page->Activate(true);
   connect(newTW ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   equalize();
 }
@@ -261,7 +261,7 @@ wxChildFrame::wxChildFrame(QWidget *parent)
   //setAttribute(Qt::WA_DeleteOnClose);
 
   deleting = false;
-  QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(QEvent::User,this));
+  QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(/*QEvent::User*/UEV_Idle,this));
 }
 
 void wxChildFrame::resizeEvent(QResizeEvent *ev) {
@@ -377,7 +377,6 @@ void wxTabWidget::mousePressEvent ( QMouseEvent *evt ) {
   Qt::MouseButton mb=evt->button();
   QSplitter *splitter=(QSplitter*)parentWidget();
   int index=tb->tabAt(pt), splitterIndex=splitter->indexOf(this);
-  wxChildFrame *page=(wxChildFrame*)widget(index);
 
   if (mb != Qt::RightButton || index == -1)
     return;
@@ -385,11 +384,11 @@ void wxTabWidget::mousePressEvent ( QMouseEvent *evt ) {
   QMenu tabMenu;
   QAction *triggeredAction;
 
-  QAction *closePageAction = tabMenu.addAction("Close this page");
-  QAction *closeFileAction = tabMenu.addAction("Close this file");
-  QAction *newTabWidAction = tabMenu.addAction("Move to new tabbed window");
-  QAction *movePageRightAction = tabMenu.addAction("Move to next tabbed window");
-  QAction *movePageLeftAction = tabMenu.addAction("Move to preceding tabbed window");
+  closePageAction = tabMenu.addAction("Close this page");
+  closeFileAction = tabMenu.addAction("Close this file");
+  newTabWidAction = tabMenu.addAction("Move to new tabbed window");
+  movePageRightAction = tabMenu.addAction("Move to next tabbed window");
+  movePageLeftAction = tabMenu.addAction("Move to preceding tabbed window");
 
   if (count() == 1)
     newTabWidAction->setEnabled(false);
@@ -399,6 +398,14 @@ void wxTabWidget::mousePressEvent ( QMouseEvent *evt ) {
     movePageLeftAction->setEnabled(false);
 
   triggeredAction = tabMenu.exec(QCursor::pos());
+  
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(this, index, triggeredAction)));
+}
+
+void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
+{
+  wxChildFrame *page=(wxChildFrame*)widget(index);
+  QSplitter *splitter=(QSplitter*)parentWidget();
 
   if (triggeredAction == closePageAction) {
     if (page->inherits("CTreeFrame")

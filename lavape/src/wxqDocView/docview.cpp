@@ -182,6 +182,10 @@ void wxApp::updateButtonsMenus()
 
 void wxApp::customEvent(QEvent *e)
 {
+  if (((CustomEvent*)e)->type() == UEV_TabChange) {
+    wxPostTabData* data = (wxPostTabData*)((CustomEvent*)e)->data();
+    data->source->postTabChange(data->tabIndex, data->action);
+  }
 }
 
 //bool wxApp::notify (QObject *receiver,QEvent *evt ) {
