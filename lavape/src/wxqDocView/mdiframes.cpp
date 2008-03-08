@@ -449,6 +449,9 @@ void wxTabWidget::closePage() {
   int index=currentIndex();
   QSplitter *splitter=(QSplitter*)parentWidget();
 
+  if (count() == 0 && splitter->count() > 1)
+    deleteLater();
+
   if (page->inherits("CTreeFrame")
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
     page->Activate(true);
@@ -459,8 +462,6 @@ void wxTabWidget::closePage() {
     removeTab(index);
     delete page;
   }
-  if (count() == 0 && splitter->count() > 1)
-    deleteLater();
   wxTheApp->updateButtonsMenus();
 }
 
