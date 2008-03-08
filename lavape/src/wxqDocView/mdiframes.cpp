@@ -407,25 +407,27 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
   wxChildFrame *page=(wxChildFrame*)widget(index);
   QSplitter *splitter=(QSplitter*)parentWidget();
   if (triggeredAction == closePageAction) {
-    if (count() == 0 && splitter->count() > 1)
-      deleteLater();    
     if (page->inherits("CTreeFrame")
     || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
       page->Activate(true);
-      wxDocManager::GetDocumentManager()->OnFileClose();
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(0,0,0)));
+      //wxDocManager::GetDocumentManager()->OnFileClose();
     }
     else {
       removeTab(index);
       delete page;
+      if (count() == 0 && splitter  ->count() > 1)
+        deleteLater();    
+      wxTheApp->updateButtonsMenus();
     }
-    wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == closeFileAction) {
     page->Activate(true);
-    if (count() == 0 && splitter->count() > 1)
-      deleteLater();
-    wxDocManager::GetDocumentManager()->OnFileClose();
-    wxTheApp->updateButtonsMenus();
+    //if (count() == 0 && splitter->count() > 1)
+    //  deleteLater();
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(0,0,0)));
+    //wxDocManager::GetDocumentManager()->OnFileClose();
+    //wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == newTabWidAction) {
     page->Activate(true);
@@ -449,20 +451,21 @@ void wxTabWidget::closePage() {
   int index=currentIndex();
   QSplitter *splitter=(QSplitter*)parentWidget();
 
-  if (count() == 0 && splitter->count() > 1)
-    deleteLater();
 
   if (page->inherits("CTreeFrame")
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
     page->Activate(true);
-    wxDocManager::GetDocumentManager()->OnFileClose();
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(0,0,0)));
+    //wxDocManager::GetDocumentManager()->OnFileClose();
     return;
   }
   else {
     removeTab(index);
     delete page;
+    if (count() == 0 && splitter->count() > 1)
+      deleteLater();
+    wxTheApp->updateButtonsMenus();
   }
-  wxTheApp->updateButtonsMenus();
 }
 
 void wxTabWidget::closePage2(wxChildFrame *page, int index)

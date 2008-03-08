@@ -186,7 +186,11 @@ void wxApp::customEvent(QEvent *e)
 {
   if (((CustomEvent*)e)->type() == UEV_TabChange) {
     wxPostTabData* data = (wxPostTabData*)((CustomEvent*)e)->data();
-    data->source->postTabChange(data->tabIndex, data->action);
+    if (!data->source)
+      m_docManager->OnFileClose();
+    else 
+      data->source->postTabChange(data->tabIndex, data->action);
+    delete data;
   }
 }
 
