@@ -30,6 +30,8 @@
 #include "qt_windows.h"
 #include "commdlg.h"
 #define QASSISTANT "assistant"
+#elif __Darwin
+#define QASSISTANT "/usr/local/Trolltech/Qt-4.3.4/bin/"
 #else
 #define QASSISTANT "./assistant"
 #endif
