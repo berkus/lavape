@@ -92,11 +92,11 @@ public:
   void MoveToNextTabbedWindow(wxTabWidget *tw,int index);
   void MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index);
   void equalize();
-
+  QSplitter *m_ClientArea;
+  
 protected:
   virtual QSplitter *CreateWorkspace(QWidget* parent);
   QWidget *m_CentralWidget;
-  QSplitter *m_ClientArea;
   QVBoxLayout *m_layout;
 	wxHistory *m_childFrameHistory;
   QWidget *theActiveFrame;

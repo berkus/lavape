@@ -406,28 +406,32 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
 {
   wxChildFrame *page=(wxChildFrame*)widget(index);
   QSplitter *splitter=(QSplitter*)parentWidget();
+  wxTabWidget* tab;
   if (triggeredAction == closePageAction) {
     if (page->inherits("CTreeFrame")
     || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
       page->Activate(true);
       QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(0,0,0)));
-      //wxDocManager::GetDocumentManager()->OnFileClose();
     }
     else {
       removeTab(index);
       delete page;
-      if (count() == 0 && splitter  ->count() > 1)
-        deleteLater();    
+      if (count() == 0 && splitter->count() > 1) {
+        if (splitter->widget(0) == this)
+          tab = (wxTabWidget*)splitter->widget(1);
+        else
+          tab = (wxTabWidget*)splitter->widget(0);
+        wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
+        if (tab->widget(0))
+          ((wxChildFrame*)tab->widget(0))->Activate(true);
+        deleteLater();  
+      }
       wxTheApp->updateButtonsMenus();
     }
   }
   else if (triggeredAction == closeFileAction) {
     page->Activate(true);
-    //if (count() == 0 && splitter->count() > 1)
-    //  deleteLater();
     QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(0,0,0)));
-    //wxDocManager::GetDocumentManager()->OnFileClose();
-    //wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == newTabWidAction) {
     page->Activate(true);
@@ -450,19 +454,26 @@ void wxTabWidget::closePage() {
   wxChildFrame *page=(wxChildFrame*)currentWidget();
   int index=currentIndex();
   QSplitter *splitter=(QSplitter*)parentWidget();
+  wxTabWidget* tab;
 
 
   if (page->inherits("CTreeFrame")
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
     page->Activate(true);
     QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(0,0,0)));
-    //wxDocManager::GetDocumentManager()->OnFileClose();
     return;
   }
   else {
     removeTab(index);
     delete page;
     if (count() == 0 && splitter->count() > 1)
+      if (splitter->widget(0) == this)
+        tab = (wxTabWidget*)splitter->widget(1);
+      else
+        tab = (wxTabWidget*)splitter->widget(0);
+      wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
+      if (tab->widget(0))
+        ((wxChildFrame*)tab->widget(0))->Activate(true);
       deleteLater();
     wxTheApp->updateButtonsMenus();
   }
@@ -473,9 +484,6 @@ void wxTabWidget::closePage2(wxChildFrame *page, int index)
   QSplitter *splitter=(QSplitter*)parentWidget();
   removeTab(index);
   delete page;
-  //if (count() == 0 && splitter->count() > 1)
-  //  deleteLater();
-  //wxTheApp->updateButtonsMenus();
 }
 
 #define MYSTYLEIMP(sty)\

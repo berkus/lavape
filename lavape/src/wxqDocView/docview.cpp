@@ -341,9 +341,11 @@ bool wxDocument::DeleteAllChildFrames()
     tab->closePage2(child, tab->currentIndex());
     if (tab->count() == 0 && ((QSplitter*)tab->parentWidget())->count() > 1)
       delete tab;
-    else
-      wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
   }
+  tab = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
+  wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
+  if (tab->widget(0))
+    ((wxChildFrame*)tab->widget(0))->Activate(true);
   return true;
 }
 
