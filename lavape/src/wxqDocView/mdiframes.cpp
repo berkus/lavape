@@ -407,6 +407,8 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
   wxChildFrame *page=(wxChildFrame*)widget(index);
   QSplitter *splitter=(QSplitter*)parentWidget();
   if (triggeredAction == closePageAction) {
+    if (count() == 0 && splitter->count() > 1)
+      deleteLater();    
     if (page->inherits("CTreeFrame")
     || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
       page->Activate(true);
@@ -416,15 +418,13 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
       removeTab(index);
       delete page;
     }
-    if (count() == 0 && splitter->count() > 1)
-      deleteLater();
     wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == closeFileAction) {
     page->Activate(true);
-    wxDocManager::GetDocumentManager()->OnFileClose();
     if (count() == 0 && splitter->count() > 1)
       deleteLater();
+    wxDocManager::GetDocumentManager()->OnFileClose();
     wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == newTabWidAction) {
