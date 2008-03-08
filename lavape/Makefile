@@ -109,10 +109,9 @@ bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; $(LN) $< $@
 bin/assistant:
 ifeq ($(OPSYS),Darwin)
-	rm -f $@; \
-	$(LN) $(QBIN)/assistant.app/Contents/MacOS/assistant $@
+	rm -f $@; $(LN) $(QBIN) $@
 else
-	$(LN) $(QBIN)/assistant$(SUFF) $@
+	rm -f $@; $(LN) $(QBIN)/assistant$(SUFF) $@
 endif
 
 lib/libQtCore.so.4: $(QLIB)/libQtCore.so.4

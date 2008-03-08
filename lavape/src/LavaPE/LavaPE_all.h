@@ -24,6 +24,7 @@
 #include "setup.h"
 #include "qtreewidget.h"
 #include "qfontinfo.h"
+#include "qglobal.h"
 #include <QActionGroup>
 
 #include "Bars.h"

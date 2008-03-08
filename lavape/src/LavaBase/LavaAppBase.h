@@ -31,7 +31,7 @@
 #include "commdlg.h"
 #define QASSISTANT "assistant"
 #elif __Darwin
-#define QASSISTANT "/usr/local/Trolltech/Qt-4.3.4/bin/"
+#define QASSISTANT "assistant"
 #else
 #define QASSISTANT "./assistant"
 #endif

@@ -50,6 +50,7 @@
 #include "qpixmapcache.h"
 #include "qmessagebox.h"
 #include "qprocess.h"
+#include "qglobal.h"
 //Added by qt3to4:
 #include <QPixmap>
 #include <QEvent>
@@ -698,7 +699,8 @@ void CLavaPEApp::HtmlHelp()
 {
   QString path(QASSISTANT);
   QStringList args;
-
+  DString cpath(qPrintable(path));
+  
   args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
   if (!qacl) {
     qacl = new QAssistantClient(path,m_appWindow);
