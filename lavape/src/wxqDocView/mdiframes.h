@@ -121,6 +121,7 @@ public:
 
   void mousePressEvent (QMouseEvent *evt);
   void postTabChange(int index, QAction* triggeredAction);
+  void closePage2(wxChildFrame *page, int index);
   public slots:
   void closePage();
 

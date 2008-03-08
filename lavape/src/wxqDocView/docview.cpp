@@ -171,6 +171,8 @@ void wxApp::updateButtonsMenus()
 {
   if (!m_appWindow->m_currentTabWidget)
     return;
+  if (wxDocManager::GetDocumentManager()->GetActiveDocument() && wxDocManager::GetDocumentManager()->GetActiveDocument()->deleting)
+    return;
   //wxChildFrame *actMDIChild = (wxChildFrame*)m_appWindow->m_currentTabWidget->currentWidget();
 
   onUpdateUI();
@@ -199,7 +201,7 @@ void wxApp::onUpdateUI()
 
   if (appExit /*deletingMainFrame*/)
     return;
-
+  
   UpdateUI();
   if (m_appWindow)
     m_appWindow->UpdateUI();
@@ -325,8 +327,19 @@ bool wxDocument::OnCloseDocument()
 // deleted.
 bool wxDocument::DeleteAllChildFrames()
 {
-  while (m_docChildFrames.size())
-    delete m_docChildFrames.takeAt(0);
+  wxChildFrame* child;
+  wxTabWidget* tab;
+  while (m_docChildFrames.size()) {
+    //delete m_docChildFrames.takeAt(0);
+    child = m_docChildFrames.takeAt(0);
+    tab = child->m_tabWidget;
+    tab->setCurrentWidget(child);
+    tab->closePage2(child, tab->currentIndex());
+    if (tab->count() == 0 && ((QSplitter*)tab->parentWidget())->count() > 1)
+      delete tab;
+    else
+      wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
+  }
   return true;
 }
 

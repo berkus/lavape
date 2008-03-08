@@ -406,7 +406,6 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
 {
   wxChildFrame *page=(wxChildFrame*)widget(index);
   QSplitter *splitter=(QSplitter*)parentWidget();
-
   if (triggeredAction == closePageAction) {
     if (page->inherits("CTreeFrame")
     || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
@@ -454,6 +453,7 @@ void wxTabWidget::closePage() {
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
     page->Activate(true);
     wxDocManager::GetDocumentManager()->OnFileClose();
+    return;
   }
   else {
     removeTab(index);
@@ -464,6 +464,15 @@ void wxTabWidget::closePage() {
   wxTheApp->updateButtonsMenus();
 }
 
+void wxTabWidget::closePage2(wxChildFrame *page, int index)
+{
+  QSplitter *splitter=(QSplitter*)parentWidget();
+  removeTab(index);
+  delete page;
+  //if (count() == 0 && splitter->count() > 1)
+  //  deleteLater();
+  //wxTheApp->updateButtonsMenus();
+}
 
 #define MYSTYLEIMP(sty)\
   int My##sty##Style::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const\
