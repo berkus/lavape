@@ -1,6 +1,6 @@
 SHELL=/usr/bin/env sh
 #SHELL=/bin/sh
-
+   
 #to build a debug version set DBG=-ggdb
 DBG=-gstabs+
 
