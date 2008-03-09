@@ -1,11 +1,11 @@
 #! /usr/bin/env bash
-cd /opt/lavape/bin
+cd bin
 mv LavaPE LavaPE.exe
 mv Lava Lava.exe
 mv LPC LPC.exe
 rm -f assistant
 
-cd /opt
+cd ../..
 tar -c -j \
 --exclude=lib \
 --exclude=LavaWWW \
@@ -29,6 +29,7 @@ tar -c -j \
 --exclude='*~' \
 --exclude='*.o' \
 --exclude='*.so' \
+--exclude='*.dylib' \
 --exclude='*.exe' \
 --exclude='*.gch' \
 --exclude='*.d' \
@@ -38,7 +39,7 @@ tar -c -j \
 --exclude='.[#,a-z,A-Z]*' \
 -f lavape/lavape-0.9.$1-src.tar.bz2 lavape
 ls -l lavape/lavape-0.9.$1-src.tar.bz2
-cd /opt/lavape/bin
+cd lavape/bin
 mv LavaPE.exe LavaPE
 mv Lava.exe Lava
 mv LPC.exe LPC
