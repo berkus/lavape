@@ -192,6 +192,11 @@ void wxApp::customEvent(QEvent *e)
       data->source->postTabChange(data->tabIndex, data->action);
     delete data;
   }
+  else if (((CustomEvent*)e)->type() == UEV_TabDrop) {
+    wxPostDropData* data = (wxPostDropData*)((CustomEvent*)e)->data();
+    m_appWindow->DropPage(data->source, data->sIndex, data->dest, data->dIndex);
+    delete data;
+  }
 }
 
 //bool wxApp::notify (QObject *receiver,QEvent *evt ) {

@@ -235,6 +235,25 @@ void wxMainFrame::MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index){
   wxTheApp->updateButtonsMenus();
 }
 
+void wxMainFrame::DropPage(wxTabWidget* sTw, int sIndex, wxTabWidget* dTw, int dIndex)
+{
+  QString tt=sTw->tabText(sIndex), ttt=sTw->tabToolTip(sIndex);
+  wxChildFrame *page=(wxChildFrame*)sTw->widget(sIndex);
+  if (sTw == dTw)
+    dTw->removeTab(sIndex);
+  int ii = dTw->insertTab(dIndex, page, tt);
+  page->correctMyTabWidget(dTw);
+  dTw->setTabToolTip(0,ttt);
+  dTw->setCurrentIndex(dIndex);
+  SetCurrentTabWindow(dTw);
+  page->Activate(true);
+  if (sTw->count() == 0 && m_ClientArea->count() > 1) {
+    delete sTw;
+    equalize();
+  }
+  wxTheApp->updateButtonsMenus();
+}
+
 void wxMainFrame::equalize() {
   if (m_ClientArea->count()>1) {
     QList<int> sz;
@@ -370,7 +389,104 @@ wxChildFrame::~wxChildFrame()
     delete m_document;
 }
 
+wxTabBar::wxTabBar(QWidget* parent) : QTabBar(parent)
+{
+  setAcceptDrops(true);
+  wxDragFormat = "wxTabWidget";
+  dragStartPosition=QPoint(0,0);
+}
 
+void wxTabBar::mouseMoveEvent(QMouseEvent *evt)
+{
+  if (!(evt->buttons() & Qt::LeftButton))
+    return;
+  if ((evt->pos() - dragStartPosition).manhattanLength()
+        < QApplication::startDragDistance())
+    return;
+  QPoint pt = evt->pos();
+  int index = tabAt(pt);
+  if (index < 0)
+    return;
+  QDrag *drag = new QDrag(this);
+  wxDragData* dragData = new wxDragData((wxTabWidget*)parentWidget(), index);
+  QByteArray ba = QByteArray::fromRawData((char*)dragData, sizeof(wxDragData));
+  QMimeData *mimeData = new QMimeData;
+  mimeData->setData(wxDragFormat, ba);
+  drag->setMimeData(mimeData);
+  Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
+  delete drag;
+  delete dragData;
+}
+
+void wxTabBar::mousePressEvent ( QMouseEvent *evt )
+{
+  QPoint pt=evt->pos();
+  Qt::MouseButton mb=evt->button();
+  wxTabWidget* tw = (wxTabWidget*)parentWidget();
+  QSplitter *splitter=(QSplitter*)tw->parentWidget();
+  int index=tabAt(pt), splitterIndex=splitter->indexOf(tw);
+
+  if ((index >= 0) && (evt->button() == Qt::LeftButton)) {
+    ((wxChildFrame*)tw->widget(index))->Activate();
+    dragStartPosition = evt->pos();
+  }
+  else {
+    dragStartPosition = QPoint(0,0);
+    if (mb != Qt::RightButton || index == -1)
+      return;
+    QMenu tabMenu;
+    QAction *triggeredAction;
+
+    tw->closePageAction = tabMenu.addAction("Close this page");
+    tw->closeFileAction = tabMenu.addAction("Close this file");
+    tw->newTabWidAction = tabMenu.addAction("Move to new tabbed window");
+    tw->movePageRightAction = tabMenu.addAction("Move to next tabbed window");
+    tw->movePageLeftAction = tabMenu.addAction("Move to preceding tabbed window");
+
+    if (count() == 1)
+      tw->newTabWidAction->setEnabled(false);
+    if (splitterIndex == splitter->count()-1)
+      tw->movePageRightAction->setEnabled(false);
+    if (splitterIndex == 0)
+      tw->movePageLeftAction->setEnabled(false);
+
+    triggeredAction = tabMenu.exec(QCursor::pos());
+    
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(tw, index, triggeredAction)));
+  }
+}
+
+void wxTabBar::dragEnterEvent(QDragEnterEvent *evt)
+{
+  if (evt->provides(wxDragFormat)) {
+    QByteArray ba = evt->encodedData(wxDragFormat);
+    wxDragData* dragData = (wxDragData*)ba.data();
+    evt->setDropAction(Qt::MoveAction);
+    evt->accept();
+  }
+  else
+    evt->ignore();
+}
+
+void wxTabBar::dropEvent(QDropEvent *evt)
+{
+  if (evt->provides(wxDragFormat)) {
+    QPoint pt=evt->pos();
+    int index = tabAt(pt);
+    QByteArray ba = evt->encodedData(wxDragFormat);
+    wxDragData* dragData = (wxDragData*)ba.data();
+    if ((parentWidget() != dragData->wt) || (index != dragData->index)) {
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabDrop,(void*)new wxPostDropData(dragData->wt, dragData->index, (wxTabWidget*)parentWidget(), index)));
+      evt->acceptProposedAction();
+    }
+    else
+      evt->ignore();
+  }
+  else
+    evt->ignore();
+}
+
+/*
 void wxTabWidget::mousePressEvent ( QMouseEvent *evt ) {
   QTabBar *tb=tabBar();
   QPoint pt=evt->pos();
@@ -380,7 +496,6 @@ void wxTabWidget::mousePressEvent ( QMouseEvent *evt ) {
 
   if (mb != Qt::RightButton || index == -1)
     return;
-
   QMenu tabMenu;
   QAction *triggeredAction;
 
@@ -400,7 +515,7 @@ void wxTabWidget::mousePressEvent ( QMouseEvent *evt ) {
   triggeredAction = tabMenu.exec(QCursor::pos());
   
   QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(this, index, triggeredAction)));
-}
+}*/
 
 void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
 {

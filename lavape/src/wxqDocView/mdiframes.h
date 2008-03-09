@@ -57,6 +57,16 @@ public:
   wxPostTabData(wxTabWidget* s, int i, QAction *act) {source = s; tabIndex = i; action = act;}
 };
 
+class WXDLLEXPORT wxPostDropData
+{
+public:
+  wxTabWidget* source;
+  int sIndex;
+  wxTabWidget* dest;
+  int dIndex;
+  wxPostDropData(wxTabWidget* s, int si, wxTabWidget* d, int di) {source = s; sIndex = si; dest = d; dIndex = di;}
+};
+
 
 class WXDLLEXPORT wxMainFrame: public QMainWindow
 {
@@ -91,6 +101,7 @@ public:
   void MoveToNewTabbedWindow(wxTabWidget *tw,int index);
   void MoveToNextTabbedWindow(wxTabWidget *tw,int index);
   void MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index);
+  void DropPage(wxTabWidget* s_wt, int s_index, wxTabWidget* d_wt, int d_index);
   void equalize();
   QSplitter *m_ClientArea;
   
@@ -115,22 +126,41 @@ private:
   Q_OBJECT
 };
 
+class WXDLLEXPORT wxDragData {
+public:
+  wxDragData(wxTabWidget* w, int i) {wt=w; index=i;}
+  wxTabWidget* wt;
+  int index;
+};
+
+class WXDLLEXPORT wxTabBar : public QTabBar {
+public:
+  wxTabBar(QWidget* parent);
+  void mouseMoveEvent(QMouseEvent *evt);
+  void mousePressEvent (QMouseEvent *evt);
+  void dragEnterEvent(QDragEnterEvent *ev);
+  void dropEvent(QDropEvent* ev);
+  QPoint dragStartPosition;
+  const char* wxDragFormat;
+};
+
 class WXDLLEXPORT wxTabWidget : public QTabWidget {
 public:
-  wxTabWidget(QWidget *parent) : QTabWidget(parent) {}
+  wxTabWidget(QWidget *parent) : QTabWidget(parent) {setTabBar(new wxTabBar(this));}
 
-  void mousePressEvent (QMouseEvent *evt);
+  //void mousePressEvent (QMouseEvent *evt);
   void postTabChange(int index, QAction* triggeredAction);
   void closePage2(wxChildFrame *page, int index);
-  public slots:
-  void closePage();
 
-private:
   QAction *closePageAction;
   QAction *closeFileAction;
   QAction *newTabWidAction;
   QAction *movePageRightAction;
   QAction *movePageLeftAction;
+
+public slots:
+  void closePage();
+private:
   Q_OBJECT
 };
 
