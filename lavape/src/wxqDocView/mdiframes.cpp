@@ -408,6 +408,7 @@ void wxTabBar::mouseMoveEvent(QMouseEvent *evt)
   if (index < 0)
     return;
   QDrag *drag = new QDrag(this);
+  drag->setPixmap(QPixmap(QString::fromUtf8(":/wxqDocView/res/wxqDocView/res/minitab.xpm")));
   wxDragData* dragData = new wxDragData((wxTabWidget*)parentWidget(), index);
   QByteArray ba = QByteArray::fromRawData((char*)dragData, sizeof(wxDragData));
   QMimeData *mimeData = new QMimeData;
