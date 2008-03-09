@@ -73,16 +73,18 @@ ITPF = src/Interpreter/Constructs.ph \
   src/Interpreter/VisitorTraversal.cpp \
   src/Interpreter/TableVisitor.cpp \
   src/Interpreter/ClosedLevelVisitor.cpp
-
+  
+ifeq ($(OPSYS),Darwin)
+links: $(ITPF) \
+	bin/Components/LCompoImpl.lcom.lnk \
+	bin/Components/LavaStream.lava \
+	bin/assistant.app
+else
 links: $(ITPF) \
 	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava \
 	bin/assistant
-#	lib/libQtCore.so.4 \
-#	lib/libQtGui.so.4 \
-#	lib/libQtNetwork.so.4 \
-#	lib/libQtXml.so.4 \
-#	lib/libQtAssistantClient.so.4
+endif
 
 src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
 	cd src/Interpreter; $(LN) ../LavaExecs/Constructs.ph .
@@ -107,10 +109,11 @@ bin/Components/LCompoImpl.lcom.lnk: samples/LCompoImpl.lcom
 	rm -f $@; $(LN) $< $@
 bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; $(LN) $< $@
-bin/assistant:
 ifeq ($(OPSYS),Darwin)
-	rm -f $@; $(LN) $(QBIN) $@
+bin/assistant.app:
+	rm -f $@; $(LN) $(QBIN)/assistant.app $@
 else
+bin/assistant$(SUFF):
 	rm -f $@; $(LN) $(QBIN)/assistant$(SUFF) $@
 endif
 

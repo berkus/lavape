@@ -31,7 +31,7 @@
 #include "commdlg.h"
 #define QASSISTANT "assistant"
 #elif __Darwin
-#define QASSISTANT "assistant"
+#define QASSISTANT "."
 #else
 #define QASSISTANT "./assistant"
 #endif
