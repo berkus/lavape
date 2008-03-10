@@ -6,7 +6,7 @@ EXEC = Lava
 
 QRC = ../Lava_resources.qrc
 
-SUBPRO=disco wxqDocView LavaBase LavaGUI Lava_UI Interpreter LavaStream
+SUBPRO=disco wxqDocView LavaBase LavaGUI Lava_UI Interpreter
 
 CPP_INCLUDES = -I. -Ires -I../LavaBase/Generated \
 	-I../Interpreter -I../Lava_UI -I../Lava_UI/Generated -I../LavaGUI \

@@ -286,12 +286,13 @@ TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL, LavaDECL* spe
     return StdAdapterTab[classDECL->fromBType];
   else if (((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab)
     return ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab;
-  else
-    if (specDECL && (specDECL->DeclType == CompObjSpec) 
-      &&  classDECL->TypeFlags.Contains(isComponent)) {
-//    QString lib = ExeDir + "/" + QString (((CHEEnumSelId*)specDECL->Items.first)->data.Id.c);
+  else if (specDECL && (specDECL->DeclType == CompObjSpec) 
+  &&  classDECL->TypeFlags.Contains(isComponent)) {
+#ifdef WIN32
     QString lib = QString (((CHEEnumSelId*)specDECL->Items.first)->data.Id.c);
-    //DString dlib(qPrintable(lib));
+#else
+    QString lib = QString("lib")+QString (((CHEEnumSelId*)specDECL->Items.first)->data.Id.c);
+#endif
     TS adapt = (TS)QLibrary::resolve(lib, classDECL->LitStr.c);
     ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab =  adapt();
     return ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab;

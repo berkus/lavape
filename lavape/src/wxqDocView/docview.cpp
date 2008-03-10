@@ -92,6 +92,12 @@ QString wxEmptyString;
 static inline QString FindExtension(const char *path);
 static const QString s_MRUEntryFormat("%1 %2");
 
+#ifdef __Darwin
+const char* qs2str(const QString &qstr)
+{
+  return qstr.toAscii().constData();
+}
+#endif
 
 // break into the debugger
 void Trap()
