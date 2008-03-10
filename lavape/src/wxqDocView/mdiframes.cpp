@@ -452,8 +452,8 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
       tw->movePageLeftAction->setEnabled(false);
 
     triggeredAction = tabMenu.exec(QCursor::pos());
-    
-    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(tw, index, triggeredAction)));
+    if (triggeredAction)  
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(tw, index, triggeredAction)));
   }
 }
 
