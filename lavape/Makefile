@@ -137,7 +137,7 @@ bin/LavaStream.dll:
 	cd src/LavaStream; $(MAKE)
 else
 bin/Components/$(DLLPREFIX)LavaStream$(DLLSUFFIX): lib/$(DLLPREFIX)LavaStream$(DLLSUFFIX)
-	rm -f $@; $(LN) $< $@
+	rm -f $@; cd bin/Components; $(LN) ../../lib/$(DLLPREFIX)LavaStream$(DLLSUFFIX) $(DLLPREFIX)LavaStream$(DLLSUFFIX)
 lib/$(DLLPREFIX)LavaStream$(DLLSUFFIX):
 	cd src/LavaStream; $(MAKE)
 endif
