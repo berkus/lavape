@@ -245,12 +245,12 @@ void wxMainFrame::DropPage(wxTabWidget* sTw, int sIndex, wxTabWidget* dTw, int d
   page->correctMyTabWidget(dTw);
   dTw->setTabToolTip(0,ttt);
   dTw->setCurrentIndex(dIndex);
-  SetCurrentTabWindow(dTw);
-  page->Activate(true);
   if (sTw->count() == 0 && m_ClientArea->count() > 1) {
     delete sTw;
     equalize();
   }
+  SetCurrentTabWindow(dTw);
+  page->Activate(true);
   wxTheApp->updateButtonsMenus();
 }
 
@@ -477,7 +477,8 @@ void wxTabBar::dropEvent(QDropEvent *evt)
     QByteArray ba = evt->encodedData(wxDragFormat);
     wxTabChangeData* dragData = (wxTabChangeData*)ba.data();
     if ((parentWidget() != dragData->source) || (index != dragData->sIndex)) {
-      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabDrop,(void*)new wxTabChangeData(dragData->source, dragData->sIndex, (wxTabWidget*)parentWidget(), index)));
+      wxDocManager::GetDocumentManager()->SetActiveView(0,false);
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(dragData->source, dragData->sIndex, (wxTabWidget*)parentWidget(), index)));
       evt->acceptProposedAction();
     }
     else

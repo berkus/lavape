@@ -189,12 +189,10 @@ void wxApp::customEvent(QEvent *e)
     if (!data->source)
       m_docManager->OnFileClose();
     else 
-      data->source->postTabChange(data->sIndex, data->action);
-    delete data;
-  }
-  else if (((CustomEvent*)e)->type() == UEV_TabDrop) {
-    wxTabChangeData* data = (wxTabChangeData*)((CustomEvent*)e)->data();
-    m_appWindow->DropPage(data->source, data->sIndex, data->dest, data->dIndex);
+      if (data->action)
+        data->source->postTabChange(data->sIndex, data->action);
+      else
+        m_appWindow->DropPage(data->source, data->sIndex, data->dest, data->dIndex);
     delete data;
   }
 }
@@ -1675,7 +1673,7 @@ void wxDocManager::SetActiveView(wxView *view, bool activate)
     }
   }
   else
-    if (m_activeView == view)
+    if (!view || (m_activeView == view))
       m_activeView = 0;
 }
 

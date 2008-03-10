@@ -345,6 +345,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\res\minitab.xpm"
+				>
+			</File>
+			<File
 				RelativePath="setup.h"
 				>
 			</File>

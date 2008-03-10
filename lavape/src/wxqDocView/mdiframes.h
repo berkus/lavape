@@ -61,35 +61,6 @@ public:
   wxTabChangeData(wxTabWidget* s, int si, wxTabWidget* d, int di) {source = s; sIndex = si; dest = d; dIndex = di; action=0;}
 };
 
-/*
-class WXDLLEXPORT wxPostTabData
-{
-public:
-  wxTabWidget* source;
-  int tabIndex;
-  QAction *action;
-  wxPostTabData(wxTabWidget* s, int i, QAction *act) {source = s; tabIndex = i; action = act;}
-};
-
-class WXDLLEXPORT wxPostDropData
-{
-public:
-  wxTabWidget* source;
-  int sIndex;
-  wxTabWidget* dest;
-  int dIndex;
-  wxPostDropData(wxTabWidget* s, int si, wxTabWidget* d, int di) {source = s; sIndex = si; dest = d; dIndex = di;}
-};
-
-
-class WXDLLEXPORT wxDragData {
-public:
-  wxDragData(wxTabWidget* w, int i) {wt=w; index=i;}
-  wxTabWidget* wt;
-  int index;
-};
-*/
-
 class WXDLLEXPORT wxMainFrame: public QMainWindow
 {
     friend class wxChildFrame;
