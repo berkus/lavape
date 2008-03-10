@@ -583,7 +583,7 @@ void wxTabWidget::closePage() {
   else {
     removeTab(index);
     delete page;
-    if (count() == 0 && splitter->count() > 1)
+    if (count() == 0 && splitter->count() > 1) {
       if (splitter->widget(0) == this)
         tab = (wxTabWidget*)splitter->widget(1);
       else
@@ -592,6 +592,7 @@ void wxTabWidget::closePage() {
       if (tab->widget(0))
         ((wxChildFrame*)tab->widget(0))->Activate(true);
       deleteLater();
+    }
     wxTheApp->updateButtonsMenus();
   }
 }
