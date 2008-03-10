@@ -106,9 +106,9 @@ src/Interpreter/ClosedLevelVisitor.cpp: src/LavaExecs/ClosedLevelVisitor.cpp
 	cd src/Interpreter; $(LN) ../LavaExecs/ClosedLevelVisitor.cpp .
 	
 bin/Components/LCompoImpl.lcom.lnk: samples/LCompoImpl.lcom
-	rm -f $@; $(LN) $< $@
+	rm -f $@; cd bin/Components; $(LN) ../../samples/LCompoImpl.lcom LCompoImpl.lcom.lnk
 bin/Components/LavaStream.lava: samples/LavaStream.lava
-	rm -f $@; $(LN) $< $@
+	rm -f $@; cd bin/Components; $(LN) ../../samples/LavaStream.lava
 ifeq ($(OPSYS),Darwin)
 bin/assistant.app:
 	rm -f $@; $(LN) $(QBIN)/assistant.app $@

@@ -291,6 +291,7 @@ TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL, LavaDECL* spe
       &&  classDECL->TypeFlags.Contains(isComponent)) {
 //    QString lib = ExeDir + "/" + QString (((CHEEnumSelId*)specDECL->Items.first)->data.Id.c);
     QString lib = QString (((CHEEnumSelId*)specDECL->Items.first)->data.Id.c);
+    //DString dlib(qPrintable(lib));
     TS adapt = (TS)QLibrary::resolve(lib, classDECL->LitStr.c);
     ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab =  adapt();
     return ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab;
