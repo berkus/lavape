@@ -185,15 +185,15 @@ void wxApp::updateButtonsMenus()
 void wxApp::customEvent(QEvent *e)
 {
   if (((CustomEvent*)e)->type() == UEV_TabChange) {
-    wxPostTabData* data = (wxPostTabData*)((CustomEvent*)e)->data();
+    wxTabChangeData* data = (wxTabChangeData*)((CustomEvent*)e)->data();
     if (!data->source)
       m_docManager->OnFileClose();
     else 
-      data->source->postTabChange(data->tabIndex, data->action);
+      data->source->postTabChange(data->sIndex, data->action);
     delete data;
   }
   else if (((CustomEvent*)e)->type() == UEV_TabDrop) {
-    wxPostDropData* data = (wxPostDropData*)((CustomEvent*)e)->data();
+    wxTabChangeData* data = (wxTabChangeData*)((CustomEvent*)e)->data();
     m_appWindow->DropPage(data->source, data->sIndex, data->dest, data->dIndex);
     delete data;
   }

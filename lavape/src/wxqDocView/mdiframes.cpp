@@ -409,8 +409,8 @@ void wxTabBar::mouseMoveEvent(QMouseEvent *evt)
     return;
   QDrag *drag = new QDrag(this);
   drag->setPixmap(QPixmap(QString::fromUtf8(":/wxqDocView/res/wxqDocView/res/minitab.xpm")));
-  wxDragData* dragData = new wxDragData((wxTabWidget*)parentWidget(), index);
-  QByteArray ba = QByteArray::fromRawData((char*)dragData, sizeof(wxDragData));
+  wxTabChangeData* dragData = new wxTabChangeData((wxTabWidget*)parentWidget(), index);
+  QByteArray ba = QByteArray::fromRawData((char*)dragData, sizeof(wxTabChangeData));
   QMimeData *mimeData = new QMimeData;
   mimeData->setData(wxDragFormat, ba);
   drag->setMimeData(mimeData);
@@ -453,7 +453,7 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
 
     triggeredAction = tabMenu.exec(QCursor::pos());
     
-    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(tw, index, triggeredAction)));
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(tw, index, triggeredAction)));
   }
 }
 
@@ -461,7 +461,7 @@ void wxTabBar::dragEnterEvent(QDragEnterEvent *evt)
 {
   if (evt->provides(wxDragFormat)) {
     QByteArray ba = evt->encodedData(wxDragFormat);
-    wxDragData* dragData = (wxDragData*)ba.data();
+    wxTabChangeData* dragData = (wxTabChangeData*)ba.data();
     evt->setDropAction(Qt::MoveAction);
     evt->accept();
   }
@@ -475,9 +475,9 @@ void wxTabBar::dropEvent(QDropEvent *evt)
     QPoint pt=evt->pos();
     int index = tabAt(pt);
     QByteArray ba = evt->encodedData(wxDragFormat);
-    wxDragData* dragData = (wxDragData*)ba.data();
-    if ((parentWidget() != dragData->wt) || (index != dragData->index)) {
-      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabDrop,(void*)new wxPostDropData(dragData->wt, dragData->index, (wxTabWidget*)parentWidget(), index)));
+    wxTabChangeData* dragData = (wxTabChangeData*)ba.data();
+    if ((parentWidget() != dragData->source) || (index != dragData->sIndex)) {
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabDrop,(void*)new wxTabChangeData(dragData->source, dragData->sIndex, (wxTabWidget*)parentWidget(), index)));
       evt->acceptProposedAction();
     }
     else
@@ -527,7 +527,7 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
     if (page->inherits("CTreeFrame")
     || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
       page->Activate(true);
-      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(0,0,0)));
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
     }
     else {
       removeTab(index);
@@ -547,7 +547,7 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
   }
   else if (triggeredAction == closeFileAction) {
     page->Activate(true);
-    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(0,0,0)));
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
   }
   else if (triggeredAction == newTabWidAction) {
     page->Activate(true);
@@ -576,7 +576,7 @@ void wxTabWidget::closePage() {
   if (page->inherits("CTreeFrame")
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
     page->Activate(true);
-    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(0,0,0)));
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
     return;
   }
   else {

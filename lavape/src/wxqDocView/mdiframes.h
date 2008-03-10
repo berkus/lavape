@@ -48,6 +48,20 @@ public:
 	wxChildFrame *window;
 };
 
+class WXDLLEXPORT wxTabChangeData
+{
+public:
+  wxTabWidget* source;
+  int sIndex;
+  wxTabWidget* dest;
+  int dIndex;
+  QAction *action;
+  wxTabChangeData(wxTabWidget* w, int i) {source=w; sIndex=i; dest=0; dIndex=0; action=0;}
+  wxTabChangeData(wxTabWidget* s, int i, QAction *act) {source = s; sIndex = i; action = act; dest=0;dIndex=0;}
+  wxTabChangeData(wxTabWidget* s, int si, wxTabWidget* d, int di) {source = s; sIndex = si; dest = d; dIndex = di; action=0;}
+};
+
+/*
 class WXDLLEXPORT wxPostTabData
 {
 public:
@@ -67,6 +81,14 @@ public:
   wxPostDropData(wxTabWidget* s, int si, wxTabWidget* d, int di) {source = s; sIndex = si; dest = d; dIndex = di;}
 };
 
+
+class WXDLLEXPORT wxDragData {
+public:
+  wxDragData(wxTabWidget* w, int i) {wt=w; index=i;}
+  wxTabWidget* wt;
+  int index;
+};
+*/
 
 class WXDLLEXPORT wxMainFrame: public QMainWindow
 {
@@ -124,13 +146,6 @@ private:
 	virtual void customEvent(QEvent *ev){}
 
   Q_OBJECT
-};
-
-class WXDLLEXPORT wxDragData {
-public:
-  wxDragData(wxTabWidget* w, int i) {wt=w; index=i;}
-  wxTabWidget* wt;
-  int index;
 };
 
 class WXDLLEXPORT wxTabBar : public QTabBar {
