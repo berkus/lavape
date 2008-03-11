@@ -85,25 +85,6 @@ int main( int argc, char ** argv ) {
 
   //QTest::qSleep(20000);
 
-  myPath = qgetenv("PATH");
-  componentPath = myPath;
-/*
-#ifdef WIN32
-  if (componentPath.isEmpty())
-    componentPath = ExeDir + "\\Components";
-  else
-    componentPath = componentPath + ";" + ExeDir + "\\Components";
-  _putenv(qPrintable(QString("PATH=")+componentPath));
-#else
-  if (componentPath.isEmpty())
-    componentPath = ExeDir + "/Components";
-  else
-    componentPath = componentPath + ";" + ExeDir + "/Components";
-  putenv((char*)qPrintable(QString("LD_LIBRARY_PATH=")+componentPath));
-#endif
-*/
-  QCoreApplication::addLibraryPath(componentPath);
-
   ap.m_appWindow = new CLavaMainFrame;
 
   if (ap.m_appWindow->OnCreate()) {

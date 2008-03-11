@@ -293,6 +293,7 @@ TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL, LavaDECL* spe
 #else
     QString lib = QString("lib")+QString (((CHEEnumSelId*)specDECL->Items.first)->data.Id.c);
 #endif
+    lib = ExeDir + "/Components/" + lib;
     TS adapt = (TS)QLibrary::resolve(lib, classDECL->LitStr.c);
     ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab =  adapt();
     return ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab;
