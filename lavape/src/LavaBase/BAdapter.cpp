@@ -791,7 +791,7 @@ bool StringQuestionBox(CheckData& ckd, LavaVariablePtr stack)
 {
   QWidget *parent=wxTheApp->m_appWindow;
 
-  wxTheApp->m_appWindow->activateWindow();
+//  wxTheApp->m_appWindow->activateWindow();
   OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[B_Bool], false)
   int rc=Qt::NoButton;
   if ((QString*)(stack[SFH]+LSH)) {
