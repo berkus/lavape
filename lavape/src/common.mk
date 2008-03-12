@@ -84,8 +84,8 @@ ifeq ($(OPSYS),Darwin)
   DLLSUFFIX = .dylib
   DLLNAME = lib$(addsuffix .dylib,$(basename $(EXEC)))
 #  OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL -L$(QTDIR)/lib
-  OSDLLFLAGS = -dynamiclib -header-pad_max_install_names -L../../lib
-  OSEXECFLAGS = -fstack-check -header-pad_max_install_names -L../../lib
+  OSDLLFLAGS = -dynamiclib -header-pad_max_install_names $(RPATH)../lib:$(QLIB):/usr/local/lib:/usr/lib:/lib -L../../lib
+  OSEXECFLAGS = -fstack-check -header-pad_max_install_names $(RPATH)../lib:$(QLIB):/usr/local/lib:/usr/lib:/lib -L../../lib
   OSCPPFLAGS = -D__$(OPSYS)
 #  ifneq ($(DBG),)
 #    QtS = _debug
@@ -133,9 +133,6 @@ endif
 
 ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QINCL) -I$(QINCL)/QtCore -I$(QINCL)/QtNetwork -I$(QINCL)/QtGui
 
-asscli=-lqassistantclient
-
-#rec_make: $(make_subpro) this
 
 ifeq ($(suffix $(EXEC)),.so)
   ifeq ($(OPSYS),MINGW32)
@@ -146,11 +143,11 @@ this: ../../bin/$(DLLNAME)
   ifeq ($(OPSYS),Darwin)
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../lib/$(DLLNAME) -Wl,-install_name,@executable_path/../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) -F$(QTDIR)/lib -framework QtAssistant$(QtS) -framework QtCore$(QtS) -framework QtGui$(QtS) -framework QtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../lib/$(DLLNAME) -Wl,-install_name,@executable_path/../lib/$(DLLNAME) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) -F$(QTDIR)/lib -framework QtAssistant$(QtS) -framework QtCore$(QtS) -framework QtGui$(QtS) -framework QtNetwork$(QtS) $(OSLIBFLAGS)
   else
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L$(QLIB) -L../../lib $(addprefix -l,$(SUBPRO)) -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(OSDLLFLAGS) $(all_o_files) -L$(QLIB) -L../../lib $(addprefix -l,$(SUBPRO)) -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(OSLIBFLAGS)
   endif
   endif
 else

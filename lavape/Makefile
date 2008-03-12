@@ -151,33 +151,42 @@ build:  $(SUBPRO)
 #	&& cd ../Lava && $(MAKE)
 
 bindist:
-	if [ ! -e lavape ] ; then mkdir lavape; fi; cp *.txt lavape; \
-	cd lavape; if [ ! -e bin ] ; then mkdir bin; fi; \
-	if [ ! -e doc ] ; then mkdir doc; fi; \
+	rm -rf lavape; mkdir lavape; cp *.txt lavape; \
+	cd lavape; mkdir bin; mkdir doc; \
 	cd ..; tar --exclude=.svn -cjf /tmp/docarchive doc; \
 	cd lavape; tar xjf /tmp/docarchive; rm /tmp/docarchive; \
-	if [ ! -e lib ] ; then mkdir lib; fi; \
-	if [ ! -e samples ] ; then mkdir samples; fi; \
-	cp ../samples/*.l* samples; \
-	cd bin; if [ ! -e LavaIcons ] ; then mkdir LavaIcons; fi; \
-	if [ ! -e std ] ; then mkdir std; fi; \
-	cd ../../bin; cp LavaPE Lava ../lavape/bin; cp $(QBIN)/assistant ../lavape/bin; \
-	cd ../lavape/bin; strip LavaPE Lava assistant; \
-	cd ../../bin; cp LavaIcons/* ../lavape/bin/LavaIcons; cp std/* ../lavape/bin/std; \
-	cd ../lavape; \
-	cp ../bin/*.htm bin; cp ../bin/*.lava bin; \
-	cp ../bin/cp_icons_std bin; \
-	cp ../bin-install install; chmod a+x install; \
-	cd bin; \
-	if [ ! -e Components ] ; then mkdir Components; fi; \
+	mkdir lib; cp ../lib/*$(DLLSUFFIX) lib; \
+	mkdir samples; cp ../samples/*.l* samples; \
+	cd bin; mkdir LavaIcons; mkdir std; \
+	cd ../../bin; cp LavaPE Lava ../lavape/bin;
+ifeq ($(OPSYS),Darwin)
+	cp -R $(QBIN)/assistant.app lavape/bin; \
+	strip lavape/bin/assistant.app/Contents/MacOS/assistant;
+else
+	cp -R $(QBIN)/assistant lavape/bin; strip lavape/bin/assistant;
+endif
+	cd lavape/bin; strip LavaPE Lava;
+	cd bin; cp LavaIcons/* ../lavape/bin/LavaIcons; cp std/* ../lavape/bin/std; \
+	cp *.htm *.lava cp_icons_std ../lavape/bin; \
+	cp ../bin-install install; chmod a+x install;
+	cd lavape/bin; \
+	mkdir Components; \
 	cd Components; \
-	if [ ! -e LCompoImpl.lcom.lnk ]; then ln -s ../../samples/LCompoImpl.lcom LCompoImpl.lcom.lnk; fi; \
-	if [ ! -e LavaStream.lava ]; then ln -s ../../samples/LavaStream.lava .; fi; \
-	if [ ! -e libLavaStream.so ]; then ln -s ../../lib/libLavaStream.so .; fi; \
-	cd ../..; cp ../lib/*.so lib; \
+	ln -s ../../samples/LCompoImpl.lcom LCompoImpl.lcom.lnk; \
+	ln -s ../../samples/LavaStream.lava .; \
+	ln -s ../../lib/libLavaStream$(DLLSUFFIX) .;
+ifeq ($(OPSYS),Darwin)
+	cd lavape/lib; mkdir QtAssistant.framework QtCore.framework QtGui.framework QtNetwork.framework QtXml.framework; \
+	cp $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant QtAssistant.framework; strip QtAssistant.framework/QtAssistant; \
+	cp $(QLIB)/QtCore.framework/Versions/4/QtCore QtCore.framework; strip QtCore.framework/QtCore; \
+	cp $(QLIB)/QtGui.framework/Versions/4/QtGui QtGui.framework; strip QtGui.framework/QtGui; \
+	cp $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork QtNetwork.framework; strip QtNetwork.framework/QtNetwork; \
+	cp $(QLIB)/QtXml.framework/Versions/4/QtXml QtXml.framework; strip QtXml.framework/QtXml;
+else
 	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 lib; \
-	cd lib; strip *.so*; \
-	cd ../..; tar cjf lavape-0.9.0-linux-bin.tar.bz2 lavape; ls -l lavape-*; rm -rf lavape
+	cd lib; strip *$(DLLSUFFIX)*;
+endif
+	tar cjf lavape-0.9.1-linux-bin.tar.bz2 lavape; ls -l lavape-*;
 
 
 clean: cleanall binclean libclean
@@ -188,4 +197,3 @@ binclean:
 
 libclean:
 	cd $(LAVADIR)/lib; rm -f *$(DLLSUFFIX)
-
