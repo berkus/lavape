@@ -15,13 +15,13 @@ QINCL = $(shell ./qincl.sh)
 QLIB = $(shell ./qlib.sh)
 QSUFF = $(shell ./qsuff.sh)
 
-export LD_LIBRARY_PATH=$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib
+#export LD_LIBRARY_PATH=$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib
 
-
-all: dirs links build
-#all: dirs links Precompiler LavaStream build
 
 SUBPRO=disco Precompiler wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
+
+all: dirs links $(SUBPRO)
+#all: dirs links Precompiler LavaStream build
 
 include src/common.mk
 
@@ -145,10 +145,6 @@ endif
 bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
 	rm -f $@; $(LN) ../$< $@
 
-build:  $(SUBPRO)
-#	cd src/disco && $(MAKE) \
-#	&& cd ../LavaPE && $(MAKE) \
-#	&& cd ../Lava && $(MAKE)
 
 bindist:
 	rm -rf lavape; mkdir lavape; cp *.txt lavape; \
@@ -176,12 +172,12 @@ endif
 	ln -s ../../samples/LavaStream.lava .; \
 	ln -s ../../lib/libLavaStream$(DLLSUFFIX) .;
 ifeq ($(OPSYS),Darwin)
-	cd lavape/lib; mkdir QtAssistant.framework QtCore.framework QtGui.framework QtNetwork.framework QtXml.framework; \
-	cp $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant QtAssistant.framework; strip QtAssistant.framework/QtAssistant; \
-	cp $(QLIB)/QtCore.framework/Versions/4/QtCore QtCore.framework; strip QtCore.framework/QtCore; \
-	cp $(QLIB)/QtGui.framework/Versions/4/QtGui QtGui.framework; strip QtGui.framework/QtGui; \
-	cp $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork QtNetwork.framework; strip QtNetwork.framework/QtNetwork; \
-	cp $(QLIB)/QtXml.framework/Versions/4/QtXml QtXml.framework; strip QtXml.framework/QtXml;
+	cd lavape/lib; \
+	cp $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant .; \
+	cp $(QLIB)/QtCore.framework/Versions/4/QtCore .; \
+	cp $(QLIB)/QtGui.framework/Versions/4/QtGui .; \
+	cp $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork .; \
+	cp $(QLIB)/QtXml.framework/Versions/4/QtXml .;
 else
 	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 lib; \
 	cd lib; strip *$(DLLSUFFIX)*;

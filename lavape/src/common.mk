@@ -83,13 +83,9 @@ ifeq ($(OPSYS),Darwin)
   DLLPREFIX = lib
   DLLSUFFIX = .dylib
   DLLNAME = lib$(addsuffix .dylib,$(basename $(EXEC)))
-#  OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL -L$(QTDIR)/lib
-  OSDLLFLAGS = -dynamiclib -header-pad_max_install_names $(RPATH)../lib:$(QLIB):/usr/local/lib:/usr/lib:/lib -L../../lib
-  OSEXECFLAGS = -fstack-check -header-pad_max_install_names $(RPATH)../lib:$(QLIB):/usr/local/lib:/usr/lib:/lib -L../../lib
+  OSDLLFLAGS = -dynamiclib -header-pad_max_install_names $(RPATH)../lib -L../../lib
+  OSEXECFLAGS = -fstack-check -header-pad_max_install_names $(RPATH)../lib -L../../lib
   OSCPPFLAGS = -D__$(OPSYS)
-#  ifneq ($(DBG),)
-#    QtS = _debug
-#  endif
   EXEC2 = $(EXEC)
   CC = c++
 else
