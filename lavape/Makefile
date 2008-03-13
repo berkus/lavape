@@ -15,13 +15,9 @@ QINCL = $(shell ./qincl.sh)
 QLIB = $(shell ./qlib.sh)
 QSUFF = $(shell ./qsuff.sh)
 
-#export LD_LIBRARY_PATH=$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib
-
-
 SUBPRO=disco Precompiler wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
 
 all: dirs links $(SUBPRO)
-#all: dirs links Precompiler LavaStream build
 
 include src/common.mk
 
@@ -51,7 +47,6 @@ Lava:
 	cd src/Lava; $(MAKE)
 
 dirs:
-	if [ ! -e bin ] ; then mkdir bin; fi; \
 	if [ ! -e lib ] ; then mkdir lib; fi; \
 	cd src/Lava; if [ ! -e Generated ]; then mkdir Generated; fi ; \
 	cd ../Interpreter; if [ ! -e Generated ]; then mkdir Generated; fi ; \
@@ -72,17 +67,16 @@ ITPF = src/Interpreter/Constructs.ph \
   src/Interpreter/Tokens.cpp \
   src/Interpreter/VisitorTraversal.cpp \
   src/Interpreter/TableVisitor.cpp \
-  src/Interpreter/ClosedLevelVisitor.cpp
-  
+  src/Interpreter/ClosedLevelVisitor.cpp \
+ 	bin/Components/LCompoImpl.lcom.lnk \
+	bin/Components/LavaStream.lava
+ 
 ifeq ($(OPSYS),Darwin)
 links: $(ITPF) \
-	bin/Components/LCompoImpl.lcom.lnk \
-	bin/Components/LavaStream.lava \
-	bin/assistant.app
+	bin/assistant.app \
+	lib/QtAssistant lib/QtCore lib/QtGui lib/QtNetwork lib/QtXml
 else
 links: $(ITPF) \
-	bin/Components/LCompoImpl.lcom.lnk \
-	bin/Components/LavaStream.lava \
 	bin/assistant
 endif
 
@@ -111,10 +105,50 @@ bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; cd bin/Components; $(LN) ../../samples/LavaStream.lava
 ifeq ($(OPSYS),Darwin)
 bin/assistant.app:
-	rm -f $@; $(LN) $(QBIN)/assistant.app $@
+	$(LN) $(QBIN)/assistant.app $@
+lib/QtAssistant:
+	cp -f $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant $@; \
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
+	-id @executable_path/../lib/QtAssistant $@
+lib/QtCore:
+	cp -f $(QLIB)/QtCore.framework/Versions/4/QtCore $@; \
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
+	-id @executable_path/../lib/QtCore $@
+lib/QtGui:
+	cp -f $(QLIB)/QtGui.framework/Versions/4/QtGui $@; \
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
+	-id @executable_path/../lib/QtGui $@
+lib/QtNetwork:
+	cp -f $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork $@; \
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
+	-id @executable_path/../lib/QtNetwork $@
+lib/QtXml:
+	cp -f $(QLIB)/QtXml.framework/Versions/4/QtXml $@; \
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
+	-id @executable_path/../lib/QtXml $@
 else
 bin/assistant$(SUFF):
-	rm -f $@; $(LN) $(QBIN)/assistant$(SUFF) $@
+	$(LN) $(QBIN)/assistant$(SUFF) $@
 endif
 
 lib/libQtCore.so.4: $(QLIB)/libQtCore.so.4
@@ -147,42 +181,46 @@ bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
 
 
 bindist:
-	rm -rf lavape; mkdir lavape; cp *.txt lavape; \
-	cd lavape; mkdir bin; mkdir doc; \
+	rm -rf lavadist; mkdir lavadist; cp *.txt lavadist; \
+	cd lavadist; mkdir bin; mkdir doc; \
 	cd ..; tar --exclude=.svn -cjf /tmp/docarchive doc; \
-	cd lavape; tar xjf /tmp/docarchive; rm /tmp/docarchive; \
+	cd lavadist; tar xjf /tmp/docarchive; rm /tmp/docarchive; \
 	mkdir lib; cp ../lib/*$(DLLSUFFIX) lib; \
 	mkdir samples; cp ../samples/*.l* samples; \
 	cd bin; mkdir LavaIcons; mkdir std; \
-	cd ../../bin; cp LavaPE Lava ../lavape/bin;
+	cd ../../bin; cp LavaPE Lava ../lavadist/bin;
 ifeq ($(OPSYS),Darwin)
-	cp -R $(QBIN)/assistant.app lavape/bin; \
-	strip lavape/bin/assistant.app/Contents/MacOS/assistant;
+	cp -R $(QBIN)/assistant.app lavadist/bin; \
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../../../../../lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../../../../../lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../../../../../lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../../../../../lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../../../../../lib/QtXml lavadist/bin/assistant.app/Contents/MacOS/assistant
 else
-	cp -R $(QBIN)/assistant lavape/bin; strip lavape/bin/assistant;
+	cp -R $(QBIN)/assistant lavadist/bin; strip lavadist/bin/assistant;
 endif
-	cd lavape/bin; strip LavaPE Lava;
-	cd bin; cp LavaIcons/* ../lavape/bin/LavaIcons; cp std/* ../lavape/bin/std; \
-	cp *.htm *.lava cp_icons_std ../lavape/bin; \
+	cd lavadist/bin; strip LavaPE Lava;
+	cd bin; cp LavaIcons/* ../lavadist/bin/LavaIcons; cp std/* ../lavadist/bin/std; \
+	cp *.htm *.lava cp_icons_std ../lavadist/bin; \
 	cp ../bin-install install; chmod a+x install;
-	cd lavape/bin; \
+	cd lavadist/bin; \
 	mkdir Components; \
 	cd Components; \
 	ln -s ../../samples/LCompoImpl.lcom LCompoImpl.lcom.lnk; \
 	ln -s ../../samples/LavaStream.lava .; \
 	ln -s ../../lib/libLavaStream$(DLLSUFFIX) .;
 ifeq ($(OPSYS),Darwin)
-	cd lavape/lib; \
-	cp $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant .; \
-	cp $(QLIB)/QtCore.framework/Versions/4/QtCore .; \
-	cp $(QLIB)/QtGui.framework/Versions/4/QtGui .; \
-	cp $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork .; \
-	cp $(QLIB)/QtXml.framework/Versions/4/QtXml .;
+	cd lavadist/lib; \
+	cp ../../lib/QtAssistant .; \
+	cp ../../lib/QtCore .; \
+	cp ../../lib/QtGui .; \
+	cp ../../lib/QtNetwork .; \
+	cp ../../lib/QtXml .;
 else
 	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 lib; \
 	cd lib; strip *$(DLLSUFFIX)*;
 endif
-	tar cjf lavape-0.9.1-linux-bin.tar.bz2 lavape; ls -l lavape-*;
+	tar cjf lavape-0.9.1-linux-bin.tar.bz2 lavadist; ls -l lavape-*;
 
 
 clean: cleanall binclean libclean

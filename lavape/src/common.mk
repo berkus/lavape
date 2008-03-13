@@ -129,7 +129,7 @@ endif
 
 ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QINCL) -I$(QINCL)/QtCore -I$(QINCL)/QtNetwork -I$(QINCL)/QtGui
 
-
+#shared libraries:
 ifeq ($(suffix $(EXEC)),.so)
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(DLLNAME)
@@ -139,14 +139,16 @@ this: ../../bin/$(DLLNAME)
   ifeq ($(OPSYS),Darwin)
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../lib/$(DLLNAME) -Wl,-install_name,@executable_path/../lib/$(DLLNAME) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) -F$(QTDIR)/lib -framework QtAssistant$(QtS) -framework QtCore$(QtS) -framework QtGui$(QtS) -framework QtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../lib/$(DLLNAME) -Wl,-install_name,@executable_path/../lib/$(DLLNAME) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) ../../lib/QtAssistant ../../lib/QtCore ../../lib/QtGui ../../lib/QtNetwork $(OSLIBFLAGS)
   else
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
 	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(OSDLLFLAGS) $(all_o_files) -L$(QLIB) -L../../lib $(addprefix -l,$(SUBPRO)) -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(OSLIBFLAGS)
   endif
   endif
-else
+
+#executables:
+else 
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
@@ -156,7 +158,7 @@ this: ../../bin/$(EXEC2)
   ifeq ($(OPSYS),Darwin)
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) $(addprefix -l,$(SUBPRO)) -F$(QTDIR)/lib -framework QtAssistant$(QtS) -framework QtCore$(QtS) -framework QtGui$(QtS) -framework QtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) $(addprefix -l,$(SUBPRO)) ../../lib/QtAssistant ../../lib/QtCore ../../lib/QtGui ../../lib/QtNetwork $(OSLIBFLAGS)
   else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
