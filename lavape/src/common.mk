@@ -114,7 +114,7 @@ else
       DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
       DLLSUFFIX = .so
       OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) $(RPATH)../lib:$(QLIB):/usr/local/lib:/usr/lib:/lib -L../../lib
-      OSEXECFLAGS = -fstack-check -z nodefaultlib $(RPATH)../lib:$(QLIB):/usr/local/lib:/usr/lib:/lib -L../../lib
+      OSEXECFLAGS = -fstack-check -z nodefaultlib $(RPATH)../../lib:../lib:$(QLIB):/usr/local/lib:/usr/lib:/lib -L../../lib
       EXEC2 = $(EXEC)
       ifneq ($(DBG),)
         QtS =
