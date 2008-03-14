@@ -274,7 +274,7 @@ bool CLavaApp::event(QEvent *e)
   case UEV_LavaStart:
     doc = (CLavaProgram*)((CustomEvent*)e)->data();
     doc->m_execThread.start();
-    break;
+    return true;
   case UEV_LavaEnd:
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     doc = (CLavaProgram*)pHint->fromDoc;
@@ -303,7 +303,7 @@ bool CLavaApp::event(QEvent *e)
         mbp->thr->waitingForUI = false;
         mbp->thr->resume();
       }
-      break;
+      return true;
     case 1:
       result =   QMessageBox::information(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
@@ -312,7 +312,7 @@ bool CLavaApp::event(QEvent *e)
         mbp->thr->waitingForUI = false;
         mbp->thr->resume();
       }
-      break;
+      return true;
     case 2:
       result =   QMessageBox::question(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
@@ -321,9 +321,9 @@ bool CLavaApp::event(QEvent *e)
         mbp->thr->waitingForUI = false;
         mbp->thr->resume();
       }
-      break;
+      return true;
     }
-    break;
+    return true;
   case UEV_LavaShow:
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     LBaseData.docModal = pHint->fromDoc;
@@ -352,7 +352,7 @@ bool CLavaApp::event(QEvent *e)
       }
     }
     delete (CLavaPEHint*)((CustomEvent*)e)->data();
-    break;
+    return true;
   case UEV_LavaDump:
     dumpdata = (DumpEventData*)((CustomEvent*)e)->data();
     dumpdata->doc->DumpFrame = new LavaDumpFrame(m_appWindow, dumpdata);
@@ -362,10 +362,10 @@ bool CLavaApp::event(QEvent *e)
     ((DumpEventData*)((CustomEvent*)e)->data())->currentThread->waitingForUI = false;
     ((DumpEventData*)((CustomEvent*)e)->data())->currentThread->resume();
     delete (DumpEventData*)((CustomEvent*)e)->data();
-    break;
+    return true;
   case UEV_PMDumpOff:
     ((CMainFrame*)m_appWindow)->pmDumpAction->setChecked(false);
-    break;
+    return true;
   case UEV_LavaGUIEvent: 
     if ( LBaseData.docModal 
       && ((CLavaBaseDoc*)LBaseData.docModal)->ActLavaDialog ) 
@@ -375,18 +375,19 @@ bool CLavaApp::event(QEvent *e)
       if (actView && actView->inherits("CLavaGUIView") ) 
         ((CLavaGUIView*)actView)->myGUIProg->CmdExec.GUIEvent( e);
     }
-    break;
+    return true;
   case UEV_DebugStop:
     DebugStop(*(CheckData*)((CustomEvent*)e)->data(),0,0,QString("Object allocation failed because error detected in syntax:\n")+(QString)((CheckData*)((CustomEvent*)e)->data())->exceptionMsg, Stop_Exception,0,0);
     doc = (CLavaProgram*)((CheckData*)((CustomEvent*)e)->data())->document;
     delete (CheckData*)((CustomEvent*)e)->data();
     doc->OnCloseDocument();
     delete doc;
-    break;
+    return true;
   default:
-    wxApp::event(e);
+    return wxApp::event(e);
   }
-  return QApplication::event(e);
+
+  //return QApplication::event(e);
 }
 
 

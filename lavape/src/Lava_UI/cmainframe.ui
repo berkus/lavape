@@ -522,7 +522,6 @@
  <layoutdefault spacing="1" margin="1" />
  <resources>
   <include location="../Lava_resources.qrc" />
-  <include location="../Lava_resources.qrc" />
  </resources>
  <connections/>
 </ui>

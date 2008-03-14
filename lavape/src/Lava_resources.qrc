@@ -21,4 +21,7 @@
         <file>LavaPE/res/TOOLBUTTONS/close.xpm</file>
         <file>LavaPE/res/TreeIcons/PX_debugTab.xpm</file>
     </qresource>
+    <qresource prefix="/wxqDocView/res" >
+        <file>wxqDocView/res/minitab.xpm</file>
+    </qresource>
 </RCC>

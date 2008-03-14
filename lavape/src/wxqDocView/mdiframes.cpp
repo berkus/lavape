@@ -396,29 +396,6 @@ wxTabBar::wxTabBar(QWidget* parent) : QTabBar(parent)
   dragStartPosition=QPoint(0,0);
 }
 
-void wxTabBar::mouseMoveEvent(QMouseEvent *evt)
-{
-  if (!(evt->buttons() & Qt::LeftButton))
-    return;
-  if ((evt->pos() - dragStartPosition).manhattanLength()
-        < QApplication::startDragDistance())
-    return;
-  QPoint pt = evt->pos();
-  int index = tabAt(pt);
-  if (index < 0)
-    return;
-  QDrag *drag = new QDrag(this);
-  drag->setPixmap(QPixmap(QString::fromUtf8(":/wxqDocView/res/wxqDocView/res/minitab.xpm")));
-  wxTabChangeData* dragData = new wxTabChangeData((wxTabWidget*)parentWidget(), index);
-  QByteArray ba = QByteArray::fromRawData((char*)dragData, sizeof(wxTabChangeData));
-  QMimeData *mimeData = new QMimeData;
-  mimeData->setData(wxDragFormat, ba);
-  drag->setMimeData(mimeData);
-  Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
-  delete drag;
-  delete dragData;
-}
-
 void wxTabBar::mousePressEvent ( QMouseEvent *evt )
 {
   QPoint pt=evt->pos();
@@ -455,6 +432,29 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
     if (triggeredAction)  
       QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(tw, index, triggeredAction)));
   }
+}
+
+void wxTabBar::mouseMoveEvent(QMouseEvent *evt)
+{
+  if (!(evt->buttons() & Qt::LeftButton))
+    return;
+  if ((evt->pos() - dragStartPosition).manhattanLength()
+        < QApplication::startDragDistance())
+    return;
+  QPoint pt = evt->pos();
+  int index = tabAt(pt);
+  if (index < 0)
+    return;
+  QDrag *drag = new QDrag(this);
+  drag->setPixmap(QPixmap(QString::fromUtf8(":/wxqDocView/res/wxqDocView/res/minitab.xpm")));
+  wxTabChangeData* dragData = new wxTabChangeData((wxTabWidget*)parentWidget(), index);
+  QByteArray ba = QByteArray::fromRawData((char*)dragData, sizeof(wxTabChangeData));
+  QMimeData *mimeData = new QMimeData;
+  mimeData->setData(wxDragFormat, ba);
+  drag->setMimeData(mimeData);
+  Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
+  delete drag;
+  delete dragData;
 }
 
 void wxTabBar::dragEnterEvent(QDragEnterEvent *evt)
