@@ -2,6 +2,7 @@ export SHELL=/bin/sh
 #$(warning $(SHELL))
 
 export LAVADIR=$(shell pwd)
+export LAVADIST=$(LAVADIR)/lavadist
 
 #ifeq ($(LD_LIBRARY_PATH),)
 #  $(error LD_LIBRARY_PATH must be defined!)
@@ -105,47 +106,52 @@ bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; cd bin/Components; $(LN) ../../samples/LavaStream.lava
 ifeq ($(OPSYS),Darwin)
 bin/assistant.app:
-	$(LN) $(QBIN)/assistant.app $@
+	cp -R $(QBIN)/assistant.app $@; \
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant $(LAVADIR)/lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore $(LAVADIR)/lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui $(LAVADIR)/lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork $(LAVADIR)/lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml $(LAVADIR)/lib/QtXml $@/Contents/MacOS/assistant
 lib/QtAssistant:
 	cp -f $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant $@; \
-	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../lib/QtAssistant \
-	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
-	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
-	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
-	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
-	-id @executable_path/../lib/QtAssistant $@
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant $(LAVADIR)/lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore $(LAVADIR)/lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui $(LAVADIR)/lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork $(LAVADIR)/lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml $(LAVADIR)/lib/QtXml \
+	-id $(LAVADIR)/lib/QtAssistant $@
 lib/QtCore:
 	cp -f $(QLIB)/QtCore.framework/Versions/4/QtCore $@; \
-	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../lib/QtAssistant \
-	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
-	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
-	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
-	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
-	-id @executable_path/../lib/QtCore $@
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant $(LAVADIR)/lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore $(LAVADIR)/lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui $(LAVADIR)/lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork $(LAVADIR)/lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml $(LAVADIR)/lib/QtXml \
+	-id $(LAVADIR)/lib/QtCore $@
 lib/QtGui:
 	cp -f $(QLIB)/QtGui.framework/Versions/4/QtGui $@; \
-	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../lib/QtAssistant \
-	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
-	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
-	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
-	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
-	-id @executable_path/../lib/QtGui $@
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant $(LAVADIR)/lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore $(LAVADIR)/lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui $(LAVADIR)/lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork $(LAVADIR)/lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml $(LAVADIR)/lib/QtXml \
+	-id $(LAVADIR)/lib/QtGui $@
 lib/QtNetwork:
 	cp -f $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork $@; \
-	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../lib/QtAssistant \
-	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
-	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
-	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
-	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
-	-id @executable_path/../lib/QtNetwork $@
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant $(LAVADIR)/lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore $(LAVADIR)/lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui $(LAVADIR)/lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork $(LAVADIR)/lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml $(LAVADIR)/lib/QtXml \
+	-id $(LAVADIR)/lib/QtNetwork $@
 lib/QtXml:
 	cp -f $(QLIB)/QtXml.framework/Versions/4/QtXml $@; \
-	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../lib/QtAssistant \
-	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
-	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
-	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
-	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
-	-id @executable_path/../lib/QtXml $@
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant $(LAVADIR)/lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore $(LAVADIR)/lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui $(LAVADIR)/lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork $(LAVADIR)/lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml $(LAVADIR)/lib/QtXml \
+	-id $(LAVADIR)/lib/QtXml $@
 else
 bin/assistant$(SUFF):
 	$(LN) $(QBIN)/assistant$(SUFF) $@
@@ -191,11 +197,11 @@ bindist:
 	cd ../../bin; cp LavaPE Lava ../lavadist/bin;
 ifeq ($(OPSYS),Darwin)
 	cp -R $(QBIN)/assistant.app lavadist/bin; \
-	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../../../../../lib/QtAssistant \
-	-change $(QLIB)/QtCore.framework/Versions/4/QtCore @executable_path/../../../../../lib/QtCore \
-	-change $(QLIB)/QtGui.framework/Versions/4/QtGui @executable_path/../../../../../lib/QtGui \
-	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../../../../../lib/QtNetwork \
-	-change $(QLIB)/QtXml.framework/Versions/4/QtXml @executable_path/../../../../../lib/QtXml lavadist/bin/assistant.app/Contents/MacOS/assistant
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant $(LAVADIST)/lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore $(LAVADIST)/lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui $(LAVADIST)/lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork $(LAVADIST)/lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml $(LAVADIST)/lib/QtXml lavadist/bin/assistant.app/Contents/MacOS/assistant
 else
 	cp -R $(QBIN)/assistant lavadist/bin; strip lavadist/bin/assistant;
 endif
