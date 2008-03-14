@@ -438,18 +438,18 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
     QMenu tabMenu;
     QAction *triggeredAction;
 
-    tw->closePageAction = tabMenu.addAction("Close this page");
-    tw->closeFileAction = tabMenu.addAction("Close this file");
-    tw->newTabWidAction = tabMenu.addAction("Move to new tabbed window");
-    tw->movePageRightAction = tabMenu.addAction("Move to next tabbed window");
-    tw->movePageLeftAction = tabMenu.addAction("Move to preceding tabbed window");
+    closePageAction = tabMenu.addAction("Close this page");
+    closeFileAction = tabMenu.addAction("Close this file");
+    newTabWidAction = tabMenu.addAction("Move to new tabbed window");
+    movePageRightAction = tabMenu.addAction("Move to next tabbed window");
+    movePageLeftAction = tabMenu.addAction("Move to preceding tabbed window");
 
     if (count() == 1)
-      tw->newTabWidAction->setEnabled(false);
+      newTabWidAction->setEnabled(false);
     if (splitterIndex == splitter->count()-1)
-      tw->movePageRightAction->setEnabled(false);
+      movePageRightAction->setEnabled(false);
     if (splitterIndex == 0)
-      tw->movePageLeftAction->setEnabled(false);
+      movePageLeftAction->setEnabled(false);
 
     triggeredAction = tabMenu.exec(QCursor::pos());
     if (triggeredAction)  
@@ -488,43 +488,12 @@ void wxTabBar::dropEvent(QDropEvent *evt)
     evt->ignore();
 }
 
-/*
-void wxTabWidget::mousePressEvent ( QMouseEvent *evt ) {
-  QTabBar *tb=tabBar();
-  QPoint pt=evt->pos();
-  Qt::MouseButton mb=evt->button();
-  QSplitter *splitter=(QSplitter*)parentWidget();
-  int index=tb->tabAt(pt), splitterIndex=splitter->indexOf(this);
-
-  if (mb != Qt::RightButton || index == -1)
-    return;
-  QMenu tabMenu;
-  QAction *triggeredAction;
-
-  closePageAction = tabMenu.addAction("Close this page");
-  closeFileAction = tabMenu.addAction("Close this file");
-  newTabWidAction = tabMenu.addAction("Move to new tabbed window");
-  movePageRightAction = tabMenu.addAction("Move to next tabbed window");
-  movePageLeftAction = tabMenu.addAction("Move to preceding tabbed window");
-
-  if (count() == 1)
-    newTabWidAction->setEnabled(false);
-  if (splitterIndex == splitter->count()-1)
-    movePageRightAction->setEnabled(false);
-  if (splitterIndex == 0)
-    movePageLeftAction->setEnabled(false);
-
-  triggeredAction = tabMenu.exec(QCursor::pos());
-  
-  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxPostTabData(this, index, triggeredAction)));
-}*/
-
 void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
 {
   wxChildFrame *page=(wxChildFrame*)widget(index);
   QSplitter *splitter=(QSplitter*)parentWidget();
   wxTabWidget* tab;
-  if (triggeredAction == closePageAction) {
+  if (triggeredAction == ((wxTabBar*)tabBar())->closePageAction) {
     if (page->inherits("CTreeFrame")
     || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
       page->Activate(true);
@@ -546,21 +515,21 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
       wxTheApp->updateButtonsMenus();
     }
   }
-  else if (triggeredAction == closeFileAction) {
+  else if (triggeredAction == ((wxTabBar*)tabBar())->closeFileAction) {
     page->Activate(true);
     QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
   }
-  else if (triggeredAction == newTabWidAction) {
+  else if (triggeredAction == ((wxTabBar*)tabBar())->newTabWidAction) {
     page->Activate(true);
     wxTheApp->m_appWindow->MoveToNewTabbedWindow(this,index);
     wxTheApp->updateButtonsMenus();
   }
-  else if (triggeredAction == movePageRightAction) {
+  else if (triggeredAction == ((wxTabBar*)tabBar())->movePageRightAction) {
     page->Activate(true);
     wxTheApp->m_appWindow->MoveToNextTabbedWindow(this,index);
     wxTheApp->updateButtonsMenus();
   }
-  else if (triggeredAction == movePageLeftAction) {
+  else if (triggeredAction == ((wxTabBar*)tabBar())->movePageLeftAction) {
     page->Activate(true);
     wxTheApp->m_appWindow->MoveToPrecedingTabbedWindow(this,index);
     wxTheApp->updateButtonsMenus();

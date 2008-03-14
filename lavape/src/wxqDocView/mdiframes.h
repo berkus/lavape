@@ -128,21 +128,19 @@ public:
   void dropEvent(QDropEvent* ev);
   QPoint dragStartPosition;
   const char* wxDragFormat;
+  QAction *closePageAction;
+  QAction *closeFileAction;
+  QAction *newTabWidAction;
+  QAction *movePageRightAction;
+  QAction *movePageLeftAction;
 };
 
 class WXDLLEXPORT wxTabWidget : public QTabWidget {
 public:
   wxTabWidget(QWidget *parent) : QTabWidget(parent) {setTabBar(new wxTabBar(this));}
 
-  //void mousePressEvent (QMouseEvent *evt);
   void postTabChange(int index, QAction* triggeredAction);
   void closePage2(wxChildFrame *page, int index);
-
-  QAction *closePageAction;
-  QAction *closeFileAction;
-  QAction *newTabWidAction;
-  QAction *movePageRightAction;
-  QAction *movePageLeftAction;
 
 public slots:
   void closePage();
