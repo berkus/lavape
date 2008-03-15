@@ -115,6 +115,16 @@ CLavaApp::CLavaApp(int &argc, char ** argv )
   InitGlobalStrings();
 //  qt_use_native_dialogs = false;
 
+  ExeDir = applicationDirPath();
+#ifdef WIN32
+  QString driveLetter = QString(ExeDir[0].toUpper());
+  ExeDir.replace(0,1,driveLetter);
+#endif
+  QDir::setCurrent(ExeDir);
+  StdLavaLog = ExeDir + "/std.lava";
+  QFileInfo qf = QFileInfo(StdLavaLog);
+  StdLava = ResolveLinks(qf);
+
   SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
@@ -208,15 +218,6 @@ CLavaApp::CLavaApp(int &argc, char ** argv )
     "Lava Component", "*.lcom","", "lcom", "Lava Component", "Lava Frame", "Lava GUI View",
     &CLavaDoc::CreateObject, &CLavaGUIFrame::CreateObject, &CLavaGUIView::CreateObject);
   m_docManager->AssociateTemplate(pLavaLcomTemplate);
-
-  ExeDir = applicationDirPath();
-#ifdef WIN32
-  QString driveLetter = QString(ExeDir[0].toUpper());
-  ExeDir.replace(0,1,driveLetter);
-#endif
-  StdLavaLog = ExeDir + "/std.lava";
-  QFileInfo qf = QFileInfo(StdLavaLog);
-  StdLava = ResolveLinks(qf);
   Tokens_INIT();
 }
 

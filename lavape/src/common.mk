@@ -83,8 +83,8 @@ ifeq ($(OPSYS),Darwin)
   DLLPREFIX = lib
   DLLSUFFIX = .dylib
   DLLNAME = lib$(addsuffix .dylib,$(basename $(EXEC)))
-  OSDLLFLAGS = -dynamiclib -header-pad_max_install_names $(RPATH)../lib -L../../lib
-  OSEXECFLAGS = -fstack-check -header-pad_max_install_names $(RPATH)../lib -L../../lib
+  OSDLLFLAGS = -dynamiclib -header-pad_max_install_names -Wl,-install_name,@executable_path/../lib/$(DLLNAME)
+  OSEXECFLAGS = -fstack-check -header-pad_max_install_names
   OSCPPFLAGS = -D__$(OPSYS)
   EXEC2 = $(EXEC)
   CC = c++
@@ -139,7 +139,7 @@ this: ../../bin/$(DLLNAME)
   ifeq ($(OPSYS),Darwin)
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../lib/$(DLLNAME) -Wl,-install_name,@executable_path/../lib/$(DLLNAME) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) ../../lib/QtAssistant ../../lib/QtCore ../../lib/QtGui ../../lib/QtNetwork $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(OSDLLFLAGS) -F$(QLIB) -L../../lib $(all_o_files) $(addprefix -l,$(SUBPRO)) -framework QtAssistant -framework QtCore -framework QtGui -framework QtNetwork $(OSLIBFLAGS)
   else
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
@@ -158,7 +158,7 @@ this: ../../bin/$(EXEC2)
   ifeq ($(OPSYS),Darwin)
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) $(addprefix -l,$(SUBPRO)) ../../lib/QtAssistant ../../lib/QtCore ../../lib/QtGui ../../lib/QtNetwork $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../bin/$(EXEC2) -F$(QLIB) -L../../lib $(all_o_files) $(OSEXECFLAGS) $(addprefix -l,$(SUBPRO)) -framework QtAssistant -framework QtCore -framework QtGui -framework QtNetwork $(OSLIBFLAGS)
   else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)

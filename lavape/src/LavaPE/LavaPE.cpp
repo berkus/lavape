@@ -125,6 +125,16 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
   
   LBaseData.stdUpdate = 0;
   //stop here and set stdUpdate = 1 to allow updates in std.lava
+  
+  ExeDir = applicationDirPath();
+#ifdef WIN32
+  QString driveLetter = QString(ExeDir[0].toUpper());
+  ExeDir.replace(0,1,driveLetter);
+#endif
+  QDir::setCurrent(ExeDir);
+  StdLavaLog = ExeDir + "/std.lava";
+  QFileInfo qf = QFileInfo(StdLavaLog);
+  StdLava = ResolveLinks(qf);
 
   SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");
@@ -305,14 +315,6 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
     &CLavaPEDoc::CreateObject, &CFormFrame::CreateObject, &CLavaGUIView::CreateObject);//&CLavaGUIView::CreateObject);
   m_docManager->AssociateTemplate(pFormTemplate);
 
-  ExeDir = applicationDirPath();
-#ifdef WIN32
-  QString driveLetter = QString(ExeDir[0].toUpper());
-  ExeDir.replace(0,1,driveLetter);
-#endif
-  StdLavaLog = ExeDir + "/std.lava";
-  QFileInfo qf = QFileInfo(StdLavaLog);
-  StdLava = ResolveLinks(qf);
   Tokens_INIT();
 }
 

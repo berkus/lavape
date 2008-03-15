@@ -8,13 +8,16 @@ rm -f assistant
 cd ../..
 tar -c -j \
 --exclude=lib \
+--exclude=*.app \
+--exclude=*.build \
 --exclude=LavaWWW \
 --exclude=*.kdevelop \
 --exclude=*.filelist \
 --exclude=*.pcs \
 --exclude=*.kdevses \
 --exclude=LavaWWW \
---exclude='.svn' \
+--exclude=*.svn \
+--exclude=*.DS_Store \
 --exclude=Generated \
 --exclude=*.cur \
 --exclude=*.bmp \
@@ -22,7 +25,7 @@ tar -c -j \
 --exclude=*.bash \
 --exclude=*.bat \
 --exclude=*.phd \
---exclude=*.bz2 \
+--exclude='*.bz2' \
 --exclude=*.gz \
 --exclude=*.proj \
 --exclude=linux* \
@@ -36,11 +39,11 @@ tar -c -j \
 --exclude='*.jar' \
 --exclude='*.iss' \
 --exclude='*.nsi' \
+--exclude=*.xcodeproj \
 --exclude='.[#,a-z,A-Z]*' \
--f lavape/lavape-0.9.$1-src.tar.bz2 lavape
-ls -l lavape/lavape-0.9.$1-src.tar.bz2
+-f Downloads/lavape-0.9.$1-src.tar.bz2 lavape
+ls -l Downloads/lavape-0.9.$1-src.tar.bz2
 cd lavape/bin
 mv LavaPE.exe LavaPE
 mv Lava.exe Lava
 mv LPC.exe LPC
-
