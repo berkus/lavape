@@ -621,6 +621,7 @@ public:
 
     // Number of files saved
     int      m_historyN;
+    bool suppressHistAction;
 
 private:
     Q_OBJECT

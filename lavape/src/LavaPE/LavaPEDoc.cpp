@@ -3510,6 +3510,7 @@ void CLavaPEDoc::OnTotalCheck()
 				if (SameFile (absName, absName2))
 					pos = mana->m_docs.size();
 			}
+      wxDocManager::GetDocumentManager()->m_fileHistory->suppressHistAction = true;
 			doc = (CLavaPEDoc*) wxDocManager::GetDocumentManager()->FindOpenDocumentN (absName.c, isNewDoc);
 			if (isNewDoc)
 				doc->openInTotalCheck = true;

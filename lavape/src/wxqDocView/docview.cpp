@@ -1703,6 +1703,7 @@ wxHistory::wxHistory(QObject *receiver, int maxItems)
   for (int i = 0; i < m_maxHistItems; i++)
     m_actions[i] = 0;
   m_signalMapper=new QSignalMapper(this);
+  suppressHistAction = false;
 }
 
 wxHistory::~wxHistory()
@@ -1732,6 +1733,11 @@ void wxHistory::SetFirstInHistory(int histFileIndex)
   int i;
   bool enabled;
 
+  if (suppressHistAction) {
+    suppressHistAction = false;
+    return;
+  }
+
   if (histFileIndex == 0)
     return;
 
@@ -1757,6 +1763,12 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
 {
   int i;
   // Check we don't already have this item
+
+  if (suppressHistAction) {
+    suppressHistAction = false;
+    return;
+  }
+
   for (i = 0; i < m_historyN; i++)
   {
     if (m_history[i]->l && (*m_history[i] == *item)) {
