@@ -239,7 +239,7 @@ void TableVisitor::VisitSelfVar (SelfVar *obj,SynObject *parent,address where,CH
     }
     CheckData ckd;
     ckd.myDECL = obj->execDECL; 
-    ckd.inINCL = obj->inINCL;
+    ckd.inINCL = obj->execDECL->inINCL;
     ckd.document = (CLavaBaseDoc*)((CSearchData*)searchData)->doc;
     UpdateParameters(ckd);
     //obj->Check(ckd); // only to insert identifiers of references and formal parameters

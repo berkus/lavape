@@ -3740,7 +3740,7 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
               afterEl = (CHE*)execElIf->predecessor;
               clipElDECL->NestedDecls.Delete(execElIf);
               makeMess = true;
-              mess = QString("Ensure of interface function declaration ")
+              mess = QString("\"Ensure\" in class interface function declaration ")
                 + QString(((LavaDECL*)clipEl->data)->LocalName.c) + QString(" will be lost");
             }
             if (execEl) {
@@ -3757,10 +3757,10 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
               clipElDECL->NestedDecls.Delete(execElIf);
               if (makeMess) {
                 mess[0] = 'e';
-                mess = QString("Require and ") + mess;
+                mess = QString("\"Require\" and ") + mess;
               }
               else {
-               mess = QString("Require of interface function declaration ") + QString(((LavaDECL*)clipEl->data)->LocalName.c) + QString(" will be lost");
+               mess = QString("\"Require\" in function declarationin in class interface ") + QString(((LavaDECL*)clipEl->data)->LocalName.c) + QString(" will be lost");
                makeMess = true;
               }
             }
@@ -3996,7 +3996,7 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
       ((CLavaPEApp*)wxTheApp)->LBaseData.inMultiDocUpdate = false;
       if (clipEl) {
         QMessageBox::critical(this, qApp->applicationName(),"Cannot move feature because the implementation\n"
-          "of the target interface does not yet exist\n"
+          "of the target class interface does not yet exist\n"
           "or is in another Lava file that is not open currently",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         return false;
       }
@@ -5452,23 +5452,23 @@ QString CLavaPEView::text(const QPoint &point) {
         " (= <font color=\"red\"><b><i>Lava</i></b></font> main program)</p>"));
     case Interface:
       if (itemDECL->SecondTFlags.Contains(isGUI))
-        return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> interface "
-          "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> interface</p>"));
+        return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> class "
+          "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
       else if (itemDECL->SecondTFlags.Contains(isChain)
       || itemDECL->SecondTFlags.Contains(isSet))
         return QString(QObject::tr("<p>This is a <a href=\"SetChain.htm\">Set or Chain</a> type</p>"));
       else if (itemDECL->SecondTFlags.Contains(isEnum))
         return QString(QObject::tr("<p>This is an <a href=\"Enumeration.htm\">enumeration type</a></p>"));
       else
-        return QString(QObject::tr("<p>This is an <a href=\"../SepItfImpl.htm\">interface</a>"
+        return QString(QObject::tr("<p>This is an <a href=\"../SepItfImpl.htm\">class interface</a>"
         " (= the public part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>"));
     case FormDef:
       return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> implementation "
-        "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> interface</p>"));
+        "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> class interface</p>"));
     case Impl:
       if (itemDECL->SecondTFlags.Contains(isGUI))
         return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> implementation "
-          "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> interface</p>"));
+          "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
       else
         return QString(QObject::tr("<p>This is an <a href=\"../SepItfImpl.htm\">implementation</a>"
           " (= the private part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>"));
@@ -5498,7 +5498,7 @@ QString CLavaPEView::text(const QPoint &point) {
   case TIType_Exec:
     itemDECL = *(LavaDECL**)itd->synEl;
     if (itemDECL->DeclType == Interface)
-      return QString(QObject::tr("<p>This is the (optional) <a href=\"../DBC.htm\">invariant</a> of the above interface</p>"));
+      return QString(QObject::tr("<p>This is the (optional) <a href=\"../DBC.htm\">invariant</a> of the above class</p>"));
     else if (itemDECL->DeclType == Impl)
       return QString(QObject::tr("<p>This is the (optional) <a href=\"../DBC.htm\">invariant</a> of the above implementation</p>"));
     else
