@@ -2,7 +2,6 @@ export SHELL=/bin/sh
 #$(warning $(SHELL))
 
 export LAVADIR=$(shell pwd)
-export LAVADIST=$(LAVADIR)/lavadist
 
 #ifeq ($(LD_LIBRARY_PATH),)
 #  $(error LD_LIBRARY_PATH must be defined!)
@@ -187,46 +186,49 @@ bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
 
 
 bindist:
-	rm -rf lavadist; mkdir lavadist; cp *.txt lavadist; \
-	cd lavadist; mkdir bin; mkdir doc; \
-	cd ..; tar --exclude=.svn -cjf /tmp/docarchive doc; \
-	cd lavadist; tar xjf /tmp/docarchive; rm /tmp/docarchive; \
-	mkdir lib; cp ../lib/*$(DLLSUFFIX) lib; \
-	mkdir samples; cp ../samples/*.l* samples; \
+	rm -rf ~/lavadist; mkdir ~/lavadist ~/lavadist/lavape; cp *.txt ~/lavadist/lavape; \
+	cd ~/lavadist/lavape; mkdir bin; mkdir doc; \
+	cd $(LAVADIR); tar --exclude=.svn -cjf /tmp/docarchive doc; \
+	cd ~/lavadist/lavape; tar xjf /tmp/docarchive; rm /tmp/docarchive; \
+	mkdir lib; cp $(LAVADIR)/lib/*$(DLLSUFFIX) lib; \
+	mkdir samples; cp $(LAVADIR)/samples/*.l* samples; \
 	cd bin; mkdir LavaIcons; mkdir std; \
-	cd ../../bin; cp LavaPE Lava ../lavadist/bin;
+	cd $(LAVADIR)/bin; cp LavaPE Lava ~/lavadist/lavape/bin;
 ifeq ($(OPSYS),Darwin)
-	cp -R $(QBIN)/assistant.app lavadist/bin; \
-	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant $(LAVADIST)/lib/QtAssistant \
-	-change $(QLIB)/QtCore.framework/Versions/4/QtCore $(LAVADIST)/lib/QtCore \
-	-change $(QLIB)/QtGui.framework/Versions/4/QtGui $(LAVADIST)/lib/QtGui \
-	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork $(LAVADIST)/lib/QtNetwork \
-	-change $(QLIB)/QtXml.framework/Versions/4/QtXml $(LAVADIST)/lib/QtXml lavadist/bin/assistant.app/Contents/MacOS/assistant
+	cp -R $(QBIN)/assistant.app ~/lavadist/lavape/bin; \
+	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant ~/lavadist/lavape/lib/QtAssistant \
+	-change $(QLIB)/QtCore.framework/Versions/4/QtCore ~/lavadist/lavape/lib/QtCore \
+	-change $(QLIB)/QtGui.framework/Versions/4/QtGui ~/lavadist/lavape/lib/QtGui \
+	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork ~/lavadist/lavape/lib/QtNetwork \
+	-change $(QLIB)/QtXml.framework/Versions/4/QtXml ~/lavadist/lavape/lib/QtXml \
+	~/lavadist/lavape/bin/assistant.app/Contents/MacOS/assistant; \
+	cp bin-install-mac ~/lavadist/install.sh; chmod a+x ~/lavadist/install.sh;
 else
-	cp -R $(QBIN)/assistant lavadist/bin; strip lavadist/bin/assistant;
+	cp -R $(QBIN)/assistant ~/lavadist/lavape/bin; strip ~/lavadist/lavape/bin/assistant; \
+	cd ~/lavadist/lavape/bin; strip LavaPE Lava;
+	cp bin-install-linux ~/lavadist/install.sh; chmod a+x ~/lavadist/install.sh;
 endif
-	cd lavadist/bin; strip LavaPE Lava;
-	cd bin; cp LavaIcons/* ../lavadist/bin/LavaIcons; cp std/* ../lavadist/bin/std; \
-	cp *.htm *.lava cp_icons_std ../lavadist/bin; \
-	cp ../bin-install install; chmod a+x install;
-	cd lavadist/bin; \
+	cd bin; cp LavaIcons/* ~/lavadist/lavape/bin/LavaIcons; cp std/* ~/lavadist/lavape/bin/std; \
+	cp *.htm *.lava cp_icons_std ~/lavadist/lavape/bin; \
+	cd ~/lavadist/lavape/bin; \
 	mkdir Components; \
 	cd Components; \
 	ln -s ../../samples/LCompoImpl.lcom LCompoImpl.lcom.lnk; \
 	ln -s ../../samples/LavaStream.lava .; \
 	ln -s ../../lib/libLavaStream$(DLLSUFFIX) .;
 ifeq ($(OPSYS),Darwin)
-	cd lavadist/lib; \
-	cp ../../lib/QtAssistant .; \
-	cp ../../lib/QtCore .; \
-	cp ../../lib/QtGui .; \
-	cp ../../lib/QtNetwork .; \
-	cp ../../lib/QtXml .;
+	cd ~/lavadist/lavape/lib; \
+	cp $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant \
+	$(QLIB)/QtCore.framework/Versions/4/QtCore \
+	$(QLIB)/QtGui.framework/Versions/4/QtGui \
+	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork \
+	$(QLIB)/QtXml.framework/Versions/4/QtXml .; \
+	cd ~; rm Downloads/lavape-*-macos*; tar cjf Downloads/lavape-0.9.1-macos-bin.tar.bz2 lavadist; ls -l Downloads/lavape-*;
 else
 	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 lib; \
-	cd lib; strip *$(DLLSUFFIX)*;
+	cd lib; strip *$(DLLSUFFIX)*; \
+	tar cjf lavape-0.9.1-linux-bin.tar.bz2 ~/Downloads; ls -l ~/Downloads/lavape-*;
 endif
-	tar cjf lavape-0.9.1-linux-bin.tar.bz2 lavadist; ls -l lavape-*;
 
 
 clean: cleanall binclean libclean

@@ -73,7 +73,16 @@ static const char slash='/';
 
 int main( int argc, char ** argv ) {
   CLavaApp ap(argc,argv);
-  wxTheApp->clipboard()->clear();
+  
+  ExeDir = wxTheApp->applicationDirPath();
+#ifdef WIN32
+  QString driveLetter = QString(ExeDir[0].toUpper());
+  ExeDir.replace(0,1,driveLetter);
+#endif
+  QDir::setCurrent(ExeDir);
+  StdLavaLog = ExeDir + "/std.lava";
+  QFileInfo qf = QFileInfo(StdLavaLog);
+  StdLava = ResolveLinks(qf);
 
   QString componentPath;
   QByteArray myPath;
@@ -114,16 +123,6 @@ CLavaApp::CLavaApp(int &argc, char ** argv )
   SynIO.INIT();
   InitGlobalStrings();
 //  qt_use_native_dialogs = false;
-
-  ExeDir = applicationDirPath();
-#ifdef WIN32
-  QString driveLetter = QString(ExeDir[0].toUpper());
-  ExeDir.replace(0,1,driveLetter);
-#endif
-  QDir::setCurrent(ExeDir);
-  StdLavaLog = ExeDir + "/std.lava";
-  QFileInfo qf = QFileInfo(StdLavaLog);
-  StdLava = ResolveLinks(qf);
 
   SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");

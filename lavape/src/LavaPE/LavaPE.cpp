@@ -88,7 +88,18 @@ static const char slash='/';
 // CLavaPEApp
 int main(int argc, char ** argv ) {
   CLavaPEApp app(argc,argv);
-  //wxTheApp->clipboard()->clear();
+  app.OnAppCreate(); // pixmaps may be created only after the app object
+  
+  ExeDir = wxTheApp->applicationDirPath();
+#ifdef WIN32
+  QString driveLetter = QString(ExeDir[0].toUpper());
+  ExeDir.replace(0,1,driveLetter);
+#endif
+  QDir::setCurrent(ExeDir);
+  StdLavaLog = ExeDir + "/std.lava";
+  QFileInfo qf = QFileInfo(StdLavaLog);
+  StdLava = ResolveLinks(qf);
+
   app.m_appWindow = new CLavaMainFrame();
 
 #ifdef _DEBUG
@@ -125,16 +136,6 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
   
   LBaseData.stdUpdate = 0;
   //stop here and set stdUpdate = 1 to allow updates in std.lava
-  
-  ExeDir = applicationDirPath();
-#ifdef WIN32
-  QString driveLetter = QString(ExeDir[0].toUpper());
-  ExeDir.replace(0,1,driveLetter);
-#endif
-  QDir::setCurrent(ExeDir);
-  StdLavaLog = ExeDir + "/std.lava";
-  QFileInfo qf = QFileInfo(StdLavaLog);
-  StdLava = ResolveLinks(qf);
 
   SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");
@@ -211,6 +212,30 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
 #endif
   LBaseData.m_myWebBrowser = InitWebBrowser();
 
+  pLavaTemplate = new wxDocTemplate(m_docManager,
+    "LavaPE", "*.lava","", "lava", "Lava Doc", "Lava Frame", "Lava Tree View",
+    &CLavaPEDoc::CreateObject, &CTreeFrame::CreateObject, &CLavaPEView::CreateObject);
+  m_docManager->AssociateTemplate(pLavaTemplate);
+
+  pExecTemplate = new wxDocTemplate(m_docManager,
+    "LavaPE", "*.lava","", "lava", "Lava Doc", "Lava Frame", "Lava Tree View",
+    &CLavaPEDoc::CreateObject, &CExecFrame::CreateObject, &CExecView::CreateObject);
+  m_docManager->AssociateTemplate(pExecTemplate);
+
+  pLComTemplate = new wxDocTemplate(m_docManager,
+    "LavaPE", "*.lcom","", "lcom", "Lava Compo", "Lava Frame", "Lava Tree View",
+    &CLavaPEDoc::CreateObject, &CTreeFrame::CreateObject, &CLavaPEView::CreateObject);
+  m_docManager->AssociateTemplate(pLComTemplate);
+
+  pFormTemplate = new wxDocTemplate(m_docManager,
+    "LavaPE", "*.lava","", "lava", "Lava Doc", "Lava Frame", "Lava GUI View",
+    &CLavaPEDoc::CreateObject, &CFormFrame::CreateObject, &CLavaGUIView::CreateObject);//&CLavaGUIView::CreateObject);
+  m_docManager->AssociateTemplate(pFormTemplate);
+
+  Tokens_INIT();
+}
+
+void CLavaPEApp::OnAppCreate() { // pixmaps may be created only after the app object
   LavaPixmaps[ 0] = new QPixmap((const char**)PX_basicatt);;
   LavaPixmaps[ 1] = new QPixmap((const char**)PX_BasicType);
   LavaPixmaps[ 2] = new QPixmap((const char**)PX_paramatt);
@@ -294,28 +319,6 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
   LavaIcons[38] = new QIcon(*LavaPixmaps[38]);
   LavaIcons[39] = new QIcon(*LavaPixmaps[39]);
   LavaIcons[40] = 0;
-
-  pLavaTemplate = new wxDocTemplate(m_docManager,
-    "LavaPE", "*.lava","", "lava", "Lava Doc", "Lava Frame", "Lava Tree View",
-    &CLavaPEDoc::CreateObject, &CTreeFrame::CreateObject, &CLavaPEView::CreateObject);
-  m_docManager->AssociateTemplate(pLavaTemplate);
-
-  pExecTemplate = new wxDocTemplate(m_docManager,
-    "LavaPE", "*.lava","", "lava", "Lava Doc", "Lava Frame", "Lava Tree View",
-    &CLavaPEDoc::CreateObject, &CExecFrame::CreateObject, &CExecView::CreateObject);
-  m_docManager->AssociateTemplate(pExecTemplate);
-
-  pLComTemplate = new wxDocTemplate(m_docManager,
-    "LavaPE", "*.lcom","", "lcom", "Lava Compo", "Lava Frame", "Lava Tree View",
-    &CLavaPEDoc::CreateObject, &CTreeFrame::CreateObject, &CLavaPEView::CreateObject);
-  m_docManager->AssociateTemplate(pLComTemplate);
-
-  pFormTemplate = new wxDocTemplate(m_docManager,
-    "LavaPE", "*.lava","", "lava", "Lava Doc", "Lava Frame", "Lava GUI View",
-    &CLavaPEDoc::CreateObject, &CFormFrame::CreateObject, &CLavaGUIView::CreateObject);//&CLavaGUIView::CreateObject);
-  m_docManager->AssociateTemplate(pFormTemplate);
-
-  Tokens_INIT();
 }
 
 bool CLavaPEApp::event(QEvent *e)

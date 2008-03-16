@@ -49,6 +49,9 @@ class CLavaPEApp : public wxApp
 public:
   CLavaPEApp(int &argc, char ** argv);
   ~CLavaPEApp();
+  
+  void OnAppCreate();
+  
   wxDocTemplate *pLavaTemplate, *pFormTemplate, *pExecTemplate, *pLComTemplate;
   CLavaPEBrowse Browser;
   CExecUpdate ExecUpdate;
