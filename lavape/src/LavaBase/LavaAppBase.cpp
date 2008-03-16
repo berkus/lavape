@@ -974,8 +974,10 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
     }
     if (doClose ) {
       if (((CLavaBaseDoc*)fromDoc)->isObject ) {
-        if (/*!((CLavaBaseDoc*)fromDoc)->IsEmbedded() &&*/ ((CLavaBaseDoc*)fromDoc)->OnSaveModified())
+        if (/*!((CLavaBaseDoc*)fromDoc)->IsEmbedded() &&*/ ((CLavaBaseDoc*)fromDoc)->OnSaveModified()) {
           ((CLavaBaseDoc*)fromDoc)->OnCloseDocument();
+          delete fromDoc;
+        }
         return;
       }
       else {

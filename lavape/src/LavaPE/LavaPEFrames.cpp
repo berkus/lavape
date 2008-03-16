@@ -1739,8 +1739,11 @@ CTreeFrame::CTreeFrame(QWidget* parent):wxChildFrame(parent)
 {
   viewR = 0;
   showIt = !((CLavaPEApp*)wxTheApp)->inTotalCheck;
-  if (!showIt)
+  if (!showIt) {
+    ((wxTabWidget*)parent)->removeTab(((wxTabWidget*)parent)->indexOf(this));
+    m_tabWidget = 0;
     hide();
+  }
 }
 
 bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)

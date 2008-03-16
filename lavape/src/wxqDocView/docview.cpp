@@ -346,10 +346,14 @@ bool wxDocument::DeleteAllChildFrames()
     //delete m_docChildFrames.takeAt(0);
     child = m_docChildFrames.takeAt(0);
     tab = child->m_tabWidget;
-    tab->setCurrentWidget(child);
-    tab->closePage2(child, tab->currentIndex());
-    if (tab->count() == 0 && ((QSplitter*)tab->parentWidget())->count() > 1)
-      delete tab;
+    if (tab) {
+      tab->setCurrentWidget(child);
+      tab->closePage2(child, tab->currentIndex());
+      if (tab->count() == 0 && ((QSplitter*)tab->parentWidget())->count() > 1)
+        delete tab;
+    }
+    else
+      delete child;
   }
   tab = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
   wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
@@ -898,7 +902,8 @@ wxChildFrame *wxDocTemplate::CreateChildFrame(wxDocument *doc)
 {
   wxMainFrame *mw = wxTheApp->m_appWindow;
   wxChildFrame *frame = (wxChildFrame *)m_frameClassInfo(mw->GetCurrentTabWindow());
-  frame->m_tabWidget->setCurrentWidget(frame);
+  if (frame->m_tabWidget)
+    frame->m_tabWidget->setCurrentWidget(frame);
 
   if (frame->OnCreate(this,doc)) {
     return frame;

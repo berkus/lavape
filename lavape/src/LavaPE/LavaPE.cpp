@@ -321,6 +321,7 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
 bool CLavaPEApp::event(QEvent *e)
 {
   wxView *actView;
+  CLavaPEDoc *doc;
   switch (e->type()) {
   case UEV_LavaDebug:
     ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((CustomEvent*)e)->data(), debugger.myDoc);
@@ -342,7 +343,9 @@ bool CLavaPEApp::event(QEvent *e)
     ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
     return true;
   case UEV_LavaPE_CloseDoc:
-    ((CLavaPEDoc*)((CustomEvent*)e)->data())->OnCloseDocument();
+    doc = (CLavaPEDoc*)((CustomEvent*)e)->data();
+    doc->OnCloseDocument();
+    delete doc;
     return true;
   case UEV_LavaGUIEvent:
     actView = wxDocManager::GetDocumentManager()->GetActiveView();

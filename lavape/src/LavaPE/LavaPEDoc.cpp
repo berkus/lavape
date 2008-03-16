@@ -4024,9 +4024,9 @@ void CLavaPEDoc::SetNameText (LavaDECL* inDecl, CFindData& fw) //const DString& 
 				break;
 			case Interface:
 				if (inDecl->SecondTFlags.Contains (isGUI))
-					barText += DString ("GUI service class ");
+					barText += DString ("GUI service interface ");
 				else
-					barText += DString ("Class ");
+					barText += DString ("Interface ");
 				putIt = true;
 				break;
 			case CompObjSpec:
@@ -4048,7 +4048,7 @@ void CLavaPEDoc::SetNameText (LavaDECL* inDecl, CFindData& fw) //const DString& 
 	{
 		barText += "Enumeration item ";
 		barText += fw.enumID;
-		barText += " in class ";
+		barText += " in interface ";
 		putIt = true;
 	}
 	if (putIt)

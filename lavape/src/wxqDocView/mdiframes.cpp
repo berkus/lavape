@@ -290,7 +290,8 @@ bool wxChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   doc->AddChildFrame(this);
   m_document = doc;
-  m_tabWidget->setCurrentWidget(this);
+  if (m_tabWidget)
+    m_tabWidget->setCurrentWidget(this);
   return true;
 }
 
@@ -312,6 +313,8 @@ void wxChildFrame::Activate(bool activate, bool windowMenuAction)
 {
  QString title=windowTitle();
 
+ if (!m_tabWidget)
+   return;
  if (activate)
   m_tabWidget->setCurrentWidget(this);
 
@@ -568,7 +571,6 @@ void wxTabWidget::closePage() {
 
 void wxTabWidget::closePage2(wxChildFrame *page, int index)
 {
-  QSplitter *splitter=(QSplitter*)parentWidget();
   removeTab(index);
   delete page;
 }
