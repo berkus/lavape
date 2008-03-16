@@ -60,8 +60,14 @@ CUtilityView::CUtilityView(QWidget *parent)
   HandlerPage->setHeaderItem(item);
   CommentPage = new QTextEdit(0);
   CommentPage->setReadOnly(true);
-  ErrorPage = new QTextEdit(0);
-  ErrorPage->setReadOnly(true);
+  ErrorPage = new QTreeWidget(0);
+  HandlerPage->setColumnCount(1);
+  ErrorPage->setRootIsDecorated(false);
+  ErrorPage->setSelectionMode(QAbstractItemView::SingleSelection);
+  ErrorPage->header()->hide();
+  singleError = true;
+  //ErrorPage = new QTextEdit(0);
+  //ErrorPage->setReadOnly(true);
   DebugPage = new QFrame(0);
   splitter = new QSplitter(DebugPage);
   splitter->setOrientation(Qt::Horizontal);
@@ -97,6 +103,7 @@ CUtilityView::CUtilityView(QWidget *parent)
   connect(this,SIGNAL(currentChanged(int)), SLOT(OnTabChange(int)));
   connect(FindPage,SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int  )), SLOT(OnDblclk(QTreeWidgetItem*, int)));
   connect(HandlerPage,SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int  )), SLOT(OnDblclk(QTreeWidgetItem*, int)));
+  connect(ErrorPage,SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int  )), SLOT(OnDblclk(QTreeWidgetItem*, int)));
   ErrorEmpty = true;
   CommentEmpty = true;
   firstDebug = true;
@@ -120,33 +127,24 @@ void CUtilityView::ResetError()
 void CUtilityView::SetErrorOnUtil(LavaDECL* decl)
 {
   QString cstrA;
+  ErrorPage->clear();
+  singleError = true;
   setError(decl->DECLError1, &cstrA);
   setError(decl->DECLError2, &cstrA);
-  ErrorPage->setPlainText(cstrA);
+  CTreeItem *item = new CTreeItem(cstrA, ErrorPage);
+  //ErrorPage->setPlainText(cstrA);
   ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
 }
 
 void CUtilityView::SetErrorOnUtil(const CHAINX& ErrChain)
 {
   QString cstrA;
+  ErrorPage->clear();
+  singleError = true;
   setError(ErrChain, &cstrA);
-  ErrorPage->setPlainText(cstrA);
+  //ErrorPage->setPlainText(cstrA);
+  CTreeItem *item = new CTreeItem(cstrA, ErrorPage);
   ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
-}
-
-bool CUtilityView::eventFilter(QObject *watched,QEvent *ev) {
-  if (watched == DebugPage && ev->type() == QEvent::Paint && firstTime) {
-    QList<int> list=splitter->sizes();
-    int totalW = 0;
-    for (int i=0; i<3; i++)
-      totalW += list.at(i);
-    list.replace(0,totalW/5 * 2);
-    list.replace(1,totalW/5 * 2);
-    list.replace(2,totalW/5);
-    splitter->setSizes(list);
-    firstTime = false;
-  }
-  return false;
 }
 
 void CUtilityView::setError(const CHAINX& ErrChain, QString* cstrA)
@@ -164,6 +162,32 @@ void CUtilityView::setError(const CHAINX& ErrChain, QString* cstrA)
     *cstrA += cstr;
     che = (CHE*)che->successor;
   }
+}
+
+void CUtilityView::setErrorFile(QString& file)
+{
+  if (singleError) {
+    singleError = false;
+    ErrorPage->clear();
+    SetTab (tabError);
+  }
+  CTreeItem *item = new CTreeItem(file, ErrorPage);
+}
+
+
+bool CUtilityView::eventFilter(QObject *watched,QEvent *ev) {
+  if (watched == DebugPage && ev->type() == QEvent::Paint && firstTime) {
+    QList<int> list=splitter->sizes();
+    int totalW = 0;
+    for (int i=0; i<3; i++)
+      totalW += list.at(i);
+    list.replace(0,totalW/5 * 2);
+    list.replace(1,totalW/5 * 2);
+    list.replace(2,totalW/5);
+    splitter->setSizes(list);
+    firstTime = false;
+  }
+  return false;
 }
 
 void CUtilityView::SetComment(const DString& text, bool toStatebar)
@@ -186,6 +210,7 @@ void CUtilityView::SetFindText(const DString& text, CFindData* data)
   CTreeItem *item = new CTreeItem(text.c, FindPage);
   item->setItemData((TItemData*)data);
 }
+
 void CUtilityView::AddHandler(LavaDECL* func, CLavaBaseDoc* doc)
 {
   CTreeItem *item;
@@ -357,6 +382,15 @@ void CUtilityView::OnDblclk(QTreeWidgetItem* item, int col)
   LavaDECL *decl, *execDecl;
   TDeclType type;
 
+  if (currentWidget() == ErrorPage) {
+    if (singleError)
+      return;
+    else {
+      QString file = item->text(0);
+      wxDocManager::GetDocumentManager()->FindOpenDocument(file);
+      return;
+    }
+  }
   data = (CFindData*)((CTreeItem*)item)->getItemData();
   doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(data->fname.c);
   if (doc && data) {

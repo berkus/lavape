@@ -3483,13 +3483,15 @@ void CLavaPEDoc::OnTotalCheck()
 	int pos;
 	bool isNewDoc;
 
-	CExecChecks* ch = new CExecChecks (this);
+	((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView->singleError = true;
+  CExecChecks* ch = new CExecChecks (this);
 	delete ch;
 	wxView *actView = mana->GetActiveView();
 	((CLavaPEApp*) wxTheApp)->inTotalCheck = true;
 	if (/*nTreeErrors ||*/ nErrors || nPlaceholders)
 	{
 		ShowErrorBox (true);
+    ((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView->setErrorFile(QString(m_documentFile));
 		nErrBoxShown++;
 	}
 	for (ii = 1; ii < IDTable.freeINCL; ii++)
@@ -3528,6 +3530,7 @@ void CLavaPEDoc::OnTotalCheck()
 					//if (!doc->openInTotalCheck)
 					//  doc->MainView->GetParentFrame()->Activate(true);
 					doc->ShowErrorBox (true);
+          ((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView->setErrorFile(QString(absName.c));
 				}
 			}
 		}

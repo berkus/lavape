@@ -315,9 +315,10 @@ void wxChildFrame::Activate(bool activate, bool windowMenuAction)
 
  if (!m_tabWidget)
    return;
- if (activate)
+ if (activate) {
   m_tabWidget->setCurrentWidget(this);
-
+  wxTheApp->m_appWindow->SetCurrentTabWindow(m_tabWidget);
+ }
  if (title.length() && title.at(title.length()-1) == '*')
    title = title.left(title.length()-1);
  //wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);

@@ -249,9 +249,11 @@ void CInclView::customEvent(QEvent *ev0)
     delete usersFn;
     if (doc) {
       doc->MainView->ActivateView(true);
+      /*
       doc->SetTitle( fi.absoluteFilePath());
 			abs_fn = fi.absoluteFilePath();
       doc->MainView->GetParentFrame()->SetTitle(abs_fn);
+      */
     }
   }
 }

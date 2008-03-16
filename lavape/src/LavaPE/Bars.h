@@ -102,6 +102,7 @@ public:
   void SetErrorOnUtil(LavaDECL* decl);
   void SetErrorOnUtil(const CHAINX& ErrChain);
   void setError(const CHAINX& ErrChain, QString * strA);
+  void setErrorFile(QString& file);
   void SetComment(const DString& str, bool toStatebar = false);
   void SetFindText(const DString& text, CFindData* data);
   void SetHandler(TIDs* handlerIDs, CLavaBaseDoc* doc);
@@ -119,13 +120,15 @@ public:
   CLavaBaseDoc* stopDoc;
   VarItem *itemToOpen;
   QFrame *DebugPage;
+  bool singleError;
 
 protected:
   bool eventFilter(QObject *watched,QEvent *ev);
   QTreeWidget* FindPage;
   QTreeWidget* HandlerPage;
   QTextEdit* CommentPage;
-  QTextEdit* ErrorPage;
+  QTreeWidget* ErrorPage;
+  //QTextEdit* ErrorPage;
   //QSplitter *DebugPage;
   LavaDECL *stopExecDECL;
   bool firstDebug;
