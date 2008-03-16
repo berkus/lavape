@@ -72,9 +72,9 @@ static const char slash='/';
 
 
 int main( int argc, char ** argv ) {
-  CLavaApp ap(argc,argv);
+  CLavaApp app(argc,argv);
   
-  ExeDir = wxTheApp->applicationDirPath();
+  ExeDir = app.applicationDirPath();
 #ifdef WIN32
   QString driveLetter = QString(ExeDir[0].toUpper());
   ExeDir.replace(0,1,driveLetter);
@@ -94,17 +94,17 @@ int main( int argc, char ** argv ) {
 
   //QTest::qSleep(20000);
 
-  ap.m_appWindow = new CLavaMainFrame;
+  app.m_appWindow = new CLavaMainFrame;
 
-  if (ap.m_appWindow->OnCreate()) {
-    ap.m_appWindow->show();
+  if (app.m_appWindow->OnCreate()) {
+    app.m_appWindow->show();
   }
   else
     return 1;
 
-  ap.updateButtonsMenus();
+  app.updateButtonsMenus();
 
-  int res = ap.exec();
+  int res = app.exec();
 
   return res;
 }
