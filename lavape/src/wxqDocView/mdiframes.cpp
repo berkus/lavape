@@ -457,7 +457,7 @@ void wxTabBar::mouseMoveEvent(QMouseEvent *evt)
   mimeData->setData(wxDragFormat, ba);
   drag->setMimeData(mimeData);
   Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
-  delete drag;
+  drag->deleteLater();
   delete dragData;
 }
 
