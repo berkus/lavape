@@ -245,7 +245,7 @@ void wxApp::SetLastFileOpen(QString &lfo)
 QString wxApp::GetLastFileOpen()
 {
   if (lastFileOpen.isEmpty())
-    lastFileOpen = appDir+"/../samples";
+    lastFileOpen = appDir+"/../samples/HelloWorld.lava";
   return lastFileOpen;
 }
 
