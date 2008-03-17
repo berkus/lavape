@@ -57,12 +57,6 @@ public:
 //  void CalcObjName(const DString& FileName);
   void LObjectError(CheckData& ckd, const QString& ldocName, const QString& lcomName, QString* nresourceID, int moreText = 0, const DString* text = 0, const TID* id = 0);
   bool ExecuteLavaObject();
-#ifdef WIN32
-  QString getOpenFileName(const QString& initialDir,
-				      const QString& filter,
-				      QWidget *parent,
-				      const QString& caption);
-#endif
 
 private:
 	Q_OBJECT
