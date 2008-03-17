@@ -66,6 +66,7 @@ public:
     wxApp(int &argc, char ** argv);
     virtual ~wxApp();
 
+    QString appDir;
     QThread *mainThread;
     bool deletingMainFrame;
     bool isChMaximized;

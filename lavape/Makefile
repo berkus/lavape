@@ -186,44 +186,37 @@ bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
 
 
 bindist:
-	rm -rf ~/lavadist; mkdir ~/lavadist ~/lavadist/lavape; cp *.txt ~/lavadist/lavape; \
-	cd ~/lavadist/lavape; mkdir bin; mkdir doc; \
+	rm -rf ~/lavadistro; mkdir ~/lavadistro ~/lavadistro/lavadir; cp *.txt ~/lavadistro/lavadir; \
+	cd ~/lavadistro/lavadir; mkdir bin; mkdir doc; \
 	cd $(LAVADIR); tar --exclude=.svn -cjf /tmp/docarchive doc; \
-	cd ~/lavadist/lavape; tar xjf /tmp/docarchive; rm /tmp/docarchive; \
+	cd ~/lavadistro/lavadir; tar xjf /tmp/docarchive; rm /tmp/docarchive; \
 	mkdir lib; cp $(LAVADIR)/lib/*$(DLLSUFFIX) lib; \
 	mkdir samples; cp $(LAVADIR)/samples/*.l* samples; \
 	cd bin; mkdir LavaIcons; mkdir std; \
-	cd $(LAVADIR)/bin; cp LavaPE Lava ~/lavadist/lavape/bin;
+	cd $(LAVADIR)/bin; cp LavaPE Lava ~/lavadistro/lavadir/bin;
 ifeq ($(OPSYS),Darwin)
-	cp -R $(QBIN)/assistant.app ~/lavadist/lavape/bin; \
-	install_name_tool -change $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant ~/lavadist/lavape/lib/QtAssistant \
-	-change $(QLIB)/QtCore.framework/Versions/4/QtCore ~/lavadist/lavape/lib/QtCore \
-	-change $(QLIB)/QtGui.framework/Versions/4/QtGui ~/lavadist/lavape/lib/QtGui \
-	-change $(QLIB)/QtNetwork.framework/Versions/4/QtNetwork ~/lavadist/lavape/lib/QtNetwork \
-	-change $(QLIB)/QtXml.framework/Versions/4/QtXml ~/lavadist/lavape/lib/QtXml \
-	~/lavadist/lavape/bin/assistant.app/Contents/MacOS/assistant; \
-	cp bin-install-mac ~/lavadist/install.sh; chmod a+x ~/lavadist/install.sh;
+	cp -R $(QBIN)/assistant.app ~/lavadistro/lavadir/bin;
 else
-	cp -R $(QBIN)/assistant ~/lavadist/lavape/bin; strip ~/lavadist/lavape/bin/assistant; \
-	cd ~/lavadist/lavape/bin; strip LavaPE Lava;
-	cp bin-install-linux ~/lavadist/install.sh; chmod a+x ~/lavadist/install.sh;
+	cp -R $(QBIN)/assistant ~/lavadistro/lavadir/bin; strip ~/lavadistro/lavadir/bin/assistant; \
+	cd ~/lavadistro/lavadir/bin; strip LavaPE Lava;
 endif
-	cd bin; cp LavaIcons/* ~/lavadist/lavape/bin/LavaIcons; cp std/* ~/lavadist/lavape/bin/std; \
-	cp *.htm *.lava cp_icons_std ~/lavadist/lavape/bin; \
-	cd ~/lavadist/lavape/bin; \
+	cp bin-install ~/lavadistro/install.bash; chmod a+x ~/lavadistro/install.bash;
+	cd bin; cp LavaIcons/* ~/lavadistro/lavadir/bin/LavaIcons; cp std/* ~/lavadistro/lavadir/bin/std; \
+	cp *.htm *.lava cp_icons_std ~/lavadistro/lavadir/bin; \
+	cd ~/lavadistro/lavadir/bin; \
 	mkdir Components; \
 	cd Components; \
 	ln -s ../../samples/LCompoImpl.lcom LCompoImpl.lcom.lnk; \
 	ln -s ../../samples/LavaStream.lava .; \
 	ln -s ../../lib/libLavaStream$(DLLSUFFIX) .;
 ifeq ($(OPSYS),Darwin)
-	cd ~/lavadist/lavape/lib; \
+	cd ~/lavadistro/lavadir/lib; \
 	cp $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant \
 	$(QLIB)/QtCore.framework/Versions/4/QtCore \
 	$(QLIB)/QtGui.framework/Versions/4/QtGui \
 	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork \
 	$(QLIB)/QtXml.framework/Versions/4/QtXml .; \
-	cd ~; rm Downloads/lavape-*-macos*; tar cjf Downloads/lavape-0.9.1-macos-bin.tar.bz2 lavadist; ls -l Downloads/lavape-*;
+	cd ~; rm Downloads/lavape-*-macos*; tar cjf Downloads/lavape-0.9.1-macos-bin.tar.bz2 lavadistro; ls -l Downloads/lavape-*;
 else
 	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 lib; \
 	cd lib; strip *$(DLLSUFFIX)*; \

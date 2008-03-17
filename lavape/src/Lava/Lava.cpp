@@ -124,7 +124,7 @@ CLavaApp::CLavaApp(int &argc, char ** argv )
   InitGlobalStrings();
 //  qt_use_native_dialogs = false;
 
-  SetVendorName("Fraunhofer-SIT");
+  SetVendorName("LavaPE-Project");
   SetAppName("LavaPE");
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 //  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);

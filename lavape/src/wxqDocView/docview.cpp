@@ -125,6 +125,7 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
   wxTheApp = this;
   this->argc = argc;
   this->argv = argv;
+  appDir = QCoreApplication::applicationDirPath();
   m_appName = argv[0];
   mainThread = QThread::currentThread();
 
@@ -243,6 +244,8 @@ void wxApp::SetLastFileOpen(QString &lfo)
 
 QString wxApp::GetLastFileOpen()
 {
+  if (lastFileOpen.isEmpty())
+    lastFileOpen = appDir+"/../samples";
   return lastFileOpen;
 }
 

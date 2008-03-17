@@ -137,7 +137,7 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
   LBaseData.stdUpdate = 0;
   //stop here and set stdUpdate = 1 to allow updates in std.lava
 
-  SetVendorName("Fraunhofer-SIT");
+  SetVendorName("LavaPE-Project");
   SetAppName("LavaPE");
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
@@ -707,7 +707,6 @@ void CLavaPEApp::HtmlHelp()
 {
   QString path(QASSISTANT);
   QStringList args;
-  DString cpath(qPrintable(path));
   
   args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
   if (!qacl) {
