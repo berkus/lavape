@@ -70,8 +70,12 @@ ITPF = src/Interpreter/Constructs.ph \
   src/Interpreter/ClosedLevelVisitor.cpp \
  	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava
- 
+
+ifeq ($(OPSYS),Darwin)
 links: $(ITPF) bin/assistant.app
+else
+links: $(ITPF) bin/assistant
+endif
 
 src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
 	cd src/Interpreter; $(LN) ../LavaExecs/Constructs.ph .
