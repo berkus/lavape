@@ -293,7 +293,6 @@ QString wxApp::wxGetOpenFileName(const QString& startFileName,
    if (!fileName.contains(".ldoc"))
      fd->selectFile(fileName);
   }*/
-  fd->selectFile(fileName);
   fd->setResolveSymlinks(false);
   if (save) {
     fd->setWindowTitle(QString("Save as"));
@@ -305,6 +304,7 @@ QString wxApp::wxGetOpenFileName(const QString& startFileName,
     fd->setLabelText(QFileDialog::Accept, QString("Open"));
     fd->setAcceptMode(QFileDialog::AcceptOpen);
   }
+  fd->selectFile(fileName);
   if (fd->exec() == QDialog::Accepted ) {
     QStringList selFiles=fd->selectedFiles();
     selFiles.replaceInStrings("\\", "/");
