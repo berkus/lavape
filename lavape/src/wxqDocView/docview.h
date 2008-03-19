@@ -96,6 +96,19 @@ public:
     QString GetLastFileOpen();
     void SetLastFileOpen(QString &lfo);
         // set/get the app class name
+    QString wxGetOpenFileName(const QString& startFileName,
+                              QWidget *parent,
+                              const QString& caption,
+                              const QString& filter,
+                              const QString& filter2=QString::null,
+                              bool save=false
+                              );
+    QStringList wxGetOpenFileNames(const QString& startFileName,
+                                  QWidget *parent,
+                                  const QString& caption,
+                                  const QString& filter,
+                                  const QString& filter2=QString::null
+                                  );
     QString GetClassName() const { return m_className; }
     void SetClassName(const QString& name) { m_className = name; }
 

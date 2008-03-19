@@ -1562,7 +1562,7 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
 
 QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption, bool existing)
 {
-  return L_GetOpenFileName(startFileName, parent, caption,
+  return wxTheApp->wxGetOpenFileName(startFileName, parent, caption,
           "Lava file (*.lava)", "LavaCom file (*.lcom)");
 
 }

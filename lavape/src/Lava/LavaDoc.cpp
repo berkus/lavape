@@ -174,7 +174,7 @@ bool CLavaDoc::SelectLcom(bool emptyDoc)
   filter = ("LavaCom file (*.lcom)");
 #endif
 
-  fileName = L_GetOpenFileName( iniFile,
+  fileName = wxTheApp->wxGetOpenFileName( iniFile,
 				      ((CLavaApp*)wxTheApp)->m_appWindow,
 				      "Lava (*.lcom) file defining the type of lava component object",
 				      filter

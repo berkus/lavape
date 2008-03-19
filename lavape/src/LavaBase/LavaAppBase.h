@@ -521,18 +521,6 @@ extern LAVABASE_DLL CLavaBaseData *LBaseData;
 
 //extern  LAVABASE_DLL DString dach;
 extern LAVABASE_DLL void LavaEnd(wxDocument* fromDoc, bool doClose);
-extern LAVABASE_DLL QString L_GetOpenFileName(const QString& startFileName,
-				                                      QWidget *parent,
-				                                      const QString& caption,
-				                                      const QString& filter,
-                                              const QString& filter2=QString::null
-                                              );
-extern LAVABASE_DLL QStringList L_GetOpenFileNames(const QString& startFileName,
-				                                      QWidget *parent,
-				                                      const QString& caption,
-				                                      const QString& filter,
-				                                      const QString& filter2=QString::null
-                                              );
 #ifdef WIN32
 extern unsigned int CALLBACK myOFNHookProc(HWND hdlg, unsigned int uiMsg,
                                            WPARAM wParam, LPARAM lParam);

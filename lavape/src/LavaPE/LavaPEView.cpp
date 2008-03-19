@@ -2200,7 +2200,7 @@ QDrag*  CLavaPEView::OnDragBegin()
   GetDocument()->DragView = this;
   DragDoc = GetDocument();
   //Q3dragSource->drag();
-  drag->start(Qt::CopyAction | Qt::MoveAction);
+  drag->exec(Qt::CopyAction | Qt::MoveAction);
   if (clipdata.synEl)
     delete (LavaDECL*)clipdata.synEl;
   //if (m_hitemDrop)

@@ -856,20 +856,22 @@ void CCompSpecBox::on_EnumAdd_clicked()
 #else
       filter = ("LavaCom file (*.lcom)");
 #endif
-      fileName = L_GetOpenFileName(
+      fileName = wxTheApp->wxGetOpenFileName(
                     dir,
                     this,
                     IDS_LAVACOM_FILE,
                     filter
                     ); 
-      fileName.remove(0,dir.length());
+      if (!fileName.isEmpty()) {
+        fileName.remove(0,dir.length());
 #ifdef WIN32
-      fileName.truncate(fileName.length()-4);
+        fileName.truncate(fileName.length()-4);
 #endif
-      EnumItems->insertItem(0,fileName);
-      EnumItems->item(0)->setSelected(true);
-      EnumDel->setEnabled(true);
-      EnumEdit->setEnabled(true);
+        EnumItems->insertItem(0,fileName);
+        EnumItems->item(0)->setSelected(true);
+        EnumDel->setEnabled(true);
+        EnumEdit->setEnabled(true);
+      }
     }
   }
   else if (myDECL->nOutput == PROT_NATIVE) {
@@ -930,18 +932,20 @@ void CCompSpecBox::on_EnumEdit_clicked()
 #else
       filter = ("LavaCom file (*.lcom)");
 #endif
-      fileName = L_GetOpenFileName(
+      fileName = wxTheApp->wxGetOpenFileName(
                     fileName,
                     this,
                     IDS_LAVACOM_FILE,
                     filter
                     ); 
-      fileName.remove(0,dir.length());
+      if (!fileName.isEmpty()) {
+        fileName.remove(0,dir.length());
 #ifdef WIN32
-      fileName.truncate(fileName.length()-4);
+        fileName.truncate(fileName.length()-4);
 #endif
-      item->setText(fileName);
-      EnumItems->item(0)->setSelected(true);
+        item->setText(fileName);
+        EnumItems->item(0)->setSelected(true);
+      }
     }
     else if (myDECL->nOutput == PROT_NATIVE) {
       iT = item->text();
@@ -2764,20 +2768,24 @@ void CIncludeBox::UpdateData(bool getData)
 void CIncludeBox::on_ID_OK_clicked() 
 {
   UpdateData(true);
-  NewChe->data.UsersName = STRING(qPrintable(valFullPathName));
-  QFileInfo fi(valFullPathName);
-  QString qfn = ResolveLinks(fi);
-  NewChe->data.SyntaxName = STRING(qPrintable(qfn));
-  RelPathName(NewChe->data.SyntaxName, MyDoc->IDTable.DocDir); 
-  RelPathName(NewChe->data.UsersName, MyDoc->IDTable.DocDir);   
-  NewChe->data.LocalTopName = STRING(qPrintable(valUseAs)); 
-  QDialog::accept();
+  if (!valFullPathName.isEmpty()) {
+    NewChe->data.UsersName = STRING(qPrintable(valFullPathName));
+    QFileInfo fi(valFullPathName);
+    QString qfn = ResolveLinks(fi);
+    NewChe->data.SyntaxName = STRING(qPrintable(qfn));
+    RelPathName(NewChe->data.SyntaxName, MyDoc->IDTable.DocDir); 
+    RelPathName(NewChe->data.UsersName, MyDoc->IDTable.DocDir);   
+    NewChe->data.LocalTopName = STRING(qPrintable(valUseAs)); 
+    QDialog::accept();
+  }
+  else
+    QDialog::reject();
 }
 
 void CIncludeBox::on_OtherPath_clicked() 
 {
   UpdateData(true);
-  valFullPathName = L_GetOpenFileName(
+  valFullPathName = wxTheApp->wxGetOpenFileName(
                     valFullPathName,
                     this,
                     "Choose a file to include",

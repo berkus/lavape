@@ -395,7 +395,7 @@ bool CLavaApp::event(QEvent *e)
 QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption, bool existing)
 {
 
-  return L_GetOpenFileName(startFileName, parent, caption,
+  return wxTheApp->wxGetOpenFileName(startFileName, parent, caption,
           "Lava file (*.lava)", "Lava object file (*.ldoc)");
 
 
@@ -403,7 +403,7 @@ QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QStr
 
 void CLavaApp::OnFileOpen()
 {
-  QString fileName = lavaFileDialog(wxTheApp->GetLastFileOpen(), m_appWindow, "Select a file to open", true);
+  QString fileName = lavaFileDialog(GetLastFileOpen(), m_appWindow, "Select a file to open", true);
   if (fileName.isEmpty())
     return;
 #ifdef WIN32

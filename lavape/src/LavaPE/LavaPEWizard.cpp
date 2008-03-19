@@ -2973,7 +2973,7 @@ void CMenuItem::on_button_browse_clicked()
   QFileInfo qf(dir, Pixmap->text());
   //QString pix = QFileDialog::getOpenFileName( qf.absFilePath(), "Pixmap (*.xpm)",
   //                  this,"open file dialog", "Choose a pixmap file", 0, false );
-  QString pix = L_GetOpenFileName(
+  QString pix = wxTheApp->wxGetOpenFileName(
                     qf.absoluteFilePath(),
                     this,
                     "Choose a pixmap file",
