@@ -269,7 +269,7 @@ QString wxApp::wxGetOpenFileName(const QString& startFileName,
 	QStringList filters;
 
   qf = QFileInfo(startFileName);
-  fileName = qf.fileName();
+  fileName = startFileName;//qf.fileName();
   QFileInfo qfresolved(ResolveLinks(qf));
   currentFilter = qfresolved.suffix();
   initialDir = qf.path();
@@ -299,17 +299,17 @@ QString wxApp::wxGetOpenFileName(const QString& startFileName,
      fd->selectFile(fileName);
   }*/
   fd->setResolveSymlinks(false);
+  fd->selectFile(fileName);
   if (save) {
     fd->setWindowTitle(QString("Save as"));
     fd->setAcceptMode(QFileDialog::AcceptSave);
     fd->setLabelText(QFileDialog::Accept, QString("Save as"));
   }
   else {
+    fd->setAcceptMode(QFileDialog::AcceptOpen);
     fd->setFileMode( QFileDialog::ExistingFile );
     fd->setLabelText(QFileDialog::Accept, QString("Open"));
-    fd->setAcceptMode(QFileDialog::AcceptOpen);
   }
-  fd->selectFile(fileName);
   if (fd->exec() == QDialog::Accepted ) {
     QStringList selFiles=fd->selectedFiles();
     selFiles.replaceInStrings("\\", "/");

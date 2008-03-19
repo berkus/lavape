@@ -150,7 +150,7 @@ ifeq ($(OPSYS),Darwin)
 	cp -R $(QBIN)/assistant.app ~/lavadistro/lavadir/bin;
 else
 	cp -R $(QBIN)/assistant ~/lavadistro/lavadir/bin; strip ~/lavadistro/lavadir/bin/assistant; \
-	cd ~/lavadistro/lavadir/bin; strip LavaPE Lava;
+	cd ~/lavadistro/lavadir/bin;
 endif
 	cp bin-install ~/lavadistro/install.bash; chmod a+x ~/lavadistro/install.bash;
 	cd bin; cp LavaIcons/* ~/lavadistro/lavadir/bin/LavaIcons; cp std/* ~/lavadistro/lavadir/bin/std; \
@@ -168,11 +168,11 @@ ifeq ($(OPSYS),Darwin)
 	$(QLIB)/QtGui.framework/Versions/4/QtGui \
 	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork \
 	$(QLIB)/QtXml.framework/Versions/4/QtXml .; \
-	cd ~; rm Downloads/lavape-*-macos*; tar cjf Downloads/lavape-0.9.1-macos-bin.tar.bz2 lavadistro; ls -l Downloads/lavape-*;
+	cd ~; rm -f Downloads/lavape-*-macos*; tar cjf Downloads/lavape-0.9.1-macos-bin.tar.bz2 lavadistro; ls -l Downloads/lavape-*;
 else
-	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 lib; \
-	cd lib; strip *$(DLLSUFFIX)*; \
-	tar cjf lavape-0.9.1-linux-bin.tar.bz2 ~/Downloads; ls -l ~/Downloads/lavape-*;
+	cd ~/lavadistro/lavadir/lib; \
+	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 .; \
+	cd ~; rm -f Downloads/lavape-*-linux*; tar cjf Downloads/lavape-0.9.1-linux-bin.tar.bz2 lavadistro; ls -l ~/Downloads/lavape-*;
 endif
 
 
