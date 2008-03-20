@@ -289,15 +289,7 @@ QString wxApp::wxGetOpenFileName(const QString& startFileName,
     currentFilter = filter;
   fd->selectFilter(currentFilter);
   fd->setViewMode( QFileDialog::List );
-  /*
-  if (LBaseData->inRuntime) {
-   if (!fileName.contains(".lcom"))
-     fd->selectFile(fileName);
-  }
-  else {
-   if (!fileName.contains(".ldoc"))
-     fd->selectFile(fileName);
-  }*/
+
   fd->setResolveSymlinks(false);
   fd->selectFile(fileName);
   if (save) {
