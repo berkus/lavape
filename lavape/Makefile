@@ -56,8 +56,7 @@ dirs:
 	cd ../Lava_UI; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaPE_UI; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaPE; if [ ! -e Generated ]; then mkdir Generated; fi; \
-	cd ../wxqDocView; if [ ! -e Generated ]; then mkdir Generated; fi; \
-	cd ../..
+	cd ../wxqDocView; if [ ! -e Generated ]; then mkdir Generated; fi;
 
 ITPF = src/Interpreter/Constructs.ph \
   src/Interpreter/Constructs.cpp \
@@ -147,9 +146,10 @@ bindist:
 	cd bin; mkdir LavaIcons; mkdir std; \
 	cd $(LAVADIR)/bin; cp LavaPE Lava ~/lavadistro/lavadir/bin;
 ifeq ($(OPSYS),Darwin)
-	cp -R $(QBIN)/assistant.app ~/lavadistro/lavadir/bin;
+	cp -R $(QBIN)/assistant.app ~/lavadistro/lavadir/bin; \
 else
 	cp -R $(QBIN)/assistant ~/lavadistro/lavadir/bin; strip ~/lavadistro/lavadir/bin/assistant; \
+	cp /usr/local/bin/chrpath ~/lavadistro/lavadir/bin;
 	cd ~/lavadistro/lavadir/bin;
 endif
 	cp bin-install ~/lavadistro/install.bash; chmod a+x ~/lavadistro/install.bash;
@@ -183,4 +183,4 @@ binclean:
 	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX)
 
 libclean:
-	cd $(LAVADIR)/lib; rm -f *$(DLLSUFFIX)
+	cd $(LAVADIR)/lib; rm -f lib*
