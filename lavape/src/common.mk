@@ -2,7 +2,7 @@ SHELL=/usr/bin/env sh
 #SHELL=/bin/sh
    
 #to build a debug version set DBG=-ggdb
-DBG=-gstabs+
+DBG=#-gstabs+
 
 export
 
@@ -113,8 +113,8 @@ else
       OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
       DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
       DLLSUFFIX = .so
-      OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) $(RPATH)../lib:$(QLIB):/usr/local/lib:/usr/lib:/lib -L../../lib
-      OSEXECFLAGS = -fstack-check -z nodefaultlib $(RPATH)../lib:../../lib:$(QLIB):/usr/local/lib:/usr/lib:/lib -L../../lib
+      OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib -L../../lib
+      OSEXECFLAGS = -fstack-check -z nodefaultlib $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib -L../../lib
       EXEC2 = $(EXEC)
       ifneq ($(DBG),)
         QtS =

@@ -146,11 +146,10 @@ bindist:
 	cd bin; mkdir LavaIcons; mkdir std; \
 	cd $(LAVADIR)/bin; cp LavaPE Lava ~/lavadistro/lavadir/bin;
 ifeq ($(OPSYS),Darwin)
-	cp -R $(QBIN)/assistant.app ~/lavadistro/lavadir/bin; \
+	cp -R $(QBIN)/assistant.app ~/lavadistro/lavadir/bin;
 else
 	cp -R $(QBIN)/assistant ~/lavadistro/lavadir/bin; strip ~/lavadistro/lavadir/bin/assistant; \
 	cp /usr/local/bin/chrpath ~/lavadistro/lavadir/bin;
-	cd ~/lavadistro/lavadir/bin;
 endif
 	cp bin-install ~/lavadistro/install.bash; chmod a+x ~/lavadistro/install.bash;
 	cd bin; cp LavaIcons/* ~/lavadistro/lavadir/bin/LavaIcons; cp std/* ~/lavadistro/lavadir/bin/std; \
