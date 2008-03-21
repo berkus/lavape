@@ -1,4 +1,4 @@
-#! /usr/bin/env sh
+#!/usr/bin/env sh
 
 if [ $QTDIR ]; then
   if [ -d $QTDIR/include/QtCore ]; then

@@ -60,7 +60,4 @@ install_name_tool -change /usr/local/Trolltech/Qt-4.3.4/QtAssistant.framework/Ve
 -change /usr/local/Trolltech/Qt-4.3.4/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
 -change /usr/local/Trolltech/Qt-4.3.4/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
 assistant
-else
-;
-#$LAVADIR/bin/chrpath -r $LAVADIR/lib assistant
 fi
