@@ -2,7 +2,7 @@ SHELL=/usr/bin/env sh
 #SHELL=/bin/sh
    
 #to build a debug version set DBG=-ggdb
-DBG=#-gstabs+
+DBG=-gstabs+
 
 export
 
@@ -66,14 +66,14 @@ endif
 ifeq ($(OPSYS),MINGW32_NT-5.1)
   OPSYS = MINGW32
   OSCAT = WIN32
-  LN = cp
+  LN = cp -f
 else
 ifeq ($(OPSYS),Darwin)
   OSCAT = __UNIX__
-  LN = ln -s
+  LN = ln -s -f
 else
   OSCAT = __UNIX__
-  LN = ln -s
+  LN = ln -s -f
 endif
 endif
 
@@ -113,8 +113,8 @@ else
       OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
       DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
       DLLSUFFIX = .so
-      OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib -L../../lib
-      OSEXECFLAGS = -fstack-check -z nodefaultlib $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib -L../../lib
+      OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -L../../lib
+      OSEXECFLAGS = -fstack-check -z nodefaultlibb -L../../lib $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
       EXEC2 = $(EXEC)
       ifneq ($(DBG),)
         QtS =
@@ -168,13 +168,13 @@ this: ../../bin/$(EXEC2)
 endif
 
 .cpp.o:
-	$(CC) -c -fPIC $(DBG) -pipe -MMD $(PCH_WARN) -D$(OSCAT) -D$(OPSYS) -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(OSCPPFLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
+	$(CC) -c -fPIC $(DBG) -pipe -MMD $(PCH_WARN) -D$(OSCAT) $(OSCPPFLAGS) $(CPP_FLAGS) -DQT_THREAD_SUPPORT $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
 
 .c.o:
-	$(CC) -c -fPIC $(DBG) -pipe -MMD $(PCH_WARN) $(OSCPPFLAGS) -D$(OSCAT) -D$(OPSYS) $(CPP_FLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
+	$(CC) -c -fPIC $(DBG) -pipe -MMD $(PCH_WARN) -D$(OSCAT) $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h $(h_ui_files) $(h_ph_files)
-	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -fPIC $(DBG) -pipe -MMD -Winvalid-pch -D$(OSCAT) -D$(OPSYS) -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(OSCPPFLAGS) $(ALL_CPP_INCLUDES) -o $@ $(PRJ)_all.h
+	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -fPIC $(DBG) -pipe -MMD -Winvalid-pch -D$(OSCAT) $(OSCPPFLAGS) $(CPP_FLAGS) -DQT_THREAD_SUPPORT $(ALL_CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's

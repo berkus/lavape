@@ -10,7 +10,7 @@ ln -s -f lavadir/bin/Lava .
 ln -s -f lavadir/samples .
 
 cd $LAVADIR/lib
-for library in $(ls) ;
+for library in $(ls lib*) ;
 do
 #echo lib1=$library, cwd=$(pwd);
 if [ $(uname) == Darwin ]; then
@@ -21,9 +21,8 @@ install_name_tool -change /usr/local/Trolltech/Qt-4.3.4/QtAssistant.framework/Ve
 -change /usr/local/Trolltech/Qt-4.3.4/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
 -change /usr/local/Trolltech/Qt-4.3.4/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
 $library
-else
-#echo lib2=$library cwd=$(pwd);
-$LAVADIR/bin/chrpath -r $LAVADIR/lib $library
+elif [ $(echo $library | colrm 6) != libQt ]; then
+$LAVADIR/bin/chrpath -r $LAVADIR/lib $library >/dev/null
 fi;
 done
 
@@ -37,7 +36,7 @@ install_name_tool -change /usr/local/Trolltech/Qt-4.3.4/QtAssistant.framework/Ve
 -change /usr/local/Trolltech/Qt-4.3.4/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
 Lava
 else
-$LAVADIR/bin/chrpath -r $LAVADIR/lib Lava
+$LAVADIR/bin/chrpath -r $LAVADIR/lib Lava >/dev/null
 fi
 
 if [ $(uname) == Darwin ]; then
@@ -49,7 +48,7 @@ install_name_tool -change /usr/local/Trolltech/Qt-4.3.4/QtAssistant.framework/Ve
 -change /usr/local/Trolltech/Qt-4.3.4/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
 LavaPE
 else
-$LAVADIR/bin/chrpath -r $LAVADIR/lib LavaPE
+$LAVADIR/bin/chrpath -r $LAVADIR/lib LavaPE >/dev/null
 fi
 
 if [ $(uname) == Darwin ]; then
@@ -62,5 +61,6 @@ install_name_tool -change /usr/local/Trolltech/Qt-4.3.4/QtAssistant.framework/Ve
 -change /usr/local/Trolltech/Qt-4.3.4/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
 assistant
 else
-$LAVADIR/bin/chrpath -r $LAVADIR/lib assistant
+;
+#$LAVADIR/bin/chrpath -r $LAVADIR/lib assistant
 fi

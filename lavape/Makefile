@@ -101,7 +101,7 @@ bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; cd bin/Components; $(LN) ../../samples/LavaStream.lava
 ifeq ($(OPSYS),Darwin)
 bin/assistant.app:
-	ln -s $(QBIN)/assistant.app $@
+	ln -s -f $(QBIN)/assistant.app $@
 else
 bin/assistant$(SUFF):
 	$(LN) $(QBIN)/assistant$(SUFF) $@
@@ -164,13 +164,14 @@ ifeq ($(OPSYS),Darwin)
 	cd ~/lavadistro/lavadir/lib; \
 	cp $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant \
 	$(QLIB)/QtCore.framework/Versions/4/QtCore \
+	$(QLIB)/QtDBus.framework/Versions/4/QtDBus \
 	$(QLIB)/QtGui.framework/Versions/4/QtGui \
 	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork \
 	$(QLIB)/QtXml.framework/Versions/4/QtXml .; \
 	cd ~; rm -f Downloads/lavape-*-macos*; tar cjf Downloads/lavape-0.9.1-macos-bin.tar.bz2 lavadistro; ls -l Downloads/lavape-*;
 else
 	cd ~/lavadistro/lavadir/lib; \
-	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 .; \
+	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtDBus.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 .; \
 	cd ~; rm -f Downloads/lavape-*-linux*; tar cjf Downloads/lavape-0.9.1-linux-bin.tar.bz2 lavadistro; ls -l ~/Downloads/lavape-*;
 endif
 

@@ -3426,6 +3426,8 @@ bool CLavaPEDoc::OnOpenDocument (const QString& filename)
 void CLavaPEDoc::OnRunLava()
 {
 	QString interpreterPath, lavaFile = GetFilename(), buf;
+  QProcess interpreter;
+  QStringList args;
 
 	if (IsModified()
 	        && ! ((CLavaPEApp*) wxTheApp)->DoSaveAll()
@@ -3444,10 +3446,8 @@ void CLavaPEDoc::OnRunLava()
 	interpreterPath = ExeDir + "/Lava";
 #endif
 
-	QStringList args;
 	args << lavaFile;
   args << "startedFromLavaPE";
-	QProcess interpreter;
 
 	if (! ((CLavaPEApp*) qApp)->interpreter.startDetached (interpreterPath,args))
 	{

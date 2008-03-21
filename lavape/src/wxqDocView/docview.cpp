@@ -264,7 +264,7 @@ QString wxApp::wxGetOpenFileName(const QString& startFileName, QWidget *parent,
 	QStringList filters;
 
   qf = QFileInfo(startFileName);
-  fileName = qf.fileName(); //startFileName;//qf.fileName();
+  fileName = qf.fileName();
   QFileInfo qfresolved(ResolveLinks(qf));
   currentFilter = qfresolved.suffix();
   initialDir = qf.path();
