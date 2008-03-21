@@ -899,8 +899,11 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
   IDTable.DropINCL = 0;
   if (localMove)
     LBaseData->debugger->checkAndSetBrkPnts(this);
-  if (/*m_savedYet &&*/ LBaseData->m_saveEveryChange)
-    wxDocManager::GetDocumentManager()->OnFileSave();
+  if ((undo || redo || firstLast.Contains(lastHint)) && LBaseData->m_saveEveryChange)
+    //if (otherDocs)
+      wxTheApp->DoSaveAll();
+    //else
+     // wxDocManager::GetDocumentManager()->OnFileSave();
   return true;
 }
 
@@ -916,6 +919,11 @@ void CPEBaseDoc::SetLastHint(bool otherDocs)
     UpdateOtherDocs(0, str0, 0, false, flag);
   }
   IDTable.ChangeTab.Destroy();
+  if (LBaseData->m_saveEveryChange)
+    //if (otherDocs)
+      wxTheApp->DoSaveAll();
+    //else
+      //wxDocManager::GetDocumentManager()->OnFileSave();
 }
 
 

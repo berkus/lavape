@@ -61,7 +61,7 @@ public:
   CLavaPEDebugger debugger;
   //CLavaPEPMdumpThread pmDumpThread;
 
-  bool DoSaveAll();
+  //bool DoSaveAll();
   bool inTotalCheck;
   ChainOfString FindList;
   QIcon* LavaIcons[50];
@@ -100,7 +100,7 @@ public:
   Q_OBJECT;
 };
 
-extern QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption, bool existing);
+//extern QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption);
 
 extern  int enumBM;
 extern  int enumselBM;

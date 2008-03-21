@@ -54,7 +54,7 @@ public:
 
 //extern bool Q_EXPORT qt_use_native_dialogs;
 
-extern QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption, bool existing);
+//extern QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption);
 
 /////////////////////////////////////////////////////////////////////////////
 

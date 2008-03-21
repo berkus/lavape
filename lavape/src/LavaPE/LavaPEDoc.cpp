@@ -864,47 +864,39 @@ bool CLavaPEDoc::CheckImpl (LavaDECL* implDECL, int checkLevel)
 	changed = changed || (typeFlag != implDECL->TypeFlags);
 
 	cheI = (CHE*) classDECL->NestedDecls.first;
-	while (cheI)
-	{
+	while (cheI)	{
 		classElDECL = (LavaDECL*) cheI->data;
 		toImpl = classElDECL && (classElDECL->DeclType == Function)
 		         && !classElDECL->TypeFlags.Contains (isAbstract)
 		         && !classElDECL->TypeFlags.Contains (isNative);
-		if (toImpl)
-		{
+		if (toImpl)	{
 			fID = TID (classElDECL->OwnID, classElDECL->inINCL);
 			cheImplEl = (CHE*) implDECL->NestedDecls.first;
 			found = false;
 			if (cheImplEl)
 				implElDECL = (LavaDECL*) cheImplEl->data;
-			while (cheImplEl && !found)
-			{
+			while (cheImplEl && !found)	{
 				if ((implElDECL->DeclType == Function)
 				        && implElDECL->Supports.first
-				        && implElDECL->SecondTFlags.Contains (funcImpl))
-				{
+				        && implElDECL->SecondTFlags.Contains (funcImpl))	{
 					supID = ((CHETID*) implElDECL->Supports.first)->data;
 					supID.nINCL = IDTable.IDTab[implDECL->inINCL]->nINCLTrans[supID.nINCL].nINCL;
 					found = (supID == fID);
 				}
-				if (!found)
-				{
+				if (!found)	{
 					cheImplEl = (CHE*) cheImplEl->successor;
 					if (cheImplEl)
 						implElDECL = (LavaDECL*) cheImplEl->data;
 				}
 			}
-			if (!cheImplEl) //function not found, then make it
-			{
+      if (!cheImplEl) { //function not found, then make it
 				changed = true;
 				UpdateNo++;
 				implElDECL = NewLavaDECL();
 				*implElDECL = *classElDECL;
 				cheIOEl = (CHE*) implElDECL->NestedDecls.first;
-				while (cheIOEl)
-				{
-					if ((((LavaDECL*) cheIOEl->data)->DeclType == Require) || (((LavaDECL*) cheIOEl->data)->DeclType == Ensure))
-					{
+				while (cheIOEl)	{
+					if ((((LavaDECL*) cheIOEl->data)->DeclType == Require) || (((LavaDECL*) cheIOEl->data)->DeclType == Ensure))	{
 						che = (CHE*) cheIOEl->successor;
 						implElDECL->NestedDecls.Delete (cheIOEl);
 						cheIOEl = che;
@@ -934,8 +926,7 @@ bool CLavaPEDoc::CheckImpl (LavaDECL* implDECL, int checkLevel)
 					implDECL->NestedDecls.Append (cheImplEl);
 				GetExecDECL (implElDECL,ExecDef);
 				implElDECL->ParentDECL = implDECL;
-				if (checkLevel > CHLV_inUpdateLow)
-				{
+				if (checkLevel > CHLV_inUpdateLow)	{
 					UpdateNo++;
 					IDTable.NewID ((LavaDECL**) &cheImplEl->data);
 					implElDECL->WorkFlags.INCL (newTreeNode);
@@ -999,14 +990,12 @@ bool CLavaPEDoc::CheckImpl (LavaDECL* implDECL, int checkLevel)
 				implElDECL->TypeFlags.EXCL (isInitializer);
 				implElDECL->TypeFlags.EXCL (defaultInitializer);
 				implElDECL->Supports.Destroy();
-				if (implElDECL->op != OP_noOp)
-				{
+				if (implElDECL->op != OP_noOp)	{
 					implElDECL->LocalName = DString ("leaved_from_operator_") + LBaseData->OpFuncNames[ ((LavaDECL*) cheImplEl->data)->op];
 					implElDECL->op = OP_noOp;
 				}
 				cheIOEl = (CHE*) ((LavaDECL*) cheImplEl->data)->NestedDecls.first;
-				while (cheIOEl)
-				{
+				while (cheIOEl)	{
 					((LavaDECL*) cheIOEl->data)->SecondTFlags.EXCL (funcImpl);
 					((LavaDECL*) cheIOEl->data)->SecondTFlags.EXCL (closed);
 					((LavaDECL*) cheIOEl->data)->TypeFlags.EXCL (isPropGet);
@@ -1016,10 +1005,8 @@ bool CLavaPEDoc::CheckImpl (LavaDECL* implDECL, int checkLevel)
 				}
 			}
 			else
-				if (implElDECL->SecondTFlags.Contains (funcImpl))
-				{
-					if (implElDECL->TypeFlags.Contains (isPropGet) || implElDECL->TypeFlags.Contains (isPropSet))
-					{
+				if (implElDECL->SecondTFlags.Contains (funcImpl))	{
+					if (implElDECL->TypeFlags.Contains (isPropGet) || implElDECL->TypeFlags.Contains (isPropSet))	{
 						classElDECL = IDTable.GetDECL (((CHETID*) implElDECL->Supports.first)->data, implElDECL->inINCL);
 						if (classElDECL && !classElDECL->TypeFlags.Contains (hasSetGet))
 							new CLavaError (&implElDECL->DECLError2, &ERR_NoSetGetMember);
@@ -1027,11 +1014,9 @@ bool CLavaPEDoc::CheckImpl (LavaDECL* implDECL, int checkLevel)
 							if (checkLevel == CHLV_showError)
 								new CLavaError (&implElDECL->DECLError2, &ERR_MissingItfFuncDecl);
 					}
-					else
-					{
+					else	{
 						classElDECL = IDTable.GetDECL (((CHETID*) implElDECL->Supports.first)->data, implElDECL->inINCL);
-						if (classElDECL)
-						{
+						if (classElDECL)	{
 							if (checkLevel == CHLV_showError)
 								new CLavaError (&implElDECL->DECLError2, &ERR_NoImplForAbstract);
 						}
@@ -1086,20 +1071,17 @@ bool CLavaPEDoc::CheckImpl (LavaDECL* implDECL, int checkLevel)
 					che = NewCHE (formDECL);
 					implDECL->NestedDecls.Insert (afterElem, che);
 				}
-				else
-				{
+				else {
 					if (checkLevel == CHLV_showError)
 						new CLavaError (&implDECL->DECLError1, &ERR_NoExtForm);
 				}
 			}
-			else
-			{
+			else {
 				if (checkLevel == CHLV_showError)
 					new CLavaError (&implDECL->DECLError1, &ERR_NoExtForm);
 			}
 		}
 	}
-
 	return changed;
 }
 
@@ -3430,7 +3412,7 @@ void CLavaPEDoc::OnRunLava()
   QStringList args;
 
 	if (IsModified()
-	        && ! ((CLavaPEApp*) wxTheApp)->DoSaveAll()
+	        && !wxTheApp->DoSaveAll()
 	        && (QMessageBox::Cancel == QMessageBox::question (wxTheApp->m_appWindow,qApp->applicationName(),ERR_SaveFailed,QMessageBox::Ok,QMessageBox::Cancel,0)))
 		return;
 	lavaFile = GetFilename();
@@ -3460,7 +3442,7 @@ void CLavaPEDoc::OnRunLava()
 void CLavaPEDoc::OnDebugLava()
 {
 	if (IsModified()
-	        && ! ((CLavaPEApp*) wxTheApp)->DoSaveAll()
+	        && !wxTheApp->DoSaveAll()
 	        && (QMessageBox::Cancel == QMessageBox::question (wxTheApp->m_appWindow,qApp->applicationName(),ERR_SaveFailed,
 	                QMessageBox::Ok,QMessageBox::Cancel,0)))
 		return;
@@ -4412,8 +4394,7 @@ void CLavaPEDoc::UpdateOtherDocs (wxDocument* skipOther, DString& inclFile, int 
 			}
 		}
 	}
-	for (che = (CHE*) chain.first; che; che = (CHE*) che->successor)
-	{
+	for (che = (CHE*) chain.first; che; che = (CHE*) che->successor)	{
 		((CLavaPEDoc*) che->data)->UpdateOtherDocs (0, str, 0, false, flag);
 		che->data = 0;
 	}

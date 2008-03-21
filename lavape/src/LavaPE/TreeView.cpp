@@ -326,7 +326,7 @@ void MyListView::mousePressEvent(QMouseEvent *ev)
     QTreeWidget::mousePressEvent(ev);
   withShift = false;
   withControl = false;
-  if(!itemAt(p)) {
+  if(!itemAt(p) && currentItem()) {
     currentItem()->setSelected(true);
 //    ensureItemVisible(currentItem());
 //    currentItem()->repaint();

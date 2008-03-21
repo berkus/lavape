@@ -162,7 +162,7 @@ void CInclView::OnNewInclude()
   QFileInfo finfo;
   int ii;
   unsigned long firstLast = 1;
-  QStringList fileNames = wxTheApp->wxGetOpenFileNames(GetDocument()->IDTable.DocDir.c, this,
+  QStringList fileNames = wxTheApp->wxGetOpenFileNames(this, GetDocument()->IDTable.DocDir.c, 
 				                                      "Select additional include files", "Lava.File (*.lava)");
 
   if (fileNames.isEmpty())

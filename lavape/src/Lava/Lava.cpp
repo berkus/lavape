@@ -395,19 +395,20 @@ bool CLavaApp::event(QEvent *e)
 }
 
 
-
-QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption, bool existing)
+/*
+QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption)
 {
 
-  return wxTheApp->wxGetOpenFileName(startFileName, parent, caption,
+  return wxTheApp->wxGetOpenFileName(parent, startFileName, caption,
           "Lava file (*.lava)", "Lava object file (*.ldoc)");
 
 
-}
+}*/
 
 void CLavaApp::OnFileOpen()
 {
-  QString fileName = lavaFileDialog(GetLastFileOpen(), m_appWindow, "Select a file to open", true);
+  //QString fileName = lavaFileDialog(GetLastFileOpen(), m_appWindow, "Select a file to open");
+  QString fileName = wxGetOpenFileName(m_appWindow, GetLastFileOpen(), "Select a file to open",  "Lava file (*.lava)", "Lava object file (*.ldoc)");
   if (fileName.isEmpty())
     return;
 #ifdef WIN32
@@ -419,7 +420,8 @@ void CLavaApp::OnFileOpen()
 
 void CLavaApp::OnFileDebug()
 {
-  QString fileName = lavaFileDialog(wxTheApp->GetLastFileOpen(), m_appWindow, "Select a file to open for debugging", true);
+  //QString fileName = lavaFileDialog(wxTheApp->GetLastFileOpen(), m_appWindow, "Select a file to open for debugging");
+  QString fileName = wxGetOpenFileName(m_appWindow, GetLastFileOpen(), "Select a file to open for debugging",  "Lava file (*.lava)", "Lava object file (*.ldoc)");
   if (fileName.isEmpty())
     return;
   LBaseData.openForDebugging = true;

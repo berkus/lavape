@@ -674,7 +674,7 @@ void CLavaPEApp::OnChooseGlobalFont()
 
 void CLavaPEApp::OnFileOpen()
 {
-  QString fileName = lavaFileDialog(wxTheApp->GetLastFileOpen(), m_appWindow, "Select a file to open", true);
+  QString fileName = wxGetOpenFileName(m_appWindow, wxTheApp->GetLastFileOpen(), "Select a file to open",  "Lava file (*.lava)", "LavaCom file (*.lcom)");
   if (fileName.isEmpty())
     return;
 #ifdef WIN32
@@ -769,21 +769,19 @@ void CLavaPEApp::OnSaveAll()
   DoSaveAll();
 }
 
+/*
 bool CLavaPEApp::DoSaveAll()
 {
   bool ret = true;
   CLavaPEDoc* doc;
   int pos;
-  /*
-  while (pos) {
-    doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetNextDoc(pos);*/
   for (pos = 0; pos < wxDocManager::GetDocumentManager()->m_docs.size(); pos++) {
     doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->m_docs[pos];
     if (doc->IsModified())
       ret = ret && doc->Save();
   }
   return ret;
-}
+}*/
 
 void CLavaPEApp::OnImport()
 {
@@ -1563,9 +1561,10 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
 }
 
 
-QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption, bool existing)
+/*
+QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption)
 {
-  return wxTheApp->wxGetOpenFileName(startFileName, parent, caption,
+  return wxTheApp->wxGetOpenFileName(parent, startFileName, caption,
           "Lava file (*.lava)", "LavaCom file (*.lcom)");
 
-}
+}*/

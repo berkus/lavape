@@ -255,8 +255,8 @@ QString wxApp::GetLastFileOpen()
 }
 
 
-QString wxApp::wxGetOpenFileName(const QString& startFileName, QWidget *parent,
-				      const QString& caption, const QString& filter, const QString& filter2, bool save)
+QString wxApp::wxGetOpenFileName(QWidget *parent, const QString& startFileName, const QString& caption,
+				                         const QString& filter, const QString& filter2, bool save)
 {
   QFileInfo qf;
   QString fileName, currentFilter, initialDir;
@@ -318,31 +318,53 @@ QString wxApp::wxGetOpenFileName(const QString& startFileName, QWidget *parent,
   }
 }
 
-QStringList wxApp::wxGetOpenFileNames(const QString& startFileName,
-				      QWidget *parent,
-				      const QString& caption,
-				      const QString& filter,
-				      const QString& filter2
-            )
+bool wxApp::DoSaveAll()
+{
+  bool ret = true;
+  wxDocument* doc;
+  int pos;
+  for (pos = 0; pos < wxDocManager::GetDocumentManager()->m_docs.size(); pos++) {
+    doc = wxDocManager::GetDocumentManager()->m_docs[pos];
+    ret = ret && doc->Save();
+  }
+  return ret;
+}
+
+
+QStringList wxApp::wxGetOpenFileNames(QWidget *parent, const QString& startFileName,
+				                              const QString& caption,  const QString& filter,  const QString& filter2)
 {
   QStringList resultNames;
-  QFileInfo qf = QFileInfo(startFileName);
-  QFileInfo qfresolved(ResolveLinks(qf));
-  QString currentFilter = qfresolved.suffix();
-  QString fileName, initialDir = qf.path();
-
+  QString currentFilter;// = qfresolved.suffix();
+  QString fileName, initialDir;
   QFileDialog *fd = new QFileDialog(parent);
 	QStringList filters;
 
+  if (startFileName.isEmpty())
+    fileName = lastFileOpen;
+  else
+    fileName = startFileName;
+
+  QFileInfo qf = QFileInfo(fileName);
+  if (startFileName.isEmpty())
+    fileName.clear();
+  else
+    fileName = qf.fileName();
+  initialDir = qf.path();
+  if (initialDir == QString(".")) { 
+    QString cleanD = QFileInfo(lastFileOpen).absolutePath();
+    cleanD = QDir::cleanPath(cleanD);
+    qf = QFileInfo(QDir(cleanD), startFileName);
+  }
+  QFileInfo qfresolved(ResolveLinks(qf));
+  currentFilter = qfresolved.suffix();
+  fd->setDirectory(qf.absolutePath());
+  fd->setWindowTitle(caption);
 	filters << filter;
   if (filter2 != QString::null)
     filters << filter2; 
-  fileName = qf.fileName();
   currentFilter = qfresolved.suffix();
-  initialDir = qf.path();
-  fd->setDirectory(qf.absolutePath());
 	fd->setFilters(filters);
-  fd->setWindowTitle(caption);
   if (currentFilter.isEmpty())
     currentFilter = "lava";
   currentFilter = "*." + currentFilter;
@@ -351,16 +373,6 @@ QStringList wxApp::wxGetOpenFileNames(const QString& startFileName,
   else
     currentFilter = filter;
   fd->selectFilter(currentFilter);
-  /*
-  if (LBaseData->inRuntime) {
-   if (!fileName.contains(".lcom"))
-     fd->selectFile(fileName);
-  }
-  else {
-   if (!fileName.contains(".ldoc"))
-     fd->selectFile(fileName);
-  }
-  */
   fd->selectFile(fileName);
   fd->setFileMode( QFileDialog::ExistingFiles );
   fd->setViewMode( QFileDialog::List );
@@ -586,7 +598,7 @@ bool wxDocument::SaveAs()
     if (!docTemplate)
         return false;
 
-    QString fn = wxTheApp->wxGetOpenFileName(GetFilename(), wxTheApp->m_appWindow, QString(), docTemplate->GetFileFilter(), QString::null, true);
+    QString fn = wxTheApp->wxGetOpenFileName(wxTheApp->m_appWindow, GetFilename(), QString(), docTemplate->GetFileFilter(), QString::null, true);
 
     if (fn.isEmpty())
         return false;
@@ -1154,8 +1166,8 @@ void wxDocManager::OnFileClose()
   wxDocument *doc = GetActiveDocument();
   if (!doc)
     return;
-  doc->Close();
-  delete doc;
+  if (doc->Close())
+    delete doc;
 }
 
 void wxDocManager::OnUndo()
@@ -1643,9 +1655,9 @@ wxDocTemplate *wxDocManager::SelectDocumentPath(wxDocTemplate **templates,
     }
   parent = wxFindSuitableParent();
     if (save)
-      pathTmp = wxTheApp->wxGetOpenFileName(m_lastDirectory, wxTheApp->m_appWindow,QString("Save as"), QString::null, QString::null, true);
+      pathTmp = wxTheApp->wxGetOpenFileName(wxTheApp->m_appWindow, m_lastDirectory, QString("Save as"), QString::null, QString::null, true);
     else
-      pathTmp = wxTheApp->wxGetOpenFileName(m_lastDirectory, wxTheApp->m_appWindow, QString("Open"),QString::null);
+      pathTmp = wxTheApp->wxGetOpenFileName(wxTheApp->m_appWindow, m_lastDirectory, QString("Open"),QString::null);
 
   theTemplate = (wxDocTemplate *)NULL;
   if (!pathTmp.isEmpty()) {

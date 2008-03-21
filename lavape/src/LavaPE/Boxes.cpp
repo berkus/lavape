@@ -856,12 +856,7 @@ void CCompSpecBox::on_EnumAdd_clicked()
 #else
       filter = ("LavaCom file (*.lcom)");
 #endif
-      fileName = wxTheApp->wxGetOpenFileName(
-                    dir,
-                    this,
-                    IDS_LAVACOM_FILE,
-                    filter
-                    ); 
+      fileName = wxTheApp->wxGetOpenFileName(this, dir, IDS_LAVACOM_FILE, filter); 
       if (!fileName.isEmpty()) {
         fileName.remove(0,dir.length());
 #ifdef WIN32
@@ -933,8 +928,8 @@ void CCompSpecBox::on_EnumEdit_clicked()
       filter = ("LavaCom file (*.lcom)");
 #endif
       fileName = wxTheApp->wxGetOpenFileName(
-                    fileName,
                     this,
+                    fileName,
                     IDS_LAVACOM_FILE,
                     filter
                     ); 
@@ -2786,8 +2781,8 @@ void CIncludeBox::on_OtherPath_clicked()
 {
   UpdateData(true);
   valFullPathName = wxTheApp->wxGetOpenFileName(
-                    valFullPathName,
                     this,
+                    valFullPathName,
                     "Choose a file to include",
                     "Lava files (*.lava)"
                     );
