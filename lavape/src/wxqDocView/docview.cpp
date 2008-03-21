@@ -255,13 +255,8 @@ QString wxApp::GetLastFileOpen()
 }
 
 
-QString wxApp::wxGetOpenFileName(const QString& startFileName,
-				      QWidget *parent,
-				      const QString& caption,
-				      const QString& filter,
-				      const QString& filter2,
-              bool save
-            )
+QString wxApp::wxGetOpenFileName(const QString& startFileName, QWidget *parent,
+				      const QString& caption, const QString& filter, const QString& filter2, bool save)
 {
   QFileInfo qf;
   QString fileName, currentFilter, initialDir;
@@ -269,12 +264,20 @@ QString wxApp::wxGetOpenFileName(const QString& startFileName,
 	QStringList filters;
 
   qf = QFileInfo(startFileName);
-  fileName = startFileName;//qf.fileName();
+  fileName = qf.fileName(); //startFileName;//qf.fileName();
   QFileInfo qfresolved(ResolveLinks(qf));
   currentFilter = qfresolved.suffix();
   initialDir = qf.path();
-  fd->setDirectory(qf.canonicalPath());
-
+  if (initialDir == QString(".")) { 
+    QString cleanD = QFileInfo(lastFileOpen).absolutePath();
+    cleanD = QDir::cleanPath(cleanD);
+    qf = QFileInfo(QDir(cleanD), startFileName);
+  }
+  else {
+    initialDir = QDir::cleanPath(initialDir);
+    qf = QFileInfo(initialDir, fileName);
+  }
+  fd->setDirectory(qf.path());
 	filters << filter;
   if (filter2 != QString::null)
     filters << filter2; 
