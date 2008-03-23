@@ -62,7 +62,7 @@
        </font>
       </property>
       <property name="text" >
-       <string>&lt;center>Lava Preview Release 0.9.0&lt;/center></string>
+       <string>&lt;center>Lava Preview Release 0.9.1&lt;/center></string>
       </property>
       <property name="textFormat" >
        <enum>Qt::RichText</enum>
