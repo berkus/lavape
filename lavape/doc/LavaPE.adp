@@ -306,7 +306,7 @@
 				<keyword ref="html/CallbackSample.htm">event handling</keyword>
 			</section>
 		</section>
-		<section ref="html/BasicEditing.htm" title="Basic program editing procedures">
+		<section ref="html/BasicEditing.htm" title="How to edit and run Lava programs">
 			<keyword ref="html/BasicEditing.htm">editing Lava programs</keyword>
 			<keyword ref="html/BasicEditing.htm">views of LavaPE</keyword>
 			<section ref="html/EditTree.htm" title="Editing the declaration tree">
@@ -329,8 +329,11 @@
 				<keyword ref="html/EditForm.htm">forms, semi-automatic generation</keyword>
 				<keyword ref="html/EditForm.htm">GUI, semi-automatic generation</keyword>
 			</section>
-		</section>
-		<section ref="html/DialogAndCmdHelp.htm" title="Property sheets and command help">
+		  <section ref="html/Debugger.htm" title="The interactive Lava run time debugger">
+			  <keyword ref="html/Debugger.htm">debugger></keyword>
+      </section>
+    </section>
+    <section ref="html/DialogAndCmdHelp.htm" title="Property sheets and command help">
 			<section ref="html/PropertySheets.htm" title="Property sheets of Lava entities">
 				<section ref="html/dialogs/ChainFormBox.htm" title="Chain type in forms"/>
 				<section ref="html/dialogs/CoSpecBox.htm" title="Component object specification"/>
