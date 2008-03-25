@@ -1,64 +1,25 @@
-I) Change Log for Release 0.9.0
-==============================
+I) Change Log for Release 0.9.1
+===============================
 
-A)Migration to Qt4:
-===================
 
-In a big effort, the entire Lava software has been
-migrated to Trolltech's Qt4 package; all dependencies
-on Qt3 have been removed.
+A) The LavaPE/Lava GUI is now based on tabbed and splitter widgets
+==================================================================
 
-B1) Lava provides complete static initialization checks now
-===========================================================
+The user interface of the Lava Programming Environment LavaPE
+and of the Lava interpreter is no longer based on MDI (Multiple
+Document Interface) but on tabbed and splitter widgets, which
+would allow for more neatly arranged, non-overlapping windows.
 
-By purely static checks Lava can now make sure already
-at programming time that you cannot inadvertently access
-uninitialized variables or null objects. This has been
-achieved by three new measures:
+The individual tabs can be rearranged by drag-and-drop between
+splitters and within a tabbed widget.
 
-1. By the new "closed" attribute for local variables,
-   for the "self" variable and for input/output parameters
-   of functions/initializers, which prohibits any access
-   to the member variables of still unfinished objects
-   during their initialization phase,
 
-2. by the new "initialize" clause of the "declare" statement
-   which allows you to collectively initialize several local
-   variables in the presence of mutual references,
-   
-3. by introducing more strict static checks of optional-to-
-   mandatory assignments together with two related new
-   constructs: The "ifdef" statement and the "else" expression.
+B) Support of Mac OS
+====================
 
-B2) Checking optional-to-mandatory assignments:
-===============================================
-
-LavaPE now enforces already at programming time that optional
-variables and expressions have non-null values if they are
-assigned to mandatory variables.
-
-The new LavaPE release accepts such an assignment only
-
-a) if the source of the assignment is an (optional)
-   variable that is checked by an "ifdef" conditional
-   statement and if the assigment is contained in the
-   "then" clause of the "ifdef" statement, or
-
-b) if the source of the assignment is an "else"
-   expression "x else y" where at least one of x or y
-   is mandatory.
-
-"x else y" checks (at run time) whether x is null;
-if yes then the "else" expression yields y, if no then the
-expression yields x.
-
-C) Getting started with GUI event handlers
-==========================================
-
-Lava allows you to assign event handlers to certain basic
-GUI events now: "new input" handlers for elementary input
-fields, "insert"/"delete" handlers for chain/array elements
-and optional data.
+The Lava programming environment can now also be successfully
+built and run on the Mac OS 10.5 platform. A binary package for
+Mac OS 10.5 is available now, too.
 
 
 II)Installation of Lava/LavaPE
@@ -88,8 +49,25 @@ Lava interpreter, respectively, thereafter. Execute
    ./LavaPE  or ./Lava , resp., to launch them.
 
 
-How to install LavaPE from the source distribution on UNIX
-==========================================================
+How to install the Mac OS 10.5 binary release of LavaPE
+=======================================================
+
+Download the lavape-<rel>-macos.dmg package, move it to
+the directory where the "lavape" installation directory is to
+reside as a subdirectory, and double-click it in the
+Mac OS Finder.
+
+   tar xjf lavape-<rel>-linux-bin.tar.bz2
+
+in the usual way. In lavape/bin you will find the LavaPE/Lava
+executables of the Lava Programming Environment and of the
+Lava interpreter, respectively, thereafter. Execute
+
+   ./LavaPE  or ./Lava , resp., to launch them.
+
+
+How to install LavaPE from the source distribution on UNIX/Mac OS
+=================================================================
 
 Download the compressed tar file lavape-<release>-src.tar.bz2
 of the LavaPE source distribution and store it in the parent
@@ -109,12 +87,13 @@ environment variable QTDIR to point to the Qt-<release>
 directory that is created by the build process,
 before you build Lava/LavaPE from the sources.
 
-Or the software package manager of your Linux distribution
-offers you the possibility to download and install the
-Qt4 developer package(s). The Lava build process will then
-try to locate the Qt4 include files, libraries and
-utility programs automatically (using the qbin.sh, qincl.sh,
-qlib.sh, and qsuff.sh shell procedures).
+Or, on a Linux box, the software package manager of your
+Linux distribution offers you the possibility to download 
+and install the Qt4 developer package(s). The Lava
+build process will then try to locate the Qt4 include files,
+libraries and utility programs automatically (using the
+qbin.sh, qincl.sh, qlib.sh, and qsuff.sh shell procedures
+in the lavape top-level directory).
 
 Then build the LavaPE executables as follows:
 
@@ -130,9 +109,16 @@ Go to the lavape/bin directory, launch "./LavaPE", consult the
 Online Help, open some sample programs from the lavape/samples
 directory and enjoy the unique structure editing features of LavaPE.
 
-You can run the Lava interpreter "Lava" either by executing "./Lava"
-in the lavape/bin directory or from LavaPE by clicking the
-"running man" toolbutton.
+You can run the Lava interpreter "Lava" 
+
+1. either by executing "./Lava" in the lavape/bin directory and by
+   opening a *.lava or *.ldoc file from the file menu or from the
+   file open button, or
+   
+2. from LavaPE by clicking the "running man" toolbutton, after you
+   have activated a view containing the executable code of a
+   main program or a declaration tree view that contains a
+   main program declaration.
 
 We'd appreciate very much if you would inform
 us (e-mail: guenthk@users.sourceforge.net)
