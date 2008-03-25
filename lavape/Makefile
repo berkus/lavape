@@ -10,6 +10,7 @@ export LAVADIR=$(shell pwd)
 QBIN = $(shell ./qbin.sh)
 ifeq ($(QBIN),)
   $(error Qt tools/executables couldn't be found!)
+  $(error QTDIR=$(QTDIR))
 endif
 QINCL = $(shell ./qincl.sh)
 QLIB = $(shell ./qlib.sh)

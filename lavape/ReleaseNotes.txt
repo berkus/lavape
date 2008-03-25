@@ -6,35 +6,36 @@ A) The LavaPE/Lava GUI is now based on tabbed and splitter widgets
 ==================================================================
 
 The user interface of the Lava Programming Environment LavaPE
-and of the Lava interpreter is no longer based on MDI (Multiple
-Document Interface) but on tabbed and splitter widgets, which
-would allow for more neatly arranged, non-overlapping windows.
+and of the Lava interpreter is no longer based on the MDI (Multiple
+Document Interface) concept but on tabbed and splitter widgets, which
+promise to allow for more neatly arranged, non-overlapping windows.
 
-The individual tabs can be rearranged by drag-and-drop between
-splitters and within a tabbed widget.
+The individual tabs can be rearranged by drag-and-drop within
+a tabbed widget as well as between different tabbed widgets.
+The latter may be arranged horizontally or vertically.
 
 
 B) Support of Mac OS
 ====================
 
-The Lava programming environment can now also be successfully
-built and run on the Mac OS 10.5 platform. A binary package for
-Mac OS 10.5 is also available now.
+The Lava programming environment can now also be built and run
+on the Mac OS 10.5 platform. A binary package for Mac OS 10.5
+is also available now.
 
 
-II)Installation of Lava/LavaPE
+II) Installation of Lava/LavaPE
 ==============================
 
 
-How to install the Windows binary release of LavaPE
-===================================================
+A) How to install the Windows binary release of LavaPE
+======================================================
 
 Simply launch the downloaded lavape-<rel>-win32-bin.exe file and
 follow the instructions of the installer.
 
 
-How to install the Linux binary release of LavaPE
-=================================================
+B) How to install the Linux binary release of LavaPE
+====================================================
 
 Download the lavape-<rel>-linux-bin.tar.bz2 package, move it to
 the directory where the "lavape" installation directory is to

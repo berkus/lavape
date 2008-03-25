@@ -1,8 +1,10 @@
 SHELL=/usr/bin/env sh
 #SHELL=/bin/sh
    
-#to build a debug version set DBG=-ggdb
+#to build a release version set REL
+ifeq ($(REL),)
 DBG=-gstabs+
+endif
 
 export
 
