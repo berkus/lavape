@@ -1,7 +1,7 @@
 LAVA PROGRAMMING ENVIRONMENT
 AND LAVA INTERPRETER
 
-Copyright (C) 2001 Fraunhofer Institute for Secure Telecooperation SIT.
+Copyright (C) 2001-2008 Fraunhofer Institute for Secure Telecooperation SIT.
 
 This is free software; the Lava sources can be found via the Lava
 home page at http://lavape.sourceforge.net.

@@ -19,7 +19,7 @@ B) Support of Mac OS
 
 The Lava programming environment can now also be successfully
 built and run on the Mac OS 10.5 platform. A binary package for
-Mac OS 10.5 is available now, too.
+Mac OS 10.5 is also available now.
 
 
 II)Installation of Lava/LavaPE
