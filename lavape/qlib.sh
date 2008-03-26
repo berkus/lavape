@@ -9,6 +9,8 @@ fi
 
 if [ -e /usr/lib/qt4/lib/libQtCore.so ]; then
   echo /usr/lib/qt4/lib
+elif [ -e /usr/lib/qt4/libQtCore.so ]; then
+  echo /usr/lib/qt4
 elif [ -e /usr/lib/libQtCore.so ]; then
   echo /usr/lib
 else
