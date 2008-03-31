@@ -48,16 +48,16 @@ Lava:
 	cd src/Lava; $(MAKE)
 
 dirs:
-	if [ ! -d lib ] ; then mkdir lib; fi; \
-	cd src/Lava; if [ ! -d Generated ]; then mkdir Generated; fi ; \
-	cd ../Interpreter; if [ ! -d Generated ]; then mkdir Generated; fi ; \
-	cd ../LavaBase; if [ ! -d Generated ]; then mkdir Generated; fi; \
-	cd ../LavaExecs; if [ ! -d Generated ]; then mkdir Generated; fi; \
-	cd ../LavaGUI; if [ ! -d Generated ]; then mkdir Generated; fi; \
-	cd ../Lava_UI; if [ ! -d Generated ]; then mkdir Generated; fi; \
-	cd ../LavaPE_UI; if [ ! -d Generated ]; then mkdir Generated; fi; \
-	cd ../LavaPE; if [ ! -d Generated ]; then mkdir Generated; fi; \
-	cd ../wxqDocView; if [ ! -d Generated ]; then mkdir Generated; fi;
+	if [ ! -e lib ] ; then mkdir lib; fi; \
+	cd src/Lava; if [ ! -e Generated ]; then mkdir Generated; fi ; \
+	cd ../Interpreter; if [ ! -e Generated ]; then mkdir Generated; fi ; \
+	cd ../LavaBase; if [ ! -e Generated ]; then mkdir Generated; fi; \
+	cd ../LavaExecs; if [ ! -e Generated ]; then mkdir Generated; fi; \
+	cd ../LavaGUI; if [ ! -e Generated ]; then mkdir Generated; fi; \
+	cd ../Lava_UI; if [ ! -e Generated ]; then mkdir Generated; fi; \
+	cd ../LavaPE_UI; if [ ! -e Generated ]; then mkdir Generated; fi; \
+	cd ../LavaPE; if [ ! -e Generated ]; then mkdir Generated; fi; \
+	cd ../wxqDocView; if [ ! -e Generated ]; then mkdir Generated; fi;
 
 ITPF = src/Interpreter/Constructs.ph \
   src/Interpreter/Constructs.cpp \

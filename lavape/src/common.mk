@@ -3,7 +3,7 @@ SHELL=/usr/bin/env sh
    
 #to build a release version set REL
 ifeq ($(REL),)
-DBG=-gstabs+
+DBG=#-gstabs+
 endif
 
 export
@@ -113,18 +113,18 @@ else
       OSCPPFLAGS = -fPIC -D__$(OPSYS) -fno-strict-aliasing
     else
       OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
-    endif
-    DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
-    DLLSUFFIX = .so
-    OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -L../../lib
-    OSEXECFLAGS = -fstack-check -z nodefaultlib -L../../lib $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    EXEC2 = $(EXEC)
-    ifneq ($(DBG),)
-      QtS =
-      ACL =
-    else
-      QtS =
-      ACL =
+      DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
+      DLLSUFFIX = .so
+      OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -L../../lib
+      OSEXECFLAGS = -fstack-check -z nodefaultlibb -L../../lib $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+      EXEC2 = $(EXEC)
+      ifneq ($(DBG),)
+        QtS =
+        ACL =
+      else
+        QtS =
+        ACL =
+      endif
     endif
   endif
 endif
@@ -176,7 +176,7 @@ endif
 	$(CC) -c -fPIC $(DBG) -pipe -MMD $(PCH_WARN) -D$(OSCAT) $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h $(h_ui_files) $(h_ph_files)
-	if [ ! -d PCH ] ; then mkdir PCH; fi; $(CC) -c -fPIC $(DBG) -pipe -MMD -Winvalid-pch -D$(OSCAT) $(OSCPPFLAGS) $(CPP_FLAGS) -DQT_THREAD_SUPPORT $(ALL_CPP_INCLUDES) -o $@ $(PRJ)_all.h
+	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -fPIC $(DBG) -pipe -MMD -Winvalid-pch -D$(OSCAT) $(OSCPPFLAGS) $(CPP_FLAGS) -DQT_THREAD_SUPPORT $(ALL_CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
