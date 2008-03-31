@@ -61,15 +61,9 @@ using namespace std;
 }
 	//((SynFlags*)(RESULT+1))->INCL(finished); \
 
-#ifdef WIN32
-#define TEST_AND_THROW \
-  if (!_finite(result)) throw CFPException(false); \
-  else if (_isnan(result)) throw CFPException(true);
-#else
 #define TEST_AND_THROW \
   if (!qIsFinite(result)) throw CFPException(false); \
   else if (qIsNaN(result)) throw CFPException(true);
-#endif
 
 
 void NewQString(QString* pstr, const char* str)
