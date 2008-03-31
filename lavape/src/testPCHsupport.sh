@@ -1,6 +1,6 @@
 #! /usr/bin/env sh
 
-if [ -n $PCH ]; then
+if [ $PCH. != . ]; then
   echo yes
   exit
 fi

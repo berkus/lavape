@@ -67,8 +67,8 @@ using namespace std;
   else if (_isnan(result)) throw CFPException(true);
 #else
 #define TEST_AND_THROW \
-  if (!isfinite(result)) throw CFPException(false); \
-  else if (isnan(result)) throw CFPException(true);
+  if (!qIsFinite(result)) throw CFPException(false); \
+  else if (qIsNaN(result)) throw CFPException(true);
 #endif
 
 
