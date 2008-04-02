@@ -253,9 +253,15 @@ void CLavaMainFrame::makeStyle(const QString &style)
 	    QApplication::setStyle(style);
   }
   else {
+#ifdef Darwin
+    LBaseData->m_style = "Mac";
+    wxTheApp->saveSettings();
+    QApplication::setStyle(new MyMacStyle);
+#else
     LBaseData->m_style = "Windows";
     wxTheApp->saveSettings();
     QApplication::setStyle(new MyWindowsStyle);
+#endif
   }
 
   isVisible = Toolbar_7->isVisible();
