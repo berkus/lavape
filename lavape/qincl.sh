@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-if [ $QTDIR ]; then
+if [ -d $QTDIR ]; then
   if [ -d $QTDIR/include/QtCore ]; then
     echo $QTDIR/include
     exit
