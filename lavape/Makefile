@@ -145,7 +145,7 @@ bindist:
 	mkdir lib; cp $(LAVADIR)/lib/*$(DLLSUFFIX) lib; \
 	mkdir samples; cp $(LAVADIR)/samples/*.l* samples; \
 	cd bin; mkdir LavaIcons; mkdir std; \
-	cd $(LAVADIR)/bin; cp LavaPE Lava $(HOME)/lavadistro/lavadir/bin;
+	cd $(LAVADIR)/bin; cp LavaPE Lava ../colrm $(HOME)/lavadistro/lavadir/bin;
 ifeq ($(OPSYS),Darwin)
 	cp -R $(QBIN)/assistant.app $(HOME)/lavadistro/lavadir/bin;
 else
@@ -169,9 +169,16 @@ ifeq ($(OPSYS),Darwin)
 	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork \
 	cd $(HOME); rm -f Desktop/lavape-*-macos*; tar cjf Desktop/lavape-0.9.1-macos-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
 else
+	cd $(HOME)/lavadistro/lavadir/lib; strip lib*;
+ifeq ($(OPSYS),SunOS)
 	cd $(HOME)/lavadistro/lavadir/lib; \
 	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtAssistantClient.so.4 .; \
-	cd $(HOME); rm -f Desktop/lavape-*-linux*; tar cjf Desktop/lavape-0.9.1-linux-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
+	cd $(HOME); rm -f Desktop/lavape-*-bin.*; tar cjf Desktop/lavape-0.9.1-sunos-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
+else
+	cd $(HOME)/lavadistro/lavadir/lib; \
+	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtAssistantClient.so.4 .; \
+	cd $(HOME); rm -f Desktop/lavape-*-bin.*; tar cjf Desktop/lavape-0.9.1-linux-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
+endif
 endif
 
 
