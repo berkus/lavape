@@ -597,7 +597,7 @@ void wxTabWidget::closePage2(wxChildFrame *page, int index)
 MYSTYLEIMP(WindowsXP)
 MYSTYLEIMP(WindowsVista)
 #endif
-#ifdef Darwin
+#ifdef __Darwin
 MYSTYLEIMP(Mac)
 #endif
 MYSTYLEIMP(Windows)

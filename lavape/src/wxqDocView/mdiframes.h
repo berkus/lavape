@@ -34,7 +34,7 @@
 #include <QCDEStyle>
 #include <QPlastiqueStyle>
 #include <QCleanlooksStyle>
-#ifdef Darwin
+#ifdef __Darwin
 #include <QMacStyle>
 #endif
 #include "qlist.h"
@@ -198,7 +198,7 @@ public:\
 MYSTYLE(WindowsXP)
 MYSTYLE(WindowsVista)
 #endif
-#ifdef Darwin
+#ifdef __Darwin
 MYSTYLE(Mac)
 #endif
 MYSTYLE(Windows)

@@ -237,7 +237,7 @@ void CLavaMainFrame::makeStyle(const QString &style)
     else if (style == "WindowsVista")
       QApplication::setStyle(new MyWindowsVistaStyle);
 #endif
-#ifdef Darwin
+#ifdef __Darwin
     else if (style == "Mac")
       QApplication::setStyle(new MyMacStyle);
 #endif
@@ -253,7 +253,7 @@ void CLavaMainFrame::makeStyle(const QString &style)
 	    QApplication::setStyle(style);
   }
   else {
-#ifdef Darwin
+#ifdef __Darwin
     LBaseData->m_style = "Mac";
     wxTheApp->saveSettings();
     QApplication::setStyle(new MyMacStyle);

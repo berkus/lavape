@@ -3,7 +3,7 @@ SHELL=/usr/bin/env sh
    
 #to build a release version set REL
 ifeq ($(REL),)
-DBG=#-gstabs+
+DBG=-g #stabs+
 endif
 
 export
@@ -88,6 +88,7 @@ ifeq ($(OPSYS),Darwin)
   OSDLLFLAGS = -dynamiclib -header-pad_max_install_names -Wl,-install_name,@executable_path/../lib/$(DLLNAME)
   OSEXECFLAGS = -fstack-check -header-pad_max_install_names
   OSCPPFLAGS = -D__$(OPSYS)
+#  OSLIBFLAGS = -F/System/Library/Frameworks -framework AppKit -framework Carbon
   EXEC2 = $(EXEC)
   CC = c++
 else

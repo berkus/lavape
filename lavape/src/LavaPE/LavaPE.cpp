@@ -88,9 +88,9 @@ static const char slash='/';
 // CLavaPEApp
 int main(int argc, char ** argv ) {
   CLavaPEApp app(argc,argv);
-//  bool ok; QFontDialog::getFont(&ok);
+//  bool ok; QFontDialog::getFont(&ok); app.exit();
   app.OnAppCreate(); // pixmaps may be created only after the app object
-  
+
   ExeDir = wxTheApp->applicationDirPath();
 #ifdef WIN32
   QString driveLetter = QString(ExeDir[0].toUpper());
@@ -105,7 +105,6 @@ int main(int argc, char ** argv ) {
   StdLava = ResolveLinks(qf);
 
   app.m_appWindow = new CLavaMainFrame();
-
 #ifdef _DEBUG
   _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
   //_CrtSetBreakAlloc(206362);
