@@ -1,4 +1,4 @@
-export SHELL=/bin/sh
+export SHELL=/usr/bin/bash
 #$(warning $(SHELL))
 
 export LAVADIR=$(shell pwd)
@@ -138,42 +138,40 @@ bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
 
 
 bindist:
-	rm -rf ~/lavadistro; mkdir ~/lavadistro ~/lavadistro/lavadir; cp *.txt ~/lavadistro/lavadir; \
-	cd ~/lavadistro/lavadir; mkdir bin; mkdir doc; \
+	rm -rf $(HOME)/lavadistro; mkdir $(HOME)/lavadistro $(HOME)/lavadistro/lavadir; cp *.txt $(HOME)/lavadistro/lavadir; \
+	cd $(HOME)/lavadistro/lavadir; mkdir bin; mkdir doc; \
 	cd $(LAVADIR); tar --exclude=.svn -cjf /tmp/docarchive doc; \
-	cd ~/lavadistro/lavadir; tar xjf /tmp/docarchive; rm /tmp/docarchive; \
+	cd $(HOME)/lavadistro/lavadir; tar xjf /tmp/docarchive; rm /tmp/docarchive; \
 	mkdir lib; cp $(LAVADIR)/lib/*$(DLLSUFFIX) lib; \
 	mkdir samples; cp $(LAVADIR)/samples/*.l* samples; \
 	cd bin; mkdir LavaIcons; mkdir std; \
-	cd $(LAVADIR)/bin; cp LavaPE Lava ~/lavadistro/lavadir/bin;
+	cd $(LAVADIR)/bin; cp LavaPE Lava $(HOME)/lavadistro/lavadir/bin;
 ifeq ($(OPSYS),Darwin)
-	cp -R $(QBIN)/assistant.app ~/lavadistro/lavadir/bin;
+	cp -R $(QBIN)/assistant.app $(HOME)/lavadistro/lavadir/bin;
 else
-	cp -R $(QBIN)/assistant ~/lavadistro/lavadir/bin; strip ~/lavadistro/lavadir/bin/assistant; \
-	cp /usr/local/bin/chrpath ~/lavadistro/lavadir/bin;
+	cp -R $(QBIN)/assistant $(HOME)/lavadistro/lavadir/bin; strip $(HOME)/lavadistro/lavadir/bin/assistant; \
+	cp /usr/local/bin/chrpath $(HOME)/lavadistro/lavadir/bin;
 endif
-	cp bin-install ~/lavadistro/install.bash; chmod a+x ~/lavadistro/install.bash;
-	cd bin; cp LavaIcons/* ~/lavadistro/lavadir/bin/LavaIcons; cp std/* ~/lavadistro/lavadir/bin/std; \
-	cp *.htm *.lava cp_icons_std ~/lavadistro/lavadir/bin; \
-	cd ~/lavadistro/lavadir/bin; \
+	cp bin-install $(HOME)/lavadistro/install.bash; chmod a+x $(HOME)/lavadistro/install.bash;
+	cd bin; cp LavaIcons/* $(HOME)/lavadistro/lavadir/bin/LavaIcons; cp std/* $(HOME)/lavadistro/lavadir/bin/std; \
+	cp *.htm *.lava cp_icons_std $(HOME)/lavadistro/lavadir/bin; \
+	cd $(HOME)/lavadistro/lavadir/bin; \
 	mkdir Components; \
 	cd Components; \
 	ln -s ../../samples/LCompoImpl.lcom LCompoImpl.lcom.lnk; \
 	ln -s ../../samples/LavaStream.lava .; \
 	ln -s ../../lib/libLavaStream$(DLLSUFFIX) .;
 ifeq ($(OPSYS),Darwin)
-	cd ~/lavadistro/lavadir/lib; \
+	cd $(HOME)/lavadistro/lavadir/lib; \
 	cp $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant \
 	$(QLIB)/QtCore.framework/Versions/4/QtCore \
-	$(QLIB)/QtDBus.framework/Versions/4/QtDBus \
 	$(QLIB)/QtGui.framework/Versions/4/QtGui \
 	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork \
-	$(QLIB)/QtXml.framework/Versions/4/QtXml .; \
-	cd ~; rm -f Desktop/lavape-*-macos*; tar cjf Desktop/lavape-0.9.1-macos-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
+	cd $(HOME); rm -f Desktop/lavape-*-macos*; tar cjf Desktop/lavape-0.9.1-macos-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
 else
-	cd ~/lavadistro/lavadir/lib; \
-	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtDBus.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 .; \
-	cd ~; rm -f Desktop/lavape-*-linux*; tar cjf Desktop/lavape-0.9.1-linux-bin.tar.bz2 lavadistro; ls -l ~/Desktop/lavape-*;
+	cd $(HOME)/lavadistro/lavadir/lib; \
+	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtAssistantClient.so.4 .; \
+	cd $(HOME); rm -f Desktop/lavape-*-linux*; tar cjf Desktop/lavape-0.9.1-linux-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
 endif
 
 
