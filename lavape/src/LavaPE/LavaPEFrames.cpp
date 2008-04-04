@@ -479,11 +479,11 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"));
   newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(throwEx()),
     QObject::tr("Fail or even throw an exception"),
-    QObject::tr("<p><a href=\"FailSucceed.htm\">Throw</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Throw</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#\">exec</a>,"
     " optionally throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
   newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()),
     QObject::tr("Immediate affirmative/successful return"),
-    QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"));
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm\">exec</a></p>"));
   newKwdToolbutton(tb,LBaseData->connectButton,"connect",SLOT(connectSignal()),
     QObject::tr("Connect a signal to a handler (\"callback\")"),
     QObject::tr("<p>Connect a software signal to a <a href=\"../Callbacks.htm\">handler (\"callback\")</a></p>"));

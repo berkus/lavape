@@ -5502,7 +5502,7 @@ QString CLavaPEView::text(const QPoint &point) {
     else if (itemDECL->DeclType == Impl)
       return QString(QObject::tr("<p>This is the (optional) <a href=\"../DBC.htm\">invariant</a> of the above implementation</p>"));
     else
-      return QString(QObject::tr("<p>This is the <a href=\"../EditExec.htm#exec\">exec</a> (= executable body) of the above function</p>"));
+      return QString(QObject::tr("<p>This is the <a href=\"../EditExec.htm\">exec</a> (= executable body) of the above function</p>"));
   case TIType_Require:
     return QString(QObject::tr("<p>This is the (optional) <a href=\"../DBC.htm\">precondition</a> of the above function</p>"));
   case TIType_Ensure:
