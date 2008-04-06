@@ -161,7 +161,7 @@ ifeq ($(OPSYS),Darwin)
 	cp $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant \
 	$(QLIB)/QtCore.framework/Versions/4/QtCore \
 	$(QLIB)/QtGui.framework/Versions/4/QtGui \
-	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork \
+	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork .; \
 	cd $(HOME); rm -f Desktop/lavape-*-macos*; tar cjf Desktop/lavape-0.9.1-macos-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
 else
 	cd $(HOME)/lavadistro/lavadir/lib; strip lib*;

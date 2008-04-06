@@ -1,6 +1,3 @@
-SHELL=/usr/bin/env sh
-#SHELL=/bin/sh
-   
 #to build a release version set REL
 ifeq ($(REL),)
 DBG=#-g #stabs+
