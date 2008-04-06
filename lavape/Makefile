@@ -1,4 +1,4 @@
-#export SHELL=/bin/bash)
+#export SHELL=/bin/sh
 #$(warning $(SHELL))
 
 export LAVADIR=$(shell pwd)
@@ -6,6 +6,8 @@ export LAVADIR=$(shell pwd)
 #ifeq ($(LD_LIBRARY_PATH),)
 #  $(error LD_LIBRARY_PATH must be defined!)
 #endif
+
+export
 
 QBIN = $(shell ./qbin.sh)
 ifeq ($(QBIN),)
@@ -43,7 +45,7 @@ Lava_UI:
 Interpreter:
 	cd src/Interpreter; $(MAKE)
 LavaStream:
-	cd src/LavaStream; $(MAKE)
+	echo QBIN=$(QBIN); cd src/LavaStream; $(MAKE)
 Lava:
 	cd src/Lava; $(MAKE)
 
