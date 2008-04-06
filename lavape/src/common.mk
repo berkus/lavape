@@ -85,12 +85,12 @@ ifeq ($(OPSYS),Darwin)
   DLLPREFIX = lib
   DLLSUFFIX = .dylib
   DLLNAME = lib$(addsuffix .dylib,$(basename $(EXEC)))
-  OSDLLFLAGS = -dynamiclib -header-pad_max_install_names -Wl,-install_name,@executable_path/../lib/$(DLLNAME)
-  OSEXECFLAGS = -fstack-check -header-pad_max_install_names
+  OSDLLFLAGS = -dynamiclib -Wl,-headerpad_max_install_names -Wl,-install_name,@executable_path/../lib/$(DLLNAME)
+  OSEXECFLAGS = -fstack-check -Wl,-headerpad_max_install_names
   OSCPPFLAGS = -D__$(OPSYS)
 #  OSLIBFLAGS = -F/System/Library/Frameworks -framework AppKit -framework Carbon
   EXEC2 = $(EXEC)
-  CC = c++
+#  CC = c++
 else
   ifeq ($(OPSYS),MINGW32)
     DLLSUFFIX = .dll
