@@ -38,7 +38,7 @@ LavaExecs:
 	cd src/LavaExecs; $(MAKE)
 LavaPE_UI:
 	cd src/LavaPE_UI; $(MAKE)
-LavaPE1:
+LavaPE:
 	cd src/LavaPE; $(MAKE)
 Lava_UI:
 	cd src/Lava_UI; $(MAKE)
@@ -46,7 +46,7 @@ Interpreter:
 	cd src/Interpreter; $(MAKE)
 LavaStream:
 	cd src/LavaStream; $(MAKE)
-Lava1:
+Lava:
 	cd src/Lava; $(MAKE)
 
 dirs:
