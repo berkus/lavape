@@ -45,7 +45,7 @@ Lava_UI:
 Interpreter:
 	cd src/Interpreter; $(MAKE)
 LavaStream:
-	echo QBIN=$(QBIN); cd src/LavaStream; $(MAKE)
+	cd src/LavaStream; $(MAKE)
 Lava:
 	cd src/Lava; $(MAKE)
 
