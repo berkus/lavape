@@ -6,7 +6,6 @@ ifeq ($(REL),)
 DBG=#-g #stabs+
 endif
 
-export
 
 ph_files=$(wildcard *.ph)
 h_ph_files=$(ph_files:.ph=.h)

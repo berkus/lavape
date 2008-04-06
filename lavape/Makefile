@@ -1,13 +1,6 @@
-#export SHELL=/bin/sh
-#$(warning $(SHELL))
-
-export LAVADIR=$(shell pwd)
-
-#ifeq ($(LD_LIBRARY_PATH),)
-#  $(error LD_LIBRARY_PATH must be defined!)
-#endif
-
 export
+
+LAVADIR=$(shell pwd)
 
 QBIN = $(shell ./qbin.sh)
 ifeq ($(QBIN),)
@@ -44,7 +37,7 @@ Lava_UI:
 	cd src/Lava_UI; $(MAKE)
 Interpreter:
 	cd src/Interpreter; $(MAKE)
-LavaStream:
+LavaStream: bin/Components/$(DLLPREFIX)LavaStream$(DLLSUFFIX)
 	cd src/LavaStream; $(MAKE)
 Lava:
 	cd src/Lava; $(MAKE)
@@ -121,7 +114,7 @@ lib/libQtXml.so.4: $(QLIB)/libQtXml.so.4
 lib/libQtAssistantClient.so.4: $(QLIB)/libQtAssistantClient.so.4
 	rm -f $@; $(LN) $< $@
 
-LavaStream: bin/Components/$(DLLPREFIX)LavaStream$(DLLSUFFIX)
+#LavaStream: bin/Components/$(DLLPREFIX)LavaStream$(DLLSUFFIX)
 
 ifeq ($(OPSYS),MINGW32)
 bin/Components/LavaStream.dll: bin/LavaStream.dll
