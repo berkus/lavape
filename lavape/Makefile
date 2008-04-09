@@ -140,14 +140,13 @@ bindist:
 	mkdir lib; cp $(LAVADIR)/lib/*$(DLLSUFFIX) lib; \
 	mkdir samples; cp $(LAVADIR)/samples/*.l* samples; \
 	cd bin; mkdir LavaIcons; mkdir std; \
-	cd $(LAVADIR)/bin; cp LavaPE Lava ../colrm $(HOME)/lavadistro/lavadir/bin;
+	cd $(LAVADIR)/bin; cp LavaPE Lava $(HOME)/lavadistro/lavadir/bin;
 ifeq ($(OPSYS),Darwin)
-	cp -R $(QBIN)/assistant.app $(HOME)/lavadistro/lavadir/bin;
+	cp -R $(QBIN)/assistant.app/Contents/MacOS/assistant $(HOME)/lavadistro/lavadir/bin;
 else
-	cp -R $(QBIN)/assistant $(HOME)/lavadistro/lavadir/bin; strip $(HOME)/lavadistro/lavadir/bin/assistant; \
-	cp /usr/local/bin/chrpath $(HOME)/lavadistro/lavadir/bin;
+	cp -R $(QBIN)/assistant $(HOME)/lavadistro/lavadir/bin; strip $(HOME)/lavadistro/lavadir/bin/assistant;
 endif
-	cp bin-install $(HOME)/lavadistro/install.bash; chmod a+x $(HOME)/lavadistro/install.bash;
+	cp lava lavape $(HOME)/lavadistro; ln -s $(LAVADIR)/ReleaseNotes.txt $(LAVADIR)/SamplesReadme.txt $(LAVADIR)/samples $(HOME)/lavadistro; \
 	cd bin; cp LavaIcons/* $(HOME)/lavadistro/lavadir/bin/LavaIcons; cp std/* $(HOME)/lavadistro/lavadir/bin/std; \
 	cp *.htm *.lava cp_icons_std $(HOME)/lavadistro/lavadir/bin; \
 	cd $(HOME)/lavadistro/lavadir/bin; \
@@ -161,8 +160,10 @@ ifeq ($(OPSYS),Darwin)
 	cp $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant \
 	$(QLIB)/QtCore.framework/Versions/4/QtCore \
 	$(QLIB)/QtGui.framework/Versions/4/QtGui \
-	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork .; \
-	cd $(HOME); rm -f Desktop/lavape-*-macos*; tar cjf Desktop/lavape-0.9.1-macos-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
+	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork \
+	$(QLIB)/QtXml.framework/Versions/4/QtXml .; \
+	cd $(HOME); rm -f Desktop/lavape-*-macos*; tar cjf Desktop/lavape-0.9.1-linux-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
+#	cd $(HOME); rm -f Desktop/lavape-*-macos*; /usr/local/makeself-2.1.5/makeself.sh --notemp --bzip2 --nomd5 lavadistro Desktop/lavape-0.9.1-macos-bin.bz2.sh "the Lava Programming Environment" ./install.bash; ls -l Desktop/lavape-*;
 else
 	cd $(HOME)/lavadistro/lavadir/lib; strip lib*;
 ifeq ($(OPSYS),SunOS)
