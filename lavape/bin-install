@@ -1,63 +1,24 @@
 #!/usr/bin/env bash
 #
+echo SHELL=$SHELL
 LAVADIST=$(pwd)/$(dirname $0)
 LAVADIR=$LAVADIST/lavadir
-#echo LAVADIR=$LAVADIR
 
-cd $LAVADIST
-ln -s -f lavadir/bin/LavaPE .
-ln -s -f lavadir/bin/Lava .
-ln -s -f lavadir/samples .
+# Create shell procedures for launching LavaPE / Lava:
 
-cd $LAVADIR/lib
-for library in $(ls lib*) ;
-do
-#echo lib1=$library, cwd=$(pwd);
-if [ $(uname) == Darwin ]; then
-install_name_tool -change /usr/local/Trolltech/Qt-4.3.4/QtAssistant.framework/Versions/4/QtAssistant \
-@executable_path/../lib/QtAssistant \
--change /usr/local/Trolltech/Qt-4.3.4/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
--change /usr/local/Trolltech/Qt-4.3.4/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
--change /usr/local/Trolltech/Qt-4.3.4/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
--change /usr/local/Trolltech/Qt-4.3.4/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
-$library
-elif [ $(echo $library | $LAVADIR/bin/colrm 6) != libQt ]; then
-$LAVADIR/bin/chrpath -r $LAVADIR/lib:/usr/lib:/lib $library >/dev/null
-fi;
-done
+rm -f lavape lava
 
-cd $LAVADIR/bin
-if [ $(uname) == Darwin ]; then
-install_name_tool -change /usr/local/Trolltech/Qt-4.3.4/QtAssistant.framework/Versions/4/QtAssistant \
-@executable_path/../lib/QtAssistant \
--change /usr/local/Trolltech/Qt-4.3.4/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
--change /usr/local/Trolltech/Qt-4.3.4/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
--change /usr/local/Trolltech/Qt-4.3.4/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
--change /usr/local/Trolltech/Qt-4.3.4/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
-Lava
-else
-$LAVADIR/bin/chrpath -r $LAVADIR/lib:/usr/lib:/lib Lava >/dev/null
-fi
+echo "#!$SHELL">$LAVADIST/lavape
+echo "export LAVADIR=$LAVADIR">>$LAVADIST/lavape
+echo "export LD_LIBRARY_PATH=$LAVADIR/lib:/usr/lib:/lib">>$LAVADIST/lavape
+echo "cd $LAVADIR/bin">>$LAVADIST/lavape
+echo "if [ -x $(which chcon) ]; then chcon -t texrel_shlib_t ../lib/*.so 2>>/dev/null; fi">>$LAVADIST/lavape
+echo "./LavaPE">>$LAVADIST/lavape
+chmod a+x lavape
 
-if [ $(uname) == Darwin ]; then
-install_name_tool -change /usr/local/Trolltech/Qt-4.3.4/QtAssistant.framework/Versions/4/QtAssistant \
-@executable_path/../lib/QtAssistant \
--change /usr/local/Trolltech/Qt-4.3.4/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
--change /usr/local/Trolltech/Qt-4.3.4/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
--change /usr/local/Trolltech/Qt-4.3.4/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
--change /usr/local/Trolltech/Qt-4.3.4/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
-LavaPE
-else
-$LAVADIR/bin/chrpath -r $LAVADIR/lib:/usr/lib:/lib LavaPE >/dev/null
-fi
-
-if [ $(uname) == Darwin ]; then
-cd assistant.app/Contents/MacOS
-install_name_tool -change /usr/local/Trolltech/Qt-4.3.4/QtAssistant.framework/Versions/4/QtAssistant \
-@executable_path/../lib/QtAssistant \
--change /usr/local/Trolltech/Qt-4.3.4/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
--change /usr/local/Trolltech/Qt-4.3.4/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
--change /usr/local/Trolltech/Qt-4.3.4/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
--change /usr/local/Trolltech/Qt-4.3.4/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
-assistant
-fi
+echo "export LAVADIR=$LAVADIR">>$LAVADIST/lava
+echo "export LD_LIBRARY_PATH=$LAVADIR/lib:/usr/lib:/lib">>$LAVADIST/lava
+echo "cd $LAVADIR/bin">>$LAVADIST/lava
+echo "if [ -x $(which chcon) ]; then chcon -t texrel_shlib_t ../lib/*.so 2>>/dev/null; fi">>$LAVADIST/lava
+echo "./Lava">>$LAVADIST/lava
+chmod a+x lava
