@@ -79,8 +79,8 @@ int main( int argc, char ** argv ) {
   QString driveLetter = QString(ExeDir[0].toUpper());
   ExeDir.replace(0,1,driveLetter);
 #else
-  QString ldpath=QString("LD_LIBRARY_PATH=")+ExeDir+"/../lib";
-  putenv((char*)qPrintable(ldpath)); // for Qt assistant start
+//  QString ldpath=QString("LD_LIBRARY_PATH=")+ExeDir+"/../lib";
+  setenv("LD_LIBRARY_PATH","../lib",1);
 #endif
   QDir::setCurrent(ExeDir);
   

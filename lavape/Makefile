@@ -3,16 +3,21 @@ export
 LAVADIR=$(shell pwd)
 
 QBIN = $(shell ./qbin.sh)
-QASSL = $(shell readlink $(QBIN)/assistant)
-ifneq ($(QASSL),)
-  QASS=$(QASSL)
-else
-  QASS = $(QBIN)/assistant
-endif
 
 ifeq ($(QBIN),)
   $(error Qt tools/executables couldn't be found!)
-  $(error QTDIR=$(QTDIR))
+endif
+
+QASSL = $(shell readlink $(QBIN)/assistant)
+ifneq ($(QASSL),)
+  QASSL2 = $(shell readlink $(QASSL))
+  ifneq ($(QASSL2),)
+    QASS = $(QASSL2)
+  else
+    QASS = $(QASSL)
+  endif
+else
+  QASS = $(QBIN)/assistant
 endif
 
 QINCL = $(shell ./qincl.sh)
@@ -152,9 +157,9 @@ bindist:
 ifeq ($(OPSYS),Darwin)
 	cp -R $(QBIN)/assistant.app/Contents/MacOS/assistant $(HOME)/lavadistro/lavadir/bin;
 else
-	cp -R $(QASS) $(HOME)/lavadistro/lavadir/bin/Assistant; cp assistant $(HOME)/lavadistro/lavadir/bin;
+	cp $(QASS) $(HOME)/lavadistro/lavadir/bin/assistant;
 endif
-	cp lava lavape $(HOME)/lavadistro; cp assistant $(HOME)/lavadistro/lavadir/bin; \
+	cp lava lavape $(HOME)/lavadistro; \
 	cd $(HOME)/lavadistro; ln -s lavadir/ReleaseNotes.txt lavadir/SamplesReadme.txt lavadir/samples .; \
 	cd $(LAVADIR)/bin; cp LavaIcons/* $(HOME)/lavadistro/lavadir/bin/LavaIcons; cp std/* $(HOME)/lavadistro/lavadir/bin/std; \
 	cp *.htm *.lava cp_icons_std $(HOME)/lavadistro/lavadir/bin; \
