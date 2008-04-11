@@ -911,16 +911,15 @@
 			Name="Generated"
 			>
 			<File
-				RelativePath=".\Generated\LavaPE_resources.cpp"
+				RelativePath=".\Generated\LavaPE_res.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="2"
 						PrecompiledHeaderThrough="QtCore/qglobal.h"
-						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
+						PrecompiledHeaderFile="PCH/LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1871,7 +1870,7 @@
 			>
 		</File>
 		<File
-			RelativePath="..\LavaPE_resources.qrc"
+			RelativePath="..\LavaPE_res.qrc"
 			>
 			<FileConfiguration
 				Name="Debug|Win32"
@@ -1879,7 +1878,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)"
 					Outputs="Generated/$(InputName).cpp"
 				/>
 			</FileConfiguration>
@@ -1889,7 +1888,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)"
 					Outputs="Generated/$(InputName).cpp"
 				/>
 			</FileConfiguration>

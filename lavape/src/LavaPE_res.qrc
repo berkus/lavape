@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/LavaExecs/res/TOOLBUTTONS" >
+    <qresource prefix="/" >
         <file>LavaExecs/res/TOOLBUTTONS/Q5_conflict.xpm</file>
         <file>LavaExecs/res/TOOLBUTTONS/Q5_formParmNames.xpm</file>
         <file>LavaExecs/res/TOOLBUTTONS/Q5_ignore.xpm</file>
@@ -45,12 +45,11 @@
         <file>LavaExecs/res/TOOLBUTTONS/breakPoint.xpm</file>
         <file>LavaExecs/res/TOOLBUTTONS/debugStop.xpm</file>
         <file>LavaExecs/res/TOOLBUTTONS/debugStopGreen.xpm</file>
-    </qresource>
-    <qresource prefix="/LavaGUI/res/TOOLBUTTONS" >
         <file>LavaGUI/res/TOOLBUTTONS/Q_Delete.xpm</file>
         <file>LavaGUI/res/TOOLBUTTONS/Q_Insert.xpm</file>
-    </qresource>
-    <qresource prefix="/LavaPE/res/TOOLBUTTONS" >
+        <file>LavaGUI/res/TOOLBUTTONS/Q_State.Value.xpm</file>
+        <file>LavaGUI/res/TOOLBUTTONS/Q_Undo.xpm</file>
+        <file>LavaGUI/res/TOOLBUTTONS/Q_ok.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/Q2_Comment.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/Q2_EditSel.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/Q2_FindByName.xpm</file>
@@ -115,8 +114,6 @@
         <file>LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/WhatNext.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/close.xpm</file>
-    </qresource>
-    <qresource prefix="/wxqDocView/res" >
         <file>wxqDocView/res/minitab.xpm</file>
     </qresource>
 </RCC>
