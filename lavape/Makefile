@@ -155,11 +155,12 @@ bindist:
 	cd bin; mkdir LavaIcons; mkdir std; \
 	cd $(LAVADIR)/bin; cp LavaPE Lava $(HOME)/lavadistro/lavadir/bin;
 ifeq ($(OPSYS),Darwin)
-	cp -R $(QBIN)/assistant.app/Contents/MacOS/assistant $(HOME)/lavadistro/lavadir/bin;
+	cp -R $(QBIN)/assistant.app $(HOME)/lavadistro/lavadir/bin; \
+	cp bin-install-mac $(HOME)/lavadistro/install.bash
 else
 	cp $(QASS) $(HOME)/lavadistro/lavadir/bin/assistant;
 endif
-	cp lava lavape $(HOME)/lavadistro; \
+	cp lava.bash $(HOME)/lavadistro/lava; cp lavape.bash $(HOME)/lavadistro/lavape; \
 	cd $(HOME)/lavadistro; ln -s lavadir/ReleaseNotes.txt lavadir/SamplesReadme.txt lavadir/samples .; \
 	cd $(LAVADIR)/bin; cp LavaIcons/* $(HOME)/lavadistro/lavadir/bin/LavaIcons; cp std/* $(HOME)/lavadistro/lavadir/bin/std; \
 	cp *.htm *.lava cp_icons_std $(HOME)/lavadistro/lavadir/bin; \
@@ -173,12 +174,11 @@ ifeq ($(OPSYS),Darwin)
 	cd $(HOME)/lavadistro/lavadir/lib; \
 	cp $(QLIB)/QtAssistant.framework/Versions/4/QtAssistant \
 	$(QLIB)/QtCore.framework/Versions/4/QtCore \
-	$(QLIB)/QtDBus.framework/Versions/4/QtDBus \
 	$(QLIB)/QtGui.framework/Versions/4/QtGui \
 	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork \
 	$(QLIB)/QtXml.framework/Versions/4/QtXml .; \
-	cd $(HOME); rm -f Desktop/lavape-*-macos*; tar cjf Desktop/lavape-0.9.1-linux-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
-#	cd $(HOME); rm -f Desktop/lavape-*-macos*; /usr/local/makeself-2.1.5/makeself.sh --notemp --bzip2 --nomd5 lavadistro Desktop/lavape-0.9.1-macos-bin.bz2.sh "the Lava Programming Environment" ./install.bash; ls -l Desktop/lavape-*;
+	cd $(HOME); rm -f Desktop/lavape-*-macos*; /usr/local/makeself-2.1.5/makeself.sh --notemp --bzip2 --nomd5 lavadistro Desktop/lavape-0.9.1-macos-bin.bz2.run "the Lava Programming Environment" ./install.bash; ls -l Desktop/lavape-*;
+#	cd $(HOME); rm -f Desktop/lavape-*-macos*; tar cjf Desktop/lavape-0.9.1-linux-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
 else
 	cd $(HOME)/lavadistro/lavadir/lib; strip lib*; \
 	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtDBus.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 .; \
