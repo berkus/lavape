@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "LavaPE"
-!define PRODUCT_VERSION "0.9.0"
+!define PRODUCT_VERSION "0.9.1"
 !define PRODUCT_PUBLISHER "The lavape project "
 !define PRODUCT_WEB_SITE "http://lavape.sourceforge.net/index.htm"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\LavaPE.exe"
@@ -17,7 +17,7 @@ SetCompressor lzma
 !include "MUI.nsh"
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "lavape-0.9.0-win32-bin.exe"
+OutFile "lavape-0.9.1-win32-bin.exe"
 Var instForAll
 Var userName
 Var unInstString
@@ -34,7 +34,7 @@ InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 ;  !define MUI_HEADERIMAGE_RIGHT
   !define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
   ;!define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\win.bmp" ; optional
-  !define MUI_HEADERIMAGE_BITMAP "volcano2.bmp" ; optional
+  !define MUI_HEADERIMAGE_BITMAP "volcano2.png" ; optional
   !define MUI_ABORTWARNING
 
 ; MUI Settings
@@ -128,13 +128,13 @@ Section "LavaPE (required)" SEC01
   SetFileAttributes $OUTDIR\std.lava READONLY|ARCHIVE
   File "bin\*.htm"
   File "bin\*.bat"
-  File "C:\Qt4\Qt433msvc\bin\assistant.exe"
-  File "C:\Qt4\Qt433msvc\bin\assistant.exe.manifest"
-  File "C:\Qt4\Qt433msvc\bin\QtAssistantClient4.dll"
-  File "C:\Qt4\Qt433msvc\bin\QtCore4.dll"
-  File "C:\Qt4\Qt433msvc\bin\QtGui4.dll"
-  File "C:\Qt4\Qt433msvc\bin\QtNetwork4.dll"
-  File "C:\Qt4\Qt433msvc\bin\QtXml4.dll"
+  File "C:\Qt4\Qt434msvc\bin\assistant.exe"
+  File "C:\Qt4\Qt434msvc\bin\assistant.exe.manifest"
+  File "C:\Qt4\Qt434msvc\bin\QtAssistantClient4.dll"
+  File "C:\Qt4\Qt434msvc\bin\QtCore4.dll"
+  File "C:\Qt4\Qt434msvc\bin\QtGui4.dll"
+  File "C:\Qt4\Qt434msvc\bin\QtNetwork4.dll"
+  File "C:\Qt4\Qt434msvc\bin\QtXml4.dll"
 ;  File "C:\Qt4\Qt432msvc\bin\QtSvg4.dll"
 
 ;  File "C:\Qt4\Qt432msvc\plugins\imageformats\qgif4.dll"

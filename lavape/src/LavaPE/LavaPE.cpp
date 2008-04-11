@@ -21,7 +21,6 @@
 #include "LavaPE.h"
 
 #include <stdlib.h>
-#include <iostream>
 #include <errno.h>
 
 //#include <prelude.h>
