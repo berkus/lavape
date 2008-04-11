@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+#
+LAVA=$PWD/lavadir
+LAVALIB=$LAVA/lib
+
+QLIB=/usr/local/Trolltech/Qt-4.3.4/lib
+
+cd $LAVALIB
+for library in $(ls lib*) ;
+do
+#echo lib1=$library, cwd=$(pwd);
+install_name_tool \
+-change /usr/local/Trolltech/Qt-4.3.4/lib/QtAssistant.framework/Versions/4/QtAssistant @executable_path/../lib/QtAssistant \
+-change /usr/local/Trolltech/Qt-4.3.4/lib/QtCore.framework/Versions/4/QtCore @executable_path/../lib/QtCore \
+-change /usr/local/Trolltech/Qt-4.3.4/lib/QtGui.framework/Versions/4/QtGui @executable_path/../lib/QtGui \
+-change /usr/local/Trolltech/Qt-4.3.4/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../lib/QtNetwork \
+-change /usr/local/Trolltech/Qt-4.3.4/lib/QtXml.framework/Versions/4/QtXml @executable_path/../lib/QtXml \
+$library
+done
+
+cd $LAVA/bin
+install_name_tool -change $QLIB/QtAssistant.framework/Versions/4/QtAssistant $LAVALIB/QtAssistant \
+-change $QLIB/QtCore.framework/Versions/4/QtCore $LAVALIB/QtCore \
+-change $QLIB/QtGui.framework/Versions/4/QtGui $LAVALIB/QtGui \
+-change $QLIB/QtNetwork.framework/Versions/4/QtNetwork $LAVALIB/QtNetwork \
+-change $QLIB/QtXml.framework/Versions/4/QtXml $LAVALIB/QtXml \
+$LAVA/bin/assistant.app/Contents/MacOS/assistant
+
+install_name_tool -change $QLIB/QtAssistant.framework/Versions/4/QtAssistant $LAVALIB/QtAssistant \
+-change $QLIB/QtCore.framework/Versions/4/QtCore $LAVALIB/QtCore \
+-change $QLIB/QtGui.framework/Versions/4/QtGui $LAVALIB/QtGui \
+-change $QLIB/QtNetwork.framework/Versions/4/QtNetwork $LAVALIB/QtNetwork \
+-change $QLIB/QtXml.framework/Versions/4/QtXml $LAVALIB/QtXml \
+$LAVA/bin/Lava
+
+install_name_tool -change $QLIB/QtAssistant.framework/Versions/4/QtAssistant $LAVALIB/QtAssistant \
+-change $QLIB/QtCore.framework/Versions/4/QtCore $LAVALIB/QtCore \
+-change $QLIB/QtGui.framework/Versions/4/QtGui $LAVALIB/QtGui \
+-change $QLIB/QtNetwork.framework/Versions/4/QtNetwork $LAVALIB/QtNetwork \
+-change $QLIB/QtXml.framework/Versions/4/QtXml $LAVALIB/QtXml \
+$LAVA/bin/LavaPE
+
+cd $LAVALIB
+install_name_tool -change $QLIB/QtAssistant.framework/Versions/4/QtAssistant $LAVALIB/QtAssistant \
+-change $QLIB/QtCore.framework/Versions/4/QtCore $LAVALIB/QtCore \
+-change $QLIB/QtGui.framework/Versions/4/QtGui $LAVALIB/QtGui \
+-change $QLIB/QtNetwork.framework/Versions/4/QtNetwork $LAVALIB/QtNetwork \
+-change $QLIB/QtXml.framework/Versions/4/QtXml $LAVALIB/QtXml \
+-id $LAVALIB/QtAssistant $LAVALIB/QtAssistant
+
+install_name_tool -change $QLIB/QtAssistant.framework/Versions/4/QtAssistant $LAVALIB/QtAssistant \
+-change $QLIB/QtCore.framework/Versions/4/QtCore $LAVALIB/QtCore \
+-change $QLIB/QtGui.framework/Versions/4/QtGui $LAVALIB/QtGui \
+-change $QLIB/QtNetwork.framework/Versions/4/QtNetwork $LAVALIB/QtNetwork \
+-change $QLIB/QtXml.framework/Versions/4/QtXml $LAVALIB/QtXml \
+-id $LAVALIB/QtCore $LAVALIB/QtCore
+
+install_name_tool -change $QLIB/QtAssistant.framework/Versions/4/QtAssistant $LAVALIB/QtAssistant \
+-change $QLIB/QtCore.framework/Versions/4/QtCore $LAVALIB/QtCore \
+-change $QLIB/QtGui.framework/Versions/4/QtGui $LAVALIB/QtGui \
+-change $QLIB/QtNetwork.framework/Versions/4/QtNetwork $LAVALIB/QtNetwork \
+-change $QLIB/QtXml.framework/Versions/4/QtXml $LAVALIB/QtXml \
+-id $LAVALIB/QtGui $LAVALIB/QtGui
+
+install_name_tool -change $QLIB/QtAssistant.framework/Versions/4/QtAssistant $LAVALIB/QtAssistant \
+-change $QLIB/QtCore.framework/Versions/4/QtCore $LAVALIB/QtCore \
+-change $QLIB/QtGui.framework/Versions/4/QtGui $LAVALIB/QtGui \
+-change $QLIB/QtNetwork.framework/Versions/4/QtNetwork $LAVALIB/QtNetwork \
+-change $QLIB/QtXml.framework/Versions/4/QtXml $LAVALIB/QtXml \
+-id $LAVALIB/QtNetwork $LAVALIB/QtNetwork
+
+install_name_tool -change $QLIB/QtAssistant.framework/Versions/4/QtAssistant $LAVALIB/QtAssistant \
+-change $QLIB/QtCore.framework/Versions/4/QtCore $LAVALIB/QtCore \
+-change $QLIB/QtGui.framework/Versions/4/QtGui $LAVALIB/QtGui \
+-change $QLIB/QtNetwork.framework/Versions/4/QtNetwork $LAVALIB/QtNetwork \
+-change $QLIB/QtXml.framework/Versions/4/QtXml $LAVALIB/QtXml \
+-id $LAVALIB/QtXml $LAVALIB/QtXml
