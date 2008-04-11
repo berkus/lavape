@@ -389,7 +389,7 @@
 			Name="Generated"
 			>
 			<File
-				RelativePath=".\Generated\Lava_resources.cpp"
+				RelativePath=".\Generated\Lava_res.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -562,7 +562,7 @@
 			>
 		</File>
 		<File
-			RelativePath="..\Lava_resources.qrc"
+			RelativePath="..\Lava_res.qrc"
 			>
 			<FileConfiguration
 				Name="Debug|Win32"

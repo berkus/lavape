@@ -1,12 +1,8 @@
 <RCC>
-    <qresource prefix="/Lava/res/TOOLBUTTONS" >
+    <qresource prefix="/" >
         <file>Lava/res/TOOLBUTTONS/Q_del.xpm</file>
         <file>Lava/res/TOOLBUTTONS/Q_ins.xpm</file>
-    </qresource>
-    <qresource prefix="/LavaExecs/res/TOOLBUTTONS" >
         <file>LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</file>
-    </qresource>
-    <qresource prefix="/LavaPE/res/TOOLBUTTONS" >
         <file>LavaPE/res/TOOLBUTTONS/Q_Cascade.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/Q_Copy.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/Q_Cut.xpm</file>
@@ -20,8 +16,9 @@
         <file>LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/close.xpm</file>
         <file>LavaPE/res/TreeIcons/PX_debugTab.xpm</file>
-    </qresource>
-    <qresource prefix="/wxqDocView/res" >
         <file>wxqDocView/res/minitab.xpm</file>
+    </qresource>
+    <qresource prefix="/qt/etc" >
+        <file>qt.conf</file>
     </qresource>
 </RCC>

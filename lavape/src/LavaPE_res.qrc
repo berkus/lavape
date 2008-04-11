@@ -116,4 +116,7 @@
         <file>LavaPE/res/TOOLBUTTONS/close.xpm</file>
         <file>wxqDocView/res/minitab.xpm</file>
     </qresource>
+    <qresource prefix="/qt/etc" >
+        <file>qt.conf</file>
+    </qresource>
 </RCC>
