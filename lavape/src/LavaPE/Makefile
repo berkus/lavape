@@ -4,7 +4,7 @@ MOCABLES=Bars.h Boxes.h DebuggerPE.h FindRefsBox.h LavaPE.h LavaPEFrames.h LavaP
 
 EXEC = LavaPE
 
-QRC = ../LavaPE_resources.qrc
+QRC = ../LavaPE_res.qrc
 
 SUBPRO=disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI
 

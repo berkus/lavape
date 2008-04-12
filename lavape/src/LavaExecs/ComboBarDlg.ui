@@ -31,7 +31,7 @@
     <string/>
    </property>
    <property name="icon" >
-    <iconset resource="../LavaPE_resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/LavaExecs/res/TOOLBUTTONS/bitmap2.xpm</iconset>
+    <iconset resource="../LavaPE_res.qrc" >:/LavaExecs/res/TOOLBUTTONS/bitmap2.xpm</iconset>
    </property>
   </widget>
   <widget class="QPushButton" name="IDC_NewPFunc" >
@@ -56,7 +56,7 @@
     <string/>
    </property>
    <property name="icon" >
-    <iconset resource="../LavaPE_resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/LavaExecs/res/TOOLBUTTONS/bmNewPFunc.xpm</iconset>
+    <iconset resource="../LavaPE_res.qrc" >:/LavaExecs/res/TOOLBUTTONS/bmNewPFunc.xpm</iconset>
    </property>
   </widget>
   <widget class="QComboBox" name="IDC_CompaBTypes" >
@@ -99,7 +99,7 @@
     <string/>
    </property>
    <property name="icon" >
-    <iconset resource="../LavaPE_resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/LavaExecs/res/TOOLBUTTONS/bmNewFunc.xpm</iconset>
+    <iconset resource="../LavaPE_res.qrc" >:/LavaExecs/res/TOOLBUTTONS/bmNewFunc.xpm</iconset>
    </property>
   </widget>
   <widget class="QComboBox" name="IDC_CompaTypes" >
@@ -418,7 +418,7 @@
  <layoutdefault spacing="6" margin="11" />
  <pixmapfunction></pixmapfunction>
  <resources>
-  <include location="../LavaPE_resources.qrc" />
+  <include location="../LavaPE_res.qrc" />
  </resources>
  <connections/>
 </ui>

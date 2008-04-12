@@ -4,7 +4,7 @@ MOCABLES=Lava.h LavaDoc.h MainFrm.h
 
 EXEC = Lava
 
-QRC = ../Lava_resources.qrc
+QRC = ../Lava_res.qrc
 
 SUBPRO=disco wxqDocView LavaBase LavaGUI Lava_UI Interpreter
 
