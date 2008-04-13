@@ -113,8 +113,8 @@ else
     endif
     DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
     DLLSUFFIX = .so
-    OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -L../../lib
-    OSEXECFLAGS = -fstack-check -z nodefaultlib -L../../lib $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib -L../../lib
+    OSEXECFLAGS = -fstack-check -z nodefaultlib -L../../lib $(RPATH)$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib
     EXEC2 = $(EXEC)
     ifneq ($(DBG),)
       QtS =
