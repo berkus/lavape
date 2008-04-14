@@ -15,5 +15,9 @@ else
 fi
 #echo dir=$MYDIR
 
-export LD_LIBRARY_PATH=$MYDIR/lavadir/lib
+if [ `uname` == Darwin ]; then  
+  export DYLD_LIBRARY_PATH=$MYDIR/lavadir/lib
+else
+  export LD_LIBRARY_PATH=$MYDIR/lavadir/lib
+fi
 $MYDIR/lavadir/bin/Lava
