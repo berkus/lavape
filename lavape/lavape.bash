@@ -13,11 +13,12 @@ else
     MYDIR=$PWD/$(dirname $0)
   fi
 fi
-#echo dir=$MYDIR
+
+echo dir=$MYDIR
 
 if [ `uname` == Darwin ]; then  
   export DYLD_LIBRARY_PATH=$MYDIR/lavadir/lib
 else
-  export LD_LIBRARY_PATH=$MYDIR/lavadir/lib
+  export LD_LIBRARY_PATH=$MYDIR/../lavape/lib
 fi
-$MYDIR/lavadir/bin/LavaPE
+$MYDIR/../lavape/bin/LavaPE
