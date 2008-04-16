@@ -17,7 +17,8 @@ fi
 
 if [ `uname` == Darwin ]; then  
   export DYLD_LIBRARY_PATH=$MYDIR/lavadir/lib
+  $MYDIR/lavadir/bin/Lava
 else
   export LD_LIBRARY_PATH=$MYDIR/../lavape/lib
+  $MYDIR/../lavape/bin/Lava
 fi
-$MYDIR/../lavape/bin/Lava

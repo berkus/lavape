@@ -18,7 +18,8 @@ echo dir=$MYDIR
 
 if [ `uname` == Darwin ]; then  
   export DYLD_LIBRARY_PATH=$MYDIR/lavadir/lib
+  $MYDIR/lavadir/bin/LavaPE
 else
   export LD_LIBRARY_PATH=$MYDIR/../lavape/lib
+  $MYDIR/../lavape/bin/LavaPE
 fi
-$MYDIR/../lavape/bin/LavaPE
