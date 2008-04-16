@@ -96,6 +96,7 @@ bool CLavaDoc::OnCloseDocument()
     delete ((CLavaDoc*)LBaseData->docModal)->ActLavaDialog;
     LBaseData->docModal = 0;
   }*/
+  deleting = true;
   return CLavaProgram::OnCloseDocument();
 }
 

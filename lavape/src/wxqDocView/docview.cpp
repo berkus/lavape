@@ -577,19 +577,19 @@ bool wxDocument::Save()
     QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),str ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
   }
-    bool ret = false;
+  bool ret = false;
 
 //    if (!IsModified() && m_savedYet) {
-        wxDocManager::GetDocumentManager()->GetFileHistory()->SetFirstInHistory(m_userFilename);
+  wxDocManager::GetDocumentManager()->GetFileHistory()->SetFirstInHistory(m_userFilename);
 //        return true;
 //    }
-    if (m_documentFile == QString("") || !m_savedYet)
-        ret = SaveAs();
-    else
-        ret = OnSaveDocument(m_documentFile);
-    if ( ret )
-        SetDocumentSaved(true);
-    return ret;
+  if (m_documentFile == QString("") || !m_savedYet)
+      ret = SaveAs();
+  else
+      ret = OnSaveDocument(m_documentFile);
+  if ( ret )
+      SetDocumentSaved(true);
+  return ret;
 }
 
 bool wxDocument::SaveAs()

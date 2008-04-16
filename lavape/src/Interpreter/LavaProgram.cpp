@@ -2697,7 +2697,7 @@ bool GUIEdit(CheckData& ckd, LavaVariablePtr stack)
     return false;
   if (ex)
     throw *ex;
-  ex = showFunc(ckd, newStackFrame, !((SynFlags*)(newStackFrame[SFH+2]+1))->Contains(stateObjFlag), false);
+  ex = showFunc(ckd, newStackFrame, !((SynFlags*)(newStackFrame[SFH+1]+1))->Contains(stateObjFlag), false);
   if (ckd.exceptionThrown) {
     if (newStackFrame[SFH+2])
       DFC(newStackFrame[SFH+2]);

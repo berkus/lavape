@@ -85,7 +85,7 @@
      <x>0</x>
      <y>0</y>
      <width>539</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="fileMenu" >
@@ -221,7 +221,16 @@
     <string>&amp;Reset</string>
    </property>
    <property name="iconText" >
-    <string>Reset</string>
+    <string>Reset form contents</string>
+   </property>
+   <property name="toolTip" >
+    <string>Reset form contents</string>
+   </property>
+   <property name="statusTip" >
+    <string>Reset form contents</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Reset form contents</string>
    </property>
    <property name="shortcut" >
     <string>Ctrl+Z</string>
@@ -308,13 +317,19 @@
     <iconset resource="../Lava_res.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_TileHori.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Tile horizontal</string>
+    <string>Vertic. arrangement of splitter panes</string>
    </property>
    <property name="iconText" >
-    <string>Action</string>
+    <string>Vertic. arrangement of splitter panes</string>
    </property>
    <property name="toolTip" >
-    <string>Tile horizontal</string>
+    <string>Vertic. arrangement of splitter panes</string>
+   </property>
+   <property name="statusTip" >
+    <string>Vertic. arrangement of splitter panes</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Vertic. arrangement of splitter panes</string>
    </property>
   </action>
   <action name="tileVerticAction" >
@@ -322,13 +337,19 @@
     <iconset resource="../Lava_res.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_TileVert.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Tile vertical</string>
+    <string>Horiz. arrangement of splitter panes</string>
    </property>
    <property name="iconText" >
-    <string>Tile vertical</string>
+    <string>Horiz. arrangement of splitter panes</string>
    </property>
    <property name="toolTip" >
-    <string>Tile vertical</string>
+    <string>Horiz. arrangement of splitter panes</string>
+   </property>
+   <property name="statusTip" >
+    <string>Horiz. arrangement of splitter panes</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Horiz. arrangement of splitter panes</string>
    </property>
   </action>
   <action name="cascadeAction" >
@@ -386,10 +407,21 @@
     <iconset resource="../Lava_res.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Toggle category</string>
+    <string>Toggle object category,\npressed=state object</string>
    </property>
    <property name="iconText" >
     <string>Toggle category</string>
+   </property>
+   <property name="toolTip" >
+    <string>Toggle object category,
+pressed=state object</string>
+   </property>
+   <property name="statusTip" >
+    <string>Toggle object category,\npressed=state object</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Toggle object category,
+pressed=state object</string>
    </property>
   </action>
   <action name="learningLavaAction" >
