@@ -176,8 +176,8 @@ ifeq ($(OPSYS),Darwin)
 	$(QLIB)/QtCore.framework/Versions/4/QtCore \
 	$(QLIB)/QtGui.framework/Versions/4/QtGui \
 	$(QLIB)/QtNetwork.framework/Versions/4/QtNetwork \
-	$(QLIB)/QtXml.framework/Versions/4/QtXml .
-#	cd $(HOME); rm -f Desktop/lavape-*-macos*; tar cjf Desktop/lavape-0.9.1-linux-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*;
+	$(QLIB)/QtXml.framework/Versions/4/QtXml .; \
+	cd $(HOME); rm -f Desktop/lavape-*-macos*; tar cjf Desktop/lavape-0.9.1-mac-bin.tar.bz2 lavadistro; ls -l Desktop/lavape-*
 #	cd $(HOME); rm -f Desktop/lavape-*-macos*; /usr/local/makeself-2.1.5/makeself.sh --notemp --bzip2 --nomd5 lavadistro Desktop/lavape-0.9.1-macos-bin.bz2.run "the Lava Programming Environment"; ls -l Desktop/lavape-*;
 else
 	cd $(HOME)/lavadistro/lavadir/lib; \

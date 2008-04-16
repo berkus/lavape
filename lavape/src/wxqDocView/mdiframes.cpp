@@ -102,7 +102,7 @@ QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
   close->setPalette(pal);
   close->setCursor(Qt::ArrowCursor);
   close->setAutoRaise(true);
-  close->setIcon(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/close.xpm")));
+  close->setIcon(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/close.xpm")));
   m_currentTabWidget->setCornerWidget(close);
   close->setToolTip("Close current page");
   connect(close,SIGNAL(clicked()),m_currentTabWidget,SLOT(closePage()));
@@ -184,7 +184,7 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   pal.setColor(QPalette::Disabled, QPalette::Button, pal.color(QPalette::Disabled, QPalette::Window));
   pal.setColor(QPalette::Inactive, QPalette::Button, pal.color(QPalette::Inactive, QPalette::Window));
   close->setPalette(pal);
-  close->setIcon(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/close.xpm")));
+  close->setIcon(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/close.xpm")));
   close->setCursor(Qt::ArrowCursor);
   close->setAutoRaise(true);
   newTW->setCornerWidget(close);
