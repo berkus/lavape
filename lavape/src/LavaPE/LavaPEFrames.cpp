@@ -369,8 +369,10 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QToolButton *&pb,const char *
   pb->setToolButtonStyle(Qt::ToolButtonTextOnly);
   pb->setMinimumHeight(pb->fontInfo().pixelSize());
   pb->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::MinimumExpanding);
-  if (!tooltip.isEmpty())
+  if (!tooltip.isEmpty()) {
     pb->setToolTip(tooltip);
+    pb->setStatusTip(tooltip);
+  }
   if (!whatsThis.isEmpty())
     pb->setWhatsThis(whatsThis);
   pb->installEventFilter(this);

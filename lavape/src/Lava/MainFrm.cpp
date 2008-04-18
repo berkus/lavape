@@ -81,6 +81,14 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
   //connect( delAction,SIGNAL( triggered() ),SLOT( on_delAction_triggered() ) );
   setWindowIcon(QPixmap((const char**) Lava));
   lastTile = 0;
+
+  installToolButtonEvtFilters(Toolbar_1);
+  LBaseData->myWhatsThisAction = QWhatsThis::createAction(Toolbar_1);
+  Toolbar_1->addAction(LBaseData->myWhatsThisAction);
+  LBaseData->myWhatsThisAction->setWhatsThis("<p>Drag the \"What's this?\" cursor to any user interface object"
+    " and drop it there to see a <b>little popup info (but usually more than a tooltip)</b> on that object.</p>");
+  LBaseData->myWhatsThisAction->setToolTip("Enter \"WhatsThis help\" mode");
+  LBaseData->myWhatsThisAction->setStatusTip("Enter \"WhatsThis help\" mode");
 }
 
 bool CLavaMainFrame::OnCreate() {
@@ -399,3 +407,20 @@ void CLavaMainFrame::on_pmDumpAction_triggered(bool on)
   ((CLavaApp*)wxTheApp)->saveSettings();
 }
 
+void CLavaMainFrame::installToolButtonEvtFilters(QToolBar *tb) {
+  QList<QToolButton*> buttonList = tb->findChildren<QToolButton*>();
+  for (int i=0; i<buttonList.size(); i++)
+    buttonList.at(i)->installEventFilter(this);
+}
+
+bool CLavaMainFrame::eventFilter(QObject *obj,QEvent *ev) {
+  QWhatsThisClickedEvent *wtcEv;
+
+  if (ev->type() == QEvent::WhatsThisClicked) {
+    wtcEv = (QWhatsThisClickedEvent*)ev;
+    ShowPage(QString("whatsThis/")+wtcEv->href());
+    return true;
+  }
+  else
+    return false;
+}

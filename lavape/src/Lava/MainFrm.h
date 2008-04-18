@@ -15,8 +15,8 @@ public:
   virtual bool OnCreate();
   int lastTile;
   virtual void customEvent(QEvent *ev);
-  //CLavaDoc* docModal;
-  //QSplitter *m_ClientArea;
+  bool eventFilter(QObject *obj,QEvent *ev);
+  void installToolButtonEvtFilters(QToolBar *tb);
 
 public slots:
   virtual void on_helpContentsAction_triggered();
