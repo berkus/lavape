@@ -186,7 +186,7 @@ public:
     // deletes the document if this is there are no more views.
     virtual void OnChangedViewList();
 
-    virtual bool IsModified() const
+    virtual bool IsModified() //const
         { return m_documentModified; }
     virtual void Modify(bool mod) { m_documentModified = mod; }
 
