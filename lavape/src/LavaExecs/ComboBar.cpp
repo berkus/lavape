@@ -1226,7 +1226,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
         if (idtype == globalID) {
           memDECL = *(LavaDECL**)var;
           bContext = lastDOD->context;
-          if (memDECL->TypeFlags.Contains(trueObjCat))
+          if (memDECL->TypeFlags.Contains(definiteCat))
             if (memDECL->TypeFlags.Contains(stateObject))
               catComp = stateObj;
             else

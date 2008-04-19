@@ -2648,10 +2648,10 @@ LavaDECL* CLavaPEDoc::MakeOneSetGet (TypeFlag setgetflag, LavaDECL* implDECL,
 	IOEl = (LavaDECL*) cheIOEl->data;
 	IOEl->RefID = TID (propDecl->RefID.nID, IDTable.IDTab[propDecl->inINCL]->nINCLTrans[propDecl->RefID.nINCL].nINCL);
 	IOEl->LocalName = propDecl->LocalName;
-	if (propDecl->TypeFlags.Contains (trueObjCat))
-		IOEl->TypeFlags.INCL (trueObjCat);
+	if (propDecl->TypeFlags.Contains (definiteCat))
+		IOEl->TypeFlags.INCL (definiteCat);
 	else
-		IOEl->TypeFlags.EXCL (trueObjCat);
+		IOEl->TypeFlags.EXCL (definiteCat);
 	if (propDecl->TypeFlags.Contains (definesObjCat))
 		IOEl->TypeFlags.INCL (definesObjCat);
 	else
@@ -2719,7 +2719,7 @@ void CLavaPEDoc::MakeOperator (LavaDECL* opDecl)
 			declVal->ParentDECL = opDecl;
 			declVal->DeclType = OAttr;
 			declVal->LocalName = DString ("result");
-			declVal->TypeFlags.INCL (trueObjCat);
+			declVal->TypeFlags.INCL (definiteCat);
 		}
 		opDecl->NestedDecls.Append (cheVal);
 		if (opDecl->op == OP_fis)
@@ -2767,7 +2767,7 @@ void CLavaPEDoc::MakeOperator (LavaDECL* opDecl)
 				declArg1->ParentDECL = opDecl;
 				declArg1->DeclType = IAttr;
 				declArg1->LocalName = DString ("op1");
-				declArg1->TypeFlags.INCL (trueObjCat);
+				declArg1->TypeFlags.INCL (definiteCat);
 				if ((opDecl->op == OP_lshift) || (opDecl->op == OP_rshift))
 				{
 					declArg1->DeclDescType = BasicType;
@@ -2809,7 +2809,7 @@ void CLavaPEDoc::MakeOperator (LavaDECL* opDecl)
 			declArg1->DeclType = IAttr;
 			declArg1->DeclDescType = BasicType;
 			declArg1->BType = Integer;
-			declArg1->TypeFlags.INCL (trueObjCat);
+			declArg1->TypeFlags.INCL (definiteCat);
 			declArg1->RefID.nID = IDTable.BasicTypesID[Integer];
 			if (isStd)
 				declArg1->RefID.nINCL = 0;
@@ -2819,7 +2819,7 @@ void CLavaPEDoc::MakeOperator (LavaDECL* opDecl)
 			opDecl->NestedDecls.Prepend (cheArg1);
 			declVal->DeclDescType = NamedType;
 			declVal->BType = NonBasic;
-			declVal->TypeFlags.EXCL (trueObjCat);
+			declVal->TypeFlags.EXCL (definiteCat);
 			IDTable.GetParamID (opDecl->ParentDECL, declVal->RefID, isArray);
 
 			break;
@@ -2835,7 +2835,7 @@ void CLavaPEDoc::MakeOperator (LavaDECL* opDecl)
 			declArg1->DeclType = IAttr;
 			declArg1->DeclDescType = BasicType;
 			declArg1->BType = Integer;
-			declArg1->TypeFlags.INCL (trueObjCat);
+			declArg1->TypeFlags.INCL (definiteCat);
 			declArg1->RefID.nID = IDTable.BasicTypesID[Integer];
 			if (isStd)
 				declArg1->RefID.nINCL = 0;
@@ -2851,7 +2851,7 @@ void CLavaPEDoc::MakeOperator (LavaDECL* opDecl)
 				cheArg2 = NewCHE (declArg2);
 				declArg2->ParentDECL = opDecl;
 				declArg2->DeclType = IAttr;
-				declArg2->TypeFlags.INCL (trueObjCat);
+				declArg2->TypeFlags.INCL (definiteCat);
 				declArg2->LocalName = DString ("op2");
 			}
 			declArg2->DeclDescType = NamedType;
