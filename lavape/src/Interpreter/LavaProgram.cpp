@@ -2690,7 +2690,9 @@ bool GUIEdit(CheckData& ckd, LavaVariablePtr stack)
   newStackFrame[1] = (LavaObjectPtr)stack;
   newStackFrame[2] = (LavaObjectPtr)((unsigned)stack[2] & ~2);
   newStackFrame[SFH] = servObj; //stack[SFH];
-  newStackFrame[SFH+1] = stack[SFH+1];
+  newStackFrame[SFH+1] = CastTo(newStackFrame[SFH][0][0].classDECL->RelatedDECL, stack[SFH+1]);
+  if (!newStackFrame[SFH+1])
+    return false;
   newStackFrame[SFH+2] = 0;
   CRuntimeException *ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], !((SynFlags*)(newStackFrame[SFH+1]+1))->Contains(stateObjFlag), newStackFrame[SFH][0][0].classDECL->RelatedDECL);
   if (ckd.exceptionThrown)

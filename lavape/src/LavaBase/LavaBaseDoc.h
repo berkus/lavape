@@ -624,6 +624,8 @@ extern LAVABASE_DLL LavaObjectPtr CastEnumType(CheckData& ckd, LavaObjectPtr eTy
 extern LAVABASE_DLL LavaObjectPtr CastChainType(CheckData& ckd, LavaObjectPtr chainTypeObjPtr/*, LavaDECL* chainTypeDECL*/);
 extern LAVABASE_DLL LavaObjectPtr CastSetType(CheckData& ckd, LavaObjectPtr setTypeObjPtr);
 extern LAVABASE_DLL LavaObjectPtr CastArrayType(CheckData& ckd, LavaObjectPtr arrayTypeObjPtr);
+extern LAVABASE_DLL LavaObjectPtr CastTo(LavaDECL* classDECL, LavaObjectPtr obj);
+
 extern LAVABASE_DLL void ToggleObjectCat(LavaObjectPtr obj);
 /////////////////////////////////////////////////////////////////////////////
 

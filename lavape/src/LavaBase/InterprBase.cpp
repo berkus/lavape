@@ -1043,6 +1043,17 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
   return isNew;
 }
 
+LavaObjectPtr CastTo(LavaDECL* classDECL, LavaObjectPtr obj)
+{
+  int ii;
+  LavaObjectPtr objC;
+  objC = obj - obj[0]->sectionOffset;
+  for (ii = 0; (ii < objC[0][0].nSections) && (objC[0][ii].classDECL != classDECL); ii++);
+  if (ii < objC[0][0].nSections) 
+    return objC + objC[0][ii].sectionOffset;
+  else
+    return 0;
+}
 
 LavaObjectPtr CastEnumType(CheckData& ckd, LavaObjectPtr eTypeObjPtr)
 {
