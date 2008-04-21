@@ -22,6 +22,13 @@ The Lava programming environment can now also be built and run
 on the Mac OS 10.5 platform. A binary package for Mac OS 10.5
 is also available now.
 
+C) Support of Solaris
+=====================
+
+The Lava programming environment can now also be built and run
+on the Solaris platform. A binary package for Solaris is also
+available now.
+
 
 II) Installation of Lava/LavaPE
 ==============================
@@ -34,41 +41,45 @@ Simply launch the downloaded lavape-<rel>-win32-bin.exe file and
 follow the instructions of the installer.
 
 
-B) How to install the Linux binary release of LavaPE
-====================================================
+B) How to install the Linux binary releases of LavaPE
+=====================================================
 
-Download the lavape-<rel>-linux-bin.tar.bz2 package, move it to
-the directory where the "lavape" installation directory is to
-reside as a subdirectory, and execute
+Download the pertinent *.rpm / *.deb packages and install them
+in the usual way using "rpm -i <package>.rpm"
+or "dpkg -i <package>.deb".
 
-   tar xjf lavape-<rel>-linux-bin.tar.bz2
+A "lavape" installation directory will be installed in
+/usr/local, and two shell procedures "lavape" and "lava"
+will be installed in /usr/local/bin.
 
-in the usual way. In lavape/bin you will find the LavaPE/Lava
-executables of the Lava Programming Environment and of the
-Lava interpreter, respectively, thereafter. Execute
+"lavape" starts the Lava Programming Environment,
+"lava" starts the Lava interpreter.
 
-   ./LavaPE  or ./Lava , resp., to launch them.
+A number of sample programs can be found in the "samples"
+subdirectory of the "/usr/local/lavape" installation
+directory.
 
 
 How to install the Mac OS 10.5 binary release of LavaPE
 =======================================================
 
-Download the lavape-<rel>-macos.dmg package, move it to
+Download the lavape-<rel>-macos.tar.bz2 archive, move it to
 the directory where the "lavape" installation directory is to
 reside as a subdirectory, and double-click it in the
 Mac OS Finder.
 
-   tar xjf lavape-<rel>-linux-bin.tar.bz2
+A "lavadistro" subdirectoy will be created, containing
+two shell procedures "lavape" and "lava". You can
+double-click them in the Finder to launch the Lava Programming
+Environment or the Lava Interpreter, respectively.
 
-in the usual way. In lavape/bin you will find the LavaPE/Lava
-executables of the Lava Programming Environment and of the
-Lava interpreter, respectively, thereafter. Execute
-
-   ./LavaPE  or ./Lava , resp., to launch them.
+A number of sample programs can be found in the "samples"
+subdirectory of "lavadistro/lavadir/samples".
 
 
-How to install LavaPE from the source distribution on UNIX/Mac OS
-=================================================================
+
+How to install LavaPE from the source distribution on UNIX
+==========================================================
 
 Download the compressed tar file lavape-<release>-src.tar.bz2
 of the LavaPE source distribution and store it in the parent
