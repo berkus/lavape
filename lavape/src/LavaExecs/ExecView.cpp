@@ -5468,8 +5468,7 @@ void CExecView::OnToggleCategory()
     else if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
     && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
       PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
-    else if (text->currentSynObj->parentObject->primaryToken == new_T
-    || text->currentSynObj->parentObject->primaryToken == attach_T)
+    else if (text->currentSynObj->parentObject->primaryToken == new_T)
       PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
     else {
       PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));

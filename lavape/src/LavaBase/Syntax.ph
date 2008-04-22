@@ -298,7 +298,7 @@ $TYPE +CDP {
     //29, X2000 0000
     definesObjCat, //pattern parameter defines object category
     //30, X4000 0000
-    definiteCat    //attribute/IO-category is defined
+    trueObjCat    //attribute/IO-category is defined
     //31, X8000 0000
   };//TypeFlag
 

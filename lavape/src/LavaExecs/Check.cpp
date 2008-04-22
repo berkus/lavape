@@ -669,22 +669,12 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
       ok &= false;
     }
 
-  //if (parm->flags.Contains(isSelfVar)) {
-  //  if (parm->parentObject->parentObject->primaryToken != initializing_T
-  //  && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-  //  && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
-  //  && !formDecl->SecondTFlags.Contains(closed)) {
-  //    ((SynObject*)((CHE*)((ObjReference*)parm)->refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
-  //    ok &= false;
-  //  }
-  //}
-
   ckd.document->MemberTypeContext(formDecl, callContext,&ckd);
   callContext = callCtx;
   formTypeDecl = ckd.document->GetFinalMVType(formDecl->RefID,formDecl->inINCL,callContext,formCat,&ckd);
   callContext = callCtx;
   if (formCat == unknownCategory
-  && formDecl->TypeFlags.Contains(definiteCat))
+  && formDecl->TypeFlags.Contains(trueObjCat))
     if (formDecl->TypeFlags.Contains(stateObject))
       formCat = stateObj;
     else if (formDecl->TypeFlags.Contains(sameAsSelf))
@@ -755,7 +745,7 @@ bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContex
   }
 
   if (formCat == unknownCategory
-  && formDecl->TypeFlags.Contains(definiteCat))
+  && formDecl->TypeFlags.Contains(trueObjCat))
     if (formDecl->TypeFlags.Contains(stateObject))
       formCat = stateObj;
     else if (formDecl->TypeFlags.Contains(sameAsSelf))
@@ -1323,7 +1313,7 @@ void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, S
         else
           ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
         if (cat == unknownCategory
-        && declOutparm1->TypeFlags.Contains(definiteCat))
+        && declOutparm1->TypeFlags.Contains(trueObjCat))
           if (declOutparm1->TypeFlags.Contains(stateObject))
             cat = stateObj;
           else if (declOutparm1->TypeFlags.Contains(sameAsSelf))
@@ -1855,7 +1845,7 @@ void SelfVar::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
   ckd.tempCtx = selfCtx;
   if (decl->DeclType == VirtualType
   && decl->TypeFlags.Contains(definesObjCat)
-  && decl->TypeFlags.Contains(definiteCat))
+  && decl->TypeFlags.Contains(trueObjCat))
     if (decl->TypeFlags.Contains(stateObject))
       cat = stateObj;
     else
@@ -2482,7 +2472,7 @@ void UnaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynF
         else
           ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
         if (cat == unknownCategory
-        && declOutparm1->TypeFlags.Contains(definiteCat))
+        && declOutparm1->TypeFlags.Contains(trueObjCat))
           if (declOutparm1->TypeFlags.Contains(stateObject))
             cat = stateObj;
           else if (declOutparm1->TypeFlags.Contains(sameAsSelf))
@@ -2710,7 +2700,7 @@ void BinaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
         else
           ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
         if (cat == unknownCategory
-        && declOutparm1->TypeFlags.Contains(definiteCat))
+        && declOutparm1->TypeFlags.Contains(trueObjCat))
           if (declOutparm1->TypeFlags.Contains(stateObject))
             cat = stateObj;
           else if (declOutparm1->TypeFlags.Contains(sameAsSelf))
@@ -2822,7 +2812,7 @@ bool BinaryOp::Check (CheckData &ckd)
   if (formParmDecl->TypeFlags.Contains(substitutable))
     ctx.ContextFlags = SET(multiContext,-1); //?? stimmt der Context
   if (formCat2 == unknownCategory
-  && formParmDecl->TypeFlags.Contains(definiteCat))
+  && formParmDecl->TypeFlags.Contains(trueObjCat))
     if (formParmDecl->TypeFlags.Contains(stateObject))
       formCat2 = stateObj;
     else if (formParmDecl->TypeFlags.Contains(sameAsSelf))
@@ -3986,7 +3976,7 @@ void ArrayAtIndex::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat,
     else
       ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
     if (cat == unknownCategory
-    && declOutparm1->TypeFlags.Contains(definiteCat))
+    && declOutparm1->TypeFlags.Contains(trueObjCat))
       if (declOutparm1->TypeFlags.Contains(stateObject))
         cat = stateObj;
       else if (declOutparm1->TypeFlags.Contains(sameAsSelf))
@@ -4008,7 +3998,7 @@ void ArrayAtIndex::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat,
     else
       ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
     if (cat == unknownCategory
-    && declInparm2->TypeFlags.Contains(definiteCat))
+    && declInparm2->TypeFlags.Contains(trueObjCat))
       if (declInparm2->TypeFlags.Contains(stateObject))
         cat = stateObj;
       else if (declInparm2->TypeFlags.Contains(sameAsSelf))
@@ -4110,7 +4100,7 @@ bool ArrayAtIndex::Check (CheckData &ckd)
     ERROREXIT
   }
   if (formCat == unknownCategory
-  && declOp2->TypeFlags.Contains(definiteCat))
+  && declOp2->TypeFlags.Contains(trueObjCat))
     if (declOp2->TypeFlags.Contains(stateObject))
       formCat = stateObj;
     else if (declOp2->TypeFlags.Contains(sameAsSelf))
@@ -6854,7 +6844,7 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
         if (fieldDECL->TypeFlags.Contains(substitutable))
           parent->flags.INCL(isSubstitutable);
         if (parent->myCategory == unknownCategory
-            && fieldDECL->TypeFlags.Contains(definiteCat))
+            && fieldDECL->TypeFlags.Contains(trueObjCat))
           if (fieldDECL->TypeFlags.Contains(stateObject))
             parent->myCategory = stateObj;
           else
@@ -6951,7 +6941,7 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
             if (fieldDECL->TypeFlags.Contains(substitutable))
               parent->flags.INCL(isSubstitutable);
             if (parent->myCategory == unknownCategory
-                && fieldDECL->TypeFlags.Contains(definiteCat))
+                && fieldDECL->TypeFlags.Contains(trueObjCat))
               if (fieldDECL->TypeFlags.Contains(stateObject))
                 parent->myCategory = stateObj;
               else
