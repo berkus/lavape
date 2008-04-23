@@ -3628,7 +3628,7 @@ quantCase:
 
   default:
 deflt:
-    if (text->currentSynObj->primaryToken = quant_T) {
+    if (text->currentSynObj->primaryToken == quant_T) {
       if (text->currentSynObj->parentObject->primaryToken == declare_T)
         withSet = false;
       goto quantCase;
