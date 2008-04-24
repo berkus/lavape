@@ -98,7 +98,6 @@ ValOnInit CAttachHandler::OnInitDialog()
   }
   ID_OK->setEnabled(false);
   return BoxContinue;
-;
 }
 
 void CAttachHandler::on_HandlerList_activated(int)

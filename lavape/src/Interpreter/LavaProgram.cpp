@@ -2684,6 +2684,7 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
 
 bool GUIEdit(CheckData& ckd, LavaVariablePtr stack)
 {
+  bool objModf = false;
   LavaObjectPtr servObj = stack[SFH] - stack[SFH][0][0].sectionOffset;
   LavaObjectPtr newStackFrame[SFH+3];
   newStackFrame[0] = 0;
@@ -2708,7 +2709,11 @@ bool GUIEdit(CheckData& ckd, LavaVariablePtr stack)
   else {
     if (ex)
       throw *ex;
-    UpdateObject(ckd, newStackFrame[SFH+1], &newStackFrame[SFH+2]);
+    UpdateObject(ckd, newStackFrame[SFH+1], &newStackFrame[SFH+2], objModf);
+    if (objModf)
+      ((SynFlags*)(stack[SFH+1]+1))->INCL(objectModified);
+    else
+      ((SynFlags*)(stack[SFH+1]+1))->EXCL(objectModified);
     if (newStackFrame[SFH+2])
       DFC(newStackFrame[SFH+2]);
     if (ckd.exceptionThrown)

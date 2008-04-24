@@ -110,7 +110,7 @@ bool ObjectFinalize(CheckData& ckd, LavaVariablePtr stack)
   int ii, lmem, llast;
 
   object = stack[SFH] - stack[SFH][0][0].sectionOffset;
-  if (*(object - LOH) && ((RunTimeData*)*(object-LOH))->urlObj)  //url object?
+  if (*(object - LOH) && ((RunTimeData*)*(object-LOH))->urlObj && ((SynFlags*)(object+1))->Contains(objectModified))  //url object?
     if (object[0][0].implDECL != object[0][0].classDECL) { //not native i.e. Lava component
       if ( !((SynFlags*)(object + 1))->Contains(dontSave))
         ckd.document->SaveObject(ckd, stack[SFH]);
@@ -1260,7 +1260,7 @@ bool HSetOneLevelCopy(CheckData& ckd, LavaObjectPtr sourceSectionPtr, LavaObject
   return true;
 }
 
-bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& isNew)
+bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& isNew, bool& objModf)
 {
   CHE *cheUpdate, *cheOrig, *el;
   LavaObjectPtr elOrig, elUpdate, handle;
@@ -1285,6 +1285,7 @@ bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePt
         el = cheOrig;
         cheOrig = (CHE*)cheOrig->successor;
         chainOrig->Uncouple(el);
+        objModf = true;
         if (el->data)
           DFC((LavaObjectPtr)(el->data));
         DFC((LavaObjectPtr)el-LSH-1);
@@ -1317,6 +1318,7 @@ bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePt
         handle = (LavaObjectPtr)el-LSH-1;
         *(LavaVariablePtr)(handle + LSH) = origObj; //now chain element of origObj
         chainOrig->Insert(cheOrig, el);
+        objModf = true;
         cheOrig = (CHE*)el->successor;
       }
       else {
@@ -1325,7 +1327,7 @@ bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePt
         secOff = (elUpdate[0])[0].sectionOffset;
         elUpdate = elUpdate - secOff;
         elOrig = elOrig - secOff;
-        if (UpdateObject(ckd, elOrig, &elUpdate)) {
+        if (UpdateObject(ckd, elOrig, &elUpdate, objModf)) {
           if (!isNew && !((SynFlags*)(origObj+1))->Contains(stateObjFlag)) {
             ONELEVELCOPY(ckd, origObj);
             isNew = true;
@@ -1703,7 +1705,7 @@ void HArrayOneLevelCopy(CheckData& ckd, LavaObjectPtr sourceSectionPtr, LavaObje
   }
 }
 
-bool HArrayUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& isNew)
+bool HArrayUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& isNew, bool& objModf)
 {
   int iLen, ii/*, secOff*/;
   LavaVariablePtr origElPtr, updateElPtr;
@@ -1718,7 +1720,7 @@ bool HArrayUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr update
       //secOff = ((updateElPtr[0])[0])[0].sectionOffset;
       //*updateElPtr = updateElPtr[0] - secOff;
       //origElN = origElN - secOff;
-      if (UpdateObject(ckd, origElN, updateElPtr)) {
+      if (UpdateObject(ckd, origElN, updateElPtr, objModf)) {
         if (!isNew && !((SynFlags*)(origObj+1))->Contains(stateObjFlag))  {
           isNew = true;
           ONELEVELCOPY(ckd, origObj);

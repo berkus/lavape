@@ -608,7 +608,8 @@ enum ObjectStateFlag {
    zombified,       //global object flag (in object+1)
    releaseFinished, //indicator that all sub-objects have been released/decremented
 //   marked,          //used in InterprBase::forceRelease
-   compoPrim        //the creation section of component
+   compoPrim,        //the creation section of component
+   objectModified      //object is modified 
 };
 
 extern LAVABASE_DLL LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* typeDECL, bool stateObj, LavaObjectPtr urlObj=0);
@@ -617,7 +618,7 @@ extern LAVABASE_DLL LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr url
 extern LAVABASE_DLL bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object);
 extern LAVABASE_DLL CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, LavaVariablePtr resultVarPtr, bool stateObj = false, LavaDECL* resultClassDECL = 0, CCopied* copied = 0);
 extern LAVABASE_DLL bool EqualObjects(CheckData &ckd, LavaObjectPtr leftVarPtr, LavaObjectPtr rightVarPtr, int specialEQ);
-extern LAVABASE_DLL bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr);
+extern LAVABASE_DLL bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& objModf);
 extern LAVABASE_DLL bool OneLevelCopy(CheckData& ckd, LavaObjectPtr& object);
 extern LAVABASE_DLL TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL, LavaDECL* specDECL);
 extern LAVABASE_DLL LavaObjectPtr CastEnumType(CheckData& ckd, LavaObjectPtr eTypeObjPtr);

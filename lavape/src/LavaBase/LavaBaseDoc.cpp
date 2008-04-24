@@ -1230,19 +1230,19 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
       isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
     }
   }
-  /* alt:
+  // altI:
   if (basedefsCat || refdefsCat) 
     memDECL->TypeFlags.INCL(definesObjCat);
   else 
     if (memDECL->DeclType != VirtualType)
       memDECL->TypeFlags.EXCL(definesObjCat);
-  */
-  //neu:
+  /**/
+  /*neuD:
   if (memDECL->DeclType == VirtualType)
     if (basedefsCat || refdefsCat) 
       memDECL->TypeFlags.INCL(definesObjCat);
 //    else   //dies muß so (weg-)bleiben, sonst verliert der VT seine definesObjCat-Eigenschaft
-//      memDECL->TypeFlags.EXCL(definesObjCat);
+//      memDECL->TypeFlags.EXCL(definesObjCat);*/
   if (basetrueCat || reftrueCat) 
     memDECL->TypeFlags.INCL(trueObjCat);
   else 

@@ -922,7 +922,7 @@ bool OneLevelCopy(CheckData &ckd, LavaObjectPtr& object)
   return true;
 }
 
-bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr)
+bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& objModf)
 //
 // Function returns true if a value object has updates
 // 
@@ -959,11 +959,11 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
       if (secClassDECL->TypeFlags.Contains(isNative)) { //native base class
         funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
         if (secClassDECL->fromBType == B_Set) {
-          HSetUpdate(ckd, origSectionPtr, &updateSectionPtr, isNew);
+          HSetUpdate(ckd, origSectionPtr, &updateSectionPtr, isNew, objModf);
           origObj = origSectionPtr - secTab[ii].sectionOffset; //may be new object
         }
         else if (secClassDECL->fromBType == B_Array) {
-          HArrayUpdate(ckd, origSectionPtr, &updateSectionPtr, isNew);
+          HArrayUpdate(ckd, origSectionPtr, &updateSectionPtr, isNew, objModf);
           origObj = origSectionPtr - secTab[ii].sectionOffset; //may be new object
         }
         else {
@@ -998,6 +998,7 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
               equ = updateSectionPtr[ll] == origSectionPtr[ll];
           }
           if (!equ) {
+            objModf = true;
             if (isNew || ((SynFlags*)(origObj+1))->Contains(stateObjFlag)) {
               if (secClassDECL->fromBType == VLString)
                 HStringCopy(origSectionPtr, updateSectionPtr);
@@ -1023,7 +1024,7 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
           attrDECL = ((CSectionDesc*)secClassDECL->SectionTabPtr)[0].attrDesc[lmem-LSH].attrDECL;
           if (attrDECL->TypeFlags.Contains(constituent)) {
             newObject = *(LavaVariablePtr)(origSectionPtr + lmem);
-            if (UpdateObject(ckd, newObject, (LavaVariablePtr)(updateSectionPtr + lmem))) {
+            if (UpdateObject(ckd, newObject, (LavaVariablePtr)(updateSectionPtr + lmem), objModf)) {
               if (!isNew && !((SynFlags*)(origObj+1))->Contains(stateObjFlag))  {
                 isNew = true;
                 if (!OneLevelCopy(ckd, origObj))
