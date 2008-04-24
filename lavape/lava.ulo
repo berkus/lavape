@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+LAVADIR=/usr/local/lavape
+
+if [ `uname` == Darwin ]; then  
+  export DYLD_LIBRARY_PATH=$LAVADIR/lib
+  $LAVADIR/bin/Lava
+else
+  export LD_LIBRARY_PATH=$LAVADIR/lib
+  $LAVADIR/bin/Lava
+fi
