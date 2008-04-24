@@ -1216,13 +1216,13 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
                         && refDECL->TypeFlags.Contains(definesObjCat));
   if (refdefsCat) {
     inheritedFlags.INCL(definesObjCat);
-    reftrueCat = !refDECL->TypeFlags.Contains(isAbstract);
-    if (reftrueCat) {
+    reftrueCat = true; //!refDECL->TypeFlags.Contains(isAbstract);
+    //if (reftrueCat) {
       catErr = basetrueCat && (isStateOb != refDECL->TypeFlags.Contains(stateObject));
       if (!catErr) 
         isStateOb = refDECL->TypeFlags.Contains(stateObject);
       inheritedFlags.INCL(trueObjCat);
-    }
+    //}
   }
   else {
     if (!basetrueCat && (memDECL->DeclType != VirtualType)) {
@@ -1248,7 +1248,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
   else 
     if (memDECL->DeclType == VirtualType) {
       if (memDECL->TypeFlags.Contains(definesObjCat)
-        && !memDECL->TypeFlags.Contains(isAbstract)) {
+        /*&& !memDECL->TypeFlags.Contains(isAbstract)*/) {
         memDECL->TypeFlags.INCL(trueObjCat);
         isStateOb = memDECL->TypeFlags.Contains(stateObject);
         isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);

@@ -3509,6 +3509,11 @@ ValOnInit CIOBox::OnInitDialog()
           SameAsSelf->setChecked(true);
           AnyCategory->setChecked(false);
         }
+        else if (myDECL->TypeFlags.Contains(isAnyCategory)) {
+          StateObject->setChecked(false);
+          ValueObject->setChecked(false);
+          AnyCategory->setChecked(true);
+        }
         else {
           ValueObject->setChecked(true);
           SameAsSelf->setChecked(false);
@@ -4187,67 +4192,69 @@ void CVTypeBox::SetCategoryChecks()
     DefCat->setChecked(true);
   else 
     DefCat->setChecked(false);
+  AnyCategory->setChecked(false);
+  AnyCategory->setEnabled(false);
   inheritedFlag = myDoc->GetCategoryFlags(myDECL, catErr);;
   DefCat->setEnabled(!inheritedFlag.Contains(definesObjCat));
   if (inheritedFlag.Contains(trueObjCat)) {
     if (myDECL->TypeFlags.Contains(stateObject)) {
       StateObject->setChecked(true);
       ValueObject->setChecked(false);
-      AnyCategory->setChecked(false);
+      //AnyCategory->setChecked(false);
     }
     else if (myDECL->TypeFlags.Contains(isAnyCategory)) {
       StateObject->setChecked(false);
       ValueObject->setChecked(false);
-      AnyCategory->setChecked(true);
+      //AnyCategory->setChecked(true);
     }
     else {
       StateObject->setChecked(false);
       ValueObject->setChecked(true);
-      AnyCategory->setChecked(false);
+      //AnyCategory->setChecked(false);
     }
     StateObject->setEnabled(false);
     ValueObject->setEnabled(false);
-    AnyCategory->setEnabled(false);
+    //AnyCategory->setEnabled(false);
   }
   else {
     if (myDECL->TypeFlags.Contains(isAbstract)) 
       if (myDECL->Supports.first && !inheritedFlag.Contains(isAbstract))
         myDECL->TypeFlags.EXCL(isAbstract);
-    if (myDECL->TypeFlags.Contains(isAbstract)) {
+    /*if (myDECL->TypeFlags.Contains(isAbstract)) {
       StateObject->setChecked(false);
       ValueObject->setChecked(false);
-      AnyCategory->setChecked(false);
+      //AnyCategory->setChecked(false);
       StateObject->setEnabled(false);
       ValueObject->setEnabled(false);
-      AnyCategory->setEnabled(false);
+      //AnyCategory->setEnabled(false);
    }
-    else {
+    else {*/
       if (myDECL->TypeFlags.Contains(definesObjCat)) {
         if (myDECL->TypeFlags.Contains(stateObject)) {
           StateObject->setChecked(true);
           ValueObject->setChecked(false);
-          AnyCategory->setChecked(false);
+          //AnyCategory->setChecked(false);
         }
         else if (myDECL->TypeFlags.Contains(isAnyCategory)) {
           StateObject->setChecked(false);
           ValueObject->setChecked(false);
-          AnyCategory->setChecked(true);
+          //AnyCategory->setChecked(true);
         }
         else {
           StateObject->setChecked(false);
           ValueObject->setChecked(true);
-          AnyCategory->setChecked(false);
+          //AnyCategory->setChecked(false);
         }
         StateObject->setEnabled(true);
         ValueObject->setEnabled(true);
-        AnyCategory->setEnabled(true);
+        //AnyCategory->setEnabled(true);
       }
       else {
         StateObject->setChecked(false);
         ValueObject->setChecked(false);
-        AnyCategory->setChecked(false);
+        //AnyCategory->setChecked(false);
       }
-    }
+    //}
   }
 }
 
@@ -4342,13 +4349,15 @@ void CVTypeBox::on_DefCat_clicked()
   UpdateData(true);
   bool defCat = DefCat->isChecked()
                 && !inheritedFlag.Contains(trueObjCat)
-                && !myDECL->TypeFlags.Contains(isAbstract);
+                /*&& !myDECL->TypeFlags.Contains(isAbstract)*/;//04.08
   StateObject->setEnabled(defCat);
   ValueObject->setEnabled(defCat);
-  AnyCategory->setEnabled(defCat);
+  //AnyCategory->setEnabled(false);
+  //AnyCategory->setEnabled(defCat);04.08
   if (defCat) {
     ValueObject->setChecked(true);
     myDECL->TypeFlags.INCL(definesObjCat);
+    //myDECL->TypeFlags.EXCL(isAnyCategory);
   }
   else {
     ValueObject->setChecked(false);
@@ -4452,8 +4461,9 @@ void CVTypeBox::on_ID_OK_clicked()
     myDECL->TypeFlags.EXCL(substitutable);
   if (VTAbstract->isChecked()) {
     myDECL->TypeFlags.INCL(isAbstract);
-    myDECL->TypeFlags.EXCL(trueObjCat);
-    myDECL->TypeFlags.EXCL(stateObject);
+    //myDECL->TypeFlags.EXCL(trueObjCat);
+    //myDECL->TypeFlags.EXCL(stateObject);
+    //myDECL->TypeFlags.EXCL(isAnyCategory);
     myDECL->RefID  = TID(-1,0);
     myDECL->DeclDescType = NamedType;
   }
