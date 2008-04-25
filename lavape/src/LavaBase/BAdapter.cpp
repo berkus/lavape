@@ -54,10 +54,11 @@ using namespace std;
 }
 
 #define ONELEVELCOPY(CKD, OBJ) {\
-  if (!OneLevelCopy(CKD, OBJ) && !CKD.exceptionThrown)\
-    throw CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
-  else\
-    return false;\
+  if (!OneLevelCopy(CKD, OBJ)) \
+    if (!CKD.exceptionThrown)\
+      throw CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
+    else\
+      return false;\
 }
 	//((SynFlags*)(RESULT+1))->INCL(finished); \
 
