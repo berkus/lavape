@@ -465,7 +465,7 @@ void LavaBaseStringInit() {
   ERR_HandleOpParm  = QObject::tr("Parameter of handle operator # must be a quantified variable");
   ERR_UseVT  = QObject::tr("Error: This or a base type is virtual; => ref. to concrete interface forbidden");
   ERR_WrongContext  = QObject::tr("Type cannot be referenced from the current pattern context");
-  ERR_ImmutableCallObj  = QObject::tr("Frozen value object is used to call non-read-only member function");
+  ERR_ImmutableCallObj  = QObject::tr("This is or might be a (frozen!) value object but is used to call non-read-only member function");
   ERR_NonROCallInROClause = "Forbidden call of non-read-only function/main program in read-only clause or exec";
   ERR_SuccFailNotLast  = QObject::tr("Succeed/throw returns control; therefore there must not follow any further statement");
   ERR_NoNativeImpl  = QObject::tr("Implementation of native function not found/no adapter table");

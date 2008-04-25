@@ -653,7 +653,6 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
   LavaDECL *declVal, *declMapped, *startDecl=0; 
   TID pID;
   bool inContext = true;
-//  bool inContext = !decl->TypeFlags.Contains(substitutable);
 
   if (!decl)
     return 0;
