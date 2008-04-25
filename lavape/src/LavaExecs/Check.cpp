@@ -703,11 +703,22 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
       ok = false;
     }
 
-    if (actCat != unknownCategory
-    && ((formCat == sameAsSelfObj && actCat != callObjCat)
-        || (formCat != sameAsSelfObj && formCat != unknownCategory && actCat != formCat))) {
-      parm->SetError(ckd,&ERR_IncompatibleCategory);
-      ok = false;
+    if (actCat == unknownCategory) {
+      if (formCat != unknownCategory) {
+        parm->SetError(ckd,&ERR_IncompatibleCategory);
+        ok = false;
+      }
+    }
+    else if (formCat != unknownCategory) {
+      if (formCat == sameAsSelfObj
+      && actCat != callObjCat) {
+        parm->SetError(ckd,&ERR_IncompatibleCategory);
+        ok = false;
+      }
+      else if (formCat != sameAsSelfObj && actCat != formCat) {
+        parm->SetError(ckd,&ERR_IncompatibleCategory);
+        ok = false;
+      }
     }
   }
   return ok;
@@ -3635,11 +3646,13 @@ void VarName::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
     if (quant->elemType.ptr
     && ((SynObject*)quant->elemType.ptr)->primaryToken == TypeRef_T) {
       decl = ckd.document->GetFinalMVType(((Reference*)quant->elemType.ptr)->refID,ckd.inINCL,ckd.tempCtx,cat,&ckd);
-      if (cat == unknownCategory)
+      if (decl->DeclType != VirtualType) //cat == unknownCategory)
         if (((Reference*)quant->elemType.ptr)->flags.Contains(isVariable))
           cat = stateObj;
         else if (((Reference*)quant->elemType.ptr)->flags.Contains(isSameAsSelf))
           cat = sameAsSelfObj;
+        else if (((Reference*)quant->elemType.ptr)->flags.Contains(isUnknownCat))
+          cat = unknownCategory;
         else
           cat = valueObj;
       if (((Reference*)quant->elemType.ptr)->flags.Contains(isSubstitutable))
@@ -3880,8 +3893,13 @@ bool Assignment::Check (CheckData &ckd)
         ((SynObject*)exprValue.ptr)->SetError(ckd,ckd.errorCode);
         ok = false;
       }
-      if (catSource != unknownCategory
-      && catTarget != unknownCategory
+      if (catSource == unknownCategory) {
+        if (catTarget != unknownCategory) {
+          ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
+          ok = false;
+        }
+      }
+      else if (catTarget != unknownCategory
       && catSource != catTarget) {
         ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
         ok = false;

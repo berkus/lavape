@@ -23,8 +23,8 @@ $prefix=/usr/local
 d 755 root sys $prefix/lavape -
 #f 755 root sys $prefix/lavape/bin-install bin-install
 f 644 root sys $prefix/lavape *.txt
-f 755 root sys $prefix/bin/lavape lavape.bash
-f 755 root sys $prefix/bin/lava lava.bash
+f 755 root sys $prefix/bin/lavape lavape.ulo
+f 755 root sys $prefix/bin/lava lava.ulo
 
 d 777 root sys $prefix/lavape/samples -
 f 666 root sys $prefix/lavape/samples samples/*.lava
