@@ -189,19 +189,23 @@
     account.</p>
 
     
-<p align="justify">In contrast to this is copying a (signed and thereafter 
-    immutable) money transfer order semantics-preserving, provided it doesn't 
+<p align="justify">In contrast to this, copying a (signed and thereafter 
+    immutable) money transfer order is semantics-preserving, provided it doesn't 
     cause the money transfer order to be executed twice.</p>
 
     
 <p align="justify">In <b><i><font color="#ff0000">Lava</font></i></b> you 
-    can distinguish these two object categories explicitly: When declaring a 
-    variable you can (and must) specify whether the values of that variable are 
+    can distinguish these <a href="TwoObjectCategories.htm">two object categories</a> explicitly: When declaring a 
+    variable you can specify whether the values of that variable are 
     mutable <i>state objects</i> (with uniqueness semantics) or complex value 
     objects that become immutable after they have been constructed completely 
     (i.e., when they leave the <font color="#ff0000"><i><b>Lava</b></i></font> 
     new construct); thereafter they may be copied/cloned/passed by value without 
-    restrictions.</p>
+    restrictions. (For function parameters you may also specify that they should 
+be of the same category as the call object of the function call. Local variables 
+and function parameters, but not for member variables of classes, may also be of 
+&quot;any category&quot; (in cases where their treatment doesn't depend on their 
+category).</p>
 
     
 <p align="justify">Likewise, you have to distinguish explicitly in <b><i>

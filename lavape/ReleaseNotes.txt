@@ -2,13 +2,13 @@ I) Change Log for Release 0.9.1
 ===============================
 
 
-A) The LavaPE/Lava GUI is now based on tabbed and splitter widgets
-==================================================================
+A) The LavaPE/Lava user interface is now based on tabbed and splitter widgets
+=============================================================================
 
 The user interface of the Lava Programming Environment LavaPE
 and of the Lava interpreter is no longer based on the MDI (Multiple
 Document Interface) concept but on tabbed and splitter widgets, which
-promise to allow for more neatly arranged, non-overlapping windows.
+provide more neatly arranged, non-overlapping windows.
 
 The individual tabs can be rearranged by drag-and-drop within
 a tabbed widget as well as between different tabbed widgets.
@@ -74,7 +74,24 @@ double-click them in the Finder to launch the Lava Programming
 Environment or the Lava Interpreter, respectively.
 
 A number of sample programs can be found in the "samples"
-subdirectory of "lavadistro/lavadir/samples".
+subdirectory of "lavadistro/lavadir".
+
+How to install the Solaris binary release of LavaPE
+===================================================
+
+Download the lavape-<rel>-solaris.tar.bz2 archive, move it to
+the directory where the "lavape" installation directory is to
+reside as a subdirectory, and unpack it:
+
+   tar xjf lavape-<rel>-solaris.tar.bz2
+
+A "lavadistro" subdirectoy will be created, containing
+two shell procedures "lavape" and "lava" for launching
+the Lava Programming Environment or the Lava Interpreter,
+respectively.
+
+A number of sample programs can be found in the "samples"
+subdirectory of "lavadistro/lavadir".
 
 
 
@@ -92,7 +109,7 @@ Uncompress it using the command
 You need to have GNU gcc/make and the developer version
 of TrollTech/Qt4.
 
-Either you may download Qt4 from
+Either you may download (the OpenSource version of) Qt4 from
 http://trolltech.com/developer/downloads/qt/x11 and
 build it yourself. In this case you must set the
 environment variable QTDIR to point to the Qt-<release>
@@ -137,8 +154,4 @@ us (e-mail: guenthk@users.sourceforge.net)
 about any problems that you have encounterd
 during the installation or while using
 Lava/LavaPE.
-
-But let us also know if you could successfully
-install and use LavaPE. So far, we could not test Lava
-on all platforms where we can build it successfully.
 

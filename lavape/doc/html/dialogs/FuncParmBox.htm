@@ -57,9 +57,14 @@
     
     <P>The <A HREF="../TwoObjectCategories.htm">object category</A> of a
       function parameter may be <I>value object</I> (default) or <I>state
-      object </I>or<I> same as &quot;self&quot;</I>. The latter means that the
+      object </I>or<I> same as &quot;self&quot; </I>or <I>any category</I>. <i>
+    Same as &quot;self&quot; </i>means that the
       parameter's category equals that of the function's &quot;self&quot; object
-      (which can, of course, be determined only on the callers level).</P>
+      (which can, of course, be determined and evaluated only on the callers level).
+    <i>Any category </i>means that <i>state</i> as well as <i>value objects</i> 
+    may be assigned to this parameter. (This is useful in cases where the 
+    treatment of those objects actually doesn't depend on their category and 
+    where it is desirable to apply the function to both categories of objects.)</P>
     
     <H3>Mode</H3>
     
