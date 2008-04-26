@@ -260,7 +260,7 @@ ValOnInit CAttrBox::OnInitDialog()
     if (myDoc->GetCategoryFlags(myDECL, catErr).Contains(definesObjCat)) {
       StateObject->setEnabled(false);
       ValueObject->setEnabled(false);
-      AnyCategory->setEnabled(false);
+      //AnyCategory->setEnabled(false);
     }
     if (myDECL->TypeFlags.Contains(isOptional))
       valkindOfField = 1;
@@ -335,22 +335,22 @@ ValOnInit CAttrBox::OnInitDialog()
       if (myDECL->TypeFlags.Contains(stateObject)) {
         StateObject->setChecked(true);
         ValueObject->setChecked(false);
-        AnyCategory->setChecked(false);
+        //AnyCategory->setChecked(false);
       }
       else if (myDECL->TypeFlags.Contains(isAnyCategory)) {
         StateObject->setChecked(false);
         ValueObject->setChecked(false);
-        AnyCategory->setChecked(true);
+        //AnyCategory->setChecked(true);
       }
       else {
         StateObject->setChecked(false);
         ValueObject->setChecked(true);
-        AnyCategory->setChecked(false);
+        //AnyCategory->setChecked(false);
       }
     else {
       StateObject->setChecked(false);
       ValueObject->setChecked(false);
-      AnyCategory->setChecked(false);
+      //AnyCategory->setChecked(false);
     }
 
   }
@@ -510,29 +510,29 @@ void CAttrBox::on_NamedTypes_activated(int pos)
     SynFlags inheritedFlag = myDoc->GetCategoryFlags(myDECL, catErr); 
     StateObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
     ValueObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
-    AnyCategory->setEnabled(!inheritedFlag.Contains(definesObjCat));
+    //AnyCategory->setEnabled(!inheritedFlag.Contains(definesObjCat));
     if (inheritedFlag.Contains(definesObjCat))
       if (myDECL->TypeFlags.Contains(trueObjCat)) {
         if (myDECL->TypeFlags.Contains(stateObject)) {
           StateObject->setChecked(true);
           ValueObject->setChecked(false);
-          AnyCategory->setChecked(false);
+          //AnyCategory->setChecked(false);
         }
         else if (myDECL->TypeFlags.Contains(isAnyCategory)) {
           StateObject->setChecked(false);
           ValueObject->setChecked(false);
-          AnyCategory->setChecked(true);
+          //AnyCategory->setChecked(true);
         }
         else {
           StateObject->setChecked(false);
           ValueObject->setChecked(true);
-          AnyCategory->setChecked(false);
+          //AnyCategory->setChecked(false);
         }
       }
       else {
         StateObject->setChecked(false);
         ValueObject->setChecked(false);
-        AnyCategory->setChecked(false);
+        //AnyCategory->setChecked(false);
       }
   }
   else 
