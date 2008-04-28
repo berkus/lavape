@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>483</width>
-    <height>365</height>
+    <height>370</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -20,31 +20,28 @@
   </property>
   <layout class="QVBoxLayout" >
    <item>
-    <widget class="QLabel" name="Label_IDC_STATIC36" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize" >
-      <size>
-       <width>1</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text" >
-      <string>Name</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout" >
      <item>
       <layout class="QVBoxLayout" >
-       <property name="spacing" >
-        <number>15</number>
-       </property>
+       <item>
+        <widget class="QLabel" name="Label_IDC_STATIC36" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize" >
+          <size>
+           <width>1</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text" >
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QLineEdit" name="NewName" >
          <property name="sizePolicy" >
@@ -179,19 +176,38 @@
         </layout>
        </item>
        <item>
-        <widget class="QCheckBox" name="Native" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+        <widget class="QGroupBox" name="groupBox" >
+         <property name="title" >
+          <string>Naive / constant</string>
          </property>
-         <property name="focusPolicy" >
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="text" >
-          <string>Native class</string>
-         </property>
+         <layout class="QVBoxLayout" >
+          <item>
+           <widget class="QCheckBox" name="Native" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy" >
+             <enum>Qt::StrongFocus</enum>
+            </property>
+            <property name="text" >
+             <string>Native class</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="Constant" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string>All constituents are constant</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>

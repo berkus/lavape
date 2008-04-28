@@ -262,7 +262,7 @@ $TYPE +CDP {
     //11/2048, X0000 0800, get property function in a service implementation, the RefID is the ID of the property
     isPropSet,
     //12/4096, X0000 1000, set property function in a service implementation, the RefID is the ID of the property
-    isAnyCategory,
+    FREE_TYPEFLAG0,//isAnyCategory,
     //13/8192, X0000 2000, indefinite object category (stateObject or valueObject)
     constituent,
     //14/16384, X0000 4000 an attribute defines a down link
@@ -276,7 +276,7 @@ $TYPE +CDP {
     //18/, X0004 0000 the edit show function
     oldIsGUI,
     //19, X0008 0000/ now free flag
-    sameAsSelf,
+    FREE_TYPEFLAG1,//sameAsSelf,
     //20, X0010 0000 IO parameter has same category as "self"
     isNative,
     //21, X0020 0000         Function or interface has native implementation
@@ -292,13 +292,13 @@ $TYPE +CDP {
     //26, X0400 0000
     consumable,
     //27, X0800 0000
-    stateObject,  //attribute references a state object
+    FREE_TYPEFLAG2,//stateObject,  //attribute references a state object
     //28, X1000 0000
     hasSetGet,    //attribute has set and get functions
     //29, X2000 0000
-    definesObjCat, //pattern parameter defines object category
+    FREE_TYPEFLAG3,//definesObjCat, //pattern parameter defines object category
     //30, X4000 0000
-    trueObjCat    //attribute/IO-category is defined
+    FREE_TYPEFLAG4//trueObjCat    //attribute/IO-category is defined
     //31, X8000 0000
   };//TypeFlag
 

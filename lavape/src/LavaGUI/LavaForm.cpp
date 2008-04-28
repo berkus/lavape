@@ -76,7 +76,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn, LavaVariablePtr resultObjPtr, 
           if (!servDECL->WorkFlags.Contains(runTimeOK))
             if (!GUIProg->myDoc->CheckImpl(((CGUIProg*)GUIProg)->ckd, servDECL))
               RETURNFALSE()  //return false;
-          *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL->RelatedDECL, syn->TypeFlags.Contains(stateObject));
+          *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL->RelatedDECL, true/*syn->TypeFlags.Contains(stateObject)*/);
           if (!*resultObjPtr)
             RETURNFALSE() 
           if (GUIProg->myDoc->isObject
@@ -86,7 +86,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn, LavaVariablePtr resultObjPtr, 
     }
     else
       if (newObj) {
-        *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL, syn->TypeFlags.Contains(stateObject));
+        *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL, true/*syn->TypeFlags.Contains(stateObject)*/);
         if (!*resultObjPtr) 
           RETURNFALSE() 
         if (GUIProg->myDoc->isObject
@@ -1144,7 +1144,7 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
           else {
             elemObj = HArrayGetEl(multiObj, ii);
             if (!elemObj) {
-              elemObj = AllocateObject(((CGUIProg*)GUIProg)->ckd, iterDECL->RelatedDECL->RuntimeDECL, iterDECL->RelatedDECL->TypeFlags.Contains(stateObject));
+              elemObj = AllocateObject(((CGUIProg*)GUIProg)->ckd, iterDECL->RelatedDECL->RuntimeDECL, true/*iterDECL->RelatedDECL->TypeFlags.Contains(stateObject)*/);
               if (elemObj) {
   //              ((SynFlags*)(elemObj+1))->INCL(notFromSource);
                 ((SynFlags*)(elemObj+1))->INCL(useDefaults);

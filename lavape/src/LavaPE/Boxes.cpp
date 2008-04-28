@@ -239,7 +239,7 @@ ValOnInit CAttrBox::OnInitDialog()
   if (onNew) {
     TypeFlags.INCL(constituent);
     myDECL->TypeFlags.INCL(constituent);
-    myDECL->TypeFlags.INCL(trueObjCat);
+    //myDECL->TypeFlags.INCL(trueObjCat);
     //ValueObject->setChecked(true);
     myDoc->MakeBasicBox(BasicTypes, NoDef, true, TypeFlags.Contains(constituent));
     execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
@@ -1661,11 +1661,11 @@ ValOnInit CFuncBox::OnInitDialog()
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     while (cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)) {
       hasOutput = hasOutput || (((LavaDECL*)cheIO->data)->DeclType == OAttr);
-      if (((LavaDECL*)cheIO->data)->TypeFlags.Contains(sameAsSelf)) {
-        StaticFunc->setEnabled(false);
-        cheIO = 0;
-      }
-      else
+      //if (((LavaDECL*)cheIO->data)->TypeFlags.Contains(sameAsSelf)) {
+      //  StaticFunc->setEnabled(false);
+      //  cheIO = 0;
+      //}
+      //else
         cheIO = (CHE*)cheIO->successor;
     }
     hasOutput = hasOutput || myDECL->Inherits.first;
@@ -2249,7 +2249,7 @@ void CFuncBox::makeHandler()
   LavaDECL *IOEl, *IOEl2; 
   if (myDECL->GUISignaltype == Ev_ChainDelete) {
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->LocalName = STRING("chain");
     IOEl->DeclType = IAttr;
     IOEl->DeclDescType = NamedType;
@@ -2258,7 +2258,7 @@ void CFuncBox::makeHandler()
     myDECL->NestedDecls.Append(NewCHE(IOEl));
 
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->DeclType = IAttr;
     IOEl->LocalName = STRING("delHandle");
     IOEl->DeclDescType = BasicType;
@@ -2267,7 +2267,7 @@ void CFuncBox::makeHandler()
     IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Che], 1);
     myDECL->NestedDecls.Append(NewCHE(IOEl));
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->DeclType = OAttr;
     IOEl->LocalName = STRING("delete");
     IOEl->DeclDescType = BasicType;
@@ -2278,7 +2278,7 @@ void CFuncBox::makeHandler()
   }
   else if (myDECL->GUISignaltype == Ev_ChainInsert) {
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->LocalName = STRING("chain");
     IOEl->DeclType = IAttr;
     IOEl->DeclDescType = NamedType;
@@ -2287,7 +2287,7 @@ void CFuncBox::makeHandler()
     myDECL->NestedDecls.Append(NewCHE(IOEl));
 
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->LocalName = STRING("afterHandle");
     IOEl->DeclType = IAttr;
     IOEl->DeclDescType = BasicType;
@@ -2297,7 +2297,7 @@ void CFuncBox::makeHandler()
     IOEl->TypeFlags.INCL(isOptional);
     myDECL->NestedDecls.Append(NewCHE(IOEl));
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->DeclType = IAttr;
     IOEl->LocalName = STRING("defaultElem");
     if (FieldTypeDECL->fromBType == NonBasic)
@@ -2309,7 +2309,7 @@ void CFuncBox::makeHandler()
     myDoc->IDTable.GetParamRefID(FieldTypeDECL, IOEl->RefID, isSet);
     myDECL->NestedDecls.Append(NewCHE(IOEl));
     IOEl2 = NewLavaDECL();
-    IOEl2->TypeFlags.INCL(trueObjCat);
+    //IOEl2->TypeFlags.INCL(trueObjCat);
     IOEl2->LocalName = STRING("insert");
     IOEl2->DeclType = OAttr;
     IOEl2->DeclDescType = BasicType;
@@ -2318,7 +2318,7 @@ void CFuncBox::makeHandler()
     IOEl2->RefID = TID(myDoc->IDTable.BasicTypesID[B_Bool], 1);
     myDECL->NestedDecls.Append(NewCHE(IOEl2));
     IOEl2 = NewLavaDECL();
-    IOEl2->TypeFlags.INCL(trueObjCat);
+    //IOEl2->TypeFlags.INCL(trueObjCat);
     IOEl2->TypeFlags.INCL(isOptional);
     IOEl2->DeclType = OAttr;
     IOEl2->LocalName = STRING("insertElem");
@@ -2333,7 +2333,7 @@ void CFuncBox::makeHandler()
   }
 	else if (myDECL->GUISignaltype == Ev_OptInsert) {
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->DeclType = IAttr;
     IOEl->LocalName = STRING("defaultOpt");
     if (FieldTypeDECL->fromBType == NonBasic)
@@ -2345,7 +2345,7 @@ void CFuncBox::makeHandler()
     IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
     myDECL->NestedDecls.Append(NewCHE(IOEl));
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->LocalName = STRING("insert");
     IOEl->DeclType = OAttr;
     IOEl->DeclDescType = BasicType;
@@ -2354,8 +2354,8 @@ void CFuncBox::makeHandler()
     IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Bool], 1);
     myDECL->NestedDecls.Append(NewCHE(IOEl));
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->TypeFlags.INCL(isOptional);
     IOEl->DeclType = OAttr;
     IOEl->LocalName = STRING("insertOpt");
@@ -2370,7 +2370,7 @@ void CFuncBox::makeHandler()
   }
 	else if (myDECL->GUISignaltype == Ev_OptDelete) {
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->DeclType = IAttr;
     IOEl->LocalName = STRING("delOpt");
     if (FieldTypeDECL->fromBType == NonBasic)
@@ -2382,7 +2382,7 @@ void CFuncBox::makeHandler()
     IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
     myDECL->NestedDecls.Append(NewCHE(IOEl));
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->LocalName = STRING("delete");
     IOEl->DeclType = OAttr;
     IOEl->DeclDescType = BasicType;
@@ -2394,7 +2394,7 @@ void CFuncBox::makeHandler()
   }
   else if (myDECL->GUISignaltype == Ev_ValueChanged) {
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->DeclType = IAttr;
     IOEl->LocalName = STRING("oldValue");
     if (FieldTypeDECL->fromBType == NonBasic)
@@ -2406,7 +2406,7 @@ void CFuncBox::makeHandler()
     IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
     myDECL->NestedDecls.Append(NewCHE(IOEl));
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->DeclType = IAttr;
     IOEl->LocalName = STRING("enteredValue");
     if (FieldTypeDECL->fromBType == NonBasic)
@@ -2418,7 +2418,7 @@ void CFuncBox::makeHandler()
     IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
     myDECL->NestedDecls.Append(NewCHE(IOEl));
     IOEl = NewLavaDECL();
-    IOEl->TypeFlags.INCL(trueObjCat);
+    //IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->TypeFlags.INCL(isOptional);
     IOEl->DeclType = OAttr;
     IOEl->LocalName = STRING("newValue");
@@ -3007,6 +3007,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
     SupportsToList();
     BuildSet->setEnabled(false);
     Native->setChecked(myDECL->TypeFlags.Contains(isNative));
+    Constant->setChecked(myDECL->TypeFlags.Contains(isConst));
     if (myDECL->TypeFlags.Contains(isComponent)) {
       valKindOfInterface = 2;
       InterfaceID->setEnabled(true);
@@ -5030,7 +5031,7 @@ void CExecExtensions::ExecDefs (LavaDECL ** pelDef, int )
         if ((elDef != OrigDECL)
             && (  (elDef->DeclType != VirtualType)
                || (id == myDoc->GetMappedVType(id, context,0))
-                  && (myDECL->TypeFlags.Contains(stateObject) == elDef->TypeFlags.Contains(stateObject))
+                  /*&& (myDECL->TypeFlags.Contains(stateObject) == elDef->TypeFlags.Contains(stateObject))*/
                )) {
           //item = new CComboBoxItem(elDef->FullName, TID(elDef->OwnID, elDef->inINCL));
           //Combo->listBox()->insertItem(item);//sort

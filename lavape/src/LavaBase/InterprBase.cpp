@@ -658,7 +658,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
           for (/*ll = LSH*/; lmem < llast; lmem++) {
             attrDECL = ((CSectionDesc*)secClassDECL->SectionTabPtr)[0].attrDesc[lmem-LSH].attrDECL;
             constit = attrDECL->TypeFlags.Contains(constituent);
-            stateO = attrDECL->TypeFlags.Contains(stateObject);
+            stateO = true/*attrDECL->TypeFlags.Contains(stateObject)*/;
             resultAttr = (LavaVariablePtr)(resultSectionPtr + lmem);
             if (*(sourceSectionPtr + lmem) && constit) {
               cr = copied->Find(*((LavaVariablePtr)(sourceSectionPtr + lmem)));

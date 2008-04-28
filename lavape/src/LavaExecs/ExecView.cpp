@@ -5492,43 +5492,43 @@ bool CExecView::ConflictSelected()
 //    PutInsFlagHint(SET(isVariable,-1));
 //}
 
-bool CExecView::ToggleCatEnabled()
-{
-  LavaDECL *decl;
-  NewExpression *newExp;
-  //Category cat;
-  SynFlags ctxFlags;
-
-  if (Ignorable())
-    return false;
-
-  switch (text->currentSynObj->primaryToken) {
-  case CrtblRef_T:
-    if (text->currentSynObj->parentObject->primaryToken == new_T) {
-      newExp = (NewExpression*)text->currentSynObj->parentObject;
-      decl = myDoc->IDTable.GetDECL(((Reference*)newExp->objType.ptr)->refID,text->ckd.inINCL);
-      if (decl && decl->DeclType == CompObjSpec)
-        return false;
-      else
-        return true;
-    }
-    break;
-  case TypeRef_T:
-    if ((text->currentSynObj->parentObject->primaryToken == quant_T
-        && ((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
-    || text->currentSynObj->parentObject->primaryToken == catch_T)
-      return false;
-    text->currentSynObj->ExprGetFVType(text->ckd,decl,ctxFlags);
-    if (decl && decl->DeclType == VirtualType && decl->TypeFlags.Contains(definesObjCat))
-      return false;
-    else
-      return true;
-  default:
-    if (text->currentSynObj->IsConstant() && text->currentSynObj->primaryToken != nil_T)
-      return true;
-  }
-  return false;
-}
+//bool CExecView::ToggleCatEnabled()
+//{
+//  LavaDECL *decl;
+//  NewExpression *newExp;
+//  //Category cat;
+//  SynFlags ctxFlags;
+//
+//  if (Ignorable())
+//    return false;
+//
+//  switch (text->currentSynObj->primaryToken) {
+//  case CrtblRef_T:
+//    if (text->currentSynObj->parentObject->primaryToken == new_T) {
+//      newExp = (NewExpression*)text->currentSynObj->parentObject;
+//      decl = myDoc->IDTable.GetDECL(((Reference*)newExp->objType.ptr)->refID,text->ckd.inINCL);
+//      if (decl && decl->DeclType == CompObjSpec)
+//        return false;
+//      else
+//        return true;
+//    }
+//    break;
+//  case TypeRef_T:
+//    if ((text->currentSynObj->parentObject->primaryToken == quant_T
+//        && ((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
+//    || text->currentSynObj->parentObject->primaryToken == catch_T)
+//      return false;
+//    text->currentSynObj->ExprGetFVType(text->ckd,decl,ctxFlags);
+//    if (decl && decl->DeclType == VirtualType && decl->TypeFlags.Contains(definesObjCat))
+//      return false;
+//    else
+//      return true;
+//  default:
+//    if (text->currentSynObj->IsConstant() && text->currentSynObj->primaryToken != nil_T)
+//      return true;
+//  }
+//  return false;
+//}
 
 void CExecView::OnToggleSubstitutable()
 {
@@ -5773,8 +5773,8 @@ void CExecView::SetHelpText () {
   else if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
   && !text->currentSynObj->IsPlaceHolder())
     helpMsg = ID_INSERT_STM;
-  else if (ToggleCatEnabled())
-    helpMsg = ID_TOGGLE_CATEGORY;
+  //else if (ToggleCatEnabled())
+  //  helpMsg = ID_TOGGLE_CATEGORY;
   else if (!Ignorable() && text->currentSynObj->ExpressionSelected(text->currentSelection)
   && !text->currentSynObj->IsPlaceHolder())
     helpMsg = ID_REPLACE_EXP;
@@ -5814,7 +5814,7 @@ void CExecView::UpdateUI()
   OnUpdateToggleClosed(LBaseData->toggleClosedActionPtr);
   OnUpdateToggleParmNames(LBaseData->parmNameActionPtr);
   OnUpdateConflict(LBaseData->conflictingAssigActionPtr);
-  OnUpdateToggleCategory(LBaseData->toggleCategoryActionPtr);
+  //OnUpdateToggleCategory(LBaseData->toggleCategoryActionPtr);
   OnUpdateNextComment(LBaseData->nextCommentActionPtr);
   OnUpdatePrevComment(LBaseData->prevCommentActionPtr);
   OnUpdateNextError(LBaseData->nextErrorActionPtr);
@@ -6306,15 +6306,15 @@ void CExecView::OnUpdateToggleClosed(QAction* action)
   action->setChecked(text->currentSynObj->flags.Contains(isClosed));
 }
 
-void CExecView::OnUpdateToggleCategory(QAction* action)
-{
-  if (GetDocument()->changeNothing) {
-    action->setEnabled(false);
-    return;
-  }
-
-  action->setEnabled(ToggleCatEnabled());
-}
+//void CExecView::OnUpdateToggleCategory(QAction* action)
+//{
+//  if (GetDocument()->changeNothing) {
+//    action->setEnabled(false);
+//    return;
+//  }
+//
+//  action->setEnabled(ToggleCatEnabled());
+//}
 
 void CExecView::OnUpdateConflict(QAction* action)
 {

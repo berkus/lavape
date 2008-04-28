@@ -320,19 +320,19 @@ void CExecTree::ExecVT(LavaDECL *elDef, DString* lab)
     if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract)
         && (elDef->ParentDECL->DeclType != Package))
       new CLavaError(&elDef->DECLError1, &ERR_NoAbstract);
-    if (elDef->TypeFlags.Contains(stateObject))
-      *lab += DString("~");
-    else if (elDef->TypeFlags.Contains(isAnyCategory))
-      *lab += DString("*");
+    //if (elDef->TypeFlags.Contains(stateObject))
+    //  *lab += DString("~");
+    //else if (elDef->TypeFlags.Contains(isAnyCategory))
+    //  *lab += DString("*");
   }
   else {
     *lab += DString(" = ");
     if (elDef->TypeFlags.Contains(substitutable))
       *lab += DString("{");
-    if (elDef->TypeFlags.Contains(stateObject))
-      *lab += DString("~");
-    else if (elDef->TypeFlags.Contains(isAnyCategory))
-      *lab += DString("*");
+    //if (elDef->TypeFlags.Contains(stateObject))
+    //  *lab += DString("~");
+    //else if (elDef->TypeFlags.Contains(isAnyCategory))
+    //  *lab += DString("*");
     if (elDef->DeclDescType == NamedType) {
       decl2 = Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
       if (decl2) {
@@ -838,15 +838,15 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     lab += DString(" : ");
     if (elDef->TypeFlags.Contains(substitutable))
       lab += DString("{");
-    if (elDef->TypeFlags.Contains(stateObject))
-      lab += DString("~");
-    else if (elDef->TypeFlags.Contains(isAnyCategory))
-      lab += DString("*");
+    //if (elDef->TypeFlags.Contains(stateObject))
+    //  lab += DString("~");
+    //else if (elDef->TypeFlags.Contains(isAnyCategory))
+    //  lab += DString("*");
     lab += Doc->GetTypeLabel(elDef, true);
     if (elDef->TypeFlags.Contains(substitutable))
       lab += DString("}");
-    if (elDef->TypeFlags.Contains(sameAsSelf))
-      lab += DString(", same category as \"self\"");
+    //if (elDef->TypeFlags.Contains(sameAsSelf))
+    //  lab += DString(", same category as \"self\"");
     if ( ( elDef->DeclType == Attr)
          && elDef->Supports.first
          && elDef->SecondTFlags.Contains(overrides)) {

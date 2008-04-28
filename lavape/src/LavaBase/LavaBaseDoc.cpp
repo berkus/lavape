@@ -1128,12 +1128,12 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
 //return true: category of Attr, IAttr or OAttr
 //             is defined by the referenced virtual type
 {
-  bool basedefsCat = false;
-  bool refdefsCat = false;
-  bool basetrueCat = false;
-  bool reftrueCat = false;
-  bool isStateOb = false;
-  bool isSameAsSelf = false;
+  //bool basedefsCat = false;
+  //bool refdefsCat = false;
+  //bool basetrueCat = false;
+  //bool reftrueCat = false;
+  //bool isStateOb = false;
+  //bool isSameAsSelf = false;
   bool baseabstract = false;
   bool baseSubst = false;
   CHETID* che;
@@ -1147,25 +1147,25 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
     for (che = (CHETID*)memDECL->Supports.first; che; che = (CHETID*)che->successor) {
       decl = IDTable.GetDECL(che->data, memDECL->inINCL);
       if (decl) {
-        basedefsCat = basedefsCat || decl->TypeFlags.Contains(definesObjCat);
-        basetrueCat = basetrueCat || decl->TypeFlags.Contains(trueObjCat);
-        isStateOb = isStateOb || decl->TypeFlags.Contains(stateObject);
-        isSameAsSelf = isSameAsSelf || decl->TypeFlags.Contains(sameAsSelf);
+        //basedefsCat = basedefsCat || decl->TypeFlags.Contains(definesObjCat);
+        //basetrueCat = basetrueCat || decl->TypeFlags.Contains(trueObjCat);
+        //isStateOb = isStateOb || decl->TypeFlags.Contains(stateObject);
+        //isSameAsSelf = isSameAsSelf || decl->TypeFlags.Contains(sameAsSelf);
         baseabstract = baseabstract || decl->TypeFlags.Contains(isAbstract);
         baseSubst = baseSubst || decl->TypeFlags.Contains(substitutable);
       }
     }
-    if (basedefsCat)
-      inheritedFlags.INCL(definesObjCat);
+    //if (basedefsCat)
+    //  inheritedFlags.INCL(definesObjCat);
     if (baseabstract)
       inheritedFlags.INCL(isAbstract);
-    if (basetrueCat) {
-      inheritedFlags.INCL(trueObjCat);
-      if (isStateOb)
-        inheritedFlags.INCL(stateObject);
-      if (isSameAsSelf)
-        inheritedFlags.INCL(sameAsSelf);
-    }
+    //if (basetrueCat) {
+    //  inheritedFlags.INCL(trueObjCat);
+    //  if (isStateOb)
+    //    inheritedFlags.INCL(stateObject);
+    //  if (isSameAsSelf)
+    //    inheritedFlags.INCL(sameAsSelf);
+    //}
     if (decl && (memDECL->DeclType == Attr)) { 
       if (decl->TypeFlags.Contains(constituent)) 
         memDECL->TypeFlags.INCL(constituent);
@@ -1200,37 +1200,37 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
         else
           if (!baseabstract)
             memDECL->TypeFlags.EXCL(substitutable);
-        if (!basetrueCat) {
-          isStateOb = memDECL->TypeFlags.Contains(stateObject);
-          isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
-        }
+        //if (!basetrueCat) {
+        //  isStateOb = memDECL->TypeFlags.Contains(stateObject);
+        //  isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
+        //}
       }
   }
   LavaDECL* refDECL = IDTable.GetDECL(memDECL->RefID, memDECL->inINCL);
-  refdefsCat = (refDECL && (refDECL->DeclType == VirtualType)
-                        && refDECL->TypeFlags.Contains(definesObjCat));
-  if (refdefsCat) {
-    inheritedFlags.INCL(definesObjCat);
-    reftrueCat = true; //!refDECL->TypeFlags.Contains(isAbstract);
-    //if (reftrueCat) {
-      catErr = basetrueCat && (isStateOb != refDECL->TypeFlags.Contains(stateObject));
-      if (!catErr) 
-        isStateOb = refDECL->TypeFlags.Contains(stateObject);
-      inheritedFlags.INCL(trueObjCat);
-    //}
-  }
-  else {
-    if (!basetrueCat && (memDECL->DeclType != VirtualType)) {
-      isStateOb = memDECL->TypeFlags.Contains(stateObject);
-      isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
-    }
-  }
+  //refdefsCat = (refDECL && (refDECL->DeclType == VirtualType)
+  //                      && refDECL->TypeFlags.Contains(definesObjCat));
+  //if (refdefsCat) {
+  //  inheritedFlags.INCL(definesObjCat);
+  //  reftrueCat = true; //!refDECL->TypeFlags.Contains(isAbstract);
+  //  //if (reftrueCat) {
+  //    catErr = basetrueCat && (isStateOb != refDECL->TypeFlags.Contains(stateObject));
+  //    if (!catErr) 
+  //      isStateOb = refDECL->TypeFlags.Contains(stateObject);
+  //    inheritedFlags.INCL(trueObjCat);
+  //  //}
+  //}
+  //else {
+  //  if (!basetrueCat && (memDECL->DeclType != VirtualType)) {
+  //    isStateOb = memDECL->TypeFlags.Contains(stateObject);
+  //    isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
+  //  }
+  //}
   // altI:
-  if (basedefsCat || refdefsCat) 
-    memDECL->TypeFlags.INCL(definesObjCat);
-  else 
-    if (memDECL->DeclType != VirtualType)
-      memDECL->TypeFlags.EXCL(definesObjCat);
+  //if (basedefsCat || refdefsCat) 
+  //  memDECL->TypeFlags.INCL(definesObjCat);
+  //else 
+  //  if (memDECL->DeclType != VirtualType)
+  //    memDECL->TypeFlags.EXCL(definesObjCat);
   /**/
   /*neuD:
   if (memDECL->DeclType == VirtualType)
@@ -1238,35 +1238,35 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
       memDECL->TypeFlags.INCL(definesObjCat);
 //    else   //dies muß so (weg-)bleiben, sonst verliert der VT seine definesObjCat-Eigenschaft
 //      memDECL->TypeFlags.EXCL(definesObjCat);*/
-  if (basetrueCat || reftrueCat) 
-    memDECL->TypeFlags.INCL(trueObjCat);
-  else 
-    if (memDECL->DeclType == VirtualType) {
-      if (memDECL->TypeFlags.Contains(definesObjCat)
-        /*&& !memDECL->TypeFlags.Contains(isAbstract)*/) {
-        memDECL->TypeFlags.INCL(trueObjCat);
-        isStateOb = memDECL->TypeFlags.Contains(stateObject);
-        isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
-      }
-      else
-        memDECL->TypeFlags.EXCL(trueObjCat);
-    }
-    else
-      if (refDECL && memDECL->TypeFlags.Contains(definesObjCat)
-          && !refDECL->TypeFlags.Contains(trueObjCat))
-         memDECL->TypeFlags.EXCL(trueObjCat);
-      else
-         memDECL->TypeFlags.INCL(trueObjCat);
-  if (memDECL->TypeFlags.Contains(trueObjCat)) {
-    if (isStateOb)  
-      memDECL->TypeFlags.INCL(stateObject);
-    else 
-      memDECL->TypeFlags.EXCL(stateObject);
-    if (isSameAsSelf) 
-      memDECL->TypeFlags.INCL(sameAsSelf);
-    else 
-      memDECL->TypeFlags.EXCL(sameAsSelf);
-  }
+  //if (basetrueCat || reftrueCat) 
+  //  memDECL->TypeFlags.INCL(trueObjCat);
+  //else 
+  //  if (memDECL->DeclType == VirtualType) {
+  //    if (memDECL->TypeFlags.Contains(definesObjCat)
+  //      /*&& !memDECL->TypeFlags.Contains(isAbstract)*/) {
+  //      memDECL->TypeFlags.INCL(trueObjCat);
+  //      isStateOb = memDECL->TypeFlags.Contains(stateObject);
+  //      isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
+  //    }
+  //    else
+  //      memDECL->TypeFlags.EXCL(trueObjCat);
+  //  }
+  //  else
+  //    if (refDECL && memDECL->TypeFlags.Contains(definesObjCat)
+  //        && !refDECL->TypeFlags.Contains(trueObjCat))
+  //       memDECL->TypeFlags.EXCL(trueObjCat);
+  //    else
+  //       memDECL->TypeFlags.INCL(trueObjCat);
+  //if (memDECL->TypeFlags.Contains(trueObjCat)) {
+  //  if (isStateOb)  
+  //    memDECL->TypeFlags.INCL(stateObject);
+  //  else 
+  //    memDECL->TypeFlags.EXCL(stateObject);
+  //  if (isSameAsSelf) 
+  //    memDECL->TypeFlags.INCL(sameAsSelf);
+  //  else 
+  //    memDECL->TypeFlags.EXCL(sameAsSelf);
+  //}
   return inheritedFlags;
 }
 

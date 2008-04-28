@@ -108,7 +108,7 @@ public:
   bool IsTopLevelToken ();
   bool IsDeletablePrimary ();
   bool ConflictSelected();
-  bool ToggleCatEnabled();
+  //bool ToggleCatEnabled();
   bool ToggleSubstitutableEnabled();
   bool Ignorable ();
   bool Taboo (bool isEnableBreakpoints=false);
@@ -252,7 +252,7 @@ public:
   void OnUpdateToggleSubstitutable(QAction* action);
   void OnUpdateToggleClosed(QAction* action);
   void OnUpdateConflict(QAction* action);
-  void OnUpdateToggleCategory(QAction* action);
+  //void OnUpdateToggleCategory(QAction* action);
   void OnUpdateNextComment(QAction* action);
   void OnUpdatePrevComment(QAction* action);
   void OnUpdateNextError(QAction* action);

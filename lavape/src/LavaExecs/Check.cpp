@@ -4580,13 +4580,13 @@ bool Expression::CallCheck (CheckData &ckd) {
       funcExpr->SetError(ckd,&ERR_NonROCallInROClause);
       return false;
     }
-    else {
-      CHE *outp=GetFirstOutput(FuncDecl());
-      if (outp && !((LavaDECL*)outp->data)->TypeFlags.Contains(stateObject)) {
-        SetError(ckd,&ERR_ImmutableCallObj);
-        return false;
-      }
-    }
+    //else {
+    //  CHE *outp=GetFirstOutput(FuncDecl());
+    //  if (outp && !((LavaDECL*)outp->data)->TypeFlags.Contains(stateObject)) {
+    //    SetError(ckd,&ERR_ImmutableCallObj);
+    //    return false;
+    //  }
+    //}
 
   return ok;
 }
