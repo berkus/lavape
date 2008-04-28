@@ -2988,6 +2988,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
     myDoc->IDTable.GetPattern(myDECL, context);
     //IsGUI->setEnabled(!context.oContext);
     Native->setChecked(false);
+    ReadOnlyClass->setChecked(false);
   }
   else {
     //IsGUI->setEnabled(false);
@@ -3007,7 +3008,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
     SupportsToList();
     BuildSet->setEnabled(false);
     Native->setChecked(myDECL->TypeFlags.Contains(isNative));
-    Constant->setChecked(myDECL->TypeFlags.Contains(isConst));
+    ReadOnlyClass->setChecked(myDECL->TypeFlags.Contains(isConst));
     if (myDECL->TypeFlags.Contains(isComponent)) {
       valKindOfInterface = 2;
       InterfaceID->setEnabled(true);
@@ -3250,6 +3251,10 @@ void CInterfaceBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(isNative);
   else
     myDECL->TypeFlags.EXCL(isNative);
+  if (ReadOnlyClass->isChecked())
+    myDECL->TypeFlags.INCL(isConst);
+  else
+    myDECL->TypeFlags.EXCL(isConst);
   if  (valKindOfInterface == 1) {
     myDECL->TypeFlags.INCL(isAbstract);
     myDECL->TypeFlags.EXCL(isComponent);
