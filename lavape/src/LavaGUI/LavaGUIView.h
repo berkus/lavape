@@ -132,7 +132,7 @@ public:
 
   void OnDeleteOpt();
   void OnInsertOpt();
-	void OnTogglestate();
+	//void OnTogglestate();
   void OnEditCopy();
   void OnEditCut();
   void OnEditPaste();

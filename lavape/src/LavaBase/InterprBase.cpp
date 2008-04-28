@@ -352,10 +352,10 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,
             funcAdapter[4](ckd, newStackFrame);
           }
         }
-        if (stateObj)
-          ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
-        else
-          ((SynFlags*)(sectionPtr+1))->EXCL(stateObjFlag);
+        //if (stateObj)
+        //  ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
+        //else
+        //  ((SynFlags*)(sectionPtr+1))->EXCL(stateObjFlag);
         ((SynFlags*)(sectionPtr+1))->INCL(sectEstablished);
       }
     }
@@ -419,18 +419,18 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
   return ok;
 }
 
-void ToggleObjectCat(LavaObjectPtr object)
-{
-  LavaObjectPtr sectionPtr;
-  bool stateObj = !((SynFlags*)(object+1))->Contains(stateObjFlag);
-  for (int ii = 0; ii < object[0][0].nSections; ii++) {
-    sectionPtr = object - (object[0])[0].sectionOffset + (object[0])[ii].sectionOffset;
-    if (stateObj)
-      ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
-    else
-      ((SynFlags*)(sectionPtr+1))->EXCL(stateObjFlag);
-  }
-}
+//void ToggleObjectCat(LavaObjectPtr object)
+//{
+//  LavaObjectPtr sectionPtr;
+//  bool stateObj = !((SynFlags*)(object+1))->Contains(stateObjFlag);
+//  for (int ii = 0; ii < object[0][0].nSections; ii++) {
+//    sectionPtr = object - (object[0])[0].sectionOffset + (object[0])[ii].sectionOffset;
+//    if (stateObj)
+//      ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
+//    else
+//      ((SynFlags*)(sectionPtr+1))->EXCL(stateObjFlag);
+//  }
+//}
 
 LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObj)
 {

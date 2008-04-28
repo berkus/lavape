@@ -1037,11 +1037,11 @@ void CLavaMainFrame::on_genSingleHtmlAction_triggered()
 //////////////////////////////////////////////////////////
 // Exec handlers (tool buttons):
 
-void CLavaMainFrame::on_toggleCategoryAction_triggered(){
-  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  if (view)
-    view->OnToggleCategory();
-}
+//void CLavaMainFrame::on_toggleCategoryAction_triggered(){
+//  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+//  if (view)
+//    view->OnToggleCategory();
+//}
 
 void CLavaMainFrame::on_optLocalVarAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();

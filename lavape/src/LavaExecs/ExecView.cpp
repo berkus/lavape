@@ -1363,7 +1363,7 @@ void CExecView::Select (SynObject *selObj)
   CHE *chpFormIn;
   unsigned iInp=1, iOut=1;
   LavaDECL *decl, *declSig, *sigFuncDecl, *finalDecl, *declSwitchExpression;
-  Category cat, catSwitchExpression;
+  //Category cat, catSwitchExpression;
   CContext nullCtx, callCtx, callCtxSig;
   SynFlags ctxFlags;
   bool isSigFunc;
@@ -1527,7 +1527,7 @@ void CExecView::Select (SynObject *selObj)
             callCtx = text->ckd.lpc;
           }
           else {
-            callExpr->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+            callExpr->ExprGetFVType(text->ckd,decl,ctxFlags);
             callCtx = text->ckd.tempCtx;
             decl = text->ckd.document->GetTypeAndContext(decl,callCtx);
             text->ckd.document->NextContext(decl,callCtx);
@@ -1545,7 +1545,7 @@ void CExecView::Select (SynObject *selObj)
             if (((SynObject*)((FuncStatement*)connStm->callback.ptr)->function.ptr)->flags.Contains(isDisabled))
               ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
             else {
-/*              callExpr->ExprGetFVType(text->ckd,declSig,cat,ctxFlags);
+/*              callExpr->ExprGetFVType(text->ckd,declSig,ctxFlags);
               callCtxSig = text->ckd.tempCtx;
               declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
               text->ckd.document->NextContext(declSig,callCtxSig);
@@ -1588,7 +1588,7 @@ void CExecView::Select (SynObject *selObj)
             callCtx = text->ckd.lpc;
           }
           else {
-            callExpr->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+            callExpr->ExprGetFVType(text->ckd,decl,ctxFlags);
             callCtx = text->ckd.tempCtx;
             decl = text->ckd.document->GetTypeAndContext(decl,callCtx);
             text->ckd.document->NextContext(decl,callCtx);
@@ -1629,7 +1629,7 @@ disconn:
           callCtx = text->ckd.lpc;
         }
         else {
-          callExpr->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+          callExpr->ExprGetFVType(text->ckd,decl,ctxFlags);
           if (decl == (LavaDECL*)-1)
             decl = 0;
           else {
@@ -1644,7 +1644,7 @@ disconn:
             ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
           else { // slot function
             callExpr = (Expression*)disconnStm->signalSender.ptr;
-            callExpr->ExprGetFVType(text->ckd,declSig,cat,ctxFlags);
+            callExpr->ExprGetFVType(text->ckd,declSig,ctxFlags);
             if (declSig != (LavaDECL*)-1) {
               callCtxSig = text->ckd.tempCtx;
               declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
@@ -1702,11 +1702,11 @@ obj:
         }
         else
           text->ckd.tempCtx = text->ckd.lpc;
-        finalDecl = myDoc->GetFinalMVType(decl->RefID,decl->inINCL,text->ckd.tempCtx,cat,0);
+        finalDecl = myDoc->GetFinalMVType(decl->RefID,decl->inINCL,text->ckd.tempCtx,0);
         if (finalDecl) {
           if (decl->TypeFlags.Contains(substitutable))
             text->ckd.tempCtx.ContextFlags = SET(multiContext,-1);
-          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,finalDecl,text->ckd.tempCtx,cat,false);
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,finalDecl,text->ckd.tempCtx,false);
           redCtl->update();
           return;
         }
@@ -1714,22 +1714,22 @@ obj:
     }
     else if (text->currentSynObj->parentObject->primaryToken == assign_T) {
       assigStm = (Assignment*)text->currentSynObj->parentObject;
-      ((SynObject*)assigStm->exprValue.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      ((SynObject*)assigStm->exprValue.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
       if (decl && decl != (LavaDECL*)-1) {
         if (ctxFlags.bits)
           text->ckd.tempCtx.ContextFlags = ctxFlags;
-        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,false);
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,false);
         redCtl->update();
         return;
       }
     }
 /*    else if (text->currentSynObj->parentObject->primaryToken == copy_T) {
       copyStm = (CopyStatement*)text->currentSynObj->parentObject;
-      ((SynObject*)copyStm->fromObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      ((SynObject*)copyStm->fromObj.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
       if (decl) {
         if (ctxFlags.bits)
           text->ckd.tempCtx.ContextFlags = ctxFlags;
-        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,false,true);
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,false,true);
         redCtl->update();
         return;
       }
@@ -1751,11 +1751,11 @@ exp: // Const_T
         text->ckd.tempCtx = funcExpr->callCtx;
       else
         text->ckd.tempCtx = text->ckd.lpc;
-      finalDecl = myDoc->GetFinalMVType(decl->RefID,decl->inINCL,text->ckd.tempCtx,cat,0);
+      finalDecl = myDoc->GetFinalMVType(decl->RefID,decl->inINCL,text->ckd.tempCtx,0);
       if (finalDecl) {
         if (decl->TypeFlags.Contains(substitutable))
           text->ckd.tempCtx.ContextFlags = SET(multiContext,-1);
-        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,finalDecl,text->ckd.tempCtx,cat,true);
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,finalDecl,text->ckd.tempCtx,true);
       }
       else
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
@@ -1764,23 +1764,23 @@ exp: // Const_T
     && text->currentSynObj->parentObject->primaryToken == EvalStm_T) {
       TID tidBool=TID(text->ckd.document->IDTable.BasicTypesID[B_Bool],myDoc->isStd?0:1);
       decl = myDoc->IDTable.GetDECL(tidBool);
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,nullCtx,valueObj,true);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,nullCtx,true);
     }
     else if (text->currentSelection->data.token == Exp_T
     && text->currentSynObj->parentObject->primaryToken == item_T) {
       TID tidInteger=TID(text->ckd.document->IDTable.BasicTypesID[Integer],myDoc->isStd?0:1);
       decl = myDoc->IDTable.GetDECL(tidInteger);
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,nullCtx,valueObj,true);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,nullCtx,true);
     }
     else if (text->currentSelection->data.token == Exp_T
     && text->currentSynObj->parentObject->primaryToken == elsif_T) {
       ifx = (IfExpression*)text->currentSynObj->parentObject->parentObject;
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,ifx->targetDecl,ifx->targetCtx,ifx->targetCat,true);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,ifx->targetDecl,ifx->targetCtx,true);
     }
     else if (text->currentSelection->data.token == Exp_T
     && text->currentSynObj->parentObject->primaryToken == ifx_T) {
       ifx = (IfExpression*)text->currentSynObj->parentObject;
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,ifx->targetDecl,ifx->targetCtx,ifx->targetCat,true);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,ifx->targetDecl,ifx->targetCtx,true);
     }
     else if (text->currentSelection->data.token == Exp_T
     && text->currentSynObj->parentObject->primaryToken == select_T
@@ -1794,26 +1794,26 @@ exp: // Const_T
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objCombo);
     else if (text->currentSelection->data.token == Exp_T
     && text->currentSynObj->parentObject->primaryToken == Handle_T) {
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,0,nullCtx,valueObj,true);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,0,nullCtx,true);
     }
     else if (text->currentSynObj->parentObject->primaryToken == assign_T) {
       assigStm = (Assignment*)text->currentSynObj->parentObject;
-      ((SynObject*)assigStm->targetObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      ((SynObject*)assigStm->targetObj.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
       if (decl) {
         if (ctxFlags.bits)
           text->ckd.tempCtx.ContextFlags = ctxFlags;
-        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,true);
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,true);
       }
       else
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
     }
     else if (text->currentSynObj->parentObject->primaryToken == copy_T) {
       copyStm = (CopyStatement*)text->currentSynObj->parentObject;
-      ((SynObject*)copyStm->ontoObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      ((SynObject*)copyStm->ontoObj.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
       if (decl) {
         if (ctxFlags.bits)
           text->ckd.tempCtx.ContextFlags = ctxFlags;
-        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,true,true);
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,true,true);
       }
       else
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
@@ -1821,7 +1821,7 @@ exp: // Const_T
     else if (text->currentSynObj->parentObject->IsMultOp()
     && text->currentSynObj->parentObject->IsExpression()) {
       multOpExp = (MultipleOp*)text->currentSynObj->parentObject;
-      ((SynObject*)((CHE*)multOpExp->operands.first)->data)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      ((SynObject*)((CHE*)multOpExp->operands.first)->data)->ExprGetFVType(text->ckd,decl,ctxFlags);
       text->ckd.tempCtx = text->ckd.lpc;
       decl = text->ckd.document->GetTypeAndContext(decl,text->ckd.tempCtx);
       if (decl
@@ -1831,11 +1831,11 @@ exp: // Const_T
         ADJUST(tid,decl);
         if (ctxFlags.bits)
           text->ckd.tempCtx.ContextFlags = ctxFlags;
-        decl = myDoc->GetFinalMVType(tid,0,text->ckd.tempCtx,cat,0);
+        decl = myDoc->GetFinalMVType(tid,0,text->ckd.tempCtx,0);
         if (decl) {
           if (((LavaDECL*)chpFormIn->data)->TypeFlags.Contains(substitutable))
             text->ckd.tempCtx.ContextFlags = SET(multiContext,-1);
-          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,true);
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,true);
         }
         else
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
@@ -1886,7 +1886,7 @@ exp: // Const_T
         && objRef->refIDs.first == objRef->refIDs.last)
           decl = text->ckd.document->IDTable.GetDECL(selfVar->typeID,text->ckd.inINCL);
         else {
-          ((VarName*)dw)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+          ((VarName*)dw)->ExprGetFVType(text->ckd,decl,ctxFlags);
           decl = text->ckd.document->GetType(decl);
         }
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSubObjects(decl, text->ckd.lpc);
@@ -1926,7 +1926,7 @@ exp: // Const_T
     else if(text->currentSynObj->type == TypePH_T
     && text->currentSynObj->parentObject->primaryToken == caseType_T) {
       typeSwitchExpression = (SynObject*)((TypeSwitchStatement*)text->currentSynObj->parentObject->parentObject)->caseExpression.ptr;
-      typeSwitchExpression->ExprGetFVType(text->ckd,declSwitchExpression,catSwitchExpression,ctxFlags);
+      typeSwitchExpression->ExprGetFVType(text->ckd,declSwitchExpression,ctxFlags);
       if (declSwitchExpression) {
         CContext swCtx = text->ckd.tempCtx;
         if (ctxFlags.bits)
@@ -4095,7 +4095,7 @@ bool CExecView::EnableGotoDecl()
   SynObject *typeObj, *synObj;
   Quantifier *quant;
   CloneExpression *makeClone;
-  Category cat;
+  //Category cat;
   SynFlags ctxFlags;
 
   if (text->currentSelection->data.token == Comment_T)
@@ -4131,7 +4131,7 @@ bool CExecView::EnableGotoDecl()
         return true;
     else if (text->currentSynObj->parentObject->primaryToken == quant_T) { // typeless quant. set var
       quant = (Quantifier*)text->currentSynObj->parentObject;
-      ((SynObject*)quant->set.ptr)->ExprGetFVType(text->ckd,setDecl,cat,ctxFlags);
+      ((SynObject*)quant->set.ptr)->ExprGetFVType(text->ckd,setDecl,ctxFlags);
       setDecl = text->ckd.document->GetType(setDecl);
       if (!setDecl) return false;
       if (((SynObject*)quant->set.ptr)->primaryToken == intIntv_T
@@ -4144,7 +4144,7 @@ bool CExecView::EnableGotoDecl()
     }
     else {  // clone temp variable
       makeClone = (CloneExpression*)text->currentSynObj->parentObject;
-      ((CloneExpression*)makeClone->fromObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      ((CloneExpression*)makeClone->fromObj.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
       if (!decl) return false;
       decl = text->ckd.document->GetType(decl);
       tid = OWNID(decl);
@@ -4153,19 +4153,19 @@ bool CExecView::EnableGotoDecl()
     break;
   default:
     if (text->currentSynObj->primaryToken == arrayAtIndex_T) {
-      ((SynObject*)((ArrayAtIndex*)text->currentSynObj)->arrayObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      ((SynObject*)((ArrayAtIndex*)text->currentSynObj)->arrayObj.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
       decl = text->ckd.document->GetType(decl);
     }
     else if (text->currentSynObj->IsMultOp() && text->currentSynObj->ExpressionSelected(text->currentSelection)) {
-      ((SynObject*)((CHE*)((MultipleOp*)text->currentSynObj)->operands.first)->data)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      ((SynObject*)((CHE*)((MultipleOp*)text->currentSynObj)->operands.first)->data)->ExprGetFVType(text->ckd,decl,ctxFlags);
       decl = text->ckd.document->GetType(decl);
     }
     else if (text->currentSynObj->IsBinaryOp()) {
-      ((SynObject*)((BinaryOp*)text->currentSynObj)->operand1.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      ((SynObject*)((BinaryOp*)text->currentSynObj)->operand1.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
       decl = text->ckd.document->GetType(decl);
     }
     else if (text->currentSynObj->IsUnaryOp()) {
-      ((SynObject*)((UnaryOp*)text->currentSynObj)->operand.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      ((SynObject*)((UnaryOp*)text->currentSynObj)->operand.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
       decl = text->ckd.document->GetType(decl);
     }
     else
@@ -4189,7 +4189,7 @@ void CExecView::OnGotoDecl()
   CloneExpression *makeClone;
   Quantifier *quant;
   TID itfTid;
-  Category cat;
+  //Category cat;
   SynFlags ctxFlags;
 
   if (!EditOK()) return;
@@ -4212,7 +4212,7 @@ void CExecView::OnGotoDecl()
       else if (text->currentSynObj->parentObject->primaryToken == quant_T) { // typeless quant. set var
         quant = (Quantifier*)text->currentSynObj->parentObject;
         quant = (Quantifier*)text->currentSynObj->parentObject;
-        ((SynObject*)quant->set.ptr)->ExprGetFVType(text->ckd,setDecl,cat,ctxFlags);
+        ((SynObject*)quant->set.ptr)->ExprGetFVType(text->ckd,setDecl,ctxFlags);
         setDecl = text->ckd.document->GetType(setDecl);
         if (!setDecl) return;
         if (((SynObject*)quant->set.ptr)->primaryToken == intIntv_T
@@ -4224,7 +4224,7 @@ void CExecView::OnGotoDecl()
       }
       else {  // clone temp variable
         makeClone = (CloneExpression*)text->currentSynObj->parentObject;
-        ((CloneExpression*)makeClone->fromObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+        ((CloneExpression*)makeClone->fromObj.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
         decl = text->ckd.document->GetType(decl);
         tid = OWNID(decl);
         Base->Browser->BrowseDECL(GetDocument(),tid);
@@ -4255,19 +4255,19 @@ void CExecView::OnGotoDecl()
       break;
     default:
       if (text->currentSynObj->primaryToken == arrayAtIndex_T) {
-        ((SynObject*)((ArrayAtIndex*)text->currentSynObj)->arrayObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+        ((SynObject*)((ArrayAtIndex*)text->currentSynObj)->arrayObj.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
         decl = text->ckd.document->GetType(decl);
       }
       else if (text->currentSynObj->IsMultOp()) {
-        ((SynObject*)((CHE*)((MultipleOp*)text->currentSynObj)->operands.first)->data)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+        ((SynObject*)((CHE*)((MultipleOp*)text->currentSynObj)->operands.first)->data)->ExprGetFVType(text->ckd,decl,ctxFlags);
         decl = text->ckd.document->GetType(decl);
       }
       else if (text->currentSynObj->IsBinaryOp()) {
-        ((SynObject*)((BinaryOp*)text->currentSynObj)->operand1.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+        ((SynObject*)((BinaryOp*)text->currentSynObj)->operand1.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
         decl = text->ckd.document->GetType(decl);
       }
       else if (text->currentSynObj->IsUnaryOp()) {
-        ((SynObject*)((UnaryOp*)text->currentSynObj)->operand.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+        ((SynObject*)((UnaryOp*)text->currentSynObj)->operand.ptr)->ExprGetFVType(text->ckd,decl,ctxFlags);
         decl = text->ckd.document->GetType(decl);
       }
       myDoc->GetOperatorID(decl,(TOperator)(text->currentSynObj->primaryToken-not_T),tidOperatorFunc);
@@ -4972,7 +4972,7 @@ crtbl:
           return;
         }
         else {
-          Category targetCat = newExp->targetCat;
+          //Category targetCat = newExp->targetCat;
           newExp = new NewExpressionV(
             funcStm,
             false,
@@ -4983,8 +4983,8 @@ crtbl:
             varNamePtr->varName += qPrintable(QString::number(tempNo));
                                         }
           newExp->objType.ptr = new ReferenceV(CrtblPH_T,tid,str.toAscii());
-          if (targetCat == stateObj)
-            ((Reference*)newExp->objType.ptr)->flags.INCL(isVariable);
+          //if (targetCat == stateObj)
+          //  ((Reference*)newExp->objType.ptr)->flags.INCL(isVariable);
           tdod = new TDODV(true);
           ((VarName*)newExp->varName.ptr)->MakeTable((address)&myDoc->IDTable,0,newExp,onNewID,(address)&newExp->varName.ptr,0);
           ((VarName*)newExp->varName.ptr)->varID.nINCL = -1;
@@ -5016,8 +5016,8 @@ crtbl:
   default: // TypeRef
     ref = new ReferenceV(text->currentSynObj->type,refID,refName.toAscii());
     decl = myDoc->IDTable.GetDECL(refID);
-    if (((Expression*)text->currentSynObj->parentObject)->targetCat == stateObj)
-      ref->flags.INCL(isVariable);
+    //if (((Expression*)text->currentSynObj->parentObject)->targetCat == stateObj)
+    //  ref->flags.INCL(isVariable);
     if (text->currentSynObj->parentObject->primaryToken != select_T) {
       PutInsHint(ref);
       return;
@@ -5096,8 +5096,8 @@ void CExecView::SetRefTypeFlags (ObjReference *newRef) {
     switch (decl->DeclType) {
     case Attr:
       newRef->flags.INCL(isMemberVar);
-      if (((TDOD*)((CHE*)((CHE*)newRef->refIDs.last)->predecessor)->data)->IsStateObject(text->ckd))
-        newRef->flags.INCL(isStateObjMember);
+      //if (((TDOD*)((CHE*)((CHE*)newRef->refIDs.last)->predecessor)->data)->IsStateObject(text->ckd))
+      //  newRef->flags.INCL(isStateObjMember);
       break;
     case IAttr:
       newRef->flags.INCL(isInputVar);
@@ -5455,48 +5455,48 @@ bool CExecView::ConflictSelected()
     return false;
 }
 
-void CExecView::OnToggleCategory()
-{
-  if (!EditOK()) return;
-
-  if (text->currentSynObj->flags.Contains(isVariable)) {
-    if (text->ckd.myDECL->ParentDECL->DeclType == Function
-    && !text->ckd.myDECL->ParentDECL->TypeFlags.Contains(isStatic)) {
-      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
-      PutInsFlagHint(SET(isSameAsSelf,-1),SET(lastHint,-1));
-    }
-    else if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
-    && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
-      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
-    else if (text->currentSynObj->parentObject->primaryToken == new_T)
-      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
-    else {
-      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
-      PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
-    }
-  }
-  else if (text->currentSynObj->flags.Contains(isSameAsSelf)) {
-    if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
-    && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
-      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
-    else if (text->currentSynObj->parentObject->primaryToken == new_T)
-      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
-    else {
-      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,-1));
-      PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
-    }
-  }
-  else if (text->currentSynObj->flags.Contains(isUnknownCat))
-    PutDelFlagHint(SET(isUnknownCat,-1));
-  else
-    PutInsFlagHint(SET(isVariable,-1));
-}
+//void CExecView::OnToggleCategory()
+//{
+//  if (!EditOK()) return;
+//
+//  if (text->currentSynObj->flags.Contains(isVariable)) {
+//    if (text->ckd.myDECL->ParentDECL->DeclType == Function
+//    && !text->ckd.myDECL->ParentDECL->TypeFlags.Contains(isStatic)) {
+//      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
+//      PutInsFlagHint(SET(isSameAsSelf,-1),SET(lastHint,-1));
+//    }
+//    else if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
+//    && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
+//      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
+//    else if (text->currentSynObj->parentObject->primaryToken == new_T)
+//      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
+//    else {
+//      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
+//      PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
+//    }
+//  }
+//  else if (text->currentSynObj->flags.Contains(isSameAsSelf)) {
+//    if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
+//    && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
+//      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
+//    else if (text->currentSynObj->parentObject->primaryToken == new_T)
+//      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
+//    else {
+//      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,-1));
+//      PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
+//    }
+//  }
+//  else if (text->currentSynObj->flags.Contains(isUnknownCat))
+//    PutDelFlagHint(SET(isUnknownCat,-1));
+//  else
+//    PutInsFlagHint(SET(isVariable,-1));
+//}
 
 bool CExecView::ToggleCatEnabled()
 {
   LavaDECL *decl;
   NewExpression *newExp;
-  Category cat;
+  //Category cat;
   SynFlags ctxFlags;
 
   if (Ignorable())
@@ -5518,7 +5518,7 @@ bool CExecView::ToggleCatEnabled()
         && ((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
     || text->currentSynObj->parentObject->primaryToken == catch_T)
       return false;
-    text->currentSynObj->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+    text->currentSynObj->ExprGetFVType(text->ckd,decl,ctxFlags);
     if (decl && decl->DeclType == VirtualType && decl->TypeFlags.Contains(definesObjCat))
       return false;
     else

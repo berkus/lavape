@@ -636,16 +636,16 @@ void CLavaBaseDoc::NextContext(LavaDECL *decl, CContext &context)
 
 
 
-LavaDECL* CLavaBaseDoc::GetFinalMVType(const TID& id, int inINCL, CContext &context, Category &cat, CheckData* pckd)
+LavaDECL* CLavaBaseDoc::GetFinalMVType(const TID& id, int inINCL, CContext &context, CheckData* pckd)
 {
   LavaDECL *decl = IDTable.GetDECL(id, inINCL);
   if (!decl)
     return 0;
-  return GetFinalMVType(decl, context, cat, pckd);
+  return GetFinalMVType(decl, context, pckd);
 }
 
 
-LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Category &cat, CheckData* pckd)
+LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, CheckData* pckd)
 {
   //returns the (final) mapped final virtual type
   //and the new calculated oContext
@@ -658,23 +658,19 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
     return 0;
   declVal = decl;
   declMapped = decl;
-  cat = unknownCategory;
+  //cat = unknownCategory;
   if (decl->DeclType != VirtualType) {
     NextContext(decl, context);
     return decl;
   }
-  else {
-    if (decl->TypeFlags.Contains(definesObjCat)
-         && decl->TypeFlags.Contains(trueObjCat))
-      if (decl->TypeFlags.Contains(stateObject))
-        cat = stateObj;
-      else
-        cat = valueObj;
-//    if (decl->TypeFlags.Contains(substitutable)) {
-//      AfxMessageBox(&ERR_SubstInContext, MB_ICONINFORMATION|MB_OK); //what to do?
-//      return 0;
-//    }
-  }
+  //else {
+  //  if (decl->TypeFlags.Contains(definesObjCat)
+  //       && decl->TypeFlags.Contains(trueObjCat))
+  //    if (decl->TypeFlags.Contains(stateObject))
+  //      cat = stateObj;
+  //    else
+  //      cat = valueObj;
+  //}
   while  (declVal   &&  (declVal->DeclType == VirtualType)) {
     if (inContext) {
       pID = GetMappedVType(TID(declVal->OwnID, declVal->inINCL), context, pckd);
@@ -690,13 +686,13 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
     else
       declMapped = declVal;
     if (declMapped->RefID.nID >= 0) {
-      if ((cat == unknownCategory)
-           && declMapped->TypeFlags.Contains(definesObjCat)
-           && declMapped->TypeFlags.Contains(trueObjCat))
-        if (declMapped->TypeFlags.Contains(stateObject))
-          cat = stateObj;
-        else
-          cat = valueObj;
+      //if ((cat == unknownCategory)
+      //     && declMapped->TypeFlags.Contains(definesObjCat)
+      //     && declMapped->TypeFlags.Contains(trueObjCat))
+      //  if (declMapped->TypeFlags.Contains(stateObject))
+      //    cat = stateObj;
+      //  else
+      //    cat = valueObj;
       declVal = IDTable.GetDECL(declMapped->RefID, declMapped->inINCL);
       if (!declVal && (declVal != startDecl))
         return 0;
@@ -720,12 +716,12 @@ LavaDECL* CLavaBaseDoc::GetFinalMTypeAndContext(const TID& id, int inINCL, CCont
 
   LavaDECL *decl = IDTable.GetDECL(id, inINCL);
   TID tidObject=TID(IDTable.BasicTypesID[B_Object],isStd?0:1);
-  Category cat;
+  //Category cat;
 
   if (!decl)
     return 0;
   if  (decl->DeclType == VirtualType) {
-    decl = GetFinalMVType(id, inINCL, context, cat, pckd);
+    decl = GetFinalMVType(id, inINCL, context, pckd);
     if (decl && (decl->RefID.nID >= 0)) {
       if (decl->TypeFlags.Contains(substitutable))
         context.ContextFlags = SET(multiContext,-1);

@@ -294,22 +294,22 @@ enum ExecFlags {
   insertBlank,        //8
   isLocalVar,         //9
   isTempVar,          //10
-  isStateObjMember,   //11
+  free0,//isStateObjMember,   //11
   isInputVar,         //12
   isOutputVar,        //13
   isSelfVar,          //14
   isMemberVar,        //15
   isDeclareVar,       //16
-  isVariable,         //17
+  free1,//isVariable,         //17
   inExecHdr,          //18
   inputArrow,         //19
-  isSameAsSelf,       //20
+  free2,//isSameAsSelf,       //20
   isSubstitutable,    //21
-  isUnknownCat,       //22
+  free3,//isUnknownCat,       //22
   isInForeach,        //23
-  free0,              //24
-  free1,              //25
-  free2,              //26
+  free4,              //24
+  free5,              //25
+  free6,              //26
   isIniClauseVar,     //27
   isOptionalExpr,     //28
   isReverseLink,      //29
@@ -415,7 +415,7 @@ public:
   void SetError(CheckData &ckd,QString *error,char *textParam=0);
   void SetRTError(CheckData &ckd,QString *error,LavaVariablePtr stackFrame,const char *textParam=0);
   QString LocationOfConstruct ();
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) { decl = 0; cat = unknownCategory; }
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags) { decl = 0; }
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
   virtual LavaObjectPtr Evaluate(CheckData  &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
   virtual bool Recursion (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel, CHE *cheQuant, CHE *cheVar, LavaObjectPtr rSet=0) { return false;};
@@ -438,7 +438,7 @@ struct TDOD : public SynObject {
 
   TDOD(); // required for InitCheck in Interpreter
   virtual bool IsPlaceHolder () { return false; };
-  bool IsStateObject (CheckData &ckd);
+//  bool IsStateObject (CheckData &ckd);
   virtual bool IsExecutable() { return false; }
   bool accessTypeOK (SynFlags accessFlags);
   bool ReplaceWithLocalParm(CheckData &ckd, LavaDECL *funcDecl,TDeclType declType);
@@ -463,7 +463,7 @@ public:
   int-- sectionNumber; // section number of formal parameter type in the type of actual parameter
   int-- vSectionNumber; //section number where FMVT is defined (in analogy to funcSectionNumber)
   bool-- isOuter;  //virtual type(formVType) of formal parameter is in the outer virtual type table of call object
-  Category-- targetCat;
+//  Category-- targetCat;
 
   virtual bool IsPlaceHolder () { return false; }
   virtual bool CallCheck (CheckData &ckd);
@@ -495,7 +495,7 @@ public:
   virtual bool IsExecutable();
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
 };
 
 class EnumConst : public Expression {
@@ -512,7 +512,7 @@ public:
   virtual bool IsEditableConstant () { return false; };
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual bool Check (CheckData &ckd);
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
 };
 
 class ObjReference : public Expression {
@@ -523,7 +523,7 @@ public:
   ObjReference-- *conflictingAssig;
   LavaDECL-- *myFinalVType;
   CContext-- myContext;
-  Category-- myCategory;
+//  Category-- myCategory;
 
   ObjReference (){}
   ObjReference (TDODC &refIDs,const char *refName); // required for InitCheck in Interpreter
@@ -542,7 +542,7 @@ public:
   virtual bool ReadCheck (CheckData &ckd);
   virtual bool CallCheck (CheckData &ckd);
   virtual bool ArrayTargetCheck (CheckData &ckd);
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -554,7 +554,7 @@ public:
   VarName-- *nextLocal;
   unsigned-- stackPos, varIndex;
 
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   Reference *TypeRef ();
   virtual bool IsPlaceHolder () { return false; }
   virtual bool IsExecutable() { return false; }
@@ -618,7 +618,7 @@ public:
   }
   virtual bool IsEmptyExec();
   virtual bool IsSelfVar() { return true; }
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   bool BaseInitsCheck (CheckData &ckd);
   virtual bool Check (CheckData &ckd);
   bool InitCheck (CheckData &ckd, bool inSelfCheck=true);
@@ -639,7 +639,7 @@ public:
   virtual bool Check (CheckData &ckd);
   virtual bool IsConstant () { return true; };
   virtual bool IsEditableConstant () { return true; };
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
 };
 
 class BoolConst : public Expression {
@@ -653,7 +653,7 @@ public:
   virtual bool Check (CheckData &ckd);
   virtual bool IsConstant () { return true; };
   virtual bool IsEditableConstant () { return false; };
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
 };
 
 class NullConst : public Expression {
@@ -662,7 +662,7 @@ public:
   virtual bool Check (CheckData &ckd);
   virtual bool IsConstant () { return true; };
   virtual bool IsEditableConstant () { return true; };
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
 };
 
 class SucceedStatement : public Expression {
@@ -684,7 +684,7 @@ public:
   NESTEDANY<Expression> paramExpr;
   unsigned-- iOldExpr;
 
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -694,7 +694,7 @@ public:
   NESTEDANY<Expression> operand;
 
   virtual bool IsUnaryOp () { return true; };
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   LavaDECL* FuncDecl () {
     return funcDecl;
   }
@@ -707,7 +707,7 @@ public:
 
   virtual bool IsUnaryOp() { return false; }
   virtual bool IsReadOnlyClause(SynObject *synObj) { return true; }
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -724,7 +724,7 @@ public:
   bool-- setCase;
 
   virtual bool IsPlaceHolder () { return false; }
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -735,7 +735,7 @@ class InvertOp : public UnaryOp {
 class HandleOp : public Expression {
   NESTEDANY<ObjReference> operand;
 
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -768,7 +768,7 @@ public:
   NESTEDANY<Expression> operand1, operand2;
 
   virtual bool IsBinaryOp () { return true; };
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   LavaDECL* FuncDecl () {
     return funcDecl;
   }
@@ -785,7 +785,7 @@ public:
 
   virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool IsMultOp () { return true; };
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   LavaDECL* FuncDecl () {
@@ -849,7 +849,7 @@ public:
   TargetType-- kindOfTarget;  // for output parameters: field/property/array elem.
 
   virtual bool IsOptional (CheckData &ckd) { return ((SynObject*)parameter.ptr)->IsOptional(ckd); };
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -866,12 +866,12 @@ public:
   bool-- vBaseIsOuter;
   LavaDECL-- *funcDecl, *objTypeDecl,  *vBaseType;
   CContext-- callCtx;
-  Category-- callObjCat;
+//  Category-- callObjCat;
 //  bool-- isStateObj;
   SynFlags-- myCtxFlags;
 
   virtual bool IsFuncInvocation () { return true; }
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual LavaDECL* FuncDecl () {
@@ -993,7 +993,7 @@ class CondExpression : public Expression {
 public:
   LavaDECL-- *targetDecl;
   CContext-- targetCtx;
-  Category-- callObjCat;
+//  Category-- callObjCat;
   bool-- isOpt;
 
   CondExpression ();
@@ -1007,7 +1007,7 @@ public:
   IfExpression () {};
 
   virtual bool IsIfStmExpr () {return true; }
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -1019,7 +1019,7 @@ public:
   ElseExpression () {};
 
   virtual bool IsIfStmExpr () {return true; }
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -1090,7 +1090,7 @@ public:
   CHAINX/*TypeBranch*/ branches;
   NESTEDANY<Expression> elsePart;
   LavaDECL-- *declSwitchExpression;
-  Category-- catSwitchExpression;
+//  Category-- catSwitchExpression;
 
   virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
@@ -1103,10 +1103,10 @@ public:
   NESTEDANY<Reference> itf;
   NESTEDANY<Expression> url;
   LavaDECL-- *typeDECL, *execDECL;
-  Category-- attachCat;
+//  Category-- attachCat;
 
   virtual bool NestedOptClause (SynObject *optClause);
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual bool Check (CheckData &ckd);
 };
@@ -1119,7 +1119,7 @@ public:
   bool-- errorInInitializer;
 
   virtual bool NestedOptClause (SynObject *optClause);
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -1132,7 +1132,7 @@ class CloneExpression : public Expression {
 
   virtual bool IsOptional (CheckData &ckd) { return ((SynObject*)fromObj.ptr)->IsOptional(ckd); };
   virtual bool NestedOptClause (SynObject *optClause);
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -1153,7 +1153,7 @@ public:
   NESTEDANY<Expression> itemNo;
   NESTEDANY<Reference> enumType;
 
-  void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -1164,7 +1164,7 @@ public:
   NESTEDANY<Reference> extendType;
   LavaDECL-- *extendTypeDecl;
 
-  void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -1185,7 +1185,7 @@ public:
   NESTEDANY<Reference> itf;
   NESTEDANY<ObjReference> givenObj;
 
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -1194,7 +1194,7 @@ class GetUUID : public Expression {
 public:
   NESTEDANY<Reference> itf;
 
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -1205,7 +1205,7 @@ public:
 
   virtual bool IsPlaceHolder () { return false; }
   virtual bool IsIntIntv () { return true; }
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
@@ -1260,7 +1260,7 @@ class SelectExpression : public QuantStmOrExp {
 public:
   NESTEDANY<Expression> addObject, resultSet;
 
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };

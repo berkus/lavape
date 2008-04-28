@@ -191,7 +191,7 @@ public:
   void OnNextComment();
   void OnPrevComment();
   void OnConflict();
-  void OnToggleCategory();
+  //void OnToggleCategory();
   void OnToggleSubstitutable();
   void OnToggleClosed();
   void OnToggleParmNames();

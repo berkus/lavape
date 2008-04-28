@@ -38,12 +38,12 @@ enum ContextFlag {
 };
 
 
-enum Category {
-  unknownCategory,
-  stateObj,
-  valueObj,
-  sameAsSelfObj
-};
+//enum Category {
+//  unknownCategory,
+//  stateObj,
+//  valueObj,
+//  sameAsSelfObj
+//};
 
 class CSectionDesc;
 typedef LAVABASE_DLL CSectionDesc **LavaObjectPtr;
@@ -123,8 +123,8 @@ public:
   SynFlags GetCategoryFlags(LavaDECL* memDECL, bool& catErr);
 //  virtual int GetContextsSectionNumber(LavaDECL* /*classDECL*/, LavaDECL* /*baseDECL*/, bool /*outer*/) {return -1;}
   virtual LavaDECL* GetExecDECL(LavaDECL* parentDecl,TDeclType type,bool makeDecl=true,bool makeExec=true);
-  LavaDECL* GetFinalMVType(LavaDECL* decl, CContext &context, Category &cat, CheckData* pckd);
-  LavaDECL* GetFinalMVType(const TID& id, int inINCL, CContext &context, Category &cat, CheckData* pckd);
+  LavaDECL* GetFinalMVType(LavaDECL* decl, CContext &context, CheckData* pckd);
+  LavaDECL* GetFinalMVType(const TID& id, int inINCL, CContext &context, CheckData* pckd);
   LavaDECL* GetFinalMTypeAndContext(const TID& id, int inINCL, CContext &context, CheckData* pckd);
   LavaDECL** GetFormpDECL(LavaDECL* decl);
   TID GetGUIDataTypeID(LavaDECL* GUIclass);
@@ -213,7 +213,7 @@ public:
   virtual void OnOK() {}
   virtual void OnReset() {}
   virtual void OnCancel() {}
-	virtual void OnTogglestate() {}
+	//virtual void OnTogglestate() {}
   virtual void OnDelete() {}
   virtual void OnOverride() {}
   virtual void OnGenHtml() {}
@@ -354,7 +354,7 @@ struct LAVABASE_DLL CheckData {
     errorCode = 0;
     iArg = 0;
     inINCL = 0;
-    stateObj = false;
+    //stateObj = false;
     concernExecs = false;
     criticalScope = false;
     handleOpd = false;
@@ -390,8 +390,8 @@ struct LAVABASE_DLL CheckData {
     inINCL,
 	  iArg;
   QString *errorCode;
-  Category callObjCat;
-  bool stateObj, iniCheck, concernExecs, criticalScope, handleOpd,
+  //Category callObjCat;
+  bool iniCheck, concernExecs, criticalScope, handleOpd,
        inQuant, inInitialUpdate, inIniClause, immediateReturn, exceptionThrown,
 	     checkClosedParmLevel;
   SET flags;
@@ -627,7 +627,7 @@ extern LAVABASE_DLL LavaObjectPtr CastSetType(CheckData& ckd, LavaObjectPtr setT
 extern LAVABASE_DLL LavaObjectPtr CastArrayType(CheckData& ckd, LavaObjectPtr arrayTypeObjPtr);
 extern LAVABASE_DLL LavaObjectPtr CastTo(LavaDECL* classDECL, LavaObjectPtr obj);
 
-extern LAVABASE_DLL void ToggleObjectCat(LavaObjectPtr obj);
+//extern LAVABASE_DLL void ToggleObjectCat(LavaObjectPtr obj);
 /////////////////////////////////////////////////////////////////////////////
 
 enum DebugStep {

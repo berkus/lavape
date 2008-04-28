@@ -411,12 +411,12 @@ void ReferenceV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored)
     UpdateReference(t.ckd);
   if (flags.Contains(isSubstitutable))
     t.Insert(Lbrace_T);
-  if (flags.Contains(isVariable))
-    t.Insert(Tilde_T);
-  else if (flags.Contains(isSameAsSelf))
-    t.Insert(Equal_T);
-  else if (flags.Contains(isUnknownCat))
-    t.Insert(Mult_T);
+  //if (flags.Contains(isVariable))
+  //  t.Insert(Tilde_T);
+  //else if (flags.Contains(isSameAsSelf))
+  //  t.Insert(Equal_T);
+  //else if (flags.Contains(isUnknownCat))
+  //  t.Insert(Mult_T);
   t.Insert(primaryToken,true);
   if (flags.Contains(isSubstitutable))
     t.Insert(Rbrace_T);
@@ -463,10 +463,10 @@ EnumConstV::EnumConstV (TToken,TID &tid,QString &name) {
 
 void EnumConstV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  if (flags.Contains(isVariable))
-    t.Insert(Tilde_T);
-  else if (flags.Contains(isSameAsSelf))
-    t.Insert(Equal_T);
+  //if (flags.Contains(isVariable))
+  //  t.Insert(Tilde_T);
+  //else if (flags.Contains(isSameAsSelf))
+  //  t.Insert(Equal_T);
   t.Insert(primaryToken,true);
   EXIT
 }
@@ -480,10 +480,10 @@ ConstantV::ConstantV (const char *c) {
 
 void ConstantV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  if (flags.Contains(isVariable))
-    t.Insert(Tilde_T);
-  else if (flags.Contains(isSameAsSelf))
-    t.Insert(Equal_T);
+  //if (flags.Contains(isVariable))
+  //  t.Insert(Tilde_T);
+  //else if (flags.Contains(isSameAsSelf))
+  //  t.Insert(Equal_T);
   t.Insert(primaryToken,true);
   EXIT
 }
@@ -497,10 +497,10 @@ BoolConstV::BoolConstV (bool val) {
 
 void BoolConstV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  if (flags.Contains(isVariable))
-    t.Insert(Tilde_T);
-  else if (flags.Contains(isSameAsSelf))
-    t.Insert(Equal_T);
+  //if (flags.Contains(isVariable))
+  //  t.Insert(Tilde_T);
+  //else if (flags.Contains(isSameAsSelf))
+  //  t.Insert(Equal_T);
   if (boolValue)
     t.Insert(true_T,true);
   else
@@ -1267,10 +1267,10 @@ void CloneExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ig
   if (!butStatement.ptr
   && parentObject->IsOperation())
     t.Insert(Lparenth_T);
-  if (flags.Contains(isVariable))
-    t.Insert(Tilde_T);
-  else if (flags.Contains(isSameAsSelf))
-    t.Insert(Equal_T);
+  //if (flags.Contains(isVariable))
+  //  t.Insert(Tilde_T);
+  //else if (flags.Contains(isSameAsSelf))
+  //  t.Insert(Equal_T);
   t.Insert(primaryToken,true);
   t.Blank();
   DRAW(fromObj.ptr);

@@ -1188,11 +1188,11 @@ void CComboBar::ShowUpcasts(const TID& id, bool theTop)
 }
 */
 
-void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &context, Category category, bool forInput, bool forCopy)
+void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &context, bool forInput, bool forCopy)
  //if decl != 0: decl is final virtual type
  //if decl = 0 local variables only for handle operator (#)
 {
-  Category cat = unknownCategory, catComp = unknownCategory;
+  //Category cat = unknownCategory, catComp = unknownCategory;
   CContext compContext = context, bContext;
   LavaDECL *fmvType=0, *memDECL, *enumDecl;
   SynFlags ctxFlags;
@@ -1221,27 +1221,27 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
     if (data && data->IDs.last) {
       lastDOD = (TDOD*)((CHE*)data->IDs.last)->data;
       var = myDoc->IDTable.GetVar(lastDOD->ID, idtype);
-      catComp = unknownCategory;
+      //catComp = unknownCategory;
       if (var) {
         if (idtype == globalID) {
           memDECL = *(LavaDECL**)var;
           bContext = lastDOD->context;
           if (memDECL->TypeFlags.Contains(trueObjCat) && !memDECL->TypeFlags.Contains(isAnyCategory))
-            if (memDECL->TypeFlags.Contains(stateObject))
-              catComp = stateObj;
-            else
-              if (memDECL->TypeFlags.Contains(sameAsSelf))
-                catComp = sameAsSelfObj;
-              else
-                catComp = valueObj;
+            //if (memDECL->TypeFlags.Contains(stateObject))
+            //  catComp = stateObj;
+            //else
+            //  if (memDECL->TypeFlags.Contains(sameAsSelf))
+            //    catComp = sameAsSelfObj;
+            //  else
+            //    catComp = valueObj;
           myDoc->MemberTypeContext(memDECL, bContext,0);
-          fmvType = myDoc->GetFinalMVType(memDECL->RefID, memDECL->inINCL, bContext, cat, 0);
+          fmvType = myDoc->GetFinalMVType(memDECL->RefID, memDECL->inINCL, bContext, 0);
           if (memDECL->TypeFlags.Contains(substitutable))
             bContext.ContextFlags = SET(multiContext,-1);
         }
         else {
           if (decl) {
-            ((VarName*)var)->ExprGetFVType(ckd, fmvType, cat,ctxFlags);
+            ((VarName*)var)->ExprGetFVType(ckd, fmvType,ctxFlags);
             bContext = ckd.tempCtx;
             if (ctxFlags.bits)
               bContext.ContextFlags = ctxFlags;
@@ -1249,9 +1249,9 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
           else
             forHandle = true;
         }
-        if (catComp == unknownCategory)
-          catComp = cat;
-        if ((forHandle || fmvType) && (forCopy || catComp == category || catComp == unknownCategory || category == unknownCategory)) {
+        //if (catComp == unknownCategory)
+        //  catComp = cat;
+        if ((forHandle || fmvType) && forCopy) {
           if (forHandle || !forHandle &&
               (   (( forInput || forCopy)
                               && compatibleTypes(ckd, fmvType, bContext, decl, compContext))

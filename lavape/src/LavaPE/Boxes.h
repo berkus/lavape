@@ -608,21 +608,21 @@ public:
 
   QString valNewName;
   QString valNewTypeType;
-	int	valkindOfLink;
+	//int	valkindOfLink;
 
 public slots:
     virtual void on_BasicTypes_activated( int );
     virtual void on_NamedTypes_activated( int );
     virtual void on_RMOverrides_clicked();
-    virtual void on_StateObject_clicked();
-    virtual void on_ValueObject_clicked();
+    //virtual void on_StateObject_clicked();
+    //virtual void on_ValueObject_clicked();
     virtual void on_ID_OK_clicked();
     virtual void on_ID_CANCEL_clicked() {reject();}
     virtual void reject();
     virtual void on_ID_HELP_clicked();
     virtual void on_EnableName_clicked();
     virtual void on_VTAbstract_clicked();
-    virtual void on_DefCat_clicked();
+    //virtual void on_DefCat_clicked();
     virtual void on_Substitutable_clicked();
 
 

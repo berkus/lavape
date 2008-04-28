@@ -837,16 +837,16 @@ void CLavaGUIView::OnUpdateInsertopt(QAction* action)
     myGUIProg->OnUpdateInsertopt(action);
 }
 
-void CLavaGUIView::OnTogglestate()
-{
-  if (LBaseData->inRuntime && GetDocument()->isObject) { // && !GetDocument()->IsEmbedded()) {
-    if (*ResultDPtr)
-      ToggleObjectCat(*ResultDPtr);
-    if (*ResultDPtr)
-      CurrentCategory = ((SynFlags*)((*ResultDPtr)+1))->Contains(stateObjFlag);
-    OnModified();
-  }
-}
+//void CLavaGUIView::OnTogglestate()
+//{
+//  if (LBaseData->inRuntime && GetDocument()->isObject) { // && !GetDocument()->IsEmbedded()) {
+//    if (*ResultDPtr)
+//      ToggleObjectCat(*ResultDPtr);
+//    if (*ResultDPtr)
+//      CurrentCategory = ((SynFlags*)((*ResultDPtr)+1))->Contains(stateObjFlag);
+//    OnModified();
+//  }
+//}
 
 void CLavaGUIView::OnUpdateTogglestate(QAction* action)
 {

@@ -255,12 +255,12 @@ void CLavaMainFrame::on_okAction_triggered()
     view->OnOK();
 }
 */
-void CLavaMainFrame::on_toggleCategoryAction_triggered()
-{
-  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  if (view)
-    view->OnTogglestate();
-}
+//void CLavaMainFrame::on_toggleCategoryAction_triggered()
+//{
+//  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+//  if (view)
+//    view->OnTogglestate();
+//}
 
 void CLavaMainFrame::on_editUndoAction_triggered()
 {

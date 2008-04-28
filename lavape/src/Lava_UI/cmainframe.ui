@@ -77,7 +77,6 @@
    <addaction name="tileVerticAction" />
    <addaction name="separator" />
    <addaction name="editUndoAction" />
-   <addaction name="toggleCategoryAction" />
   </widget>
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >
@@ -413,7 +412,7 @@
     <string>Toggle category</string>
    </property>
    <property name="toolTip" >
-    <string>Toggle object category,&#xd;
+    <string>Toggle object category,&#xd;&#xd;
 depressed=state object</string>
    </property>
    <property name="statusTip" >

@@ -243,7 +243,6 @@
    <attribute name="toolBarBreak" >
     <bool>false</bool>
    </attribute>
-   <addaction name="toggleCategoryAction" />
    <addaction name="toggleSubstTypeAction" />
    <addaction name="toggleClosedAction" />
    <addaction name="optLocalVarAction" />
@@ -331,7 +330,7 @@
      <x>0</x>
      <y>0</y>
      <width>1182</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="helpMenu" >
