@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>483</width>
-    <height>370</height>
+    <height>352</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -131,6 +131,22 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="Native" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="text" >
+          <string>Native class</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QVBoxLayout" >
          <property name="spacing" >
           <number>6</number>
@@ -174,41 +190,6 @@
           </widget>
          </item>
         </layout>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox" >
-         <property name="title" >
-          <string>Naive / constant</string>
-         </property>
-         <layout class="QVBoxLayout" >
-          <item>
-           <widget class="QCheckBox" name="Native" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="focusPolicy" >
-             <enum>Qt::StrongFocus</enum>
-            </property>
-            <property name="text" >
-             <string>Native class</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="ReadOnlyClass" >
-            <property name="enabled" >
-             <bool>true</bool>
-            </property>
-            <property name="text" >
-             <string>All constituents are read-only</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
        </item>
       </layout>
      </item>
