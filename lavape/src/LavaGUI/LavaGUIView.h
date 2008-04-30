@@ -118,7 +118,7 @@ public:
   LavaVariablePtr ServicePtr;
   LavaVariablePtr IniDataPtr;
   LavaVariablePtr ResultDPtr;
-  bool CurrentCategory;
+  //bool CurrentCategory;
   CHEFormNode* LastBrowseNode;
   bool clipboard_text_notEmpty;
 
@@ -141,7 +141,7 @@ public:
 
   //void OnUpdateNewHandler(QAction* action);
   void OnUpdateGotodef(QAction* action);
-	void OnUpdateTogglestate(QAction* action);
+	//void OnUpdateTogglestate(QAction* action);
   void OnUpdateEditPaste(QAction* action);
   void OnUpdateEditCopy(QAction* action);
   void OnUpdateEditCut(QAction* action);

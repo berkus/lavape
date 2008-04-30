@@ -598,25 +598,26 @@ extern LAVABASE_DLL bool isPartOf(const DString& qname, const DString& ancestorN
 
 enum ObjectStateFlag {
    sectEstablished,
-   //finished,        //global object flag (in object+1)
-   stateObjFlag,
-   useDefaults,     //used in LavaGUI
-   insertedItem,    //used in LavaGUI
-   deletedItem,     //used in LavaGUI
-   localCheckmark,  //temporary check mark
-   dontSave,        //global object flag (in object+1)
-   zombified,       //global object flag (in object+1)
-   releaseFinished, //indicator that all sub-objects have been released/decremented
-//   marked,          //used in InterprBase::forceRelease
+   //finished,       //global object flag (in object+1)
+   freeFlag, //ehemals stateObjFlag,
+   useDefaults,      //used in LavaGUI
+   insertedItem,     //used in LavaGUI
+   deletedItem,      //used in LavaGUI
+   localCheckmark,   //temporary check mark
+   dontSave,         //global object flag (in object+1)
+   zombified,        //global object flag (in object+1)
+   releaseFinished,  //indicator that all sub-objects have been released/decremented
+//   marked,         //used in InterprBase::forceRelease
    compoPrim,        //the creation section of component
-   objectModified      //object is modified 
+   objectModified,   //object is modified 
+   objectLocked      //
 };
 
-extern LAVABASE_DLL LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* typeDECL, bool stateObj, LavaObjectPtr urlObj=0);
-extern LAVABASE_DLL LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObj);
-extern LAVABASE_DLL LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObj);
+extern LAVABASE_DLL LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* typeDECL, LavaObjectPtr urlObj=0);
+extern LAVABASE_DLL LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL);
+extern LAVABASE_DLL LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL);
 extern LAVABASE_DLL bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object);
-extern LAVABASE_DLL CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, LavaVariablePtr resultVarPtr, bool stateObj = false, LavaDECL* resultClassDECL = 0, CCopied* copied = 0);
+extern LAVABASE_DLL CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, LavaVariablePtr resultVarPtre, LavaDECL* resultClassDECL = 0, CCopied* copied = 0);
 extern LAVABASE_DLL bool EqualObjects(CheckData &ckd, LavaObjectPtr leftVarPtr, LavaObjectPtr rightVarPtr, int specialEQ);
 extern LAVABASE_DLL bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& objModf);
 extern LAVABASE_DLL bool OneLevelCopy(CheckData& ckd, LavaObjectPtr& object);

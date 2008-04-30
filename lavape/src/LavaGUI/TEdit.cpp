@@ -72,7 +72,7 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
       setFocusPolicy(Qt::NoFocus);
   }
   else {
-    if (!myFormNode->data.IoSigFlags.Contains(Flag_INPUT) || GUIProg->FrozenObject)
+    if (!myFormNode->data.IoSigFlags.Contains(Flag_INPUT) /*|| GUIProg->FrozenObject*/)
       setReadOnly(true);
     else
       setEnabled(true);
@@ -217,7 +217,7 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   enableFunc = false;
   if (myFormNode->data.IoSigFlags.Contains(DONTPUT))
     setDisabled(true);
-  else  if (!myFormNode->data.IoSigFlags.Contains(Flag_INPUT) || GUIProg->FrozenObject)
+  else  if (!myFormNode->data.IoSigFlags.Contains(Flag_INPUT) /*|| GUIProg->FrozenObject*/)
     setReadOnly(true);
   else
     setEnabled(true);

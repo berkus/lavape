@@ -2567,7 +2567,7 @@ unsigned CLavaExecThread::ExecuteLava()
 }
 
 
-CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
+CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool fromFillIn)
 {
   LavaVariablePtr newStackFrame=0;
   int frameSize, frameSizeBytes, ii;
@@ -2577,7 +2577,7 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
   CVFuncDesc *fDesc;
 
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
-  CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, &stack[SFH], &stack[SFH+1], &stack[SFH+2], (void*)frozen, currentThread, (void*)fromFillIn);
+  CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, &stack[SFH], &stack[SFH+1], &stack[SFH+2], currentThread, (void*)fromFillIn);
   if (currentThread != wxTheApp->mainThread) {
     currentThread->mySemaphore.lastException = 0;
     currentThread->waitingForUI = true;
@@ -2695,12 +2695,12 @@ bool GUIEdit(CheckData& ckd, LavaVariablePtr stack)
   if (!newStackFrame[SFH+1])
     return false;
   newStackFrame[SFH+2] = 0;
-  CRuntimeException *ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], !((SynFlags*)(newStackFrame[SFH+1]+1))->Contains(stateObjFlag), newStackFrame[SFH][0][0].classDECL->RelatedDECL);
+  CRuntimeException *ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], newStackFrame[SFH][0][0].classDECL->RelatedDECL);
   if (ckd.exceptionThrown)
     return false;
   if (ex)
     throw *ex;
-  ex = showFunc(ckd, newStackFrame, !((SynFlags*)(newStackFrame[SFH+1]+1))->Contains(stateObjFlag), false);
+  ex = showFunc(ckd, newStackFrame, false);
   if (ckd.exceptionThrown) {
     if (newStackFrame[SFH+2])
       DFC(newStackFrame[SFH+2]);
@@ -2735,7 +2735,7 @@ bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack)
     DFC( stack[SFH+2]);
   newStackFrame[SFH] = stack[SFH] - stack[SFH][0][0].sectionOffset;
   newStackFrame[SFH+1] = stack[SFH+1];
-  newStackFrame[SFH+2] = AllocateObject(ckd, newStackFrame[SFH][0][0].classDECL->RelatedDECL, false);
+  newStackFrame[SFH+2] = AllocateObject(ckd, newStackFrame[SFH][0][0].classDECL->RelatedDECL);
   if (!newStackFrame[SFH+2]) {
     if (ckd.exceptionThrown)
       return false;
@@ -2743,13 +2743,13 @@ bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack)
       throw CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
   }
   if (newStackFrame[SFH+1]) {
-    ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], false, newStackFrame[SFH][0][0].classDECL->RelatedDECL);
+    ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], newStackFrame[SFH][0][0].classDECL->RelatedDECL);
     if (ckd.exceptionThrown)
       return false;
     if (ex)
       throw *ex;
   }
-  ex = showFunc(ckd, newStackFrame, false, true);
+  ex = showFunc(ckd, newStackFrame, true);
   stack[SFH+2] = newStackFrame[SFH+2];
   if (ex) {
     throw *ex;

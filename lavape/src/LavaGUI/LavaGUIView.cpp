@@ -129,9 +129,9 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
     myDECL = (*ServicePtr)[0]->implDECL;
     NewTitle(myDECL, myDoc->IDTable.DocName);
     myID = TID(myDECL->OwnID, 0);
-    myGUIProg->FrozenObject = (int)pHint->CommandData4;
-    myThread = (CLavaThread*)pHint->CommandData5;
-    myGUIProg->fromFillIn = (int)pHint->CommandData6;
+    //myGUIProg->FrozenObject = (int)pHint->CommandData4;
+    myThread = (CLavaThread*)pHint->CommandData4;
+    myGUIProg->fromFillIn = (int)pHint->CommandData5;
     myGUIProg->myDECL = myDECL;
     myGUIProg->OnUpdate( myDECL, ResultDPtr);
     if (myGUIProg->ckd.exceptionThrown || myGUIProg->ex) {
@@ -265,7 +265,7 @@ void LavaGUIDialog::OnReset()
       *ResultDPtr = 0;
     }
     if (myGUIProg->fromFillIn)
-      *ResultDPtr = AllocateObject(myGUIProg->ckd, (*ServicePtr)[0][0].classDECL->RelatedDECL, false);
+      *ResultDPtr = AllocateObject(myGUIProg->ckd, (*ServicePtr)[0][0].classDECL->RelatedDECL);
     if ((*ResultDPtr || !myGUIProg->fromFillIn) && !myGUIProg->ckd.exceptionThrown) {
       if (*IniDataPtr) {
         try {
@@ -273,9 +273,9 @@ void LavaGUIDialog::OnReset()
           if (setjmp(contOnHWexception)) throw hwException;
 #endif
           if (myGUIProg->fromFillIn)
-            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag), (*ServicePtr)[0][0].classDECL->RelatedDECL);
+            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, (*ServicePtr)[0][0].classDECL->RelatedDECL);
           else
-            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag));
+            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr);
           if (myGUIProg->ex)
             ok = false;
           if (myGUIProg->ckd.exceptionThrown)
@@ -374,7 +374,7 @@ CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
   ServicePtr = 0;
   IniDataPtr = 0;
   ResultDPtr = 0;
-  CurrentCategory = false;
+  //CurrentCategory = false;
   mainTree = 0;
   myTree = 0;
   LastBrowseNode = 0;
@@ -421,7 +421,7 @@ void CLavaGUIView::UpdateUI()
   OnUpdateEditCopy(LBaseData->editCopyActionPtr);
   OnUpdateEditCut(LBaseData->editCutActionPtr);
   if (LBaseData->updateResetActionPtr) {
-    OnUpdateTogglestate(LBaseData->toggleCatActionPtr);
+    //OnUpdateTogglestate(LBaseData->toggleCatActionPtr);
     OnUpdateCancel(LBaseData->updateResetActionPtr);
     //OnUpdateOk(LBaseData->okActionPtr);
   }
@@ -482,9 +482,9 @@ void CLavaGUIView::OnInitialUpdate()
         IniDataPtr = &GetDocument()->DocObjects[1];
         ResultDPtr = &GetDocument()->DocObjects[2];
         HGUISetData(myGUIProg->ckd, *ServicePtr, ResultDPtr, 0);
-        if (*ResultDPtr)
-          CurrentCategory = ((SynFlags*)((*ResultDPtr)+1))->Contains(stateObjFlag);
-        myGUIProg->FrozenObject = 0;
+        //if (*ResultDPtr)
+        //  CurrentCategory = ((SynFlags*)((*ResultDPtr)+1))->Contains(stateObjFlag);
+        //myGUIProg->FrozenObject = 0;
         myGUIProg->fromFillIn = 1;
         myDECL = (*ServicePtr)[0][0].implDECL;
         QString str(GetDocument()->GetTitle());
@@ -510,10 +510,10 @@ void CLavaGUIView::OnInitialUpdate()
       myGUIProg->ServicePtr = ServicePtr;
       IniDataPtr = &GetDocument()->DocObjects[1];
       ResultDPtr = &GetDocument()->DocObjects[2];
-      if (*ResultDPtr)
-        CurrentCategory = ((SynFlags*)((*ResultDPtr)+1))->Contains(stateObjFlag);
+      //if (*ResultDPtr)
+      //  CurrentCategory = ((SynFlags*)((*ResultDPtr)+1))->Contains(stateObjFlag);
       HGUISetData(myGUIProg->ckd, *ServicePtr, ResultDPtr, 0);
-      myGUIProg->FrozenObject = 0;
+      //myGUIProg->FrozenObject = 0;
       myGUIProg->fromFillIn = 1;
       myDECL = (*ServicePtr)[0][0].implDECL;
       QString str(GetDocument()->GetTitle());
@@ -722,7 +722,7 @@ void CLavaGUIView::OnReset()
       *ResultDPtr = 0;
     }
     if (myGUIProg->fromFillIn)
-      *ResultDPtr = AllocateObject(myGUIProg->ckd, (*ServicePtr)[0][0].classDECL->RelatedDECL, false);
+      *ResultDPtr = AllocateObject(myGUIProg->ckd, (*ServicePtr)[0][0].classDECL->RelatedDECL);
     if ((*ResultDPtr || !myGUIProg->fromFillIn) && !myGUIProg->ckd.exceptionThrown) {
       if (*IniDataPtr) {
         try {
@@ -730,9 +730,9 @@ void CLavaGUIView::OnReset()
           if (setjmp(contOnHWexception)) throw hwException;
 #endif
           if (myGUIProg->fromFillIn)
-            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag), (*ServicePtr)[0][0].classDECL->RelatedDECL);
+            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, (*ServicePtr)[0][0].classDECL->RelatedDECL);
           else
-            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag));
+            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr);
           if (myGUIProg->ex)
             ok = false;
           if (myGUIProg->ckd.exceptionThrown)
@@ -848,11 +848,12 @@ void CLavaGUIView::OnUpdateInsertopt(QAction* action)
 //  }
 //}
 
-void CLavaGUIView::OnUpdateTogglestate(QAction* action)
-{
-  action->setChecked(CurrentCategory);
-  action->setEnabled(LBaseData->inRuntime && GetDocument()->isObject); // && !GetDocument()->IsEmbedded());
-}
+
+//void CLavaGUIView::OnUpdateTogglestate(QAction* action)
+//{
+//  action->setChecked(CurrentCategory);
+//  action->setEnabled(LBaseData->inRuntime && GetDocument()->isObject); // && !GetDocument()->IsEmbedded());
+//}
 
 
 void CLavaGUIView::OnModified()
