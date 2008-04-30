@@ -76,13 +76,13 @@ TAdapterFunc* StdAdapterTab [Identifier];
 
 //LavaDECL* DECLTab [Identifier];
 
-static TAdapterFunc ObjectAdapter[LAH + 10];
+static TAdapterFunc ObjectAdapter[LAH + 8];
 static TAdapterFunc BitsetAdapter[LAH + 7];
 static TAdapterFunc BoolAdapter[LAH + 5];
 static TAdapterFunc CharAdapter[LAH + 1];
-static TAdapterFunc IntAdapter[LAH + 12];
-static TAdapterFunc FloatAdapter[LAH + 11];
-static TAdapterFunc DoubleAdapter[LAH + 11];
+static TAdapterFunc IntAdapter[LAH + 10];
+static TAdapterFunc FloatAdapter[LAH + 9];
+static TAdapterFunc DoubleAdapter[LAH + 9];
 static TAdapterFunc StringAdapter[LAH + 4];
 static TAdapterFunc EnumAdapter[LAH +4];
 static TAdapterFunc SetAdapter[LAH + 6];
@@ -177,25 +177,25 @@ bool ObjectOpNotEqual(CheckData& ckd, LavaVariablePtr stack)
   return !EqualObjects(ckd, stack[SFH], stack[SFH+1], 0);
 }
 
-bool ObjectSameAs(CheckData& ckd, LavaVariablePtr stack)
-{
-  return EqualObjects(ckd, stack[SFH], stack[SFH+1], 1);
-}
+//bool ObjectSameAs(CheckData& ckd, LavaVariablePtr stack)
+//{
+//  return EqualObjects(ckd, stack[SFH], stack[SFH+1], 1);
+//}
 
 bool ObjectEquals(CheckData& ckd, LavaVariablePtr stack)
 {
   return EqualObjects(ckd, stack[SFH], stack[SFH+1], 2);
 }
 
-bool ObjectSnapshot(CheckData& ckd, LavaVariablePtr stack)
-{
-  CRuntimeException* ex = CopyObject(ckd, &stack[SFH], &stack[SFH+1]);
-  if (ex)
-    throw *ex;
-  if (ckd.exceptionThrown)
-    return false;
-  return true;
-}
+//bool ObjectSnapshot(CheckData& ckd, LavaVariablePtr stack)
+//{
+//  CRuntimeException* ex = CopyObject(ckd, &stack[SFH], &stack[SFH+1]);
+//  if (ex)
+//    throw *ex;
+//  if (ckd.exceptionThrown)
+//    return false;
+//  return true;
+//}
 
 bool ObjectDontSave(CheckData& ckd, LavaVariablePtr stack)
 {
@@ -217,18 +217,27 @@ bool ObjectDump(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
-bool ObjectSetState(CheckData& ckd, LavaVariablePtr stack)
+bool ObjectSetLock(CheckData& ckd, LavaVariablePtr stack)
 {
-  LavaObjectPtr resultObjPtr=stack[SFH];
-
-  resultObjPtr = resultObjPtr - (resultObjPtr[0])[0].sectionOffset;
-  CRuntimeException* ex = CopyObject(ckd, &stack[SFH+1], &resultObjPtr);
-  if (ex)
-    throw *ex;
-  if (ckd.exceptionThrown)
-    return false;
+  if (*(bool*)(stack[SFH+1]+LSH))
+    ;
+  else
+    ;
   return true;
 }
+
+//bool ObjectSetState(CheckData& ckd, LavaVariablePtr stack)
+//{
+//  LavaObjectPtr resultObjPtr=stack[SFH];
+//
+//  resultObjPtr = resultObjPtr - (resultObjPtr[0])[0].sectionOffset;
+//  CRuntimeException* ex = CopyObject(ckd, &stack[SFH+1], &resultObjPtr);
+//  if (ex)
+//    throw *ex;
+//  if (ckd.exceptionThrown)
+//    return false;
+//  return true;
+//}
 
 
 //Bitset adapter functions
@@ -442,13 +451,13 @@ bool IntPlus(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
-bool IntIncBy(CheckData& ckd, LavaVariablePtr stack)
-{
-  SafeInt<int> ii =  SafeInt<int>(*(int*)(stack[SFH]+LSH)) + SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
-//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[SFH]+LSH) =  ii.Value();
-  return true;
-}
+//bool IntIncBy(CheckData& ckd, LavaVariablePtr stack)
+//{
+//  SafeInt<int> ii =  SafeInt<int>(*(int*)(stack[SFH]+LSH)) + SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
+////  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
+//  *(int*)(stack[SFH]+LSH) =  ii.Value();
+//  return true;
+//}
 
 bool IntMinus(CheckData& ckd, LavaVariablePtr stack)
 {
@@ -466,13 +475,13 @@ bool IntMulti(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
-bool IntMultBy(CheckData& ckd, LavaVariablePtr stack)
-{
-  SafeInt<int> ii = SafeInt<int>(*(int*)(stack[SFH]+LSH)) * SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
-//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[SFH]+LSH) =  ii.Value();
-  return true;
-}
+//bool IntMultBy(CheckData& ckd, LavaVariablePtr stack)
+//{
+//  SafeInt<int> ii = SafeInt<int>(*(int*)(stack[SFH]+LSH)) * SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
+////  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
+//  *(int*)(stack[SFH]+LSH) =  ii.Value();
+//  return true;
+//}
 
 bool IntDiv(CheckData& ckd, LavaVariablePtr stack)
 {
@@ -542,13 +551,13 @@ bool FloatPlus(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
-bool FloatIncBy(CheckData& ckd, LavaVariablePtr stack)
-{
-  register float result = *(float*)(stack[SFH]+LSH) + *(float*)(stack[SFH+1]+LSH);
-  TEST_AND_THROW
-  *(float*)(stack[SFH]+LSH) = result;
-  return true;
-}
+//bool FloatIncBy(CheckData& ckd, LavaVariablePtr stack)
+//{
+//  register float result = *(float*)(stack[SFH]+LSH) + *(float*)(stack[SFH+1]+LSH);
+//  TEST_AND_THROW
+//  *(float*)(stack[SFH]+LSH) = result;
+//  return true;
+//}
 
 bool FloatMinus(CheckData& ckd, LavaVariablePtr stack)
 {
@@ -568,13 +577,13 @@ bool FloatMulti(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
-bool FloatMultBy(CheckData& ckd, LavaVariablePtr stack)
-{
-  register float result = *(float*)(stack[SFH]+LSH) * (*(float*)(stack[SFH+1]+LSH));
-  TEST_AND_THROW
-  *(float*)(stack[SFH]+LSH) = result;
-  return true;
-}
+//bool FloatMultBy(CheckData& ckd, LavaVariablePtr stack)
+//{
+//  register float result = *(float*)(stack[SFH]+LSH) * (*(float*)(stack[SFH+1]+LSH));
+//  TEST_AND_THROW
+//  *(float*)(stack[SFH]+LSH) = result;
+//  return true;
+//}
 
 bool FloatDiv(CheckData& ckd, LavaVariablePtr stack)
 {
@@ -642,13 +651,13 @@ bool DoublePlus(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
-bool DoubleIncBy(CheckData& ckd, LavaVariablePtr stack)
-{
-  register double result =  *(double*)(stack[SFH]+LSH) + *(double*)(stack[SFH+1]+LSH);
-  TEST_AND_THROW
-  *(double*)(stack[SFH]+LSH) = result;
-  return true;
-}
+//bool DoubleIncBy(CheckData& ckd, LavaVariablePtr stack)
+//{
+//  register double result =  *(double*)(stack[SFH]+LSH) + *(double*)(stack[SFH+1]+LSH);
+//  TEST_AND_THROW
+//  *(double*)(stack[SFH]+LSH) = result;
+//  return true;
+//}
 
 bool DoubleMinus(CheckData& ckd, LavaVariablePtr stack)
 {
@@ -668,13 +677,13 @@ bool DoubleMulti(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
-bool DoubleMultBy(CheckData& ckd, LavaVariablePtr stack)
-{
-  register double result = *(double*)(stack[SFH]+LSH) * (*(double*)(stack[SFH+1]+LSH));
-  TEST_AND_THROW
-  *(double*)(stack[SFH]+LSH) = result;
-  return true;
-}
+//bool DoubleMultBy(CheckData& ckd, LavaVariablePtr stack)
+//{
+//  register double result = *(double*)(stack[SFH]+LSH) * (*(double*)(stack[SFH+1]+LSH));
+//  TEST_AND_THROW
+//  *(double*)(stack[SFH]+LSH) = result;
+//  return true;
+//}
 
 bool DoubleDiv(CheckData& ckd, LavaVariablePtr stack)
 {
@@ -1863,12 +1872,10 @@ void MakeStdAdapter()
   ObjectAdapter[LAH+1] = ObjectZombifyRec;
   ObjectAdapter[LAH+2] = ObjectOpEqual;
   ObjectAdapter[LAH+3] = ObjectOpNotEqual;
-  ObjectAdapter[LAH+4] = ObjectSameAs;
-  ObjectAdapter[LAH+5] = ObjectEquals;
-  ObjectAdapter[LAH+6] = ObjectSnapshot;
-  ObjectAdapter[LAH+7] = ObjectDontSave;
-  ObjectAdapter[LAH+8] = ObjectDump;
-  ObjectAdapter[LAH+9] = ObjectSetState;
+  ObjectAdapter[LAH+4] = ObjectEquals;
+  ObjectAdapter[LAH+5] = ObjectDontSave;
+  ObjectAdapter[LAH+6] = ObjectDump;
+  ObjectAdapter[LAH+7] = ObjectSetLock;
 
   BitsetAdapter[0] = (TAdapterFunc)1;
   BitsetAdapter[1] = 0;
@@ -1920,12 +1927,10 @@ void MakeStdAdapter()
   IntAdapter[LAH+3] = IntLET;
   IntAdapter[LAH+4] = IntGET;
   IntAdapter[LAH+5] = IntPlus;
-  IntAdapter[LAH+6] = IntIncBy;
-  IntAdapter[LAH+7] = IntMulti;
-  IntAdapter[LAH+8] = IntMultBy;
-  IntAdapter[LAH+9] = IntDiv;
-  IntAdapter[LAH+10] = IntPercent;
-  IntAdapter[LAH+11] = IntString;
+  IntAdapter[LAH+6] = IntMulti;
+  IntAdapter[LAH+7] = IntDiv;
+  IntAdapter[LAH+8] = IntPercent;
+  IntAdapter[LAH+9] = IntString;
 
   FloatAdapter[0] = (TAdapterFunc)1;
   FloatAdapter[1] = 0;
@@ -1940,11 +1945,9 @@ void MakeStdAdapter()
   FloatAdapter[LAH+3] = FloatLET;
   FloatAdapter[LAH+4] = FloatGET;
   FloatAdapter[LAH+5] = FloatPlus;
-  FloatAdapter[LAH+6] = FloatIncBy;
-  FloatAdapter[LAH+7] = FloatMulti;
-  FloatAdapter[LAH+8] = FloatMultBy;
-  FloatAdapter[LAH+9] = FloatDiv;
-  FloatAdapter[LAH+10] = FloatString;
+  FloatAdapter[LAH+6] = FloatMulti;
+  FloatAdapter[LAH+7] = FloatDiv;
+  FloatAdapter[LAH+8] = FloatString;
 
   DoubleAdapter[0] = (TAdapterFunc)2;
   DoubleAdapter[1] = 0;
@@ -1959,11 +1962,9 @@ void MakeStdAdapter()
   DoubleAdapter[LAH+3] = DoubleLET;
   DoubleAdapter[LAH+4] = DoubleGET;
   DoubleAdapter[LAH+5] = DoublePlus;
-  DoubleAdapter[LAH+6] = DoubleIncBy;
-  DoubleAdapter[LAH+7] = DoubleMulti;
-  DoubleAdapter[LAH+8] = DoubleMultBy;
-  DoubleAdapter[LAH+9] = DoubleDiv;
-  DoubleAdapter[LAH+10] = DoubleString;
+  DoubleAdapter[LAH+6] = DoubleMulti;
+  DoubleAdapter[LAH+7] = DoubleDiv;
+  DoubleAdapter[LAH+8] = DoubleString;
 
   StringAdapter[0] = (TAdapterFunc)((sizeof(QString)+3)/4);
   StringAdapter[1] = StringCopy;
