@@ -47,6 +47,7 @@
 #include "qcursor.h"
 #include <QMenu>
 #include "qtreewidget.h"
+#include "qthread.h"
 #include "qwhatsthis.h"
 #include "qworkspace.h"
 #include "qstatusbar.h"
@@ -1574,14 +1575,18 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
     UtilitiesHidden = false;//!UtilitiesHidden;
   }
   else {
+    //if (wxTheApp->activeView()->inherits("CExecView")) {
+    //  CExecView *ev = (CExecView*)wxTheApp->activeView();
+      //ev->sv->viewport()->update();
+      //ev->sv->widget()->update();
+      //ev->redCtl->setUpdatesEnabled(false);
+      //m_UtilityView->hide();
+      //m_UtilityView->repaint();
+      //ev->redCtl->setUpdatesEnabled(true);
+      //ev->redCtl->repaint();
+    //}
     m_UtilityView->hide();
     LastUtilitiesState = (int)m_UtilityView->ActTab;
-    //if (/*wxTheApp->isChMaximized && */wxTheApp->activeView()->inherits("CExecView")) {
-    //  CExecView *ev = (CExecView*)wxTheApp->activeView();
-    //  ev->redCtl->update();
-      //ev->redCtl->setUpdatesEnabled(false);
-      //ev->redCtl->setUpdatesEnabled(true);
-    //}
     wxTheApp->updateButtonsMenus();
     UtilitiesHidden = true;
   }

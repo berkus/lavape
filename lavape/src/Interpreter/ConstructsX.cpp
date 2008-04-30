@@ -3004,9 +3004,9 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
   int i, k=-1;
   DString bitset;
 
-  if (value)
-    IFC(value)
-  else {
+  //if (value)
+  //  IFC(value)
+  //else {
     value = AllocateObject(ckd,typeDECL,true/*flags.Contains(isVariable)*/);
     if (!value) {
       if (!ckd.exceptionThrown)
@@ -3084,7 +3084,7 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
 #endif
     // constants aren't counted as allocated objects
     // and released only when the program syntax (AST) is released
-  }
+  //}
   return value;
 }
 
@@ -3119,9 +3119,9 @@ ConstantX::~ConstantX () {
 
 LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel)
 {
-  if (value)
-    IFC(value)
-  else {
+  //if (value)
+  //  IFC(value)
+  //else {
     value = AllocateObject(ckd,typeDECL,true/*flags.Contains(isVariable)*/);
     if (!value) {
       if (!ckd.exceptionThrown)
@@ -3138,7 +3138,7 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
 #ifdef ALLOCOBJLIST
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
 #endif
-  }
+  //}
   return value;
 }
 
@@ -3149,9 +3149,9 @@ BoolConstX::~BoolConstX () {
 
 LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel)
 {
-  if (value)
-    IFC(value)
-  else {
+  //if (value)
+  //  IFC(value)
+  //else {
     value = AllocateObject(ckd,refDecl,true/*flags.Contains(isVariable)*/);
     if (!value) {
       if (!ckd.exceptionThrown)
@@ -3172,7 +3172,7 @@ LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
 #ifdef ALLOCOBJLIST
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
 #endif
-  }
+  //}
   return value;
 }
 
