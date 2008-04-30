@@ -1251,7 +1251,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
         }
         //if (catComp == unknownCategory)
         //  catComp = cat;
-        if ((forHandle || fmvType) && forCopy) {
+        if (forHandle || fmvType) {
           if (forHandle || !forHandle &&
               (   (( forInput || forCopy)
                               && compatibleTypes(ckd, fmvType, bContext, decl, compContext))

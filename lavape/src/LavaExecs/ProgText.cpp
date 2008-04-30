@@ -340,7 +340,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     if (ignored) {
       code("<I>");
       italic = true;
-      code("<FONT color=#FF0000>"); // red
+      code("<FONT color=#00A000>"); // red
       color = true;
     }
     else if (isPrimToken && currentSynObj->lastError) {
@@ -361,7 +361,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     if (ignored) {
       code("<I>");
       italic = true;
-      code("<FONT color=#FF0000>"); // red
+      code("<FONT color=#00A000>"); // red
       color = true;
       code(str.toAscii());
     }
@@ -385,7 +385,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     if (ignored) {
       code("<I>");
       italic = true;
-      code("<FONT color=#FF0000>"); // red
+      code("<FONT color=#00A000>"); // red
       color = true;
       code(((VarName*)currentSynObj)->varName.c);
     }
@@ -404,7 +404,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     if (ignored) {
       code("<I>");
       italic = true;
-      code("<FONT color=#FF0000>"); // red
+      code("<FONT color=#00A000>"); // red
       color = true;
       code(((TDOD*)currentSynObj)->name.c);
     }
@@ -419,7 +419,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
   else if (token == Comment_T) {
     code("<I>");
     italic = true;
-    code("<FONT color=#009000>"); // green
+    code("<FONT color=#000700>"); // green
     color = true;
     code(str.toAscii());
   }
@@ -429,7 +429,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
   || TOKENSTR[token][0]==':'
   || TOKENSTR[token][0]=='Ø') {
     if (ignored) {
-      code("<I><FONT color=#FF0000>"); // red
+      code("<I><FONT color=#00A000>"); // red
       italic = true;
       color = true;
     }
@@ -454,7 +454,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     if (ignored) {
       code("<I>");
       italic = true;
-      code("<FONT color=#FF0000>"); // red
+      code("<FONT color=#00A000>"); // red
       color = true;
     }
     else {
@@ -467,7 +467,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     if (ignored) {
       code("<I>");
       italic = true;
-      code("<FONT color=#FF0000>"); // red
+      code("<FONT color=#00A000>"); // red
       color = true;
     }
     else if (isPrimToken && currentSynObj->lastError) {

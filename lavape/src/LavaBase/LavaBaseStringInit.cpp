@@ -111,7 +111,7 @@ QString ERR_NoCompObjItf;
 QString ERR_ReservedName;
 QString ERR_Parameter;
 QString ERR_NullException;
-QString ERR_NotYetInitialized;
+QString ERR_MissingInitialization;
 QString ERR_AssigToRdOnly;
 QString ERR_AssigToMemberOfFrozen;
 QString ERR_RdOnlyFunc;
@@ -143,7 +143,6 @@ QString ERR_NoSignal;
 QString ERR_SignalNoOutput;
 QString ERR_MissingFuncDecl;
 QString ERR_MissingItfFuncDecl;
-QString ERR_MissingInitialization;
 QString ERR_UnaryOpUndefined;
 QString ERR_HandleOpParm;
 QString ERR_UseVT;
@@ -300,7 +299,7 @@ void LavaBaseStringInit() {
   ERR_OverOrUnderflow = QObject::tr("Over- or underflow: Exponent to big");
   ERR_Wrong_oct  = QObject::tr("Error in octal constant");
   ERR_Wrong_exp  = QObject::tr("Wrong or incomplete exponent");
-  ERR_AssignInQuery  = QObject::tr("\"Read-only\" exec: assignments are allowed only to output and declare variables (in initializers also to self.member)");
+  ERR_AssignInQuery  = QObject::tr("\"Read-only\" exec: assignments are allowed only to variables that do not yet count as conclusively initialized");
   ERR_AssignInROClause  = QObject::tr("Forbidden assignment in read-only clause");
   ERR_AssignInPrePostInv  = QObject::tr("Pre/postcondition or invariant: assignments are allowed only to declare variables");
   ERR_Broken_ref  = QObject::tr("Broken reference");
@@ -365,7 +364,7 @@ void LavaBaseStringInit() {
   ERR_ReservedName  = QObject::tr("Reserved name");
   ERR_Parameter  = QObject::tr("Formal/actual parameters don't match");
   ERR_NullException  = QObject::tr("Fail statement: exception parameter is null");
-  ERR_NotYetInitialized  = QObject::tr(": a value must be assigned in all preceding program branches (check also for missing else branches!)");
+  ERR_MissingInitialization  = QObject::tr(": a value must be assigned in all preceding program branches (check also for missing \"else\" branches!)");
   ERR_AssigToRdOnly  = QObject::tr("Forbidden assignment to read-only member variable");
   ERR_IncompatibleType  = QObject::tr("Incompatible type");
   ERR_NotSingleOutput  = QObject::tr("Function must have exactly one output parameter");
@@ -459,8 +458,6 @@ void LavaBaseStringInit() {
   ERR_SignalNoOutput = QObject::tr("Signal functions must not have output parameters");
   ERR_MissingFuncDecl  = QObject::tr("No such member function or variable:");
   ERR_MissingItfFuncDecl  = QObject::tr("No such member function in class interface:");
-  ERR_MissingInitialization 
-  = QObject::tr(": a value must be assigned in all program branches (check also for missing else branches!)");
   ERR_UnaryOpUndefined  = QObject::tr("Operator undefined for this type of operand");
   ERR_HandleOpParm  = QObject::tr("Parameter of handle operator # must be a quantified variable");
   ERR_UseVT  = QObject::tr("Error: This or a base type is virtual; => ref. to concrete interface forbidden");

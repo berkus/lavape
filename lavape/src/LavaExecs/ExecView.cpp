@@ -284,9 +284,9 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
 #endif
     fmt.color = QColor("#0000FF"); // blue
     if (currToken->data.flags.Contains(ignoreSynObj)) {
-      //fmt.italic = true;
+      fmt.italic = true;
       //fmt.color = QColor("#FF0000"); // red
-      fmt.color = QColor("#009000"); // green
+      fmt.color = QColor("#00A000"); // green
     }
     else if (currToken == currToken->data.synObject->primaryTokenNode
     && currToken->data.synObject->lastError) {
@@ -298,9 +298,9 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
     fmt.bold = true;
     fmt.color = QColor("#0000FF"); // blue
     if (currToken->data.flags.Contains(ignoreSynObj)) {
-      //fmt.italic = true;
+      fmt.italic = true;
       //fmt.color = QColor("#FF0000"); // red
-      fmt.color = QColor("#009000"); // green
+      fmt.color = QColor("#00A000"); // green
     }
     else if (currToken == currToken->data.synObject->primaryTokenNode
     && currToken->data.synObject->lastError) {
@@ -317,9 +317,9 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
     if (token == FuncRef_T)
       fmt.bold = true;
     if (currToken->data.flags.Contains(ignoreSynObj)) {
-      //fmt.italic = true;
+      fmt.italic = true;
       //fmt.color = QColor("#FF0000"); // red
-      fmt.color = QColor("#009000"); // green
+      fmt.color = QColor("#00A000"); // green
     }
     else if (currToken == currToken->data.synObject->primaryTokenNode
     && currToken->data.synObject->lastError) {
@@ -328,8 +328,8 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
     }
   }
   else if (token == Comment_T) {
-    //fmt.italic = true;
-    fmt.color = QColor("#009000"); // green
+    fmt.italic = true;
+    fmt.color = QColor("#00A000"); // green
   }
   else if (TOKENSTR[token][0].isLetter()
   || TOKENSTR[token][0]=='@'
@@ -341,9 +341,9 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
     else
       fmt.color = QColor("#0000FF"); // blue
     if (currToken->data.flags.Contains(ignoreSynObj)) {
-      //fmt.italic = true;
+      fmt.italic = true;
       //fmt.color = QColor("#FF0000"); // red
-      fmt.color = QColor("#009000"); // green
+      fmt.color = QColor("#00A000"); // green
     }
     else if (currToken == currToken->data.synObject->primaryTokenNode
     && currToken->data.synObject->lastError) {
@@ -356,8 +356,10 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
   else if (currToken->data.synObject->IsPlaceHolder()
   && !currToken->data.flags.Contains(isDisabled)) {
     fmt.color = QColor("#FF0000"); // red
-    if (currToken->data.flags.Contains(ignoreSynObj))
+    if (currToken->data.flags.Contains(ignoreSynObj)) {
       fmt.italic = true;
+      fmt.color = QColor("#00A000"); // green;
+    }
     else if (currToken == currToken->data.synObject->primaryTokenNode
     && currToken->data.synObject->lastError)
       fmt.bold = true;
@@ -365,9 +367,9 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
   else {
     fmt.color = QColor("#000000"); // black
     if (currToken->data.flags.Contains(ignoreSynObj)) {
-      //fmt.italic = true;
+      fmt.italic = true;
       //fmt.color = QColor("#FF0000"); // red
-      fmt.color = QColor("#009000"); // green
+      fmt.color = QColor("#00A000"); // green
     }
     else if (currToken->data.synObject->lastError
     && (currToken == currToken->data.synObject->primaryTokenNode

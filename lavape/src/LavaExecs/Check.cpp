@@ -356,7 +356,7 @@ QString *RefTable::findMatchingAccess (
       ObjReference *objRef,
       CWriteAccess *&writeAcc) {
 
-  QString *errorCode=ckd.iniCheck?&ERR_NotYetInitialized:0;
+  QString *errorCode=ckd.iniCheck?&ERR_MissingInitialization:0;
   unsigned totalBranches=1, iniBranches=0;
   bool alreadyIni=false, iniInBrStm;
   CVarDesc *currVarDesc;
@@ -413,7 +413,7 @@ QString *RefTable::findMatchingAccess (
               alreadyIni = true;
               iniBranches++;
               if (iniBranches < totalBranches)
-                return &ERR_NotYetInitialized;
+                return &ERR_MissingInitialization;
             }
           }
           else {
@@ -446,7 +446,7 @@ QString *RefTable::findMatchingAccess (
   } while (chp);
 
   if (ckd.iniCheck && !alreadyIni)
-    return &ERR_NotYetInitialized;
+    return &ERR_MissingInitialization;
   else
     return 0;
 }
@@ -478,7 +478,7 @@ QString *RefTable::ReadCheck (CheckData &ckd, ObjReference *objRef,CWriteAccess 
   if (chp)
     findObjRef(ckd,objRefTable,0,entryFound,(CHE*)objRef->refIDs.first);
   if (!entryFound)
-    errorCode = &ERR_NotYetInitialized;
+    errorCode = &ERR_MissingInitialization;
   else
     errorCode = findMatchingAccess(ckd,chp,entryFound,false,isAssigned,objRef,writeAcc);
   return errorCode;
@@ -1996,7 +1996,7 @@ bool SelfVar::InitCheck (CheckData &ckd, bool inSelfCheck) {
         if (inSelfCheck)
           SetError(ckd,&ERR_MissingInitialization,varName.c);
         else if (ckd.succeed)
-          ((SynObject*)ckd.succeed)->SetError(ckd,&ERR_NotYetInitialized,varName.c);
+          ((SynObject*)ckd.succeed)->SetError(ckd,&ERR_MissingInitialization,varName.c);
         ok = false;
       }
     }
@@ -2011,7 +2011,7 @@ bool SelfVar::InitCheck (CheckData &ckd, bool inSelfCheck) {
         if (inSelfCheck)
           SetError(ckd,&ERR_MissingInitialization,varName.c);
         else if (ckd.succeed)
-          ((SynObject*)ckd.succeed)->SetError(ckd,&ERR_NotYetInitialized,varName.c);
+          ((SynObject*)ckd.succeed)->SetError(ckd,&ERR_MissingInitialization,varName.c);
         ok = false;
       }
     }
@@ -3180,56 +3180,37 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
       return false;
     }
     if (roContext != noROContext
-    && !(flags.Contains(isSelfVar)
-         && InInitializer(ckd)
-         && refIDs.first->successor == refIDs.last)
-    && !(ckd.flags.Contains(InBut)
-         && flags.Contains(isTempVar)
-         && refIDs.first->successor == refIDs.last)) {
+    && !(flags.Contains(isSelfVar) && InInitializer(ckd) && refIDs.first->successor == refIDs.last)
+    && !(ckd.flags.Contains(InBut) && flags.Contains(isTempVar) && refIDs.first->successor == refIDs.last)) {
       SetError(ckd,&ERR_AssignInQuery);
       return false;
     }
-    else
-      //if (flags.Contains(isStateObjMember)) {
-        if (decl->TypeFlags.Contains(isConst)) {
-          if (!flags.Contains(isSelfVar)
-          || !InInitializer(ckd)) {
-            SetError(ckd,&ERR_AssigToRdOnly);
-            return false;
-          }
-        }
-        else if (flags.Contains(isDeclareVar)
-        || flags.Contains(isOutputVar)) {
-          secondChe = (CHE*)((CHE*)refIDs.first)->successor;
-          ((CHE*)refIDs.first)->successor = 0;
-          if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,this,wacc)) {
-            ((TDOD*)((CHE*)refIDs.first)->data)->SetError(ckd,rc,((TDOD*)((CHE*)refIDs.first)->data)->name.c);
-            ((CHE*)refIDs.first)->successor = secondChe;
-            return false;
-          }
-          else
-            ((CHE*)refIDs.first)->successor = secondChe;
-        }
-      //}
-      // !isStateObjMember:
-      if (((CHE*)refIDs.first)->successor == refIDs.last) {
-        if (!flags.Contains(isTempVar))
-          if (flags.Contains(isSelfVar)) {
-            if (ckd.myDECL->ParentDECL->TypeFlags.Contains(isConst)
-            && !InInitializer(ckd)) { // assignment to self.mem in read-only function != initializer
-              ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_RdOnlyFunc);
-              return false;
-            }
-          }
-          else {
-            ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_AssigToFrozen);
-            return false;
-          }
-      }
-      else {
-        ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_AssigToFrozen);
+    else {
+      if (decl->TypeFlags.Contains(isConst)
+      && !(flags.Contains(isSelfVar) && InInitializer(ckd))
+      && !(flags.Contains(isTempVar) && ckd.flags.Contains(InBut) && refIDs.first->successor == refIDs.last)) {
+        SetError(ckd,&ERR_AssigToRdOnly);
         return false;
       }
+      if (flags.Contains(isDeclareVar) || flags.Contains(isOutputVar)) {
+        secondChe = (CHE*)((CHE*)refIDs.first)->successor;
+        ((CHE*)refIDs.first)->successor = 0;
+        if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,this,wacc)) {
+          ((TDOD*)((CHE*)refIDs.first)->data)->SetError(ckd,rc,((TDOD*)((CHE*)refIDs.first)->data)->name.c);
+          ((CHE*)refIDs.first)->successor = secondChe;
+          return false;
+        }
+        else
+          ((CHE*)refIDs.first)->successor = secondChe;
+      }
+      if (ckd.myDECL->ParentDECL->TypeFlags.Contains(isConst)
+      && (refIDs.first->successor != refIDs.last
+          || (!(flags.Contains(isTempVar))
+              && !(InInitializer(ckd) && flags.Contains(isSelfVar))))) {
+        ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_RdOnlyFunc);
+        return false;
+      }
+    }
   }
 
   // finally prevent single-assignment violations
@@ -3501,7 +3482,7 @@ bool ObjReference::Check (CheckData &ckd) {
     if (((RefTable*)ckd.refTable)->ReadCheck(ckd,this,wacc)) {
       if (ckd.succeed) {
         SetError(ckd,&ERR_MissingInitialization,refName.c);
-        ((SynObject*)ckd.succeed)->SetError(ckd,&ERR_NotYetInitialized,refName.c);
+        ((SynObject*)ckd.succeed)->SetError(ckd,&ERR_MissingInitialization,refName.c);
       }
       else if (!((TDOD*)((CHE*)refIDs.last)->data)->errorChain.first)
         SetError(ckd,&ERR_MissingInitialization,refName.c);
