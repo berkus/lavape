@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>355</width>
+    <width>422</width>
     <height>236</height>
    </rect>
   </property>
@@ -208,47 +208,44 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <widget class="QCheckBox" name="Substitutable" >
-          <property name="geometry" >
-           <rect>
-            <x>10</x>
-            <y>10</y>
-            <width>161</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="focusPolicy" >
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="text" >
-           <string>Substitutable type</string>
-          </property>
-         </widget>
-         <widget class="QCheckBox" name="Closed" >
-          <property name="geometry" >
-           <rect>
-            <x>10</x>
-            <y>50</y>
-            <width>161</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="toolTip" >
-           <string>Possibly still incomplete object</string>
-          </property>
-          <property name="whatsThis" >
-           <string>Potentially incomplete, not yet fully initialized object; member access is still disabled therefore</string>
-          </property>
-          <property name="text" >
-           <string>Closed object</string>
-          </property>
-         </widget>
+         <layout class="QVBoxLayout" >
+          <item>
+           <widget class="QCheckBox" name="Substitutable" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy" >
+             <enum>Qt::StrongFocus</enum>
+            </property>
+            <property name="text" >
+             <string>Substitutable type</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="Immutable" >
+            <property name="text" >
+             <string>Immutable value object</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="Closed" >
+            <property name="toolTip" >
+             <string>Possibly still incomplete object</string>
+            </property>
+            <property name="whatsThis" >
+             <string>Potentially incomplete, not yet fully initialized object; member access is still disabled therefore</string>
+            </property>
+            <property name="text" >
+             <string>Closed object</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>

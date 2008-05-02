@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>379</width>
+    <width>452</width>
     <height>389</height>
    </rect>
   </property>
@@ -241,22 +241,22 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="ConstProp" >
+        <widget class="QCheckBox" name="ReadOnly" >
          <property name="focusPolicy" >
           <enum>Qt::StrongFocus</enum>
          </property>
          <property name="text" >
-          <string>Read-only</string>
+          <string>Read-only attribute</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="PassByValue" >
+        <widget class="QCheckBox" name="Immutable" >
          <property name="focusPolicy" >
           <enum>Qt::StrongFocus</enum>
          </property>
          <property name="text" >
-          <string>Copy on access</string>
+          <string>Immutable value object</string>
          </property>
         </widget>
        </item>
@@ -311,7 +311,7 @@
      <item>
       <widget class="QGroupBox" name="BGroup_KindOfRef" >
        <property name="sizePolicy" >
-        <sizepolicy vsizetype="MinimumExpanding" hsizetype="Preferred" >
+        <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -368,7 +368,7 @@
      <item>
       <widget class="QGroupBox" name="BGroup_Mode" >
        <property name="sizePolicy" >
-        <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
+        <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -512,8 +512,8 @@
   <tabstop>DownInd</tabstop>
   <tabstop>Back</tabstop>
   <tabstop>Protected</tabstop>
-  <tabstop>ConstProp</tabstop>
-  <tabstop>PassByValue</tabstop>
+  <tabstop>ReadOnly</tabstop>
+  <tabstop>Immutable</tabstop>
   <tabstop>Abstract</tabstop>
   <tabstop>SetGet</tabstop>
   <tabstop>Consumable</tabstop>

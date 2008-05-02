@@ -360,11 +360,11 @@ ValOnInit CAttrBox::OnInitDialog()
     SetGet->setEnabled(false);
   }
   if (myDECL->ParentDECL->DeclType == Interface) {
-    ConstProp->setEnabled(true);
+    ReadOnly->setEnabled(true);
     Protected->setChecked(myDECL->TypeFlags.Contains(isProtected));
-    ConstProp->setChecked(myDECL->TypeFlags.Contains(isConst));
-    PassByValue->setChecked(myDECL->TypeFlags.Contains(copyOnAccess));
-    PassByValue->setEnabled(true);
+    ReadOnly->setChecked(myDECL->TypeFlags.Contains(isConst));
+    Immutable->setChecked(myDECL->TypeFlags.Contains(isImmutable));
+    Immutable->setEnabled(true);
     Consumable->setChecked(myDECL->TypeFlags.Contains(consumable));
     SetGet->setChecked(myDECL->TypeFlags.Contains(hasSetGet));
     Consumable->setEnabled(true);
@@ -380,8 +380,8 @@ ValOnInit CAttrBox::OnInitDialog()
     }
   }
   else {
-    ConstProp->setEnabled(false);
-    PassByValue->setEnabled(false);
+    ReadOnly->setEnabled(false);
+    Immutable->setEnabled(false);
     Consumable->setEnabled(false);
     Abstract->setEnabled(false);
     Protected->setEnabled(false);
@@ -390,9 +390,9 @@ ValOnInit CAttrBox::OnInitDialog()
     Protected->setEnabled(baseDECL->TypeFlags.Contains(isProtected));
     //StateObject->setEnabled(false);
     SetGet->setEnabled(false);
-    PassByValue->setEnabled(false);
+    Immutable->setEnabled(false);
     Consumable->setEnabled(false);
-    ConstProp->setEnabled(baseDECL->TypeFlags.Contains(isConst));
+    ReadOnly->setEnabled(baseDECL->TypeFlags.Contains(isConst));
     Substitutable->setEnabled(false);
     EnableName->setEnabled(true);
     if (myDECL->SecondTFlags.Contains(enableName)) {
@@ -441,9 +441,9 @@ void CAttrBox::on_RMOverrides_clicked()
   BasicTypes->setEnabled(true);
   //StateObject->setEnabled(true);
   SetGet->setEnabled(true);
-  PassByValue->setEnabled(true);
+  Immutable->setEnabled(true);
   Consumable->setEnabled(true);
-  ConstProp->setEnabled(true);
+  ReadOnly->setEnabled(true);
   Protected->setEnabled(true);
   DownC->setEnabled(true);
   DownInd->setEnabled(true);
@@ -631,14 +631,14 @@ void CAttrBox::on_ID_OK_clicked()
     BasicTypes->setFocus();
     return;
   }
-  if (ConstProp->isChecked())
+  if (ReadOnly->isChecked())
     myDECL->TypeFlags.INCL(isConst);
   else
     myDECL->TypeFlags.EXCL(isConst);
-  if (PassByValue->isChecked())
-    myDECL->TypeFlags.INCL(copyOnAccess);
+  if (Immutable->isChecked())
+    myDECL->TypeFlags.INCL(isImmutable);
   else
-    myDECL->TypeFlags.EXCL(copyOnAccess);
+    myDECL->TypeFlags.EXCL(isImmutable);
   if (Protected->isChecked())
     myDECL->TypeFlags.INCL(isProtected);
   else
