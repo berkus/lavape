@@ -47,7 +47,6 @@
         <file>LavaExecs/res/TOOLBUTTONS/debugStopGreen.xpm</file>
         <file>LavaGUI/res/TOOLBUTTONS/Q_Delete.xpm</file>
         <file>LavaGUI/res/TOOLBUTTONS/Q_Insert.xpm</file>
-        <file>LavaGUI/res/TOOLBUTTONS/Q_State.Value.xpm</file>
         <file>LavaGUI/res/TOOLBUTTONS/Q_Undo.xpm</file>
         <file>LavaGUI/res/TOOLBUTTONS/Q_ok.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/Q2_Comment.xpm</file>

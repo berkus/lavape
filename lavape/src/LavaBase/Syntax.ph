@@ -288,11 +288,11 @@ $TYPE +CDP {
     //24, X0100 0000 Concurrent function or initiator
     execIndependent,
     //25, X0200 0000 Independent function or initiator
-    isImmutable,
+    FREE_TYPEFLAG2,//isImmutable,
     //26, X0400 0000
     consumable,
     //27, X0800 0000
-    FREE_TYPEFLAG2,//stateObject,  //attribute references a state object
+    stateObject,  //attribute references a state object
     //28, X1000 0000
     hasSetGet,    //attribute has set and get functions
     //29, X2000 0000

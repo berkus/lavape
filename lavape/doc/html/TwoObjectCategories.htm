@@ -43,19 +43,18 @@
     
     <H3><a name="stateObject"></a>State objects </H3>
     
-    <P>The essence of a state object is that new values may be assigned to its
-      member variables (<b>&quot;properties&quot;</b>) again and again, and that two state objects are
+    <P>The essence of a state object is that new values may be assigned to its 
+    member variables again and again, and that two state objects are
       considered to be &quot;equal&quot; if they are identical, i.e., the
       <FONT COLOR="#FF0000">same</FONT> object. Copying/cloning a state object
-      contradicts their &quot;uniqueness semantics&quot;. </P>
+      will normally contradict their &quot;uniqueness semantics&quot;. </P>
     
     <H3>Value objects </H3>
     
-    <P><a name="valueObject"></a>The essence of a value object is that its member variables 
-    (<b>&quot;attributes&quot;</b>) are &quot;frozen&quot;
-      (= write-locked) when the object leaves the (executable) &quot;<FONT COLOR="#0000FF">new</FONT>&quot;
-      construct (which creates new objects of some specifiable type and
-      category). Comparing two value objects amounts to a recursive comparison
+    <P><a name="valueObject"></a>The essence of a value object is that its
+    <a href="PointersRefCounts.htm#refTypes">constituent</a> objects are &quot;frozen&quot;
+      (= cannot be modified any more) when the object leaves the &quot;<FONT COLOR="#0000FF">new</FONT>&quot;
+      construct (which creates new objects of some specifiable class). Comparing two value objects amounts to a recursive comparison
       of all their <A HREF="PointersRefCounts.htm#refTypes">constituents</A>. 
     </P>
     
@@ -71,8 +70,7 @@
       <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variable v is described
       by a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> class, say A.
       The value of a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variable
-      may be any object that supports A (or an class derived from A) and
-      that has the category specified for v.</P>
+      may be any object of class A (or a class derived from A).</P>
     
     <P>The same <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> class
       may be used to declare variables of either category : state or value. The

@@ -251,12 +251,18 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="Immutable" >
+        <widget class="QCheckBox" name="StateObject" >
          <property name="focusPolicy" >
           <enum>Qt::StrongFocus</enum>
          </property>
+         <property name="toolTip" >
+          <string>Variable state object</string>
+         </property>
+         <property name="whatsThis" >
+          <string>Variable state object</string>
+         </property>
          <property name="text" >
-          <string>Immutable value object</string>
+          <string>Variable state object</string>
          </property>
         </widget>
        </item>
@@ -513,7 +519,7 @@
   <tabstop>Back</tabstop>
   <tabstop>Protected</tabstop>
   <tabstop>ReadOnly</tabstop>
-  <tabstop>Immutable</tabstop>
+  <tabstop>StateObject</tabstop>
   <tabstop>Abstract</tabstop>
   <tabstop>SetGet</tabstop>
   <tabstop>Consumable</tabstop>

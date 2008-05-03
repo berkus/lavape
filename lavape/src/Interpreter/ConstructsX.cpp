@@ -3077,7 +3077,7 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       NewQString((QString*)(value+LSH), str1.c);
       break;
     }
-    IFC(value); // for permanent ref from Constant
+    //IFC(value); // for permanent ref from Constant
     ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
 #ifdef ALLOCOBJLIST
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));

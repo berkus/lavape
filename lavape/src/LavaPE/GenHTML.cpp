@@ -1119,8 +1119,8 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
 
     if (pnode0->TypeFlags.Contains(substitutable))
       code("{");
-    //if (pnode0->TypeFlags.Contains(stateObject))
-    //  code("~");
+    if (pnode0->TypeFlags.Contains(stateObject))
+      code("~");
     //else if (pnode0->TypeFlags.Contains(sameAsSelf))
     //  code("=");
     //else if (pnode0->TypeFlags.Contains(isAnyCategory))

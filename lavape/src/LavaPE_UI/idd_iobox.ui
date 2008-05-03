@@ -226,9 +226,18 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="Immutable" >
+           <widget class="QCheckBox" name="StateObject" >
+            <property name="toolTip" >
+             <string>Variable state object</string>
+            </property>
+            <property name="statusTip" >
+             <string>Variable state object</string>
+            </property>
+            <property name="whatsThis" >
+             <string>Variable state object</string>
+            </property>
             <property name="text" >
-             <string>Immutable value object</string>
+             <string>Variable state object</string>
             </property>
            </widget>
           </item>

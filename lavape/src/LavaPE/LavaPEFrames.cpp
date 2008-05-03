@@ -197,7 +197,7 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
   LBaseData->showOptsActionPtr = showOptsAction;
   LBaseData->staticCallActionPtr = staticCallAction;
   LBaseData->toggleArrowsActionPtr = toggleArrowsAction;
-  LBaseData->toggleCategoryActionPtr = toggleCategoryAction;
+  LBaseData->toggleStateObjectPtr = toggleStateObject;
   LBaseData->toggleCommentsActionPtr = toggleCommentsAction;
   LBaseData->toggleInputArrowsActionPtr = toggleInputArrowsAction;
   LBaseData->toggleSignActionPtr = toggleSignAction;
@@ -1038,11 +1038,11 @@ void CLavaMainFrame::on_genSingleHtmlAction_triggered()
 //////////////////////////////////////////////////////////
 // Exec handlers (tool buttons):
 
-//void CLavaMainFrame::on_toggleCategoryAction_triggered(){
-//  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-//  if (view)
-//    view->OnToggleCategory();
-//}
+void CLavaMainFrame::on_toggleStateObject_triggered(){
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->OnToggleCategory();
+}
 
 void CLavaMainFrame::on_optLocalVarAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();

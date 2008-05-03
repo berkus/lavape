@@ -328,9 +328,15 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="Immutable" >
+           <widget class="QCheckBox" name="StateObject" >
+            <property name="toolTip" >
+             <string>"Self" is a variable state object</string>
+            </property>
+            <property name="whatsThis" >
+             <string>"Self" is a variable state object</string>
+            </property>
             <property name="text" >
-             <string>"Self" is immutable</string>
+             <string>"Self" is state object</string>
             </property>
            </widget>
           </item>
@@ -504,7 +510,7 @@
             <x>19</x>
             <y>140</y>
             <width>201</width>
-            <height>20</height>
+            <height>31</height>
            </rect>
           </property>
           <property name="sizePolicy" >

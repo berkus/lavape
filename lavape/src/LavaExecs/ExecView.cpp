@@ -5457,80 +5457,81 @@ bool CExecView::ConflictSelected()
     return false;
 }
 
-//void CExecView::OnToggleCategory()
-//{
-//  if (!EditOK()) return;
-//
-//  if (text->currentSynObj->flags.Contains(isVariable)) {
-//    if (text->ckd.myDECL->ParentDECL->DeclType == Function
-//    && !text->ckd.myDECL->ParentDECL->TypeFlags.Contains(isStatic)) {
-//      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
-//      PutInsFlagHint(SET(isSameAsSelf,-1),SET(lastHint,-1));
-//    }
-//    else if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
-//    && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
-//      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
-//    else if (text->currentSynObj->parentObject->primaryToken == new_T)
-//      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
-//    else {
-//      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
-//      PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
-//    }
-//  }
-//  else if (text->currentSynObj->flags.Contains(isSameAsSelf)) {
-//    if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
-//    && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
-//      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
-//    else if (text->currentSynObj->parentObject->primaryToken == new_T)
-//      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
-//    else {
-//      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,-1));
-//      PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
-//    }
-//  }
-//  else if (text->currentSynObj->flags.Contains(isUnknownCat))
-//    PutDelFlagHint(SET(isUnknownCat,-1));
-//  else
-//    PutInsFlagHint(SET(isVariable,-1));
-//}
+void CExecView::OnToggleCategory()
+{
+  if (!EditOK()) return;
 
-//bool CExecView::ToggleCatEnabled()
-//{
-//  LavaDECL *decl;
-//  NewExpression *newExp;
-//  //Category cat;
-//  SynFlags ctxFlags;
-//
-//  if (Ignorable())
-//    return false;
-//
-//  switch (text->currentSynObj->primaryToken) {
-//  case CrtblRef_T:
-//    if (text->currentSynObj->parentObject->primaryToken == new_T) {
-//      newExp = (NewExpression*)text->currentSynObj->parentObject;
-//      decl = myDoc->IDTable.GetDECL(((Reference*)newExp->objType.ptr)->refID,text->ckd.inINCL);
-//      if (decl && decl->DeclType == CompObjSpec)
-//        return false;
-//      else
-//        return true;
-//    }
-//    break;
-//  case TypeRef_T:
-//    if ((text->currentSynObj->parentObject->primaryToken == quant_T
-//        && ((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
-//    || text->currentSynObj->parentObject->primaryToken == catch_T)
-//      return false;
-//    text->currentSynObj->ExprGetFVType(text->ckd,decl,ctxFlags);
-//    if (decl && decl->DeclType == VirtualType && decl->TypeFlags.Contains(definesObjCat))
-//      return false;
-//    else
-//      return true;
-//  default:
-//    if (text->currentSynObj->IsConstant() && text->currentSynObj->primaryToken != nil_T)
-//      return true;
-//  }
-//  return false;
-//}
+  if (text->currentSynObj->flags.Contains(isVariable))
+    //if (text->ckd.myDECL->ParentDECL->DeclType == Function
+    //&& !text->ckd.myDECL->ParentDECL->TypeFlags.Contains(isStatic)) {
+      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
+      //PutInsFlagHint(SET(isSameAsSelf,-1),SET(lastHint,-1));
+    //}
+    //else if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
+    //&& ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
+    //  PutDelFlagHint(SET(stateObject,-1),SET(firstHint,lastHint,-1));
+    //else if (text->currentSynObj->parentObject->primaryToken == new_T)
+    //  PutDelFlagHint(SET(stateObject,-1),SET(firstHint,lastHint,-1));
+    //else {
+    //  PutDelFlagHint(SET(stateObject,-1),SET(firstHint,-1));
+      //PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
+    //}
+  //}
+  //else if (text->currentSynObj->flags.Contains(isSameAsSelf)) {
+  //  if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
+  //  && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
+  //    PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
+  //  else if (text->currentSynObj->parentObject->primaryToken == new_T)
+  //    PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
+  //  else {
+  //    PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,-1));
+  //    PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
+  //  }
+  //}
+  //else if (text->currentSynObj->flags.Contains(isUnknownCat))
+  //  PutDelFlagHint(SET(isUnknownCat,-1));
+  else
+    PutInsFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
+}
+
+bool CExecView::ToggleCatEnabled()
+{
+  //LavaDECL *decl;
+  //NewExpression *newExp;
+  //Category cat;
+  SynFlags ctxFlags;
+
+  if (Ignorable())
+    return false;
+
+  switch (text->currentSynObj->primaryToken) {
+  case new_T:
+  case attach_T:
+    //if (text->currentSynObj->parentObject->primaryToken == new_T) {
+    //  newExp = (NewExpression*)text->currentSynObj->parentObject;
+    //  decl = myDoc->IDTable.GetDECL(((Reference*)newExp->objType.ptr)->refID,text->ckd.inINCL);
+    //  if (decl && decl->DeclType == CompObjSpec)
+    //    return false;
+    //  else
+        return true;
+    //}
+    break;
+  case VarName_T:
+    //if ((text->currentSynObj->parentObject->primaryToken == quant_T
+    //    && ((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
+    //|| text->currentSynObj->parentObject->primaryToken == catch_T)
+    //  return false;
+    //text->currentSynObj->ExprGetFVType(text->ckd,decl,ctxFlags);
+    //if (decl && decl->DeclType == VirtualType && decl->TypeFlags.Contains(definesObjCat))
+    //  return false;
+    //else
+      return true;
+  default:
+    if (text->currentSynObj->IsConstant() && text->currentSynObj->primaryToken != nil_T)
+      return true;
+  }
+  return false;
+}
 
 void CExecView::OnToggleSubstitutable()
 {
@@ -5775,8 +5776,8 @@ void CExecView::SetHelpText () {
   else if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
   && !text->currentSynObj->IsPlaceHolder())
     helpMsg = ID_INSERT_STM;
-  //else if (ToggleCatEnabled())
-  //  helpMsg = ID_TOGGLE_CATEGORY;
+  else if (ToggleCatEnabled())
+    helpMsg = ID_TOGGLE_CATEGORY;
   else if (!Ignorable() && text->currentSynObj->ExpressionSelected(text->currentSelection)
   && !text->currentSynObj->IsPlaceHolder())
     helpMsg = ID_REPLACE_EXP;
@@ -5816,7 +5817,7 @@ void CExecView::UpdateUI()
   OnUpdateToggleClosed(LBaseData->toggleClosedActionPtr);
   OnUpdateToggleParmNames(LBaseData->parmNameActionPtr);
   OnUpdateConflict(LBaseData->conflictingAssigActionPtr);
-  //OnUpdateToggleCategory(LBaseData->toggleCategoryActionPtr);
+  OnUpdateToggleCategory(LBaseData->toggleStateObjectPtr);
   OnUpdateNextComment(LBaseData->nextCommentActionPtr);
   OnUpdatePrevComment(LBaseData->prevCommentActionPtr);
   OnUpdateNextError(LBaseData->nextErrorActionPtr);
@@ -5930,7 +5931,7 @@ void CExecView::DisableActions()
   LBaseData->toggleClosedActionPtr->setEnabled(false);
   LBaseData->parmNameActionPtr->setEnabled(false);
   LBaseData->conflictingAssigActionPtr->setEnabled(false);
-  LBaseData->toggleCategoryActionPtr->setEnabled(false);
+  LBaseData->toggleStateObjectPtr->setEnabled(false);
   LBaseData->intervalActionPtr->setEnabled(false);
   LBaseData->commentOutActionPtr->setEnabled(false);
   LBaseData->modulusActionPtr->setEnabled(false);
@@ -6308,15 +6309,15 @@ void CExecView::OnUpdateToggleClosed(QAction* action)
   action->setChecked(text->currentSynObj->flags.Contains(isClosed));
 }
 
-//void CExecView::OnUpdateToggleCategory(QAction* action)
-//{
-//  if (GetDocument()->changeNothing) {
-//    action->setEnabled(false);
-//    return;
-//  }
-//
-//  action->setEnabled(ToggleCatEnabled());
-//}
+void CExecView::OnUpdateToggleCategory(QAction* action)
+{
+  if (GetDocument()->changeNothing) {
+    action->setEnabled(false);
+    return;
+  }
+
+  action->setEnabled(ToggleCatEnabled());
+}
 
 void CExecView::OnUpdateConflict(QAction* action)
 {

@@ -70,12 +70,12 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
   LBaseData->insActionPtr = insAction;
   LBaseData->delActionPtr = delAction;
 //  LBaseData->okActionPtr = okAction;
-  LBaseData->toggleCatActionPtr = toggleCategoryAction;
+  LBaseData->toggleCatActionPtr = toggleStateObject;
   LBaseData->updateResetActionPtr = editUndoAction;
   LBaseData->editCopyActionPtr = editCopyAction;
   LBaseData->editCutActionPtr = editCutAction;
   LBaseData->editPasteActionPtr = editPasteAction;
-  //connect( toggleCategoryAction,SIGNAL( triggered() ),SLOT( on_toggleCategoryAction_triggered() ) );
+  //connect( toggleStateObject,SIGNAL( triggered() ),SLOT( on_toggleStateObject_triggered() ) );
   //connect( editUndoAction,SIGNAL( triggered() ),SLOT( on_editUndoAction_triggered() ) );
   //connect( insAction,SIGNAL( triggered() ),SLOT( on_insAction_triggered() ) );
   //connect( delAction,SIGNAL( triggered() ),SLOT( on_delAction_triggered() ) );
@@ -255,7 +255,7 @@ void CLavaMainFrame::on_okAction_triggered()
     view->OnOK();
 }
 */
-//void CLavaMainFrame::on_toggleCategoryAction_triggered()
+//void CLavaMainFrame::on_toggleStateObject_triggered()
 //{
 //  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
 //  if (view)

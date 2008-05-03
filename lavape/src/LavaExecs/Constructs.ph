@@ -300,7 +300,7 @@ enum ExecFlags {
   isSelfVar,          //14
   isMemberVar,        //15
   isDeclareVar,       //16
-  free1,//isVariable,         //17
+  isVariable,         //17
   inExecHdr,          //18
   inputArrow,         //19
   free2,//isSameAsSelf,       //20

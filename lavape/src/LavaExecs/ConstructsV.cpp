@@ -179,6 +179,8 @@ VarNameV::VarNameV (const char *vn) {
 
 void VarNameV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
+  if (flags.Contains(isVariable))
+    t.Insert(Tilde_T);
   if (flags.Contains(isOptionalExpr))
     t.Insert(primaryToken,true,true);
   else
@@ -463,10 +465,8 @@ EnumConstV::EnumConstV (TToken,TID &tid,QString &name) {
 
 void EnumConstV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  //if (flags.Contains(isVariable))
-  //  t.Insert(Tilde_T);
-  //else if (flags.Contains(isSameAsSelf))
-  //  t.Insert(Equal_T);
+  if (flags.Contains(isVariable))
+    t.Insert(Tilde_T);
   t.Insert(primaryToken,true);
   EXIT
 }
@@ -480,10 +480,8 @@ ConstantV::ConstantV (const char *c) {
 
 void ConstantV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  //if (flags.Contains(isVariable))
-  //  t.Insert(Tilde_T);
-  //else if (flags.Contains(isSameAsSelf))
-  //  t.Insert(Equal_T);
+  if (flags.Contains(isVariable))
+    t.Insert(Tilde_T);
   t.Insert(primaryToken,true);
   EXIT
 }
@@ -497,10 +495,8 @@ BoolConstV::BoolConstV (bool val) {
 
 void BoolConstV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  //if (flags.Contains(isVariable))
-  //  t.Insert(Tilde_T);
-  //else if (flags.Contains(isSameAsSelf))
-  //  t.Insert(Equal_T);
+  if (flags.Contains(isVariable))
+    t.Insert(Tilde_T);
   if (boolValue)
     t.Insert(true_T,true);
   else
@@ -962,6 +958,8 @@ AttachObjectV::AttachObjectV (Reference *ref) {
 
 void AttachObjectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
+  if (flags.Contains(stateObject))
+    t.Insert(Tilde_T);
   t.Insert(primaryToken,true);
   t.Blank();
   DRAW(objType.ptr);
@@ -1176,6 +1174,9 @@ void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
 
   if (isFuncHandle)
     t.Insert(Lparenth_T);
+
+  if (flags.Contains(stateObject))
+    t.Insert(Tilde_T);
 
   if (initializerCall.ptr) {
     t.Insert(primaryToken,true);

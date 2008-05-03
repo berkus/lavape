@@ -448,7 +448,7 @@ public:
   QAction* staticCallActionPtr;
   QAction* toggleArrowsActionPtr;
   QAction* toggleCatActionPtr;      //Lava.exe
-  QAction* toggleCategoryActionPtr; //LavaPE.exe
+  QAction* toggleStateObjectPtr; //LavaPE.exe
   QAction* toggleCommentsActionPtr;
   QAction* toggleInputArrowsActionPtr;
   QAction* toggleSignActionPtr;

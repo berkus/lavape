@@ -36,7 +36,7 @@ public slots:
   virtual void on_fileExitAction_triggered();
   virtual void makeStyle(const QString &style);
   virtual void on_helpAboutAction_triggered();
-  //virtual void on_toggleCategoryAction_triggered();
+  //virtual void on_toggleStateObject_triggered();
   virtual void on_editUndoAction_triggered();
   virtual void on_insAction_triggered();
   virtual void on_delAction_triggered();

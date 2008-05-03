@@ -1175,10 +1175,10 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
         memDECL->TypeFlags.INCL(acquaintance);
       else 
         memDECL->TypeFlags.EXCL(acquaintance);
-      if (decl->TypeFlags.Contains(isImmutable))
-        memDECL->TypeFlags.INCL(isImmutable);
+      if (decl->TypeFlags.Contains(stateObject))
+        memDECL->TypeFlags.INCL(stateObject);
       else 
-        memDECL->TypeFlags.EXCL(isImmutable);
+        memDECL->TypeFlags.EXCL(stateObject);
       if (decl->TypeFlags.Contains(consumable))
         memDECL->TypeFlags.INCL(consumable);
       else 

@@ -363,8 +363,8 @@ ValOnInit CAttrBox::OnInitDialog()
     ReadOnly->setEnabled(true);
     Protected->setChecked(myDECL->TypeFlags.Contains(isProtected));
     ReadOnly->setChecked(myDECL->TypeFlags.Contains(isConst));
-    Immutable->setChecked(myDECL->TypeFlags.Contains(isImmutable));
-    Immutable->setEnabled(true);
+    StateObject->setChecked(myDECL->TypeFlags.Contains(stateObject));
+    StateObject->setEnabled(true);
     Consumable->setChecked(myDECL->TypeFlags.Contains(consumable));
     SetGet->setChecked(myDECL->TypeFlags.Contains(hasSetGet));
     Consumable->setEnabled(true);
@@ -381,16 +381,16 @@ ValOnInit CAttrBox::OnInitDialog()
   }
   else {
     ReadOnly->setEnabled(false);
-    Immutable->setEnabled(false);
+    StateObject->setEnabled(true);
     Consumable->setEnabled(false);
     Abstract->setEnabled(false);
     Protected->setEnabled(false);
   }
   if (myDECL->SecondTFlags.Contains(overrides)) {
     Protected->setEnabled(baseDECL->TypeFlags.Contains(isProtected));
-    //StateObject->setEnabled(false);
+    StateObject->setEnabled(false);
     SetGet->setEnabled(false);
-    Immutable->setEnabled(false);
+    //Immutable->setEnabled(false);
     Consumable->setEnabled(false);
     ReadOnly->setEnabled(baseDECL->TypeFlags.Contains(isConst));
     Substitutable->setEnabled(false);
@@ -439,9 +439,9 @@ void CAttrBox::on_RMOverrides_clicked()
   second = true;
   NamedTypes->setEnabled(true);
   BasicTypes->setEnabled(true);
-  //StateObject->setEnabled(true);
+  StateObject->setEnabled(true);
   SetGet->setEnabled(true);
-  Immutable->setEnabled(true);
+  //Immutable->setEnabled(true);
   Consumable->setEnabled(true);
   ReadOnly->setEnabled(true);
   Protected->setEnabled(true);
@@ -635,10 +635,10 @@ void CAttrBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(isConst);
   else
     myDECL->TypeFlags.EXCL(isConst);
-  if (Immutable->isChecked())
-    myDECL->TypeFlags.INCL(isImmutable);
+  if (StateObject->isChecked())
+    myDECL->TypeFlags.INCL(stateObject);
   else
-    myDECL->TypeFlags.EXCL(isImmutable);
+    myDECL->TypeFlags.EXCL(stateObject);
   if (Protected->isChecked())
     myDECL->TypeFlags.INCL(isProtected);
   else
@@ -3735,10 +3735,10 @@ void CIOBox::on_ID_OK_clicked()
     myDECL->TypeFlags.EXCL(substitutable);
   if (valkindOfField == 1) 
     myDECL->TypeFlags.INCL(isOptional);
-  //if (StateObject->isChecked())
-  //  myDECL->TypeFlags.INCL(stateObject);
-  //else
-  //  myDECL->TypeFlags.EXCL(stateObject);
+  if (StateObject->isChecked())
+    myDECL->TypeFlags.INCL(stateObject);
+  else
+    myDECL->TypeFlags.EXCL(stateObject);
   //if (SameAsSelf->isChecked())
   //  myDECL->TypeFlags.INCL(sameAsSelf);
   //else

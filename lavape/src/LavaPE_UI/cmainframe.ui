@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1182</width>
+    <width>1223</width>
     <height>685</height>
    </rect>
   </property>
@@ -243,6 +243,7 @@
    <attribute name="toolBarBreak" >
     <bool>false</bool>
    </attribute>
+   <addaction name="toggleStateObject" />
    <addaction name="toggleSubstTypeAction" />
    <addaction name="toggleClosedAction" />
    <addaction name="optLocalVarAction" />
@@ -329,7 +330,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1182</width>
+     <width>1223</width>
      <height>22</height>
     </rect>
    </property>
@@ -1614,21 +1615,21 @@
     <string>Provide online help on "Editing Lava Programs"</string>
    </property>
   </action>
-  <action name="toggleCategoryAction" >
+  <action name="toggleStateObject" >
    <property name="icon" >
     <iconset resource="../LavaPE_res.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Toggle category</string>
+    <string>Toggle category, depressed = variable state object</string>
    </property>
    <property name="iconText" >
-    <string>Toggle category</string>
+    <string>Toggle category, depressed = variable state object</string>
    </property>
    <property name="toolTip" >
-    <string>Toggle category</string>
+    <string>Toggle category, depressed = variable state object</string>
    </property>
    <property name="whatsThis" >
-    <string>Toggle category: default: "constant value object", "~" means "variable state object", "=" means "same category as the self object, "*" means "any/unknown category"</string>
+    <string>Toggle category: default: "immutable value object", "~" means "variable state object"</string>
    </property>
   </action>
   <action name="optLocalVarAction" >

@@ -395,7 +395,7 @@
     <string>Editing Lava Programs</string>
    </property>
   </action>
-  <action name="toggleCategoryAction" >
+  <action name="toggleStateObject" >
    <property name="checkable" >
     <bool>true</bool>
    </property>
