@@ -184,7 +184,7 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
   ObjReference *handle;
   FuncExpression *funcExpr;
   CHE *chpFormIn;
-  //Category cat;
+  bool cat;
   SynFlags ctxFlags;
   TID targetTid, tidOperatorFunc,
       tidBool=TID(ckd.document->IDTable.BasicTypesID[B_Bool],ckd.document->isStd?0:1);
@@ -196,13 +196,13 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
       funcExpr = (FuncExpression*)parentObject->parentObject;
       handle = (ObjReference*)funcExpr->handle.ptr;
       if (handle)
-        handle->ExprGetFVType(ckd,declHandle,ctxFlags);
+        handle->ExprGetFVType(ckd,declHandle,ctxFlags,cat);
       else
         ckd.tempCtx = ckd.lpc;
     }
     else
       ckd.tempCtx = ckd.lpc;
-    targetDecl = ckd.document->GetFinalMVType(targetDecl->RefID,targetDecl->inINCL,ckd.tempCtx, &ckd);
+    targetDecl = ckd.document->GetFinalMVType(targetDecl->RefID,targetDecl->inINCL,ckd.tempCtx,&ckd);
     if (!targetDecl)
       return false;
     if (!ckd.document->IDTable.IsAn(targetDecl,tidBool,0))
@@ -212,7 +212,7 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
     multOpExp = (MultipleOp*)parentObject;
 //    if ((CHE*)whereInParent == (CHE*)multOpExp->operands.first) return true;
 
-    ((SynObject*)((CHE*)multOpExp->operands.first)->data)->ExprGetFVType(ckd,declHandle,ctxFlags);
+    ((SynObject*)((CHE*)multOpExp->operands.first)->data)->ExprGetFVType(ckd,declHandle,ctxFlags,cat);
     declHandle = ckd.document->GetTypeAndContext(declHandle,ckd.tempCtx);
     if (!declHandle)
       return false;
@@ -229,7 +229,7 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
   }
   else if (parentObject->primaryToken == assign_T) {
     assig = (Assignment*)parentObject;
-    ((SynObject*)assig->targetObj.ptr)->ExprGetFVType(ckd,targetDecl,ctxFlags);
+    ((SynObject*)assig->targetObj.ptr)->ExprGetFVType(ckd,targetDecl,ctxFlags,cat);
     targetDecl = ckd.document->GetType(targetDecl);
     if (!targetDecl)
       return false;
@@ -276,7 +276,7 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
   ObjReference *handle;
   FuncExpression *funcExpr;
   CHE *chpFormIn;
-  //Category cat;
+  bool cat;
   SynFlags ctxFlags;
   TID targetTid, tidOperatorFunc,
       tidEnum=TID(ckd.document->IDTable.BasicTypesID[Enumeration],ckd.document->isStd?0:1);
@@ -288,13 +288,13 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
       funcExpr = (FuncExpression*)parentObject->parentObject;
       handle = (ObjReference*)funcExpr->handle.ptr;
       if (handle)
-        handle->ExprGetFVType(ckd,declHandle,ctxFlags);
+        handle->ExprGetFVType(ckd,declHandle,ctxFlags,cat);
       else
         ckd.tempCtx = ckd.lpc;
     }
     else
       ckd.tempCtx = ckd.lpc;
-    targetDecl = ckd.document->GetFinalMVType(targetDecl->RefID,targetDecl->inINCL,ckd.tempCtx, &ckd);
+    targetDecl = ckd.document->GetFinalMVType(targetDecl->RefID,targetDecl->inINCL,ckd.tempCtx,&ckd);
     if (!targetDecl)
       return false;
     if (!ckd.document->IDTable.IsAn(targetDecl,tidEnum,0))
@@ -304,7 +304,7 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
     multOpExp = (MultipleOp*)parentObject;
 //    if ((CHE*)whereInParent == (CHE*)multOpExp->operands.first) return true;
 
-    ((SynObject*)((CHE*)multOpExp->operands.first)->data)->ExprGetFVType(ckd,declHandle,ctxFlags);
+    ((SynObject*)((CHE*)multOpExp->operands.first)->data)->ExprGetFVType(ckd,declHandle,ctxFlags,cat);
     declHandle = ckd.document->GetTypeAndContext(declHandle,ckd.tempCtx);
     if (!declHandle)
       return false;
@@ -321,7 +321,7 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
   }
   else if (parentObject->primaryToken == assign_T) {
     assig = (Assignment*)parentObject;
-    ((SynObject*)assig->targetObj.ptr)->ExprGetFVType(ckd,targetDecl,ctxFlags);
+    ((SynObject*)assig->targetObj.ptr)->ExprGetFVType(ckd,targetDecl,ctxFlags,cat);
     targetDecl = ckd.document->GetType(targetDecl);
     if (!targetDecl)
       return false;
@@ -371,7 +371,7 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
   Disconnect *disconnStm;
   Connect *connectStm;
   CHE *chpFormIn;
-  //Category cat;
+  bool cat;
   TID targetTid, tidOperatorFunc;
   SynFlags ctxFlags;
 
@@ -387,7 +387,7 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
     multOpExp = (MultipleOp*)parentObject;
     if ((CHE*)whereInParent == (CHE*)multOpExp->operands.first) return false;
 
-    ((SynObject*)((CHE*)multOpExp->operands.first)->data)->ExprGetFVType(ckd,declHandle,ctxFlags);
+    ((SynObject*)((CHE*)multOpExp->operands.first)->data)->ExprGetFVType(ckd,declHandle,ctxFlags,cat);
     declHandle = ckd.document->GetTypeAndContext(declHandle,ckd.tempCtx);
     if (declHandle
     && ckd.document->GetOperatorID(declHandle,(TOperator)(multOpExp->primaryToken-not_T),tidOperatorFunc)) {
@@ -401,7 +401,7 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
     binOpEx = (BinaryOp*)parentObject;
     if (whereInParent == (address)&binOpEx->operand1.ptr) return false;
 
-    ((SynObject*)binOpEx->operand1.ptr)->ExprGetFVType(ckd,declHandle,ctxFlags);
+    ((SynObject*)binOpEx->operand1.ptr)->ExprGetFVType(ckd,declHandle,ctxFlags,cat);
     declHandle = ckd.document->GetTypeAndContext(declHandle,ckd.tempCtx);
     if (declHandle
     && ckd.document->GetOperatorID(declHandle,(TOperator)(binOpEx->primaryToken-not_T),tidOperatorFunc)) {

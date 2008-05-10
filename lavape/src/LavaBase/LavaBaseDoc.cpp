@@ -716,7 +716,7 @@ LavaDECL* CLavaBaseDoc::GetFinalMTypeAndContext(const TID& id, int inINCL, CCont
 
   LavaDECL *decl = IDTable.GetDECL(id, inINCL);
   TID tidObject=TID(IDTable.BasicTypesID[B_Object],isStd?0:1);
-  //Category cat;
+  //bool cat;
 
   if (!decl)
     return 0;

@@ -958,7 +958,7 @@ AttachObjectV::AttachObjectV (Reference *ref) {
 
 void AttachObjectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  if (flags.Contains(stateObject))
+  if (flags.Contains(isVariable))
     t.Insert(Tilde_T);
   t.Insert(primaryToken,true);
   t.Blank();
@@ -1175,7 +1175,7 @@ void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   if (isFuncHandle)
     t.Insert(Lparenth_T);
 
-  if (flags.Contains(stateObject))
+  if (flags.Contains(isVariable))
     t.Insert(Tilde_T);
 
   if (initializerCall.ptr) {

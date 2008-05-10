@@ -285,6 +285,12 @@ ValOnInit CAttrBox::OnInitDialog()
     }
     else
       Substitutable->setChecked(false); 
+    if (myDECL->TypeFlags.Contains(stateObject)) {
+      StateObject->setChecked(true);
+      TypeFlags.INCL(stateObject);
+    }
+    else
+      StateObject->setChecked(false); 
     if (myDECL->SecondTFlags.Contains(overrides)) {
       cheS = (CHETID*)myDECL->Supports.first;
       while (cheS) {
@@ -3477,6 +3483,12 @@ ValOnInit CIOBox::OnInitDialog()
     }
     else
       Substitutable->setChecked(false); 
+    if (myDECL->TypeFlags.Contains(stateObject)) {
+      StateObject->setChecked(true);
+      TypeFlags.INCL(stateObject);
+    }
+    else
+      StateObject->setChecked(false); 
    //if (myDoc->GetCategoryFlags(myDECL, catErr).Contains(definesObjCat)) {
    //   StateObject->setChecked(false);
    //   ValueObject->setChecked(false);

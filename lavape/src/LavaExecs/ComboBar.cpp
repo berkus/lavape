@@ -1188,11 +1188,11 @@ void CComboBar::ShowUpcasts(const TID& id, bool theTop)
 }
 */
 
-void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &context, bool forInput, bool forCopy)
+void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &context, bool category, bool forInput, bool forCopy)
  //if decl != 0: decl is final virtual type
  //if decl = 0 local variables only for handle operator (#)
 {
-  //Category cat = unknownCategory, catComp = unknownCategory;
+  bool cat = true, catComp = true;
   CContext compContext = context, bContext;
   LavaDECL *fmvType=0, *memDECL, *enumDecl;
   SynFlags ctxFlags;
@@ -1221,19 +1221,19 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
     if (data && data->IDs.last) {
       lastDOD = (TDOD*)((CHE*)data->IDs.last)->data;
       var = myDoc->IDTable.GetVar(lastDOD->ID, idtype);
-      //catComp = unknownCategory;
+      catComp = true;
       if (var) {
         if (idtype == globalID) {
           memDECL = *(LavaDECL**)var;
           bContext = lastDOD->context;
           //if (memDECL->TypeFlags.Contains(trueObjCat) && !memDECL->TypeFlags.Contains(isAnyCategory))
-            //if (memDECL->TypeFlags.Contains(stateObject))
-            //  catComp = stateObj;
+            if (memDECL->TypeFlags.Contains(stateObject))
+              catComp = true;
             //else
             //  if (memDECL->TypeFlags.Contains(sameAsSelf))
             //    catComp = sameAsSelfObj;
-            //  else
-            //    catComp = valueObj;
+              else
+                catComp = false;
           myDoc->MemberTypeContext(memDECL, bContext,0);
           fmvType = myDoc->GetFinalMVType(memDECL->RefID, memDECL->inINCL, bContext, 0);
           if (memDECL->TypeFlags.Contains(substitutable))
@@ -1241,7 +1241,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
         }
         else {
           if (decl) {
-            ((VarName*)var)->ExprGetFVType(ckd, fmvType,ctxFlags);
+            ((VarName*)var)->ExprGetFVType(ckd,fmvType,ctxFlags,cat);
             bContext = ckd.tempCtx;
             if (ctxFlags.bits)
               bContext.ContextFlags = ctxFlags;
@@ -1249,9 +1249,9 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
           else
             forHandle = true;
         }
-        //if (catComp == unknownCategory)
-        //  catComp = cat;
-        if (forHandle || fmvType) {
+        if (catComp)
+          catComp = cat;
+        if ((forHandle || fmvType) && (forCopy || catComp == category || catComp || category)) {
           if (forHandle || !forHandle &&
               (   (( forInput || forCopy)
                               && compatibleTypes(ckd, fmvType, bContext, decl, compContext))

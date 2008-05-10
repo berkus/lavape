@@ -1616,6 +1616,9 @@
    </property>
   </action>
   <action name="toggleStateObject" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
    <property name="icon" >
     <iconset resource="../LavaPE_res.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</iconset>
    </property>

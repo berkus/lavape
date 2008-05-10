@@ -390,7 +390,7 @@ struct LAVABASE_DLL CheckData {
     inINCL,
 	  iArg;
   QString *errorCode;
-  //Category callObjCat;
+  bool callObjCat;
   bool iniCheck, concernExecs, criticalScope, handleOpd,
        inQuant, inInitialUpdate, inIniClause, immediateReturn, exceptionThrown,
 	     checkClosedParmLevel;

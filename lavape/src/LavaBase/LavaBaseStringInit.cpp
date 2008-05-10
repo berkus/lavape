@@ -274,7 +274,6 @@ QString ERR_LocalOrOutputVarInOld;
 QString ERR_OneLibName;
 QString ERR_CompObjIntfNotFound;
 QString ERR_CallCheck_NYI;
-QString ERR_ISO_NYI;
 QString ERR_clone_copy_inp_closed;
 QString ERR_Broken_ref_in_HC;
 QString ERR_NoHandlerIO;
@@ -340,7 +339,7 @@ void LavaBaseStringInit() {
   ERR_CorruptObject  = QObject::tr("Cannot read lava object with this lava component program");
   ERR_AbstrMemType  = QObject::tr("Do not use an abstract type for a member or formal parameter in a creatable interface");
   ERR_PrevDescAssig  = QObject::tr("Forbidden replacement of an ancestor after assignment to one of its ""descendants"" (= recursive constituents/acquaintances)");
-  ERR_IfdefMissing  = QObject::tr("Access to member of optional variable isn't secured by ifdef statement");
+  ERR_IfdefMissing  = QObject::tr("Access to member function or variable of optional variable/expression isn't secured by \"ifdef\" statement or \"else\" expression");
   ERR_Optional  = QObject::tr("An expression whose value is mandatory (= always non-null) is expected here. \"ifdef\" statement or \"else\" expression missing?");
   ERR_Closed  = QObject::tr("A (possibly) not yet fully initialized object may be assigned only to a \"closed\" variable or formal parameter");
   ERR_ShouldBeClosed  = QObject::tr(" Variable to be initialized must be declared \"closed\" since initializer has \"closed\" actual input parameter(s)");
@@ -523,7 +522,6 @@ void LavaBaseStringInit() {
   ERR_OneLibName = QObject::tr("Only set the name of the library implementing the component");
   ERR_CompObjIntfNotFound = QObject::tr("Supported component object interface not found");
   ERR_CallCheck_NYI = QObject::tr("Call check not yet implemented");
-  ERR_ISO_NYI = QObject::tr("\"IsStateObject\" not yet implemented");
   ERR_clone_copy_inp_closed = QObject::tr("\"Closed\" objects cannot be cloned/copied");
   ERR_Broken_ref_in_HC = QObject::tr("Broken reference in handler clients");
   ERR_NoHandlerIO = QObject::tr("Inconsistency in function parameter versus handler type or versus handler clients");
