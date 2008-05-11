@@ -1324,6 +1324,7 @@ void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFla
           ctxFlags = SET(multiContext,-1);
         else
           ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
+        cat = declOutparm1->TypeFlags.Contains(stateObject);
         //if (cat == unknownCategory
         //&& declOutparm1->TypeFlags.Contains(trueObjCat) && !declOutparm1->TypeFlags.Contains(isAnyCategory))
         //  if (declOutparm1->TypeFlags.Contains(stateObject))
@@ -2483,6 +2484,7 @@ void UnaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags,
           ctxFlags = SET(multiContext,-1);
         else
           ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
+        cat = declOutparm1->TypeFlags.Contains(stateObject);
         //if (cat == unknownCategory
         //&& declOutparm1->TypeFlags.Contains(trueObjCat) && !declOutparm1->TypeFlags.Contains(isAnyCategory))
         //  if (declOutparm1->TypeFlags.Contains(stateObject))
@@ -4222,16 +4224,17 @@ void FuncExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ct
   SynFlags callSynFlags;
 
   decl = 0;
-  cat = true;
   if (IsPH(function.ptr))
     return;
 
+  cat = true;
   funcTid = ((Reference*)function.ptr)->refID;
   ADJUST4(funcTid);
   chpFormOut = GetFirstOutput(&ckd.document->IDTable,funcTid);
   if (!chpFormOut)
     return;
   outParmDecl = (LavaDECL*)chpFormOut->data;
+  cat = outParmDecl->TypeFlags.Contains(stateObject);
   ckd.tempCtx = callCtx;
   if (myCtxFlags.bits)
     ckd.tempCtx.ContextFlags = myCtxFlags;

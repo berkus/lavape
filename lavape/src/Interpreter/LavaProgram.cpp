@@ -2567,7 +2567,7 @@ unsigned CLavaExecThread::ExecuteLava()
 }
 
 
-CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool fromFillIn)
+CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
 {
   LavaVariablePtr newStackFrame=0;
   int frameSize, frameSizeBytes, ii;
@@ -2577,7 +2577,7 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool fromFill
   CVFuncDesc *fDesc;
 
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
-  CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, &stack[SFH], &stack[SFH+1], &stack[SFH+2], currentThread, (void*)fromFillIn);
+  CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, &stack[SFH], &stack[SFH+1], &stack[SFH+2], (void*)frozen, currentThread, (void*)fromFillIn);
   if (currentThread != wxTheApp->mainThread) {
     currentThread->mySemaphore.lastException = 0;
     currentThread->waitingForUI = true;
@@ -2700,7 +2700,7 @@ bool GUIEdit(CheckData& ckd, LavaVariablePtr stack)
     return false;
   if (ex)
     throw *ex;
-  ex = showFunc(ckd, newStackFrame, false);
+  ex = showFunc(ckd, newStackFrame, false, false);
   if (ckd.exceptionThrown) {
     if (newStackFrame[SFH+2])
       DFC(newStackFrame[SFH+2]);
@@ -2749,7 +2749,7 @@ bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack)
     if (ex)
       throw *ex;
   }
-  ex = showFunc(ckd, newStackFrame, true);
+  ex = showFunc(ckd, newStackFrame, false, true);
   stack[SFH+2] = newStackFrame[SFH+2];
   if (ex) {
     throw *ex;

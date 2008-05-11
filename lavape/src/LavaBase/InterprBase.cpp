@@ -791,7 +791,7 @@ bool EqualObjects(CheckData &ckd, LavaObjectPtr leftPtr, LavaObjectPtr rightPtr,
     return false;
   leftObjPtr = leftObjPtr - (*leftObjPtr)->sectionOffset;
   rightObjPtr = rightObjPtr - (*rightObjPtr)->sectionOffset;
-  if ((specialEQ != 2) || (specialEQ == 1))
+  if (specialEQ == 1)
     return (rightObjPtr == leftObjPtr);
   classDECL = (*leftObjPtr)->classDECL;
   if (classDECL != (*rightObjPtr)->classDECL)

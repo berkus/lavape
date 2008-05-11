@@ -3078,7 +3078,7 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       break;
     }
     //IFC(value); // for permanent ref from Constant
-    ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+    //((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
 #ifdef ALLOCOBJLIST
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
 #endif
@@ -3114,7 +3114,8 @@ ConstantX::~ConstantX () {
 #endif
     break;
   }
-  delete [](value-LOH);
+  //delete [](value-LOH);
+  value = 0;
 }
 
 LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel)
@@ -3132,9 +3133,9 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     }
     //((SynFlags*)(value+1))->INCL(finished);
     *(bool*)(value+LSH) = boolValue;
-    IFC(value); // for permanent ref from BoolConst
+    //IFC(value); // for permanent ref from BoolConst
     // is released only when syntax is released
-    ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+    //((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
 #ifdef ALLOCOBJLIST
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
 #endif
@@ -3143,8 +3144,10 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
 }
 
 BoolConstX::~BoolConstX () {
-  if (value)
-    delete [] (value-LOH);
+  if (value) {
+    //delete [] (value-LOH);
+    value = 0;
+  }
 }
 
 LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel)
@@ -3166,9 +3169,9 @@ LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
       return (LavaObjectPtr)-1;
     *(int*)(enumBaseObj+LSH) = enumItem;
     NewQString((QString*)(enumBaseObj+LSH+1),Id.c);
-    IFC(value); // for permanent ref from EnumConst
+    //IFC(value); // for permanent ref from EnumConst
     // is released only when syntax is released
-    ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+    //((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
 #ifdef ALLOCOBJLIST
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
 #endif
@@ -3183,7 +3186,8 @@ EnumConstX::~EnumConstX () {
   if (value) {
     newStackFrame[SFH] = enumBaseObj+1; // +1 since the QString value follows after the int value
     StringDecFunc(ckd,newStackFrame);
-    delete [] (value-LOH);
+    //delete [] (value-LOH);
+    value = 0;
   }
 }
 
