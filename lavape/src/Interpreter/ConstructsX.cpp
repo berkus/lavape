@@ -3089,33 +3089,33 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
 }
 
 ConstantX::~ConstantX () {
-  CheckData ckd;
-  LavaVariablePtr newStackFrame;
+//  CheckData ckd;
+//  LavaVariablePtr newStackFrame;
 
-  if (!value) return;
-  switch (constType) {
-  case VLString:
-#ifdef __GNUC__
-    newStackFrame = new LavaObjectPtr[SFH+1];
-#else
-    __asm {
-      sub esp, 12
-      mov newStackFrame, esp
-    }
-#endif
-    newStackFrame[SFH] = value;
-    StringDecFunc(ckd, newStackFrame);
-#ifdef __GNUC__
-		delete [] newStackFrame;
-#else
-    __asm {
-      add esp, 12
-    }
-#endif
-    break;
-  }
-  //delete [](value-LOH);
-  value = 0;
+//  if (!value) return;
+//  switch (constType) {
+//  case VLString:
+//#ifdef __GNUC__
+//    newStackFrame = new LavaObjectPtr[SFH+1];
+//#else
+//    __asm {
+//      sub esp, 12
+//      mov newStackFrame, esp
+//    }
+//#endif
+//    newStackFrame[SFH] = value;
+//    StringDecFunc(ckd, newStackFrame);
+//#ifdef __GNUC__
+//		delete [] newStackFrame;
+//#else
+//    __asm {
+//      add esp, 12
+//    }
+//#endif
+//    break;
+//  }
+//  delete [](value-LOH);
+//  value = 0;
 }
 
 LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel)
@@ -3183,12 +3183,12 @@ EnumConstX::~EnumConstX () {
   CheckData ckd;
   LavaObjectPtr newStackFrame[SFH+1];
 
-  if (value) {
-    newStackFrame[SFH] = enumBaseObj+1; // +1 since the QString value follows after the int value
-    StringDecFunc(ckd,newStackFrame);
-    //delete [] (value-LOH);
-    value = 0;
-  }
+//  if (value) {
+//    newStackFrame[SFH] = enumBaseObj+1; // +1 since the QString value follows after the int value
+//    StringDecFunc(ckd,newStackFrame);
+//    delete [] (value-LOH);
+//    value = 0;
+//  }
 }
 
 LavaObjectPtr ObjReferenceX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {

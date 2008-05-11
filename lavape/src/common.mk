@@ -1,6 +1,6 @@
 #to build a release version set REL
 ifeq ($(REL),)
-DBG=#stabs+
+DBG=-g#stabs+
 endif
 
 
