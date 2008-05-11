@@ -2269,12 +2269,14 @@ bool SwitchStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsi
       ok = EqualObjects(ckd,caseLab,caseExpr,0);
       if (ok) {
         DFC(caseExpr);
+        DFC(caseLab);
         ok = ((SynObject*)branch->thenPart.ptr)->Execute(ckd,stackFrame,oldExprLevel);
         if (ckd.exceptionThrown)
           return false;
         RETURN(ok)
       }
-      DFC(caseLab);
+      else
+        DFC(caseLab);
     }
   }
 
@@ -3388,10 +3390,13 @@ LavaObjectPtr AttachObjectX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
       urlStr = (LavaObjectPtr)(urlObj - (*urlObj)->sectionOffset + (*urlObj)[secn].sectionOffset);
       SetRTError(ckd,&ERR_ldocNotOpened,stackFrame, qPrintable(*(QString*)(urlStr + LSH)));
     }
+    DFC(urlObj);
     return rtObj;
   }
   else if (cosDecl->nOutput == PROT_NATIVE) {
+    DFC(urlObj);
   }
+  DFC(urlObj);
   return 0;
 }
 

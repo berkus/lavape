@@ -3979,6 +3979,7 @@ void ArrayAtIndex::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxF
       ctxFlags = SET(multiContext,-1);
     else
       ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
+    cat = declOutparm1->TypeFlags.Contains(stateObject);
     //if (cat == unknownCategory
     //&& declOutparm1->TypeFlags.Contains(trueObjCat) && !declOutparm1->TypeFlags.Contains(isAnyCategory))
     //  if (declOutparm1->TypeFlags.Contains(stateObject))
@@ -4001,6 +4002,7 @@ void ArrayAtIndex::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxF
       ctxFlags = SET(multiContext,-1);
     else
       ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
+    cat = declInparm2->TypeFlags.Contains(stateObject);
     //if (cat == unknownCategory
     //&& declInparm2->TypeFlags.Contains(trueObjCat) && !declInparm2->TypeFlags.Contains(isAnyCategory))
     //  if (declInparm2->TypeFlags.Contains(stateObject))
@@ -5632,7 +5634,7 @@ bool CatchClause::Check (CheckData &ckd)
   ok &= ((SynObject*)exprType.ptr)->Check(ckd);
   ok &= ((SynObject*)varName.ptr)->Check(ckd);
   ((SynObject*)exprType.ptr)->ExprGetFVType(ckd,declBranchType,ctxFlags,catBranchType);
-
+  catBranchType = ((SynObject*)varName.ptr)->flags.Contains(isVariable);
   if (!declBranchType)
     ERROREXIT
 
@@ -5788,6 +5790,7 @@ bool IgnoreStatement::Check (CheckData &ckd)
 
 void AttachObject::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags, bool &cat) {
   ((SynObject*)itf.ptr)->ExprGetFVType(ckd,decl,ctxFlags,cat);
+  cat = flags.Contains(isVariable);
 #ifdef INTERPRETER
   finalType = ckd.document->GetType(decl);
 #endif
