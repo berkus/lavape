@@ -108,7 +108,7 @@ CLavaDoc::~CLavaDoc()
   if (numAllocObjects) {
     QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(numAllocObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
   }
-  //int sz = allocatedObjects.size();
+  int sz = allocatedObjects.size();
   if (((CLavaApp*)wxTheApp)->debugger.startedFromLavaPE) 
     qApp->exit(0);
   else

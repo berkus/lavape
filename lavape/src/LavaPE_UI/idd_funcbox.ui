@@ -270,22 +270,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="ConstFunc" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="focusPolicy" >
-             <enum>Qt::StrongFocus</enum>
-            </property>
-            <property name="text" >
-             <string>Read-only</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QCheckBox" name="StaticFunc" >
             <property name="sizePolicy" >
              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
@@ -319,24 +303,27 @@
           </item>
           <item>
            <widget class="QCheckBox" name="Closed" >
+            <property name="toolTip" >
+             <string>"self" is closed</string>
+            </property>
             <property name="whatsThis" >
              <string>The "self" object of this function may be unfinished, i.e., not yet fully initialized and therefore "closed": its members cannot yet be used</string>
             </property>
             <property name="text" >
-             <string>"Self" is closed</string>
+             <string>"self" is closed</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="StateObject" >
+           <widget class="QCheckBox" name="ConstFunc" >
             <property name="toolTip" >
-             <string>"Self" is a variable state object</string>
+             <string>Doesn't modify "self"</string>
             </property>
             <property name="whatsThis" >
-             <string>"Self" is a variable state object</string>
+             <string>Doesn't modify "self"</string>
             </property>
             <property name="text" >
-             <string>"Self" is state object</string>
+             <string>Doesn't modify "self"</string>
             </property>
            </widget>
           </item>
@@ -782,7 +769,6 @@
   <tabstop>CHECKOp</tabstop>
   <tabstop>CMBOperator</tabstop>
   <tabstop>Protected</tabstop>
-  <tabstop>ConstFunc</tabstop>
   <tabstop>StaticFunc</tabstop>
   <tabstop>Initializer</tabstop>
   <tabstop>DefaultIni</tabstop>

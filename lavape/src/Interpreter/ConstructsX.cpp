@@ -3005,11 +3005,10 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
 {
   int i, k=-1;
   DString bitset;
+  bool isVar = flags.Contains(isVariable);
 
-  //if (value)
-  //  IFC(value)
-  //else {
-    value = AllocateObject(ckd,typeDECL/*flags.Contains(isVariable)*/);
+  if (!value || isVar) {
+    value = AllocateObject(ckd,typeDECL);
     if (!value) {
       if (!ckd.exceptionThrown)
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
@@ -3017,8 +3016,6 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
         DebugStop(ckd,this,stackFrame,ckd.exceptionMsg);
       return (LavaObjectPtr)-1;
     }
-
-    //((SynFlags*)(value+1))->INCL(finished);
 
     switch (constType) {
     case Char:
@@ -3031,11 +3028,11 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       *(int*)(value+LSH) = strtol(str.c,0,0);
       if (errno == ERANGE) {
         SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
-        IFC(value); // for permanent ref from Constant
-        ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
-#ifdef ALLOCOBJLIST
-        ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
-#endif
+        //IFC(value); // for permanent ref from Constant
+        //((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+//#ifdef ALLOCOBJLIST
+//        ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
+//#endif
         return (LavaObjectPtr)-1;
       }
       break;
@@ -3045,11 +3042,11 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       *(int*)(value+LSH) = strtoul(bitset.c,0,0);
       if (errno == ERANGE) {
         SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
-        IFC(value); // for permanent ref from Constant
-        ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
-#ifdef ALLOCOBJLIST
-        ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
-#endif
+        //IFC(value); // for permanent ref from Constant
+        //((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+//#ifdef ALLOCOBJLIST
+//        ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
+//#endif
         return (LavaObjectPtr)-1;
       }
       break;
@@ -3079,52 +3076,57 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       NewQString((QString*)(value+LSH), str1.c);
       break;
     }
-    //IFC(value); // for permanent ref from Constant
-    //((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
-#ifdef ALLOCOBJLIST
-    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
-#endif
-    // constants aren't counted as allocated objects
+    if (!isVar)
+      ((CLavaBaseDoc*)ckd.document)->numAllocObjects--; // don't count this extra ref as an object allocation:
+//#ifdef ALLOCOBJLIST
+//    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
+//#endif
+  }
+  if (!isVar) {
+    IFC(value); // for permanent ref from Constant
+    // read-only constants aren't counted as allocated objects
     // and released only when the program syntax (AST) is released
-  //}
+  }
   return value;
 }
 
 ConstantX::~ConstantX () {
-//  CheckData ckd;
-//  LavaVariablePtr newStackFrame;
+  CheckData ckd;
+  LavaVariablePtr newStackFrame;
 
-//  if (!value) return;
-//  switch (constType) {
-//  case VLString:
-//#ifdef __GNUC__
-//    newStackFrame = new LavaObjectPtr[SFH+1];
-//#else
-//    __asm {
-//      sub esp, 12
-//      mov newStackFrame, esp
-//    }
-//#endif
-//    newStackFrame[SFH] = value;
-//    StringDecFunc(ckd, newStackFrame);
-//#ifdef __GNUC__
-//		delete [] newStackFrame;
-//#else
-//    __asm {
-//      add esp, 12
-//    }
-//#endif
-//    break;
-//  }
-//  delete [](value-LOH);
-//  value = 0;
+  if (!value || flags.Contains(isVariable))
+    return;
+
+  switch (constType) {
+  case VLString:
+#ifdef __GNUC__
+    newStackFrame = new LavaObjectPtr[SFH+1];
+#else
+    __asm {
+      sub esp, 12
+      mov newStackFrame, esp
+    }
+#endif
+    newStackFrame[SFH] = value;
+    StringDecFunc(ckd, newStackFrame);
+#ifdef __GNUC__
+		delete [] newStackFrame;
+#else
+    __asm {
+      add esp, 12
+    }
+#endif
+    break;
+  }
+  delete [](value-LOH);
+  value = 0;
 }
 
 LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel)
 {
-  //if (value)
-  //  IFC(value)
-  //else {
+  bool isVar = flags.Contains(isVariable);
+
+  if (!value || flags.Contains(isVariable)) {
     value = AllocateObject(ckd,typeDECL/*flags.Contains(isVariable)*/);
     if (!value) {
       if (!ckd.exceptionThrown)
@@ -3133,30 +3135,33 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
         DebugStop(ckd,this,stackFrame,ckd.exceptionMsg);
       return (LavaObjectPtr)-1;
     }
-    //((SynFlags*)(value+1))->INCL(finished);
     *(bool*)(value+LSH) = boolValue;
-    //IFC(value); // for permanent ref from BoolConst
-    // is released only when syntax is released
-    //((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
-#ifdef ALLOCOBJLIST
-    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
-#endif
-  //}
+    if (!isVar)
+      ((CLavaBaseDoc*)ckd.document)->numAllocObjects--; // don't count this extra ref as an object allocation:
+//#ifdef ALLOCOBJLIST
+//    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
+//#endif
+  }
+  if (!flags.Contains(isVariable)) {
+    IFC(value); // for permanent ref from Constant
+    // read-only constants aren't counted as allocated objects
+    // and released only when the program syntax (AST) is released
+  }
   return value;
 }
 
 BoolConstX::~BoolConstX () {
-  if (value) {
-    //delete [] (value-LOH);
-    value = 0;
-  }
+  if (!value || flags.Contains(isVariable))
+    return;
+  delete [] (value-LOH);
+  value = 0;
 }
 
 LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel)
 {
-  //if (value)
-  //  IFC(value)
-  //else {
+  bool isVar = flags.Contains(isVariable);
+
+  if (!value || flags.Contains(isVariable)) {
     value = AllocateObject(ckd,refDecl/*flags.Contains(isVariable)*/);
     if (!value) {
       if (!ckd.exceptionThrown)
@@ -3165,19 +3170,22 @@ LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
         DebugStop(ckd,this,stackFrame,ckd.exceptionMsg);
       return (LavaObjectPtr)-1;
     }
-    //((SynFlags*)(value+1))->INCL(finished);
     enumBaseObj = CastEnumType(ckd, value);
     if (ckd.exceptionThrown)
       return (LavaObjectPtr)-1;
     *(int*)(enumBaseObj+LSH) = enumItem;
     NewQString((QString*)(enumBaseObj+LSH+1),Id.c);
-    //IFC(value); // for permanent ref from EnumConst
-    // is released only when syntax is released
-    //((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
-#ifdef ALLOCOBJLIST
-    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
-#endif
-  //}
+    if (!isVar)
+      ((CLavaBaseDoc*)ckd.document)->numAllocObjects--; // don't count this extra ref as an object allocation:
+//#ifdef ALLOCOBJLIST
+//    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
+//#endif
+  }
+  if (!flags.Contains(isVariable)) {
+    IFC(value); // for permanent ref from Constant
+    // read-only constants aren't counted as allocated objects
+    // and released only when the program syntax (AST) is released
+  }
   return value;
 }
 
@@ -3185,12 +3193,12 @@ EnumConstX::~EnumConstX () {
   CheckData ckd;
   LavaObjectPtr newStackFrame[SFH+1];
 
-//  if (value) {
-//    newStackFrame[SFH] = enumBaseObj+1; // +1 since the QString value follows after the int value
-//    StringDecFunc(ckd,newStackFrame);
-//    delete [] (value-LOH);
-//    value = 0;
-//  }
+  if (!value || flags.Contains(isVariable))
+    return;
+  newStackFrame[SFH] = enumBaseObj+1; // +1 since the QString value follows after the int value
+  StringDecFunc(ckd,newStackFrame);
+  delete [] (value-LOH);
+  value = 0;
 }
 
 LavaObjectPtr ObjReferenceX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {

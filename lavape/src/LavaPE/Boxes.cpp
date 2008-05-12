@@ -1227,6 +1227,7 @@ CEnumBox::CEnumBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool is
   onNew = isNew;
   OrigDECL = origDECL;
   valBuildSet = false;
+  valItemNr = 0;
 }
 
 CEnumBox::~CEnumBox()
@@ -1236,12 +1237,12 @@ CEnumBox::~CEnumBox()
 void CEnumBox::UpdateData(bool getData)
 {
   if (getData) {
-    valItemNr = EnumItems->currentRow();
+    //valItemNr = EnumItems->currentRow();
     valNewName = NewName->text();
     valBuildSet = BuildSet->isChecked();
   }
   else {
-    EnumItems->item(valItemNr)->setSelected(true);
+    //EnumItems->item(valItemNr)->setSelected(true);
     NewName->setText(valNewName);
     BuildSet->setChecked(valBuildSet);
   }
