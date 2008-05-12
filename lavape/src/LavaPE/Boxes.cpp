@@ -1319,7 +1319,7 @@ void CEnumBox::on_EnumAdd_clicked()
   if (cm->exec() == QDialog::Accepted) {
     item = new CListBoxItem(iT, TID(-1,-1));
     EnumItems->insertItem(ss,item);
-    EnumItems->item(ss)->setSelected(true);
+    EnumItems->setCurrentRow(ss);
     EnumDel->setEnabled(true);
     EnumEdit->setEnabled(true);
   } 

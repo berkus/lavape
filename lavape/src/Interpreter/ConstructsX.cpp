@@ -3030,9 +3030,6 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
         SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
         //IFC(value); // for permanent ref from Constant
         //((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
-//#ifdef ALLOCOBJLIST
-//        ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
-//#endif
         return (LavaObjectPtr)-1;
       }
       break;
@@ -3044,9 +3041,6 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
         SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
         //IFC(value); // for permanent ref from Constant
         //((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
-//#ifdef ALLOCOBJLIST
-//        ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
-//#endif
         return (LavaObjectPtr)-1;
       }
       break;
@@ -3078,9 +3072,6 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
     }
     if (!isVar)
       ((CLavaBaseDoc*)ckd.document)->numAllocObjects--; // don't count this extra ref as an object allocation:
-//#ifdef ALLOCOBJLIST
-//    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
-//#endif
   }
   if (!isVar) {
     IFC(value); // for permanent ref from Constant
@@ -3138,9 +3129,6 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     *(bool*)(value+LSH) = boolValue;
     if (!isVar)
       ((CLavaBaseDoc*)ckd.document)->numAllocObjects--; // don't count this extra ref as an object allocation:
-//#ifdef ALLOCOBJLIST
-//    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
-//#endif
   }
   if (!flags.Contains(isVariable)) {
     IFC(value); // for permanent ref from Constant
@@ -3177,9 +3165,6 @@ LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     NewQString((QString*)(enumBaseObj+LSH+1),Id.c);
     if (!isVar)
       ((CLavaBaseDoc*)ckd.document)->numAllocObjects--; // don't count this extra ref as an object allocation:
-//#ifdef ALLOCOBJLIST
-//    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
-//#endif
   }
   if (!flags.Contains(isVariable)) {
     IFC(value); // for permanent ref from Constant

@@ -20,7 +20,7 @@
 #include <signal.h>
 #endif
 
-#define ALLOCOBJLIST
+//#define ALLOCOBJLIST
 
 //#ifdef __Darwin
 //#define FPE_INTOVF FPE_FLTOVF
