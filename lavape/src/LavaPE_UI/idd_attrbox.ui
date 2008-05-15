@@ -256,13 +256,13 @@
           <enum>Qt::StrongFocus</enum>
          </property>
          <property name="toolTip" >
-          <string>Variable state object</string>
+          <string>Points to variable state object</string>
          </property>
          <property name="whatsThis" >
-          <string>Variable state object</string>
+          <string>Points to variable state object</string>
          </property>
          <property name="text" >
-          <string>Variable state object</string>
+          <string>Points to variable state object</string>
          </property>
         </widget>
        </item>

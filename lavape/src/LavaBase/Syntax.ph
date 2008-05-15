@@ -265,9 +265,9 @@ $TYPE +CDP {
     FREE_TYPEFLAG0,//isAnyCategory,
     //13/8192, X0000 2000, indefinite object category (stateObject or valueObject)
     constituent,
-    //14/16384, X0000 4000 an attribute defines a down link
+    //14/16384, X0000 4000 constituent link
     acquaintance,
-    //15/32768, X0000 8000 an attribute defines a  'follow on copy link'
+    //15/32768, X0000 8000 acquaintance link
     isInitializer,
     //16/, X0001 0000 initializer function
     isPersistent,

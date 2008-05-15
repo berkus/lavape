@@ -1113,18 +1113,14 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     }
 
     PutComment(pnode0,false,true);
+    if (pnode0->TypeFlags.Contains(stateObject))
+      code("~");
     code(pnode0->LocalName.c);
 
     code(" : ");
 
     if (pnode0->TypeFlags.Contains(substitutable))
       code("{");
-    if (pnode0->TypeFlags.Contains(stateObject))
-      code("~");
-    //else if (pnode0->TypeFlags.Contains(sameAsSelf))
-    //  code("=");
-    //else if (pnode0->TypeFlags.Contains(isAnyCategory))
-    //  code("*");
     PutLink(&GetDocument()->IDTable,pnode->RefID,singleFile);
     if (pnode0->TypeFlags.Contains(substitutable))
       code("}");

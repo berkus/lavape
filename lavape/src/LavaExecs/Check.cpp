@@ -6803,7 +6803,7 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
   LavaDECL *fieldDECL = 0, *typeDECL = 0, *vTypeDECL = 0, *implItfDecl, *parentTypeDecl=startDecl;
   TIDType itype;
   DString strINCL, strID;
-  bool ok=true, setErr = false;
+  bool ok=true, setErr = false, tempCat = parent->myCategory;
   CHE *cheo = DODs, *cheoSucc;
   TDOD* dod = (TDOD*)cheo->data;
   int fldInType=-2;
@@ -6842,12 +6842,12 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
         parent->myFinalVType = vTypeDECL;
         if (fieldDECL->TypeFlags.Contains(substitutable))
           parent->flags.INCL(isSubstitutable);
-        //if (parent->myCategory == unknownCategory
-        //    && fieldDECL->TypeFlags.Contains(trueObjCat) && !fieldDECL->TypeFlags.Contains(isAnyCategory))
-          if (fieldDECL->TypeFlags.Contains(stateObject))
-            parent->myCategory = true;
-          else
-            parent->myCategory = false;
+        if (fieldDECL->TypeFlags.Contains(acquaintance))
+          parent->myCategory = fieldDECL->TypeFlags.Contains(stateObject);
+        else if (fieldDECL->TypeFlags.Contains(stateObject))
+          parent->myCategory = tempCat;
+        else
+          parent->myCategory = false;
       }
 //#ifndef INTERPRETER
       name += fieldDECL->LocalName;
@@ -6939,12 +6939,18 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
             parent->myFinalVType = vTypeDECL;
             if (fieldDECL->TypeFlags.Contains(substitutable))
               parent->flags.INCL(isSubstitutable);
-            //if (parent->myCategory == unknownCategory
-            //    && fieldDECL->TypeFlags.Contains(trueObjCat) && !fieldDECL->TypeFlags.Contains(isAnyCategory))
-              if (fieldDECL->TypeFlags.Contains(stateObject))
-                parent->myCategory = true;
-              else
-                parent->myCategory = false;
+            if (fieldDECL->TypeFlags.Contains(acquaintance))
+              parent->myCategory = fieldDECL->TypeFlags.Contains(stateObject);
+            else if (fieldDECL->TypeFlags.Contains(stateObject))
+              parent->myCategory = tempCat;
+            else
+              parent->myCategory = false;
+          }
+          else {
+            if (fieldDECL->TypeFlags.Contains(acquaintance))
+              tempCat = fieldDECL->TypeFlags.Contains(stateObject);
+            else if (!fieldDECL->TypeFlags.Contains(stateObject))
+              tempCat = true;
           }
         }//if Attr
         else  //not Attr
