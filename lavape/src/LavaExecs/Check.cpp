@@ -6842,7 +6842,7 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
         parent->myFinalVType = vTypeDECL;
         if (fieldDECL->TypeFlags.Contains(substitutable))
           parent->flags.INCL(isSubstitutable);
-        if (fieldDECL->TypeFlags.Contains(acquaintance))
+        if (!fieldDECL->TypeFlags.Contains(constituent)) // acquaintance or reverse link
           parent->myCategory = fieldDECL->TypeFlags.Contains(stateObject);
         else if (fieldDECL->TypeFlags.Contains(stateObject))
           parent->myCategory = tempCat;
@@ -6939,7 +6939,7 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
             parent->myFinalVType = vTypeDECL;
             if (fieldDECL->TypeFlags.Contains(substitutable))
               parent->flags.INCL(isSubstitutable);
-            if (fieldDECL->TypeFlags.Contains(acquaintance))
+            if (!fieldDECL->TypeFlags.Contains(constituent)) // acquaintance or reverse link
               parent->myCategory = fieldDECL->TypeFlags.Contains(stateObject);
             else if (fieldDECL->TypeFlags.Contains(stateObject))
               parent->myCategory = tempCat;
@@ -6947,10 +6947,10 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
               parent->myCategory = false;
           }
           else {
-            if (fieldDECL->TypeFlags.Contains(acquaintance))
+            if (!fieldDECL->TypeFlags.Contains(constituent)) // acquaintance or reverse link
               tempCat = fieldDECL->TypeFlags.Contains(stateObject);
             else if (!fieldDECL->TypeFlags.Contains(stateObject))
-              tempCat = true;
+              tempCat = false;
           }
         }//if Attr
         else  //not Attr
