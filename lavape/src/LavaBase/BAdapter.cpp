@@ -76,7 +76,7 @@ TAdapterFunc* StdAdapterTab [Identifier];
 
 //LavaDECL* DECLTab [Identifier];
 
-static TAdapterFunc ObjectAdapter[LAH + 9];
+static TAdapterFunc ObjectAdapter[LAH + 7];
 static TAdapterFunc BitsetAdapter[LAH + 7];
 static TAdapterFunc BoolAdapter[LAH + 5];
 static TAdapterFunc CharAdapter[LAH + 1];
@@ -216,30 +216,6 @@ bool ObjectDump(CheckData& ckd, LavaVariablePtr stack)
   ckd.document->DumpFrame = 0;
   return true;
 }
-
-bool ObjectToStateObj(CheckData& ckd, LavaVariablePtr stack)
-{
-  return true;
-}
-
-bool ObjectToValueObj(CheckData& ckd, LavaVariablePtr stack)
-{
-  return true;
-}
-
-//bool ObjectSetState(CheckData& ckd, LavaVariablePtr stack)
-//{
-//  LavaObjectPtr resultObjPtr=stack[SFH];
-//
-//  resultObjPtr = resultObjPtr - (resultObjPtr[0])[0].sectionOffset;
-//  CRuntimeException* ex = CopyObject(ckd, &stack[SFH+1], &resultObjPtr);
-//  if (ex)
-//    throw *ex;
-//  if (ckd.exceptionThrown)
-//    return false;
-//  return true;
-//}
-
 
 //Bitset adapter functions
 
@@ -1876,8 +1852,6 @@ void MakeStdAdapter()
   ObjectAdapter[LAH+4] = ObjectEquals;
   ObjectAdapter[LAH+5] = ObjectDontSave;
   ObjectAdapter[LAH+6] = ObjectDump;
-  ObjectAdapter[LAH+7] = ObjectToStateObj;
-  ObjectAdapter[LAH+8] = ObjectToValueObj;
 
   BitsetAdapter[0] = (TAdapterFunc)1;
   BitsetAdapter[1] = 0;

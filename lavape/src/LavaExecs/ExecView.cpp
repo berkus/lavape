@@ -6849,8 +6849,8 @@ void CExecView::OnUpdateIfdef(QToolButton *pb)
 void CExecView::OnUpdateIfExpr(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
-  SynObject *synObj=
-    text->currentSynObj->primaryToken == TDOD_T?text->currentSynObj->parentObject:text->currentSynObj;
+  SynObject *synObj=text->currentSynObj;
+    //text->currentSynObj->primaryToken == TDOD_T?text->currentSynObj->parentObject:text->currentSynObj;
 
   pb->setEnabled(!Taboo()
     && synObj->ExpressionSelected(text->currentSelection)
@@ -6866,8 +6866,8 @@ void CExecView::OnUpdateIfExpr(QToolButton *pb)
 void CExecView::OnUpdateElseExpr(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
-  SynObject *synObj=
-    text->currentSynObj->primaryToken == TDOD_T?text->currentSynObj->parentObject:text->currentSynObj;
+  SynObject *synObj=text->currentSynObj;
+    //text->currentSynObj->primaryToken == TDOD_T?text->currentSynObj->parentObject:text->currentSynObj;
 
   pb->setEnabled(!Taboo()
     && synObj->ExpressionSelected(text->currentSelection)
