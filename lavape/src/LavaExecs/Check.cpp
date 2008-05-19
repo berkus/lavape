@@ -3188,11 +3188,16 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
       return false;
     }
     else {
-      if (decl->TypeFlags.Contains(isConst)
-      && !(flags.Contains(isSelfVar) && InInitializer(ckd))
+      if (!(flags.Contains(isSelfVar) && InInitializer(ckd))
       && !(flags.Contains(isTempVar) && ckd.flags.Contains(InBut) && refIDs.first->successor == refIDs.last)) {
-        SetError(ckd,&ERR_AssigToRdOnly);
-        return false;
+        if (decl->TypeFlags.Contains(isConst)) {
+          SetError(ckd,&ERR_AssigToRdOnly);
+          return false;
+        }
+        if (!((TDOD*)((CHE*)refIDs.last->predecessor)->data)->IsStateObject(ckd)) {
+          SetError(ckd,&ERR_AssigToFrozen);
+          return false;
+        }
       }
       if (flags.Contains(isDeclareVar) || flags.Contains(isOutputVar)) {
         secondChe = (CHE*)((CHE*)refIDs.first)->successor;
@@ -3844,8 +3849,8 @@ bool Assignment::Check (CheckData &ckd)
   ok &= ((SynObject*)exprValue.ptr)->Check(ckd);
   if (targObj->primaryToken == ObjRef_T)
     ok &= ((ObjReference*)targObj)->AssignCheck(ckd,assignmentTarget);
-  if (!ok)
-    ERROREXIT
+  //if (!ok)
+  //  ERROREXIT
 
   if (((Expression*)exprValue.ptr)->ClosedLevel(ckd)
   && !targObj->ClosedLevel(ckd)

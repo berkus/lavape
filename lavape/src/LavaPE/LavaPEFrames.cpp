@@ -1575,19 +1575,22 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
     UtilitiesHidden = false;//!UtilitiesHidden;
   }
   else {
-    //if (wxTheApp->activeView()->inherits("CExecView")) {
-    //  CExecView *ev = (CExecView*)wxTheApp->activeView();
-      //ev->sv->viewport()->update();
-      //ev->sv->widget()->update();
-      //ev->redCtl->setUpdatesEnabled(false);
-      //m_UtilityView->hide();
-      //m_UtilityView->repaint();
-      //ev->redCtl->setUpdatesEnabled(true);
-      //ev->redCtl->repaint();
-    //}
-    m_UtilityView->hide();
+    if (wxTheApp->activeView()->inherits("CExecView")) {
+      CExecView *ev = (CExecView*)wxTheApp->activeView();
+    //  ev->sv->viewport()->update();
+    //  ev->sv->widget()->update();
+    //  ev->redCtl->setUpdatesEnabled(false);
+      m_UtilityView->hide();
+      ev->sv->hide();
+      ev->sv->show();
+    //  m_UtilityView->repaint();
+    //  ev->redCtl->setUpdatesEnabled(true);
+    //  ev->redCtl->repaint();
+    }
     LastUtilitiesState = (int)m_UtilityView->ActTab;
     wxTheApp->updateButtonsMenus();
+    wxTheApp->m_appWindow->hide();
+    wxTheApp->m_appWindow->show();
     UtilitiesHidden = true;
   }
 }

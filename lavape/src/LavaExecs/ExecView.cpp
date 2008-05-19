@@ -5018,8 +5018,6 @@ crtbl:
   default: // TypeRef
     ref = new ReferenceV(text->currentSynObj->type,refID,refName.toAscii());
     decl = myDoc->IDTable.GetDECL(refID);
-    if (((Expression*)text->currentSynObj->parentObject)->targetCat)
-      ref->flags.INCL(isVariable);
     if (text->currentSynObj->parentObject->primaryToken != select_T) {
       PutInsHint(ref);
       return;
