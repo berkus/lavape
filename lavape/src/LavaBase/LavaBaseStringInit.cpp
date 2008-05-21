@@ -412,7 +412,7 @@ void LavaBaseStringInit() {
   ERR_NoErrors  = QObject::tr("No errors or placeholders found in this exec");
   ERR_ExecError  = QObject::tr("Error or placeholder in executable code");
   ERR_DLLError  = QObject::tr("Native implementation DLL error");
-  ERR_AssigToFrozen  = QObject::tr("Forbidden assignment to a member of a frozen value object");
+  ERR_AssigToFrozen  = QObject::tr("Forbidden assignment to a constituent of a frozen value object");
   ERR_SingleAssViol  = QObject::tr("Single-assignment violation; press the ""conflict button"" (red and blue left arrows) to show the last conflicting previous assignment");
   ERR_NullParent  = QObject::tr("Attempt to access a member of a null object");
   ERR_NotReferenced  = QObject::tr(": Unused mandatory input parameter");

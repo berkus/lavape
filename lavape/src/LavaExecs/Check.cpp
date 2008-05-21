@@ -4059,8 +4059,8 @@ bool ArrayAtIndex::Check (CheckData &ckd)
   if (((SynObject*)arrayObj.ptr)->primaryToken != Exp_T
   && ((SynObject*)arrayObj.ptr)->primaryToken != ObjRef_T
   && ((SynObject*)arrayObj.ptr)->primaryToken != arrayAtIndex_T) {
-    ok = false;
     ((SynObject*)arrayObj.ptr)->SetError(ckd,&ERR_FaultyArrayObj);
+    ok = false;
   }
 
   ((SynObject*)arrayObj.ptr)->ExprGetFVType(ckd,objTypeDecl,ctxFlags,callObjCat);
