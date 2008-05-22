@@ -139,11 +139,13 @@ foldersTree = gFld("<i><b>Lava/LavaPE Manual</b></i>", "LavaOnlineDoc.htm")
 	  insDoc(aux1, gLnk("R", "Release notes", "html/ReleaseNotes.htm"))
 	  insDoc(aux1, gLnk("R", "Next steps, future plans, desirable contributions", "html/FAQLavaFuture.htm"))
   aux1 = insFld(foldersTree, gFld("Appendix: The cited Morgenstern poems", "html/Poems.htm"))
+      insDoc(aux1, gLnk("R", "Fish's Night Song", "html/FishsNightSong.htm"))
       insDoc(aux1, gLnk("R", "Korf's Joke", "html/KorfsJoke.htm"))
       insDoc(aux1, gLnk("R", "The Aesthete", "html/Aesthetics.htm"))
       insDoc(aux1, gLnk("R", "The Picket Fence", "html/PicketFence.htm"))
       insDoc(aux1, gLnk("R", "The Snail's Monologue", "html/Snail.htm"))
       insDoc(aux1, gLnk("R", "The Spectacles", "html/KorfSpectacles.htm"))
+
   insDoc(foldersTree, gLnk("R", "GNU Free Documentation License", "Copyright.htm"))
 
   aux1 = insFld(foldersTree, gFld("<b><i>Index</i></b>", "javascript:parent.op()"))

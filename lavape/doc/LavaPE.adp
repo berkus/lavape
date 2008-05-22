@@ -409,6 +409,7 @@
 			<section ref="html/FAQLavaFuture.htm" title="Next steps, future plans, desirable contributions"/>
 		</section>
 		<section ref="html/Poems.htm" title="Appendix: The cited Morgenstern poems">
+      <section ref="html/FishsNightSong.htm" title="Fish's Night Song"/>
 			<section ref="html/KorfsJoke.htm" title="Korf's Joke"/>
 			<section ref="html/Aesthetics.htm" title="The Aesthete"/>
 			<section ref="html/PicketFence.htm" title="The Picket Fence"/>
