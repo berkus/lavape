@@ -164,12 +164,12 @@ void Tokens_INIT ()
   //ATO(QChar(0xE0));
   ATO(QChar(0xE7)); // fat arrows (Wingdings)
   ATO(QChar(0xE8));
-#elif Linux
+#else //if Linux
   ATO(QChar(0x21D0));
   ATO(QChar(0x21D2));
-#else
-  ATO(" <== ");
-  ATO(" ==> ");
+//#else
+//  ATO(" <== ");
+//  ATO(" ==> ");
 #endif
 
   ATO(".");
