@@ -937,9 +937,9 @@ bool SynObject::UpdateReference (CheckData &ckd) {
     tdod->execView=ckd.execView;
     tdodID = tdod->ID;
     ADJUST4(tdodID);
-    ((TDOD*)che->data)->oldError = (CHE*)((TDOD*)che->data)->errorChain.first;
-    ((TDOD*)che->data)->errorChain.Destroy();
-    ((TDOD*)che->data)->lastError = 0;
+    tdod->oldError = (CHE*)((TDOD*)che->data)->errorChain.first;
+    tdod->errorChain.Destroy();
+    tdod->lastError = 0;
     objRef->myFinalVType = 0;
     dw = ckd.document->IDTable.GetVar(tdodID,idtype);
     if (!dw) {
@@ -948,29 +948,29 @@ bool SynObject::UpdateReference (CheckData &ckd) {
         Convert.IntToString(tdodID.nINCL, strINCL);
         Convert.IntToString(tdodID.nID, strID);
         objRef->refName = "("+strID+","+strINCL+")";
-        ((TDOD*)che->data)->name = objRef->refName;
+        tdod->name = objRef->refName;
       }
 //#endif
-      ((TDOD*)che->data)->SetError(ckd,&ERR_Broken_ref);
+      tdod->SetError(ckd,&ERR_Broken_ref);
       ok = false;
       objRef->flags.INCL(brokenRef);
     }
     else if (idtype == localID) {
-      ((TDOD*)che->data)->whereInParent = (address)che;
+      tdod->whereInParent = (address)che;
 //#ifndef INTERPRETER
       objRef->refName = ((VarName*)dw)->varName;
-      ((TDOD*)che->data)->name = objRef->refName;
+      tdod->name = objRef->refName;
 //#endif
       if (objRef->OutOfScope(ckd)) {
         if (objRef->flags.Contains(isSelfVar)
         && ckd.myDECL->ParentDECL->DeclType == Function
         && !ckd.myDECL->ParentDECL->TypeFlags.Contains(isStatic))
-          ((TDOD*)che->data)->ID = ((SelfVar*)ckd.selfVar)->varID;
+          tdod->ID = ((SelfVar*)ckd.selfVar)->varID;
         else if (!objRef->flags.Contains(isSelfVar)) {
           LocalVarByNameSearch lvbns(((TDOD*)che->data)->name);
           lvbns.CheckLocalScope(ckd,objRef);
           if (lvbns.found)
-            ((TDOD*)che->data)->ID = lvbns.varName->varID;
+            tdod->ID = lvbns.varName->varID;
 		      else
 			      ((SynObject*)((CHE*)objRef->refIDs.first)->data)->SetError(ckd,&ERR_OutOfScope);
         }
@@ -986,29 +986,33 @@ bool SynObject::UpdateReference (CheckData &ckd) {
       }
       if (ok) {
         if (((VarName*)dw)->flags.Contains(isOptionalExpr))
-          ((TDOD*)che->data)->flags.INCL(isOptionalExpr);
+          tdod->flags.INCL(isOptionalExpr);
         else
-          ((TDOD*)che->data)->flags.EXCL(isOptionalExpr);
+          tdod->flags.EXCL(isOptionalExpr);
         if (((VarName*)dw)->flags.Contains(isSubstitutable))
-          ((TDOD*)che->data)->flags.INCL(isSubstitutable);
+          tdod->flags.INCL(isSubstitutable);
         else
-          ((TDOD*)che->data)->flags.EXCL(isSubstitutable);
+          tdod->flags.EXCL(isSubstitutable);
         if (objRef->refIDs.first == objRef->refIDs.last)
           objRef->closedLevel = ((VarName*)dw)->ClosedLevel(ckd);
-        ((TDOD*)che->data)->parentObject = objRef;
+        tdod->parentObject = objRef;
         ((VarName*)dw)->ExprGetFVType(ckd,startDeclV,ctxFlags,cat);
+        if (cat)
+          tdod->flags.INCL(isVariable);
+        else
+          tdod->flags.EXCL(isVariable);
         if (objRef->flags.Contains(isSelfVar))
           startDecl = ckd.selfTypeDECL; // static self-type
         else
           startDecl = startDeclV; // final virtual self-type
         if (!startDecl) {
-          ((TDOD*)che->data)->SetError(ckd,&ERR_UndefType);
+          tdod->SetError(ckd,&ERR_UndefType);
           ok = false;
           objRef->flags.INCL(brokenRef);
           objRef->myFinalVType = 0;
           break;
         }
-        ((TDOD*)che->data)->context = ckd.tempCtx;
+        tdod->context = ckd.tempCtx;
         if (!che->successor) {
           objRef->myContext = ckd.tempCtx;
           if (ctxFlags.Contains(multiContext))
@@ -1053,11 +1057,11 @@ bool SynObject::UpdateReference (CheckData &ckd) {
       objRef->refName.Reset(0);
       if (decl->TypeFlags.Contains(isOptional)) {
         objRef->flags.INCL(isOptionalExpr);
-        ((TDOD*)che->data)->flags.INCL(isOptional);
+        tdod->flags.INCL(isOptional);
       }
       else {
         objRef->flags.EXCL(isOptionalExpr);
-        ((TDOD*)che->data)->flags.EXCL(isOptionalExpr);
+        tdod->flags.EXCL(isOptionalExpr);
       }
       if (decl->SecondTFlags.Contains(closed))
         objRef->closedLevel = INT_MAX;
@@ -3547,19 +3551,20 @@ bool ObjReference::Check (CheckData &ckd) {
 
 bool TDOD::IsStateObject (CheckData &ckd)
 {
-  DWORD dw;
-  TIDType idtype;
-  LavaDECL *decl;
-  bool cat;
-  SynFlags ctxFlags;
+  //DWORD dw;
+  //TIDType idtype;
+  //LavaDECL *decl;
+  //bool cat;
+  //SynFlags ctxFlags;
 
-  dw = ckd.document->IDTable.GetVar(ID,idtype,ckd.inINCL);
-  if (idtype == globalID)
-    return (*(LavaDECL**)dw)->TypeFlags.Contains(stateObject);
-  else {
-    ((VarName*)dw)->ExprGetFVType(ckd,decl,ctxFlags,cat);
-    return cat;
-  }
+  return flags.Contains(isVariable);
+  //dw = ckd.document->IDTable.GetVar(ID,idtype,ckd.inINCL);
+  //if (idtype == globalID)
+  //  return (*(LavaDECL**)dw)->TypeFlags.Contains(stateObject);
+  //else {
+  //  ((VarName*)dw)->ExprGetFVType(ckd,decl,ctxFlags,cat);
+  //  return cat;
+  //}
 }
 
 bool TDOD::accessTypeOK (SynFlags accessFlags)
@@ -6852,6 +6857,10 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
           parent->myCategory = fieldDECL->TypeFlags.Contains(stateObject);
         else
           parent->myCategory = tempCat && fieldDECL->TypeFlags.Contains(stateObject);
+        if (parent->myCategory)
+          dod->flags.INCL(isVariable);
+        else
+          dod->flags.EXCL(isVariable);
       }
 //#ifndef INTERPRETER
       name += fieldDECL->LocalName;
@@ -6948,12 +6957,20 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
               parent->myCategory = fieldDECL->TypeFlags.Contains(stateObject);
             else
               parent->myCategory = tempCat && fieldDECL->TypeFlags.Contains(stateObject);
+            if (parent->myCategory)
+              dod->flags.INCL(isVariable);
+            else
+              dod->flags.EXCL(isVariable);
           }
           else {
             if (!fieldDECL->TypeFlags.Contains(constituent)) // acquaintance or reverse link
               tempCat = fieldDECL->TypeFlags.Contains(stateObject);
             else
               tempCat = tempCat && fieldDECL->TypeFlags.Contains(stateObject);
+            if (tempCat)
+              dod->flags.INCL(isVariable);
+            else
+              dod->flags.EXCL(isVariable);
           }
         }//if Attr
         else  //not Attr
