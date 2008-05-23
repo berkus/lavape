@@ -3198,7 +3198,7 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
           SetError(ckd,&ERR_AssigToRdOnly);
           return false;
         }
-        if (!((TDOD*)((CHE*)refIDs.last->predecessor)->data)->IsStateObject(ckd)) {
+        if (!((TDOD*)((CHE*)refIDs.last->predecessor)->data)->flags.Contains(isVariable)) {
           SetError(ckd,&ERR_AssigToFrozen);
           return false;
         }
@@ -3414,7 +3414,7 @@ VarName *ObjReference::PrimaryVar (CheckData &ckd) {
 }
 
 bool ObjReference::ArrayTargetCheck (CheckData &ckd) {
-  if (((TDOD*)((CHE*)refIDs.last)->data)->IsStateObject(ckd))
+  if (((TDOD*)((CHE*)refIDs.last)->data)->flags.Contains(isVariable))
     return true;
   if (ReadOnlyContext() == roClause) {
     SetError(ckd,&ERR_AssignInROClause);
@@ -3474,7 +3474,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
       funcExpr->SetError(ckd,&ERR_NonROCallInROClause);
       return false;
     }
-    else if (!((TDOD*)((CHE*)refIDs.last)->data)->IsStateObject(ckd)
+    else if (!((TDOD*)((CHE*)refIDs.last)->data)->flags.Contains(isVariable)
     && !flags.Contains(isIniCallOrHandle)
     && !flags.Contains(isSelfVar)
     && !flags.Contains(isTempVar)) {
@@ -3549,23 +3549,10 @@ bool ObjReference::Check (CheckData &ckd) {
   return ok1;
 }
 
-bool TDOD::IsStateObject (CheckData &ckd)
-{
-  //DWORD dw;
-  //TIDType idtype;
-  //LavaDECL *decl;
-  //bool cat;
-  //SynFlags ctxFlags;
-
-  return flags.Contains(isVariable);
-  //dw = ckd.document->IDTable.GetVar(ID,idtype,ckd.inINCL);
-  //if (idtype == globalID)
-  //  return (*(LavaDECL**)dw)->TypeFlags.Contains(stateObject);
-  //else {
-  //  ((VarName*)dw)->ExprGetFVType(ckd,decl,ctxFlags,cat);
-  //  return cat;
-  //}
-}
+//bool TDOD::IsStateObject (CheckData &ckd)
+//{
+//  return flags.Contains(isVariable);
+//}
 
 bool TDOD::accessTypeOK (SynFlags accessFlags)
 {

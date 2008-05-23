@@ -438,7 +438,7 @@ struct TDOD : public SynObject {
 
   TDOD(); // required for InitCheck in Interpreter
   virtual bool IsPlaceHolder () { return false; };
-  bool IsStateObject (CheckData &ckd);
+//  bool IsStateObject (CheckData &ckd);
   virtual bool IsExecutable() { return false; }
   bool accessTypeOK (SynFlags accessFlags);
   bool ReplaceWithLocalParm(CheckData &ckd, LavaDECL *funcDecl,TDeclType declType);
