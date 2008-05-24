@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>CComment</class>
  <widget class="QDialog" name="CComment" >
   <property name="geometry" >
@@ -13,9 +10,7 @@
    </rect>
   </property>
   <property name="sizePolicy" >
-   <sizepolicy>
-    <hsizetype>7</hsizetype>
-    <vsizetype>7</vsizetype>
+   <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -23,16 +18,7 @@
   <property name="windowTitle" >
    <string>Comment</string>
   </property>
-  <property name="windowIcon" >
-   <iconset/>
-  </property>
   <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
-    <number>6</number>
-   </property>
    <item>
     <widget class="QTextEdit" name="text" />
    </item>
@@ -44,7 +30,7 @@
      <property name="sizeType" >
       <enum>QSizePolicy::Maximum</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0" >
       <size>
        <width>450</width>
        <height>16</height>
@@ -54,12 +40,6 @@
    </item>
    <item>
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
      <item>
       <widget class="QCheckBox" name="trailing_comment" >
        <property name="text" >
@@ -82,7 +62,7 @@
        <property name="sizeType" >
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>40</width>
          <height>20</height>
@@ -112,7 +92,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
  <includes>
   <include location="local" >ComboBar.h</include>
  </includes>
