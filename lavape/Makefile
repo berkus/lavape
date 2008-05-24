@@ -4,9 +4,9 @@ SUBPRO=disco Precompiler wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE 
 
 all: dirs links $(SUBPRO)
 
-include src/common.mk
-
 LAVADIR=$(shell pwd)
+
+include src/common.mk
 
 ifeq ($(OSCAT),WIN32)
   EXESUFFIX=.exe
@@ -23,9 +23,11 @@ ifeq ($(QBIN),)
   $(error Qt tools/executables couldn't be found!)
 endif
 
-ifneq ($(QBIN)/Assistant_adp.app,)
+QASS1 = $(QBIN)/Assistant_adp.app
+QASS2 = $(shell `ls $(QASS1) 2>/dev/null`)
+ifneq ($(QASS2),)
   QASS = $(QBIN)/Assistant_adp.app
-	QASSLINK = Assistant_adp.app
+  QASSLINK = Assistant_adp.app
 else
   QASSL = $(shell readlink $(QBIN)/assistant)
   ifneq ($(QASSL),)
@@ -38,8 +40,10 @@ else
   else
     QASS = $(QBIN)/assistant$(EXESUFFIX)
   endif
-	QASSLINK = $(basename $(QASS))
+  QASSLINK = $(notdir $(QASS))
 endif
+
+#$(error QASS1=$(QASS1), QASS2=$(QASS2), QASSL=$(QASSL), QASS=$(QASS), QASSLINK=$(QASSLINK))
 
 disco:
 	cd src/disco; $(MAKE)
