@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>IDD_AboutBox</class>
  <widget class="QDialog" name="IDD_AboutBox" >
   <property name="geometry" >
@@ -14,9 +11,6 @@
   </property>
   <property name="windowTitle" >
    <string>About LavaPE</string>
-  </property>
-  <property name="windowIcon" >
-   <iconset/>
   </property>
   <property name="sizeGripEnabled" >
    <bool>false</bool>
@@ -34,18 +28,10 @@
     </rect>
    </property>
    <layout class="QVBoxLayout" >
-    <property name="margin" >
-     <number>0</number>
-    </property>
-    <property name="spacing" >
-     <number>6</number>
-    </property>
     <item>
      <widget class="QLabel" name="textLabel2" >
       <property name="sizePolicy" >
-       <sizepolicy>
-        <hsizetype>1</hsizetype>
-        <vsizetype>5</vsizetype>
+       <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -83,7 +69,7 @@
        </font>
       </property>
       <property name="cursor" >
-       <cursor>13</cursor>
+       <cursorShape>PointingHandCursor</cursorShape>
       </property>
       <property name="text" >
        <string>Visit the Lava Home Page
@@ -121,12 +107,6 @@ at http://lavape.sourceforge.net</string>
     </item>
     <item>
      <layout class="QHBoxLayout" >
-      <property name="margin" >
-       <number>0</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
       <item>
        <widget class="QLineEdit" name="browserPath" >
         <property name="toolTip" >
@@ -152,7 +132,8 @@ at http://lavape.sourceforge.net</string>
          <string/>
         </property>
         <property name="icon" >
-         <iconset>../LavaPE/res/TOOLBUTTONS/Q_FileOpen.xpm</iconset>
+         <iconset>
+          <normaloff>../LavaPE/res/TOOLBUTTONS/Q_FileOpen.xpm</normaloff>../LavaPE/res/TOOLBUTTONS/Q_FileOpen.xpm</iconset>
         </property>
        </widget>
       </item>
@@ -160,12 +141,6 @@ at http://lavape.sourceforge.net</string>
     </item>
     <item>
      <layout class="QHBoxLayout" >
-      <property name="margin" >
-       <number>0</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
       <item>
        <spacer>
         <property name="orientation" >
@@ -174,7 +149,7 @@ at http://lavape.sourceforge.net</string>
         <property name="sizeType" >
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="sizeHint" >
+        <property name="sizeHint" stdset="0" >
          <size>
           <width>20</width>
           <height>20</height>
@@ -206,7 +181,7 @@ at http://lavape.sourceforge.net</string>
         <property name="sizeType" >
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="sizeHint" >
+        <property name="sizeHint" stdset="0" >
          <size>
           <width>20</width>
           <height>20</height>
@@ -220,7 +195,6 @@ at http://lavape.sourceforge.net</string>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>
