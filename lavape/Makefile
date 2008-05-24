@@ -15,35 +15,17 @@ else
 endif
 
 QBIN = $(shell ./qbin.sh)
-QINCL = $(shell ./qincl.sh)
-QLIB = $(shell ./qlib.sh)
-QSUFF = $(shell ./qsuff.sh)
-
 ifeq ($(QBIN),)
   $(error Qt tools/executables couldn't be found!)
 endif
 
-QASS1 = $(QBIN)/Assistant_adp.app
-QASS2 = $(shell `ls $(QASS1) 2>/dev/null`)
-ifneq ($(QASS2),)
-  QASS = $(QBIN)/Assistant_adp.app
-  QASSLINK = Assistant_adp.app
-else
-  QASSL = $(shell readlink $(QBIN)/assistant)
-  ifneq ($(QASSL),)
-    QASSL2 = $(shell readlink $(QASSL))
-    ifneq ($(QASSL2),)
-      QASS = $(QASSL2)
-    else
-      QASS = $(QASSL)
-    endif
-  else
-    QASS = $(QBIN)/assistant$(EXESUFFIX)
-  endif
-  QASSLINK = $(notdir $(QASS))
-endif
+QINCL = $(shell ./qincl.sh)
+QLIB = $(shell ./qlib.sh)
+QSUFF = $(shell ./qsuff.sh)
+QASSLINK = $(shell ./qassl.sh)
+QASS = $(QBIN)/$(QASSLINK)
 
-#$(error QASS1=$(QASS1), QASS2=$(QASS2), QASSL=$(QASSL), QASS=$(QASS), QASSLINK=$(QASSLINK))
+#$(error QASS=$(QASS), QASSLINK=$(QASSLINK))
 
 disco:
 	cd src/disco; $(MAKE)
