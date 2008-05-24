@@ -275,7 +275,7 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
 
   if (token == Larrow_T
   || token == Rarrow_T) {
-#if defined(WIN32) || defined(Linux)
+#if defined(WIN32) || defined(Linux) || defined(__Darwin)
     fmt.font.setFamily(fmt.symbolFamily);
     fmt.symbolFont = true;
 #endif

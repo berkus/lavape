@@ -1,34 +1,45 @@
 export
 
-LAVADIR=$(shell pwd)
-
-QBIN = $(shell ./qbin.sh)
-
-ifeq ($(QBIN),)
-  $(error Qt tools/executables couldn't be found!)
-endif
-
-QASSL = $(shell readlink $(QBIN)/assistant)
-ifneq ($(QASSL),)
-  QASSL2 = $(shell readlink $(QASSL))
-  ifneq ($(QASSL2),)
-    QASS = $(QASSL2)
-  else
-    QASS = $(QASSL)
-  endif
-else
-  QASS = $(QBIN)/assistant
-endif
-
-QINCL = $(shell ./qincl.sh)
-QLIB = $(shell ./qlib.sh)
-QSUFF = $(shell ./qsuff.sh)
-
 SUBPRO=disco Precompiler wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
 
 all: dirs links $(SUBPRO)
 
 include src/common.mk
+
+LAVADIR=$(shell pwd)
+
+ifeq ($(OSCAT),WIN32)
+  EXESUFFIX=.exe
+else
+  EXESUFFIX=
+endif
+
+QBIN = $(shell ./qbin.sh)
+QINCL = $(shell ./qincl.sh)
+QLIB = $(shell ./qlib.sh)
+QSUFF = $(shell ./qsuff.sh)
+
+ifeq ($(QBIN),)
+  $(error Qt tools/executables couldn't be found!)
+endif
+
+ifneq ($(QBIN)/Assistant_adp.app,)
+  QASS = $(QBIN)/Assistant_adp.app
+	QASSLINK = Assistant_adp.app
+else
+  QASSL = $(shell readlink $(QBIN)/assistant)
+  ifneq ($(QASSL),)
+    QASSL2 = $(shell readlink $(QASSL))
+    ifneq ($(QASSL2),)
+      QASS = $(QASSL2)
+    else
+      QASS = $(QASSL)
+    endif
+  else
+    QASS = $(QBIN)/assistant$(EXESUFFIX)
+  endif
+	QASSLINK = $(basename $(QASS))
+endif
 
 disco:
 	cd src/disco; $(MAKE)
@@ -79,11 +90,7 @@ ITPF = src/Interpreter/Constructs.ph \
  	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava
 
-ifeq ($(OPSYS),Darwin)
-links: $(ITPF) bin/assistant.app
-else
-links: $(ITPF) bin/assistant
-endif
+links: $(ITPF) bin/$(QASSLINK)
 
 src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
 	cd src/Interpreter; $(LN) ../LavaExecs/Constructs.ph .
@@ -108,13 +115,9 @@ bin/Components/LCompoImpl.lcom.lnk: samples/LCompoImpl.lcom
 	rm -f $@; cd bin/Components; $(LN) ../../samples/LCompoImpl.lcom LCompoImpl.lcom.lnk
 bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; cd bin/Components; $(LN) ../../samples/LavaStream.lava
-ifeq ($(OPSYS),Darwin)
-bin/assistant.app:
-	ln -s -f $(QBIN)/assistant.app $@
-else
-bin/assistant$(SUFF):
-	$(LN) $(QBIN)/assistant$(SUFF) $@
-endif
+	
+bin/$(QASSLINK):
+	$(LN) $(QASS) $@
 
 lib/libQtCore.so.4: $(QLIB)/libQtCore.so.4
 	rm -f $@; $(LN) $< $@
@@ -190,7 +193,7 @@ clean: cleanall binclean libclean
 distclean: cleanall binclean libclean
 
 binclean:
-	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX)
+	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX) $(QASSLINK)
 
 libclean:
 	cd $(LAVADIR)/lib; rm -f lib*

@@ -66,13 +66,8 @@ ifeq ($(OPSYS),MINGW32_NT-5.1)
   OSCAT = WIN32
   LN = cp -f
 else
-ifeq ($(OPSYS),Darwin)
   OSCAT = __UNIX__
   LN = ln -s -f
-else
-  OSCAT = __UNIX__
-  LN = ln -s -f
-endif
 endif
 
 CC = g++
