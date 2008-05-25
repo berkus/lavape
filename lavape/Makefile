@@ -27,15 +27,16 @@ QSUFF = $(shell ./qsuff.sh)
 QASSLINK = $(shell ./qassl.sh)
 QASS = $(QBIN)/$(QASSLINK)
 ifeq ($(OPSYS),Darwin)
-  QASSCALL = "."
+  QASSCALL = \".\"
 else
   ifeq ($(OSCAT),WIN32)
-    QASSCALL = "assistant.exe"
+    QASSCALL = \"assistant.exe\"
   else
-    QASSCALL = "./$(QASSLINK)"
+    QASSCALL = \"./$(QASSLINK)\"
+	endif
 endif
 
-#$(error QASS=$(QASS), QASSLINK=$(QASSLINK))
+#$(error QINCL=$(QINCL), QASS=$(QASS), QASSLINK=$(QASSLINK))
 
 include src/common.mk
 

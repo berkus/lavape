@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-
+echo $QTDIR >out
 if [ -d $QTDIR ]; then
   if [ -d $QTDIR/include/QtCore ]; then
     echo $QTDIR/include
