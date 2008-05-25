@@ -29,11 +29,10 @@
 #ifdef WIN32
 #include "qt_windows.h"
 #include "commdlg.h"
-#define QASSISTANT "assistant.exe"
-#elif __Darwin
-#define QASSISTANT "."
-#else
-#define QASSISTANT "./assistant"
+//#define QASSISTANT "assistant.exe"
+//#elif __Darwin
+//#define QASSISTANT "."
+//#else
 #endif
 
 

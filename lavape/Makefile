@@ -1,10 +1,41 @@
 export
 
+QBIN = $(shell ./qbin.sh)
+ifeq ($(QBIN),)
+  $(error Qt tools/executables couldn't be found!)
+endif
+
 SUBPRO=disco Precompiler wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
 
 all: dirs links $(SUBPRO)
 
 LAVADIR=$(shell pwd)
+OPSYS = $(shell uname)
+
+ifeq ($(OPSYS),MINGW32_NT-5.1)
+  OPSYS = MINGW32
+  OSCAT = WIN32
+  LN = cp -f
+else
+  OSCAT = __UNIX__
+  LN = ln -s -f
+endif
+
+QINCL = $(shell ./qincl.sh)
+QLIB = $(shell ./qlib.sh)
+QSUFF = $(shell ./qsuff.sh)
+QASSLINK = $(shell ./qassl.sh)
+QASS = $(QBIN)/$(QASSLINK)
+ifeq ($(OPSYS),Darwin)
+  QASSCALL = "."
+else
+  ifeq ($(OSCAT),WIN32)
+    QASSCALL = "assistant.exe"
+  else
+    QASSCALL = "./$(QASSLINK)"
+endif
+
+#$(error QASS=$(QASS), QASSLINK=$(QASSLINK))
 
 include src/common.mk
 
@@ -13,19 +44,6 @@ ifeq ($(OSCAT),WIN32)
 else
   EXESUFFIX=
 endif
-
-QBIN = $(shell ./qbin.sh)
-ifeq ($(QBIN),)
-  $(error Qt tools/executables couldn't be found!)
-endif
-
-QINCL = $(shell ./qincl.sh)
-QLIB = $(shell ./qlib.sh)
-QSUFF = $(shell ./qsuff.sh)
-QASSLINK = $(shell ./qassl.sh)
-QASS = $(QBIN)/$(QASSLINK)
-
-#$(error QASS=$(QASS), QASSLINK=$(QASSLINK))
 
 disco:
 	cd src/disco; $(MAKE)
