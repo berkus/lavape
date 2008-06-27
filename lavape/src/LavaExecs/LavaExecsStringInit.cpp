@@ -27,7 +27,7 @@
 QString ID_ENTER_CONST = QObject::tr("Click once or click spectacles or press ""cursor down"" key to enter or change constant");
 QString ID_ENTER_VARNAME = QObject::tr("Click once or click spectacles or press ""cursor down"" key to enter or change variable name");
 QString ID_F1_HELP = QObject::tr("For Help, press F1");
-QString ID_TOGGLE_CATEGORY = QObject::tr("Use the ""Tilde"" toolbutton to select ""state object"" or ""value object""");
+QString ID_TOGGLE_CATEGORY = QObject::tr("Use the \"Tilde\" toolbutton to toggle \"variable state object\"/\"constant value object\"");
 QString ID_INSERT_STM = QObject::tr("Click a statement toolbutton to insert the associated statement template after or before the selected statement");
 QString ID_OPT_CLAUSE = QObject::tr("Press DEL key to delete this optional clause");
 QString ID_EDIT_COMMENT = QObject::tr("Click once or click spectacles or press ""cursor down"" key to edit comment");

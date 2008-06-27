@@ -96,6 +96,8 @@ public:
   void OnGotoImpl();
 public slots:
   void OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*);
+  void OnCollapseAll();
+  void OnExpandAll();
   //void OnDblclk(QListViewItem* onItem, const QPoint&, int);
 private:
   Q_OBJECT

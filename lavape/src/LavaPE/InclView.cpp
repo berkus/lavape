@@ -62,6 +62,8 @@ void CInclView::DisableActions()
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
   frame->editSelItemAction->setEnabled(false);
   frame->newIncludeAction->setEnabled(false);
+  frame->expandAction->setEnabled(false);
+  frame->collapseAction->setEnabled(false);
 }
 
 
@@ -76,6 +78,8 @@ void CInclView::UpdateUI()
   if (!InitComplete)
     return;
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
+  frame->expandAction->setEnabled(true);
+  frame->collapseAction->setEnabled(true);
   OnUpdateDelete(frame->deleteAction);
   OnUpdateEditSel(frame->editSelItemAction);
 }
@@ -422,6 +426,18 @@ void CInclView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
   if (!selItem->isSelected()) 
     return;
   wxTheApp->updateButtonsMenus();
+}
+
+void CInclView::OnCollapseAll()
+{
+  CTreeItem* tri = (CTreeItem*)Tree->currentItem();
+  Tree->collapseItem(tri);
+}
+
+void CInclView::OnExpandAll()
+{
+  CTreeItem* tri = (CTreeItem*)Tree->currentItem();
+  Tree->expandItem(tri);
 }
 
 void CInclView::on_whatNextAction_triggered()

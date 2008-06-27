@@ -78,6 +78,8 @@ void CVTView::UpdateUI()
   if (!myDECL)
     return;
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
+  frame->expandAction->setEnabled(true);
+  frame->collapseAction->setEnabled(true);
   OnUpdateGotodef(frame->gotoDeclAction);
   OnUpdateOverride(frame->overrideAction);
   OnUpdateGotoImpl(frame->gotoImplAction);
@@ -906,12 +908,26 @@ void CVTView::OnActivateView(bool bActivate, wxView *deactiveView)
     }
 }
 
+void CVTView::OnCollapseAll()
+{
+  CTreeItem* tri = (CTreeItem*)Tree->currentItem();
+  Tree->collapseItem(tri);
+}
+
+void CVTView::OnExpandAll()
+{
+  CTreeItem* tri = (CTreeItem*)Tree->currentItem();
+  Tree->expandItem(tri);
+}
+
 void CVTView::DisableActions()
 {
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
   frame->gotoDeclAction->setEnabled(false);
   frame->overrideAction->setEnabled(false);
   frame->gotoImplAction->setEnabled(false);
+  frame->expandAction->setEnabled(false);
+  frame->collapseAction->setEnabled(false);
 }
 
 
