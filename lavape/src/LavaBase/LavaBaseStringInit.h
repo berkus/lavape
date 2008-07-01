@@ -61,6 +61,7 @@ extern LAVABASE_DLL QString ERR_AssigToFrozen;
 extern LAVABASE_DLL QString ERR_NoMemberFunction;
 extern LAVABASE_DLL QString ERR_SingleAssViol;
 extern LAVABASE_DLL QString ERR_PrevDescAssig;
+extern LAVABASE_DLL QString ERR_PrevAncestAssig;
 extern LAVABASE_DLL QString ERR_Optional;
 extern LAVABASE_DLL QString ERR_IfdefMissing;
 extern LAVABASE_DLL QString ERR_Closed;

@@ -5447,7 +5447,8 @@ bool CExecView::ConflictSelected()
   for (che = (CHE*)text->currentSynObj->errorChain.first;
        che
        && ((CLavaError*)che->data)->IDS != &ERR_SingleAssViol
-       &&((CLavaError*)che->data)->IDS != &ERR_PrevDescAssig;
+       &&((CLavaError*)che->data)->IDS != &ERR_PrevDescAssig
+       &&((CLavaError*)che->data)->IDS != &ERR_PrevAncestAssig;
        che = (CHE*)che->successor);
   if (che)
     return true;

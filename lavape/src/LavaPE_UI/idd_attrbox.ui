@@ -22,16 +22,7 @@
          <property name="spacing" >
           <number>6</number>
          </property>
-         <property name="leftMargin" >
-          <number>0</number>
-         </property>
-         <property name="topMargin" >
-          <number>0</number>
-         </property>
-         <property name="rightMargin" >
-          <number>0</number>
-         </property>
-         <property name="bottomMargin" >
+         <property name="margin" >
           <number>0</number>
          </property>
          <item>
@@ -39,16 +30,7 @@
            <property name="spacing" >
             <number>6</number>
            </property>
-           <property name="leftMargin" >
-            <number>0</number>
-           </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
            <item>
@@ -90,16 +72,7 @@
          <property name="spacing" >
           <number>6</number>
          </property>
-         <property name="leftMargin" >
-          <number>0</number>
-         </property>
-         <property name="topMargin" >
-          <number>0</number>
-         </property>
-         <property name="rightMargin" >
-          <number>0</number>
-         </property>
-         <property name="bottomMargin" >
+         <property name="margin" >
           <number>0</number>
          </property>
          <item>
@@ -126,16 +99,7 @@
          <property name="spacing" >
           <number>6</number>
          </property>
-         <property name="leftMargin" >
-          <number>0</number>
-         </property>
-         <property name="topMargin" >
-          <number>0</number>
-         </property>
-         <property name="rightMargin" >
-          <number>0</number>
-         </property>
-         <property name="bottomMargin" >
+         <property name="margin" >
           <number>0</number>
          </property>
          <item>
@@ -176,16 +140,7 @@
             <property name="spacing" >
              <number>6</number>
             </property>
-            <property name="leftMargin" >
-             <number>11</number>
-            </property>
-            <property name="topMargin" >
-             <number>11</number>
-            </property>
-            <property name="rightMargin" >
-             <number>11</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>11</number>
             </property>
             <item>
@@ -218,18 +173,25 @@
        <property name="spacing" >
         <number>6</number>
        </property>
-       <property name="leftMargin" >
+       <property name="margin" >
         <number>11</number>
        </property>
-       <property name="topMargin" >
-        <number>11</number>
-       </property>
-       <property name="rightMargin" >
-        <number>11</number>
-       </property>
-       <property name="bottomMargin" >
-        <number>11</number>
-       </property>
+       <item>
+        <widget class="QCheckBox" name="StateObject" >
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip" >
+          <string>Points to variable state object</string>
+         </property>
+         <property name="whatsThis" >
+          <string>Points to variable state object</string>
+         </property>
+         <property name="text" >
+          <string>Points to variable state object</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QCheckBox" name="Protected" >
          <property name="focusPolicy" >
@@ -247,22 +209,6 @@
          </property>
          <property name="text" >
           <string>Read-only attribute</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="StateObject" >
-         <property name="focusPolicy" >
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip" >
-          <string>Points to variable state object</string>
-         </property>
-         <property name="whatsThis" >
-          <string>Points to variable state object</string>
-         </property>
-         <property name="text" >
-          <string>Points to variable state object</string>
          </property>
         </widget>
        </item>
@@ -326,16 +272,7 @@
         <property name="spacing" >
          <number>6</number>
         </property>
-        <property name="leftMargin" >
-         <number>11</number>
-        </property>
-        <property name="topMargin" >
-         <number>11</number>
-        </property>
-        <property name="rightMargin" >
-         <number>11</number>
-        </property>
-        <property name="bottomMargin" >
+        <property name="margin" >
          <number>11</number>
         </property>
         <item>
@@ -383,16 +320,7 @@
         <property name="spacing" >
          <number>6</number>
         </property>
-        <property name="leftMargin" >
-         <number>11</number>
-        </property>
-        <property name="topMargin" >
-         <number>11</number>
-        </property>
-        <property name="rightMargin" >
-         <number>11</number>
-        </property>
-        <property name="bottomMargin" >
+        <property name="margin" >
          <number>11</number>
         </property>
         <item>
@@ -435,16 +363,7 @@
      <property name="spacing" >
       <number>6</number>
      </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
+     <property name="margin" >
       <number>0</number>
      </property>
      <item>
@@ -455,7 +374,7 @@
        <property name="sizeType" >
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>150</width>
          <height>16</height>
@@ -519,7 +438,6 @@
   <tabstop>Back</tabstop>
   <tabstop>Protected</tabstop>
   <tabstop>ReadOnly</tabstop>
-  <tabstop>StateObject</tabstop>
   <tabstop>Abstract</tabstop>
   <tabstop>SetGet</tabstop>
   <tabstop>Consumable</tabstop>

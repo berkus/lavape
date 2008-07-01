@@ -52,6 +52,7 @@ $INCLUDE "Syntax.ph"
 #define INDENT 3
 
 class SynObject;
+class CWriteAccess;
 
 extern TToken OperandType (TToken primaryToken);
 extern TToken PlaceHolderType (TToken primaryToken);
@@ -153,7 +154,7 @@ public:
 
   TID varID;
   CVarDesc *parent;
-  bool writeAccess;
+  CWriteAccess *writeAccess;
   CHAINANY<CVarDesc> subTree;
 };
 

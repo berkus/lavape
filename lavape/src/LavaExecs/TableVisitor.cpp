@@ -326,6 +326,8 @@ void TableVisitor::VisitSynObject (SynObject *obj,SynObject *parent,address wher
   Declare *dclStm=(Declare*)quant->parentObject;
 
   if (update == onAddID) {
+    currIniCall = 0;
+    currIniCallChp = 0;
     if (dclStm->IsDeclare()
     && dclStm->secondaryClause.ptr
     && obj->whereInParent == quant->quantVars.first
@@ -342,8 +344,8 @@ void TableVisitor::VisitSynObject (SynObject *obj,SynObject *parent,address wher
     }
 
     obj->iniCall = currIniCall;
-    currIniCall->varName = obj;
-    //currIniOrder++;
+    if (currIniCall)
+      currIniCall->varName = obj;
     if (currIniCallChp) {
       currIniCallChp = (CHE*)currIniCallChp->successor;
       if (currIniCallChp)

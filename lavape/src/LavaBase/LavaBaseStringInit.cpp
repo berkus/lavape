@@ -87,6 +87,7 @@ QString ERR_AssigToFrozen;
 QString ERR_NoMemberFunction;
 QString ERR_SingleAssViol;
 QString ERR_PrevDescAssig;
+QString ERR_PrevAncestAssig;
 QString ERR_Optional;
 QString ERR_IfdefMissing;
 QString ERR_Closed;
@@ -338,7 +339,8 @@ void LavaBaseStringInit() {
   ERR_CorruptForm3  = QObject::tr("Member type in form is not a form of member type in interface");
   ERR_CorruptObject  = QObject::tr("Cannot read lava object with this lava component program");
   ERR_AbstrMemType  = QObject::tr("Do not use an abstract type for a member or formal parameter in a creatable interface");
-  ERR_PrevDescAssig  = QObject::tr("Forbidden replacement of an ancestor after assignment to one of its ""descendants"" (= recursive constituents/acquaintances)");
+  ERR_PrevDescAssig  = QObject::tr("Single assignment violation: replacement of an ancestor; press the ""conflict button"" (red and blue left arrows) to see the conflicting previous assignment");
+  ERR_PrevAncestAssig  = QObject::tr("Single assignment violation: overwrites a descendant; press the ""conflict button"" (red and blue left arrows) to see the conflicting previous assignment");
   ERR_IfdefMissing  = QObject::tr("Access to member function or variable of optional variable/expression isn't secured by \"ifdef\" statement or \"else\" expression");
   ERR_Optional  = QObject::tr("An expression whose value is mandatory (= always non-null) is expected here. \"ifdef\" statement or \"else\" expression missing?");
   ERR_Closed  = QObject::tr("A (possibly) not yet fully initialized object may be assigned only to a \"closed\" variable or formal parameter");

@@ -321,9 +321,10 @@ void RefTable::findObjRef (CheckData &ckd,
       cheTbl->data.varID = ((TDOD*)chp->data)->ID;
       ADJUST4(cheTbl->data.varID);
       cheTbl->data.parent = oldVarDesc;
-      cheTbl->data.writeAccess = false;
+      cheTbl->data.writeAccess = 0;
       if (!chp->successor && !ckd.iniCheck) {
         newWA = new CWriteAccess;
+        cheTbl->data.writeAccess = newWA;
         newWA->objRef = objRef;
         newWA->varDesc = newVarDesc = &cheTbl->data;
         newCHEWA = new CHE(newWA);
@@ -389,6 +390,13 @@ QString *RefTable::findMatchingAccess (
               if (currVarDesc == refEntry) {
                 objRef->conflictingAssig = writeAcc->objRef;
                 return &ERR_PrevDescAssig;
+              }
+            for (currVarDesc = refEntry->parent;
+                 currVarDesc;
+                 currVarDesc = currVarDesc->parent)
+              if (currVarDesc == writeAcc->varDesc && currVarDesc->writeAccess) {
+                objRef->conflictingAssig = currVarDesc->writeAccess->objRef;
+                return &ERR_PrevAncestAssig;
               }
           }
         }
@@ -463,7 +471,7 @@ QString *RefTable::AssignCheck (CheckData &ckd, ObjReference *objRef) {
   chp = (CHE*)refTableEntries.last->predecessor;
   if (chp)
     errorCode = findMatchingAccess(ckd,chp,newEntry,false,isAssigned,objRef,wacc);
-  newEntry->writeAccess = true;
+  //newEntry->writeAccess = true;
   return errorCode;
 }
 
@@ -6800,12 +6808,13 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
   LavaDECL *fieldDECL = 0, *typeDECL = 0, *vTypeDECL = 0, *implItfDecl, *parentTypeDecl=startDecl;
   TIDType itype;
   DString strINCL, strID;
-  bool ok=true, setErr = false, tempCat = parent->myCategory;
   CHE *cheo = DODs, *cheoSucc;
   TDOD* dod = (TDOD*)cheo->data;
+  bool ok=true, setErr = false, tempCat;
   int fldInType=-2;
 
   if (startDecl) {
+    tempCat = ((TDOD*)((CHE*)cheo->predecessor)->data)->flags.Contains(isVariable);
     typeDECL = startDecl;
     typeDECL = ckd.document->GetTypeAndContext(typeDECL, ckd.tempCtx);
     if (!typeDECL && (startDecl->RefID.nID >= 0))
@@ -6815,6 +6824,7 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
     ckd.tempCtx = ckd.lpc;
     dod->context = ckd.tempCtx;
     fieldDECL = ckd.document->IDTable.GetDECL(dod->ID,ckd.inINCL);
+    tempCat = fieldDECL->TypeFlags.Contains(stateObject);
     if (fieldDECL->TypeFlags.Contains(isOptional))
       dod->flags.INCL(isOptionalExpr);
     else
