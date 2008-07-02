@@ -72,8 +72,13 @@ void TableVisitor::Eval (SynObject *obj,SynObject *parent,address where,CHAINX *
         ((CExecView*)((CSearchData*)searchData)->execView)->autoScroll = true;
         ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->update();
       }
-      else
+      else {
+        ((CExecView*)((CSearchData*)searchData)->execView)->forcePrimTokenSelect = true;
+        ((CExecView*)((CSearchData*)searchData)->execView)->text->selectAt = obj;
+        ((CExecView*)((CSearchData*)searchData)->execView)->text->currentSynObj = obj;
+        ((CExecView*)((CSearchData*)searchData)->execView)->text->currentSelection = obj->primaryTokenNode;
         ((CExecView*)((CSearchData*)searchData)->execView)->Select(obj);
+      }
       //((CSearchData*)searchData)->finished = true;
       finished = true;
       return;

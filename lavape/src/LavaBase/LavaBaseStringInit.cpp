@@ -329,7 +329,7 @@ void LavaBaseStringInit() {
   ERR_SlotTooFewArgs  = QObject::tr("Callback function has fewer parameters than signal function");
   ERR_SlotWrongArg  = QObject::tr("Argument #%1 of callback function incompatible to corresponding argument of signal function");
 
-  ERR_IncompatibleCategory  = QObject::tr("Incompatible object category");
+  ERR_IncompatibleCategory  = QObject::tr("Incompatible object category (state versus value object)");
   ERR_SetIsFrozenValObj  = QObject::tr("Forbidden insertion: result set is a frozen value object");
   ERR_EnumIntvType  = QObject::tr("Type restriction not allowed for enumerated and interval sets");
   ERR_NonCreatable  = QObject::tr("\"declare\" with \"initialize\" clause requires a \"creatable\" class here");

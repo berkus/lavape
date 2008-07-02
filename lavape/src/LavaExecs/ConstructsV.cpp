@@ -200,6 +200,8 @@ void FormParmV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) 
   DRAW(parmType.ptr);
   primaryTokenNode = startToken;
   t.Blank();
+  if (flags.Contains(isVariable))
+    t.Insert(Tilde_T);
   DRAW(formParm.ptr);
 
   EXIT

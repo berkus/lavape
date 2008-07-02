@@ -1770,7 +1770,7 @@ static void harmonize (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRe
   if (decl->TypeFlags.Contains(substitutable))
     ((SynObject*)newParmRef->parmType.ptr)->flags.INCL(isSubstitutable);
   if (decl->TypeFlags.Contains(stateObject))
-    ((SynObject*)newParmRef->parmType.ptr)->flags.INCL(isVariable);
+    newParmRef->flags.INCL(isVariable);
   //else if (decl->TypeFlags.Contains(sameAsSelf))
   //  ((SynObject*)newParmRef->parmType.ptr)->flags.INCL(isSameAsSelf);
 #ifdef INTERPRETER
