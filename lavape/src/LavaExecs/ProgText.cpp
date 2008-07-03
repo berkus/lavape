@@ -571,7 +571,6 @@ void CProgText::Select (SynObject *selObj) {
     ((CExecView*)ckd.execView)->selEndPos = currentSynObj->endToken;
   }
 
-
   newSelection = 0;
   selectAt = 0;
   selectAfter = 0;

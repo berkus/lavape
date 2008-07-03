@@ -113,6 +113,8 @@ QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
 
 void wxMainFrame::windowActivated(int index)
 {
+  if (index < 0)
+    return;
   theActiveFrame = m_currentTabWidget->widget(index);
   if (theActiveFrame && theActiveFrame->inherits("wxChildFrame"))
     ((wxChildFrame*)theActiveFrame)->Activate();

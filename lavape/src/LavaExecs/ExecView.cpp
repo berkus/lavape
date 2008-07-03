@@ -759,7 +759,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
         else
           return;
 
-      SetSelectAt(hint);
+      SetSelectAtHint(hint);
       break;
 
     case CPECommand_Change:
@@ -2058,8 +2058,14 @@ exp: // Const_T
 /////////////////////////////////////////////////////////////////////////////
 // CExecView message handlers
 
+void CExecView::SetSelectAt (SynObject *obj) {
+  forcePrimTokenSelect = true;
+  text->currentSynObj = obj;
+  text->selectAt = obj;
+  text->currentSelection = obj->primaryTokenNode;
+}
 
-void CExecView::SetSelectAt (CLavaPEHint *hint) {
+void CExecView::SetSelectAtHint (CLavaPEHint *hint) {
   CHAINX *chx;
   CHE *che;
   SynObject *insObj;
@@ -2145,10 +2151,7 @@ void CExecView::RedrawExec(SynObject *selectAt)
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSelect, 0,0, (address)&sData);
     redCtl->update();
   }
-  else
-    Select();
-
-  //redCtl->setUpdatesEnabled(true);
+  Select();
 }
 
 

@@ -92,7 +92,8 @@ public:
   static void DisableKwdButtons();
   bool EditOK();
   void Select (SynObject *selObj=0);
-  void SetSelectAt (CLavaPEHint *hint);
+  void SetSelectAtHint (CLavaPEHint *hint);
+  void SetSelectAt (SynObject *obj);
   void Check ();
   void Redraw (SynObject *newObject);
   void RedrawExec (SynObject *selectAt=0);
