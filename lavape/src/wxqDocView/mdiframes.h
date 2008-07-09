@@ -84,9 +84,9 @@ public:
   bool eventFilter(QObject *o, QEvent *e);
 
   void OnMRUFile(int histFileIndex);
-  void OnMRUWindow(int histWindowIndex);
+  //void OnMRUWindow(int histWindowIndex);
   void LoadFileHistory();
-	wxHistory *GetWindowHistory () { return m_childFrameHistory; }
+	//wxHistory *GetWindowHistory () { return m_childFrameHistory; }
   virtual void helpContents(){}
   virtual wxTabWidget* Workspace() {
     return m_currentTabWidget;
@@ -102,7 +102,7 @@ protected:
   virtual QSplitter *CreateWorkspace(QWidget* parent);
   QWidget *m_CentralWidget;
   QVBoxLayout *m_layout;
-	wxHistory *m_childFrameHistory;
+	//wxHistory *m_childFrameHistory;
   QWidget *theActiveFrame;
 	bool completelyCreated;
   wxTabWidget *m_currentTabWidget;
@@ -111,7 +111,7 @@ public slots:
   virtual void OnFileExit();
   void windowActivated(int);
   void histFile(int);
-  void histWindow(int);
+  //void histWindow(int);
 
 private:
 	virtual void customEvent(QEvent *ev){}
@@ -126,6 +126,7 @@ public:
   void mousePressEvent (QMouseEvent *evt);
   void dragEnterEvent(QDragEnterEvent *ev);
   void dropEvent(QDropEvent* ev);
+
   QPoint dragStartPosition;
   const char* wxDragFormat;
   QAction *closePageAction;
@@ -141,6 +142,10 @@ public:
 
   void postTabChange(int index, QAction* triggeredAction);
   void closePage2(wxChildFrame *page, int index);
+  void setTabTextColor (int index, const QColor &color) {
+    tabBar()->setTabTextColor(index,color);
+  }
+
 
 public slots:
   void closePage();
@@ -167,7 +172,7 @@ public:
   void RemoveView(wxView *v);
   void NotifyActive(wxView* view) {lastActive = view;}
   wxView* GetLastActive() {return lastActive;}
-  virtual void Activate(bool activate=true,bool windowMenuAction=false);
+  virtual void Activate(bool activate=true);
   //virtual void Activate(bool activate=true,bool windowMenuAction=false);
   wxTabWidget *m_tabWidget;
 

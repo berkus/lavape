@@ -310,7 +310,7 @@ public:
   virtual ~CTreeFrame();
 	void closeEvent(QCloseEvent*);
 
-  virtual void Activate(bool activate=true, bool windowMenuAction=false);
+  virtual void Activate(bool activate=true);
   void CalcSplitters(bool showVT = false, bool showINCL=false);
 
   QSplitter* splitter;

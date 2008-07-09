@@ -246,6 +246,7 @@ public:
     bool active, deleting;
     QHBoxLayout *layout;
     wxTabWidget *myTabWidget;
+    wxChildFrame *m_viewFrame;
 
     virtual void UpdateUI() {}
     virtual void focusIn( );
@@ -287,7 +288,6 @@ public:
 protected:
     wxDocument*               m_viewDocument;
     QString                   m_viewTypeName;
-    wxChildFrame*       m_viewFrame;
 
 private:
     wxChildFrame *CalcParentFrame();
@@ -596,7 +596,7 @@ public:
     virtual void SetFirstInHistory(const QString& file);
     virtual void RemoveItemFromHistory(int histFileIndex);
     virtual void RemoveItemFromHistory(QString name);
-    virtual void OnChangeOfWindowTitle(QString &oldName, QString &newName);
+    //virtual void OnChangeOfWindowTitle(QString &oldName, QString &newName);
 //    virtual void UseMenu(QPopupMenu *menu);
 
     // Remove menu from the list (MDI child may be closing)

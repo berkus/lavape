@@ -393,9 +393,9 @@ void wxMainFrame::histFile(int i) {
   OnMRUFile(i);
 }
 
-void wxMainFrame::histWindow(int i) {
-  OnMRUWindow(i);
-}
+//void wxMainFrame::histWindow(int i) {
+//  OnMRUWindow(i);
+//}
 
 void wxApp::about()
 {
@@ -823,8 +823,8 @@ void wxDocument::SetTitle(const QString& title)
     return;
   m_oldTitle = m_documentTitle;
   m_documentTitle = title;
-  if (!m_oldTitle.isEmpty())
-    wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(m_oldTitle,m_documentTitle);
+  //if (!m_oldTitle.isEmpty())
+  //  wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(m_oldTitle,m_documentTitle);
 }
 
 void wxDocument::SetFilename(const QString& filename, bool notifyViews)
@@ -2027,19 +2027,19 @@ void wxHistory::RemoveItemFromHistory(int i)
   m_historyN--;
 }
 
-void wxHistory::OnChangeOfWindowTitle(QString &oldName, QString &newName)
-{
-  int i;
-  DString str(qPrintable(newName));
-
-  for (i=0; i<m_historyN; i++)
-    if (oldName == m_history[i]->c) {
-      *m_history[i] = str;
-      m_actions[i]->setText(newName);
-      return;
-    }
-  return;
-}
+//void wxHistory::OnChangeOfWindowTitle(QString &oldName, QString &newName)
+//{
+//  int i;
+//  DString str(qPrintable(newName));
+//
+//  for (i=0; i<m_historyN; i++)
+//    if (oldName == m_history[i]->c) {
+//      *m_history[i] = str;
+//      m_actions[i]->setText(newName);
+//      return;
+//    }
+//  return;
+//}
 
 #if wxUSE_CONFIG
 void wxHistory::Load(QSettings& config)

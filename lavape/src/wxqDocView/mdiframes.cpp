@@ -65,8 +65,8 @@ wxMainFrame::wxMainFrame() : QMainWindow()
 
   docMan->m_fileHistory = new wxHistory(this);
   connect(docMan->m_fileHistory->m_signalMapper,SIGNAL(mapped(int)),wxTheApp->m_appWindow,SLOT(histFile(int)));
-  m_childFrameHistory = new wxHistory(this);
-  connect(m_childFrameHistory->m_signalMapper,SIGNAL(mapped(int)),wxTheApp->m_appWindow,SLOT(histWindow(int)));
+  //m_childFrameHistory = new wxHistory(this);
+  //connect(m_childFrameHistory->m_signalMapper,SIGNAL(mapped(int)),wxTheApp->m_appWindow,SLOT(histWindow(int)));
 }
 
 bool wxMainFrame::OnCreate()
@@ -81,7 +81,7 @@ bool wxMainFrame::OnCreate()
 wxMainFrame::~wxMainFrame()
 {
   wxTheApp->deletingMainFrame = true;
-  delete m_childFrameHistory;
+  //delete m_childFrameHistory;
 }
 
 bool wxMainFrame::eventFilter(QObject *o, QEvent *e) {
@@ -161,11 +161,11 @@ void wxMainFrame::OnMRUFile(int histFileIndex)
         delete file;
 }
 
-void wxMainFrame::OnMRUWindow(int histWindowIndex)
-{
-  HistWindow *hw = (HistWindow*)m_childFrameHistory->GetHistoryItem(histWindowIndex);
-  hw->window->Activate(true,true);
-}
+//void wxMainFrame::OnMRUWindow(int histWindowIndex)
+//{
+//  HistWindow *hw = (HistWindow*)m_childFrameHistory->GetHistoryItem(histWindowIndex);
+//  hw->window->Activate(true,true);
+//}
 
 void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   //QSplitter *split=(QSplitter*)tw->parentWidget()->parentWidget();
@@ -282,7 +282,7 @@ wxChildFrame::wxChildFrame(QWidget *parent)
   //setAttribute(Qt::WA_DeleteOnClose);
 
   deleting = false;
-  QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(/*QEvent::User*/UEV_Idle,this));
+  //QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(/*QEvent::User*/UEV_Idle,this));
 }
 
 void wxChildFrame::resizeEvent(QResizeEvent *ev) {
@@ -311,24 +311,28 @@ void wxChildFrame::InitialUpdate()
   show();
 }
 
-void wxChildFrame::Activate(bool activate, bool windowMenuAction)
+void wxChildFrame::Activate(bool activate)
 {
- QString title=windowTitle();
+  QString title=windowTitle();
+  wxView *lastActiveView=wxDocManager::GetDocumentManager()->GetActiveView();
+  wxChildFrame *lastActiveFrame=lastActiveView?lastActiveView->m_viewFrame:0;
 
- if (!m_tabWidget)
-   return;
- if (activate) {
-  m_tabWidget->setCurrentWidget(this);
-  wxTheApp->m_appWindow->SetCurrentTabWindow(m_tabWidget);
- }
- if (title.length() && title.at(title.length()-1) == '*')
-   title = title.left(title.length()-1);
- //wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
- if (activate)
-   if (lastActive)
-     wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
-   else if (!m_viewList.empty())
-     wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),true);
+  if (!m_tabWidget)
+    return;
+  if (activate) {
+    m_tabWidget->setCurrentWidget(this);
+    m_tabWidget->setTabTextColor(m_tabWidget->indexOf(this),Qt::red);
+    wxTheApp->m_appWindow->SetCurrentTabWindow(m_tabWidget);
+  }
+  if (title.length() && title.at(title.length()-1) == '*')
+    title = title.left(title.length()-1);
+  if (activate)
+    if (lastActiveFrame && lastActiveFrame != this)
+      lastActiveFrame->m_tabWidget->setTabTextColor(lastActiveFrame->m_tabWidget->indexOf(lastActiveFrame),Qt::black);
+    if (lastActive)
+      wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
+    else if (!m_viewList.empty())
+      wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),true);
 }
 
 void wxChildFrame::SetTitle(QString &title)
@@ -348,8 +352,8 @@ void wxChildFrame::SetTitle(QString &title)
   }
   if (newTitle.at(newTitle.length()-1) == '*')
     newTitle = newTitle.left(newTitle.length()-1);
-  if (!oldTitle.isEmpty())
-    wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
+  //if (!oldTitle.isEmpty())
+  //  wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
 
 bool wxChildFrame::event(QEvent *ev)
@@ -380,17 +384,17 @@ wxChildFrame::~wxChildFrame()
 {
   QString title;
 
-  title = windowTitle();
-  if (!title.isEmpty() && title.at(title.length()-1) == '*')
-    title = title.left(title.length()-1);
+  //title = windowTitle();
+  //if (!title.isEmpty() && title.at(title.length()-1) == '*')
+  //  title = title.left(title.length()-1);
   deleting = true;
   while (m_viewList.size()) {
     m_document->RemoveView(m_viewList.at(0));
     RemoveView(m_viewList.at(0));
   }
   int count = m_document->RemoveChildFrame(this);
-  if (!wxTheApp->deletingMainFrame)
-    wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
+  //if (!wxTheApp->deletingMainFrame)
+  //  wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
   if (!count && !m_document->deleting)
     delete m_document;
 }

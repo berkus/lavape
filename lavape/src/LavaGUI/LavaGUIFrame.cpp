@@ -107,7 +107,7 @@ DString CLavaGUIFrame::CalcTitle(LavaDECL* decl, const DString& lavaName)
   //DString title = lavaName;
   //title += DString(" - ");
   //DString title += decl->FullName;
-  return decl->FullName + ": form";
+  return decl->FullName + ": Form";
 }
 
 void CLavaGUIFrame::NewTitle(LavaDECL *decl, const DString& lavaName)
@@ -121,8 +121,8 @@ void CLavaGUIFrame::NewTitle(LavaDECL *decl, const DString& lavaName)
   else
     newTitle = QString(lavaName.c);
   setWindowTitle(newTitle);
-  if (!oldTitle.isEmpty() && newTitle != oldTitle)
-    wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
+  //if (!oldTitle.isEmpty() && newTitle != oldTitle)
+  //  wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
 
 

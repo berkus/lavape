@@ -167,20 +167,20 @@ void CLavaMainFrame::UpdateUI()
     ((LavaGUIDialog*)((CLavaBaseDoc*)LBaseData->docModal)->ActLavaDialog)->UpdateUI();
 }
 
-void CLavaMainFrame::customEvent(QEvent *ev0){
-	HistWindow *hw;
-	DString title;
-  CustomEvent *ev=(CustomEvent*)ev0;
+//void CLavaMainFrame::customEvent(QEvent *ev0){
+	//HistWindow *hw;
+	//DString title;
+ // CustomEvent *ev=(CustomEvent*)ev0;
 
-	if (ev->data()) {
-		title = DString(qPrintable(((QWidget*)ev->data())->windowTitle()));
-		if (title.l) {
-			if (title[title.l-1] == '*')
-				title = title.Substr(0,title.l-1);
-			hw = new HistWindow(title,(wxChildFrame*)ev->data());
-			m_childFrameHistory->AddToHistory(hw,this);
-		}
-	}
+	//if (ev->data()) {
+	//	title = DString(qPrintable(((QWidget*)ev->data())->windowTitle()));
+	//	if (title.l) {
+	//		if (title[title.l-1] == '*')
+	//			title = title.Substr(0,title.l-1);
+	//		hw = new HistWindow(title,(wxChildFrame*)ev->data());
+	//		m_childFrameHistory->AddToHistory(hw,this);
+	//	}
+	//}
 	//else
 	//	switch (lastTile) {
 	//	case 0:
@@ -190,7 +190,7 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 	//	case 2:
 	//		on_tileHorizAction_triggered();
 	//	}
-}
+//}
 
 void CLavaMainFrame::on_fileNewAction_triggered()
 {

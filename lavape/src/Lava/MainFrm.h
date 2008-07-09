@@ -14,7 +14,7 @@ public:
   virtual void UpdateUI();
   virtual bool OnCreate();
   int lastTile;
-  virtual void customEvent(QEvent *ev);
+  //virtual void customEvent(QEvent *ev);
   bool eventFilter(QObject *obj,QEvent *ev);
   void installToolButtonEvtFilters(QToolBar *tb);
 

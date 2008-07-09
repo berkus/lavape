@@ -317,8 +317,8 @@ void LavaGUIDialog::NewTitle(LavaDECL *decl, const DString& lavaName)
   else
     newTitle = QString(lavaName.c);
   setWindowTitle(newTitle);
-  if (!oldTitle.isEmpty() && newTitle != oldTitle)
-    wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
+  //if (!oldTitle.isEmpty() && newTitle != oldTitle)
+  //  wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
  
 

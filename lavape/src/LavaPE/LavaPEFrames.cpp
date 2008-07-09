@@ -1519,22 +1519,22 @@ void CLavaMainFrame::on_splitHorizAction_triggered()
 }
 
 void CLavaMainFrame::customEvent(QEvent *ev0){
-	HistWindow *hw;
-	DString title;
+	//HistWindow *hw;
+	//DString title;
   CustomEvent *ev=(CustomEvent*)ev0;
 
   if (ev->data()) {
-    if ( !((CLavaPEApp*)wxTheApp)->inTotalCheck) { //to prevent crash if mdi-frame already closed
-		  title = DString(qPrintable(((QWidget*)ev->data())->windowTitle()));
-		  if (title.l) {
-			  if (title[title.l-1] == '*')
-				  title = title.Substr(0,title.l-1);
-			  hw = new HistWindow(title,(wxChildFrame*)ev->data());
-			  m_childFrameHistory->AddToHistory(hw,this);
-		  }
-    }
+    //if ( !((CLavaPEApp*)wxTheApp)->inTotalCheck) { //to prevent crash if mdi-frame already closed
+		  //title = DString(qPrintable(((QWidget*)ev->data())->windowTitle()));
+		  //if (title.l) {
+			 // if (title[title.l-1] == '*')
+				//  title = title.Substr(0,title.l-1);
+			 // hw = new HistWindow(title,(wxChildFrame*)ev->data());
+			 // m_childFrameHistory->AddToHistory(hw,this);
+		  //}
+    //}
   }
-	else
+  else {
     splitHoriz = !splitHoriz;
 		switch (splitHoriz) {
 		case true:
@@ -1545,6 +1545,7 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 			splitHorizAction->setChecked(false);
 			splitVerticAction->setChecked(true);
 		}
+  }
 }
 
 bool CLavaMainFrame::eventFilter(QObject *obj,QEvent *ev) {
@@ -1575,18 +1576,12 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
     UtilitiesHidden = false;//!UtilitiesHidden;
   }
   else {
-    if (wxTheApp->activeView()->inherits("CExecView")) {
-      CExecView *ev = (CExecView*)wxTheApp->activeView();
-    //  ev->sv->viewport()->update();
-    //  ev->sv->widget()->update();
-    //  ev->redCtl->setUpdatesEnabled(false);
-      m_UtilityView->hide();
+    CExecView *ev = (CExecView*)wxTheApp->activeView();
+    if (ev && ev->inherits("CExecView")) {
       ev->sv->hide();
       ev->sv->show();
-    //  m_UtilityView->repaint();
-    //  ev->redCtl->setUpdatesEnabled(true);
-    //  ev->redCtl->repaint();
     }
+    m_UtilityView->hide();
     LastUtilitiesState = (int)m_UtilityView->ActTab;
     wxTheApp->updateButtonsMenus();
     wxTheApp->m_appWindow->hide();
@@ -1840,11 +1835,11 @@ void CTreeFrame::closeEvent(QCloseEvent *e)
   QApplication::postEvent(viewM->GetDocument(),new CustomEvent(UEV_Close,(void*)this));
 }
 
-void CTreeFrame::Activate(bool activate, bool windowMenuAction)
+void CTreeFrame::Activate(bool activate)
 {
   showIt = activate && (showIt || !((CLavaPEApp*)wxTheApp)->inTotalCheck);
   if (showIt)
-    wxChildFrame::Activate(showIt,windowMenuAction);
+    wxChildFrame::Activate(showIt);
   else
     hide();
 }

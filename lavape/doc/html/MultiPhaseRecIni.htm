@@ -2,25 +2,25 @@
 <html lang="en-us">
 <head>
 
-  <meta http-equiv="Content-Language" content="en-us">
+  <meta http-equiv="Content-Language" content="en-us"/>
 
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
 
-  <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+  <meta name="GENERATOR" content="Microsoft FrontPage 5.0"/>
 
-  <meta name="ProgId" content="FrontPage.Editor.Document">
+  <meta name="ProgId" content="FrontPage.Editor.Document"/>
   <title>Unfinished objects</title>
 
 
-  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css">
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css"/>
 
 </head>
 
 
 <body>
 
-<h2 align="center"><strong>Recursive, mutual,  and multi-phase 
-initialization</strong></h2>
+<h2 align="center">Recursive, mutual,  and multi-phase 
+initialization</h2>
 
 <p>In this section we shall consider more complex initialization processes that 
 require the coordinated initialization of possibly large object collections.</p>
@@ -39,7 +39,7 @@ Within an initializer of a new tree node</p>
 
 <ul>
   <li>you may create links to sub-objects by assigning the results of
-  <font color="#0000FF"><b>new</b></font> operations to member variables of the 
+  <b style="color: blue">new</b> operations to member variables of the 
   currently initialized object.</li>
   <li>you may pass the current <i>self</i> object as input parameters to the 
   initializers of sub-objects. If <i>self</i> has not yet been fully initialized 
@@ -82,7 +82,7 @@ collection of objects whose size isn't known at programming time.</p>
 <p>See the <font color="#800000">cyclicDep.lava</font> and <font color="#800000">
 cyclicDepError.lava</font> samples.</p>
 
-<h3>C) <strong>Multi-phase initialization</strong></h3>
+<h3>C) Multi-phase initialization</h3>
 
 <p>While the single-phase recursive initialization of a tree-structure of objects 
 is a rather straightforward process in <font color="#FF0000"><i><b>Lava</b></i></font>,
