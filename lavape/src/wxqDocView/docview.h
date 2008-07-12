@@ -427,6 +427,8 @@ public:
     // when a view is going in or out of focus
     virtual void SetActiveView(wxView *view, bool activate = true);
     virtual wxView *GetActiveView();// const;
+    virtual wxChildFrame *GetActiveFrame() { return m_activeFrame; }
+    virtual void SetActiveFrame(wxChildFrame *af);
 
     virtual QList<wxDocument*>& GetDocuments() const { return (QList<wxDocument*>&) m_docs; }
 
@@ -465,16 +467,18 @@ public:
     // Get the current document manager
     static wxDocManager* GetDocumentManager() { return sm_docManager; }
     static int GetOpenDocCount() { return wxDocManager::sm_docManager->m_docs.count(); };
-    wxHistory*    m_fileHistory;
+
+    wxHistory*        m_fileHistory;
 
 protected:
     long              m_flags;
     int               m_defaultDocumentNameCounter;
     int               m_maxDocsOpen;
     QList<wxDocTemplate*>  m_templates;
-    wxView*           m_activeView;
-    QString          m_lastDirectory;
+    wxView            *m_activeView;
+    QString           m_lastDirectory;
     static wxDocManager* sm_docManager;
+    wxChildFrame      *m_activeFrame;
 
 public slots:
     // Handlers for common user commands

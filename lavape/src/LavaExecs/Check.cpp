@@ -394,7 +394,9 @@ QString *RefTable::findMatchingAccess (
             for (currVarDesc = refEntry->parent;
                  currVarDesc;
                  currVarDesc = currVarDesc->parent)
-              if (currVarDesc == writeAcc->varDesc && currVarDesc->writeAccess) {
+              if (currVarDesc == writeAcc->varDesc
+              && currVarDesc->writeAccess
+              && !objRef->flags.Contains(isTempVar)) {
                 objRef->conflictingAssig = currVarDesc->writeAccess->objRef;
                 return &ERR_PrevAncestAssig;
               }

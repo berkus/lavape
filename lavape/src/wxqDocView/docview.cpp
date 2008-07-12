@@ -1087,6 +1087,7 @@ wxDocManager::wxDocManager(long flags)
   m_maxDocsOpen = 10000;
   m_fileHistory = (wxHistory *) NULL;
   sm_docManager = this;
+  m_activeFrame = 0;
 }
 
 wxDocManager::~wxDocManager()
@@ -1832,11 +1833,24 @@ void wxDocManager::SetActiveView(wxView *view, bool activate)
       m_activeView = view;
       view->OnActivateView();
       view->GetParentFrame()->NotifyActive(view);
+      wxDocManager::GetDocumentManager()->SetActiveFrame(view->GetParentFrame());
     }
   }
   else
     if (!view || (m_activeView == view))
       m_activeView = 0;
+}
+
+void wxDocManager::SetActiveFrame(wxChildFrame *af) { 
+  if (!af->m_tabWidget || af == m_activeFrame)
+    return;
+
+  af->m_tabWidget->setCurrentWidget(af);
+  af->m_tabWidget->setTabTextColor(af->m_tabWidget->indexOf(af),Qt::red);
+  if (m_activeFrame && !m_activeFrame->deleting)
+    m_activeFrame->m_tabWidget->setTabTextColor(m_activeFrame->m_tabWidget->indexOf(m_activeFrame),Qt::black);
+  wxTheApp->m_appWindow->SetCurrentTabWindow(af->m_tabWidget);
+  m_activeFrame = af;
 }
 
 

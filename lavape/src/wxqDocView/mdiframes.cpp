@@ -314,21 +314,12 @@ void wxChildFrame::InitialUpdate()
 void wxChildFrame::Activate(bool activate)
 {
   QString title=windowTitle();
-  wxView *lastActiveView=wxDocManager::GetDocumentManager()->GetActiveView();
-  wxChildFrame *lastActiveFrame=lastActiveView?lastActiveView->m_viewFrame:0;
 
-  if (!m_tabWidget)
+  if (!m_tabWidget || this == wxDocManager::GetDocumentManager()->GetActiveFrame())
     return;
-  if (activate) {
-    m_tabWidget->setCurrentWidget(this);
-    m_tabWidget->setTabTextColor(m_tabWidget->indexOf(this),Qt::red);
-    wxTheApp->m_appWindow->SetCurrentTabWindow(m_tabWidget);
-  }
   if (title.length() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
   if (activate)
-    if (lastActiveFrame && lastActiveFrame != this)
-      lastActiveFrame->m_tabWidget->setTabTextColor(lastActiveFrame->m_tabWidget->indexOf(lastActiveFrame),Qt::black);
     if (lastActive)
       wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
     else if (!m_viewList.empty())
