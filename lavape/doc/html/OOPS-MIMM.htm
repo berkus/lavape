@@ -3,9 +3,17 @@
   <head>
     <meta http-equiv="Content-Language" content="en-us">
     <meta content="text/html; charset=iso-8859-1">
-    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+    <meta name="GENERATOR" content="Microsoft FrontPage 12.0">
     <title>Object-oriented problem separation</title>
     <link rel="STYLESHEET" type="text/css" href="LavaStyles.css">
+    <link href="LavaStyles.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+      .style1
+      {
+        color: #0000FF;
+        font-weight: bold;
+      }
+    </style>
   </head>
   <body>
     <h2 align="CENTER">
@@ -171,7 +179,11 @@
       <font color="#FF0000"><i><b>LavaPE</b></i></font>'s&nbsp; rigorous 
       initialization checks for local variables, it promises to prevent most of 
       the very frequent &quot;missing initialization&quot; errors that would cause hard to 
-      analyze crashes in other programming languages.<br/>
+      analyze crashes in other programming languages. (In some cases you need a way to
+        <a href="MultiPhaseRecIni.htm">collectively or recursively initialize</a> 
+        several objects that point to each other. This is accomplished by the
+        <span class="style1"><a href="MultiPhaseRecIni.htm">initialize</a></span> clause of the declare 
+        construct.<br/>
       <br/>
       Note the <a href="TwoObjectCategories.htm">distinction</a> between 
       variable &quot;state objects&quot; in <font color="#FF0000"><i><b>Lava</b></i></font> 

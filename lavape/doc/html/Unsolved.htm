@@ -3,10 +3,18 @@
   <HEAD>
     <meta http-equiv="Content-Language" content="en-us">
     <META CONTENT="text/html; charset=windows-1252">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 12.0">
     <META NAME="ProgId" CONTENT="FrontPage.Editor.Document">
     <TITLE>Unsolved problems</TITLE>
     <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+    <style type="text/css">
+      .style1
+      {
+        color: #FF0000;
+        font-weight: bold;
+        font-style: italic;
+      }
+    </style>
   </HEAD>
   <BODY>
     <P ALIGN="right">
@@ -69,13 +77,16 @@
         state/service objects. State/service objects are typically used as <EM>shared memory</EM> between concurrent applications/processes/threads.<br/>
       </LI>
       <LI>
-        A money transfer order is a <B>value object</B> or <B>structure</B>that becomes <B>"immutable"</B> after <B>"completion"</B>: A (completed) value object represents an immutable complex value.
+        A money transfer order is a <B>value object</B> or <B>structure</B> that becomes <B>"immutable"</B> after <B>"completion"</B>: A (completed) value object represents an immutable complex value.
         Since it is immutable it doesn't matter to pass it <I>by reference</I> for efficiency reasons. Since it is just a complex value it may also be passed <I>by value</I> without contradicting its
         purpose and semantics. Value objects <I>will</I> typically be passed <I>by value</I> whenever they are passed to another <I>component</I> (see below), thereby entering a separate address
         space and possibly also the realm of another programming language. A value object is typically <EM>filled in</EM> by directly assigning values to its individual "fields" (preferably without
         explicitly calling "access methods" to this end). In addition, a money transfer order form is "signed" after <I>completion</I>, and it must not be changed any more thereafter: it is <B>
         "frozen"</B>. State/service objects are never <EM>"frozen"</EM> but open for ever new modifications, but their member variables will typically be value objects which are replaced by such
-        modifications. A value object can be assigned to a variable or passed as a parameter to functions only <EM>after</EM> it has been <EM>"completed"</EM> by assigning a value to each of its
+        modifications. Ana <span class="style1">Lava</span> object, no matter whether 
+        state or value object, can be assigned to a variable or passed as a parameter to 
+        a function only <EM>after</EM> it has been <EM>
+        &quot;</EM><b>completed&quot;</b> by assigning a value to each of its
         non-optional) fields (= member objects).
       </LI>
     </UL>

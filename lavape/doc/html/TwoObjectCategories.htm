@@ -2,17 +2,26 @@
   <HEAD>
     <meta http-equiv="Content-Language" content="en-us">
     <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 12.0">
     <meta name="ProgId" content="FrontPage.Editor.Document">
     <TITLE>Two categories of objects</TITLE>
     <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+    <style type="text/css">
+      .style1
+      {
+        color: #FF0000;
+        font-style: italic;
+        font-weight: bold;
+      }
+    </style>
   </HEAD>
   
   <BODY>
       
     <H2 ALIGN="center">Two object categories:<br/>
-     Variable <I><FONT COLOR="#FF0000">state objects</FONT></I> (or
-    <i>services</i>) and immutable <I><FONT COLOR="#FF0000">value objects</FONT></I> (or <I>structures</I>)<br/>
+      Variable <I><FONT COLOR="#FF0000">state objects</FONT></I> (or
+    <i>services</i>) and immutable <I><FONT COLOR="#FF0000">value objects</FONT></I> 
+      (or <I>structures</I>)<br/>
      <br/>
     </H2>
     
@@ -21,8 +30,8 @@
       <TR>
         <TD ALIGN="right">
         
-        <P ALIGN="center"><FONT COLOR="#0000FF" FACE="Arial"><STRONG>These
-          are </STRONG></FONT><FONT COLOR="#FF0000" FACE="Arial"><I><STRONG>state</STRONG></I></FONT><FONT COLOR="#0000FF" FACE="Arial"><STRONG>
+        <P ALIGN="center"><FONT COLOR="#0000FF" FACE="Arial"><STRONG>These are </STRONG></FONT><FONT COLOR="#FF0000" FACE="Arial"><I><STRONG>
+          state</STRONG></I></FONT><FONT COLOR="#0000FF" FACE="Arial"><STRONG>
           objects <I><FONT COLOR="#FF0000">(services)</FONT></I></STRONG></FONT></P>
         
         <P ALIGN="center"><IMG SRC="../images/down.gif" HSPACE="35" width="16" height="52"><IMG SRC="../images/down.gif" HSPACE="35" width="16" height="52"></P>
@@ -31,8 +40,8 @@
         
         <P ALIGN="center"><IMG SRC="../images/up.gif" width="16" height="52"></P>
         
-        <P ALIGN="center"><FONT COLOR="#0000FF" FACE="Arial"><STRONG>These
-          are </STRONG></FONT><FONT COLOR="#FF0000" FACE="Arial"><I><STRONG>value
+        <P ALIGN="center"><FONT COLOR="#0000FF" FACE="Arial"><STRONG>These are </STRONG></FONT><FONT COLOR="#FF0000" FACE="Arial"><I><STRONG>
+          value
           </STRONG></I></FONT><FONT COLOR="#0000FF" FACE="Arial"><STRONG>objects
           <I><FONT COLOR="#FF0000">(structures)</FONT></I></STRONG></FONT></P>
         </TD>
@@ -43,52 +52,52 @@
     
     <H3><a name="stateObject"></a>State objects </H3>
     
-    <P>The essence of a state object is that new values may be assigned to its 
-    member variables again and again, and that two state objects are
-      considered to be &quot;equal&quot; if they are identical, i.e., the
-      <FONT COLOR="#FF0000">same</FONT> object. Copying/cloning a state object
-      will normally contradict their &quot;uniqueness semantics&quot;. </P>
+    <P>The essence of a state object is that new values may be assigned to its member 
+      variables again and again, and that two state objects are considered to be 
+      &quot;equal&quot; if they are identical, i.e., the
+      <FONT COLOR="#FF0000">same</FONT> object. Copying/cloning a state object will 
+      normally contradict their &quot;uniqueness semantics&quot;. </P>
     
     <H3>Value objects </H3>
     
     <P><a name="valueObject"></a>The essence of a value object is that its
-    <a href="PointersRefCounts.htm#refTypes">constituent</a> objects are &quot;frozen&quot;
-      (= cannot be modified any more) when the object leaves the &quot;<FONT COLOR="#0000FF">new</FONT>&quot;
-      construct (which creates new objects of some specifiable class). Comparing two value objects amounts to a recursive comparison
-      of all their <A HREF="PointersRefCounts.htm#refTypes">constituents</A>. 
+    <a href="PointersRefCounts.htm#refTypes">constituent</a> objects are &quot;frozen&quot; (= 
+      cannot be modified any more) when the object leaves the &quot;<FONT COLOR="#0000FF">new</FONT>&quot; 
+      construct (which creates new objects of some specifiable class). Comparing two 
+      value objects amounts to a recursive comparison of all their <A HREF="PointersRefCounts.htm#refTypes">
+      constituents</A>. 
     </P>
     
     <H3><a name="declaration"></a>Declaration of state and value objects</H3>
     
-    <P><B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> objects can be
-      referenced only indirectly as values of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+    <P><B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> objects can be referenced only 
+      indirectly as values of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
       variables: <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variables
       <I>point</I> to <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
       objects, they are always of &quot;reference type&quot; as you would say in
-      <B><I><FONT COLOR="#FF0000">Eiffel</FONT></I></B> or <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>.
-      Several variables may point to the same object. The <B>data type</B> of a
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variable v is described
-      by a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> class, say A.
-      The value of a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variable
-      may be any object of class A (or a class derived from A).</P>
+      <B><I><FONT COLOR="#FF0000">Eiffel</FONT></I></B> or <B><I><FONT COLOR="#FF0000">
+      Java</FONT></I></B>. Several variables may point to the same object. The <B>data 
+      type</B> of a
+      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variable v is described by a <B><I><FONT COLOR="#FF0000">
+      Lava</FONT></I></B> class, say A. The value of a <B><I><FONT COLOR="#FF0000">
+      Lava</FONT></I></B> variable may be any object of class A (or a class derived 
+      from A).</P>
     
-    <P>The same <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> class
-      may be used to declare variables of either category : state or value. The
+    <P>The same <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> class may be used to 
+      declare variables of either category : state or value. The
       <B>category</B> is specified as part of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      variable declarations. If a variable is declared to be of the &quot;state
-      object&quot; category then a &quot;~&quot; (tilde) precedes the name of
-      the class that specifies the data type of the variable.</P>
+      variable declarations. If a variable is declared to be of the &quot;state object&quot; 
+      category then a &quot;~&quot; (tilde) precedes the name of the class that specifies the 
+      data type of the variable.</P>
     
     <P>A variable may be </P>
     <UL>
       <LI>a member variable of a class or implementation,</LI>
-      <LI>or an input/output parameter of a member function of a class or
-        of an <a href="Packages.htm#initiator"> initiator</a> (~ kind of <I>main program</I> of an application or
-        thread),</LI>
-      <LI>or a local variable that is declared within an <I>exec</I> (=
-        executable body of a function or initiator) or <I>invariant</I> (which
-        is executed on completion of a new object and after every method 
-      invocation on the object).</LI>
+      <LI>or an input/output parameter of a member function of a class or of an <a href="Packages.htm#initiator"> 
+        initiator</a> (~ kind of <I>main program</I> of an application or thread),</LI>
+      <LI>or a local variable that is declared within an <I>exec</I> (= executable body 
+        of a function or initiator) or <I>invariant</I> (which is executed on completion 
+        of a new object and after every method invocation on the object).</LI>
     </UL>
     
     <P><B>See also: <A HREF="ObjectLifeCycle.htm">Stages in the life of
@@ -96,76 +105,79 @@
     
     <H3><a name="component"></a>Component objects</H3>
     
-    <P>are special state objects that are dynamically created or static &quot;inhabitants&quot;
-      of &quot;<A HREF="Components.htm">components</A>&quot;. Components
-      are dynamically loadable software modules in which component objects may
-      be activated/created that can communicate with other component objects
-      over well-defined language-independent function-call interfaces. </P>
+    <P>are special state objects that are dynamically created or static &quot;inhabitants&quot; 
+      of &quot;<A HREF="Components.htm">components</A>&quot;. Components are dynamically 
+      loadable software modules in which component objects may be activated/created 
+      that can communicate with other component objects over well-defined 
+      language-independent function-call interfaces. </P>
     
     <P><B>See also: <A HREF="Components.htm"><FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT>
         as a component integration language</A></B></P>
     
     <H3><a name="database"></a>Persistent, particularly database objects</H3>
     
-    <P ALIGN="left">Persistent objects are component objects that can be &quot;attached&quot;
-      by other components. It is expected that they exist already at this time,
-      although they may exist in a deactivated state and thus must be activated
-      before they are attached. In <FONT COLOR="#FF0000"><I><STRONG>Lava,</STRONG></I></FONT>
-      <A HREF="DatabaseIntegration.htm">databases</A> are treated as special
+    <P ALIGN="left">Persistent objects are component objects that can be &quot;attached&quot; by 
+      other components. It is expected that they exist already at this time, although 
+      they may exist in a deactivated state and thus must be activated before they are 
+      attached. In <FONT COLOR="#FF0000"><I><STRONG>Lava,</STRONG></I></FONT>
+      <A HREF="DatabaseIntegration.htm">databases</A> are treated as special 
       persistent objects.</P>
     
     <P ALIGN="left">&nbsp;</P>
     <DIV ALIGN="LEFT">
     <CENTER>
     <TABLE BORDER="5" CELLPADDING="10" BGCOLOR="#FCFEA0">
-      <CAPTION ALIGN="top"><FONT SIZE="5" FACE="Arial"><STRONG>Summary: State
-      and value objects</STRONG></FONT><br/>
+      <CAPTION ALIGN="top"><FONT SIZE="5" FACE="Arial"><STRONG>Summary: State and value 
+        objects</STRONG></FONT><br/>
        <br/></CAPTION>
       <TR>
-        <TD ALIGN="center"><FONT COLOR="#000080" SIZE="4" FACE="Arial"><STRONG>Value
-        objects ...</STRONG></FONT></TD>
-        <TD ALIGN="center"><FONT COLOR="#000080" SIZE="4" FACE="Arial"><STRONG>State
-        objects ...</STRONG></FONT></TD>
+        <TD ALIGN="center"><FONT COLOR="#000080" SIZE="4" FACE="Arial"><STRONG>Value 
+          objects ...</STRONG></FONT></TD>
+        <TD ALIGN="center"><FONT COLOR="#000080" SIZE="4" FACE="Arial"><STRONG>State 
+          objects ...</STRONG></FONT></TD>
       </TR>
       <TR>
-        <TD ALIGN="center"><FONT FACE="Arial">... are </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><STRONG>frozen
-        after completion</STRONG></I></FONT></TD>
-        <TD ALIGN="center"><FONT FACE="Arial">... can be <B><I><FONT COLOR="#FF0000">changed
-        again and again even after completion</FONT></I></B></FONT></TD>
+        <TD ALIGN="center"><FONT FACE="Arial">... are </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><STRONG>
+          frozen after completion</STRONG></I></FONT></TD>
+        <TD ALIGN="center"><FONT FACE="Arial">... can be <B><I><FONT COLOR="#FF0000">
+          changed again and again even after completion</FONT></I></B></FONT></TD>
       </TR>
       <TR>
-        <TD ALIGN="center"><FONT FACE="Arial">... serve, e.g., as </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>messages</B></I></FONT><FONT FACE="Arial">
-        exchanged <I>between</I> and as </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>member
-        objects</B></I></FONT><FONT FACE="Arial"> <I>of</I> state objects</FONT></TD>
-        <TD ALIGN="center"><FONT FACE="Arial">... provide </FONT><FONT COLOR="#400040" FACE="Arial">continuous
-        </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>services</B></I></FONT></TD>
+        <TD ALIGN="center"><FONT FACE="Arial">... serve, e.g., as </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>
+          messages</B></I></FONT><FONT FACE="Arial">
+          exchanged <b>between </b>and as </FONT><B><FONT COLOR="#FF0000" FACE="Arial"><I>
+          member objects<B></I></FONT><FONT FACE="Arial"> <I <b> <I>of</I></i></FONT></b><I <b><FONT FACE="Arial"> </FONT>
+          </i></b><FONT FACE="Arial"> state objects</FONT></TD>
+        <TD ALIGN="center"><FONT FACE="Arial">... provide <span class="style1">continuous
+          </span><FONT COLOR="#FF0000" FACE="Arial"><I><B>services</B></I></FONT></TD>
       </TR>
       <TR>
         <TD ALIGN="center"><FONT FACE="Arial">Equal relation (&quot;=&quot;)
-        </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>compares values (&quot;equality
-        semantics&quot;)</B></I></FONT></TD>
+        </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>compares values (&quot;equality 
+          semantics&quot;)</B></I></FONT></TD>
         <TD ALIGN="center"><FONT FACE="Arial">Equal relation (&quot;=&quot;)
-        </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>compares pointers (&quot;identity
-        semantics&quot;)</B></I></FONT></TD>
+        </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>compares pointers (&quot;identity 
+          semantics&quot;)</B></I></FONT></TD>
       </TR>
       <TR>
-        <TD ALIGN="center"><FONT FACE="Arial">... are <FONT COLOR="#FF0000"><I><B>passed</B></I></FONT>
-        by value <I>between</I>, by reference <I>within</I> components</FONT></TD>
-        <TD ALIGN="center"><FONT FACE="Arial">... are always </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>passed</B></I></FONT><FONT FACE="Arial">
-        by reference</FONT></TD>
+        <TD ALIGN="center"><FONT FACE="Arial">... are <FONT COLOR="#FF0000"><I><B>passed</B></I></FONT><span 
+            class="style1"> by value</span> <b>between</b>, by reference <b>within</b> <a href="Components.htm">
+          components</a></FONT></TD>
+        <TD ALIGN="center"><FONT FACE="Arial">... are always
+          <FONT COLOR="#FF0000" FACE="Arial"><I><B>passed</B></I></FONT><span 
+            class="style1"> by reference</span></TD>
       </TR>
       <TR>
-        <TD ALIGN="center"><FONT FACE="Arial">... can be <FONT COLOR="#FF0000"><B><I>persistent
-        only as constituents</I></B></FONT> of component objects</FONT></TD>
+        <TD ALIGN="center"><FONT FACE="Arial">... can be <FONT COLOR="#FF0000"><B><I>
+          persistent only as constituents</I></B></FONT> of component objects</FONT></TD>
         <TD ALIGN="center"><FONT FACE="Arial">... can <B><I><FONT COLOR="#FF0000">be</FONT></I></B>
-        persistent component objects</FONT></TD>
+          persistent component objects</FONT></TD>
       </TR>
       <TR>
-        <TD ALIGN="center"><FONT FACE="Arial">Their member objects are usually
-        accessed <B><I><FONT COLOR="#FF0000">directly</FONT></I></B></FONT></TD>
-        <TD ALIGN="center"><FONT FACE="Arial">Their member objects are usually
-        accessed <B><I><FONT COLOR="#FF0000">via set/get functions</FONT></I></B>,
-        those of component objects <I>always</I></FONT></TD>
+        <TD ALIGN="center"><FONT FACE="Arial">Their member objects are usually accessed <B><I><FONT COLOR="#FF0000">
+          directly</FONT></I></B></FONT></TD>
+        <TD ALIGN="center"><FONT FACE="Arial">Their member objects are usually accessed <B><I><FONT COLOR="#FF0000">
+          via set/get functions</FONT></I></B>, those of component objects <b>always</b></FONT></TD>
       </TR>
     </TABLE> </CENTER> </DIV>
     
@@ -173,7 +185,8 @@
     
     <P><A HREF="CategorySample.htm"><B>State/value objects (sample)</B></A></P>
     
-    <P><B><A HREF="ObjectLifeCycle.htm">Stages in the life of <I><FONT COLOR="#FF0000">Lava</FONT></I>
+    <P><B><A HREF="ObjectLifeCycle.htm">Stages in the life of <I><FONT COLOR="#FF0000">
+      Lava</FONT></I>
         objects (sample)</A></B></P>
   </BODY>
 </HTML>

@@ -6561,6 +6561,8 @@ bool NewExpression::Check (CheckData &ckd)
 
 void CloneExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags, bool &cat) {
   ((SynObject*)fromObj.ptr)->ExprGetFVType(ckd,decl,ctxFlags,cat);
+  //if (!cat && flags.Contains(isVariable))
+  //  cat = true;
 #ifdef INTERPRETER
   finalType = ckd.document->GetType(decl);
 #endif

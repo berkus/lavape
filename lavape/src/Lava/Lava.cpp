@@ -332,7 +332,7 @@ bool CLavaApp::event(QEvent *e)
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     LBaseData.docModal = pHint->fromDoc;
     ((CLavaDoc*)LBaseData.docModal)->ActLavaDialog = new LavaGUIDialog(m_appWindow, pHint);
-    if (pHint->CommandData5)
+     if (pHint->CommandData5)
       thr = (CLavaThread*)((CLavaPEHint*)((CustomEvent*)e)->data())->CommandData5;
     else
       thr = 0;

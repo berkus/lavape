@@ -5509,6 +5509,7 @@ bool CExecView::ToggleCatEnabled()
   switch (text->currentSynObj->primaryToken) {
   case new_T:
   case attach_T:
+  //case clone_T:
     //if (text->currentSynObj->parentObject->primaryToken == new_T) {
     //  newExp = (NewExpression*)text->currentSynObj->parentObject;
     //  decl = myDoc->IDTable.GetDECL(((Reference*)newExp->objType.ptr)->refID,text->ckd.inINCL);
