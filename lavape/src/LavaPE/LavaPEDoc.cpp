@@ -3411,7 +3411,7 @@ bool CLavaPEDoc::OnOpenDocument (const QString& filename)
 
 void CLavaPEDoc::OnRunLava()
 {
-	QString interpreterPath, lavaFile = GetFilename(), buf;
+	QString interpreterPath, lavaFile, buf;
   QProcess interpreter;
   QStringList args;
 
