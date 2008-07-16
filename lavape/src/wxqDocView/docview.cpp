@@ -187,6 +187,7 @@ void wxApp::updateButtonsMenus()
   //wxChildFrame *newActMDIChild = (wxChildFrame*)m_appWindow->m_currentTabWidget->currentWidget();
   //if (newActMDIChild != actMDIChild)
   //newActMDIChild->m_tabWidget->setCurrentWidget(newActMDIChild);
+  wxDocManager::GetDocumentManager()->SetActiveFrame(0,true);
 }
 
 void wxApp::customEvent(QEvent *e)
@@ -433,10 +434,8 @@ wxDocument::wxDocument(wxDocument *parent)
     m_documentModified = false;
     m_documentParent = parent;
     m_documentTemplate = (wxDocTemplate *) NULL;
-//    m_commandProcessor = (wxCommandProcessor*) NULL;
     m_savedYet = false;
     deleting = false;
-//    m_documentViews.setAutoDelete(true);
 }
 
 wxDocument::~wxDocument()
@@ -486,17 +485,19 @@ bool wxDocument::DeleteAllChildFrames()
   wxChildFrame* child;
   wxTabWidget* tab;
   bool delTab = false, noTab = true;
+
   while (m_docChildFrames.size()) {
     //delete m_docChildFrames.takeAt(0);
     child = m_docChildFrames.takeAt(0);
     tab = child->m_tabWidget;
     if (tab) {
-      tab->setCurrentWidget(child);
-      tab->closePage2(child, tab->currentIndex());
+      //tab->setCurrentWidget(child);
+      tab->removePage(child);
       if (tab->count() == 0 && ((QSplitter*)tab->parentWidget())->count() > 1) {
         delete tab;
         delTab = true;
-        tab = 0;
+        tab = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
+        wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
       }
       noTab = false;
     }
@@ -504,10 +505,6 @@ bool wxDocument::DeleteAllChildFrames()
       delete child;
   }
   wxTheApp->m_docManager->SetActiveView(0);
-  if (delTab) {
-    tab = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
-    wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
-  }
   if (!noTab && tab->widget(0))
     ((wxChildFrame*)tab->widget(0))->Activate(true);
   return true;
@@ -1088,6 +1085,7 @@ wxDocManager::wxDocManager(long flags)
   m_fileHistory = (wxHistory *) NULL;
   sm_docManager = this;
   m_activeFrame = 0;
+  m_oldActiveFrame = 0;
 }
 
 wxDocManager::~wxDocManager()
@@ -1460,12 +1458,6 @@ bool wxDocManager::CreateView(wxDocument *doc)
 // Not yet implemented
 void wxDocManager::DeleteTemplate(wxDocTemplate *WXUNUSED(temp), long WXUNUSED(flags))
 {
-}
-
-// Not yet implemented
-bool wxDocManager::FlushDoc(wxDocument *WXUNUSED(doc))
-{
-    return false;
 }
 
 wxDocument *wxDocManager::GetActiveDocument()
@@ -1841,16 +1833,40 @@ void wxDocManager::SetActiveView(wxView *view, bool activate)
       m_activeView = 0;
 }
 
-void wxDocManager::SetActiveFrame(wxChildFrame *af) { 
-  if (!af->m_tabWidget || af == m_activeFrame)
+void wxDocManager::SetActiveFrame(wxChildFrame *af, bool doIt, bool deactivate) {
+  wxTabWidget *currTW;
+
+  if (deactivate) {
+    if (af == m_activeFrame)
+      m_activeFrame = 0;
+    else if (af == m_oldActiveFrame)
+      m_oldActiveFrame = 0;
+    return;
+  }
+
+  if (!doIt) {
+    m_activeFrame = af;
+    return;
+  }
+
+  if (!m_activeFrame) {
+    currTW = wxTheApp->m_appWindow->GetCurrentTabWindow();
+    if (!currTW)
+      return;
+    m_activeFrame = (wxChildFrame*)currTW->widget(0);
+    if (!m_activeFrame)
+      return;
+  }
+
+  if (m_oldActiveFrame == m_activeFrame)
     return;
 
-  af->m_tabWidget->setCurrentWidget(af);
-  af->m_tabWidget->setTabTextColor(af->m_tabWidget->indexOf(af),Qt::red);
-  if (m_activeFrame && !m_activeFrame->deleting)
-    m_activeFrame->m_tabWidget->setTabTextColor(m_activeFrame->m_tabWidget->indexOf(m_activeFrame),Qt::black);
-  wxTheApp->m_appWindow->SetCurrentTabWindow(af->m_tabWidget);
-  m_activeFrame = af;
+  m_activeFrame->m_tabWidget->setCurrentWidget(m_activeFrame);
+  m_activeFrame->m_tabWidget->setTabTextColor(m_activeFrame->m_tabWidget->indexOf(m_activeFrame),Qt::red);
+  if (m_oldActiveFrame)
+    m_oldActiveFrame->m_tabWidget->setTabTextColor(m_oldActiveFrame->m_tabWidget->indexOf(m_oldActiveFrame),Qt::black);
+  wxTheApp->m_appWindow->SetCurrentTabWindow(m_activeFrame->m_tabWidget);
+  m_oldActiveFrame = m_activeFrame;
 }
 
 

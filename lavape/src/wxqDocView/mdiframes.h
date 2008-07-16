@@ -138,10 +138,12 @@ public:
 
 class WXDLLEXPORT wxTabWidget : public QTabWidget {
 public:
+  ~wxTabWidget();
+
   wxTabWidget(QWidget *parent) : QTabWidget(parent) {setTabBar(new wxTabBar(this));}
 
   void postTabChange(int index, QAction* triggeredAction);
-  void closePage2(wxChildFrame *page, int index);
+  void removePage(wxChildFrame *page);
   void setTabTextColor (int index, const QColor &color) {
     tabBar()->setTabTextColor(index,color);
   }

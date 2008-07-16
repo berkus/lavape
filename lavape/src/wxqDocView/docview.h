@@ -398,7 +398,6 @@ public:
     virtual wxDocument *CreateDocument(const QString& path, long flags=0); //path is the used path name (no links resolved)
     virtual bool CreateView(wxDocument *doc);
     virtual void DeleteTemplate(wxDocTemplate *temp, long flags = 0);
-    virtual bool FlushDoc(wxDocument *doc);
     virtual wxDocTemplate *MatchTemplate(const QString& path); //all links resolved
     virtual wxDocTemplate *SelectDocumentPath(wxDocTemplate **templates,
             int noTemplates, QString& path, long flags, bool save = FALSE); //all links resolved
@@ -428,7 +427,7 @@ public:
     virtual void SetActiveView(wxView *view, bool activate = true);
     virtual wxView *GetActiveView();// const;
     virtual wxChildFrame *GetActiveFrame() { return m_activeFrame; }
-    virtual void SetActiveFrame(wxChildFrame *af);
+    virtual void SetActiveFrame(wxChildFrame *af, bool doIt=false, bool deactivate=false);
 
     virtual QList<wxDocument*>& GetDocuments() const { return (QList<wxDocument*>&) m_docs; }
 
@@ -478,7 +477,7 @@ protected:
     wxView            *m_activeView;
     QString           m_lastDirectory;
     static wxDocManager* sm_docManager;
-    wxChildFrame      *m_activeFrame;
+    wxChildFrame      *m_activeFrame, *m_oldActiveFrame;
 
 public slots:
     // Handlers for common user commands

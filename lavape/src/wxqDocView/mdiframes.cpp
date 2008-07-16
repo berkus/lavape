@@ -319,11 +319,13 @@ void wxChildFrame::Activate(bool activate)
     return;
   if (title.length() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
-  if (activate)
+  if (activate) {
+    wxDocManager::GetDocumentManager()->SetActiveFrame(this);
     if (lastActive)
       wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
     else if (!m_viewList.empty())
       wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),true);
+  }
 }
 
 void wxChildFrame::SetTitle(QString &title)
@@ -379,6 +381,7 @@ wxChildFrame::~wxChildFrame()
   //if (!title.isEmpty() && title.at(title.length()-1) == '*')
   //  title = title.left(title.length()-1);
   deleting = true;
+  wxDocManager::GetDocumentManager()->SetActiveFrame(this,false,true); // deactivate this frame
   while (m_viewList.size()) {
     m_document->RemoveView(m_viewList.at(0));
     RemoveView(m_viewList.at(0));
@@ -488,6 +491,11 @@ void wxTabBar::dropEvent(QDropEvent *evt)
   else
     evt->ignore();
 }
+wxTabWidget::~wxTabWidget() {
+  //QSplitter *splitter=(QSplitter*)parentWidget();
+  //if (!count() && splitter->count() == 1)
+  //  wxDocManager::GetDocumentManager()->SetActiveFrame(0);
+}
 
 void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
 {
@@ -544,15 +552,14 @@ void wxTabWidget::closePage() {
   wxTabWidget* tab;
 
 
+  page->Activate(true);
   if (page->inherits("CTreeFrame")
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
-    page->Activate(true);
     QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
     return;
   }
   else {
-    removeTab(index);
-    delete page;
+    removePage(page);
     if (count() == 0 && splitter->count() > 1) {
       if (splitter->widget(0) == this)
         tab = (wxTabWidget*)splitter->widget(1);
@@ -567,9 +574,10 @@ void wxTabWidget::closePage() {
   }
 }
 
-void wxTabWidget::closePage2(wxChildFrame *page, int index)
+void wxTabWidget::removePage(wxChildFrame *page)
 {
-  removeTab(index);
+  removeTab(indexOf(page));
+  wxDocManager::GetDocumentManager()->SetActiveFrame(page,false,true);
   delete page;
 }
 
