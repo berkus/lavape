@@ -14,19 +14,33 @@ href="../LavaStyles.css" type=text/css rel=STYLESHEET></HEAD>
 <P>The name of a function parameter may contain only letters, digits, and "_". 
 The first character must not be a digit.</P>
 <H3>Enable renaming</H3>
-<P>You may change the names of functions, member variables and virtual types 
+<P>YYou may change the names of functions, member variables and virtual types 
 when you override them in a derived class or pattern (for instance in order 
 to resolve name collisions in cases of multiple inheritance). They inherit the 
 names of the base versions by default (and their name is changed accordingly if 
 the inherited base name is changed). Check this check-box if you would like to 
 assign a different name (which will not be changed then if the base name is 
 changed).</P>
+    
+    <h3>Substitutable type</h3>
+    
+    <P>Indicates whether the type of this member variable shall be <a href="../TypeSafety.htm#substitutableType">substitutable</a>,
+    i.e., whether the type of a corresponding actual parameter may also be <a href="../TypeSafety.htm#p-derived">p-derived</a>
+    (rather than <a href="../TypeSafety.htm#c-derived">c-derived</a>) from this
+    formal parameter type. (Cf. the <i><a href="../PatternSamples.htm">ModelManyViews</a></i>
+    and <i><a href="../PatternSamples.htm">CarMeeting</a></i> samples.)</P>
+    
+    <H3>Remove overrides</H3>
+    
+    <P>Transforms an overridden member variable into a non-overridden one, as if it
+      had been newly declared in the containing class.</P>
+    
 <H3>Select type of member variable</H3>
 <P>The type of the member variable may be selected from the combo-boxes "Basic 
 types" and "Other types". "Basic types" lists all classes whose declaration 
-is contained in the basic include file <I>std.lava</I>. If you don't explicitly 
+is contained in the basic include file I>std.lava</I>. If you don't explicitly 
 select a type for a new member variable then its type will be <I>String</I>.</P>
-<H3>Kind of reference</H3>
+<H3>KKind of reference</H3>
 <P>This attribute enables us to distinguish <A 
 href="../PointersRefCounts.htm#refTypes">three kinds of references</A> to other 
 objects: <I>Constituents</I>, <I>acquaintances</I>, and <I>reverse</I> (back or 
@@ -34,28 +48,29 @@ up) links. Constituents <I>belong</I> to the current object, acquaintances
 are<I> pointers to independent objects</I>, and reverse links are 
 <I>auxiliary</I> back or up pointers that are required to facilitate automatic 
 storage management by reference counts.</P>
+<h3>Category</h3>
+<P>Check this if the member shall be treated as a variable
+  <a href="../TwoObjectCategories.htm">state object</a> ; otherwise it will be 
+  treated as an immutable <a href="../TwoObjectCategories.htm">value object</a>, 
+  i.e., its direct and nested <a href="../PointersRefCounts.htm#refTypes">
+  constituents</a> cannot be modified after the object has been completely
+  <a href="../ObjectLifeCycle.htm#creation">created/initialized</a>.</P>
 <H3>Protected</H3>
-<P>A <A href="../ProtectedFriend.htm">protected</A> member variable can be 
+<P>A A href="../ProtectedFriend.htm">protected</A> member variable can be 
 accessed only by functions contained in the implementation of the present or a 
 derived class.</P>
 <H3>Read-only</H3>
 <P>A read-only member variable <I>xy</I> of some object can be assigned a value 
-only "from inside the object" via the path <I>self.xy</I>, i.e., from within 
+only "from inside the object" via the path <I>self.xy</I>,, i.e., from within 
 functions belonging to the current class or its implementation. It is 
 write-protected against access "from outside".</P>
-<H3>Copy on access</H3>
-<P>The effect of this attribute is that the respective member object remains 
-<I>isolated</I> from the outside world. Every read access delivers a copy of the 
-object (that may the manipulated without affecting the original object), every 
-write access assigns a copy to the corresponding member variable (that will not 
-be affected by subsequent modifications of the write input object).</P>
 <H3>Abstract</H3>
 <P>This attribute is enabled only if the member variable is accessed via set/get 
 functions (see next paragraph). It allows you to defer the implementation of the 
-set/get functions to a derived class: The set/get functions are 
+set/get functions to a derived class: So actually the set/get functions are 
 abstract.</P>
 <H3>Access via set/get functions</H3>
-<P>If a member variable <I>xy</I> has this property then <A 
+<P>If a member variable <I>xy/I> has this property then <A 
 href="../Unsolved.htm#setGetFunctions">set/get functions</A> are generated for 
 it in the implementation of the containing class. Every read or write access 
 to the variable is redirected implicitly through these get/set functions. Only 
@@ -66,8 +81,9 @@ perform access permission checks.</P>
 <H3><a name="consumable"></a>Consumable</H3>
 <P><I>Consumable</I> member variables are used for <A 
 href="../Transactions.htm#producerConsumer">producer/consumer 
-synchronization</A> in <B><I><FONT color=#ff0000>Lava</FONT></I></B>.</P>
-<H3>Mode</H3>
+synchronization</A>  in <I> <B><FONT color=#ff0000>Lava </FONT></B></I>(not yet 
+  implemented).</P>
+<H3>Mode/H3>
 <P>The mode of a member variable may be <I><A 
 name=mandatory></A></I><B>mandatory</B> (default), <B>optional</B>, or 
 <B>placeholder</B>. If <I>optional</I>, the parameter may assume the special 

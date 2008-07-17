@@ -13,6 +13,11 @@
         font-style: italic;
         font-weight: bold;
       }
+      .style2
+      {
+        color: #0000FF;
+        font-weight: bold;
+      }
     </style>
   </HEAD>
   
@@ -50,7 +55,7 @@
     
     <P><A HREF="Unsolved.htm#stateValue"><B>Problem statement</B></A> </P>
     
-    <H3><a name="stateObject"></a>State objects </H3>
+    <H3 id="constituents"><a name="stateObject"></a>State objects </H3>
     
     <P>The essence of a state object is that new values may be assigned to its member 
       variables again and again, and that two state objects are considered to be 
@@ -61,12 +66,30 @@
     <H3>Value objects </H3>
     
     <P><a name="valueObject"></a>The essence of a value object is that its
+      immediate and recursive
     <a href="PointersRefCounts.htm#refTypes">constituent</a> objects are &quot;frozen&quot; (= 
       cannot be modified any more) when the object leaves the &quot;<FONT COLOR="#0000FF">new</FONT>&quot; 
       construct (which creates new objects of some specifiable class). Comparing two 
       value objects amounts to a recursive comparison of all their <A HREF="PointersRefCounts.htm#refTypes">
       constituents</A>. 
     </P>
+  <P>Since<b> </b><span class="style1">Lava</span><b> 0.9.1 we have modified the 
+    category notion in the following way:</b></P>
+  <ol>
+    <li>In variable declarations the category of a variable is now attached directly 
+      to the variable and no longer to its class.</li>
+      <li>The category isn&#39;t a property of the objects themselves any longer: objects 
+        don&#39;t know their category, but it is a way how objects are treated when accessed 
+        through variables. <span class="style1">LavaPE</span> makes sure by its 
+        comprehensive static checks that categories of variables are used consistently. 
+        So, for instance, the value of an expression that has been declared to deliver a 
+        value object cannot be assigned to a state variable.</li>
+      <li>The &quot;immutable&quot;/&quot;value object&quot; category is now inherited by all immediate <b>
+        and also</b> all recursive constituents. In other words: &quot;Immutable&quot; is now 
+        applied to the entire object including all its nested constituents, even if the 
+        latter are declared to be state variables (but not including its acquaintances, 
+        which are considered to be independent objects in <span class="style1">Lava</span>).</li>
+    </ol>
     
     <H3><a name="declaration"></a>Declaration of state and value objects</H3>
     
@@ -87,7 +110,10 @@
       declare variables of either category : state or value. The
       <B>category</B> is specified as part of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
       variable declarations. If a variable is declared to be of the &quot;state object&quot; 
-      category then a &quot;~&quot; (tilde) precedes the name of the variable.</P>
+      category then a &quot;~&quot; (tilde) precedes the name of the variable in the
+      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> declaration tree and in the 
+      quantifiers/<span class="style2">declare</span> constructs where they are 
+      declared in executable code.</P>
     
     <P>A variable may be </P>
     <UL>

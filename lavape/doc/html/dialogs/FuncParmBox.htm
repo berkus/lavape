@@ -18,18 +18,32 @@
     
     <H3>Name</H3>
     
-    <P>The name of a function parameter may contain only letters, digits, and &quot;_&quot;.
+    <P>TThe name of a function parameter may contain only letters, digits, and &quot;_&quot;.
       The first character must not be a digit.</P>
     
-    <h3>Substitutable type</h3>
+    <H3>Select type of input/output</H3>
     
-    <P>Indicates whether the type of this formal parameter shall be <a href="../TypeSafety.htm#substitutableType">substitutable</a>,
-    i.e., whether the type of a corresponding actual parameter may also be <a href="../TypeSafety.htm#p-derived">p-derived</a>
-    (rather than <a href="../TypeSafety.htm#c-derived">c-derived</a>) from this
-    formal parameter type. (Cf. the <i><a href="../PatternSamples.htm">ModelManyViews</a></i>
-    and <i><a href="../PatternSamples.htm">CarMeeting</a></i> samples.)</P>
+    <P>The type of the current function parameter may be selected from the
+      combo-boxes &quot;Basic types&quot; and &quot;Other types&quot;. &quot;Basic
+      types&quot; lists all classes whose declaration is contained in the
+      basic include file <I>std.lava</I>. If you don't explicitly select a type
+      for a new function parameter then its type will be <I>String</I>.</P>
     
-    <h3><a name="closed"></a>&quot;Closed&quot; object</h3>
+    <H3>Mode</H3>
+    
+    <P>The mode of a function parameter may be <I><a name="mandatory"></a></I><b>mandatory</b> (default) or
+    <b>optional</b>. If optional, the parameter may assume the special <I>null
+      value</I> <font color="#0000FF"><b>&Oslash;</b></font> (&quot;undefined&quot;). 
+    Note that all combinations of mandatory/optional and
+    <a href="../UnfinishedObjects.htm">closed/non-closed</a> are possible</P>
+    
+    <H3>Object category</H3>
+    
+    <P>The <A HREF="../TwoObjectCategories.htm">object category</A> of a
+      function parameter may be <I>value object</I> (default) or <I>state
+      object</I>.</P>
+    
+    <h3>&quot;Closed&quot; object</h3>
     
     <P>If checked, then this means that the actual parameter may be in a not yet 
     fully initialized state. Although an object may be passed as an input or 
@@ -44,44 +58,20 @@
     method call access to its member objects is prohibited (and prevented by
     <font color="#FF0000"><i><b>LavaPE</b></i></font> at programming time).</P>
     
-    <H3>Select type of input/output</H3>
+    <h3>Substitutable type</h3>
     
-    <P>The type of the current function parameter may be selected from the
-      combo-boxes &quot;Basic types&quot; and &quot;Other types&quot;. &quot;Basic
-      types&quot; lists all classes whose declaration is contained in the
-      basic include file <I>std.lava</I>. If you don't explicitly select a type
-      for a new function parameter then its type will be <I>String</I>.</P>
-    
-    <H3>Object category</H3>
-    
-    <P>The <A HREF="../TwoObjectCategories.htm">object category</A> of a
-      function parameter may be <I>value object</I> (default) or <I>state
-      object </I>or<I> same as &quot;self&quot; </I>or <I>any category</I>. <i>
-    Same as &quot;self&quot; </i>means that the
-      parameter's category equals that of the function's &quot;self&quot; object
-      (which can, of course, be determined and evaluated only on the callers level).
-    <i>Any category </i>means that <i>state</i> as well as <i>value objects</i> 
-    may be assigned to this parameter. (This is useful in cases where the 
-    treatment of those objects actually doesn't depend on their category and 
-    where it is desirable to apply the function to both categories of objects.)</P>
-    
-    <H3>Mode</H3>
-    
-    <P>The mode of a function parameter may be <I><a name="mandatory"></a></I><b>mandatory</b> (default) or
-    <b>optional</b>. If optional, the parameter may assume the special <I>null
-      value</I> <font color="#0000FF"><b>&Oslash;</b></font> (&quot;undefined&quot;). 
-    Note that all combinations of mandatory/optional and
-    <a href="../UnfinishedObjects.htm">closed/non-closed</a> are possible</P>
+    <P>Indicates whether the type of this formal parameter shall be <a href="../TypeSafety.htm#substitutableType">substitutable</a>,
+    i.e., whether the type of a corresponding actual parameter may also be <a href="../TypeSafety.htm#p-derived">p-derived</a>
+    (rather than <a href="../TypeSafety.htm#c-derived">c-derived</a>) from this
+    formal parameter type. (Cf. the <i><a href="../PatternSamples.htm">ModelManyViews</a></i>
+    and <i><a href="../PatternSamples.htm">CarMeeting</a></i> samples.)</P>
     <hr>
     
-    <h3>Note:</h3>
+    <h3>Notes:</h3>
 
 
-<h3><b><font color="#ff0000"><i>Lava</i></font>
-doesn't support parameter passing "by reference".</b></h3>
-
-
-<p>In <i> <font color="#ff0000"><b>Lava</b></font></i><b>,</b>
+<p><b><font color="#ff0000"><i>Lava</i></font>
+doesn't support parameter passing "by reference": </b>In <i> <font color="#ff0000"><b>Lava</b></font></i><b>,</b>
 function parameters are either input or output parameters. For
 reference parameters it wouldn't be clear whether or not the function
 assigns a value to them, whereas a <font color="#ff0000"><i><b>Lava</b></i></font>&nbsp;
@@ -90,20 +80,15 @@ non-optional output parameter, and <a href="../IniChecks.htm">this is checked</a
 programming time (= statically).</p>
 
 
-<p>This is an essential prerequisite for all kinds of <font color="#ff0000"> <i><b>Lava</b></i></font>&nbsp;
+<p>This is an essential prerequisite for all kinds of <font color="#ff0000"> <i><b>Lava/b></i></font>&&nbsp;
 initialization checks since only then you can also cover those cases
 where a variable is initialized by being an actual output parameter of
 a function call.</p>
 
 
-<p><b>Note:</b> Though function parameters aren't passed &quot;by reference&quot; in
-<font color="#FF0000"><i><b>Lava</b></i></font>, they are yet passed &quot;by 
-address&quot; and never &quot;by value&quot; (= copied). </p>
-
-
-<p>Assignment of optional to non-optional variables can be
-checked only at run time and may cause a null-pointer-exception to
-occur.</p>
+<p>Though function parameters aren't passed <b>&quot;by reference&quot;</b> in
+<font color="#FF0000"><i><b>Lava/b></i></font>,, they are yet passed <b>&quot;by 
+address&quot;</b> and never <b>&quot;by value&quot;</b> (= copied). </p>
 
 
 <p>Like the member initialization checks (see above), the
@@ -111,7 +96,7 @@ initialization checks for output parameters are performed at all return
 points of the function body.</p>
 
 
-<p>An exception-throwing <a href="../whatsThis/FailSucceed.htm"><font color="#0000ff"><b>throw</b></font></a>
+<p>An exception-throwing <a href="../whatsThis/FailSucceed.htm"><font color="#0000ff"><b>throw/b></font></a>
 statement is  the <i>only</i> way to exit from a
 function if you cannot assign a value to every non-optional output
 parameter. (Checked at programming time.)</p>
@@ -124,12 +109,16 @@ is caught and the respective output parameters are used nevertheless
 thereafter. </p>
 
 
-<p>(The worst thing that may happen then is that such an output
-is <font color="#0000ff"><b>&Oslash;</b></font>:
-then a null-pointer-exception will be thrown in turn, or you use the
-output although its value may be meaningless in this case: that's your
-own risk and should be avoided without reliable knowledge about the
-function's implementation.)</p>
+<p>TThe worst thing that may happen then is that such an output
+</p>
+<ul>
+  <li>either is <b><font color="#0000ff">&Oslash;</font> </b>and you use it 
+    bevertheless subsequently: then a null-pointer-exception will be thrown in turn,
+  </li>
+  <li>or you use the output although its value may be meaningless in this case: 
+    that&#39;s your own risk and should be avoided without reliable knowledge about the 
+    function&#39;s implementation.</li>
+</ul>
 
 
   </BODY>

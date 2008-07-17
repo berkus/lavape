@@ -6,10 +6,18 @@
     <meta http-equiv="Content-Language" content="en-us">
     <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
     <META NAME="Author" CONTENT="Klaus D. Günther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 12.0">
     <meta name="ProgId" content="FrontPage.Editor.Document">
     <TITLE>Function property sheet</TITLE>
     <LINK REL="STYLESHEET" TYPE="text/css" HREF="../LavaStyles.css">
+    <style type="text/css">
+      .style1
+      {
+        color: #FF0000;
+        font-style: italic;
+        font-weight: bold;
+      }
+    </style>
   </HEAD>
   
   <BODY>
@@ -46,54 +54,13 @@
       arithmetic operators for your new function instead of a name. The number
       of arguments and their types are determined automatically in this case.
     </P>
-    
-    <H3>Protected</H3>
-    
-    <P>A <A HREF="../ProtectedFriend.htm">protected</A> function can be
-      invoked only from functions contained in the implementation of this or a
-      derived class.</P>
-    
-    <H3><a name="readOnly"></a>Read-only</H3>
-    
-    <P>A function is &quot;read-only&quot; if its entire body has the 
-    <a href="../ReadOnly.htm">&quot;read-only&quot; 
-    property</a>, which means that it must not change any pre-existing objects, 
-    i.e., objects that existed already when the evaluation of the function body 
-    started.</P>
-    
-    <h3><a name="static"></a>Static</h3>
-    
-    <P>A class may have static member functions. These are invoked without
-    call expression and have no <i>self </i>/ <i>this</i> variable.
-    Interfaces with static member functions are used primarily if you want to
-    add further functions to an existing type T of objects without
-    extending T. Example: Mathematical functions that can be applied to
-    Integers/Floats/Doubles but that are not contained in the
-    Integer/Float/Double interfaces: You may declare then, for instance, a class &quot;Math&quot; containing static functions &quot;sin&quot;,
-    &quot;cos&quot;, &quot;exp&quot;, &quot;log&quot;, etc. that accept
-    &quot;Float x&quot; as input parameter and you can invoke these in the usual
-    form &quot;sin(x)&quot;, rather than &quot;x.sin()&quot;, &quot;log(x)&quot;,
-    rather than &quot;x.log()&quot;.</P>
-    
-    <P><b>Note</b> that <font color="#FF0000"><i><b>Lava</b></i></font> doesn't 
-    make a distinction between virtual and non-virtual member functions of 
-    classes, as for instance <b><i><font color="#FF0000">C++</font></i></b> 
-    does, but all non-static member functions are virtual automatically and thus 
-    may be overridden in derived classes.</P>
-    
-    <p><b>Restrictions concerning static function
-    calls<span lang="de">:</span></b></p>
-    
-    <P>To call a function statically means that you circumvent the usual virtual
-    function call (&quot;late binding&quot;) mechanism but you specify precisely
-    which version of the function from which class shall be called. If <I>f</I> is a member <I>function</I> of <I>A</I> then<I> f</I>
-      can be <B><I>called</I></B> <I><B>statically</B></I> only from derived
-      classes in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, i.e., from 
-    functions that are declared in a derived class <I>B</I> of <I>A</I>
-      or in the implementation thereof. So if functions are declared in <I>A</I>
-      and overridden in <I>B</I> then clients of <I>B</I> are forced to use the
-      overridden version; they are not allowed to statically call the base
-      version.</P>
+    <h3>Handler</h3>
+    <P>Handler functions aren&#39;t introduced through this dialog but through the
+      <span class="style1">Lava</span> form view. They serve as handlers for GUI 
+      events. If a handler function has been introduced in this way then it appears 
+      also here in the ordinary <span class="style1">Lava</span> declaration tree and can, for instance, be 
+      deprived of its handler status and changed into a quite normal non-handler 
+      function.</P>
     
     <H3>Initializer</H3>
     
@@ -117,6 +84,44 @@
       expressions and this way enables a more compact syntax of <B><FONT COLOR="#0000FF">new</FONT></B>
       expressions.</P>
     
+    <H3>Protected</H3>
+    
+    <P>A <A HREF="../ProtectedFriend.htm">protected</A> function can be
+      invoked only from functions contained in the implementation of this or a
+      derived class.</P>
+    
+    <h3><a name="static"></a>Static</h3>
+    
+    <P>A class may have static member functions. These are invoked without
+    call expression and have no &quot;self&quot; variable.
+    Interfaces with static member functions are used primarily if you want to
+    add further functions to an existing class C of objects without
+    extending C.</P>
+  <P><b>Example:</b> Mathematical functions that can be applied to
+    Integers/Floats/Doubles but that are not contained in the
+    Integer/Float/Double interfaces: You may declare then, for instance, a class &quot;Math&quot; containing static functions &quot;sin&quot;,
+    &quot;cos&quot;, &quot;exp&quot;, &quot;log&quot;, etc. that accept
+    &quot;Float x&quot; as input parameter and you can invoke these in the usual
+    form &quot;sin(x)&quot;, rather than &quot;x.sin()&quot;, &quot;log(x)&quot;,
+    rather than &quot;x.log()&quot;.</P>
+    
+    <P><b>Note:</b> <font color="#FF0000"><i><b>Lava</b></i></font> doesn't 
+    make a distinction between virtual and non-virtual non-static member functions of 
+    classes, as for instance <b><i><font color="#FF0000">C++</font></i></b> 
+    does, but all non-static member functions are virtual automatically and thus 
+    may be overridden in derived classes.</P>
+    
+    <p><b>Note: </b>To call a non-static function statically means that you circumvent the usual virtual
+    function call (&quot;late binding&quot;) mechanism but you specify precisely
+    which version of the function from which class shall be called. If <I>f</I> is a member <I>function</I> of <I>A</I> then<I> f</I>
+      can be called statically <b>only from derived
+      classes</b> in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, i.e., from 
+    functions that are declared in a derived class <I>B</I> of <I>A</I>
+      or in the implementation thereof. So if functions are declared in <I>A</I>
+      and overridden in <I>B</I> then clients of <I>B</I> are forced to use the
+      overridden version; they are not allowed to statically call the base
+      version.</p>
+    
     <H3>Abstract</H3>
     
     <P>An abstract function is not implemented in the implementation of the
@@ -125,7 +130,7 @@
     therefore the &quot;abstract&quot; check-box is disabled if the function
     belongs to a creatable class.</P>
     
-    <H3><a name="selfClosed"></a><i>Self </i>&nbsp;is closed</H3>
+    <H3><a name="selfClosed"></a>&quot;Self&quot;<i> </i>&nbsp;is closed</H3>
     
     <P>If checked, then this means that the <i>self</i> object of this method may be 
     in a not yet fully initialized state. Although a method may be called only 
@@ -139,20 +144,27 @@
     is prohibited (and prevented by <font color="#FF0000"><i><b>LavaPE</b></i></font> 
     already at programming time!).</P>
     
+    <H3>Function doesn&#39;t modify &quot;self&quot;</H3>
+    
+    <P>A function doesn&#39;t modify &quot;self&quot; if it treats its &quot;self&quot; object as immutable, 
+      i.e., it doesn&#39;t modify the immediate and nested       <a href="../PointersRefCounts.htm#refTypes">constituents</a> of &quot;self&quot;.</P>
+    
     <H3><A NAME="native"></A>Native</H3>
     
     <P>See <A HREF="InterfaceBox.htm#native">native interfaces</A>.</P>
+  <h3>Signal</h3>
+  <P>Check this if the function shall be eligible as a signal function in the 
+    context of the <a href="../Callbacks.htm"><span class="style1">Lava</span> 
+    callback concept</a>.</P>
     
     <!--<H3>Transaction</H3>
     
     <P>A function may be executed as an atomic
       <A HREF="../Transactions.htm#transact">transaction</A>.</P> -->
     
-    <HR>
-    
     <H3>Synchronous</H3>
     
-    <P>A function is executed in <a href="../Transactions.htm"> synchronous</a> mode by default, i.e., the caller
+    <P>A function is executed in <a href="../Transactions.htm">synchronous</a> mode by default, i.e., the caller
       waits until it returns.</P>
     
     <H3>Concurrent</H3>
@@ -165,7 +177,6 @@
     <P><a href="../Transactions.htm">Autonomous</a> execution means <I>concurrent</I> execution but,
       moreover, the function neither has output parameters nor can it throw
       exceptions.</P>
-    <HR>
     
     <H3>Select exception types</H3>
     
@@ -200,9 +211,7 @@ type</i>&quot; - expression, the left-hand side is a variable having some virtua
 type whose concrete value is <i>type</i> in the context of the function body. 
 This is the typical purpose and behavior of a &quot;factory function&quot; which is 
 overridden when the respective class is specialized.</P>
-<P>&nbsp;</P>
-<P></P>
-    <p><b>See also</b></p>
+<h3><b>See also</b></h3>
     <p align="left"><a href="../SepItfImpl.htm"><b><i><font color="#FF0000">Lava</font></i> 
     classes/interfaces/implementations</b></a></p>
     <p><b><font color="#FF0000"><a href="../ObjectLifeCycle.htm"><i>

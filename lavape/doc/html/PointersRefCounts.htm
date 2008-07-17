@@ -56,12 +56,12 @@
     in <FONT COLOR="#FF0000"> <I>Lava</I></FONT> </H3>
     
     <P>We have stated already in a <A HREF="Unsolved.htm#pointers">former
-        section</A>  that we need a proper application-level distinction between
-      constituents and acquaintances of complex objects, and storage management by
+        section</A>   that we need a proper application-level distinction between
+      <a href="TwoObjectCategories.htm#constituents">constituents and acquaintances</a> of complex objects, and storage management by
       reference counts makes it desirable to introduce a third type of
       pointers/references/links between objects: </P>
     
-    <P>If our object system (which is linked together by <b>constituent </b>and 
+    <P>If our object system (which is linked together by b>constituent </b>and 
       <b>acquaintance</b> pointers) contains closed cycles rather than
       being an acyclic graph structure then reference counts without any further
       precaution could cause isolated cycles of objects to arise that are no
@@ -70,7 +70,7 @@
       each of these would be referenced by an adjacent object in the cycle, and
       therefore none of them would ever be destroyed. </P>
     
-    <P>In order to avoid this, B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+    <P>In order to avoid this, <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
       provides a third kind of references between objects: <A NAME="reverse"></A>
     <b>reverse links</b>.. <b>They should be used</b> particularly for backward 
     references to &quot;parent&quot; or &quot;ancestor&quot; objects or anyhow </P>
@@ -98,12 +98,12 @@
     objects are decremented by 1.</P>
     
     <P>In addition, <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>  provides a 
-    basic method <b>finalize</b> of class <i>Object/i>, which 
+    basic method <b>finalize</b> of class <i>Object</i>, which 
     marks the object as a zombie 
     <i>immediately</i> and which
       again releases all directly linked objects.</P>
     
-    <P>&nbsp;<i>Object::finalize</i> can be used</P>
+    <P><i>Object::finalize</i> can be used</P>
     <OL>
       <LI>for (secure) manual storage management in exceptional cases of
         reference structures containing closed cycles of forward links (&quot;dangling pointers&quot;
@@ -114,11 +114,11 @@
       clean semantics of &quot;closing&quot; an object.</LI>
     </OL>
     
-    <P>As a further, still stronger aid for releasing whole collections of objects that are 
+    <P>AAs a further, still stronger aid for releasing whole collections of objects that are 
     linked together by potentially circular forward (= constituent or 
-    acquaintance) links, class <i>Obj provides a method <i>finalizeRec</i> 
+    acquaintance) links, class <i>Obj</i> provides a method <i>finalizeRec</i> 
     with a boolean parameter <i>aquaintancesToo</i> which <b>recursively finalizes/zombifies</b> an object and all its constituents (and acquaintances, if <i>
-    aquaintancesTooancesToo/i> is true), <b>irrespective</b> of their reference counts.</P>
+    aquaintancesTooancesToo</i> is true), <b>irrespective</b> of their reference counts.</P>
     
     <P>Note, however, that <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
       objects are not <I>destroyed</I> before both the normal <b>and</b> the reverse
