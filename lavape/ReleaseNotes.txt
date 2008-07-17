@@ -20,10 +20,10 @@ B) LavaPE has been ported to Mac OS
 
 The Lava programming environment can now also be built and run
 on the Mac OS 10.5 platform. A binary package for Mac OS 10.5
-is also available now.
+is available now, too.
 
-C) LavaPE has been ported to Solaris
-====================================
+C) LavaPE has been ported to OpenSolaris
+========================================
 
 The Lava programming environment can now also be built and run
 on the Solaris platform. A binary package for Solaris is
@@ -64,7 +64,7 @@ How to install the Mac OS 10.5 binary release of LavaPE
 =======================================================
 
 Download the lavape-<rel>-macos.tar.bz2 archive, move it to
-the directory where the "lavape" installation directory is to
+the directory where the "lavadistro" installation directory is to
 reside as a subdirectory, and double-click it in the
 Mac OS Finder.
 
@@ -80,7 +80,7 @@ How to install the Solaris binary release of LavaPE
 ===================================================
 
 Download the lavape-<rel>-solaris.tar.bz2 archive, move it to
-the directory where the "lavape" installation directory is to
+the directory where the "lavadistro" installation directory is to
 reside as a subdirectory, and unpack it:
 
    tar xjf lavape-<rel>-solaris.tar.bz2
