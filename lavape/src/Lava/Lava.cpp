@@ -290,8 +290,8 @@ bool CLavaApp::event(QEvent *e)
       doc->OnCloseDocument();
       delete doc;
     }
-    if (debugger.startedFromLavaPE)
-      qApp->exit(0);
+    if (debugger.startedFromLavaPE || wxTheApp->appExit)
+      wxTheApp->exit(0);
     return true;
   case UEV_LavaMsgBox:
     m_appWindow->activateWindow();

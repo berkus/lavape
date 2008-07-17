@@ -152,6 +152,9 @@ void CLavaMainFrame::makeStyle(const QString &style)
 
 void CLavaMainFrame::UpdateUI()
 {
+  wxHistory *fileHist = wxDocManager::GetDocumentManager()->m_fileHistory;
+  DString fn;
+
   CLavaDoc* doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
   bool enable = doc && doc->isObject;
   preconditionsAction->setEnabled(!LBaseData->m_checkPostconditions);
@@ -159,12 +162,22 @@ void CLavaMainFrame::UpdateUI()
   postconditionsAction->setChecked(LBaseData->m_checkPostconditions);
   invariantsAction->setChecked(LBaseData->m_checkInvariants);
   pmDumpAction->setChecked(LBaseData->m_pmDumps);
+  fileNewAction->setEnabled(!LBaseData->debugger->isConnected);
+  fileOpenAction->setEnabled(!LBaseData->debugger->isConnected);
+  debugAction->setEnabled(!LBaseData->debugger->isConnected);
+  //fileExitAction->setEnabled(!LBaseData->debugger->isConnected);
   fileCloseAction->setEnabled(enable);
   fileSaveAction->setEnabled(enable);
   fileSaveAsAction->setEnabled(enable);
   fileSaveAllAction->setEnabled(enable);
   if (LBaseData->docModal && ((CLavaBaseDoc*)LBaseData->docModal)->ActLavaDialog)
     ((LavaGUIDialog*)((CLavaBaseDoc*)LBaseData->docModal)->ActLavaDialog)->UpdateUI();
+
+  for (int i = 0; i < fileHist->m_historyN; i++)
+  {
+    fn = *fileHist->m_history[i];
+    fileHist->m_actions[i]->setEnabled(!LBaseData->debugger->isConnected && fn.Substr(fn.l-5,5) != DString(".lcom"));
+  }
 }
 
 //void CLavaMainFrame::customEvent(QEvent *ev0){
@@ -236,9 +249,22 @@ void CLavaMainFrame::on_helpAboutAction_triggered()
 
 void CLavaMainFrame::on_fileExitAction_triggered()
 {
-  OnFileExit();
+  if (((CLavaDebugger*)LBaseData->debugger)->isConnected) {
+    wxTheApp->appExit = true;
+    ((CLavaDebugger*)LBaseData->debugger)->stop(disconnected);
+    return;
+  }
+  wxMainFrame::OnFileExit();
 }
 
+void CLavaMainFrame::OnFileExit() {
+  if (((CLavaDebugger*)LBaseData->debugger)->isConnected) {
+    wxTheApp->appExit = true;
+    ((CLavaDebugger*)LBaseData->debugger)->stop(disconnected);
+    return;
+  }
+  wxMainFrame::OnFileExit();
+}
 
 CLavaMainFrame::~CLavaMainFrame()
 {

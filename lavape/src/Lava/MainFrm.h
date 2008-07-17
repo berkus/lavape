@@ -13,6 +13,7 @@ public:
   virtual ~CLavaMainFrame();
   virtual void UpdateUI();
   virtual bool OnCreate();
+  virtual void OnFileExit();
   int lastTile;
   //virtual void customEvent(QEvent *ev);
   bool eventFilter(QObject *obj,QEvent *ev);

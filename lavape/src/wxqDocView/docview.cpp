@@ -507,6 +507,7 @@ bool wxDocument::DeleteAllChildFrames()
   wxTheApp->m_docManager->SetActiveView(0);
   if (!noTab && tab->widget(0))
     ((wxChildFrame*)tab->widget(0))->Activate(true);
+  wxTheApp->updateButtonsMenus();
   return true;
 }
 
