@@ -1375,8 +1375,9 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
   if (temp) {
     for (pos = 0; pos < m_docs.size(); pos++) {
       doc = m_docs[pos];
-      if (doc && (fn == doc->GetFilename())) { //filename comp
-        doc->GetFirstView()->GetParentFrame()->Activate();
+      if (doc && (fn == doc->GetFilename())) {
+        if (doc->GetFirstView() && doc->GetFirstView()->GetParentFrame())  //filename comp
+          doc->GetFirstView()->GetParentFrame()->Activate();
         m_fileHistory->SetFirstInHistory(path2);
         return doc;
       }
