@@ -4,6 +4,8 @@ QBIN=`./qbin.sh`
 
 if [ -d $QBIN/Assistant_adp.app ]; then
   echo Assistant_adp.app
+elif [ -x $QBIN/assistant.app ]; then
+  echo assistant.app
 elif [ -x $QBIN/assistant_adp ]; then
   echo assistant_adp
 elif [ -x $QBIN/assistant ]; then

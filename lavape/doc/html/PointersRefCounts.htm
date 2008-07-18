@@ -1,212 +1,193 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Pointers and reference counts</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER">The three <I><FONT COLOR="#FF0000">Lava</FONT></I>
-    pointer types,<br/>
-    storage management based on reference counts</H2>
-    
-    <H3>Why reference counts rather than garbage collection? </H3>
-    
-    <P>We  felt that simple garbage collection 
-    by &quot;mark and sweep&quot; is a rather inelegant sledge-hammer
-      method. It causes quite noticeable bursts of garbage collection 
-    (GC) &nbsp;activities
-      that interrupt the normal computation process from time to time, possibly
-      even in the midst of time-critical transactions. More 
-    sophisticated GC procedures, however, require much more implementation effort. Reference counts 
-    are easier to implement and promise
-      to provide a more smooth storage management style by releasing storage
-      occupied by objects <b>at the earliest possible moment</b>.</P>
-    
-    <P>A second, less emotional argument in favor of reference counts: If you
-      pass an object <I>by reference</I> across a component border then you
-      would like to know anyhow when the receiving component does not
-      need/reference the object any longer, and we expect that it is much easier
-      to manage reference counts across component borders and to standardize an
-      appropriate interface to this end than to standardize garbage collection
-      procedures across the borders of components written in different languages
-      and following different programming paradigms.</P>
-    
-    <P>A third argument in favor of reference counts 
-    has been that <b><font color="#FF0000"><i>Lava</i></font></b> anyway 
-    distinguishes already <i>two</i> different kinds of pointers/links between 
-    objects: constituents and acquaintances (see below), and it is rather 
-    obvious to introduce a third kind then: reverse links. Constituent and 
-    acquaintance links are considered to point in forward/downward direction in
-    <font color="#FF0000"><i><b>Lava</b></i></font>, while a reverse link from 
-    object <i>B</i> to object <i>A</i> should normally imply that <i>B</i> can 
-    be reached from <i>A</i> by a forward/downward path (i.e., via a chain of 
-    constituent/acquaintance links). Closed cycles of objects are avoided under 
-    these conditions, which may otherwise restrict the successful usage of 
-    reference counts for storage management.</P>
-    
-    <H3><A NAME="refTypes"></A>The three application-level pointer types
-    in <FONT COLOR="#FF0000"> <I>Lava</I></FONT> </H3>
-    
-    <P>We have stated already in a <A HREF="Unsolved.htm#pointers">former
-        section</A>   that we need a proper application-level distinction between
-      <a href="TwoObjectCategories.htm#constituents">constituents and acquaintances</a> of complex objects, and storage management by
-      reference counts makes it desirable to introduce a third type of
-      pointers/references/links between objects: </P>
-    
-    <P>If our object system (which is linked together by b>constituent </b>and 
-      <b>acquaintance</b> pointers) contains closed cycles rather than
-      being an acyclic graph structure then reference counts without any further
-      precaution could cause isolated cycles of objects to arise that are no
-      longer referenced from anywhere else. The objects belonging to such a
-      cycle would just prevent each other's reference counts to reach 0 since
-      each of these would be referenced by an adjacent object in the cycle, and
-      therefore none of them would ever be destroyed. </P>
-    
-    <P>In order to avoid this, <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      provides a third kind of references between objects: <A NAME="reverse"></A>
-    <b>reverse links</b>.. <b>They should be used</b> particularly for backward 
-    references to &quot;parent&quot; or &quot;ancestor&quot; objects or anyhow </P>
-    
-    <ul>
-      <li>in a way that prevents the necessity to establish closed cycles of 
-      constituent/acquaintance references. </li>
-      <li>Moreover, proper functioning of storage management, as outlined below, 
-      requires that reverse links  originate from objects that can be reached 
-      by a forward (i.e., constituent/acquaintance) link from the target object 
-      of the reverse link./li>
-    </ul>
-    
-    <P> <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      manages a separate reference count for reverse links. If the normal
-      &quot;forward&quot; reference count of an object becomes 0 so that the object can 
-      at most, if at all, be
-      reached via reverse links from now on, then it is 
-    automatically and irreversibly transformed
-      into a <b>&quot;zombie&quot;</b> object. Any attempt to access this object will 
-    result in a specific exception.</P>
-    
-    <P> If the &quot;zombified&quot; object has forward (constituent or aquaintance) links 
-    to other objects then the corresponding forward/reverse counts of these 
-    objects are decremented by 1.</P>
-    
-    <P>In addition, <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>  provides a 
-    basic method <b>finalize</b> of class <i>Object</i>, which 
-    marks the object as a zombie 
-    <i>immediately</i> and which
-      again releases all directly linked objects.</P>
-    
-    <P><i>Object::finalize</i> can be used</P>
-    <OL>
-      <LI>for (secure) manual storage management in exceptional cases of
-        reference structures containing closed cycles of forward links (&quot;dangling pointers&quot;
-        cannot occur even in this case!),<br/>
-         </LI>
-      <LI>to forcibly and immediately terminate the validity/usability of an 
-      object, for instance if a bank account is closed. This enables a safe and 
-      clean semantics of &quot;closing&quot; an object.</LI>
-    </OL>
-    
-    <P>AAs a further, still stronger aid for releasing whole collections of objects that are 
-    linked together by potentially circular forward (= constituent or 
-    acquaintance) links, class <i>Obj</i> provides a method <i>finalizeRec</i> 
-    with a boolean parameter <i>aquaintancesToo</i> which <b>recursively finalizes/zombifies</b> an object and all its constituents (and acquaintances, if <i>
-    aquaintancesTooancesToo</i> is true), <b>irrespective</b> of their reference counts.</P>
-    
-    <P>Note, however, that <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      objects are not <I>destroyed</I> before both the normal <b>and</b> the reverse
-      reference count are 0. This can be achieved only by proper usage of the
-      three reference types and, in exceptional cases, the <i>Object::finalize</i>
-    and <i>Object::finalizeRec </i>
-    methods. </P>
-    
-    <P>So <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> guarantees the
-      absence of &quot;dangling pointers&quot; under all circumstances, and
-      under normal circumstances (without circular or simply unreasonable linkage
-      structures) objects that are not needed any longer will be destroyed
-      automatically at the earliest possible time.</P>
-    
-    <h3><a name="finalize"></a>Finalizers of classes other than
-    <i>Object</i></h3>
-    
-    <P><font color="#FF0000"><i><b>C++</b></i></font> provides 
-    the notion of a <b>destructor</b>, <b><i><font color="#FF0000">Java</font></i></b> 
-    the (overridable) <i> <b>finalize</b></i> method of class <i>Object</i>. These are invoked 
-    implicitly/automatically when objects are going to be destroyed (by the <b>
-    <i><font color="#FF0000">Java</font></i></b> garbage collector or the <b><i>
-    <font color="#FF0000">C++</font></i></b> delete operation or if local 
-    variables disappear from the 
-    run time stack. They give an opportunity to the object to perform special 
-    finalization operations before it is destroyed and its storage is freed. In <i>
-    <font color="#FF0000"><b>C++</b></font></i>, destructors are required 
-    particularly because members that are attached through pointers to other 
-    objects are not released automatically. </P>
-    
-    <P>This doesn't apply to <b><i><font color="#FF0000">Java</font></i></b> 
-    and <b><i><font color="#FF0000">Lava</font></i></b>. In these languages 
-    destructors/finalizers are only needed if an object should perform certain 
-    clean-up operations before it is released and destroyed, E.g., a file 
-    descriptor should close the respective file if the user of the file 
-    descriptor has forgotten to do this (or has been prevented from doing so by 
-    an exception that occurred before the close).</P>
-    
-    <P>Like <b><i><font color="#FF0000">Java</font></i></b>, <b>
-    <i><font color="#FF0000">Lava</font></i></b> provides a <i> <b>finalize</b></i> 
-    method of class <i>Object</i> to this end (see above), which 
-    may be overridden in  derived classes. It is invoked automatically by 
-    the <b><i><font color="#FF0000">Lava</font></i></b> run time system when an 
-    object is about to be destroyed since its reference counts are 0. </P>
-    
-    <P>Note, however, that <i>finalize</i> may attach the respective 
-    object as a member to some other object and thus cause its reference 
-    count(s) to become non-zero again. In this case the object isn't destroyed, 
-    of course, after <i>finalize</i> returns. </P>
-    
-    <P>The finalize method of a derived class is a quite normal 
-    method and isn't restricted anyhow. It may in turn call <i>Object::finalize</i> 
-    (by a &quot;static call&quot;) if the respective object is to be zombified finally 
-    even if its reference counts are not yet = 0.</P>
-    
-    <P>If <i>finalize</i> is invoked by a
-    <a target="_blank" href="http://www.memorymanagement.org/glossary/t.html#tracing.garbage.collection">
-    tracing garbage collector</a> as in <b><i><font color="#FF0000">Java</font></i></b> 
-    the you can get into troubles since the time of invocation is more or less 
-    unpredictable in this case. Cf., e.g., the discussion of finalization in
-    <a target="_blank" href="http://www.eclipse.org/articles/swt-design-2/swt-design-2.html">Eclipse/SWT</a> and
-    <a target="_blank" href="http://www.memorymanagement.org/glossary/f.html#finalization">
-    elsewhere</a>. In <font color="#FF0000"><i><b>Lava</b></i></font> it is 
-    perfectly predictabe: It is just the <i>earliest possible time</i>, viz. the 
-    moment when the reference counts of the object go down to zero.</P>
-    
-    <h3><b>See also</b></h3>
-    <p><b><a href="ObjectLifeCycle.htm#initializer">
-    Initializers/constructors</a></b></p>
-    <p><b><a target="_blank" href="http://www.memorymanagement.org/">
-    http://www.memorymanagement.org/</a></b></p>
-    <p><b>
-    <a target="_blank" href="http://www.memorymanagement.org/glossary/r.html#reference.counting">
-    http://www.memorymanagement.org/glossary/r.html#reference.counting</a></b></p>
-    <p><b>
-    <a target="_blank" href="http://www.memorymanagement.org/glossary/f.html#finalization">
-    http://www.memorymanagement.org/glossary/f.html#finalization</a></b></p>
-    <p><b>
-    <a target="_blank" href="http://www.memorymanagement.org/glossary/g.html#garbage.collection">
-    http://www.memorymanagement.org/glossary/g.html#garbage.collection</a></b></p>
-    <p><b>
-    <a target="_blank" href="http://www.memorymanagement.org/glossary/t.html#tracing.garbage.collection">
-    http://www.memorymanagement.org/glossary/t.html#tracing.garbage.collection</a></b></p>
-    <p><b>
-    <a target="_blank" href="http://www.eclipse.org/articles/swt-design-2/swt-design-2.html">
-    http://www.eclipse.org/articles/swt-design-2/swt-design-2.html</a></b></p>
-    <p><b>
-    <a target="_blank" href="http://www.wikiservice.at/dse/wiki.cgi?ReferenzZ%e4hlung">http://www.wikiservice.at/dse/wiki.cgi?ReferenzZ%e4hlung</a></b> 
-    (German)</p>
-  </BODY>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>Pointers and reference counts</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0 Beta (Unix)">
+	<META NAME="CREATED" CONTENT="0;0">
+	<META NAME="CHANGED" CONTENT="20080718;12141100">
+	<META NAME="ProgId" CONTENT="FrontPage.Editor.Document">
+	<META HTTP-EQUIV="Content-Language" CONTENT="en-us">
+	<STYLE TYPE="text/css">
+	<!--
+		P { margin-top: 0.18cm; color: #000000; font-family: "Arial" }
+		H2 { color: #000000; font-family: "Arial"; font-size: 24pt }
+		H3 { margin-top: 0.53cm; color: #000000; font-family: "Arial"; font-size: 16pt }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" TEXT="#000000" BGCOLOR="#d8dddd" DIR="LTR">
+<H2 ALIGN=CENTER>The three <FONT COLOR="#ff0000"><I>Lava</I></FONT>
+pointer types, storage management based on reference counts</H2>
+<H3>Why reference counts rather than garbage collection? 
+</H3>
+<P>We felt that simple garbage collection by &quot;mark and sweep&quot;
+is a rather inelegant sledge-hammer method. It causes quite
+noticeable bursts of garbage collection (GC) &nbsp;activities that
+interrupt the normal computation process from time to time, possibly
+even in the midst of time-critical transactions. More sophisticated
+GC procedures, however, require much more implementation effort.
+Reference counts are easier to implement and promise to provide a
+more smooth storage management style by releasing storage occupied by
+objects <B>at the earliest possible moment</B>.</P>
+<P>A second, less emotional argument in favor of reference counts: If
+you pass an object <I>by reference</I> across a component border then
+you would like to know anyhow when the receiving component does not
+need/reference the object any longer, and we expect that it is much
+easier to manage reference counts across component borders and to
+standardize an appropriate interface to this end than to standardize
+garbage collection procedures across the borders of components
+written in different languages and following different programming
+paradigms.</P>
+<P>A third argument in favor of reference counts has been that <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT>
+anyway distinguishes already <I>two</I> different kinds of
+pointers/links between objects: constituents and acquaintances (see
+below), and it is rather obvious to introduce a third kind then:
+reverse links. Constituent and acquaintance links are considered to
+point in forward/downward direction in <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT>,
+while a reverse link from object <I>B</I> to object <I>A</I> should
+normally imply that <I>B</I> can be reached from <I>A</I> by a
+forward/downward path (i.e., via a chain of constituent/acquaintance
+links). Closed cycles of objects are avoided under these conditions,
+which may otherwise restrict the successful usage of reference counts
+for storage management.</P>
+<H3><A NAME="refTypes"></A>The three application-level pointer types
+in <FONT COLOR="#ff0000"><I>Lava</I></FONT> 
+</H3>
+<P>We have stated already in a <A HREF="Unsolved.htm#pointers">former
+section</A> that we need a proper application-level distinction
+between <A HREF="TwoObjectCategories.htm#constituents">constituents
+and acquaintances</A> of complex objects, and storage management by
+reference counts makes it desirable to introduce a third type of
+pointers/references/links between objects: 
+</P>
+<P>If our object system (which is linked together by b&gt;constituent
+and <B>acquaintance</B> pointers) contains closed cycles rather than
+being an acyclic graph structure then reference counts without any
+further precaution could cause isolated cycles of objects to arise
+that are no longer referenced from anywhere else. The objects
+belonging to such a cycle would just prevent each other's reference
+counts to reach 0 since each of these would be referenced by an
+adjacent object in the cycle, and therefore none of them would ever
+be destroyed. 
+</P>
+<P><A NAME="reverse"></A>In order to avoid this, <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT>
+provides a third kind of references between objects: <B>reverse
+links</B>.. <B>They should be used</B> particularly for backward
+references to &quot;parent&quot; or &quot;ancestor&quot; objects or
+anyhow 
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">in a way that prevents the
+	necessity to establish closed cycles of constituent/acquaintance
+	references. 
+	</P>
+	<LI><P>Moreover, proper functioning of storage management, as
+	outlined below, requires that reverse links originate from objects
+	that can be reached by a forward (i.e., constituent/acquaintance)
+	link from the target object of the reverse link./li&gt; 
+	</P>
+</UL>
+<P><FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT> manages a separate
+reference count for reverse links. If the normal &quot;forward&quot;
+reference count of an object becomes 0 so that the object can at
+most, if at all, be reached via reverse links from now on, then it is
+automatically and irreversibly transformed into a <B>&quot;zombie&quot;</B>
+object. Any attempt to access this object will result in a specific
+exception.</P>
+<P>If the &quot;zombified&quot; object has forward (constituent or
+aquaintance) links to other objects then the corresponding
+forward/reverse counts of these objects are decremented by 1.</P>
+<P>In addition, <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT>
+provides a basic method <B>finalize</B> of class <I>Object</I>, which
+marks the object as a zombie <I>immediately</I> and which again
+releases all directly linked objects.</P>
+<P><I>Object::finalize</I> can be used</P>
+<OL>
+	<LI><P STYLE="margin-bottom: 0cm">for (secure) manual storage
+	management in exceptional cases of reference structures containing
+	closed cycles of forward links (&quot;dangling pointers&quot; cannot
+	occur even in this case!), 
+	</P>
+	<LI><P>to forcibly and immediately terminate the validity/usability
+	of an object, for instance if a bank account is closed. This enables
+	a safe and clean semantics of &quot;closing&quot; an object. 
+	</P>
+</OL>
+<P>AAs a further, still stronger aid for releasing whole collections
+of objects that are linked together by potentially circular forward
+(= constituent or acquaintance) links, class <I>Obj</I> provides a
+method <I>finalizeRec</I> with a boolean parameter <I>aquaintancesToo</I>
+which <B>recursively finalizes/zombifies</B> an object and all its
+constituents (and acquaintances, if <I>aquaintancesTooancesToo</I> is
+true), <B>irrespective</B> of their reference counts.</P>
+<P>Note, however, that <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT>
+objects are not <I>destroyed</I> before both the normal <B>and</B>
+the reverse reference count are 0. This can be achieved only by
+proper usage of the three reference types and, in exceptional cases,
+the <I>Object::finalize</I> and <I>Object::finalizeRec </I>methods. 
+</P>
+<P>So <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT> guarantees the
+absence of &quot;dangling pointers&quot; under all circumstances, and
+under normal circumstances (without circular or simply unreasonable
+linkage structures) objects that are not needed any longer will be
+destroyed automatically at the earliest possible time.</P>
+<H3><A NAME="finalize"></A>Finalizers of classes other than <I>Object</I></H3>
+<P><FONT COLOR="#ff0000"><I><B>C++</B></I></FONT> provides the notion
+of a <B>destructor</B>, <FONT COLOR="#ff0000"><I><B>Java</B></I></FONT>
+the (overridable) <I><B>finalize</B></I> method of class <I>Object</I>.
+These are invoked implicitly/automatically when objects are going to
+be destroyed (by the <FONT COLOR="#ff0000"><I><B>Java</B></I></FONT>
+garbage collector or the <FONT COLOR="#ff0000"><I><B>C++</B></I></FONT>
+delete operation or if local variables disappear from the run time
+stack. They give an opportunity to the object to perform special
+finalization operations before it is destroyed and its storage is
+freed. In <FONT COLOR="#ff0000"><I><B>C++</B></I></FONT>, destructors
+are required particularly because members that are attached through
+pointers to other objects are not released automatically. 
+</P>
+<P>This doesn't apply to <FONT COLOR="#ff0000"><I><B>Java</B></I></FONT>
+and <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT>. In these
+languages destructors/finalizers are only needed if an object should
+perform certain clean-up operations before it is released and
+destroyed, E.g., a file descriptor should close the respective file
+if the user of the file descriptor has forgotten to do this (or has
+been prevented from doing so by an exception that occurred before the
+close).</P>
+<P>Like <FONT COLOR="#ff0000"><I><B>Java</B></I></FONT>, <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT>
+provides a <I><B>finalize</B></I> method of class <I>Object</I> to
+this end (see above), which may be overridden in derived classes. It
+is invoked automatically by the <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT>
+run time system when an object is about to be destroyed since its
+reference counts are 0. 
+</P>
+<P>Note, however, that <I>finalize</I> may attach the respective
+object as a member to some other object and thus cause its reference
+count(s) to become non-zero again. In this case the object isn't
+destroyed, of course, after <I>finalize</I> returns. 
+</P>
+<P>The finalize method of a derived class is a quite normal method
+and isn't restricted anyhow. It may in turn call <I>Object::finalize</I>
+(by a &quot;static call&quot;) if the respective object is to be
+zombified finally even if its reference counts are not yet = 0.</P>
+<P>If <I>finalize</I> is invoked by a <A HREF="http://www.memorymanagement.org/glossary/t.html#tracing.garbage.collection" TARGET="_blank">tracing
+garbage collector</A> as in <FONT COLOR="#ff0000"><I><B>Java</B></I></FONT>
+the you can get into troubles since the time of invocation is more or
+less unpredictable in this case. Cf., e.g., the discussion of
+finalization in <A HREF="http://www.eclipse.org/articles/swt-design-2/swt-design-2.html" TARGET="_blank">Eclipse/SWT</A>
+and <A HREF="http://www.memorymanagement.org/glossary/f.html#finalization" TARGET="_blank">elsewhere</A>.
+In <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT> it is perfectly
+predictable: It is just the <I>earliest possible time</I>, viz. the
+moment when the reference counts of the object go down to zero.</P>
+<H3><B>See also</B></H3>
+<P><A HREF="ObjectLifeCycle.htm#initializer"><B>Initializers/constructors</B></A></P>
+<P><A HREF="http://www.memorymanagement.org/" TARGET="_blank"><B>http://www.memorymanagement.org/</B></A></P>
+<P><A HREF="http://www.memorymanagement.org/glossary/r.html#reference.counting" TARGET="_blank"><B>http://www.memorymanagement.org/glossary/r.html#reference.counting</B></A></P>
+<P><A HREF="http://www.memorymanagement.org/glossary/f.html#finalization" TARGET="_blank"><B>http://www.memorymanagement.org/glossary/f.html#finalization</B></A></P>
+<P><A HREF="http://www.memorymanagement.org/glossary/g.html#garbage.collection" TARGET="_blank"><B>http://www.memorymanagement.org/glossary/g.html#garbage.collection</B></A></P>
+<P><A HREF="http://www.memorymanagement.org/glossary/t.html#tracing.garbage.collection" TARGET="_blank"><B>http://www.memorymanagement.org/glossary/t.html#tracing.garbage.collection</B></A></P>
+<P><A HREF="http://www.eclipse.org/articles/swt-design-2/swt-design-2.html" TARGET="_blank"><B>http://www.eclipse.org/articles/swt-design-2/swt-design-2.html</B></A></P>
+<P><A HREF="http://www.wikiservice.at/dse/wiki.cgi?ReferenzZ%E4hlung" TARGET="_blank"><B>http://www.wikiservice.at/dse/wiki.cgi?ReferenzZ%e4hlung</B></A>
+(German)</P>
+</BODY>
 </HTML>

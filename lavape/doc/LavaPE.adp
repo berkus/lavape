@@ -204,6 +204,8 @@
 				<keyword ref="html/PointersRefCounts.htm">storage managent</keyword>
 				<keyword ref="html/PointersRefCounts.htm">reference counts</keyword>
 				<keyword ref="html/PointersRefCounts.htm">pointers</keyword>
+				<keyword ref="html/PointersRefCounts.htm">constituents</keyword>
+				<keyword ref="html/PointersRefCounts.htm">acquaintances</keyword>
 				<keyword ref="html/PointersRefCounts.htm">memory management</keyword>
 				<keyword ref="html/PointersRefCounts.htm">garbage collection</keyword>
 				<keyword ref="html/PointersRefCounts.htm#finalize">finalizer, finalization</keyword>
