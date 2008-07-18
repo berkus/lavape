@@ -30,17 +30,17 @@ InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 ;--------------------------------
 ;Interface Configuration
 
-  !define MUI_HEADERIMAGE
+!define MUI_HEADERIMAGE
 ;  !define MUI_HEADERIMAGE_RIGHT
-  !define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
+!define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
   ;!define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\win.bmp" ; optional
-  !define MUI_HEADERIMAGE_BITMAP "volcano2.png" ; optional
-  !define MUI_ABORTWARNING
+!define MUI_HEADERIMAGE_BITMAP "volcano2.bmp" ; optional
+!define MUI_ABORTWARNING
 
 ; MUI Settings
 ;!define MUI_ABORTWARNING
-!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
-!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
+;!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
+;!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
 ; Language Selection Dialog Settings
 !define MUI_LANGDLL_REGISTRY_ROOT "${PRODUCT_UNINST_ROOT_KEY}"
@@ -128,7 +128,7 @@ Section "LavaPE (required)" SEC01
   SetFileAttributes $OUTDIR\std.lava READONLY|ARCHIVE
   File "bin\*.htm"
   File "bin\*.bat"
-  File "C:\Qt4\Qt440msvc\bin\assistant.exe"
+  File "C:\Qt4\Qt440msvc\bin\assistant_adp.exe"
   File "C:\Qt4\Qt440msvc\bin\QtAssistantClient4.dll"
   File "C:\Qt4\Qt440msvc\bin\QtCore4.dll"
   File "C:\Qt4\Qt440msvc\bin\QtGui4.dll"
