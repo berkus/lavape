@@ -4987,9 +4987,9 @@ crtbl:
           if (tempNo > 1) {
             varNamePtr->varName += qPrintable(QString::number(tempNo));
                                         }
-          newExp->objType.ptr = new ReferenceV(CrtblPH_T,tid,str.toAscii());
-          if (targetCat)
-            ((Reference*)newExp->objType.ptr)->flags.INCL(isVariable);
+          newExp->objType.ptr = ref = new ReferenceV(CrtblPH_T,tid,str.toAscii());
+          //if (ref->refDecl->TypeFlags.Contains())
+          //  ((Reference*)newExp->objType.ptr)->flags.INCL(isVariable);
           tdod = new TDODV(true);
           ((VarName*)newExp->varName.ptr)->MakeTable((address)&myDoc->IDTable,0,newExp,onNewID,(address)&newExp->varName.ptr,0);
           ((VarName*)newExp->varName.ptr)->varID.nINCL = -1;
@@ -5498,7 +5498,7 @@ void CExecView::OnToggleCategory()
 
 bool CExecView::ToggleCatEnabled()
 {
-  //LavaDECL *decl;
+  LavaDECL *decl;
   //NewExpression *newExp;
   //bool cat;
   SynFlags ctxFlags;
@@ -5509,26 +5509,24 @@ bool CExecView::ToggleCatEnabled()
   switch (text->currentSynObj->primaryToken) {
   case new_T:
   case attach_T:
-  //case clone_T:
-    //if (text->currentSynObj->parentObject->primaryToken == new_T) {
-    //  newExp = (NewExpression*)text->currentSynObj->parentObject;
-    //  decl = myDoc->IDTable.GetDECL(((Reference*)newExp->objType.ptr)->refID,text->ckd.inINCL);
-    //  if (decl && decl->DeclType == CompObjSpec)
-    //    return false;
-    //  else
-        return true;
-    //}
-    break;
   case VarName_T:
-    //if ((text->currentSynObj->parentObject->primaryToken == quant_T
-    //    && ((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
-    //|| text->currentSynObj->parentObject->primaryToken == catch_T)
-    //  return false;
-    //text->currentSynObj->ExprGetFVType(text->ckd,decl,ctxFlags);
-    //if (decl && decl->DeclType == VirtualType && decl->TypeFlags.Contains(definesObjCat))
-    //  return false;
-    //else
+    return true;
+    break;
+
+  case TypeRef_T:
+    return true;
+    break;
+
+  case CrtblRef_T:
+    if (text->currentSynObj->parentObject->primaryToken != new_T)
+      return false;
+    decl = ((Reference*)text->currentSynObj)->refDecl;
+    if (decl->SecondTFlags.Contains(isSet))
       return true;
+    else
+      return false;
+    break;
+
   default:
     if (text->currentSynObj->IsConstant() && text->currentSynObj->primaryToken != nil_T)
       return true;
@@ -6320,7 +6318,7 @@ void CExecView::OnUpdateToggleCategory(QAction* action)
   }
 
   action->setEnabled(ToggleCatEnabled());
-  action->setChecked(text->currentSynObj->flags.Contains(isVariable));
+  //action->setChecked(text->currentSynObj->flags.Contains(isVariable));
 }
 
 void CExecView::OnUpdateConflict(QAction* action)

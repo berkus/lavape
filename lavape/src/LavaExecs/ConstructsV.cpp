@@ -413,6 +413,8 @@ void ReferenceV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored)
 
   if (!refName.l)
     UpdateReference(t.ckd);
+  if (flags.Contains(isVariable))
+    t.Insert(Tilde_T);
   if (flags.Contains(isSubstitutable))
     t.Insert(Lbrace_T);
   //if (flags.Contains(isVariable))

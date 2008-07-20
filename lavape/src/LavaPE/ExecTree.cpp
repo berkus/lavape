@@ -425,12 +425,15 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
     }
     if (elDef->TypeFlags.Contains(isPropGet))
       lab1 += DString("attribute get function");
-    else
+    else {
       if (elDef->TypeFlags.Contains(isPropSet))
         lab1 += DString("attribute set function");
       else
         if (elDef->op == OP_noOp)
           lab1 += DString("function");
+      if (elDef->TypeFlags.Contains(setElemCat))
+        lab1 += DString(", \"self\" has set elem. category");
+    }
     decl = Doc->IDTable.GetDECL(((CHETID*)elDef->Supports.first)->data, elDef->inINCL);
     if (decl && decl->TypeFlags.Contains(isAbstract))
       new CLavaError(&elDef->DECLError1, &ERR_ImplOfAbstract, 0, useAutoBox);
@@ -443,7 +446,7 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
       Doc->changeInUpdate = Doc->changeInUpdate || changed;
     }
     if (elDef->SecondTFlags.Contains(isLavaSignal))
-      lab1 += DString("signal");
+      lab1 += DString("signal ");
     else {
       if (elDef->TypeFlags.Contains(isNative))
         lab1 += DString("native ");
@@ -475,6 +478,8 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
         lab1 += DString("initializer ");
       if (elDef->op == OP_noOp)
         lab1 += DString("function");
+      if (elDef->TypeFlags.Contains(setElemCat))
+        lab1 += DString(", \"self\" has set elem. category");
     }
   }
   if (lab1.l) {
@@ -887,11 +892,15 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     else {
       if (elDef->TypeFlags.Contains(isOptional))
         lab += DString(", optional");
+      if (elDef->TypeFlags.Contains(setElemCat))
+        lab += DString(", set elem. category");
       if (elDef->SecondTFlags.Contains(closed))
         lab += DString(", closed");
       if ( elDef->DeclType == Attr) {
         if (elDef->TypeFlags.Contains(isConst))
           lab += DString(", read-only ");
+        else if (elDef->TypeFlags.Contains(setElemCat))
+          lab += DString(", set elem. category ");
         if (elDef->TypeFlags.Contains(acquaintance))
           lab += DString(", acquaintance ");
         else

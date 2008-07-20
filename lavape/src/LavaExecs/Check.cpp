@@ -1864,7 +1864,7 @@ bool BaseInit::Check (CheckData &ckd)
 
 void SelfVar::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags, bool &cat)
 {
-  cat = true;
+  cat = !execDECL->ParentDECL->TypeFlags.Contains(isConst);
   ctxFlags.bits = 0;
   decl = selfType;
   if (!decl) return;

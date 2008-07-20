@@ -1022,6 +1022,8 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
       code("<B>abstract</B> ");
     if (pnode->TypeFlags.Contains(isConst))
       code("<B>read-only</B> ");
+    else if (pnode->TypeFlags.Contains(setElemCat))
+      code("<B>set elem. category</B> ");
     if (pnode->TypeFlags.Contains(forceOverride))
       code("<B>force_override</B> ");
     if (pnode->TypeFlags.Contains(defaultInitializer))
@@ -1145,6 +1147,8 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
 
     if (pnode->TypeFlags.Contains(isConst))
       code("<B>, read-only</B>");
+    else if (pnode->TypeFlags.Contains(isConst))
+      code("<B>, set elem. category</B>");
 
     if (pnode->TypeFlags.Contains(hasSetGet))
       code("<B>, access via set/get functions</B>");

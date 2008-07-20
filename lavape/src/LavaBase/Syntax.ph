@@ -296,7 +296,7 @@ $TYPE +CDP {
     //28, X1000 0000
     hasSetGet,    //attribute has set and get functions
     //29, X2000 0000
-    FREE_TYPEFLAG3,//definesObjCat, //pattern parameter defines object category
+    setElemCat,//same category as the elements of the underlying set
     //30, X4000 0000
     FREE_TYPEFLAG4//trueObjCat    //attribute/IO-category is defined
     //31, X8000 0000

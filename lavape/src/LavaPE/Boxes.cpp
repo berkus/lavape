@@ -1647,7 +1647,7 @@ ValOnInit CFuncBox::OnInitDialog()
       Native->setChecked(true);
     }
     myDECL->TypeFlags.INCL(isConst);
-    ConstFunc->setChecked(true);
+    ConstFunc->setCurrentIndex(0);
     EventType->setCurrentIndex(0);
 
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
@@ -1723,9 +1723,16 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     else
       EnforceOver->setChecked(false);
-    ConstFunc->setChecked(myDECL->TypeFlags.Contains(isConst));
+    ConstFunc->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    if (myDECL->TypeFlags.Contains(isConst))
+      ConstFunc->setCurrentIndex(0);
+    else if (myDECL->TypeFlags.Contains(setElemCat))
+      ConstFunc->setCurrentIndex(2);
+    else
+      ConstFunc->setCurrentIndex(1);
     if (myDECL->TypeFlags.Contains(isInitializer)) {
-      ConstFunc->setEnabled(true); 
+      ConstFunc->setEnabled(false); 
+      ConstFunc->setCurrentIndex(0); 
       Protected->setEnabled(false);
       Initializer->setChecked(true);
       DefaultIni->setEnabled(!hasParams
@@ -2093,13 +2100,13 @@ void CFuncBox::on_StaticFunc_clicked()
     Initializer->setChecked(false);
     Abstract->setChecked(false);
     EnforceOver->setChecked(false);
-    ConstFunc->setChecked(false);
+    //ConstFunc->setChecked(false);
     Protected->setEnabled(false);
     Initializer->setEnabled(false);
     Abstract->setEnabled(false);
     EnforceOver->setEnabled(false);
     myDECL->TypeFlags.INCL(isConst); 
-    ConstFunc->setChecked(true);
+    //ConstFunc->setChecked(true);
     ConstFunc->setEnabled(false);
     Closed->setEnabled(false);
   }
@@ -2124,7 +2131,7 @@ void CFuncBox::on_Initializer_clicked()
                                 || myDECL->TypeFlags.Contains(defaultInitializer)));
   if (ini) {
     ConstFunc->setEnabled(false); 
-    ConstFunc->setChecked(false); 
+    //ConstFunc->setChecked(false); 
     //Protected->setEnabled(false);
     StaticFunc->setEnabled(false);
     StaticFunc->setChecked(false);
@@ -2203,7 +2210,7 @@ void CFuncBox::on_Native_clicked()
 void CFuncBox::on_Signal_clicked()
 {
   if (Signal->isChecked()) {
-    ConstFunc->setChecked(true); 
+    //ConstFunc->setChecked(true); 
     ConstFunc->setEnabled(false);
     myDECL->TypeFlags.INCL(isConst); 
     Protected->setChecked(true);
@@ -2515,10 +2522,18 @@ void CFuncBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(forceOverride);
   else
     myDECL->TypeFlags.EXCL(forceOverride);
-  if (ConstFunc->isChecked())
+  if (ConstFunc->currentIndex()== 0) {
     myDECL->TypeFlags.INCL(isConst); 
-  else
-    myDECL->TypeFlags.EXCL(isConst); 
+    myDECL->TypeFlags.EXCL(setElemCat);
+  }
+  else if (ConstFunc->currentIndex()== 2) {
+    myDECL->TypeFlags.INCL(setElemCat); 
+    myDECL->TypeFlags.EXCL(isConst);
+  }
+  else {
+    myDECL->TypeFlags.EXCL(isConst);
+    myDECL->TypeFlags.EXCL(setElemCat);
+  }
   if (Signal->isChecked())
     myDECL->SecondTFlags.INCL(isLavaSignal); 
   else
@@ -3483,13 +3498,18 @@ ValOnInit CIOBox::OnInitDialog()
       TypeFlags.INCL(substitutable);
     }
     else
-      Substitutable->setChecked(false); 
+      Substitutable->setChecked(false);
+
     if (myDECL->TypeFlags.Contains(stateObject)) {
-      StateObject->setChecked(true);
+      ParamCategory->setCurrentIndex(1);
+      TypeFlags.INCL(stateObject);
+    }
+    else if (myDECL->TypeFlags.Contains(setElemCat)) {
+      ParamCategory->setCurrentIndex(2);
       TypeFlags.INCL(stateObject);
     }
     else
-      StateObject->setChecked(false); 
+      ParamCategory->setCurrentIndex(1);
    //if (myDoc->GetCategoryFlags(myDECL, catErr).Contains(definesObjCat)) {
    //   StateObject->setChecked(false);
    //   ValueObject->setChecked(false);
@@ -3748,10 +3768,19 @@ void CIOBox::on_ID_OK_clicked()
     myDECL->TypeFlags.EXCL(substitutable);
   if (valkindOfField == 1) 
     myDECL->TypeFlags.INCL(isOptional);
-  if (StateObject->isChecked())
+
+  if (ParamCategory->currentIndex() == 1) {
     myDECL->TypeFlags.INCL(stateObject);
-  else
+    myDECL->TypeFlags.EXCL(setElemCat);
+  }
+  else if (ParamCategory->currentIndex() == 2) {
+    myDECL->TypeFlags.INCL(setElemCat);
     myDECL->TypeFlags.EXCL(stateObject);
+  }
+  else { // value object
+    myDECL->TypeFlags.EXCL(setElemCat);
+    myDECL->TypeFlags.EXCL(stateObject);
+  }
   //if (SameAsSelf->isChecked())
   //  myDECL->TypeFlags.INCL(sameAsSelf);
   //else

@@ -174,19 +174,25 @@
          </property>
          <layout class="QVBoxLayout" >
           <item>
-           <widget class="QCheckBox" name="StateObject" >
-            <property name="toolTip" >
-             <string>Variable state object</string>
+           <widget class="QComboBox" name="ParamCategory" >
+            <property name="sizeAdjustPolicy" >
+             <enum>QComboBox::AdjustToContents</enum>
             </property>
-            <property name="statusTip" >
-             <string>Variable state object</string>
-            </property>
-            <property name="whatsThis" >
-             <string>Variable state object</string>
-            </property>
-            <property name="text" >
-             <string>Variable state object</string>
-            </property>
+            <item>
+             <property name="text" >
+              <string>Immutable value object</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Variable state object</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Set elem. category</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item>
