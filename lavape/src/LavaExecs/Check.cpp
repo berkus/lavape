@@ -643,7 +643,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
     (Expression*)((Parameter*)actSynObj)->parameter.ptr : actSynObj);
   LavaDECL *actTypeDecl, *actDecl, *formDecl, *formTypeDecl;
   bool ok=true;
-  bool actCat, formCat;
+  bool actCat, formCat, formSetElemCat=false;
   CContext callContext=callCtx;
   SynFlags ctxFlags;
   int closedLevel;
@@ -683,14 +683,6 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   callContext = callCtx;
   formTypeDecl = ckd.document->GetFinalMVType(formDecl->RefID,formDecl->inINCL,callContext,&ckd);
   callContext = callCtx;
-  //if (formCat == unknownCategory
-  //&& formDecl->TypeFlags.Contains(trueObjCat) && !formDecl->TypeFlags.Contains(isAnyCategory))
-  //  if (formDecl->TypeFlags.Contains(stateObject))
-  //    formCat = stateObj;
-  //  else if (formDecl->TypeFlags.Contains(sameAsSelf))
-  //    formCat = sameAsSelfObj;
-  //  else
-  //    formCat = valueObj;
   formCat = formDecl->TypeFlags.Contains(stateObject);
   if (NoPH(parm))
     ((Expression*)parm)->targetCat = formCat;
@@ -714,23 +706,10 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
       ok = false;
     }
 
-    //if (actCat == unknownCategory) {
-    //  if (formCat != unknownCategory) {
-    //    parm->SetError(ckd,&ERR_IncompatibleCategory);
-    //    ok = false;
-    //  }
-    //}
-    //else if (formCat != unknownCategory) {
-    //  if (formCat == sameAsSelfObj
-    //  && actCat != callObjCat) {
-    //    parm->SetError(ckd,&ERR_IncompatibleCategory);
-    //    ok = false;
-    //  }
-      if (actCat != formCat) {
-        parm->SetError(ckd,&ERR_IncompatibleCategory);
-        ok = false;
-      }
-    //}
+    if (actCat != formCat) {
+      parm->SetError(ckd,&ERR_IncompatibleCategory);
+      ok = false;
+    }
   }
   return ok;
 }

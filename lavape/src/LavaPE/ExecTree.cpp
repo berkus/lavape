@@ -432,7 +432,7 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
         if (elDef->op == OP_noOp)
           lab1 += DString("function");
       if (elDef->TypeFlags.Contains(setElemCat))
-        lab1 += DString(", \"self\" has set elem. category");
+        lab1 += DString(", \"self\" has set/array elem. category");
     }
     decl = Doc->IDTable.GetDECL(((CHETID*)elDef->Supports.first)->data, elDef->inINCL);
     if (decl && decl->TypeFlags.Contains(isAbstract))
@@ -479,7 +479,7 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
       if (elDef->op == OP_noOp)
         lab1 += DString("function");
       if (elDef->TypeFlags.Contains(setElemCat))
-        lab1 += DString(", \"self\" has set elem. category");
+        lab1 += DString(", \"self\" has set/array elem. category");
     }
   }
   if (lab1.l) {
@@ -893,14 +893,16 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
       if (elDef->TypeFlags.Contains(isOptional))
         lab += DString(", optional");
       if (elDef->TypeFlags.Contains(setElemCat))
-        lab += DString(", set elem. category");
+        lab += DString(", set/array elem. category");
       if (elDef->SecondTFlags.Contains(closed))
         lab += DString(", closed");
       if ( elDef->DeclType == Attr) {
         if (elDef->TypeFlags.Contains(isConst))
           lab += DString(", read-only ");
         else if (elDef->TypeFlags.Contains(setElemCat))
-          lab += DString(", set elem. category ");
+          lab += DString(", set/array elem. category ");
+        if (elDef->TypeFlags.Contains(elemsStateObj))
+          lab += DString(", set/array elems. are variable ");
         if (elDef->TypeFlags.Contains(acquaintance))
           lab += DString(", acquaintance ");
         else

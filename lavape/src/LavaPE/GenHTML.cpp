@@ -1031,7 +1031,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     else
       code("<B>function</B>");
     if (pnode->TypeFlags.Contains(setElemCat))
-      code("<B>, \"self\" has set elem. category</B>");
+      code("<B>, \"self\" has set/array elem. category</B>");
 
     if (!pnode->SecondTFlags.Contains(funcImpl))
       for ( chpTID = (CHETID*)pnode0->Supports.first;
@@ -1145,8 +1145,11 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     else if (pnode->TypeFlags.Contains(isPlaceholder))
       code("<B>, placeholder</B>");
 
+    if (pnode->TypeFlags.Contains(elemsStateObj))
+      code("<B>, elems. are variable</B>");
+
     if (pnode->TypeFlags.Contains(setElemCat))
-      code("<B>, set elem. category</B>");
+      code("<B>, set/array elem. category</B>");
     else if (!pnode->TypeFlags.Contains(stateObject))
       code("<B>, read-only</B>");
 

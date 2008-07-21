@@ -404,6 +404,7 @@ public:
   virtual bool NestedOptClause (SynObject *optClause) { return false; }
   bool StatementSelected (CHETokenNode *currentSelection);
   bool SameExec (LavaDECL *decl);
+  virtual bool CompatibleSetElemCat(SynObject *actParm, LavaDECL *formParmDecl) { return true; }
 
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable(address table, int inINCL, SynObjectBase* parent, TTableUpdate update, address where=0, CHAINX *chx=0, address searchData=0);

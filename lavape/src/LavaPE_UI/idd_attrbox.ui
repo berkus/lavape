@@ -191,6 +191,23 @@
         </widget>
        </item>
        <item>
+        <widget class="QComboBox" name="ElemCat" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <item>
+          <property name="text" >
+           <string>Elements are immutable</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Elements are variable</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="Protected" >
          <property name="focusPolicy" >
           <enum>Qt::StrongFocus</enum>

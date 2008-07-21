@@ -236,7 +236,8 @@ ValOnInit CAttrBox::OnInitDialog()
     ID_OK->setDefault( false );
     ID_CANCEL->setDefault( true );
   }
-  if (onNew) {
+
+ if (onNew) {
     TypeFlags.INCL(constituent);
     myDECL->TypeFlags.INCL(constituent);
     //myDECL->TypeFlags.INCL(trueObjCat);
@@ -257,8 +258,10 @@ ValOnInit CAttrBox::OnInitDialog()
     valNewName = QString(myDECL->LocalName.c);
     DString dstr = myDoc->GetTypeLabel(myDECL, false);
     valNewTypeType = QString(dstr.c);
-    //if (myDoc->GetCategoryFlags(myDECL, catErr).Contains(definesObjCat)) {
-    //  StateObject->setEnabled(false);
+    LavaDECL *decl = myDoc->CheckGetFinalMType(myDECL);
+    if (decl->SecondTFlags.Contains(isSet) || decl->SecondTFlags.Contains(isArray))
+      ElemCat->setEnabled(true);
+    //if (myDoc->GetCategoryFlags(myDECL, catErr).Contains(stateObject))
     //  ValueObject->setEnabled(false);
     //  AnyCategory->setEnabled(false);
     //}
@@ -291,6 +294,12 @@ ValOnInit CAttrBox::OnInitDialog()
     }
     else
       StateObject->setCurrentIndex(0); 
+    if (myDECL->TypeFlags.Contains(elemsStateObj)) {
+      ElemCat->setCurrentIndex(1);
+      TypeFlags.INCL(elemsStateObj);
+    }
+    else
+      ElemCat->setCurrentIndex(0); 
     if (myDECL->SecondTFlags.Contains(overrides)) {
       cheS = (CHETID*)myDECL->Supports.first;
       while (cheS) {
@@ -512,9 +521,17 @@ void CAttrBox::on_NamedTypes_activated(int pos)
   UpdateData(true);
   BasicTypes->setCurrentIndex(0);
   bool catErr;
+
   if (SelEndOKToStr(NamedTypes, &valNewTypeType, &myDECL->RefID) > 0) {
     myDECL->DeclDescType = NamedType;
     SynFlags inheritedFlag = myDoc->GetCategoryFlags(myDECL, catErr); 
+    LavaDECL *decl = myDoc->CheckGetFinalMType(myDECL);
+    if (decl->SecondTFlags.Contains(isSet) || decl->SecondTFlags.Contains(isArray))
+      ElemCat->setEnabled(true);
+    else {
+      ElemCat->setEnabled(false);
+      ElemCat->setCurrentIndex(0);
+    }
     //StateObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
     //ValueObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
     //AnyCategory->setEnabled(!inheritedFlag.Contains(definesObjCat));
@@ -646,6 +663,10 @@ void CAttrBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(stateObject);
   else
     myDECL->TypeFlags.EXCL(stateObject);
+  if (ElemCat->currentIndex() == 1)
+    myDECL->TypeFlags.INCL(elemsStateObj);
+  else
+    myDECL->TypeFlags.EXCL(elemsStateObj);
   if (Protected->isChecked())
     myDECL->TypeFlags.INCL(isProtected);
   else
@@ -1724,8 +1745,8 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     else
       EnforceOver->setChecked(false);
-    if (!myDECL->ParentDECL->SecondTFlags.Contains(isSet))
-      ConstFunc->removeItem(2);
+    //if (!myDECL->ParentDECL->SecondTFlags.Contains(isSet))
+    //  ConstFunc->removeItem(2);
     ConstFunc->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     if (myDECL->TypeFlags.Contains(isConst))
       ConstFunc->setCurrentIndex(0);
@@ -3471,6 +3492,10 @@ ValOnInit CIOBox::OnInitDialog()
   }
 
   TypeFlags = myDECL->ParentDECL->ParentDECL->TypeFlags;
+  if (!myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isSet)
+  && !myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isArray))
+    ParamCategory->removeItem(2);
+
   if (onNew) {
     //ValueObject->setChecked(true);
     //myDECL->TypeFlags.INCL(trueObjCat);
@@ -3503,8 +3528,6 @@ ValOnInit CIOBox::OnInitDialog()
     else
       Substitutable->setChecked(false);
 
-    if (!myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isSet))
-      ParamCategory->removeItem(2);
     if (myDECL->TypeFlags.Contains(stateObject)) {
       ParamCategory->setCurrentIndex(1);
       TypeFlags.INCL(stateObject);

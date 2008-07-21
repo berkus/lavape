@@ -1127,38 +1127,44 @@ bool CLavaBaseDoc::okPattern(LavaDECL* decl)
 SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
 //return true: category of Attr, IAttr or OAttr
 //             is defined by the referenced virtual type
-{
+{ 
+  SynFlags flags;
+  catErr = false;
+  return flags;
+  //LavaDECL *decl=CheckGetFinalMType(memDECL);
+
+  //if (decl.Contains(isSet))
+  //  return decl->TypeFlags;
   //bool basedefsCat = false;
   //bool refdefsCat = false;
   //bool basetrueCat = false;
   //bool reftrueCat = false;
   //bool isStateOb = false;
   //bool isSameAsSelf = false;
-  bool baseabstract = false;
-  bool baseSubst = false;
-  CHETID* che;
-  LavaDECL* decl=0;
+  //bool baseabstract = false;
+  //bool baseSubst = false;
+  //CHETID* che;
+  //LavaDECL* decl=0;
 
-  catErr = false;
-  SynFlags inheritedFlags;
-  if (!memDECL)
-    return inheritedFlags;
-  if (memDECL->SecondTFlags.Contains(overrides)) {
-    for (che = (CHETID*)memDECL->Supports.first; che; che = (CHETID*)che->successor) {
-      decl = IDTable.GetDECL(che->data, memDECL->inINCL);
-      if (decl) {
-        //basedefsCat = basedefsCat || decl->TypeFlags.Contains(definesObjCat);
-        //basetrueCat = basetrueCat || decl->TypeFlags.Contains(trueObjCat);
-        //isStateOb = isStateOb || decl->TypeFlags.Contains(stateObject);
-        //isSameAsSelf = isSameAsSelf || decl->TypeFlags.Contains(sameAsSelf);
-        baseabstract = baseabstract || decl->TypeFlags.Contains(isAbstract);
-        baseSubst = baseSubst || decl->TypeFlags.Contains(substitutable);
-      }
-    }
+  //catErr = false;
+  //if (!memDECL)
+  //  return inheritedFlags;
+  //if (memDECL->SecondTFlags.Contains(overrides)) {
+  //  for (che = (CHETID*)memDECL->Supports.first; che; che = (CHETID*)che->successor) {
+  //    decl = IDTable.GetDECL(che->data, memDECL->inINCL);
+  //    if (decl) {
+  //      //basedefsCat = basedefsCat || decl->TypeFlags.Contains(definesObjCat);
+  //      //basetrueCat = basetrueCat || decl->TypeFlags.Contains(trueObjCat);
+  //      //isStateOb = isStateOb || decl->TypeFlags.Contains(stateObject);
+  //      //isSameAsSelf = isSameAsSelf || decl->TypeFlags.Contains(sameAsSelf);
+  //      baseabstract = baseabstract || decl->TypeFlags.Contains(isAbstract);
+  //      baseSubst = baseSubst || decl->TypeFlags.Contains(substitutable);
+  //    }
+  //  }
     //if (basedefsCat)
     //  inheritedFlags.INCL(definesObjCat);
-    if (baseabstract)
-      inheritedFlags.INCL(isAbstract);
+    //if (baseabstract)
+    //  inheritedFlags.INCL(isAbstract);
     //if (basetrueCat) {
     //  inheritedFlags.INCL(trueObjCat);
     //  if (isStateOb)
@@ -1166,47 +1172,47 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
     //  if (isSameAsSelf)
     //    inheritedFlags.INCL(sameAsSelf);
     //}
-    if (decl && (memDECL->DeclType == Attr)) { 
-      if (decl->TypeFlags.Contains(constituent)) 
-        memDECL->TypeFlags.INCL(constituent);
-      else 
-        memDECL->TypeFlags.EXCL(constituent);
-      if (decl->TypeFlags.Contains(acquaintance))
-        memDECL->TypeFlags.INCL(acquaintance);
-      else 
-        memDECL->TypeFlags.EXCL(acquaintance);
-      if (decl->TypeFlags.Contains(stateObject))
-        memDECL->TypeFlags.INCL(stateObject);
-      else 
-        memDECL->TypeFlags.EXCL(stateObject);
-      if (decl->TypeFlags.Contains(consumable))
-        memDECL->TypeFlags.INCL(consumable);
-      else 
-        memDECL->TypeFlags.EXCL(consumable);
-      if (decl->TypeFlags.Contains(hasSetGet)) 
-        memDECL->TypeFlags.INCL(hasSetGet);
-      else 
-        memDECL->TypeFlags.EXCL(hasSetGet);   
-      if (baseSubst)
-        memDECL->TypeFlags.INCL(substitutable);
-      else
-        if (!baseabstract)
-          memDECL->TypeFlags.EXCL(substitutable);
-    }
-    else
-      if (memDECL->DeclType == VirtualType) {
-        if (baseSubst)
-          memDECL->TypeFlags.INCL(substitutable);
-        else
-          if (!baseabstract)
-            memDECL->TypeFlags.EXCL(substitutable);
+    //if (decl && (memDECL->DeclType == Attr)) { 
+    //  if (decl->TypeFlags.Contains(constituent)) 
+    //    memDECL->TypeFlags.INCL(constituent);
+    //  else 
+    //    memDECL->TypeFlags.EXCL(constituent);
+    //  if (decl->TypeFlags.Contains(acquaintance))
+    //    memDECL->TypeFlags.INCL(acquaintance);
+    //  else 
+    //    memDECL->TypeFlags.EXCL(acquaintance);
+    //  if (decl->TypeFlags.Contains(stateObject))
+    //    memDECL->TypeFlags.INCL(stateObject);
+    //  else 
+    //    memDECL->TypeFlags.EXCL(stateObject);
+    //  if (decl->TypeFlags.Contains(consumable))
+    //    memDECL->TypeFlags.INCL(consumable);
+    //  else 
+    //    memDECL->TypeFlags.EXCL(consumable);
+    //  if (decl->TypeFlags.Contains(hasSetGet)) 
+    //    memDECL->TypeFlags.INCL(hasSetGet);
+    //  else 
+    //    memDECL->TypeFlags.EXCL(hasSetGet);   
+    //  if (baseSubst)
+    //    memDECL->TypeFlags.INCL(substitutable);
+    //  else
+    //    if (!baseabstract)
+    //      memDECL->TypeFlags.EXCL(substitutable);
+    //}
+    //else
+    //  if (memDECL->DeclType == VirtualType) {
+    //    if (baseSubst)
+    //      memDECL->TypeFlags.INCL(substitutable);
+    //    else
+    //      if (!baseabstract)
+    //        memDECL->TypeFlags.EXCL(substitutable);
         //if (!basetrueCat) {
         //  isStateOb = memDECL->TypeFlags.Contains(stateObject);
         //  isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
         //}
-      }
-  }
-  LavaDECL* refDECL = IDTable.GetDECL(memDECL->RefID, memDECL->inINCL);
+  //    }
+  //}
+  //LavaDECL* refDECL = IDTable.GetDECL(memDECL->RefID, memDECL->inINCL);
   //refdefsCat = (refDECL && (refDECL->DeclType == VirtualType)
   //                      && refDECL->TypeFlags.Contains(definesObjCat));
   //if (refdefsCat) {
@@ -1267,7 +1273,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
   //  else 
   //    memDECL->TypeFlags.EXCL(sameAsSelf);
   //}
-  return inheritedFlags;
+  //return inheritedFlags;
 }
 
 LavaDECL** CLavaBaseDoc::GetFormpDECL(LavaDECL* decl)
