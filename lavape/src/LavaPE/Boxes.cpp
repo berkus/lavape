@@ -286,11 +286,11 @@ ValOnInit CAttrBox::OnInitDialog()
     else
       Substitutable->setChecked(false); 
     if (myDECL->TypeFlags.Contains(stateObject)) {
-      StateObject->setChecked(true);
+      StateObject->setCurrentIndex(1);
       TypeFlags.INCL(stateObject);
     }
     else
-      StateObject->setChecked(false); 
+      StateObject->setCurrentIndex(0); 
     if (myDECL->SecondTFlags.Contains(overrides)) {
       cheS = (CHETID*)myDECL->Supports.first;
       while (cheS) {
@@ -369,7 +369,8 @@ ValOnInit CAttrBox::OnInitDialog()
     ReadOnly->setEnabled(true);
     Protected->setChecked(myDECL->TypeFlags.Contains(isProtected));
     ReadOnly->setChecked(myDECL->TypeFlags.Contains(isConst));
-    StateObject->setChecked(myDECL->TypeFlags.Contains(stateObject));
+    if (myDECL->TypeFlags.Contains(stateObject))
+    StateObject->setCurrentIndex(1);
     StateObject->setEnabled(true);
     Consumable->setChecked(myDECL->TypeFlags.Contains(consumable));
     SetGet->setChecked(myDECL->TypeFlags.Contains(hasSetGet));
@@ -641,7 +642,7 @@ void CAttrBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(isConst);
   else
     myDECL->TypeFlags.EXCL(isConst);
-  if (StateObject->isChecked())
+  if (StateObject->currentIndex() == 1)
     myDECL->TypeFlags.INCL(stateObject);
   else
     myDECL->TypeFlags.EXCL(stateObject);
@@ -1723,6 +1724,8 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     else
       EnforceOver->setChecked(false);
+    if (!myDECL->ParentDECL->SecondTFlags.Contains(isSet))
+      ConstFunc->removeItem(2);
     ConstFunc->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     if (myDECL->TypeFlags.Contains(isConst))
       ConstFunc->setCurrentIndex(0);
@@ -3500,6 +3503,8 @@ ValOnInit CIOBox::OnInitDialog()
     else
       Substitutable->setChecked(false);
 
+    if (!myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isSet))
+      ParamCategory->removeItem(2);
     if (myDECL->TypeFlags.Contains(stateObject)) {
       ParamCategory->setCurrentIndex(1);
       TypeFlags.INCL(stateObject);

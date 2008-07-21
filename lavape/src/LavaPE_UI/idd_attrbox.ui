@@ -177,19 +177,17 @@
         <number>11</number>
        </property>
        <item>
-        <widget class="QCheckBox" name="StateObject" >
-         <property name="focusPolicy" >
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip" >
-          <string>Points to variable state object</string>
-         </property>
-         <property name="whatsThis" >
-          <string>Points to variable state object</string>
-         </property>
-         <property name="text" >
-          <string>Points to variable state object</string>
-         </property>
+        <widget class="QComboBox" name="StateObject" >
+         <item>
+          <property name="text" >
+           <string>Immutable value object</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Variable state object</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item>

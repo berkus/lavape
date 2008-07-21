@@ -317,11 +317,6 @@
               <string>"self" is variable</string>
              </property>
             </item>
-            <item>
-             <property name="text" >
-              <string>"self" has set elem. category</string>
-             </property>
-            </item>
            </widget>
           </item>
           <item>
