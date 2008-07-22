@@ -5513,19 +5513,19 @@ bool CExecView::ToggleCatEnabled()
     return true;
     break;
 
-  case TypeRef_T:
-    return true;
-    break;
+  //case TypeRef_T:
+  //  return true;
+  //  break;
 
-  case CrtblRef_T:
-    if (text->currentSynObj->parentObject->primaryToken != new_T)
-      return false;
-    decl = ((Reference*)text->currentSynObj)->refDecl;
-    if (decl->SecondTFlags.Contains(isSet))
-      return true;
-    else
-      return false;
-    break;
+  //case CrtblRef_T:
+  //  if (text->currentSynObj->parentObject->primaryToken != new_T)
+  //    return false;
+  //  decl = ((Reference*)text->currentSynObj)->refDecl;
+  //  if (decl->SecondTFlags.Contains(isSet))
+  //    return true;
+  //  else
+  //    return false;
+  //  break;
 
   default:
     if (text->currentSynObj->IsConstant() && text->currentSynObj->primaryToken != nil_T)

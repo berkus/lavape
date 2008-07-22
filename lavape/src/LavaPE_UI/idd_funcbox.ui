@@ -309,12 +309,12 @@
            <widget class="QComboBox" name="ConstFunc" >
             <item>
              <property name="text" >
-              <string>"self" is immutable</string>
+              <string>"self" object is immutable</string>
              </property>
             </item>
             <item>
              <property name="text" >
-              <string>"self" is variable</string>
+              <string>"self" object is variable</string>
              </property>
             </item>
            </widget>

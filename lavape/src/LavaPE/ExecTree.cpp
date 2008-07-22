@@ -975,6 +975,11 @@ void CExecTree::ExecIn(LavaDECL ** pelDef, int level)
 {
   (*pelDef)->nInput = (*pelDef)->ParentDECL->nInput;
   (*pelDef)->ParentDECL->nInput++;
+  if ((*pelDef)->TypeFlags.Contains(setElemCat))
+    if ((*pelDef)->ParentDECL->ParentDECL->TypeFlags.Contains(elemsStateObj))
+      (*pelDef)->TypeFlags.INCL(stateObject);
+    else
+      (*pelDef)->TypeFlags.EXCL(stateObject);
   if ((*pelDef)->SecondTFlags.Contains(closed))
     (*pelDef)->ParentDECL->SecondTFlags.INCL(hasClosedInput);
   ExecMember(pelDef, level);
@@ -984,6 +989,11 @@ void CExecTree::ExecOut(LavaDECL ** pelDef, int level)
 {
   (*pelDef)->nInput = (*pelDef)->ParentDECL->nInput + (*pelDef)->ParentDECL->nOutput;
   (*pelDef)->ParentDECL->nOutput++;
+  if ((*pelDef)->TypeFlags.Contains(setElemCat))
+    if ((*pelDef)->ParentDECL->ParentDECL->TypeFlags.Contains(elemsStateObj))
+      (*pelDef)->TypeFlags.INCL(stateObject);
+    else
+      (*pelDef)->TypeFlags.EXCL(stateObject);
   ExecMember(pelDef, level);
 }
 

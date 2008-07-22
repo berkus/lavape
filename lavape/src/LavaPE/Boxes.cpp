@@ -259,8 +259,8 @@ ValOnInit CAttrBox::OnInitDialog()
     DString dstr = myDoc->GetTypeLabel(myDECL, false);
     valNewTypeType = QString(dstr.c);
     LavaDECL *decl = myDoc->CheckGetFinalMType(myDECL);
-    if (decl->SecondTFlags.Contains(isSet) || decl->SecondTFlags.Contains(isArray))
-      ElemCat->setEnabled(true);
+    //if (decl->SecondTFlags.Contains(isSet) || decl->SecondTFlags.Contains(isArray))
+    //  ElemCat->setEnabled(true);
     //if (myDoc->GetCategoryFlags(myDECL, catErr).Contains(stateObject))
     //  ValueObject->setEnabled(false);
     //  AnyCategory->setEnabled(false);
@@ -294,12 +294,12 @@ ValOnInit CAttrBox::OnInitDialog()
     }
     else
       StateObject->setCurrentIndex(0); 
-    if (myDECL->TypeFlags.Contains(elemsStateObj)) {
-      ElemCat->setCurrentIndex(1);
-      TypeFlags.INCL(elemsStateObj);
-    }
-    else
-      ElemCat->setCurrentIndex(0); 
+    //if (myDECL->TypeFlags.Contains(elemsStateObj)) {
+    //  ElemCat->setCurrentIndex(1);
+    //  TypeFlags.INCL(elemsStateObj);
+    //}
+    //else
+    //  ElemCat->setCurrentIndex(0); 
     if (myDECL->SecondTFlags.Contains(overrides)) {
       cheS = (CHETID*)myDECL->Supports.first;
       while (cheS) {
@@ -526,12 +526,12 @@ void CAttrBox::on_NamedTypes_activated(int pos)
     myDECL->DeclDescType = NamedType;
     SynFlags inheritedFlag = myDoc->GetCategoryFlags(myDECL, catErr); 
     LavaDECL *decl = myDoc->CheckGetFinalMType(myDECL);
-    if (decl->SecondTFlags.Contains(isSet) || decl->SecondTFlags.Contains(isArray))
-      ElemCat->setEnabled(true);
-    else {
-      ElemCat->setEnabled(false);
-      ElemCat->setCurrentIndex(0);
-    }
+    //if (decl->SecondTFlags.Contains(isSet) || decl->SecondTFlags.Contains(isArray))
+    //  ElemCat->setEnabled(true);
+    //else {
+    //  ElemCat->setEnabled(false);
+    //  ElemCat->setCurrentIndex(0);
+    //}
     //StateObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
     //ValueObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
     //AnyCategory->setEnabled(!inheritedFlag.Contains(definesObjCat));
@@ -663,10 +663,10 @@ void CAttrBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(stateObject);
   else
     myDECL->TypeFlags.EXCL(stateObject);
-  if (ElemCat->currentIndex() == 1)
-    myDECL->TypeFlags.INCL(elemsStateObj);
-  else
-    myDECL->TypeFlags.EXCL(elemsStateObj);
+  //if (ElemCat->currentIndex() == 1)
+  //  myDECL->TypeFlags.INCL(elemsStateObj);
+  //else
+  //  myDECL->TypeFlags.EXCL(elemsStateObj);
   if (Protected->isChecked())
     myDECL->TypeFlags.INCL(isProtected);
   else
@@ -3030,6 +3030,14 @@ ValOnInit CInterfaceBox::OnInitDialog()
     ID_OK->setDefault( false );
     ID_CANCEL->setDefault( true );
   }
+  if (myDECL->SecondTFlags.Contains(isSet)) {
+    ElemCat->setEnabled(true);
+    if (myDECL->TypeFlags.Contains(elemsStateObj))
+      ElemCat->setCurrentIndex(1);
+    else
+      ElemCat->setCurrentIndex(0);
+  }
+
   if (onNew) {
     myDoc->IDTable.GetPattern(myDECL, context);
     //IsGUI->setEnabled(!context.oContext);
@@ -3295,6 +3303,11 @@ void CInterfaceBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(isNative);
   else
     myDECL->TypeFlags.EXCL(isNative);
+  if (myDECL->SecondTFlags.Contains(isSet))
+    if (ElemCat->currentIndex() == 1)
+      myDECL->TypeFlags.INCL(elemsStateObj);
+    else
+      myDECL->TypeFlags.EXCL(elemsStateObj);
   if  (valKindOfInterface == 1) {
     myDECL->TypeFlags.INCL(isAbstract);
     myDECL->TypeFlags.EXCL(isComponent);
@@ -3492,9 +3505,9 @@ ValOnInit CIOBox::OnInitDialog()
   }
 
   TypeFlags = myDECL->ParentDECL->ParentDECL->TypeFlags;
-  if (!myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isSet)
-  && !myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isArray))
-    ParamCategory->removeItem(2);
+  //if (!myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isSet)
+  //&& !myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isArray))
+  //  ParamCategory->removeItem(2);
 
   if (onNew) {
     //ValueObject->setChecked(true);
@@ -3528,16 +3541,30 @@ ValOnInit CIOBox::OnInitDialog()
     else
       Substitutable->setChecked(false);
 
+    if (myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isSet)
+    || myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isArray)) {
+      ElemCat->setEnabled(true);
+      if (myDECL->TypeFlags.Contains(setElemCat)) {
+        ElemCat->setChecked(true);
+        ParamCategory->setEnabled(false);
+      }
+      else {
+        ElemCat->setChecked(false);
+        ParamCategory->setEnabled(true);
+      }
+    }
+    else {
+      ElemCat->setEnabled(false);
+      ParamCategory->setEnabled(true);
+    }
     if (myDECL->TypeFlags.Contains(stateObject)) {
       ParamCategory->setCurrentIndex(1);
       TypeFlags.INCL(stateObject);
     }
-    else if (myDECL->TypeFlags.Contains(setElemCat)) {
-      ParamCategory->setCurrentIndex(2);
-      TypeFlags.INCL(stateObject);
+    else {
+      ParamCategory->setCurrentIndex(0);
+      TypeFlags.EXCL(stateObject);
     }
-    else
-      ParamCategory->setCurrentIndex(1);
    //if (myDoc->GetCategoryFlags(myDECL, catErr).Contains(definesObjCat)) {
    //   StateObject->setChecked(false);
    //   ValueObject->setChecked(false);
@@ -3665,6 +3692,19 @@ ValOnInit CIOBox::OnInitDialog()
   UpdateData(false);
   NewName->setFocus();
   return BoxContinue;
+}
+
+void CIOBox::on_ElemCat_clicked() 
+{
+  if (ElemCat->isChecked()) {
+    ParamCategory->setEnabled(false);
+    if (myDECL->ParentDECL->ParentDECL->TypeFlags.Contains(elemsStateObj))
+      ParamCategory->setCurrentIndex(1);
+    else
+      ParamCategory->setCurrentIndex(0);
+  }
+  else
+    ParamCategory->setEnabled(true);
 }
 
 void CIOBox::on_NamedTypes_activated(int pos) 
@@ -3797,18 +3837,16 @@ void CIOBox::on_ID_OK_clicked()
   if (valkindOfField == 1) 
     myDECL->TypeFlags.INCL(isOptional);
 
+  if (ElemCat->isChecked())
+    myDECL->TypeFlags.INCL(setElemCat);
+  else
+    myDECL->TypeFlags.EXCL(setElemCat);
   if (ParamCategory->currentIndex() == 1) {
     myDECL->TypeFlags.INCL(stateObject);
-    myDECL->TypeFlags.EXCL(setElemCat);
   }
-  else if (ParamCategory->currentIndex() == 2) {
-    myDECL->TypeFlags.INCL(setElemCat);
+  else
     myDECL->TypeFlags.EXCL(stateObject);
-  }
-  else { // value object
-    myDECL->TypeFlags.EXCL(setElemCat);
-    myDECL->TypeFlags.EXCL(stateObject);
-  }
+
   //if (SameAsSelf->isChecked())
   //  myDECL->TypeFlags.INCL(sameAsSelf);
   //else

@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>422</width>
-    <height>236</height>
+    <width>457</width>
+    <height>240</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -174,7 +174,20 @@
          </property>
          <layout class="QVBoxLayout" >
           <item>
+           <widget class="QCheckBox" name="ElemCat" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string>Set/array element category</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QComboBox" name="ParamCategory" >
+            <property name="enabled" >
+             <bool>true</bool>
+            </property>
             <property name="sizeAdjustPolicy" >
              <enum>QComboBox::AdjustToContents</enum>
             </property>
@@ -186,11 +199,6 @@
             <item>
              <property name="text" >
               <string>Variable state object</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>Set elem. category</string>
              </property>
             </item>
            </widget>
