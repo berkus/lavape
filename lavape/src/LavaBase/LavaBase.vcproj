@@ -150,7 +150,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="4"
 				AdditionalIncludeDirectories=".;Generated;..\disco;..\wxqDocView"
-				PreprocessorDefinitions="WIN32;LAVABASE_EXPORT;QT_DLL;QT_THREAD_SUPPORT"
+				PreprocessorDefinitions="WIN32;LAVABASE_EXPORT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough=""

@@ -5498,7 +5498,7 @@ void CExecView::OnToggleCategory()
 
 bool CExecView::ToggleCatEnabled()
 {
-  LavaDECL *decl;
+  //LavaDECL *decl;
   //NewExpression *newExp;
   //bool cat;
   SynFlags ctxFlags;
@@ -5509,7 +5509,11 @@ bool CExecView::ToggleCatEnabled()
   switch (text->currentSynObj->primaryToken) {
   case new_T:
   case attach_T:
+    return true;
+    break;
+
   case VarName_T:
+    if (!((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
     return true;
     break;
 

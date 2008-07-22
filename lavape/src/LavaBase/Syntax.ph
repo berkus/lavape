@@ -296,9 +296,9 @@ $TYPE +CDP {
     //28, X1000 0000
     hasSetGet,    //attribute has set and get functions
     //29, X2000 0000
-    setElemCat,//same category as the elements of the underlying set
+    setElemCat,//function parameters: same category as the elements of the underlying set
     //30, X4000 0000
-    elemsStateObj//set elements are state objects //trueObjCat    //attribute/IO-category is defined
+    elemsStateObj//Set/Chain/Array: elements are state objects 
     //31, X8000 0000
   };//TypeFlag
 

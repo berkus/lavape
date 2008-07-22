@@ -641,11 +641,11 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   Expression *actSynObj=(Expression*)actParm->data;
   Expression *parm=(actSynObj->primaryToken==parameter_T?
     (Expression*)((Parameter*)actSynObj)->parameter.ptr : actSynObj);
-  LavaDECL *actTypeDecl, *actDecl, *formDecl, *formTypeDecl;
+  LavaDECL *actTypeDecl, *actDecl, *formDecl, *formTypeDecl, *callTypeDecl;
   bool ok=true;
-  bool actCat, formCat, formSetElemCat=false;
+  bool actCat, formCat, callCat;
   CContext callContext=callCtx;
-  SynFlags ctxFlags;
+  SynFlags ctxFlags, callCtxFlags;
   int closedLevel;
 
   parm->ExprGetFVType(ckd,actTypeDecl,ctxFlags,actCat);
@@ -683,7 +683,13 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   callContext = callCtx;
   formTypeDecl = ckd.document->GetFinalMVType(formDecl->RefID,formDecl->inINCL,callContext,&ckd);
   callContext = callCtx;
-  formCat = formDecl->TypeFlags.Contains(stateObject);
+  if (formDecl->TypeFlags.Contains(setElemCat)) {
+    ((Expression*)((FuncExpression*)actSynObj->parentObject)->handle.ptr)->ExprGetFVType(ckd,callTypeDecl,callCtxFlags,callCat);
+    callTypeDecl = ckd.document->GetType(callTypeDecl);
+    formCat = callTypeDecl->TypeFlags.Contains(elemsStateObj);
+  }
+  else
+    formCat = formDecl->TypeFlags.Contains(stateObject);
   if (NoPH(parm))
     ((Expression*)parm)->targetCat = formCat;
   if (actDecl == 0 && !parm->IsIfStmExpr())
@@ -718,11 +724,11 @@ bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContex
 {
   SynObject *actSynObj=(SynObject*)actParm->data;
   TID formTID;
-  LavaDECL *actTypeDecl, *formDecl, *formTypeDecl;
+  LavaDECL *actTypeDecl, *formDecl, *formTypeDecl, *callTypeDecl;
   bool ok=true;
-  bool actCat, formCat;
+  bool actCat, formCat, callCat;
   CContext callContext=callCtx;
-  SynFlags ctxFlags;
+  SynFlags ctxFlags, callCtxFlags;
 
   actSynObj->ExprGetFVType(ckd,actTypeDecl,ctxFlags,actCat);
   if (actTypeDecl == (LavaDECL*)-1) // null always admissible as output target
@@ -745,17 +751,13 @@ bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContex
     ok = false;
   }
 
-  //if (formCat == unknownCategory
-  //&& formDecl->TypeFlags.Contains(trueObjCat) && !formDecl->TypeFlags.Contains(isAnyCategory))
-  //  if (formDecl->TypeFlags.Contains(stateObject))
-  //    formCat = stateObj;
-  //  else if (formDecl->TypeFlags.Contains(sameAsSelf))
-  //    formCat = sameAsSelfObj;
-  //  else
-  //    formCat = valueObj;
-  formCat = formDecl->TypeFlags.Contains(stateObject);
-  //if (actCat != unknownCategory
-  //&& ((formCat == sameAsSelfObj && actCat != callObjCat)
+  if (formDecl->TypeFlags.Contains(setElemCat)) {
+    ((Expression*)((FuncExpression*)actSynObj->parentObject)->handle.ptr)->ExprGetFVType(ckd,callTypeDecl,callCtxFlags,callCat);
+    callTypeDecl = ckd.document->GetType(callTypeDecl);
+    formCat = callTypeDecl->TypeFlags.Contains(elemsStateObj);
+  }
+  else
+    formCat = formDecl->TypeFlags.Contains(stateObject);
   if (actCat != formCat) {
     if (actSynObj->primaryToken == parameter_T)
       ((SynObject*)((Parameter*)actSynObj)->parameter.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
@@ -6055,8 +6057,14 @@ bool Quantifier::Check(CheckData &ckd)
   if (elemType.ptr)
     ok &= ((SynObject*)elemType.ptr)->Check(ckd);
 
-  if (set.ptr)
-    ((SynObject*)set.ptr)->Check(ckd);
+  if (set.ptr) {
+    ok = ((SynObject*)set.ptr)->Check(ckd);
+    if (ok) {
+      ((SynObject*)set.ptr)->ExprGetFVType(ckd,declSetType,ctxFlags,elemCat);
+      declSetType = ckd.document->GetType(declSetType);
+      elemCat = declSetType->TypeFlags.Contains(elemsStateObj);
+    }
+  }
 
   for (chp = (CHE*)quantVars.first;
        chp;
@@ -6066,6 +6074,11 @@ bool Quantifier::Check(CheckData &ckd)
       opd = 0;
     else {
       opd = (VarName*)opdPH;
+      if (set.ptr && ok && ((SynObject*)set.ptr)->primaryToken != intIntv_T)
+        if (elemCat)
+          opd->flags.INCL(isVariable);
+        else
+          opd->flags.EXCL(isVariable);
       if (isDclWithIni)
         opd->closedLevel = -1;
     }
