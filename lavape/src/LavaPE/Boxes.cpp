@@ -3031,11 +3031,16 @@ ValOnInit CInterfaceBox::OnInitDialog()
     ID_CANCEL->setDefault( true );
   }
   if (myDECL->SecondTFlags.Contains(isSet)) {
-    ElemCat->setEnabled(true);
+    ElemCat->show();
+    ElemCatLabel->show();
     if (myDECL->TypeFlags.Contains(elemsStateObj))
       ElemCat->setCurrentIndex(1);
     else
       ElemCat->setCurrentIndex(0);
+  }
+  else {
+    ElemCat->hide();
+    ElemCatLabel->hide();
   }
 
   if (onNew) {

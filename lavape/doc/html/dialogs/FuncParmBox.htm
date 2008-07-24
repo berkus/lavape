@@ -37,11 +37,16 @@
     Note that all combinations of mandatory/optional and
     <a href="../UnfinishedObjects.htm">closed/non-closed</a> are possible</P>
     
-    <H3>Object category</H3>
+    <H3><a href="../TwoObjectCategories.htm">Category</a> of the formal 
+    parameter</H3>
     
     <P>The <A HREF="../TwoObjectCategories.htm">object category</A> of a
-      function parameter may be <I>value object</I> (default) or <I>state
-      object</I>.</P>
+      formal function parameter may be <I>value object</I> (default) or <I>state
+      object</I>. If the function is a member function of a collection class 
+    (derived from one of the built-in classes Set/Chain/Array) then you may want 
+    to express that the formal parameter category should be the same as that of 
+    the elements of the underlying collection class. Check the check box in this 
+    case.</P>
     
     <h3>&quot;Closed&quot; object</h3>
     
@@ -80,14 +85,14 @@ non-optional output parameter, and <a href="../IniChecks.htm">this is checked</a
 programming time (= statically).</p>
 
 
-<p>This is an essential prerequisite for all kinds of <font color="#ff0000"> <i><b>Lava/b></i></font>&&nbsp;
+<p>This is an essential prerequisite for all kinds of <font color="#ff0000"> <i><b>Lava</b></i></font>
 initialization checks since only then you can also cover those cases
 where a variable is initialized by being an actual output parameter of
 a function call.</p>
 
 
 <p>Though function parameters aren't passed <b>&quot;by reference&quot;</b> in
-<font color="#FF0000"><i><b>Lava/b></i></font>,, they are yet passed <b>&quot;by 
+<font color="#FF0000"><i><b>Lava</b></i></font>, they are yet passed <b>&quot;by 
 address&quot;</b> and never <b>&quot;by value&quot;</b> (= copied). </p>
 
 
@@ -96,7 +101,7 @@ initialization checks for output parameters are performed at all return
 points of the function body.</p>
 
 
-<p>An exception-throwing <a href="../whatsThis/FailSucceed.htm"><font color="#0000ff"><b>throw/b></font></a>
+<p>An exception-throwing <a href="../whatsThis/FailSucceed.htm"><font color="#0000ff"><b>throw</b></font></a>
 statement is  the <i>only</i> way to exit from a
 function if you cannot assign a value to every non-optional output
 parameter. (Checked at programming time.)</p>
@@ -109,11 +114,11 @@ is caught and the respective output parameters are used nevertheless
 thereafter. </p>
 
 
-<p>TThe worst thing that may happen then is that such an output
+<p>The worst thing that may happen then is that such an output
 </p>
 <ul>
   <li>either is <b><font color="#0000ff">&Oslash;</font> </b>and you use it 
-    bevertheless subsequently: then a null-pointer-exception will be thrown in turn,
+    nevertheless subsequently: then a null-pointer-exception will be thrown in turn,
   </li>
   <li>or you use the output although its value may be meaningless in this case: 
     that&#39;s your own risk and should be avoided without reliable knowledge about the 

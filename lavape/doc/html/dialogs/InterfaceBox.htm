@@ -39,28 +39,8 @@
     <P>As a consequence, creatable classes must not contain <I>abstract</I>
       functions. If a class interface contains abstract functions or if it would not
       make sense to create objects supporting this and only this class interface, for
-      instance a general <I>Print</I> class, then you will declare it to be
+      instance a general <I>Print</I>  class, then you will declare it to be
       non-creatable. </P>
-    
-    <H3><A NAME="native"></A>Native</H3>
-    
-    <P>If a class is to contain <A HREF="FunctionBox.htm#native">native</A>
-      functions (implemented in some other language) then you must declare it to
-      be native. Native classes are implemented in a special way as dynamic
-      link libraries (DLLs). A native class may nevertheless contain
-      non-native functions .</P>
-    
-    <H3><A NAME="GUIservice"></A>GUI service classes</H3>
-    
-    <p>For any user-defined class C, LavaPE can semi-automatically create a GUI 
-    representation of C. This is a class that is derived from the common base 
-    class GUI (contained in std.lava) of all GUI service classes by assigning 
-    the concrete class C to the abstract virtual type DATATYPE of class GUI.</p>
-    
-    <P>LavaPE provides a <a href="../EditForm.htm">special view</a> for editing 
-    GUI specifications. It allows you to modify various representation 
-    attributes of individual atomic or composite class members and to associate 
-    handlers (callbacks) with input fields and input events.</P>
     
     <H3>Component object interface</H3>
     
@@ -70,11 +50,19 @@
       special restrictions, and their member variables must be accessed through
       set/get functions.</P>
     
-    <H3>Interface UUID</H3>
+    <H3></A>Element category combo box</H3>
+  <p>If the current class is a collection class, i.e., it is derived directly or 
+    indirectly from one of the built-in base classes Set, Chain, or Array, and if the 
+    current class is the first class in the inheritance chain to define the 
+    collection element class (through the ELEMTYPE virtual type), then you may 
+    specify the <a href="../TwoObjectCategories.htm">category</a> of the collection elements here.</p>
+  <H3><A NAME="native">Native</H3>
     
-    <P>Interfaces of <A HREF="../Components.htm">component objects</A> are
-      designated by an external identifier: A <U><B>U</B></U>niversally <U><B>U</B></U>nique<B>
-      <U>ID</U></B>entifier.</P>
+    <P>If a class is to contain <A HREF="FunctionBox.htm#native">native</A>
+      functions (implemented in some other language) then you must declare it to
+      be native. Native classes are implemented in a special way as dynamic
+      link libraries (DLLs). A native class may nevertheless contain
+      non-native functions .</P>
     
     <H3>Select classes to be extended</H3>
     
@@ -84,5 +72,23 @@
       classes whose declaration is contained in the basic include file <I>std.lava</I>.
       If you don't explicitly select a base class then the new class is derived 
     from class <I>Object</I> in <I>std.lava</I>.</P>
+    
+    <p><A NAME="GUIservice">T</A>he base class GUI is the common base class of all 
+      Lava GUI service classes: For any user-defined class C, LavaPE can semi-automatically create a GUI 
+    representation of C. This is a class that is derived from the common base 
+    class GUI (contained in std.lava) of all GUI service classes by assigning 
+    the concrete class C to the abstract virtual type DATATYPE of class GUI.</p>
+    
+    <P>LavaPE provides a <a href="../EditForm.htm">special view</a> for editing 
+    GUI specifications. It allows you to modify various representation 
+    attributes of individual atomic or composite class members and to associate 
+    handlers (callbacks) with input fields and input events.</P>
+    
+    <H3>Interface UUID</H3>
+    
+    <p>
+      Interfaces of <A HREF="../Components.htm">component objects</A> are
+      designated by an external identifier: A <U><B>U</B></U>niversally <U><B>U</B></U>nique<B>
+      <U>ID</U></B>entifier.</p>
     </BODY>
 </HTML>

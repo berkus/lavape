@@ -131,9 +131,19 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="ElemCat" >
+        <widget class="QLabel" name="ElemCatLabel" >
          <property name="enabled" >
           <bool>false</bool>
+         </property>
+         <property name="text" >
+          <string>Define collection element category:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="ElemCat" >
+         <property name="enabled" >
+          <bool>true</bool>
          </property>
          <item>
           <property name="text" >

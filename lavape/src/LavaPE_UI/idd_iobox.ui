@@ -179,7 +179,7 @@
              <bool>false</bool>
             </property>
             <property name="text" >
-             <string>Set/array element category</string>
+             <string>Like collection element category</string>
             </property>
            </widget>
           </item>
