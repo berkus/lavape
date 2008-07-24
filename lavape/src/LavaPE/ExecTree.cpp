@@ -431,7 +431,7 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
       else
         if (elDef->op == OP_noOp)
           lab1 += DString("function");
-      if (elDef->TypeFlags.Contains(setElemCat))
+      if (elDef->TypeFlags.Contains(collectionElemCat))
         lab1 += DString(", \"self\" has set/array elem. category");
     }
     decl = Doc->IDTable.GetDECL(((CHETID*)elDef->Supports.first)->data, elDef->inINCL);
@@ -478,7 +478,7 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
         lab1 += DString("initializer ");
       if (elDef->op == OP_noOp)
         lab1 += DString("function");
-      if (elDef->TypeFlags.Contains(setElemCat))
+      if (elDef->TypeFlags.Contains(collectionElemCat))
         lab1 += DString(", \"self\" has set/array elem. category");
     }
   }
@@ -892,14 +892,14 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     else {
       if (elDef->TypeFlags.Contains(isOptional))
         lab += DString(", optional");
-      if (elDef->TypeFlags.Contains(setElemCat))
+      if (elDef->TypeFlags.Contains(collectionElemCat))
         lab += DString(", set/array elem. category");
       if (elDef->SecondTFlags.Contains(closed))
         lab += DString(", closed");
       if ( elDef->DeclType == Attr) {
         if (elDef->TypeFlags.Contains(isConst))
           lab += DString(", read-only ");
-        else if (elDef->TypeFlags.Contains(setElemCat))
+        else if (elDef->TypeFlags.Contains(collectionElemCat))
           lab += DString(", set/array elem. category ");
         if (elDef->TypeFlags.Contains(elemsStateObj))
           lab += DString(", set/array elems. are variable ");
@@ -975,7 +975,7 @@ void CExecTree::ExecIn(LavaDECL ** pelDef, int level)
 {
   (*pelDef)->nInput = (*pelDef)->ParentDECL->nInput;
   (*pelDef)->ParentDECL->nInput++;
-  if ((*pelDef)->TypeFlags.Contains(setElemCat))
+  if ((*pelDef)->TypeFlags.Contains(collectionElemCat))
     if ((*pelDef)->ParentDECL->ParentDECL->TypeFlags.Contains(elemsStateObj))
       (*pelDef)->TypeFlags.INCL(stateObject);
     else
@@ -989,7 +989,7 @@ void CExecTree::ExecOut(LavaDECL ** pelDef, int level)
 {
   (*pelDef)->nInput = (*pelDef)->ParentDECL->nInput + (*pelDef)->ParentDECL->nOutput;
   (*pelDef)->ParentDECL->nOutput++;
-  if ((*pelDef)->TypeFlags.Contains(setElemCat))
+  if ((*pelDef)->TypeFlags.Contains(collectionElemCat))
     if ((*pelDef)->ParentDECL->ParentDECL->TypeFlags.Contains(elemsStateObj))
       (*pelDef)->TypeFlags.INCL(stateObject);
     else

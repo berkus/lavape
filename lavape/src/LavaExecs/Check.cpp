@@ -683,7 +683,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   callContext = callCtx;
   formTypeDecl = ckd.document->GetFinalMVType(formDecl->RefID,formDecl->inINCL,callContext,&ckd);
   callContext = callCtx;
-  if (formDecl->TypeFlags.Contains(setElemCat)) {
+  if (formDecl->TypeFlags.Contains(collectionElemCat)) {
     ((Expression*)((FuncExpression*)actSynObj->parentObject)->handle.ptr)->ExprGetFVType(ckd,callTypeDecl,callCtxFlags,callCat);
     callTypeDecl = ckd.document->GetType(callTypeDecl);
     formCat = callTypeDecl->TypeFlags.Contains(elemsStateObj);
@@ -751,7 +751,7 @@ bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContex
     ok = false;
   }
 
-  if (formDecl->TypeFlags.Contains(setElemCat)) {
+  if (formDecl->TypeFlags.Contains(collectionElemCat)) {
     ((Expression*)((FuncExpression*)actSynObj->parentObject)->handle.ptr)->ExprGetFVType(ckd,callTypeDecl,callCtxFlags,callCat);
     callTypeDecl = ckd.document->GetType(callTypeDecl);
     formCat = callTypeDecl->TypeFlags.Contains(elemsStateObj);

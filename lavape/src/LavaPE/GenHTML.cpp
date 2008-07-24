@@ -1030,7 +1030,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
       code("<B>initializer</B>");
     else
       code("<B>function</B>");
-    if (pnode->TypeFlags.Contains(setElemCat))
+    if (pnode->TypeFlags.Contains(collectionElemCat))
       code("<B>, \"self\" has set/array elem. category</B>");
 
     if (!pnode->SecondTFlags.Contains(funcImpl))
@@ -1148,7 +1148,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     if (pnode->TypeFlags.Contains(elemsStateObj))
       code("<B>, elems. are variable</B>");
 
-    if (pnode->TypeFlags.Contains(setElemCat))
+    if (pnode->TypeFlags.Contains(collectionElemCat))
       code("<B>, set/array elem. category</B>");
     else if (!pnode->TypeFlags.Contains(stateObject))
       code("<B>, read-only</B>");

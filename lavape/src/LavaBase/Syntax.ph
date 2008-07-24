@@ -288,7 +288,7 @@ $TYPE +CDP {
     //24, X0100 0000 Concurrent function or initiator
     execIndependent,
     //25, X0200 0000 Independent function or initiator
-    FREE_TYPEFLAG2,//isImmutable,
+    definesElemCat,//det/chain/array: the current collection class defines the category of the collection elements
     //26, X0400 0000
     consumable,
     //27, X0800 0000
@@ -296,7 +296,7 @@ $TYPE +CDP {
     //28, X1000 0000
     hasSetGet,    //attribute has set and get functions
     //29, X2000 0000
-    setElemCat,//function parameters: same category as the elements of the underlying set
+    collectionElemCat,//function parameters: same category as the elements of the underlying collection
     //30, X4000 0000
     elemsStateObj//Set/Chain/Array: elements are state objects 
     //31, X8000 0000

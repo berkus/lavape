@@ -1750,7 +1750,7 @@ ValOnInit CFuncBox::OnInitDialog()
     ConstFunc->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     if (myDECL->TypeFlags.Contains(isConst))
       ConstFunc->setCurrentIndex(0);
-    else if (myDECL->TypeFlags.Contains(setElemCat))
+    else if (myDECL->TypeFlags.Contains(collectionElemCat))
       ConstFunc->setCurrentIndex(2);
     else
       ConstFunc->setCurrentIndex(1);
@@ -2548,15 +2548,15 @@ void CFuncBox::on_ID_OK_clicked()
     myDECL->TypeFlags.EXCL(forceOverride);
   if (ConstFunc->currentIndex()== 0) {
     myDECL->TypeFlags.INCL(isConst); 
-    myDECL->TypeFlags.EXCL(setElemCat);
+    myDECL->TypeFlags.EXCL(collectionElemCat);
   }
   else if (ConstFunc->currentIndex()== 2) {
-    myDECL->TypeFlags.INCL(setElemCat); 
+    myDECL->TypeFlags.INCL(collectionElemCat); 
     myDECL->TypeFlags.EXCL(isConst);
   }
   else {
     myDECL->TypeFlags.EXCL(isConst);
-    myDECL->TypeFlags.EXCL(setElemCat);
+    myDECL->TypeFlags.EXCL(collectionElemCat);
   }
   if (Signal->isChecked())
     myDECL->SecondTFlags.INCL(isLavaSignal); 
@@ -3544,7 +3544,7 @@ ValOnInit CIOBox::OnInitDialog()
     if (myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isSet)
     || myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isArray)) {
       ElemCat->setEnabled(true);
-      if (myDECL->TypeFlags.Contains(setElemCat)) {
+      if (myDECL->TypeFlags.Contains(collectionElemCat)) {
         ElemCat->setChecked(true);
         ParamCategory->setEnabled(false);
       }
@@ -3838,9 +3838,9 @@ void CIOBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(isOptional);
 
   if (ElemCat->isChecked())
-    myDECL->TypeFlags.INCL(setElemCat);
+    myDECL->TypeFlags.INCL(collectionElemCat);
   else
-    myDECL->TypeFlags.EXCL(setElemCat);
+    myDECL->TypeFlags.EXCL(collectionElemCat);
   if (ParamCategory->currentIndex() == 1) {
     myDECL->TypeFlags.INCL(stateObject);
   }

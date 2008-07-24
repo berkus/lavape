@@ -1890,6 +1890,13 @@ int TIDTable::InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDE
     finalnewBasedecl = newbasedecl;
   if (!finalnewBasedecl)
     return 0;
+  if ((decl->SecondTFlags.Contains(isSet)
+  || decl->SecondTFlags.Contains(isChain)
+  || decl->SecondTFlags.Contains(isArray))
+  && (finalnewBasedecl->SecondTFlags.Contains(isSet)
+  || finalnewBasedecl->SecondTFlags.Contains(isChain)
+  || finalnewBasedecl->SecondTFlags.Contains(isArray)))
+    return 0;
   TID finalBaseID = TID(finalnewBasedecl->OwnID, finalnewBasedecl->inINCL);
   che = (CHETID*)decl->Supports.first;
   while (che) {

@@ -333,7 +333,7 @@ void LavaBaseStringInit() {
   ERR_SetIsFrozenValObj  = QObject::tr("Forbidden insertion: result set is a frozen value object");
   ERR_EnumIntvType  = QObject::tr("Type restriction not allowed for enumerated and interval sets");
   ERR_NonCreatable  = QObject::tr("\"declare\" with \"initialize\" clause requires a \"creatable\" class here");
-  ERR_AbstractInherited  = QObject::tr(": Creatable interface inherits this abstract feature or virtual type ");
+  ERR_AbstractInherited  = QObject::tr(": Creatable interface inherits abstract feature or virtual type ");
   ERR_IncompAbstractVT  = QObject::tr("Assignment source has incompatible abstract virtual type");
   ERR_CallExprRequired  = QObject::tr("This function is no longer static; a call expression is required");
   ERR_CorruptForm3  = QObject::tr("Member type in form is not a form of member type in interface");
