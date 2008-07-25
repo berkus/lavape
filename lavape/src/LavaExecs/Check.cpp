@@ -4659,7 +4659,7 @@ bool FuncStatement::Check (CheckData &ckd)
   oldError1 = oldError;
   ok &= FuncExpression::Check(ckd);
   oldError = oldError1;
-  if (!function.ptr || IsPH(function.ptr))
+  if (!ok || !function.ptr || IsPH(function.ptr))
     ERROREXIT
 
   CContext callContext = callCtx;
