@@ -15,14 +15,28 @@ a tabbed widget as well as between different tabbed widgets.
 The latter may be arranged horizontally or vertically.
 
 
-B) LavaPE has been ported to Mac OS
+B) The state/value object distinction has been revised
+======================================================
+
+Before this revision only the to level attributes of a constant
+value object had been protected against replacement. Now also
+the nested constituents of an object are protected against
+replacement. We believe this to be a more consistant usage of
+the term "constant object". But note that "constant object"
+actually isn't a property of a Lava object any longer, but a property
+of Lava variables, and LavaPE makes sure that this property
+is used consistantly. For instance, you cannot assign a state variable
+to a value variable and vice versa.
+
+
+C) LavaPE has been ported to Mac OS
 ===================================
 
 The Lava programming environment can now also be built and run
 on the Mac OS 10.5 platform. A binary package for Mac OS 10.5
 is available now, too.
 
-C) LavaPE has been ported to OpenSolaris
+D) LavaPE has been ported to OpenSolaris
 ========================================
 
 The Lava programming environment can now also be built and run
