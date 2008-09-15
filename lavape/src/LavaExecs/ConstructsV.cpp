@@ -1172,14 +1172,19 @@ NewExpressionV::NewExpressionV (FuncStatement *ref, bool withItf, bool withLoc) 
 
 void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   LavaDECL *iniDecl=0;
-  bool isFuncHandle=IsFuncHandle();
+  bool isFuncHandle=IsFuncHandle(), showTemp;
 
   ENTRY
+
+  showTemp = butStatement.ptr
+    || !iniDecl
+    || !iniDecl->TypeFlags.Contains(defaultInitializer)
+    || errorInInitializer;
 
   if (isFuncHandle)
     t.Insert(Lparenth_T);
 
-  if (flags.Contains(isVariable))
+  if (flags.Contains(isVariable) && !showTemp)
     t.Insert(Tilde_T);
 
   if (initializerCall.ptr) {
@@ -1188,11 +1193,10 @@ void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
     DRAW(objType.ptr);
     if (!((SynObject*)((FuncStatement*)initializerCall.ptr)->function.ptr)->IsPlaceHolder())
       iniDecl = t.document->IDTable.GetDECL(((Reference*)((FuncStatement*)initializerCall.ptr)->function.ptr)->refID,t.ckd.inINCL);
-    if (butStatement.ptr
-    || !iniDecl
-    || !iniDecl->TypeFlags.Contains(defaultInitializer)
-    || errorInInitializer) {
+    if (showTemp) {
       t.Blank();
+      if (flags.Contains(isVariable))
+        t.Insert(Tilde_T);
       DRAW(varName.ptr);
     }
     if (!iniDecl

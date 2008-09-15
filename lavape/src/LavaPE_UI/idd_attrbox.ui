@@ -134,7 +134,7 @@
             <string>Select type of member variable</string>
            </property>
            <property name="alignment" >
-            <set>Qt::AlignCenter|Qt::AlignHCenter|Qt::AlignJustify|Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
            <layout class="QVBoxLayout" >
             <property name="spacing" >
