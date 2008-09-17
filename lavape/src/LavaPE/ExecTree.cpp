@@ -574,7 +574,7 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
 {
   LavaDECL *pp;
   CHETID* cheS = (CHETID*)elDef->Supports.first;
-  bool withName = true;
+  bool withName = true, isContainer = false;
   SynFlags typeFlags;
   DString lName = elDef->LocalName;
 //  CContext con;
@@ -644,6 +644,13 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
           }
           else
             *lab += pp->FullName;
+        if ((elDef->DeclType == Interface) && (pp->SecondTFlags.Contains(isSet)
+                                               || pp->SecondTFlags.Contains(isChain)
+                                               || pp->SecondTFlags.Contains(isArray))) 
+          if (isContainer)
+            new CLavaError(&elDef->DECLError1, &ERR_NotSingleContainer);
+          else
+            isContainer = true;
         if ((elDef->DeclType == Interface)
             && elDef->SecondTFlags.Contains(isGUI)
             && pp->SecondTFlags.Contains(isGUI)
@@ -664,6 +671,13 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
       while (cheS) {
         pp = Doc->IDTable.GetDECL(cheS->data, elDef->inINCL);
         if (pp) {
+          if ((elDef->DeclType == Interface) && (pp->SecondTFlags.Contains(isSet)
+                                                 || pp->SecondTFlags.Contains(isChain)
+                                                 || pp->SecondTFlags.Contains(isArray)) )
+            if (isContainer)
+              new CLavaError(&elDef->DECLError1, &ERR_NotSingleContainer);
+            else
+              isContainer = true;
           if ((elDef->DeclType == Interface) && (errID = Doc->ExtensionAllowed(elDef, pp, 0)))
             new CLavaError(&elDef->DECLError1, errID);
           if ((elDef->DeclType == Interface)

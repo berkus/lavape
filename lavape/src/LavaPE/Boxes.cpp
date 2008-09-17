@@ -5219,6 +5219,9 @@ void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
     return;
   if (elDef == IBox->OrigDECL)
     return;
+  if ((elDef->SecondTFlags.Contains(isSet) || elDef->SecondTFlags.Contains(isChain) || elDef->SecondTFlags.Contains(isArray))
+       && (IBox->myDECL->SecondTFlags.Contains(isSet) || IBox->myDECL->SecondTFlags.Contains(isChain) ||IBox->myDECL->SecondTFlags.Contains(isArray)))
+    return;
   IBox->myDoc->IDTable.GetPattern(elDef, con);
   if ( IBox->myDoc->IDTable.InsertBase(IBox->myDECL, elDef, IBox->ContextDECL, false)
         && (IBox->myDECL->TypeFlags.Contains(isComponent) == elDef->TypeFlags.Contains(isComponent))
@@ -5419,6 +5422,9 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
 //             || (DeclType == Package) && (elType == Package);
     putIt = putIt && (!CallingDECL || !myDoc->IDTable.IsAn(elDef, TID(CallingDECL->OwnID, CallingDECL->inINCL), 0)
                   && !myDoc->IDTable.IsAn(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0));
+    putIt = putIt && (!CallingDECL || !(elDef->SecondTFlags.Contains(isSet) || elDef->SecondTFlags.Contains(isChain) || elDef->SecondTFlags.Contains(isArray))
+                 || !(CallingDECL->SecondTFlags.Contains(isSet) || CallingDECL->SecondTFlags.Contains(isChain) ||CallingDECL->SecondTFlags.Contains(isArray)));
+
   }
   else if ((DeclType == Interface) && (elType == VirtualType)) 
     if (CallingDECL) {

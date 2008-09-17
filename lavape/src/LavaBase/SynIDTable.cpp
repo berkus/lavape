@@ -1877,6 +1877,7 @@ int TIDTable::InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDE
   //returns 0 : type already contained, 1 : type realy new, -1 : overrides an already contained type
   LavaDECL* findecl, *finalnewBasedecl, *bdecl;
   CHETID *che;
+
   if (!decl || !newbasedecl || !contDECL)
     return 0;
   if ((contDECL->OwnID == decl->OwnID)
@@ -1890,13 +1891,14 @@ int TIDTable::InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDE
     finalnewBasedecl = newbasedecl;
   if (!finalnewBasedecl)
     return 0;
+  /*
   if ((decl->SecondTFlags.Contains(isSet)
   || decl->SecondTFlags.Contains(isChain)
   || decl->SecondTFlags.Contains(isArray))
   && (finalnewBasedecl->SecondTFlags.Contains(isSet)
   || finalnewBasedecl->SecondTFlags.Contains(isChain)
   || finalnewBasedecl->SecondTFlags.Contains(isArray)))
-    return 0;
+    return 0;*/
   TID finalBaseID = TID(finalnewBasedecl->OwnID, finalnewBasedecl->inINCL);
   che = (CHETID*)decl->Supports.first;
   while (che) {
