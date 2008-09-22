@@ -1862,8 +1862,8 @@ QString* TIDTable::CleanSupports(LavaDECL *decl, LavaDECL* contDECL)
   for (che = (CHETID*)chain.first; che; che = (CHETID*)che->successor) {
     basedecl = GetDECL(che->data);
     if (basedecl) {
-      ret2 = InsertBase(decl, basedecl, contDECL, true);
-      if (!ret1 && (ret2 != 1))
+      ret2 = InsertBaseClass(decl, basedecl, contDECL, true);
+      if (!ret1 && (!ret2 || (ret2 == 2)))
         ret1 = &ERR_CleanSupports;
     }
     else
@@ -1872,11 +1872,12 @@ QString* TIDTable::CleanSupports(LavaDECL *decl, LavaDECL* contDECL)
   return ret1;
 }
 
-int TIDTable::InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDECL, bool putBase)
+int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDECL, bool putBase)
 {
-  //returns 0 : type already contained, 1 : type realy new, -1 : overrides an already contained type
+  //returns 0: type already contained return -1: second container class, 1 : type realy new, 2 : overrides an already contained type
   LavaDECL* findecl, *finalnewBasedecl, *bdecl;
   CHETID *che;
+  bool multiContainer;
 
   if (!decl || !newbasedecl || !contDECL)
     return 0;
@@ -1891,14 +1892,8 @@ int TIDTable::InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDE
     finalnewBasedecl = newbasedecl;
   if (!finalnewBasedecl)
     return 0;
-  /*
-  if ((decl->SecondTFlags.Contains(isSet)
-  || decl->SecondTFlags.Contains(isChain)
-  || decl->SecondTFlags.Contains(isArray))
-  && (finalnewBasedecl->SecondTFlags.Contains(isSet)
-  || finalnewBasedecl->SecondTFlags.Contains(isChain)
-  || finalnewBasedecl->SecondTFlags.Contains(isArray)))
-    return 0;*/
+  multiContainer = decl->Supports.first && (decl->SecondTFlags.Contains(isSet) || decl->SecondTFlags.Contains(isChain) || decl->SecondTFlags.Contains(isArray))
+        && (finalnewBasedecl->SecondTFlags.Contains(isSet) || finalnewBasedecl->SecondTFlags.Contains(isChain) || finalnewBasedecl->SecondTFlags.Contains(isArray));
   TID finalBaseID = TID(finalnewBasedecl->OwnID, finalnewBasedecl->inINCL);
   che = (CHETID*)decl->Supports.first;
   while (che) {
@@ -1917,7 +1912,7 @@ int TIDTable::InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDE
             if (HasVBase(finalnewBasedecl, che->data, 0)) {
               if (putBase)
                 che->data = newbaseID;
-              return -1;
+              return 2;
             }
       }
       else {
@@ -1932,14 +1927,18 @@ int TIDTable::InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDE
         }
         if ((finalnewBasedecl == bdecl)
             || IsAnc(finalnewBasedecl, che->data, decl->inINCL, contDECL, true)) {
-          if (putBase)
+          if (putBase) {
             che->data = newbaseID;
-          return -1;
+            multiContainer = false;
+          }
+          return 2;
         }
       }
     }
     che = (CHETID*)che->successor;
   }
+  if (multiContainer)
+    return -1;
   if (putBase) {
     che = new CHETID;
     che->data = newbaseID;

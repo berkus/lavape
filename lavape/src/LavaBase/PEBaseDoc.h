@@ -75,7 +75,7 @@ public:
   virtual void ExecViewPrivToPub(LavaDECL* , int) {}
   virtual int ReadSynDef(const QString& fn, SynDef* &sntx, ASN1* cid = 0);//fn has all links resolved
   virtual void SetExecItemImage(LavaDECL* /*execDECL*/, bool /*empty*/, bool /*hasErrors*/) {}
-  void MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bool skipServices = false); //with: with B_Object and B_Service
+  void MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bool skipServices = false, bool withContainer = true); //with: with B_Object and B_Service
   bool Step(CLavaPEHint* hint, LavaDECL* parDECL, CHE*& relElem);
   CLavaPEHint* InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, bool& localMove);
   void ChangeDECL(CLavaPEHint* hint, bool undo);

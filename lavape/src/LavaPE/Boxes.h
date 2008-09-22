@@ -445,6 +445,7 @@ public:
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
   void SupportsToList();
+  void ContainerCheck();
 
   LavaDECL *myDECL;
   LavaDECL *OrigDECL;

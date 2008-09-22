@@ -122,7 +122,7 @@ public:
   bool Overrides(const TID& upId, int upinINCL, const TID& id, int inINCL);
   bool Overrides(LavaDECL* decl1, LavaDECL* decl2);
   QString*  CleanSupports(LavaDECL *decl, LavaDECL* contDECL);
-  int InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDECL, bool putBase);
+  int InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDECL, bool putBase);
   CHETVElem* FindElemInVT(LavaDECL* dropClassDecl, LavaDECL* dragClassDecl, LavaDECL* dragEl, int dragINCL);
   CHETVElem* FindSamePosInVT(CHETVElem *addElem, CHETVElem *ElStart, CHETVElem *ElLast);
   //  bool PatParamInContext(LavaDECL* patparamDECL, LavaDECL* decl);

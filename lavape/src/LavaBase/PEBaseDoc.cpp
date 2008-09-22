@@ -163,7 +163,7 @@ void CPEBaseDoc::UndoDelSyntax(CLavaPEHint* hint)
   IDTable.UndoDeleteINCL(((CHESimpleSyntax*)hint->CommandData1)->data.nINCL);
 }
 
-void  CPEBaseDoc::MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bool skipServices)
+void  CPEBaseDoc::MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bool skipServices, bool withContainer)
 { // defType == NoDef means all basics
   LavaDECL* decl;
   int incl;
@@ -174,10 +174,11 @@ void  CPEBaseDoc::MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bo
     incl = 1;
   for ( int it = 1; it < LBaseData->maxb; it++) {
     decl = IDTable.GetDECL(incl, IDTable.BasicTypesID[it]);
-    //es soll abstrzen, wenn decl = 0
+    //es soll abstuerzen, wenn decl = 0
     if (with  || (it != B_Object)
         && ((defType == NoDef) || (decl->DeclType == defType))
-        && (!skipServices || (decl->DeclType != Interface))) {
+        && (!skipServices || (decl->DeclType != Interface))
+        && (withContainer || (it !=  B_Set) && (it !=  B_Chain) && (it !=  B_Array))) {
       comboItem = new CComboBoxItem(/*LBaseData->BasicNames[it],*/ TID(IDTable.BasicTypesID[it], incl));
       addItemAlpha(cbox, QString(LBaseData->BasicNames[it]),QVariant::fromValue(comboItem));
 //      delete comboItem;

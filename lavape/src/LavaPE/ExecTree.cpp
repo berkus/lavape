@@ -292,7 +292,7 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
 
 void CExecTree::ExecVT(LavaDECL *elDef, DString* lab)
 {
-  LavaDECL *decl2;
+  LavaDECL *decl;
   QString* errCode;
   int bm=0;
   DString lab1;
@@ -330,10 +330,10 @@ void CExecTree::ExecVT(LavaDECL *elDef, DString* lab)
     //if (elDef->TypeFlags.Contains(stateObject))
     //  *lab += DString("~");
     if (elDef->DeclDescType == NamedType) {
-      decl2 = Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
-      if (decl2) {
+      decl = Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
+      if (decl) {
         *lab += Doc->GetTypeLabel(elDef, true);
-        if (errCode = Doc->TestValOfVirtual(elDef, decl2))
+        if (errCode = Doc->TestValOfVirtual(elDef, decl))
           new CLavaError(&elDef->DECLError1, errCode);
       }
       else {
@@ -345,6 +345,17 @@ void CExecTree::ExecVT(LavaDECL *elDef, DString* lab)
       *lab += Doc->GetTypeLabel(elDef, true);
     if (elDef->TypeFlags.Contains(substitutable))
       *lab += DString("}");
+  }
+  if (elDef->Supports.first && elDef->SecondTFlags.Contains(overrides)) {
+    decl = Doc->IDTable.GetDECL(((CHETID*)elDef->Supports.first)->data, elDef->inINCL);
+    for ( ;decl && decl->Supports.first && (decl->DeclType == VirtualType);
+      decl = Doc->IDTable.GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL));
+    if (decl) {
+      TID id1 = TID(elDef->ParentDECL->OwnID, elDef->inINCL);
+      TID id2 = TID(decl->ParentDECL->OwnID, decl->inINCL);
+      if (!Doc->IDTable.IsAn(id1,0,id2,0))
+        new CLavaError(&elDef->DECLError1, &ERR_NoOverridden);
+    }
   }
   if (errCode = Doc->CommonContext(elDef))
     new CLavaError(&elDef->DECLError1, errCode);

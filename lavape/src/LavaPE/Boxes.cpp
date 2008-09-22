@@ -3013,13 +3013,14 @@ ValOnInit CInterfaceBox::OnInitDialog()
 {
   DString str;
   CContext context;
-//  int pos, icount;
+  TID ElID;
   QString * err;
   CExecAllDefs * execAllPatt;
   QVariant var;
+  LavaDECL* elDecl;
+  bool found=false, isContainer;
 //  CHETID *ncheS, *cheS;
-//  LavaDECL* decl;
-  bool found=false;
+//  int pos, icount;
 //  CComboBoxItem *comboItem;
 
 
@@ -3030,13 +3031,21 @@ ValOnInit CInterfaceBox::OnInitDialog()
     ID_OK->setDefault( false );
     ID_CANCEL->setDefault( true );
   }
-  if (myDECL->SecondTFlags.Contains(isSet)) {
-    ElemCat->show();
-    ElemCatLabel->show();
-    if (myDECL->TypeFlags.Contains(elemsStateObj))
-      ElemCat->setCurrentIndex(1);
-    else
-      ElemCat->setCurrentIndex(0);
+  if (myDECL->SecondTFlags.Contains(isSet) && myDoc->IDTable.GetParamID(myDECL, ElID, isSet)
+    || myDECL->SecondTFlags.Contains(isArray) && myDoc->IDTable.GetParamID(myDECL, ElID, isArray)) {
+    elDecl = myDoc->IDTable.GetDECL(ElID);
+    if (elDecl && (elDecl->RefID.nID >= 0) && (elDecl->ParentDECL == OrigDECL)) {
+      ElemCat->show();
+      ElemCatLabel->show();
+      if (myDECL->TypeFlags.Contains(elemsStateObj))
+        ElemCat->setCurrentIndex(1);
+      else
+        ElemCat->setCurrentIndex(0);
+    }
+    else {
+      ElemCat->hide();
+      ElemCatLabel->hide();
+    }
   }
   else {
     ElemCat->hide();
@@ -3078,7 +3087,8 @@ ValOnInit CInterfaceBox::OnInitDialog()
       if (myDECL->TypeFlags.Contains(isAbstract))
         valKindOfInterface = 1;
   }
-  myDoc->MakeBasicBox(BasicTypes, myDECL->DeclType, false);
+  isContainer = myDECL->SecondTFlags.Contains(isSet) || myDECL->SecondTFlags.Contains(isChain) || myDECL->SecondTFlags.Contains(isArray);
+  myDoc->MakeBasicBox(BasicTypes, myDECL->DeclType, false, false, !isContainer);
   execAllPatt = new CExecAllDefs(myDoc, ExtTypes, 0, //GUIStructs, 
                         myDECL->ParentDECL, OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
   delete execAllPatt;
@@ -3159,6 +3169,7 @@ void CInterfaceBox::on_DelSupport_clicked()
     pos = Extends->row(listItem);
     delete Extends->takeItem(pos);
     ListToChain(Extends, &myDECL->Supports);
+    ContainerCheck();
     ResetComboItems(ExtTypes);
     CExecBase *execBase = new CExecBase(this);
     delete execBase;
@@ -3177,8 +3188,9 @@ void CInterfaceBox::on_ExtTypes_activated(int pos)
   CComboBoxItem *comboItem = var.value<CComboBoxItem*>();
   if (comboItem) {
     baseDECL = myDoc->IDTable.GetDECL(comboItem->itemData());
-    if (myDoc->IDTable.InsertBase(myDECL, baseDECL, ContextDECL, true)) {
+    if (myDoc->IDTable.InsertBaseClass(myDECL, baseDECL, ContextDECL, true)) {
       SupportsToList();
+      ContainerCheck();
       ResetComboItems(ExtTypes);
       CExecBase *execBase = new CExecBase(this);
       delete execBase;
@@ -3203,8 +3215,9 @@ void CInterfaceBox::on_BasicTypes_activated(int pos)
   var = BasicTypes->itemData(pos);
   CComboBoxItem *comboItem = var.value<CComboBoxItem*>();
   if (comboItem) {
-    if (myDoc->IDTable.InsertBase(myDECL, myDoc->IDTable.GetDECL(comboItem->itemData(), 0), ContextDECL, true)) {
+    if (myDoc->IDTable.InsertBaseClass(myDECL, myDoc->IDTable.GetDECL(comboItem->itemData(), 0), ContextDECL, true)) {
       SupportsToList();
+      ContainerCheck();
       ExtTypes->setCurrentIndex(0);
       UpdateData(false);
     }
@@ -3285,6 +3298,28 @@ void CInterfaceBox::reject()
 //  ResetComboItems(GUIStructs);
   ResetComboItems(BasicTypes); 
   QDialog::reject();
+}
+
+void CInterfaceBox::ContainerCheck()
+{
+  CHETID *cheS;
+  LavaDECL *suDECL;
+  myDECL->SecondTFlags.EXCL(isSet);
+  myDECL->SecondTFlags.EXCL(isChain);
+  myDECL->SecondTFlags.EXCL(isArray);
+  cheS = (CHETID*)myDECL->Supports.first;
+  while (cheS) {
+    suDECL = myDoc->IDTable.GetDECL(cheS->data);
+    if (suDECL) {
+      if (suDECL->SecondTFlags.Contains(isSet))
+        myDECL->SecondTFlags.INCL(isSet);
+      if (suDECL->SecondTFlags.Contains(isChain))
+        myDECL->SecondTFlags.INCL(isChain);
+      if (suDECL->SecondTFlags.Contains(isArray))
+        myDECL->SecondTFlags.INCL(isArray);
+    }
+    cheS = (CHETID*)cheS->successor;
+  }
 }
 
 
@@ -5219,11 +5254,8 @@ void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
     return;
   if (elDef == IBox->OrigDECL)
     return;
-  if ((elDef->SecondTFlags.Contains(isSet) || elDef->SecondTFlags.Contains(isChain) || elDef->SecondTFlags.Contains(isArray))
-       && (IBox->myDECL->SecondTFlags.Contains(isSet) || IBox->myDECL->SecondTFlags.Contains(isChain) ||IBox->myDECL->SecondTFlags.Contains(isArray)))
-    return;
   IBox->myDoc->IDTable.GetPattern(elDef, con);
-  if ( IBox->myDoc->IDTable.InsertBase(IBox->myDECL, elDef, IBox->ContextDECL, false)
+  if ( IBox->myDoc->IDTable.InsertBaseClass(IBox->myDECL, elDef, IBox->ContextDECL, false)
         && (IBox->myDECL->TypeFlags.Contains(isComponent) == elDef->TypeFlags.Contains(isComponent))
         && (!con.oContext
             || (con.oContext == elDef)
