@@ -539,7 +539,7 @@ void CExecTree::ExecInterface(LavaDECL *elDef, DString* lab)
   if (errCode)
     new CLavaError(&elDef->DECLError1, errCode);
   if (elDef->WorkFlags.Contains(recalcVT)
-       || (checkLevel == CHLV_fit)) {
+       || (checkLevel == CHLV_fit) || FinalUpdate) {
     if (Doc->MakeVElems(elDef) )
       elDef->WorkFlags.EXCL(recalcVT);
     else
