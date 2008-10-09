@@ -1,46 +1,51 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta content="text/html; charset=iso-8859-1">
-    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-    <title>
-      Copy statement
-    </title>
-    <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
-  </head>
+<html><head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0"><title>Copy statement</title>
+
+<link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
+</head>
+
   <body>
-  <h2 align="center">&quot;Copy&quot; statement</h2>
-  <p>Use the <font color="#0000FF"><b>copy</b> </font>statement to copy an existing <font color="#FF0000"><i><b>Lava</b></i></font> 
-  object onto another object.</p>
-  <p>If the target object does not yet exist (i.e, is = <font color="#0000FF">
-  <b>0</b></font>) then <font color="#0000FF"><b>copy</b></font> allocates a new 
-  target object whose type is the (&quot;static&quot;) type of the target variable on the 
-  left side of <font color="#0000FF"><b>copy</b></font>. (<font color="#0000FF"><b>Copy</b></font> 
-  uses the default initializer of that class to initialize the new target 
-  object.) Subsequently it copies those parts of the source object onto the new 
-  target object that correspond to common base classes of source and target 
-  object. (Here we count the whole object class also as a base class.)</p>
-  <p>If the target object exists (i.e, is &#8800; <font color="#0000FF"><b>0</b></font>) 
-  then it is &quot;overwritten&quot; by a copy of the source object. Again those parts of 
-  the source object are copied onto the (existing) target object that correspond 
-  to common base classes of source and target object.</p>
-  <p><b>Note</b> that <font color="#FF0000"><i><b>Lava</b></i></font> provides a 
-  distinction between <b>constituent</b> and <b>acquaintance</b> members of an 
-  object. Only the constituents are copied by <font color="#0000FF"><b>copy</b></font> 
-  (&quot;deep copy&quot;). 
-  Acquaintances are considered to be separate, independent objects.
-  <font color="#0000FF"><b>Copy</b></font> copies only the <b>pointers</b> to 
-  acquaintances.</p>
-  <p><b>Note</b> that <font color="#0000FF"><b>copy</b></font> doesn't make much 
-  sense in cases where source and target object don't have common base classes.
-  <font color="#0000FF"><b>Copy</b></font>  is used primarily to copy a &quot;less 
-    derived&quot; onto a &quot;more derived&quot; object or to create a &quot;snapshot&quot; of the current 
-    state of a <a href="../TwoObjectCategories.htm">state object</a>. (The snapshot 
-    may be an immutable value object or again a state object.)</p>
-  <p><b>See also:/b></p>
-  <p><a href="Clone.htm">Clone</a></p>
-  <p><a href="../Unsolved.htm#pointers">Application-level pointer notion</a></p>
-  <p><a href="../PointersRefCounts.htm#refTypes">Pointers and reference counts</a></p>
-  </body>
-</html>
+<h2 align="center">"Copy" statement</h2>
+<p>Use the <font color="#0000ff"><b>copy</b>
+</font>statement to copy an existing <font color="#ff0000"><i><b>Lava</b></i></font>
+object onto another object.</p>
+<p>If the target object does not yet exist (i.e, is = <font color="#0000ff"> <b>0</b></font>) then <font color="#0000ff"><b>copy</b></font>
+allocates a new target object whose type is the ("static") type of the
+target variable on the left side of <font color="#0000ff"><b>copy</b></font>.
+(<font color="#0000ff"><b>Copy</b></font>
+uses the default initializer of that class to initialize the new target
+object.) Subsequently it copies those parts of the source object onto
+the new target object that correspond to common base classes of source
+and target object. (Here we count the whole object class also as a base
+class.)</p>
+<p>If the target object exists (i.e, is &#8800; <font color="#0000ff"><b>0</b></font>) then it
+is "overwritten" by a copy of the source object. Again those parts of
+the source object are copied onto the (existing) target object that
+correspond to common base classes of source and target object.</p>
+<p><b>Note</b> that <font color="#ff0000"><i><b>Lava</b></i></font>
+provides a distinction between <b>constituent</b> and <b>acquaintance</b>
+members of an object. Only the constituents are copied by <font color="#0000ff"><b>copy</b></font> ("deep
+copy"). Acquaintances are considered to be separate, independent
+objects. <font color="#0000ff"><b>Copy</b></font>
+copies only the <b>pointers</b> to acquaintances.</p>
+<p><b>Note</b> that <font color="#0000ff"><b>copy</b></font>
+doesn't make much sense in cases where source and target object don't
+have common base classes. <font color="#0000ff"><b>Copy</b></font>
+is used primarily to copy a "less derived" onto a "more derived" object
+or to create a "snapshot" of the current state of a <a href="../TwoObjectCategories.htm">state object</a>.
+(The snapshot may be an immutable value object or again a state object.)</p>
+<p><b>See also:</b></p>
+<b> </b>
+<p><b><a href="Clone.htm">Clone</a></b></p>
+<b> </b>
+<p><b><a href="../Unsolved.htm#pointers">Application-level
+pointer notion</a></b></p>
+<b> </b>
+<p><b><a href="../PointersRefCounts.htm#refTypes">Pointers
+and reference counts</a></b></p>
+<b> </b>
+</body></html>
+

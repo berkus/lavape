@@ -1,82 +1,95 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META CONTENT="text/html; charset=windows-1252">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <META NAME="ProgId" CONTENT="FrontPage.Editor.Document">
-    <TITLE>
-      Lava refactoring support
-    </TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  <BODY>
-    <H2 ALIGN="CENTER">
-      <I><FONT COLOR="#FF0000">Lava</FONT></I> refac<FONT COLOR="#000000">toring support</FONT>
-    </H2>
-    <P>
-      <I>"Refactoring"</I> has become a buzzword in today's software engineering discussion, and refactoring support is of growing importance for IDE's&nbsp; (Integrated Development Environments)
-      that claim to be up-to-date.
-    </P>
-    <P>
-      <I>"Refactoring"</I> means to change and improve the structure of a program without changing its behavior. See, for instance, the <A TARGET="_blank" HREF="http://www.refactoring.com/">
-      Refactoring Home Page</A> and the <A TARGET="_blank" HREF="http://groups.yahoo.com/group/refactoring/">Refactoring discussion group at Yahoo</A>. Several (mostly Java) IDE's are available now
-      that provide either integrated refactoring support or a separate "Refactoring Browser"
-    </P>
-    <P>
-      In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, refactoring support is <I>built-in</I> from the beginning and <I>integrated</I> to the highest possible degree: It doesn't even appear as a
-      <I>special</I> service but rather as a collection of parenthetical side effects of quite normal editing operations of the <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> structure editors:
-    </P>
-    <OL>
-      <LI>
-        <B>Renaming</B> of all kinds of <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> entities (classes, functions, variables etc.) uses the same entity-specific property sheets that are also used
-        when you <I>declare a new entity</I> or when you <I>change any other property</I> of the entity. As a parenthetical side effect all references to this entity are changed correspondingly to
-        show the new name of the entity. This is achieved by fetching the current name of the entity <I>from its declaration</I> at every point of reference; the declaration is found from a symbol
-        table that is indexed by the <I>immutable numeric internal identifiers</I> of all symbols.
-      </LI>
-      <LI>
-        <B><A NAME="featureMove"></A> &nbsp;Moving/copying features</B> (= member variables and functions) forth and back between base classes and derived classes or between 
-        classes and
-        corresponding implementations uses the quite normal drag-and-drop or cut/copy/paste operations that are <I>always</I> used in <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> for restructuring
-        the <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> <A HREF="EditTree.htm">declaration tree</A>. Errors caused by refactoring operations are tolerated in cases where only the programmer knows
-        how to circumvent or repair these in a meaningful way. (See also <A HREF="EditTree.htm#undoRedo">undo/redo support</A> for drag-and-drop operations.)
-      </LI>
-      <LI>
-        <B>Moving/copying other <FONT COLOR="#FF0000"><I>Lava</I></FONT> entities</B> uses these same drag-and-drop or cut/copy/paste operations. The fully qualified names of moved/copied entities,
-        which reflect the nesting of packages and classes, are changed automatically as a parenthetical side effect.
-      </LI>
-      <LI>
-        <B>Changing</B> the number and/or order of the <B>formal parameters</B> of a function entails corresponding <I>automatic changes</I> of the actual parameter lists <I>of all invocations</I> of
-        this function.
-      </LI>
-      <LI>
-        <B>Introducing or removing accessor ("setter/getter")&nbsp; functions</B> for member variables of a class is supported mainly by three specific measures: 
-        <UL>
-          <LI>
-            The <I>same</I> variable access syntax is used transparently for read/write access to member variables, no matter whether or not the access operation is based on setter/getter functions:
-            Setter/getter functions are called only <I>implicitly</I> in any case. So the points of access to this variable need not be changed if setter/getter access is turned on or off.
-          </LI>
-          <LI>
-            Default setter/getter functions are generated automatically in the implementation of the class to which the respective member variable belongs when setter/getter access is turned on.
-          </LI>
-          <LI>
-            The <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> interpreter "knows" that <I>within</I> a setter/getter function access operations to the respective member variable must not <I>
-            recursively invoke</I> the setter/getter functions but have to be performed <I>directly</I>.
-          </LI>
-        </UL>
-      </LI>
-    </OL>
-    <H3>
-      Other refactoring links
-    </H3>
-    <P>
-      <A TARGET="_blank" HREF="http://c2.com/cgi/wiki?WikiPagesAboutRefactoring">http://c2.com/cgi/wiki?WikiPagesAboutRefactoring</A>
-    </P>
-    <P>
-      <A TARGET="_blank" HREF="http://www.wikiservice.at/dse/wiki.cgi?CodeRefactoring">http://www.wikiservice.at/dse/wiki.cgi?CodeRefactoring</A> (German)
-    </P>
-    <P>
-      <A TARGET="_blank" HREF="http://www.wikiservice.at/dse/wiki.cgi?RefactoringBrowser">http://www.wikiservice.at/dse/wiki.cgi?RefactoringBrowser</A> (German)
-    </P>
-  </BODY>
-</HTML>
+<html><head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document"><title>Lava refactoring support</title>
+
+<link rel="STYLESHEET" type="text/css" href="LavaStyles.css">
+</head>
+
+  <body>
+<h2 align="center"> <i><font color="#ff0000">Lava</font></i>
+refac<font color="#000000">toring support</font> </h2>
+<p> <i>"Refactoring"</i> has become a buzzword in
+today's software engineering discussion, and refactoring support is of
+growing importance for IDE's&nbsp; (Integrated Development
+Environments) that claim to be up-to-date. </p>
+<p> <i>"Refactoring"</i> means to change and improve
+the structure of a program without changing its behavior. See, for
+instance, the <a target="_blank" href="http://www.refactoring.com/"> Refactoring Home Page</a>
+and the <a target="_blank" href="http://groups.yahoo.com/group/refactoring/">Refactoring
+discussion group at Yahoo</a>. Several (mostly Java) IDE's are
+available now that provide either integrated refactoring support or a
+separate "Refactoring Browser" </p>
+<p> In <b><i><font color="#ff0000">Lava</font></i></b>,
+refactoring support is <i>built-in</i> from the beginning
+and <i>integrated</i> to the highest possible degree: It
+doesn't even appear as a <i>special</i> service but rather
+as a collection of parenthetical side effects of quite normal editing
+operations of the <font color="#ff0000"><i><b>Lava</b></i></font>
+structure editors: </p>
+<ol>
+<li> <b>Renaming</b> of all kinds of <font color="#ff0000"><i><b>Lava</b></i></font>
+entities (classes, functions, variables etc.) uses the same
+entity-specific property sheets that are also used when you <i>declare
+a new entity</i> or when you <i>change any other property</i>
+of the entity. As a parenthetical side effect all references to this
+entity are changed correspondingly to show the new name of the entity.
+This is achieved by fetching the current name of the entity <i>from
+its declaration</i> at every point of reference; the declaration
+is found from a symbol table that is indexed by the <i>immutable
+numeric internal identifiers</i> of all symbols. </li>
+<li> <b><a name="featureMove"></a>
+&nbsp;Moving/copying features</b> (= member variables and
+functions) forth and back between base classes and derived classes or
+between classes and corresponding implementations uses the quite normal
+drag-and-drop or cut/copy/paste operations that are <i>always</i>
+used in <font color="#ff0000"><i><b>Lava</b></i></font>
+for restructuring the <font color="#ff0000"><i><b>Lava</b></i></font>
+<a href="EditTree.htm">declaration tree</a>.
+Errors caused by refactoring operations are tolerated in cases where
+only the programmer knows how to circumvent or repair these in a
+meaningful way. (See also <a href="EditTree.htm#undoRedo">undo/redo
+support</a> for drag-and-drop operations.) </li>
+<li> <b>Moving/copying other <font color="#ff0000"><i>Lava</i></font>
+entities</b> uses these same drag-and-drop or cut/copy/paste
+operations. The fully qualified names of moved/copied entities, which
+reflect the nesting of packages and classes, are changed automatically
+as a parenthetical side effect. </li>
+<li> <b>Changing</b> the number and/or order of
+the <b>formal parameters</b> of a function entails
+corresponding <i>automatic changes</i> of the actual
+parameter lists <i>of all invocations</i> of this
+function. </li>
+<li> <b>Introducing or removing accessor
+("setter/getter")&nbsp; functions</b> for member variables of
+a class is supported mainly by three specific measures:
+<ul>
+<li> The <i>same</i> variable access syntax is
+used transparently for read/write access to member variables, no matter
+whether or not the access operation is based on setter/getter
+functions: Setter/getter functions are called only <i>implicitly</i>
+in any case. So the points of access to this variable need not be
+changed if setter/getter access is turned on or off. </li>
+<li> Default setter/getter functions are generated
+automatically in the implementation of the class to which the
+respective member variable belongs when setter/getter access is turned
+on. </li>
+<li> The <font color="#ff0000"><i><b>Lava</b></i></font>
+interpreter "knows" that <i>within</i> a setter/getter
+function access operations to the respective member variable must not <i>
+recursively invoke</i> the setter/getter functions but have to be
+performed <i>directly</i>. </li>
+</ul>
+</li>
+</ol>
+<h3> Other refactoring links </h3>
+<p> <a target="_blank" href="http://c2.com/cgi/wiki?WikiPagesAboutRefactoring">http://c2.com/cgi/wiki?WikiPagesAboutRefactoring</a>
+</p>
+<p> <a target="_blank" href="http://www.wikiservice.at/dse/wiki.cgi?CodeRefactoring">http://www.wikiservice.at/dse/wiki.cgi?CodeRefactoring</a>
+(German) </p>
+<p> <a target="_blank" href="http://www.wikiservice.at/dse/wiki.cgi?RefactoringBrowser">http://www.wikiservice.at/dse/wiki.cgi?RefactoringBrowser</a>
+(German) </p>
+</body></html>
+
