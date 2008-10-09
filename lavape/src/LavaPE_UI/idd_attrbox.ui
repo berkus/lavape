@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>452</width>
-    <height>389</height>
+    <width>409</width>
+    <height>403</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -191,6 +191,23 @@
         </widget>
        </item>
        <item>
+        <widget class="QComboBox" name="ElemCombo" >
+         <property name="enabled" >
+          <bool>true</bool>
+         </property>
+         <item>
+          <property name="text" >
+           <string>Set/array elements are immutable</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Set/array elements are variable</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="Protected" >
          <property name="focusPolicy" >
           <enum>Qt::StrongFocus</enum>
@@ -206,7 +223,7 @@
           <enum>Qt::StrongFocus</enum>
          </property>
          <property name="text" >
-          <string>Read-only attribute</string>
+          <string>Read-only member variable</string>
          </property>
         </widget>
        </item>
@@ -266,6 +283,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="title" >
+        <string>Kind of link</string>
+       </property>
        <layout class="QVBoxLayout" >
         <property name="spacing" >
          <number>6</number>
@@ -313,6 +333,9 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="title" >
+        <string>Requisiteness</string>
        </property>
        <layout class="QVBoxLayout" >
         <property name="spacing" >

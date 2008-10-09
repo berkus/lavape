@@ -1171,7 +1171,7 @@ NewExpressionV::NewExpressionV (FuncStatement *ref, bool withItf, bool withLoc) 
 }
 
 void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
-  LavaDECL *iniDecl=0;
+  LavaDECL *iniDecl=((FuncStatement*)initializerCall.ptr)->funcDecl;
   bool isFuncHandle=IsFuncHandle(), showTemp;
 
   ENTRY

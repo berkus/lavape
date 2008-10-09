@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>483</width>
-    <height>352</height>
+    <width>492</width>
+    <height>321</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -61,6 +61,57 @@
          </property>
          <property name="alignment" >
           <set>Qt::AlignLeading</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="Native" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="text" >
+          <string>Native class</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="BuildSet" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize" >
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="text" >
+          <string>Declare also "Set" of ...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="ElemsConstituents" >
+         <property name="toolTip" >
+          <string>If this class inherits from set/chain/array then the collection elements are treated as constituents, i.e., as owned by the collection object</string>
+         </property>
+         <property name="whatsThis" >
+          <string>If this class inherits from set/chain/array then the collection elements are treated as constituents, i.e., as owned by the collection object</string>
+         </property>
+         <property name="text" >
+          <string>Set/array elements are constituents</string>
          </property>
         </widget>
        </item>
@@ -131,49 +182,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="ElemCatLabel" >
-         <property name="enabled" >
-          <bool>false</bool>
-         </property>
-         <property name="text" >
-          <string>Define collection element category:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="ElemCat" >
-         <property name="enabled" >
-          <bool>true</bool>
-         </property>
-         <item>
-          <property name="text" >
-           <string>Elements are immutable</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Elements are variable</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="Native" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy" >
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="text" >
-          <string>Native class</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <layout class="QVBoxLayout" >
          <property name="spacing" >
           <number>6</number>
@@ -225,28 +233,6 @@
        <property name="spacing" >
         <number>15</number>
        </property>
-       <item>
-        <widget class="QCheckBox" name="BuildSet" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize" >
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="focusPolicy" >
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="text" >
-          <string>Declare also ""Set"" of ...</string>
-         </property>
-        </widget>
-       </item>
        <item>
         <widget class="QGroupBox" name="GroupBox_IDC_STATIC16" >
          <property name="sizePolicy" >
@@ -457,7 +443,6 @@
   <tabstop>Extends</tabstop>
   <tabstop>BasicTypes</tabstop>
   <tabstop>ExtTypes</tabstop>
-  <tabstop>BuildSet</tabstop>
  </tabstops>
  <resources/>
  <connections/>

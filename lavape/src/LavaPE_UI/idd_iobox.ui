@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>457</width>
-    <height>240</height>
+    <width>405</width>
+    <height>318</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -18,79 +18,59 @@
   <property name="windowTitle" >
    <string>Input/output</string>
   </property>
-  <layout class="QVBoxLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout_3" >
    <item>
-    <layout class="QHBoxLayout" >
+    <layout class="QHBoxLayout" name="horizontalLayout" >
      <item>
-      <layout class="QVBoxLayout" >
+      <layout class="QVBoxLayout" name="verticalLayout" >
        <item>
-        <layout class="QVBoxLayout" >
-         <property name="spacing" >
-          <number>6</number>
+        <widget class="QLabel" name="Label_IDC_STATIC64" >
+         <property name="focusPolicy" >
+          <enum>Qt::NoFocus</enum>
          </property>
-         <property name="margin" >
-          <number>0</number>
+         <property name="text" >
+          <string>Name</string>
          </property>
-         <item>
-          <widget class="QLabel" name="Label_IDC_STATIC64" >
-           <property name="focusPolicy" >
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text" >
-            <string>Name</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="NewName" >
-           <property name="focusPolicy" >
-            <enum>Qt::StrongFocus</enum>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignLeading</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
+         <property name="alignment" >
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" >
-         <property name="spacing" >
-          <number>6</number>
+        <widget class="QLineEdit" name="NewName" >
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
          </property>
-         <property name="margin" >
-          <number>0</number>
+         <property name="alignment" >
+          <set>Qt::AlignLeading</set>
          </property>
-         <item>
-          <widget class="QLabel" name="Label_IDC_STATIC65" >
-           <property name="focusPolicy" >
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text" >
-            <string>Type</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="NewTypeType" >
-           <property name="enabled" >
-            <bool>false</bool>
-           </property>
-           <property name="focusPolicy" >
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignLeading</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="Label_IDC_STATIC65" >
+         <property name="focusPolicy" >
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text" >
+          <string>Type</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="NewTypeType" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <property name="focusPolicy" >
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignLeading</set>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QGroupBox" name="GroupBox_IDC_STATIC33" >
@@ -128,12 +108,11 @@
          </layout>
         </widget>
        </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" >
        <item>
         <widget class="QGroupBox" name="BGroup_ObjCat" >
+         <property name="title" >
+          <string>Requisiteness</string>
+         </property>
          <layout class="QVBoxLayout" >
           <property name="spacing" >
            <number>6</number>
@@ -146,8 +125,14 @@
             <property name="focusPolicy" >
              <enum>Qt::StrongFocus</enum>
             </property>
+            <property name="toolTip" >
+             <string>A non-null value is required for this variable</string>
+            </property>
+            <property name="whatsThis" >
+             <string>A non-null value is required for this variable</string>
+            </property>
             <property name="text" >
-             <string>Mandatory</string>
+             <string>Required</string>
             </property>
            </widget>
           </item>
@@ -155,6 +140,12 @@
            <widget class="QRadioButton" name="Optional" >
             <property name="focusPolicy" >
              <enum>Qt::StrongFocus</enum>
+            </property>
+            <property name="toolTip" >
+             <string>May assume the value "null"</string>
+            </property>
+            <property name="whatsThis" >
+             <string>May assume the value "null"</string>
             </property>
             <property name="text" >
              <string>Optional</string>
@@ -164,6 +155,10 @@
          </layout>
         </widget>
        </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2" >
        <item>
         <widget class="QGroupBox" name="BGroup_Mode" >
          <property name="sizePolicy" >
@@ -172,37 +167,58 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="title" >
+          <string>Alterability</string>
+         </property>
          <layout class="QVBoxLayout" >
           <item>
-           <widget class="QCheckBox" name="ElemCat" >
+           <widget class="QCheckBox" name="StateObject" >
+            <property name="text" >
+             <string>Variable state object</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="LikeElemCat" >
             <property name="enabled" >
              <bool>false</bool>
             </property>
+            <property name="toolTip" >
+             <string>If the "self" variable of the current member function is of a array/set/chain class then you may specify that the current formal parameter shall have the same alterability as the elements of "self"</string>
+            </property>
+            <property name="whatsThis" >
+             <string>If the "self" variable of the current member function is of a array/set/chain class then you may specify that the current formal parameter shall have the same alterability as the elements of "self"</string>
+            </property>
             <property name="text" >
-             <string>Like collection element category</string>
+             <string>Same alterability as elements of "self"</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="ParamCategory" >
+           <widget class="QCheckBox" name="ElemsStateObjects" >
             <property name="enabled" >
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
-            <property name="sizeAdjustPolicy" >
-             <enum>QComboBox::AdjustToContents</enum>
+            <property name="toolTip" >
+             <string>If the class of this formal parameter is a collection class (derived from array/set/chain) then you may specify the alterability (immutable/variable) of the collection elements here</string>
             </property>
-            <item>
-             <property name="text" >
-              <string>Immutable value object</string>
-             </property>
-            </item>
-            <item>
-             <property name="text" >
-              <string>Variable state object</string>
-             </property>
-            </item>
+            <property name="whatsThis" >
+             <string>If the class of this formal parameter is a collection class (derived from array/set/chain) then you may specify the alterability (immutable/variable) of the collection elements here</string>
+            </property>
+            <property name="text" >
+             <string>Set/array elements are variable</string>
+            </property>
            </widget>
           </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox" >
+         <property name="title" >
+          <string/>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4" >
           <item>
            <widget class="QCheckBox" name="Closed" >
             <property name="toolTip" >
@@ -341,8 +357,6 @@
   <tabstop>NewName</tabstop>
   <tabstop>BasicTypes</tabstop>
   <tabstop>NamedTypes</tabstop>
-  <tabstop>Mandatory</tabstop>
-  <tabstop>Optional</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -508,7 +508,7 @@ public:
 
 public slots:
     virtual void on_BasicTypes_activated( int );
-    virtual void on_ElemCat_clicked();
+    virtual void on_LikeElemCat_clicked();
     virtual void on_NamedTypes_activated( int );
     virtual void on_Substitutable_clicked();
     virtual void on_ID_OK_clicked();
