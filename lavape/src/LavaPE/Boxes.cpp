@@ -1669,7 +1669,7 @@ ValOnInit CFuncBox::OnInitDialog()
       Native->setChecked(true);
     }
     myDECL->TypeFlags.INCL(isConst);
-    ConstFunc->setChecked(false);
+    ConstFunc->setChecked(true);
     EventType->setCurrentIndex(0);
 
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
@@ -1749,14 +1749,14 @@ ValOnInit CFuncBox::OnInitDialog()
     //  ConstFunc->removeItem(2);
     //ConstFunc->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     if (myDECL->TypeFlags.Contains(isConst))
-      ConstFunc->setChecked(false);
+      ConstFunc->setChecked(true);
     //else if (myDECL->TypeFlags.Contains(collectionElemCat))
     //  ConstFunc->setCurrentIndex(2);
     else
-      ConstFunc->setChecked(true);
+      ConstFunc->setChecked(false);
     if (myDECL->TypeFlags.Contains(isInitializer)) {
       ConstFunc->setEnabled(false); 
-      ConstFunc->setChecked(true);
+      ConstFunc->setChecked(false);
       Protected->setEnabled(false);
       Initializer->setChecked(true);
       DefaultIni->setEnabled(!hasParams
@@ -2547,18 +2547,11 @@ void CFuncBox::on_ID_OK_clicked() // flags korr!!!
   else
     myDECL->TypeFlags.EXCL(forceOverride);
   if (ConstFunc->isChecked()) {
-    myDECL->TypeFlags.EXCL(isConst); 
-    myDECL->TypeFlags.EXCL(collectionElemCat);// !!!
+    myDECL->TypeFlags.INCL(isConst); 
   }
-  //else if (ConstFunc->currentIndex()== 2) {
   else {
-    myDECL->TypeFlags.INCL(isConst);
-    myDECL->TypeFlags.EXCL(collectionElemCat);// !!!
+    myDECL->TypeFlags.EXCL(isConst);
   }
-  //else {
-  //  myDECL->TypeFlags.EXCL(isConst);
-  //  myDECL->TypeFlags.EXCL(collectionElemCat);
-  //}
   if (Signal->isChecked())
     myDECL->SecondTFlags.INCL(isLavaSignal); 
   else

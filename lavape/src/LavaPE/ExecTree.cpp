@@ -918,7 +918,6 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
       if (elDef->TypeFlags.Contains(isOptional))
         lab += DString(", optional");
       if (elDef->TypeFlags.Contains(collectionElemCat)) {
-        //elDef->TypeFlags.EXCL(collectionElemCat); //!!!
         lab += DString(", set/array elem. category");
       }
       if (elDef->SecondTFlags.Contains(closed))
@@ -927,7 +926,6 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
         if (elDef->TypeFlags.Contains(isConst))
           lab += DString(", read-only ");
         else if (elDef->TypeFlags.Contains(collectionElemCat)) {
-          //elDef->TypeFlags.EXCL(collectionElemCat);//!!!
           lab += DString(", set/array elem. category");
         }
         if (elDef->TypeFlags.Contains(elemsStateObj))
