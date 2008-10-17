@@ -61,6 +61,8 @@ endif
 
 CC = g++
 
+QTOOLS = $(QBIN)
+
 ifeq ($(OPSYS),Darwin)
   DLLPREFIX = lib
   DLLSUFFIX = .dylib
@@ -72,6 +74,12 @@ ifeq ($(OPSYS),Darwin)
 #  OSLIBFLAGS = -F/System/Library/Frameworks -framework AppKit -framework Carbon
   EXEC2 = $(EXEC)
 #  CC = c++
+	ifeq ($(QLIB),/Library/Frameworks)
+	  QFRW = .framework/Headers
+	  QTOOLS = /usr/bin
+	else
+	  QTOOLS = $(QBIN)
+	endif
 else
   ifeq ($(OPSYS),MINGW32)
     DLLSUFFIX = .dll
@@ -111,7 +119,7 @@ else
   endif
 endif
 
-ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QINCL) -I$(QINCL)/QtCore -I$(QINCL)/QtNetwork -I$(QINCL)/QtGui
+ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QINCL) -I$(QINCL)/QtCore$(QFRW) -I$(QINCL)/QtNetwork$(QFRW) -I$(QINCL)/QtGui$(QFRW)
 
 #shared libraries:
 ifeq ($(suffix $(EXEC)),.so)
@@ -163,7 +171,7 @@ PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h $(h_ui_files) $(h_ph_files)
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
 Generated/%.h: %.ui
-	$(QBIN)/uic $< -o $@
+	$(QTOOLS)/uic $< -o $@
 #	( grep -q -e 'UI version=\"[0-9]\+\.0\"' $< || \
 #	  sed -i -e 's/\(UI version=\"[0-9]\+\.\)[0-9]\+"/\10\"/' $<; ); \
 #  export LD_LIBRARY_PATH=/usr/X11R6/bin;
@@ -175,9 +183,9 @@ Generated/%.h: %.ui
 
 #MOC rule
 moc_%.cpp: %.h
-	$(QBIN)/moc $< -o $@
+	$(QTOOLS)/moc $< -o $@
 Generated/moc_%.cpp: %.h
-	$(QBIN)/moc $< -o $@
+	$(QTOOLS)/moc $< -o $@
 
 #LPC rule:
 ifneq ($(DLL),)
@@ -188,7 +196,7 @@ endif
 	../../bin/LPC $(impex) -I. -I../LavaBase $<
 
 %.cpp: %.qrc
-	$(QBIN)/rcc$(SUFF) -o $@ $<
+	$(QTOOLS)/rcc$(SUFF) -o $@ $<
 
 ifeq ($(suffix $(EXEC)),)
 run:
