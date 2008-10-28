@@ -272,11 +272,11 @@ $TYPE +CDP {
     //16/, X0001 0000 initializer function
     isPersistent,
     //17/, X0002 0000 persistent component
-    isGUIEdit,
+    FREE_TYPEFLAG1, //isGUIEdit,
     //18/, X0004 0000 the edit show function
-    FREE_TYPEFLAG1, //oldIsGUI,
+    FREE_TYPEFLAG2, //oldIsGUI,
     //19, X0008 0000/ now free flag
-    FREE_TYPEFLAG2,//sameAsSelf,
+    FREE_TYPEFLAG3,//sameAsSelf,
     //20, X0010 0000 IO parameter has same category as "self"
     isNative,
     //21, X0020 0000         Function or interface has native implementation
@@ -288,7 +288,7 @@ $TYPE +CDP {
     //24, X0100 0000 Concurrent function or initiator
     execIndependent,
     //25, X0200 0000 Independent function or initiator
-    FREE_TYPEFLAG3,//det/chain/array: the current collection class defines the category of the collection elements
+    FREE_TYPEFLAG4,//det/chain/array: the current collection class defines the category of the collection elements
     //26, X0400 0000
     consumable,
     //27, X0800 0000

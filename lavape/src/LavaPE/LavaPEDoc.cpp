@@ -3032,7 +3032,7 @@ bool CLavaPEDoc::MakeSetAndGets (LavaDECL* implDECL, LavaDECL* classDECL, int ch
 
 bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 {
-	bool isNSp, isCreatable, elOk, allOk = true, GUInew = true, GUInewE = true, hasEnum = false;
+	bool isNSp, isCreatable, elOk, allOk = true, /*GUInew = true, GUInewE = true,*/ hasEnum = false;
 	QString cstr;
 	CHETVElem *El;
 	LavaDECL *elDecl, *IFace, *elBase;
@@ -3153,10 +3153,10 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 		}
 		else
 
-			if ((elDecl->DeclType == Function) && elDecl->SecondTFlags.Contains (isGUI))
+			/*if ((elDecl->DeclType == Function) && elDecl->SecondTFlags.Contains (isGUI))
 			{
 				for (El = (CHETVElem*) classDECL->VElems.VElems.first;
-				        El /*&& !El->data.TypeFlags.Contains (oldIsGUI)*/;
+				        El && !El->data.TypeFlags.Contains (oldIsGUI);
 				        El = (CHETVElem*) El->successor);
 				if (El)
 				{
@@ -3171,7 +3171,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 					El->data.TypeFlags = elDecl->TypeFlags;
 					El->data.ok = true;
 				}
-			}
+			}*/
 
 		if (isNSp && (elDecl->DeclType != VirtualType))
 			cheDecl = 0;
@@ -3187,7 +3187,8 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 		        || (elDecl->DeclType == Attr))
 		        && !elDecl->Supports.first
 		        //&& (GUInew || !elDecl->TypeFlags.Contains (oldIsGUI))
-		        && (GUInewE || !elDecl->TypeFlags.Contains (isGUIEdit)))
+		        //&& (GUInewE || !elDecl->TypeFlags.Contains (isGUIEdit))
+            )
 		{
 			El = new CHETVElem;
 			El->data.VTClss = declID;
