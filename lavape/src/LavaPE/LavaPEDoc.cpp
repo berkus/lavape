@@ -3156,7 +3156,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 			if ((elDecl->DeclType == Function) && elDecl->SecondTFlags.Contains (isGUI))
 			{
 				for (El = (CHETVElem*) classDECL->VElems.VElems.first;
-				        El && !El->data.TypeFlags.Contains (oldIsGUI);
+				        El /*&& !El->data.TypeFlags.Contains (oldIsGUI)*/;
 				        El = (CHETVElem*) El->successor);
 				if (El)
 				{
@@ -3186,7 +3186,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 		        || (elDecl->DeclType == Function) && !elDecl->TypeFlags.Contains (isStatic)
 		        || (elDecl->DeclType == Attr))
 		        && !elDecl->Supports.first
-		        && (GUInew || !elDecl->TypeFlags.Contains (oldIsGUI))
+		        //&& (GUInew || !elDecl->TypeFlags.Contains (oldIsGUI))
 		        && (GUInewE || !elDecl->TypeFlags.Contains (isGUIEdit)))
 		{
 			El = new CHETVElem;

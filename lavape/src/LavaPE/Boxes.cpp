@@ -1669,7 +1669,7 @@ ValOnInit CFuncBox::OnInitDialog()
       Native->setChecked(true);
     }
     myDECL->TypeFlags.INCL(isConst);
-    ConstFunc->setChecked(true);
+    //ConstFunc->setChecked(true);
     EventType->setCurrentIndex(0);
 
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
@@ -2155,14 +2155,14 @@ void CFuncBox::on_Initializer_clicked()
                                 || myDECL->TypeFlags.Contains(defaultInitializer)));
   if (ini) {
     ConstFunc->setEnabled(false); 
-    //ConstFunc->setChecked(false); 
-    //Protected->setEnabled(false);
+    ConstFunc->setChecked(false); 
+    Protected->setEnabled(false);
+    Protected->setChecked(false);
     StaticFunc->setEnabled(false);
     StaticFunc->setChecked(false);
     myDECL->TypeFlags.EXCL(isAbstract);
     Abstract->setChecked(false);
     Abstract->setEnabled(false);
-    //Closed->setEnabled(false);
     Signal->setEnabled(false);
     Signal->setChecked(false);
   }
@@ -2171,8 +2171,8 @@ void CFuncBox::on_Initializer_clicked()
     StaticFunc->setEnabled(true);
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
     ConstFunc->setEnabled(true); 
+    ConstFunc->setChecked(true); 
     Protected->setEnabled(true);
-    //Closed->setEnabled(true);
     Signal->setEnabled(true);
   }
   myDECL->TypeFlags.EXCL(isConst);

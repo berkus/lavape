@@ -423,12 +423,12 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
              && !classElDECL->TypeFlags.Contains(isAbstract)
              && !classElDECL->TypeFlags.Contains(isNative);
     if (classElDECL->TypeFlags.Contains(isNative)) {
-      if (classElDECL->TypeFlags.Contains(oldIsGUI))
-        if (classElDECL->TypeFlags.Contains(isGUIEdit))
-          classElDECL->RuntimeDECL = (LavaDECL*)&GUIEdit;
-        else
-          classElDECL->RuntimeDECL = (LavaDECL*)&GUIFillOut;
-      else
+      //if (classElDECL->TypeFlags.Contains(oldIsGUI))
+      //  if (classElDECL->TypeFlags.Contains(isGUIEdit))
+      //    classElDECL->RuntimeDECL = (LavaDECL*)&GUIEdit;
+      //  else
+      //    classElDECL->RuntimeDECL = (LavaDECL*)&GUIFillOut;
+      //else
         if (funcAdapter)
           classElDECL->RuntimeDECL = (LavaDECL*)funcAdapter[nNative];
         /*
