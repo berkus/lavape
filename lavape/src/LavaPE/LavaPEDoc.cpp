@@ -3151,27 +3151,27 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 				classDECL->VElems.VElems.Append (El);
 			}
 		}
-		else
+		//else
 
-			/*if ((elDecl->DeclType == Function) && elDecl->SecondTFlags.Contains (isGUI))
-			{
-				for (El = (CHETVElem*) classDECL->VElems.VElems.first;
-				        El && !El->data.TypeFlags.Contains (oldIsGUI);
-				        El = (CHETVElem*) El->successor);
-				if (El)
-				{
-					if (El->data.TypeFlags.Contains (isGUIEdit))
-						GUInewE = false;
-					else
-						GUInew = false;
-					El->data.VTEl = TID (elDecl->OwnID, elDecl->inINCL);
-					El->data.VTBaseEl = El->data.VTEl;
-					El->data.op = elDecl->op;
-					El->data.Ambgs.Destroy();
-					El->data.TypeFlags = elDecl->TypeFlags;
-					El->data.ok = true;
-				}
-			}*/
+		//	if ((elDecl->DeclType == Function) && elDecl->SecondTFlags.Contains (isGUI))
+		//	{
+		//		for (El = (CHETVElem*) classDECL->VElems.VElems.first;
+		//		        El && !El->data.TypeFlags.Contains (oldIsGUI);
+		//		        El = (CHETVElem*) El->successor);
+		//		if (El)
+		//		{
+		//			if (El->data.TypeFlags.Contains (isGUIEdit))
+		//				GUInewE = false;
+		//			else
+		//				GUInew = false;
+		//			El->data.VTEl = TID (elDecl->OwnID, elDecl->inINCL);
+		//			El->data.VTBaseEl = El->data.VTEl;
+		//			El->data.op = elDecl->op;
+		//			El->data.Ambgs.Destroy();
+		//			El->data.TypeFlags = elDecl->TypeFlags;
+		//			El->data.ok = true;
+		//		}
+		//	}
 
 		if (isNSp && (elDecl->DeclType != VirtualType))
 			cheDecl = 0;
