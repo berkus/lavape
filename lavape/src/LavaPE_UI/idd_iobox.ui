@@ -195,9 +195,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="ElemsStateObjects" >
+           <widget class="QCheckBox" name="ElemsAreVariable" >
             <property name="enabled" >
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="toolTip" >
              <string>If the class of this formal parameter is a collection class (derived from array/set/chain) then you may specify the alterability (immutable/variable) of the collection elements here</string>

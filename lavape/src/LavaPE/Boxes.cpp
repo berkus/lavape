@@ -265,6 +265,10 @@ ValOnInit CAttrBox::OnInitDialog()
     //  ValueObject->setEnabled(false);
     //  AnyCategory->setEnabled(false);
     //}
+    if (myDECL->TypeFlags.Contains(elemsStateObj))
+      ElemsAreVariable->setChecked(true);
+    else
+      ElemsAreVariable->setChecked(false);
     if (myDECL->TypeFlags.Contains(isOptional))
       valkindOfField = 1;
     else
@@ -340,34 +344,6 @@ ValOnInit CAttrBox::OnInitDialog()
       myDoc->MakeBasicBox(BasicTypes, NoDef, true, TypeFlags.Contains(constituent));
       execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
     }
-    /*
-    if (myDoc->GetCategoryFlags(myDECL).Contains(definesObjCat)) {
-      StateObject->setEnabled(false);
-      ValueObject->setEnabled(false);
-    }
-    */
-    //if (myDECL->TypeFlags.Contains(trueObjCat))
-    //  if (myDECL->TypeFlags.Contains(stateObject)) {
-    //    StateObject->setChecked(true);
-    //    ValueObject->setChecked(false);
-    //    AnyCategory->setChecked(false);
-    //  }
-    //  else if (myDECL->TypeFlags.Contains(isAnyCategory)) {
-    //    StateObject->setChecked(false);
-    //    ValueObject->setChecked(false);
-    //    AnyCategory->setChecked(true);
-    //  }
-    //  else {
-    //    StateObject->setChecked(false);
-    //    ValueObject->setChecked(true);
-    //    AnyCategory->setChecked(false);
-    //  }
-    //else {
-    //  StateObject->setChecked(false);
-    //  ValueObject->setChecked(false);
-    //  //AnyCategory->setChecked(false);
-    //}
-
   }
   if (TypeFlags.Contains(isComponent)) {
     myDECL->TypeFlags.INCL(hasSetGet);
@@ -3580,11 +3556,6 @@ ValOnInit CIOBox::OnInitDialog()
        valkindOfField = 1;
     else
        valkindOfField = 0;
-    //if (myDECL->ParentDECL->TypeFlags.Contains(isStatic)) {
-    //  SameAsSelf->setChecked(false);
-    //  myDECL->TypeFlags.EXCL(sameAsSelf);
-    //  SameAsSelf->setEnabled(false);
-    //}
     if (myDECL->TypeFlags.Contains(substitutable)) {
       Substitutable->setChecked(true);
       TypeFlags.INCL(substitutable);
@@ -3594,18 +3565,18 @@ ValOnInit CIOBox::OnInitDialog()
 
     if (myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isSet)
     || myDECL->ParentDECL->ParentDECL->SecondTFlags.Contains(isArray)) {
-      ElemsStateObjects->setEnabled(true);
+      ElemsAreVariable->setEnabled(true);
       if (myDECL->TypeFlags.Contains(collectionElemCat)) {
-        ElemsStateObjects->setChecked(true);
+        ElemsAreVariable->setChecked(true);
         StateObject->setEnabled(false);
       }
       else {
-        ElemsStateObjects->setChecked(false);
+        ElemsAreVariable->setChecked(false);
         StateObject->setEnabled(true);
       }
     }
     else {
-      ElemsStateObjects->setEnabled(false);
+      ElemsAreVariable->setEnabled(false);
       StateObject->setEnabled(true);
     }
     if (myDECL->TypeFlags.Contains(stateObject)) {
@@ -3616,108 +3587,54 @@ ValOnInit CIOBox::OnInitDialog()
       StateObject->setChecked(false);
       TypeFlags.EXCL(stateObject);
     }
-   //if (myDoc->GetCategoryFlags(myDECL, catErr).Contains(definesObjCat)) {
-   //   StateObject->setChecked(false);
-   //   ValueObject->setChecked(false);
-   //   AnyCategory->setChecked(false);
-   //   SameAsSelf->setChecked(false);
-   //   StateObject->setEnabled(false);
-   //   ValueObject->setEnabled(false);
-   //   SameAsSelf->setEnabled(false);
-   //   AnyCategory->setEnabled(false);
-   // }
-    //else 
-      if (myDECL->SecondTFlags.Contains(overrides)) {
-        //StateObject->setEnabled(false);
-        //ValueObject->setEnabled(false);
-        //SameAsSelf->setEnabled(false);
-        //AnyCategory->setEnabled(false);
-        Closed->setEnabled(false);
+    if (myDECL->SecondTFlags.Contains(overrides))
+      Closed->setEnabled(false);
+    che = (CHETID*)myDECL->Supports.first;
+    if (myDECL->SecondTFlags.Contains(overrides)) {
+      if (OrigDECL->DECLError1.first) {
+        baseDECL = myDoc->IDTable.GetDECL(che->data, myDECL->inINCL);
+        if (((CLavaError*)((CHE*)OrigDECL->DECLError1.first)->data)->IDS == &ERR_OverriddenIOType)
+          callBox = true;
+        else 
+          callBox = baseDECL && !baseDECL->DECLError1.first;
       }
-    //if (myDECL->TypeFlags.Contains(trueObjCat))
-    //  if (myDECL->TypeFlags.Contains(stateObject)) {
-    //    StateObject->setChecked(true);
-    //    ValueObject->setChecked(false);
-    //    SameAsSelf->setChecked(false);
-    //    AnyCategory->setChecked(false);
-    //  }
-    //  else {
-    //    StateObject->setChecked(false);
-    //    if (myDECL->TypeFlags.Contains(sameAsSelf)) {
-    //      ValueObject->setChecked(false);
-    //      SameAsSelf->setChecked(true);
-    //      AnyCategory->setChecked(false);
-    //    }
-    //    else if (myDECL->TypeFlags.Contains(isAnyCategory)) {
-    //      StateObject->setChecked(false);
-    //      ValueObject->setChecked(false);
-    //      AnyCategory->setChecked(true);
-    //    }
-    //    else {
-    //      ValueObject->setChecked(true);
-    //      SameAsSelf->setChecked(false);
-    //      AnyCategory->setChecked(false);
-    //    }
-    //  }
-      /*
-    if (myDECL->TypeFlags.Contains(isGUI)) {
-      if (myDECL->DeclType == IAttr) {
-        typeDECL = myDoc->IDTable.GetDECL(myDECL->ParentDECL->ParentDECL->RefID, myDECL->inINCL);
-        if (typeDECL)
-          BaseClassesToCombo(typeDECL);
-      }
-      else {
+      else
+        callBox = false;
+
+      if (!callBox) {
         NamedTypes->setEnabled(false);
         BasicTypes->setEnabled(false);
       }
-    }
-    else {*/
-      che = (CHETID*)myDECL->Supports.first;
-      if (myDECL->SecondTFlags.Contains(overrides)) {
-        if (OrigDECL->DECLError1.first) {
-          baseDECL = myDoc->IDTable.GetDECL(che->data, myDECL->inINCL);
-          if (((CLavaError*)((CHE*)OrigDECL->DECLError1.first)->data)->IDS == &ERR_OverriddenIOType)
-            callBox = true;
-          else 
-            callBox = baseDECL && !baseDECL->DECLError1.first;
-        }
-        else
-          callBox = false;
-
-        if (!callBox) {
+      else {
+        if (myDoc->AutoCorrBox(&ERR_OverriddenIOType) == QDialog::Accepted) {
+          myDECL->RefID.nID = baseDECL->RefID.nID;
+          if (baseDECL->RefID.nID >= 0)
+            myDECL->RefID.nINCL = myDoc->IDTable.IDTab[baseDECL->inINCL]->nINCLTrans[baseDECL->RefID.nINCL].nINCL;
           NamedTypes->setEnabled(false);
           BasicTypes->setEnabled(false);
         }
         else {
-          if (myDoc->AutoCorrBox(&ERR_OverriddenIOType) == QDialog::Accepted) {
-            myDECL->RefID.nID = baseDECL->RefID.nID;
-            if (baseDECL->RefID.nID >= 0)
-              myDECL->RefID.nINCL = myDoc->IDTable.IDTab[baseDECL->inINCL]->nINCLTrans[baseDECL->RefID.nINCL].nINCL;
-            NamedTypes->setEnabled(false);
-            BasicTypes->setEnabled(false);
-          }
-          else {
-            myDoc->MakeBasicBox(BasicTypes, NoDef, true);
-            execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL,
-                                         Attr, TypeFlags);
-          }
+          myDoc->MakeBasicBox(BasicTypes, NoDef, true);
+          execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL,
+                                       Attr, TypeFlags);
         }
       }
-      else {
-        myDoc->MakeBasicBox(BasicTypes, NoDef, true);
-        execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL,
-                                     Attr, TypeFlags);
-      }
-    //}
+    }
+    else {
+      myDoc->MakeBasicBox(BasicTypes, NoDef, true);
+      execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL,
+                                   Attr, TypeFlags);
+    }
     dstr = myDoc->GetTypeLabel(myDECL, false);
     valNewTypeType = QString(dstr.c);
   }
-  //if (myDECL->ParentDECL->TypeFlags.Contains(isStatic)) 
-  //  SameAsSelf->setEnabled(false);
+  if (myDECL->TypeFlags.Contains(elemsStateObj))
+    ElemsAreVariable->setChecked(true);
+  else
+    ElemsAreVariable->setChecked(false);
   if (execAllPatt)
     delete execAllPatt;
   SetSelections(BasicTypes, NamedTypes, valNewTypeType);
-  //SetSelections();  
   if (myDECL->SecondTFlags.Contains(funcImpl)) { // || myDECL->TypeFlags.Contains(isGUI)) {
     NewTypeType->setEnabled(false);
     NewName->setEnabled(false);
@@ -3898,14 +3815,10 @@ void CIOBox::on_ID_OK_clicked()
   else
     myDECL->TypeFlags.EXCL(stateObject);
 
-  //if (SameAsSelf->isChecked())
-  //  myDECL->TypeFlags.INCL(sameAsSelf);
-  //else
-  //  myDECL->TypeFlags.EXCL(sameAsSelf);
-  //if (AnyCategory->isChecked())
-  //  myDECL->TypeFlags.INCL(isAnyCategory);
-  //else
-  //  myDECL->TypeFlags.EXCL(isAnyCategory);
+  if (ElemsAreVariable->isChecked())
+    myDECL->TypeFlags.INCL(elemsStateObj);
+  else
+    myDECL->TypeFlags.EXCL(elemsStateObj);
   if (Closed->isChecked())
     myDECL->SecondTFlags.INCL(closed); 
   else
