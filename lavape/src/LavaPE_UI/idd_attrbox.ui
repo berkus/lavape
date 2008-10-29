@@ -177,34 +177,17 @@
         <number>11</number>
        </property>
        <item>
-        <widget class="QComboBox" name="StateObject" >
-         <item>
-          <property name="text" >
-           <string>Immutable value object</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Variable state object</string>
-          </property>
-         </item>
+        <widget class="QCheckBox" name="StateObject" >
+         <property name="text" >
+          <string>Variable state object</string>
+         </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="ElemCombo" >
-         <property name="enabled" >
-          <bool>true</bool>
+        <widget class="QCheckBox" name="ElemsAreVariable" >
+         <property name="text" >
+          <string>Set/array elements are variable</string>
          </property>
-         <item>
-          <property name="text" >
-           <string>Set/array elements are immutable</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Set/array elements are variable</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item>

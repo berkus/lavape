@@ -289,11 +289,11 @@ ValOnInit CAttrBox::OnInitDialog()
     else
       Substitutable->setChecked(false); 
     if (myDECL->TypeFlags.Contains(stateObject)) {
-      StateObject->setCurrentIndex(1);
+      StateObject->setChecked(true);
       TypeFlags.INCL(stateObject);
     }
     else
-      StateObject->setCurrentIndex(0); 
+      StateObject->setChecked(false); 
     //if (myDECL->TypeFlags.Contains(elemsStateObj)) {
     //  ElemCat->setCurrentIndex(1);
     //  TypeFlags.INCL(elemsStateObj);
@@ -379,7 +379,7 @@ ValOnInit CAttrBox::OnInitDialog()
     Protected->setChecked(myDECL->TypeFlags.Contains(isProtected));
     ReadOnly->setChecked(myDECL->TypeFlags.Contains(isConst));
     if (myDECL->TypeFlags.Contains(stateObject))
-    StateObject->setCurrentIndex(1);
+      StateObject->setChecked(true);
     StateObject->setEnabled(true);
     Consumable->setChecked(myDECL->TypeFlags.Contains(consumable));
     SetGet->setChecked(myDECL->TypeFlags.Contains(hasSetGet));
@@ -659,11 +659,11 @@ void CAttrBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(isConst);
   else
     myDECL->TypeFlags.EXCL(isConst);
-  if (StateObject->currentIndex() == 1)
+  if (StateObject->isChecked())
     myDECL->TypeFlags.INCL(stateObject);
   else
     myDECL->TypeFlags.EXCL(stateObject);
-  if (ElemCombo->currentIndex() == 1)
+  if (ElemsAreVariable->isChecked())
     myDECL->TypeFlags.INCL(elemsStateObj);
   else
     myDECL->TypeFlags.EXCL(elemsStateObj);
@@ -1745,15 +1745,18 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     else
       EnforceOver->setChecked(false);
-    //if (!myDECL->ParentDECL->SecondTFlags.Contains(isSet))
-    //  ConstFunc->removeItem(2);
-    //ConstFunc->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     if (myDECL->TypeFlags.Contains(isConst))
       ConstFunc->setChecked(true);
-    //else if (myDECL->TypeFlags.Contains(collectionElemCat))
-    //  ConstFunc->setCurrentIndex(2);
     else
       ConstFunc->setChecked(false);
+    if (myDECL->ParentDECL->SecondTFlags.Contains(isSet)
+    || myDECL->ParentDECL->SecondTFlags.Contains(isArray)) {
+      ElemsAreVariable->setVisible(true);
+      if (myDECL->TypeFlags.Contains(elemsStateObj))
+        ElemsAreVariable->setChecked(true);
+      else
+        ElemsAreVariable->setChecked(false);
+    }
     if (myDECL->TypeFlags.Contains(isInitializer)) {
       ConstFunc->setEnabled(false); 
       ConstFunc->setChecked(false);
@@ -2546,12 +2549,14 @@ void CFuncBox::on_ID_OK_clicked() // flags korr!!!
     myDECL->TypeFlags.INCL(forceOverride);
   else
     myDECL->TypeFlags.EXCL(forceOverride);
-  if (ConstFunc->isChecked()) {
+  if (ConstFunc->isChecked())
     myDECL->TypeFlags.INCL(isConst); 
-  }
-  else {
+  else
     myDECL->TypeFlags.EXCL(isConst);
-  }
+  if (ElemsAreVariable->isChecked())
+    myDECL->TypeFlags.INCL(elemsStateObj); 
+  else
+    myDECL->TypeFlags.EXCL(elemsStateObj);
   if (Signal->isChecked())
     myDECL->SecondTFlags.INCL(isLavaSignal); 
   else
