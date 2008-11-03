@@ -237,7 +237,7 @@ ValOnInit CAttrBox::OnInitDialog()
     ID_CANCEL->setDefault( true );
   }
 
- if (onNew) {
+  if (onNew) {
     TypeFlags.INCL(constituent);
     myDECL->TypeFlags.INCL(constituent);
     //myDECL->TypeFlags.INCL(trueObjCat);
@@ -253,22 +253,23 @@ ValOnInit CAttrBox::OnInitDialog()
       valkindOfField = 0;
       valkindOfRef = 0;
     }
+    ElemsAreVariable->setVisible(false);
   }
   else {
     valNewName = QString(myDECL->LocalName.c);
     DString dstr = myDoc->GetTypeLabel(myDECL, false);
     valNewTypeType = QString(dstr.c);
     LavaDECL *decl = myDoc->CheckGetFinalMType(myDECL);
-    //if (decl->SecondTFlags.Contains(isSet) || decl->SecondTFlags.Contains(isArray))
-    //  ElemCat->setEnabled(true);
-    //if (myDoc->GetCategoryFlags(myDECL, catErr).Contains(stateObject))
-    //  ValueObject->setEnabled(false);
-    //  AnyCategory->setEnabled(false);
-    //}
-    if (myDECL->TypeFlags.Contains(elemsStateObj))
-      ElemsAreVariable->setChecked(true);
+    if (decl->SecondTFlags.Contains(isSet)
+    || decl->SecondTFlags.Contains(isArray)) {
+      ElemsAreVariable->setVisible(true);
+      if (myDECL->TypeFlags.Contains(elemsStateObj))
+        ElemsAreVariable->setChecked(true);
+      else
+        ElemsAreVariable->setChecked(false);
+    }
     else
-      ElemsAreVariable->setChecked(false);
+      ElemsAreVariable->setVisible(false);
     if (myDECL->TypeFlags.Contains(isOptional))
       valkindOfField = 1;
     else
@@ -298,12 +299,6 @@ ValOnInit CAttrBox::OnInitDialog()
     }
     else
       StateObject->setChecked(false); 
-    //if (myDECL->TypeFlags.Contains(elemsStateObj)) {
-    //  ElemCat->setCurrentIndex(1);
-    //  TypeFlags.INCL(elemsStateObj);
-    //}
-    //else
-    //  ElemCat->setCurrentIndex(0); 
     if (myDECL->SecondTFlags.Contains(overrides)) {
       cheS = (CHETID*)myDECL->Supports.first;
       while (cheS) {
@@ -502,42 +497,20 @@ void CAttrBox::on_NamedTypes_activated(int pos)
     myDECL->DeclDescType = NamedType;
     SynFlags inheritedFlag = myDoc->GetCategoryFlags(myDECL, catErr); 
     LavaDECL *decl = myDoc->CheckGetFinalMType(myDECL);
-    //if (decl->SecondTFlags.Contains(isSet) || decl->SecondTFlags.Contains(isArray))
-    //  ElemCat->setEnabled(true);
-    //else {
-    //  ElemCat->setEnabled(false);
-    //  ElemCat->setCurrentIndex(0);
-    //}
-    //StateObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
-    //ValueObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
-    //AnyCategory->setEnabled(!inheritedFlag.Contains(definesObjCat));
-    //if (inheritedFlag.Contains(definesObjCat))
-    //  if (myDECL->TypeFlags.Contains(trueObjCat)) {
-    //    if (myDECL->TypeFlags.Contains(stateObject)) {
-    //      StateObject->setChecked(true);
-    //      ValueObject->setChecked(false);
-    //      //AnyCategory->setChecked(false);
-    //    }
-    //    else if (myDECL->TypeFlags.Contains(isAnyCategory)) {
-    //      StateObject->setChecked(false);
-    //      ValueObject->setChecked(false);
-    //      //AnyCategory->setChecked(true);
-    //    }
-    //    else {
-    //      StateObject->setChecked(false);
-    //      ValueObject->setChecked(true);
-    //      //AnyCategory->setChecked(false);
-    //    }
-    //  }
-    //  else {
-    //    StateObject->setChecked(false);
-    //    ValueObject->setChecked(false);
-    //    //AnyCategory->setChecked(false);
-    //  }
   }
   else 
-   SetSelections(BasicTypes, NamedTypes, valNewTypeType);
-   //SetSelections();
+    SetSelections(BasicTypes, NamedTypes, valNewTypeType);
+  LavaDECL *decl = myDoc->CheckGetFinalMType(myDECL);
+  if (decl->SecondTFlags.Contains(isSet)
+  || decl->SecondTFlags.Contains(isArray)) {
+    ElemsAreVariable->setVisible(true);
+    if (myDECL->TypeFlags.Contains(elemsStateObj))
+      ElemsAreVariable->setChecked(true);
+    else
+      ElemsAreVariable->setChecked(false);
+  }
+  else
+    ElemsAreVariable->setVisible(false);
   UpdateData(false);
 }
 
@@ -554,21 +527,21 @@ void CAttrBox::on_BasicTypes_activated(int pos)
   }
   else 
     SetSelections(BasicTypes, NamedTypes, valNewTypeType);
+  decl = myDoc->CheckGetFinalMType(myDECL);
+  //decl = myDoc->IDTable.GetDECL(myDECL->RefID);
+  if (decl->SecondTFlags.Contains(isSet)
+  || decl->SecondTFlags.Contains(isArray)) {
+    ElemsAreVariable->setVisible(true);
+    if (myDECL->TypeFlags.Contains(elemsStateObj))
+      ElemsAreVariable->setChecked(true);
+    else
+      ElemsAreVariable->setChecked(false);
+  }
+  else
+    ElemsAreVariable->setVisible(false);
   UpdateData(false);
 }
 
-/*
-bool CAttrBox::SetSelections()
-{
-  BasicTypes->setCurrentIndex(0);
-  NamedTypes->setCurrentIndex(0);
-  //int cb1= CB_ERR, cb2= CB_ERR;
-  if (myDECL->DeclDescType == BasicType) 
-    cb1 = BasicTypes->setCurrentText(valNewTypeType);   
-  else
-    cb2 = NamedTypes->setCurrentText(valNewTypeType);
-  return true;//(cb1 != CB_ERR) || (cb2 != CB_ERR);
-}*/
 
 void CAttrBox::on_Substitutable_clicked() 
 {
@@ -1657,6 +1630,9 @@ ValOnInit CFuncBox::OnInitDialog()
       CalcOpBox();
     }
     CHECKHandler->setEnabled(false);
+    if (myDECL->ParentDECL->SecondTFlags.Contains(isSet)
+    || myDECL->ParentDECL->SecondTFlags.Contains(isArray))
+      ElemsAreVariable->setVisible(true);
   }  
   else {
     valNewName = QString(myDECL->LocalName.c);
@@ -1704,9 +1680,19 @@ ValOnInit CFuncBox::OnInitDialog()
       ConstFunc->setEnabled(false);
       Closed->setEnabled(false);
       Closed->setChecked(false);
+      ElemsAreVariable->setVisible(false);
     }
-    else
+    else {
       StaticFunc->setChecked(false);
+      if (myDECL->ParentDECL->SecondTFlags.Contains(isSet)
+      || myDECL->ParentDECL->SecondTFlags.Contains(isArray)) {
+        ElemsAreVariable->setVisible(true);
+        if (myDECL->TypeFlags.Contains(elemsStateObj))
+          ElemsAreVariable->setChecked(true);
+        else
+          ElemsAreVariable->setChecked(false);
+      }
+    }
     if (myDECL->TypeFlags.Contains(isProtected)) {
       Protected->setChecked(true);
       StaticFunc->setEnabled(false);
@@ -1725,14 +1711,6 @@ ValOnInit CFuncBox::OnInitDialog()
       ConstFunc->setChecked(true);
     else
       ConstFunc->setChecked(false);
-    if (myDECL->ParentDECL->SecondTFlags.Contains(isSet)
-    || myDECL->ParentDECL->SecondTFlags.Contains(isArray)) {
-      ElemsAreVariable->setVisible(true);
-      if (myDECL->TypeFlags.Contains(elemsStateObj))
-        ElemsAreVariable->setChecked(true);
-      else
-        ElemsAreVariable->setChecked(false);
-    }
     if (myDECL->TypeFlags.Contains(isInitializer)) {
       ConstFunc->setEnabled(false); 
       ConstFunc->setChecked(false);
@@ -2112,6 +2090,8 @@ void CFuncBox::on_StaticFunc_clicked()
     //ConstFunc->setChecked(true);
     ConstFunc->setEnabled(false);
     Closed->setEnabled(false);
+    ElemsAreVariable->setVisible(false);
+    myDECL->TypeFlags.EXCL(elemsStateObj);
   }
   else {
     Protected->setEnabled(true);
@@ -2120,6 +2100,11 @@ void CFuncBox::on_StaticFunc_clicked()
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     ConstFunc->setEnabled(true);
     Closed->setEnabled(true);
+    if (myDECL->ParentDECL->SecondTFlags.Contains(isSet)
+    || myDECL->ParentDECL->SecondTFlags.Contains(isArray)) {
+      ElemsAreVariable->setVisible(true);
+      ElemsAreVariable->setChecked(false);
+    }
   }
   UpdateData(false);
 }

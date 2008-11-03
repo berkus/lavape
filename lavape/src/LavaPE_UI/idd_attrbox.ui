@@ -333,7 +333,7 @@
            <enum>Qt::StrongFocus</enum>
           </property>
           <property name="text" >
-           <string>Mandatory</string>
+           <string>Required</string>
           </property>
          </widget>
         </item>
