@@ -928,8 +928,8 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
         else if (elDef->TypeFlags.Contains(collectionElemCat)) {
           lab += DString(", set/array elem. category");
         }
-        if (elDef->TypeFlags.Contains(elemsStateObj))
-          elDef->TypeFlags.EXCL(elemsStateObj);
+        //if (elDef->TypeFlags.Contains(elemsStateObj))
+        //  elDef->TypeFlags.EXCL(elemsStateObj);
           //lab += DString(", set/array elements are variable");
         if (elDef->TypeFlags.Contains(acquaintance))
           lab += DString(", acquaintance ");

@@ -502,15 +502,11 @@ void CAttrBox::on_NamedTypes_activated(int pos)
     SetSelections(BasicTypes, NamedTypes, valNewTypeType);
   LavaDECL *decl = myDoc->CheckGetFinalMType(myDECL);
   if (decl->SecondTFlags.Contains(isSet)
-  || decl->SecondTFlags.Contains(isArray)) {
+  || decl->SecondTFlags.Contains(isArray))
     ElemsAreVariable->setVisible(true);
-    if (myDECL->TypeFlags.Contains(elemsStateObj))
-      ElemsAreVariable->setChecked(true);
-    else
-      ElemsAreVariable->setChecked(false);
-  }
   else
     ElemsAreVariable->setVisible(false);
+  ElemsAreVariable->setChecked(false);
   UpdateData(false);
 }
 
@@ -528,17 +524,12 @@ void CAttrBox::on_BasicTypes_activated(int pos)
   else 
     SetSelections(BasicTypes, NamedTypes, valNewTypeType);
   decl = myDoc->CheckGetFinalMType(myDECL);
-  //decl = myDoc->IDTable.GetDECL(myDECL->RefID);
   if (decl->SecondTFlags.Contains(isSet)
-  || decl->SecondTFlags.Contains(isArray)) {
+  || decl->SecondTFlags.Contains(isArray))
     ElemsAreVariable->setVisible(true);
-    if (myDECL->TypeFlags.Contains(elemsStateObj))
-      ElemsAreVariable->setChecked(true);
-    else
-      ElemsAreVariable->setChecked(false);
-  }
   else
     ElemsAreVariable->setVisible(false);
+  ElemsAreVariable->setChecked(false);
   UpdateData(false);
 }
 
@@ -624,10 +615,6 @@ void CAttrBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(consumable);
   else
     myDECL->TypeFlags.EXCL(consumable);
-  //if (StateObject->isChecked())
-  //  myDECL->TypeFlags.INCL(stateObject);
-  //else
-  //  myDECL->TypeFlags.EXCL(stateObject);
   if (SetGet->isChecked()) {
     myDECL->TypeFlags.INCL(hasSetGet);
     if (myDECL->ParentDECL && myDECL->ParentDECL->TypeFlags.Contains(isNative)
