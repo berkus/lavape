@@ -311,7 +311,7 @@ ValOnInit CAttrBox::OnInitDialog()
         }
         else
           if (baseDECL->TypeFlags.Contains(isStatic)) {
-            if (myDoc->AutoCorrBox(&ERR_OverriddenStatic) != QDialog::Accepted) {
+            if (myDoc->AutoCorrBox(&ERR_OverriddenStatic) != QMessageBox::Ok) { //QDialog::Accepted) {
               return BoxCancel; //QDialog::reject();
             }
             myDECL->Supports.Destroy();
@@ -712,7 +712,7 @@ ValOnInit CCompSpecBox::OnInitDialog()
           myDECL->Supports.Uncouple(cheS);
           delete cheS;
           cheS = ncheS;
-          if (myDoc->AutoCorrBox(&ERR_NoBaseIF) != QDialog::Accepted)  {
+          if (myDoc->AutoCorrBox(&ERR_NoBaseIF) != QMessageBox::Ok) { //QDialog::Accepted)  {
             QDialog::reject();
             return BoxCancel;
           }
@@ -1745,7 +1745,7 @@ ValOnInit CFuncBox::OnInitDialog()
           myDECL->Inherits.Uncouple(cheS);
           delete cheS;
           cheS = ncheS;
-          if (myDoc->AutoCorrBox(&ERR_NoFiredIF) != QDialog::Accepted)  {
+          if (myDoc->AutoCorrBox(&ERR_NoFiredIF) != QMessageBox::Ok) { //QDialog::Accepted)  {
             return BoxCancel; //QDialog::reject();
           }
         }
@@ -1755,7 +1755,7 @@ ValOnInit CFuncBox::OnInitDialog()
         myDECL->Inherits.Uncouple(cheS);
         delete cheS;
         cheS = ncheS;
-        if (myDoc->AutoCorrBox(&ERR_OverThrow)  != QDialog::Accepted) {
+        if (myDoc->AutoCorrBox(&ERR_OverThrow)  != QMessageBox::Ok) { //QDialog::Accepted) {
           return BoxCancel; //QDialog::reject();
         }
       }
@@ -1777,7 +1777,7 @@ ValOnInit CFuncBox::OnInitDialog()
         }
         else
           if (baseDECL->TypeFlags.Contains(isStatic)) {
-            if (myDoc->AutoCorrBox(&ERR_OverriddenStatic) != QDialog::Accepted) {
+            if (myDoc->AutoCorrBox(&ERR_OverriddenStatic) != QMessageBox::Ok) { //QDialog::Accepted) {
               return BoxCancel; //QDialog::reject();
             }
             myDECL->Supports.Destroy();
@@ -3546,7 +3546,7 @@ ValOnInit CIOBox::OnInitDialog()
         BasicTypes->setEnabled(false);
       }
       else {
-        if (myDoc->AutoCorrBox(&ERR_OverriddenIOType) == QDialog::Accepted) {
+        if (myDoc->AutoCorrBox(&ERR_OverriddenIOType) == QMessageBox::Ok) { //QDialog::Accepted) {
           myDECL->RefID.nID = baseDECL->RefID.nID;
           if (baseDECL->RefID.nID >= 0)
             myDECL->RefID.nINCL = myDoc->IDTable.IDTab[baseDECL->inINCL]->nINCLTrans[baseDECL->RefID.nINCL].nINCL;
@@ -3801,7 +3801,7 @@ ValOnInit CPackageBox::OnInitDialog()
           myDECL->Supports.Uncouple(cheS);
           delete cheS;
           cheS = ncheS;
-          if (myDoc->AutoCorrBox(&ERR_NoBaseIF) != QDialog::Accepted) {
+          if (myDoc->AutoCorrBox(&ERR_NoBaseIF) != QMessageBox::Ok) { //QDialog::Accepted) {
             //QDialog::reject();
             return BoxCancel; ;
           }
