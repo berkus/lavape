@@ -3091,15 +3091,11 @@ void CInterfaceBox::on_DelSupport_clicked()
     delete Extends->takeItem(pos);
     ListToChain(Extends, &myDECL->Supports);
     ContainerCheck();
-	  //if (!myDECL->SecondTFlags.Contains(isArray)
-	  //&& !myDECL->SecondTFlags.Contains(isSet)
-	  //&& !myDECL->SecondTFlags.Contains(isChain)) {
-	  //  ElemCombo->setEnabled(false);
-	    //ElemCatLabel->setVisible(false);
-	  //}
-    //ResetComboItems(ExtTypes);
-    //CExecBase *execBase = new CExecBase(this);
-    //delete execBase;
+	  if (myDECL->SecondTFlags.Contains(isArray)
+	  || myDECL->SecondTFlags.Contains(isSet))
+	    ElemsConstituents->setVisible(true);
+    else
+	    ElemsConstituents->setVisible(false);
     UpdateData(false);
   }
 }
@@ -3118,14 +3114,14 @@ void CInterfaceBox::on_ExtTypes_activated(int pos)
     if (myDoc->IDTable.InsertBaseClass(myDECL, baseDECL, ContextDECL, true)) {
       SupportsToList();
       ContainerCheck();
-      //ResetComboItems(ExtTypes);
-      //CExecBase *execBase = new CExecBase(this);
-      //delete execBase;
+		  if (myDECL->SecondTFlags.Contains(isArray)
+		  || myDECL->SecondTFlags.Contains(isSet))
+		    ElemsConstituents->setVisible(true);
+      //if (baseDECL->SecondTFlags.Contains(isSet)) {
+      //  BuildSet->setChecked(false);
+      //  BuildSet->setEnabled(false);
+      //}
       BasicTypes->setCurrentIndex(0);
-      if (baseDECL->SecondTFlags.Contains(isSet)) {
-        BuildSet->setChecked(false);
-        BuildSet->setEnabled(false);
-      }
       UpdateData(false);
     }
   }
@@ -3145,12 +3141,9 @@ void CInterfaceBox::on_BasicTypes_activated(int pos)
     if (myDoc->IDTable.InsertBaseClass(myDECL, myDoc->IDTable.GetDECL(comboItem->itemData(), 0), ContextDECL, true)) {
       SupportsToList();
       ContainerCheck();
-		  //if (myDECL->SecondTFlags.Contains(isArray)
-		  //|| myDECL->SecondTFlags.Contains(isSet)
-		  //|| myDECL->SecondTFlags.Contains(isChain)) {
-		  //  ElemCombo->setEnabled(true);
-		    //ElemCatLabel->setVisible(true);
-		  //}
+		  if (myDECL->SecondTFlags.Contains(isArray)
+		  || myDECL->SecondTFlags.Contains(isSet))
+		    ElemsConstituents->setVisible(true);
       ExtTypes->setCurrentIndex(0);
       UpdateData(false);
     }
