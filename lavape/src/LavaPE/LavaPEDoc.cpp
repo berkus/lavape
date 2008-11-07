@@ -275,7 +275,7 @@ void CLavaPEDoc::AutoCorr (LavaDECL* decl)
 				            || (((CLavaError*) che->data)->IDS == &ERR_NoSetGetMember)
 				            || (((CLavaError*) che->data)->IDS == &ERR_NoImplForAbstract)
 				            || (((CLavaError*) che->data)->IDS == &ERR_ImplOfAbstract);
-				if (AutoCorrBox (((CLavaError*) che->data)->IDS) != QDialog::Accepted)
+				if (AutoCorrBox (((CLavaError*) che->data)->IDS) != QMessageBox::Ok) //QDialog::Accepted)
 				{
 					if (lfuncImpl)
 						decl->WorkFlags.INCL (allowDEL);
