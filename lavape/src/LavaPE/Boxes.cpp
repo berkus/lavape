@@ -1615,9 +1615,6 @@ ValOnInit CFuncBox::OnInitDialog()
       CalcOpBox();
     }
     CHECKHandler->setEnabled(false);
-    if (myDECL->ParentDECL->SecondTFlags.Contains(isSet)
-    || myDECL->ParentDECL->SecondTFlags.Contains(isArray))
-      ElemsAreVariable->setVisible(true);
   }  
   else {
     valNewName = QString(myDECL->LocalName.c);
@@ -1896,6 +1893,15 @@ ValOnInit CFuncBox::OnInitDialog()
         CHECKHandler->setEnabled(false);
     }
   }
+
+  if (myDECL->ParentDECL->SecondTFlags.Contains(isSet)
+  || myDECL->ParentDECL->SecondTFlags.Contains(isArray))
+    ElemsAreVariable->setVisible(true);
+  else {
+    ElemsAreVariable->setVisible(false);
+    myDECL->TypeFlags.EXCL(elemsStateObj);
+  }
+
   CHECKHandler->setChecked(myDECL->SecondTFlags.Contains(isHandler));
   EventType->setEnabled(myDECL->SecondTFlags.Contains(isHandler) && !myDECL->SecondTFlags.Contains(funcImpl));
   FieldList->setEnabled(myDECL->SecondTFlags.Contains(isHandler) && !myDECL->SecondTFlags.Contains(funcImpl));
