@@ -288,7 +288,7 @@ $TYPE +CDP {
     //24, X0100 0000 Concurrent function or initiator
     execIndependent,
     //25, X0200 0000 Independent function or initiator
-    FREE_TYPEFLAG4,//det/chain/array: the current collection class defines the category of the collection elements
+    elemsConstituents,//set/chain/array: the elements of the current collection class are constituents
     //26, X0400 0000
     consumable,
     //27, X0800 0000

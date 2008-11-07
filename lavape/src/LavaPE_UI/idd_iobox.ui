@@ -181,7 +181,7 @@
           <item>
            <widget class="QCheckBox" name="LikeElemCat" >
             <property name="enabled" >
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="toolTip" >
              <string>If the "self" variable of the current member function is of a array/set/chain class then you may specify that the current formal parameter shall have the same alterability as the elements of "self"</string>

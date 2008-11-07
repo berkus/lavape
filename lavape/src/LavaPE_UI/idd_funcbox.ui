@@ -169,19 +169,19 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="ConstFunc" >
+          <widget class="QCheckBox" name="SelfIsVariable" >
            <property name="text" >
-            <string>"self" is immutable</string>
+            <string>"self" is variable</string>
            </property>
            <property name="checked" >
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QCheckBox" name="ElemsAreVariable" >
            <property name="enabled" >
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="text" >
             <string>"self" elements are variable</string>

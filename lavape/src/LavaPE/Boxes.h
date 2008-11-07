@@ -499,7 +499,6 @@ public:
   bool onNew;
   LavaDECL * OrigDECL;
   SynFlags TypeFlags;
- // bool SetSelections();
 
   QString valNewName;
   QString valNewTypeType;
