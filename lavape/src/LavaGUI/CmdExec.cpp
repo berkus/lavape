@@ -388,6 +388,7 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
           doIt = *(bool*)(Handler_Stack[SFH+2]+LSH);
           DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+2]);
  	        delete [] Handler_Stack;
+          Handler_Stack = 0;
           if (!doIt)
             return true;
         }
