@@ -102,7 +102,8 @@ else
     ifeq ($(OPSYS),SunOS)
       OSCPPFLAGS = -fPIC -D__$(OPSYS) -fno-strict-aliasing
     else
-      OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
+#      OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
+      OSCPPFLAGS = -D__$(OPSYS)
     endif
     DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
     DLLSUFFIX = .so

@@ -867,7 +867,7 @@ public:
   bool-- vBaseIsOuter;
   LavaDECL-- *funcDecl, *objTypeDecl,  *vBaseType;
   CContext-- callCtx;
-  bool-- callObjCat;
+//  bool-- callObjCat;
 //  bool-- isStateObj;
   SynFlags-- myCtxFlags;
 
@@ -994,7 +994,7 @@ class CondExpression : public Expression {
 public:
   LavaDECL-- *targetDecl;
   CContext-- targetCtx;
-  bool-- callObjCat;
+//  bool-- callObjCat;
   bool-- isOpt;
 
   CondExpression ();

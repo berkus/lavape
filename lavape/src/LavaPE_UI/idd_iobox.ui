@@ -111,7 +111,7 @@
        <item>
         <widget class="QGroupBox" name="BGroup_ObjCat" >
          <property name="title" >
-          <string>Requisiteness</string>
+          <string>Value may be "null"</string>
          </property>
          <layout class="QVBoxLayout" >
           <property name="spacing" >
@@ -132,7 +132,7 @@
              <string>A non-null value is required for this variable</string>
             </property>
             <property name="text" >
-             <string>Required</string>
+             <string>No</string>
             </property>
            </widget>
           </item>
@@ -148,7 +148,7 @@
              <string>May assume the value "null"</string>
             </property>
             <property name="text" >
-             <string>Optional</string>
+             <string>Yes</string>
             </property>
            </widget>
           </item>

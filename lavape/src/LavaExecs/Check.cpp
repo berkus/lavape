@@ -636,7 +636,7 @@ bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, 
     }
 }
 
-bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext &callCtx, bool callObjCat)
+bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext &callCtx)
 {
   Expression *actSynObj=(Expression*)actParm->data;
   Expression *parm=(actSynObj->primaryToken==parameter_T?
@@ -703,7 +703,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
     ((CondExpression*)parm)->targetDecl = formTypeDecl;
     ((CondExpression*)parm)->targetCtx = ckd.tempCtx;
     ((CondExpression*)parm)->targetCat = formCat;
-    ((CondExpression*)parm)->callObjCat = callObjCat;
+    //((CondExpression*)parm)->callObjCat = callObjCat;
     ok &= parm->Check(ckd);
   }
   else {
@@ -720,7 +720,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   return ok;
 }
 
-bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext &callCtx, bool callObjCat)
+bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext &callCtx)
 {
   SynObject *actSynObj=(SynObject*)actParm->data;
   TID formTID;
@@ -1320,14 +1320,6 @@ void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFla
         else
           ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
         cat = declOutparm1->TypeFlags.Contains(stateObject);
-        //if (cat == unknownCategory
-        //&& declOutparm1->TypeFlags.Contains(trueObjCat) && !declOutparm1->TypeFlags.Contains(isAnyCategory))
-        //  if (declOutparm1->TypeFlags.Contains(stateObject))
-        //    cat = stateObj;
-        //  else if (declOutparm1->TypeFlags.Contains(sameAsSelf))
-        //    cat = sameAsSelfObj;
-        //  else
-        //    cat = valueObj;
       }
 #ifndef INTERPRETER
     }
@@ -1466,7 +1458,7 @@ bool MultipleOp::Check (CheckData &ckd)
   while (chpActIn) {
   //if (!((SynObject*)chpActIn->data)->IsIfStmExpr()) {
       if (chpActIn->predecessor)
-        compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
+        compatibleInput(ckd,chpActIn,chpFormIn,callContext);
       opd = (Expression*)chpActIn->data;
       formInParmDecl = (LavaDECL*)chpFormIn->data;
       if (opd->IsOptional(ckd)
@@ -2620,8 +2612,6 @@ bool InSetStatement::Check (CheckData &ckd)
       opd1->SetError(ckd,ckd.errorCode);
       ok = false;
     }
-    //if (cat1 != unknownCategory
-    //&& cat2 != unknownCategory
     if (cat1 != cat2) {
       opd1->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
@@ -2646,8 +2636,6 @@ bool InSetStatement::Check (CheckData &ckd)
           ok = false;
         }
         if (declSetEl
-        //&& cat1 != unknownCategory
-        //&& cat2 != unknownCategory
         && cat1 != cat2) {
           opd1->SetError(ckd,&ERR_IncompatibleCategory);
           ok = false;
@@ -2672,7 +2660,6 @@ void BinaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags
   LavaDECL *declOp1;
 #endif
   CHE *chpOutparm1;
-//  SynFlags ctxFlags;
 
   decl = 0;
   cat = true;
@@ -2708,14 +2695,6 @@ void BinaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, SynFlags& ctxFlags
           ctxFlags = SET(multiContext,-1);
         else
           ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
-        //if (cat == unknownCategory
-        //&& declOutparm1->TypeFlags.Contains(trueObjCat) && !declOutparm1->TypeFlags.Contains(isAnyCategory))
-        //  if (declOutparm1->TypeFlags.Contains(stateObject))
-        //    cat = stateObj;
-        //  else if (declOutparm1->TypeFlags.Contains(sameAsSelf))
-        //    cat = sameAsSelfObj;
-        //  else
-        //    cat = valueObj;
       }
 #ifndef INTERPRETER
     }
@@ -2834,7 +2813,7 @@ bool BinaryOp::Check (CheckData &ckd)
     ((CondExpression*)opd2)->targetDecl = formTypeDecl;
     ((CondExpression*)opd2)->targetCtx = ctx;
     ((CondExpression*)opd2)->targetCat = formCat2;
-    ((CondExpression*)opd2)->callObjCat = callObjCat;
+    //((CondExpression*)opd2)->callObjCat = callObjCat;
     ok &= ((SynObject*)opd2)->Check(ckd);
   }
   else {
@@ -3826,7 +3805,7 @@ bool Assignment::Check (CheckData &ckd)
     ((CondExpression*)exprValue.ptr)->targetDecl = targetDecl;
     ((CondExpression*)exprValue.ptr)->targetCtx = targetCtx;
     ((CondExpression*)exprValue.ptr)->targetCat = catTarget;
-    ((CondExpression*)exprValue.ptr)->callObjCat = catTarget;
+    //((CondExpression*)exprValue.ptr)->callObjCat = catTarget;
   }
 
   ok &= ((SynObject*)exprValue.ptr)->Check(ckd);
@@ -4325,7 +4304,7 @@ bool FuncExpression::Check (CheckData &ckd)
     if (objTypeDecl) {
       callCtx = ckd.tempCtx;
       ckd.document->NextContext(objTypeDecl, callCtx);
-      callObjCat = cat;
+      //callObjCat = cat;
       if (callExpr->flags.Contains(isSelfVar)
       && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
         // Implementation required for self, rather than Interface
@@ -4404,7 +4383,7 @@ bool FuncExpression::Check (CheckData &ckd)
 //    if (IsPH(function.ptr))
 //      ERROREXIT
 
-    callObjCat = true;
+    //callObjCat = true;
     funcTid = ((Reference*)function.ptr)->refID;
     ADJUST4(funcTid);
     funcDecl = ckd.document->IDTable.GetDECL(funcTid);
@@ -4474,7 +4453,7 @@ bool FuncExpression::Check (CheckData &ckd)
       }
       closedLevel = qMax(opd->closedLevel,closedLevel);
       // check act.parm/form.parm. type compatibility:
-      ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
+      ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext);
 #ifdef INTERPRETER
       formInParmDecl = (LavaDECL*)chpFormIn->data;
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,ctxFlags,cat);
@@ -4678,7 +4657,7 @@ bool FuncStatement::Check (CheckData &ckd)
       if (rc) {
         ok &= rc;
       // check act.parm/form.parm. type compatibility:
-        ok &= compatibleOutput(ckd,chpActOut,chpFormOut,callContext,callObjCat);
+        ok &= compatibleOutput(ckd,chpActOut,chpFormOut,callContext);
         formOutParmDecl = (LavaDECL*)chpFormOut->data;
         if (formOutParmDecl->TypeFlags.Contains(isOptional)
         && !opd->IsOptional(ckd)) {
@@ -5326,7 +5305,7 @@ bool IfExpression::Check (CheckData &ckd)
       ((CondExpression*)opd->thenPart.ptr)->targetDecl = targetDecl;
       ((CondExpression*)opd->thenPart.ptr)->targetCtx = targetCtx;
       ((CondExpression*)opd->thenPart.ptr)->targetCat = targetCat;
-      ((CondExpression*)opd->thenPart.ptr)->callObjCat = callObjCat;
+      //((CondExpression*)opd->thenPart.ptr)->callObjCat = callObjCat;
     }
     ok &= opd->Check(ckd);
     if (((SynObject*)opd->thenPart.ptr)->IsOptional(ckd))
@@ -5364,7 +5343,7 @@ bool IfExpression::Check (CheckData &ckd)
       ((CondExpression*)elsePart.ptr)->targetDecl = targetDecl;
       ((CondExpression*)elsePart.ptr)->targetCtx = targetCtx;
       ((CondExpression*)elsePart.ptr)->targetCat = targetCat;
-      ((CondExpression*)elsePart.ptr)->callObjCat = callObjCat;
+      //((CondExpression*)elsePart.ptr)->callObjCat = callObjCat;
     }
     ok &= ((SynObject*)elsePart.ptr)->Check(ckd);
     if (!((SynObject*)elsePart.ptr)->IsIfStmExpr()) {
@@ -5433,13 +5412,13 @@ bool ElseExpression::Check (CheckData &ckd)
     ((CondExpression*)opd1)->targetDecl = targetDecl;
     ((CondExpression*)opd1)->targetCtx = targetCtx;
     ((CondExpression*)opd1)->targetCat = targetCat;
-    ((CondExpression*)opd1)->callObjCat = callObjCat;
+    //((CondExpression*)opd1)->callObjCat = callObjCat;
   }
   if (opd2->IsIfStmExpr()) {
     ((CondExpression*)opd2)->targetDecl = targetDecl;
     ((CondExpression*)opd2)->targetCtx = targetCtx;
     ((CondExpression*)opd2)->targetCat = targetCat;
-    ((CondExpression*)opd2)->callObjCat = callObjCat;
+    //((CondExpression*)opd2)->callObjCat = callObjCat;
   }
   ok &= opd2->Check(ckd);
   if (IsPH(opd1) || !opd1->IsOptional(ckd) || IsPH(opd2) || !opd2->IsOptional(ckd))
@@ -5888,7 +5867,7 @@ bool Run::Check (CheckData &ckd)
     opd = (SynObject*)chpActIn->data;
     ok &= opd->Check(ckd);
     // check act.parm/form.parm. type compatibility:
-    ok &= compatibleInput(ckd,chpActIn,chpFormIn,callCtx,callObjCat);
+    ok &= compatibleInput(ckd,chpActIn,chpFormIn,callCtx);
     if (chpActIn)
       chpActIn = (CHE*)chpActIn->successor;
     chpFormIn = (CHE*)chpFormIn->successor;

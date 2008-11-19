@@ -3490,9 +3490,10 @@ ValOnInit CIOBox::OnInitDialog()
     else
       Substitutable->setChecked(false);
 
-    LavaDECL *decl = myDoc->CheckGetFinalMType(myDECL);
-    if (decl->SecondTFlags.Contains(isSet)
-    || decl->SecondTFlags.Contains(isArray)) {
+    LavaDECL *decl = myDoc->IDTable.GetDECL(myDECL->RefID);//CheckGetFinalMType(myDECL);
+    decl = myDoc->GetType(decl);
+    if (decl && (decl->SecondTFlags.Contains(isSet)
+    || decl->SecondTFlags.Contains(isArray))) {
       ElemsAreVariable->setVisible(true);
       if (myDECL->TypeFlags.Contains(elemsStateObj))
         ElemsAreVariable->setChecked(true);
