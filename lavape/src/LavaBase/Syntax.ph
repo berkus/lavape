@@ -1128,4 +1128,7 @@ extern LAVABASE_DLL bool RemoveErrCode(CHAINX* errors, QString* ids);
 
 extern LAVABASE_DLL TAnnotation *NewTAnnotation();
 
+//  compiler bug on Fedora10? Workaround:
+extern LAVABASE_DLL void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
+
 #endif
