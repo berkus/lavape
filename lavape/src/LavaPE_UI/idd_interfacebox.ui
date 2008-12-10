@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>557</width>
-    <height>451</height>
+    <width>446</width>
+    <height>366</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -21,9 +21,9 @@
   <widget class="QWidget" native="1" name="widget" >
    <property name="geometry" >
     <rect>
-     <x>12</x>
-     <y>401</y>
-     <width>539</width>
+     <x>10</x>
+     <y>320</y>
+     <width>411</width>
      <height>46</height>
     </rect>
    </property>
@@ -114,8 +114,8 @@
     <rect>
      <x>12</x>
      <y>12</y>
-     <width>539</width>
-     <height>379</height>
+     <width>411</width>
+     <height>330</height>
     </rect>
    </property>
    <property name="sizePolicy" >
@@ -127,10 +127,10 @@
    <widget class="QWidget" native="1" name="widget_4" >
     <property name="geometry" >
      <rect>
-      <x>-10</x>
-      <y>0</y>
-      <width>286</width>
-      <height>385</height>
+      <x>9</x>
+      <y>9</y>
+      <width>194</width>
+      <height>312</height>
      </rect>
     </property>
     <property name="sizePolicy" >
@@ -140,9 +140,6 @@
      </sizepolicy>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_4" >
-     <property name="spacing" >
-      <number>5</number>
-     </property>
      <item>
       <widget class="QWidget" native="1" name="widget_3" >
        <layout class="QVBoxLayout" name="verticalLayout_2" >
@@ -298,10 +295,6 @@
          </widget>
         </item>
        </layout>
-       <zorder>Creatable</zorder>
-       <zorder>NonCreatable</zorder>
-       <zorder>IsComponent</zorder>
-       <zorder>widget_2</zorder>
       </widget>
      </item>
      <item>
@@ -353,10 +346,10 @@
    <widget class="QGroupBox" name="GroupBox_IDC_STATIC16" >
     <property name="geometry" >
      <rect>
-      <x>290</x>
-      <y>0</y>
-      <width>245</width>
-      <height>261</height>
+      <x>209</x>
+      <y>9</y>
+      <width>211</width>
+      <height>312</height>
      </rect>
     </property>
     <property name="sizePolicy" >
@@ -392,7 +385,7 @@
       <rect>
        <x>10</x>
        <y>110</y>
-       <width>201</width>
+       <width>181</width>
        <height>27</height>
       </rect>
      </property>
@@ -435,7 +428,7 @@
        <rect>
         <x>10</x>
         <y>27</y>
-        <width>191</width>
+        <width>171</width>
         <height>23</height>
        </rect>
       </property>
@@ -456,7 +449,7 @@
        <rect>
         <x>10</x>
         <y>56</y>
-        <width>191</width>
+        <width>171</width>
         <height>23</height>
        </rect>
       </property>
@@ -478,7 +471,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>NewName</tabstop>
   <tabstop>Creatable</tabstop>
   <tabstop>NonCreatable</tabstop>
   <tabstop>IsComponent</tabstop>
