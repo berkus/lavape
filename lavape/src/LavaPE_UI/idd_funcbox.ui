@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
-    <height>561</height>
+    <width>560</width>
+    <height>682</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -91,6 +91,12 @@
       </property>
       <item>
        <widget class="QGroupBox" name="groupBox_2" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="title" >
          <string>Kind of function</string>
         </property>
@@ -140,16 +146,6 @@
            </property>
            <property name="checked" >
             <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="ElemsAreVariable" >
-           <property name="enabled" >
-            <bool>true</bool>
-           </property>
-           <property name="text" >
-            <string>"self" elements are variable</string>
            </property>
           </widget>
          </item>
@@ -321,6 +317,12 @@
        <widget class="QPushButton" name="ID_OK" >
         <property name="text" >
          <string>OK</string>
+        </property>
+        <property name="autoDefault" >
+         <bool>true</bool>
+        </property>
+        <property name="default" >
+         <bool>true</bool>
         </property>
        </widget>
       </item>

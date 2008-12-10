@@ -56,8 +56,8 @@
 #include <QEvent>
 
 #include "AboutBox.h"
-#include "QtAssistant/qassistantclient.h"
-#include <QtTest/QtTest>
+#include "qassistantclient.h"
+#include <QtTest>
 
 #pragma hdrstop
 

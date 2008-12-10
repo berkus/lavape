@@ -120,7 +120,7 @@ else
   endif
 endif
 
-ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QINCL) -I$(QINCL)/QtCore$(QFRW) -I$(QINCL)/QtNetwork$(QFRW) -I$(QINCL)/QtGui$(QFRW)
+ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QINCL) -I$(QINCL)/QtCore$(QFRW) -I$(QINCL)/QtNetwork$(QFRW) -I$(QINCL)/QtGui$(QFRW) -I$(QINCL)/QtAssistant$(QFRW) -I$(QINCL)/QtTest$(QFRW)
 
 #shared libraries:
 ifeq ($(suffix $(EXEC)),.so)

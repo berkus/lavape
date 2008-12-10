@@ -17,6 +17,7 @@
 #include <QResizeEvent>
 #include <QEvent>
 #include <QCloseEvent>
+#include <QObject>
 
 class LAVAGUI_DLL GUIVBox : public QFrame
 {
