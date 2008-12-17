@@ -58,8 +58,6 @@ void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
       else
         QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
     }
-    else
-      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
   }
   else
     QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
@@ -78,8 +76,6 @@ void CmdExecCLASS::DeleteOptionalItem ( CHEFormNode* fNode)
       else
         QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
     }
-    else
-      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
   }
   else
     QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
@@ -388,7 +384,6 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
           doIt = *(bool*)(Handler_Stack[SFH+2]+LSH);
           DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+2]);
  	        delete [] Handler_Stack;
-          Handler_Stack = 0;
           if (!doIt)
             return true;
         }

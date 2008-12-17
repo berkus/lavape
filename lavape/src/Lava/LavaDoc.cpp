@@ -313,7 +313,7 @@ bool CLavaDoc::OnSaveDocument(const QString& lpszPathName)
         DFC(DocObjects[1]);
         DocObjects[1] = 0;
       }
-      ex = CopyObject(ckd, &DocObjects[2], &DocObjects[1], DocObjects[0][0][0].classDECL->RelatedDECL);
+      ex = CopyObject(ckd, &DocObjects[2], &DocObjects[1], ((SynFlags*)(DocObjects[2]+1))->Contains(stateObjFlag), DocObjects[0][0][0].classDECL->RelatedDECL);
       if (ex) {
         ex->SetLavaException(ckd);
         delete ex;
@@ -528,8 +528,8 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
           if (((CSectionDesc*)classDECL->SectionTabPtr)[iSect].SectionFlags.Contains(SectPrimary)) {
             secClassDECL = ((CSectionDesc*)classDECL->SectionTabPtr)[iSect].classDECL;
             sectionPtr = ObjTab[iTab] - (*ObjTab[iTab])->sectionOffset + (*ObjTab[iTab])[iSect].sectionOffset;
-            //if (isObject && firstStore && (iTab == 1))
-            //  ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
+            if (isObject && firstStore && (iTab == 1))
+              ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
             CDPSynFlags(PUT, cid, (address)(sectionPtr+1),false); //(*cid->Ar) << *(DWORD*)(sectionPtr+1); //section flags
             lmem = LSH;
             if ((*sectionPtr)->classDECL->TypeFlags.Contains(isNative)) { //native section content
@@ -704,7 +704,7 @@ QString* CLavaDoc::LoadChain1(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr o
        cid->GETint(lon)) { //(*cid->Ar) >> lon) {
     iStore = (int)(signed short)LOWORD(lon);
     if (iStore) {
-      LavaObjectPtr che  = AllocateObject(ckd, DECLTab[B_Che]);
+      LavaObjectPtr che  = AllocateObject(ckd, DECLTab[B_Che], false);
       if (!che)
         return &ERR_CorruptObject;
       *(LavaVariablePtr)(che+LSH) = object;
@@ -832,7 +832,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
           LObjectError(ckd, cid->FileName, dPN, &ERR_CorruptObject, 2, &implDECL->FullName, &((CHETID*)implDECL->Supports.first)->data);
           return false;
         }
-        objPtr = AllocateObject(ckd, classDECL);
+        objPtr = AllocateObject(ckd, classDECL, secFlag.Contains(stateObjFlag));
         if (!objPtr) {
           if (ckd.exceptionThrown) {
             DebugStop(ckd, 0,0, QString("Syntax error detected before execution start"), Stop_Exception,0,0);
@@ -1079,7 +1079,7 @@ bool CLavaDoc::ExecuteLavaObject()
   }
   if (showIntfDecl) {
     if (!DocObjects[0]) {
-      DocObjects[0] = AllocateObject(ckd, showIntfDecl);
+      DocObjects[0] = AllocateObject(ckd, showIntfDecl, true);
       if (!DocObjects[0]) {
         if (!ckd.exceptionThrown)
           SetLavaException(ckd, memory_ex, ERR_AllocObjectFailed);
@@ -1101,7 +1101,7 @@ bool CLavaDoc::ExecuteLavaObject()
       if (setjmp(contOnHWexception)) throw hwException;
 #endif
       if (DocObjects[1]) {
-        ex = CopyObject(ckd, &DocObjects[1], &DocObjects[2], classDECL);
+        ex = CopyObject(ckd, &DocObjects[1], &DocObjects[2], ((SynFlags*)(DocObjects[1]+1))->Contains(stateObjFlag), classDECL);
         if (ex) {
           ex->SetLavaException(ckd);
           delete ex;
@@ -1112,7 +1112,7 @@ bool CLavaDoc::ExecuteLavaObject()
         }
       }
       else {
-        DocObjects[2] = AllocateObject(ckd, classDECL);
+        DocObjects[2] = AllocateObject(ckd, classDECL, true);
         if (!DocObjects[2]) {
           if (!ckd.exceptionThrown)
             SetLavaException(ckd, memory_ex, ERR_AllocObjectFailed);

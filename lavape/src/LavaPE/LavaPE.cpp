@@ -73,7 +73,7 @@
 static QString szSaveEveryChange = "SaveEveryChange";
 static QString szExecFont = "ExecFont";
 static QString szFormFont = "FormFont";
-designer
+static QString szFormLabelFont = "FormLabelFont";
 static QString szTreeFont = "TreeFont";
 static QString szGlobalFont = "GlobalFont";
 static QString favoriteBrowser = "MyBrowser";

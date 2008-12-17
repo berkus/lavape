@@ -262,6 +262,6 @@ extern LAVABASE_DLL QString ERR_AbortQuestion;
 extern LAVABASE_DLL QString ERR_ExecutionAborted;
 extern LAVABASE_DLL QString ERR_NotSingleContainer;
 
-extern void LavaBaseStringInit();
+extern LAVABASE_DLL void LavaBaseStringInit();
 
 #endif

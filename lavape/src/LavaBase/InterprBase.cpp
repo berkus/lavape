@@ -352,10 +352,10 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,
             funcAdapter[4](ckd, newStackFrame);
           }
         }
-        //if (stateObj)
-        //  ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
-        //else
-        //  ((SynFlags*)(sectionPtr+1))->EXCL(stateObjFlag);
+        if (stateObj)
+          ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
+        else
+          ((SynFlags*)(sectionPtr+1))->EXCL(stateObjFlag);
         ((SynFlags*)(sectionPtr+1))->INCL(sectEstablished);
       }
     }

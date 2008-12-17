@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1223</width>
+    <width>1182</width>
     <height>685</height>
    </rect>
   </property>
@@ -18,25 +18,8 @@
     <height>15</height>
    </size>
   </property>
-  <widget class="QWidget" name="widget" >
-   <property name="geometry" >
-    <rect>
-     <x>12</x>
-     <y>48</y>
-     <width>1211</width>
-     <height>637</height>
-    </rect>
-   </property>
-  </widget>
+  <widget class="QWidget" name="widget" />
   <widget class="QToolBar" name="Toolbar_1" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>22</y>
-     <width>300</width>
-     <height>26</height>
-    </rect>
-   </property>
    <property name="windowTitle" >
     <string>General toolbar</string>
    </property>
@@ -71,14 +54,6 @@
    <addaction name="splitVerticAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_2" >
-   <property name="geometry" >
-    <rect>
-     <x>300</x>
-     <y>22</y>
-     <width>317</width>
-     <height>26</height>
-    </rect>
-   </property>
    <property name="windowTitle" >
     <string>Tree op. tooolbar</string>
    </property>
@@ -113,14 +88,6 @@
    <addaction name="runAction" />
   </widget>
   <widget class="QToolBar" name="HelpToolbar" >
-   <property name="geometry" >
-    <rect>
-     <x>617</x>
-     <y>22</y>
-     <width>35</width>
-     <height>26</height>
-    </rect>
-   </property>
    <property name="windowTitle" >
     <string>Help toolbar</string>
    </property>
@@ -142,14 +109,6 @@
    <addaction name="whatNextAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_3" >
-   <property name="geometry" >
-    <rect>
-     <x>652</x>
-     <y>22</y>
-     <width>364</width>
-     <height>26</height>
-    </rect>
-   </property>
    <property name="windowTitle" >
     <string>Declaration toolbar</string>
    </property>
@@ -189,14 +148,6 @@
    <addaction name="makeGUIAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_4" >
-   <property name="geometry" >
-    <rect>
-     <x>1016</x>
-     <y>22</y>
-     <width>66</width>
-     <height>26</height>
-    </rect>
-   </property>
    <property name="windowTitle" >
     <string>Details toolbar</string>
    </property>
@@ -233,14 +184,6 @@
    <addaction name="delAction" />
   </widget>
   <widget class="QToolBar" name="ToolbarDbg" >
-   <property name="geometry" >
-    <rect>
-     <x>1082</x>
-     <y>22</y>
-     <width>47</width>
-     <height>26</height>
-    </rect>
-   </property>
    <property name="maximumSize" >
     <size>
      <width>16777215</width>
@@ -282,14 +225,6 @@
    <addaction name="DbgStopAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_5" >
-   <property name="geometry" >
-    <rect>
-     <x>1129</x>
-     <y>22</y>
-     <width>47</width>
-     <height>26</height>
-    </rect>
-   </property>
    <property name="windowTitle" >
     <string>Exec switches toolbar</string>
    </property>
@@ -308,7 +243,7 @@
    <attribute name="toolBarBreak" >
     <bool>false</bool>
    </attribute>
-   <addaction name="toggleStateObject" />
+   <addaction name="toggleCategoryAction" />
    <addaction name="toggleSubstTypeAction" />
    <addaction name="toggleClosedAction" />
    <addaction name="optLocalVarAction" />
@@ -323,14 +258,6 @@
    <addaction name="toggleCommentsAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_6" >
-   <property name="geometry" >
-    <rect>
-     <x>1176</x>
-     <y>22</y>
-     <width>47</width>
-     <height>26</height>
-    </rect>
-   </property>
    <property name="windowTitle" >
     <string>Exec operations toolbar</string>
    </property>
@@ -379,14 +306,6 @@
    <addaction name="ordAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_7" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>48</y>
-     <width>12</width>
-     <height>637</height>
-    </rect>
-   </property>
    <property name="windowTitle" >
     <string>Keyword toolbar</string>
    </property>
@@ -411,8 +330,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1223</width>
-     <height>22</height>
+     <width>1182</width>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="helpMenu" >
@@ -1746,10 +1665,7 @@
     <string>Provide online help on "Editing Lava Programs"</string>
    </property>
   </action>
-  <action name="toggleStateObject" >
-   <property name="checkable" >
-    <bool>false</bool>
-   </property>
+  <action name="toggleCategoryAction" >
    <property name="icon" >
     <iconset resource="../LavaPE_res.qrc" >
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</iconset>
@@ -1772,8 +1688,7 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
-     <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_optLocalVar.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_optLocalVar.xpm</iconset>
+    <iconset resource="../LavaPE_res.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_optLocalVar.xpm</iconset>
    </property>
    <property name="text" >
     <string>Optional local variable</string>

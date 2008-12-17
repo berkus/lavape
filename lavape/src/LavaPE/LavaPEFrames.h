@@ -209,7 +209,7 @@ public slots:
     virtual void on_DbgBreakpointAct_triggered();
     virtual void on_DbgClearBreakpointsAct_triggered();
     virtual void on_DbgStopAction_triggered();
-    virtual void on_toggleStateObject_triggered();
+    virtual void on_toggleCategoryAction_triggered();
     virtual void on_optLocalVarAction_triggered();
     virtual void on_toggleSubstTypeAction_triggered();
     virtual void on_toggleClosedAction_triggered();

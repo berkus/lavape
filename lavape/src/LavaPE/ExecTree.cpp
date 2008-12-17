@@ -320,15 +320,19 @@ void CExecTree::ExecVT(LavaDECL *elDef, DString* lab)
     if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract)
         && (elDef->ParentDECL->DeclType != Package))
       new CLavaError(&elDef->DECLError1, &ERR_NoAbstract);
-    //if (elDef->TypeFlags.Contains(stateObject))
-    //  *lab += DString("~");
+    if (elDef->TypeFlags.Contains(stateObject))
+      *lab += DString("~");
+    else if (elDef->TypeFlags.Contains(isAnyCategory))
+      *lab += DString("*");
   }
   else {
     *lab += DString(" = ");
     if (elDef->TypeFlags.Contains(substitutable))
       *lab += DString("{");
-    //if (elDef->TypeFlags.Contains(stateObject))
-    //  *lab += DString("~");
+    if (elDef->TypeFlags.Contains(stateObject))
+      *lab += DString("~");
+    else if (elDef->TypeFlags.Contains(isAnyCategory))
+      *lab += DString("*");
     if (elDef->DeclDescType == NamedType) {
       decl = Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
       if (decl) {
@@ -436,15 +440,12 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
     }
     if (elDef->TypeFlags.Contains(isPropGet))
       lab1 += DString("attribute get function");
-    else {
+    else
       if (elDef->TypeFlags.Contains(isPropSet))
         lab1 += DString("attribute set function");
       else
         if (elDef->op == OP_noOp)
           lab1 += DString("function");
-      if (elDef->TypeFlags.Contains(collectionElemCat))
-        lab1 += DString(", \"self\" has set/array elem. category");
-    }
     decl = Doc->IDTable.GetDECL(((CHETID*)elDef->Supports.first)->data, elDef->inINCL);
     if (decl && decl->TypeFlags.Contains(isAbstract))
       new CLavaError(&elDef->DECLError1, &ERR_ImplOfAbstract, 0, useAutoBox);
@@ -489,8 +490,6 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
         lab1 += DString("initializer ");
       if (elDef->op == OP_noOp)
         lab1 += DString("function");
-      if (elDef->TypeFlags.Contains(collectionElemCat))
-        lab1 += DString(", \"self\" has set/array elem. category");
     }
   }
   if (lab1.l) {
@@ -867,6 +866,10 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     lab += DString(" : ");
     if (elDef->TypeFlags.Contains(substitutable))
       lab += DString("{");
+    if (elDef->TypeFlags.Contains(stateObject))
+      lab += DString("~");
+    else if (elDef->TypeFlags.Contains(isAnyCategory))
+      lab += DString("*");
     lab += Doc->GetTypeLabel(elDef, true);
     if (elDef->TypeFlags.Contains(substitutable))
       lab += DString("}");
@@ -917,20 +920,11 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     else {
       if (elDef->TypeFlags.Contains(isOptional))
         lab += DString(", optional");
-      if (elDef->TypeFlags.Contains(collectionElemCat)) {
-        lab += DString(", set/array elem. category");
-      }
       if (elDef->SecondTFlags.Contains(closed))
         lab += DString(", closed");
       if ( elDef->DeclType == Attr) {
         if (elDef->TypeFlags.Contains(isConst))
           lab += DString(", read-only ");
-        else if (elDef->TypeFlags.Contains(collectionElemCat)) {
-          lab += DString(", set/array elem. category");
-        }
-        //if (elDef->TypeFlags.Contains(elemsStateObj))
-        //  elDef->TypeFlags.EXCL(elemsStateObj);
-          //lab += DString(", set/array elements are variable");
         if (elDef->TypeFlags.Contains(acquaintance))
           lab += DString(", acquaintance ");
         else
@@ -1003,11 +997,6 @@ void CExecTree::ExecIn(LavaDECL ** pelDef, int level)
 {
   (*pelDef)->nInput = (*pelDef)->ParentDECL->nInput;
   (*pelDef)->ParentDECL->nInput++;
-  if ((*pelDef)->TypeFlags.Contains(collectionElemCat))
-    if ((*pelDef)->ParentDECL->ParentDECL->TypeFlags.Contains(elemsStateObj))
-      (*pelDef)->TypeFlags.INCL(stateObject);
-    else
-      (*pelDef)->TypeFlags.EXCL(stateObject);
   if ((*pelDef)->SecondTFlags.Contains(closed))
     (*pelDef)->ParentDECL->SecondTFlags.INCL(hasClosedInput);
   ExecMember(pelDef, level);
@@ -1017,11 +1006,6 @@ void CExecTree::ExecOut(LavaDECL ** pelDef, int level)
 {
   (*pelDef)->nInput = (*pelDef)->ParentDECL->nInput + (*pelDef)->ParentDECL->nOutput;
   (*pelDef)->ParentDECL->nOutput++;
-  if ((*pelDef)->TypeFlags.Contains(collectionElemCat))
-    if ((*pelDef)->ParentDECL->ParentDECL->TypeFlags.Contains(elemsStateObj))
-      (*pelDef)->TypeFlags.INCL(stateObject);
-    else
-      (*pelDef)->TypeFlags.EXCL(stateObject);
   ExecMember(pelDef, level);
 }
 

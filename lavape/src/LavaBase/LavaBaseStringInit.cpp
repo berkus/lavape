@@ -482,8 +482,7 @@ void LavaBaseStringInit() {
   ERR_CommonContext  = QObject::tr("Common base context of inner and outer context not allowed");
   ERR_OverriddenStatic  = QObject::tr("A static function cannot be overridden");
   ERR_SubstInContext  = QObject::tr("Substitutable type must not belong to the current context or a context that has a base context in common with the current context");
-  ERR_VBaseWithoutDefaultIni 
-  = QObject::tr("A virtual base interface needs a default initializer");
+  ERR_VBaseWithoutDefaultIni  = QObject::tr("A virtual base interface needs a default initializer");
   ERR_NoImplClass  = QObject::tr("The interface to be implemented by this implementation is missing");
   ERR_ImplOfAbstract  = QObject::tr("An abstract function cannot have an implementation");
   ERR_CleanSupports  = QObject::tr("Redundant entry in the list of base types");

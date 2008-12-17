@@ -20,7 +20,7 @@
 #include <signal.h>
 #endif
 
-//#define ALLOCOBJLIST
+#define ALLOCOBJLIST
 
 //#ifdef __Darwin
 //#define FPE_INTOVF FPE_FLTOVF
@@ -622,6 +622,7 @@ extern LAVABASE_DLL bool EqualObjects(CheckData &ckd, LavaObjectPtr leftVarPtr, 
 extern LAVABASE_DLL bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& objModf);
 extern LAVABASE_DLL bool OneLevelCopy(CheckData& ckd, LavaObjectPtr& object);
 extern LAVABASE_DLL TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL, LavaDECL* specDECL);
+extern LAVABASE_DLL LavaObjectPtr CastTo(LavaDECL* classDECL, LavaObjectPtr obj);
 extern LAVABASE_DLL LavaObjectPtr CastEnumType(CheckData& ckd, LavaObjectPtr eTypeObjPtr);
 extern LAVABASE_DLL LavaObjectPtr CastChainType(CheckData& ckd, LavaObjectPtr chainTypeObjPtr/*, LavaDECL* chainTypeDECL*/);
 extern LAVABASE_DLL LavaObjectPtr CastSetType(CheckData& ckd, LavaObjectPtr setTypeObjPtr);

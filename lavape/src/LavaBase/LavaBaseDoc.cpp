@@ -16,7 +16,7 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
-//
+
 #include "LavaBase_all.h"
 #include "BASEMACROS.h"
 
@@ -665,7 +665,7 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
   }
   else {
     if (decl->TypeFlags.Contains(definesObjCat)
-         && decl->TypeFlags.Contains(trueObjCat))
+         && decl->TypeFlags.Contains(definiteCat))
       if (decl->TypeFlags.Contains(stateObject))
         cat = stateObj;
       else
@@ -688,7 +688,7 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
     if (declMapped->RefID.nID >= 0) {
       if ((cat == unknownCategory)
            && declMapped->TypeFlags.Contains(definesObjCat)
-           && declMapped->TypeFlags.Contains(trueObjCat))
+           && declMapped->TypeFlags.Contains(definiteCat))
         if (declMapped->TypeFlags.Contains(stateObject))
           cat = stateObj;
         else
@@ -1148,7 +1148,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
       decl = IDTable.GetDECL(che->data, memDECL->inINCL);
       if (decl) {
         basedefsCat = basedefsCat || decl->TypeFlags.Contains(definesObjCat);
-        basetrueCat = basetrueCat || decl->TypeFlags.Contains(trueObjCat);
+        basetrueCat = basetrueCat || decl->TypeFlags.Contains(definiteCat);
         isStateOb = isStateOb || decl->TypeFlags.Contains(stateObject);
         isSameAsSelf = isSameAsSelf || decl->TypeFlags.Contains(sameAsSelf);
         baseabstract = baseabstract || decl->TypeFlags.Contains(isAbstract);
@@ -1160,7 +1160,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
     if (baseabstract)
       inheritedFlags.INCL(isAbstract);
     if (basetrueCat) {
-      inheritedFlags.INCL(trueObjCat);
+      inheritedFlags.INCL(definiteCat);
       if (isStateOb)
         inheritedFlags.INCL(stateObject);
       if (isSameAsSelf)
@@ -1216,7 +1216,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
       catErr = basetrueCat && (isStateOb != refDECL->TypeFlags.Contains(stateObject));
       if (!catErr) 
         isStateOb = refDECL->TypeFlags.Contains(stateObject);
-      inheritedFlags.INCL(trueObjCat);
+      inheritedFlags.INCL(definiteCat);
     }
   }
   else {
@@ -1239,25 +1239,25 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
 //    else   //dies muß so (weg-)bleiben, sonst verliert der VT seine definesObjCat-Eigenschaft
 //      memDECL->TypeFlags.EXCL(definesObjCat);
   if (basetrueCat || reftrueCat) 
-    memDECL->TypeFlags.INCL(trueObjCat);
+    memDECL->TypeFlags.INCL(definiteCat);
   else 
     if (memDECL->DeclType == VirtualType) {
       if (memDECL->TypeFlags.Contains(definesObjCat)
         && !memDECL->TypeFlags.Contains(isAbstract)) {
-        memDECL->TypeFlags.INCL(trueObjCat);
+        memDECL->TypeFlags.INCL(definiteCat);
         isStateOb = memDECL->TypeFlags.Contains(stateObject);
         isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
       }
       else
-        memDECL->TypeFlags.EXCL(trueObjCat);
+        memDECL->TypeFlags.EXCL(definiteCat);
     }
     else
       if (refDECL && memDECL->TypeFlags.Contains(definesObjCat)
-          && !refDECL->TypeFlags.Contains(trueObjCat))
-         memDECL->TypeFlags.EXCL(trueObjCat);
+          && !refDECL->TypeFlags.Contains(definiteCat))
+         memDECL->TypeFlags.EXCL(definiteCat);
       else
-         memDECL->TypeFlags.INCL(trueObjCat);
-  if (memDECL->TypeFlags.Contains(trueObjCat)) {
+         memDECL->TypeFlags.INCL(definiteCat);
+  if (memDECL->TypeFlags.Contains(definiteCat)) {
     if (isStateOb)  
       memDECL->TypeFlags.INCL(stateObject);
     else 

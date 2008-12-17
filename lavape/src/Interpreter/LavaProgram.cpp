@@ -2696,12 +2696,12 @@ bool GUIEdit(CheckData& ckd, LavaVariablePtr stack)
   if (!newStackFrame[SFH+1])
     return false;
   newStackFrame[SFH+2] = 0;
-  CRuntimeException *ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], newStackFrame[SFH][0][0].classDECL->RelatedDECL);
+  CRuntimeException *ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], !((SynFlags*)(newStackFrame[SFH+1]+1))->Contains(stateObjFlag), newStackFrame[SFH][0][0].classDECL->RelatedDECL);
   if (ckd.exceptionThrown)
     return false;
   if (ex)
     throw *ex;
-  ex = showFunc(ckd, newStackFrame, false, false);
+  ex = showFunc(ckd, newStackFrame, !((SynFlags*)(newStackFrame[SFH+1]+1))->Contains(stateObjFlag), false);
   if (ckd.exceptionThrown) {
     if (newStackFrame[SFH+2])
       DFC(newStackFrame[SFH+2]);
@@ -2736,7 +2736,7 @@ bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack)
     DFC( stack[SFH+2]);
   newStackFrame[SFH] = stack[SFH] - stack[SFH][0][0].sectionOffset;
   newStackFrame[SFH+1] = stack[SFH+1];
-  newStackFrame[SFH+2] = AllocateObject(ckd, newStackFrame[SFH][0][0].classDECL->RelatedDECL);
+  newStackFrame[SFH+2] = AllocateObject(ckd, newStackFrame[SFH][0][0].classDECL->RelatedDECL, false);
   if (!newStackFrame[SFH+2]) {
     if (ckd.exceptionThrown)
       return false;
@@ -2744,7 +2744,7 @@ bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack)
       throw CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
   }
   if (newStackFrame[SFH+1]) {
-    ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], newStackFrame[SFH][0][0].classDECL->RelatedDECL);
+    ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], false, newStackFrame[SFH][0][0].classDECL->RelatedDECL);
     if (ckd.exceptionThrown)
       return false;
     if (ex)

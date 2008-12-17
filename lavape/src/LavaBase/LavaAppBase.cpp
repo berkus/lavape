@@ -1056,6 +1056,117 @@ int question(QWidget *parent, const QString &caption,
 	return params.result;
 }
 
+QString L_GetOpenFileName(const QString& startFileName,
+				      QWidget *parent,
+				      const QString& caption,
+				      const QString& filter,
+				      const QString& filter2
+            )
+{
+  QFileInfo qf;
+  QString fileName, currentFilter, initialDir;
+  QFileDialog *fd = new QFileDialog(parent);
+	QStringList filters;
+
+  qf = QFileInfo(startFileName);
+  fileName = qf.fileName();
+  QFileInfo qfresolved(ResolveLinks(qf));
+  currentFilter = qfresolved.suffix();
+  initialDir = qf.path();
+  fd->setDirectory(qf.absolutePath());
+
+	filters << filter;
+  if (filter2 != QString::null)
+    filters << filter2; 
+	fd->setFilters(filters);
+  fd->setWindowTitle(caption);
+  if (currentFilter.isEmpty())
+    currentFilter = "lava";
+  currentFilter = "*." + currentFilter;
+  if (filter2.contains(currentFilter))
+    currentFilter = filter2;
+  else
+    currentFilter = filter;
+  fd->selectFilter(currentFilter);
+  fd->setFileMode( QFileDialog::ExistingFile );
+  fd->setViewMode( QFileDialog::List );
+  if (LBaseData->inRuntime) {
+   if (!fileName.contains(".lcom"))
+     fd->selectFile(fileName);
+  }
+  else {
+   if (!fileName.contains(".ldoc"))
+     fd->selectFile(fileName);
+  }
+  fd->setResolveSymlinks(false);
+  if (fd->exec() == QDialog::Accepted ) {
+    QStringList selFiles=fd->selectedFiles();
+    selFiles.replaceInStrings("\\", "/");
+    fileName = selFiles.first();
+    delete fd;
+    return fileName;
+  }
+  else {
+    delete fd;
+    return 0;
+  }
+}
+
+QStringList L_GetOpenFileNames(const QString& startFileName,
+				      QWidget *parent,
+				      const QString& caption,
+				      const QString& filter,
+				      const QString& filter2
+            )
+{
+  QStringList resultNames;
+  QFileInfo qf = QFileInfo(startFileName);
+  QFileInfo qfresolved(ResolveLinks(qf));
+  QString currentFilter = qfresolved.suffix();
+  QString fileName, initialDir = qf.path();
+
+  QFileDialog *fd = new QFileDialog(parent);
+	QStringList filters;
+
+	filters << filter;
+  if (filter2 != QString::null)
+    filters << filter2; 
+  fileName = qf.fileName();
+  currentFilter = qfresolved.suffix();
+  initialDir = qf.path();
+  fd->setDirectory(qf.absolutePath());
+	fd->setFilters(filters);
+  fd->setWindowTitle(caption);
+  if (currentFilter.isEmpty())
+    currentFilter = "lava";
+  currentFilter = "*." + currentFilter;
+  if (filter2.contains(currentFilter))
+    currentFilter = filter2;
+  else
+    currentFilter = filter;
+  fd->selectFilter(currentFilter);
+  if (LBaseData->inRuntime) {
+   if (!fileName.contains(".lcom"))
+     fd->selectFile(fileName);
+  }
+  else {
+   if (!fileName.contains(".ldoc"))
+     fd->selectFile(fileName);
+  }
+  fd->setFileMode( QFileDialog::ExistingFiles );
+  fd->setViewMode( QFileDialog::List );
+  if (fd->exec() == QDialog::Accepted ) {
+    resultNames = fd->selectedFiles();
+    delete fd;
+    resultNames.replaceInStrings("\\", "/");
+    return resultNames;
+  }
+  else {
+    delete fd;
+    return QStringList();
+  }
+}
+
 
 #ifdef WIN32
 

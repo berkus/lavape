@@ -70,12 +70,12 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
   LBaseData->insActionPtr = insAction;
   LBaseData->delActionPtr = delAction;
 //  LBaseData->okActionPtr = okAction;
-  LBaseData->toggleCatActionPtr = toggleStateObject;
+  LBaseData->toggleCatActionPtr = toggleCategoryAction;
   LBaseData->updateResetActionPtr = editUndoAction;
   LBaseData->editCopyActionPtr = editCopyAction;
   LBaseData->editCutActionPtr = editCutAction;
   LBaseData->editPasteActionPtr = editPasteAction;
-  //connect( toggleStateObject,SIGNAL( triggered() ),SLOT( on_toggleStateObject_triggered() ) );
+  //connect( toggleCategoryAction,SIGNAL( triggered() ),SLOT( on_toggleCategoryAction_triggered() ) );
   //connect( editUndoAction,SIGNAL( triggered() ),SLOT( on_editUndoAction_triggered() ) );
   //connect( insAction,SIGNAL( triggered() ),SLOT( on_insAction_triggered() ) );
   //connect( delAction,SIGNAL( triggered() ),SLOT( on_delAction_triggered() ) );
@@ -180,31 +180,6 @@ void CLavaMainFrame::UpdateUI()
   }
 }
 
-//void CLavaMainFrame::customEvent(QEvent *ev0){
-	//HistWindow *hw;
-	//DString title;
- // CustomEvent *ev=(CustomEvent*)ev0;
-
-	//if (ev->data()) {
-	//	title = DString(qPrintable(((QWidget*)ev->data())->windowTitle()));
-	//	if (title.l) {
-	//		if (title[title.l-1] == '*')
-	//			title = title.Substr(0,title.l-1);
-	//		hw = new HistWindow(title,(wxChildFrame*)ev->data());
-	//		m_childFrameHistory->AddToHistory(hw,this);
-	//	}
-	//}
-	//else
-	//	switch (lastTile) {
-	//	case 0:
-	//	case 1:
-	//		on_tileVerticAction_triggered();
-	//		break;
-	//	case 2:
-	//		on_tileHorizAction_triggered();
-	//	}
-//}
-
 void CLavaMainFrame::on_fileNewAction_triggered()
 {
   ((CLavaApp*)wxTheApp)->OnFileNew();
@@ -281,12 +256,12 @@ void CLavaMainFrame::on_okAction_triggered()
     view->OnOK();
 }
 */
-//void CLavaMainFrame::on_toggleStateObject_triggered()
-//{
-//  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-//  if (view)
-//    view->OnTogglestate();
-//}
+void CLavaMainFrame::on_toggleCategoryAction_triggered()
+{
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->OnTogglestate();
+}
 
 void CLavaMainFrame::on_editUndoAction_triggered()
 {
