@@ -54,7 +54,7 @@ CGUIProg::CGUIProg() : CGUIProgBase()
   allowIncompleteForms = false;
   ErrorCode = NONE;
   ErrPos = 0;
-  //FrozenObject = 0;
+  FrozenObject = 0;
   fromFillIn = 0;
   Redraw = false;
   ServicePtr = 0;

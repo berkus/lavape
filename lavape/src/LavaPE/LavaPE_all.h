@@ -26,6 +26,8 @@
 #include "qfontinfo.h"
 #include "qglobal.h"
 #include <QActionGroup>
+#include "qassistantclient.h"
+#include "qtest.h"
 
 #include "Bars.h"
 #include "Boxes.h"

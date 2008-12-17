@@ -57,7 +57,7 @@
 
 #include "AboutBox.h"
 #include "qassistantclient.h"
-#include <QtTest>
+#include "qtest.h"
 
 #pragma hdrstop
 
@@ -73,7 +73,7 @@
 static QString szSaveEveryChange = "SaveEveryChange";
 static QString szExecFont = "ExecFont";
 static QString szFormFont = "FormFont";
-static QString szFormLabelFont = "FormLabelFont";
+designer
 static QString szTreeFont = "TreeFont";
 static QString szGlobalFont = "GlobalFont";
 static QString favoriteBrowser = "MyBrowser";

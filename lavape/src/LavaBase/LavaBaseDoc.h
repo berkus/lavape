@@ -38,12 +38,12 @@ enum ContextFlag {
 };
 
 
-//enum Category {
-//  unknownCategory,
-//  stateObj,
-//  valueObj,
-//  sameAsSelfObj
-//};
+enum Category {
+  unknownCategory,
+  stateObj,
+  valueObj,
+  sameAsSelfObj
+};
 
 class CSectionDesc;
 typedef LAVABASE_DLL CSectionDesc **LavaObjectPtr;
@@ -123,8 +123,8 @@ public:
   SynFlags GetCategoryFlags(LavaDECL* memDECL, bool& catErr);
 //  virtual int GetContextsSectionNumber(LavaDECL* /*classDECL*/, LavaDECL* /*baseDECL*/, bool /*outer*/) {return -1;}
   virtual LavaDECL* GetExecDECL(LavaDECL* parentDecl,TDeclType type,bool makeDecl=true,bool makeExec=true);
-  LavaDECL* GetFinalMVType(LavaDECL* decl, CContext &context, CheckData* pckd);
-  LavaDECL* GetFinalMVType(const TID& id, int inINCL, CContext &context, CheckData* pckd);
+  LavaDECL* GetFinalMVType(LavaDECL* decl, CContext &context, Category &cat, CheckData* pckd);
+  LavaDECL* GetFinalMVType(const TID& id, int inINCL, CContext &context, Category &cat, CheckData* pckd);
   LavaDECL* GetFinalMTypeAndContext(const TID& id, int inINCL, CContext &context, CheckData* pckd);
   LavaDECL** GetFormpDECL(LavaDECL* decl);
   TID GetGUIDataTypeID(LavaDECL* GUIclass);
@@ -213,7 +213,7 @@ public:
   virtual void OnOK() {}
   virtual void OnReset() {}
   virtual void OnCancel() {}
-	//virtual void OnTogglestate() {}
+	virtual void OnTogglestate() {}
   virtual void OnDelete() {}
   virtual void OnOverride() {}
   virtual void OnGenHtml() {}
@@ -354,7 +354,7 @@ struct LAVABASE_DLL CheckData {
     errorCode = 0;
     iArg = 0;
     inINCL = 0;
-    //stateObj = false;
+    stateObj = false;
     concernExecs = false;
     criticalScope = false;
     handleOpd = false;
@@ -390,8 +390,8 @@ struct LAVABASE_DLL CheckData {
     inINCL,
 	  iArg;
   QString *errorCode;
-  bool callObjCat;
-  bool iniCheck, concernExecs, criticalScope, handleOpd,
+  Category callObjCat;
+  bool stateObj, iniCheck, concernExecs, criticalScope, handleOpd,
        inQuant, inInitialUpdate, inIniClause, immediateReturn, exceptionThrown,
 	     checkClosedParmLevel;
   SET flags;
@@ -598,26 +598,26 @@ extern LAVABASE_DLL bool isPartOf(const DString& qname, const DString& ancestorN
 
 enum ObjectStateFlag {
    sectEstablished,
-   //finished,       //global object flag (in object+1)
-   freeFlag, //ehemals stateObjFlag,
-   useDefaults,      //used in LavaGUI
-   insertedItem,     //used in LavaGUI
-   deletedItem,      //used in LavaGUI
-   localCheckmark,   //temporary check mark
-   dontSave,         //global object flag (in object+1)
-   zombified,        //global object flag (in object+1)
-   releaseFinished,  //indicator that all sub-objects have been released/decremented
-//   marked,         //used in InterprBase::forceRelease
+   //finished,        //global object flag (in object+1)
+   stateObjFlag,
+   useDefaults,     //used in LavaGUI
+   insertedItem,    //used in LavaGUI
+   deletedItem,     //used in LavaGUI
+   localCheckmark,  //temporary check mark
+   dontSave,        //global object flag (in object+1)
+   zombified,       //global object flag (in object+1)
+   releaseFinished, //indicator that all sub-objects have been released/decremented
+//   marked,          //used in InterprBase::forceRelease
    compoPrim,        //the creation section of component
    objectModified,   //object is modified 
    objectLocked      //
 };
 
-extern LAVABASE_DLL LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* typeDECL, LavaObjectPtr urlObj=0);
-extern LAVABASE_DLL LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL);
-extern LAVABASE_DLL LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL);
+extern LAVABASE_DLL LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* typeDECL, bool stateObj, LavaObjectPtr urlObj=0);
+extern LAVABASE_DLL LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObj);
+extern LAVABASE_DLL LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObj);
 extern LAVABASE_DLL bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object);
-extern LAVABASE_DLL CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, LavaVariablePtr resultVarPtre, LavaDECL* resultClassDECL = 0, CCopied* copied = 0);
+extern LAVABASE_DLL CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, LavaVariablePtr resultVarPtr, bool stateObj = false, LavaDECL* resultClassDECL = 0, CCopied* copied = 0);
 extern LAVABASE_DLL bool EqualObjects(CheckData &ckd, LavaObjectPtr leftVarPtr, LavaObjectPtr rightVarPtr, int specialEQ);
 extern LAVABASE_DLL bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& objModf);
 extern LAVABASE_DLL bool OneLevelCopy(CheckData& ckd, LavaObjectPtr& object);
@@ -626,9 +626,7 @@ extern LAVABASE_DLL LavaObjectPtr CastEnumType(CheckData& ckd, LavaObjectPtr eTy
 extern LAVABASE_DLL LavaObjectPtr CastChainType(CheckData& ckd, LavaObjectPtr chainTypeObjPtr/*, LavaDECL* chainTypeDECL*/);
 extern LAVABASE_DLL LavaObjectPtr CastSetType(CheckData& ckd, LavaObjectPtr setTypeObjPtr);
 extern LAVABASE_DLL LavaObjectPtr CastArrayType(CheckData& ckd, LavaObjectPtr arrayTypeObjPtr);
-extern LAVABASE_DLL LavaObjectPtr CastTo(LavaDECL* classDECL, LavaObjectPtr obj);
-
-//extern LAVABASE_DLL void ToggleObjectCat(LavaObjectPtr obj);
+extern LAVABASE_DLL void ToggleObjectCat(LavaObjectPtr obj);
 /////////////////////////////////////////////////////////////////////////////
 
 enum DebugStep {

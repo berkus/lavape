@@ -301,7 +301,7 @@ TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL, LavaDECL* spe
   return 0;
 }
 
-LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, LavaObjectPtr urlObj)
+LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj, LavaObjectPtr urlObj)
 {
   int ii;
   LavaObjectPtr object, sectionPtr, newStackFrame[SFH+1];
@@ -419,20 +419,20 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
   return ok;
 }
 
-//void ToggleObjectCat(LavaObjectPtr object)
-//{
-//  LavaObjectPtr sectionPtr;
-//  bool stateObj = !((SynFlags*)(object+1))->Contains(stateObjFlag);
-//  for (int ii = 0; ii < object[0][0].nSections; ii++) {
-//    sectionPtr = object - (object[0])[0].sectionOffset + (object[0])[ii].sectionOffset;
-//    if (stateObj)
-//      ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
-//    else
-//      ((SynFlags*)(sectionPtr+1))->EXCL(stateObjFlag);
-//  }
-//}
+void ToggleObjectCat(LavaObjectPtr object)
+{
+  LavaObjectPtr sectionPtr;
+  bool stateObj = !((SynFlags*)(object+1))->Contains(stateObjFlag);
+  for (int ii = 0; ii < object[0][0].nSections; ii++) {
+    sectionPtr = object - (object[0])[0].sectionOffset + (object[0])[ii].sectionOffset;
+    if (stateObj)
+      ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
+    else
+      ((SynFlags*)(sectionPtr+1))->EXCL(stateObjFlag);
+  }
+}
 
-LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL)
+LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObj)
 {
   int secn;
   LavaObjectPtr object;
@@ -440,7 +440,7 @@ LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specD
   switch ((TCompoProt)specDECL->nOutput) {
   case PROT_LAVA:
     ckd.document->CheckCompObj(specDECL->RuntimeDECL);
-    object = AllocateObject(ckd, specDECL->RuntimeDECL->RelatedDECL, urlObj);
+    object = AllocateObject(ckd, specDECL->RuntimeDECL->RelatedDECL, stateObj, urlObj);
     if (!object)
       return 0;
     if (object)
@@ -454,7 +454,7 @@ LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specD
     return (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
 
   case PROT_NATIVE: ; 
-    object = AllocateObject(ckd, specDECL, urlObj);
+    object = AllocateObject(ckd, specDECL, stateObj, urlObj);
     if (!object)
       return 0;
     if (ckd.exceptionThrown)
@@ -474,7 +474,7 @@ LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specD
 }
 
 
-LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL) //, bool stateObj)
+LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObj)
 {
   int secn;
   LavaObjectPtr object;
@@ -498,16 +498,16 @@ LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* s
       ckd.document->LavaError(ckd, true, specDECL, &ERR_ldocIncompatible,0);
       return 0;
     }
-    //if (stateObj != ((SynFlags*)(object+1))->Contains(stateObjFlag)) {
-    //  ckd.document->LavaError(ckd, true, specDECL, &ERR_IncompatibleCategory, 0);
-    //  return 0;
-    //}
+    if (stateObj != ((SynFlags*)(object+1))->Contains(stateObjFlag)) {
+      ckd.document->LavaError(ckd, true, specDECL, &ERR_IncompatibleCategory, 0);
+      return 0;
+    }
     //((SynFlags*)(object+1))->INCL(finished);
     secn = ckd.document->GetSectionNumber(ckd, specDECL->RuntimeDECL->RelatedDECL, classDECL);
     return (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
 
   case PROT_NATIVE:
-    return CreateObject(ckd, urlObj, specDECL, classDECL);
+    return CreateObject(ckd, urlObj, specDECL, classDECL, stateObj);
 
   default:
     ckd.document->LavaError(ckd, true, specDECL, &ERR_NotYetImplemented, 0);
@@ -553,7 +553,7 @@ void CCopied::Destroy()
 }
 
 
-CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, LavaVariablePtr resultVarPtr, LavaDECL* resultClassDECL, CCopied* copied)
+CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, LavaVariablePtr resultVarPtr, bool stateObj, LavaDECL* resultClassDECL, CCopied* copied)
 {
   LavaObjectPtr sourceSectionPtr, resultSectionPtr, sourceObjPtr, resultObjPtr, cr;
   LavaDECL *classDECL, *secClassDECL, *attrDECL, *sourceClassDECL, *resultMemberClass;
@@ -565,7 +565,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
   CContext context;
   int ii, sii, ll, lmem, llast, fsize;
   unsigned fsizeBytes;
-  bool constit, secCopy=false, fullCopy, ok, copyStart = false, isNew = false;
+  bool constit, secCopy=false, fullCopy, stateO, ok, copyStart = false, isNew = false;
 
   sourceObjPtr = *sourceVarPtr;
   resultObjPtr = *resultVarPtr;
@@ -589,7 +589,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
     classDECL = sourceObjPtr[0]->classDECL;
   }
   if (!resultObjPtr) {
-    resultObjPtr = AllocateObject(ckd, classDECL);
+    resultObjPtr = AllocateObject(ckd, classDECL, stateObj);
     isNew = true;
   }
   if (!resultObjPtr)
@@ -658,6 +658,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
           for (/*ll = LSH*/; lmem < llast; lmem++) {
             attrDECL = ((CSectionDesc*)secClassDECL->SectionTabPtr)[0].attrDesc[lmem-LSH].attrDECL;
             constit = attrDECL->TypeFlags.Contains(constituent);
+            stateO = attrDECL->TypeFlags.Contains(stateObject);
             resultAttr = (LavaVariablePtr)(resultSectionPtr + lmem);
             if (*(sourceSectionPtr + lmem) && constit) {
               cr = copied->Find(*((LavaVariablePtr)(sourceSectionPtr + lmem)));
@@ -675,7 +676,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
                 if (resultClassDECL) {
                   ckd.document->MemberTypeContext(attrDECL, ckd.tempCtx,0);
                   resultMemberClass = ckd.document->GetFinalMTypeAndContext(attrDECL->RefID, attrDECL->inINCL, ckd.tempCtx, 0);
-                  ex = CopyObject(ckd, (LavaVariablePtr)(sourceSectionPtr + lmem), resultAttr, resultMemberClass, copied);
+                  ex = CopyObject(ckd, (LavaVariablePtr)(sourceSectionPtr + lmem), resultAttr, stateO, resultMemberClass, copied);
                   ckd.tempCtx = context;                  
                   if (ex)
                     return ex;
@@ -684,7 +685,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
                       return 0;
                 }
                 else {
-                  ex = CopyObject(ckd, (LavaVariablePtr)(sourceSectionPtr + lmem), resultAttr, 0, copied);
+                  ex = CopyObject(ckd, (LavaVariablePtr)(sourceSectionPtr + lmem), resultAttr, stateO, 0, copied);
                   if (ex)
                     return ex;
                   else
@@ -791,7 +792,9 @@ bool EqualObjects(CheckData &ckd, LavaObjectPtr leftPtr, LavaObjectPtr rightPtr,
     return false;
   leftObjPtr = leftObjPtr - (*leftObjPtr)->sectionOffset;
   rightObjPtr = rightObjPtr - (*rightObjPtr)->sectionOffset;
-  if (specialEQ == 1)
+  if ((specialEQ != 2) && (((SynFlags*)(leftObjPtr+1))->Contains(stateObjFlag)
+                           || ((SynFlags*)(rightObjPtr+1))->Contains(stateObjFlag))
+      || (specialEQ == 1))
     return (rightObjPtr == leftObjPtr);
   classDECL = (*leftObjPtr)->classDECL;
   if (classDECL != (*rightObjPtr)->classDECL)
@@ -875,7 +878,7 @@ bool OneLevelCopy(CheckData &ckd, LavaObjectPtr& object)
     return true;
   sourceObjPtr = object - castVal;
   classDECL = sourceObjPtr[0][0].classDECL;
-  resultObjPtr = AllocateObject(ckd, classDECL);//, ((SynFlags*)(sourceObjPtr+1))->Contains(stateObjFlag));
+  resultObjPtr = AllocateObject(ckd, classDECL, ((SynFlags*)(sourceObjPtr+1))->Contains(stateObjFlag));
   if (!resultObjPtr)
     return false;
   for (ii = 0; ii < resultObjPtr[0]->nSections; ii++) {
@@ -1228,14 +1231,14 @@ bool CHWException::SetLavaException(CheckData& ckd)
   LavaObjectPtr strObj, codeObj;
   int ii;
 
-  ckd.lastException = AllocateObject(ckd, ckd.document->DECLTab[B_HWException]);
+  ckd.lastException = AllocateObject(ckd, ckd.document->DECLTab[B_HWException], false);
   if (!ckd.lastException)
     return false;
   //((SynFlags*)(ckd.lastException+1))->INCL(finished);
   for (ii = 0; (ii < ckd.lastException[0][0].nSections) && (ckd.lastException[0][ii].classDECL != ckd.document->DECLTab[B_Exception]); ii++);
   ckd.lastException = ckd.lastException + ckd.lastException[0][ii].sectionOffset;
-  codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_HWException]->NestedDecls.first->successor)->data);
-  strObj = AllocateObject(ckd, ckd.document->DECLTab[VLString]);
+  codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_HWException]->NestedDecls.first->successor)->data, false);
+  strObj = AllocateObject(ckd, ckd.document->DECLTab[VLString], false);
   if (!ckd.lastException || !strObj || !codeObj) {
     ckd.exceptionThrown = true;
     return false;
@@ -1274,14 +1277,14 @@ bool CRuntimeException::SetLavaException(CheckData& ckd)
   LavaObjectPtr strObj, codeObj;
   int ii;
 
-  ckd.lastException = AllocateObject(ckd, ckd.document->DECLTab[B_RTException]);
+  ckd.lastException = AllocateObject(ckd, ckd.document->DECLTab[B_RTException], false);
   if (!ckd.lastException)
     return false;
   //((SynFlags*)(ckd.lastException+1))->INCL(finished);
   for (ii = 0; (ii < ckd.lastException[0][0].nSections) && (ckd.lastException[0][ii].classDECL != ckd.document->DECLTab[B_Exception]); ii++);
   ckd.lastException = ckd.lastException + ckd.lastException[0][ii].sectionOffset;
-  strObj = AllocateObject(ckd, ckd.document->DECLTab[VLString]);
-  codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_RTException]->NestedDecls.first->successor)->data);
+  strObj = AllocateObject(ckd, ckd.document->DECLTab[VLString], false);
+  codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_RTException]->NestedDecls.first->successor)->data, false);
   if (!ckd.lastException || !strObj || !codeObj) {
     ckd.exceptionThrown = true;
     return false;
@@ -1300,9 +1303,9 @@ bool SetLavaException(CheckData& ckd, int code, const QString& mess)
 {
   LavaObjectPtr ex, strObj, codeObj;
 
-  ex = AllocateObject(ckd, ckd.document->DECLTab[B_RTException]);
-  strObj = AllocateObject(ckd, ckd.document->DECLTab[VLString]);
-  codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_RTException]->NestedDecls.first->successor)->data);
+  ex = AllocateObject(ckd, ckd.document->DECLTab[B_RTException], false);
+  strObj = AllocateObject(ckd, ckd.document->DECLTab[VLString], false);
+  codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_RTException]->NestedDecls.first->successor)->data, false);
   if (!ex || !strObj || !codeObj) {
     ckd.exceptionMsg = ERR_SetLavaExceptionFailed;
     ckd.exceptionThrown = true;

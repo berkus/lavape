@@ -54,8 +54,8 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
   //setWFlags(GUIProg->checkBoxStyle);
   setChecked(myFormNode->data.B);
   setAutoFillBackground(true);
-  if (/*GUIProg->FrozenObject ||*/ myFormNode->data.IoSigFlags.Contains(DONTPUT)
-      || !myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
+  if (GUIProg->FrozenObject || myFormNode->data.IoSigFlags.Contains(DONTPUT)
+  || !myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
   myFormNode->data.IoSigFlags.INCL(trueValue);
   GUIProg->SetColor(this, myFormNode, QPalette::Window, QPalette::WindowText);
@@ -196,8 +196,8 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   setGeometry(bord,bord, size.width() + iw1 + iw2, size.height() + iw1 + iw2);
   //size = qApp->style().sizeFromContents(QStyle::CT_PushButton, this, size);
   //setGeometry(bord,bord, size.width(), size.height());
-  if (/*GUIProg->FrozenObject ||*/ ((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(DONTPUT)
-      || !((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
+  if (GUIProg->FrozenObject || ((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(DONTPUT)
+  || !((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
   QWidget* par = parent;
   while (par && !par->inherits("CFormWid"))
@@ -240,8 +240,8 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
   int iw1 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_ButtonMargin, &qsob, this);
   int iw2 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &qsob, this)*2;
   setGeometry(bord,bord, size.width() + iw1 + iw2 + myFormNode->data.Pixmap->width(), size.height() + iw1 + iw2);
-  if (/*GUIProg->FrozenObject ||*/ ((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(DONTPUT)
-      || !((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
+  if (GUIProg->FrozenObject || ((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(DONTPUT)
+  || !((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
   QWidget* par = parent;
   while (par && !par->inherits("CFormWid"))
@@ -455,8 +455,8 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
   setGeometry(bord,bord, size.width(), size.height());
   if (!myFormNode->data.IoSigFlags.Contains(DONTPUT)) 
     setChecked(num == EnumNode->data.D+1);
-  if (/*GUIProg->FrozenObject ||*/ ((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(DONTPUT)
-      || !((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
+  if (GUIProg->FrozenObject || ((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(DONTPUT)
+  || !((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
 //  else
 //    myFormNode->data.IoSigFlags.INCL(UnprotectedUser);

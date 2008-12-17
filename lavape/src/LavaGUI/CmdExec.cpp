@@ -499,7 +499,7 @@ CHEHandlerInfo* CmdExecCLASS::GetHandler(CHEFormNode* fNode, int eventType)
       classDECL = handlerDECL->ParentDECL;
       if (classDECL->DeclType == Impl)
         classDECL = GUIProg->myDoc->IDTable.GetDECL(((CHETID*)classDECL->Supports.first)->data, classDECL->inINCL);
-      obj = AllocateObject(GUIProg->ckd, classDECL);
+      obj = AllocateObject(GUIProg->ckd, classDECL, true);
       if (obj && CallDefaultInit(((CGUIProg*)GUIProg)->ckd, obj)) {
         GUIProg->allocatedObjects.append(obj);
         cheHandler->data.HandlerNode->data.GUIService = (CSecTabBase**)obj;

@@ -76,7 +76,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn, LavaVariablePtr resultObjPtr, 
           if (!servDECL->WorkFlags.Contains(runTimeOK))
             if (!GUIProg->myDoc->CheckImpl(((CGUIProg*)GUIProg)->ckd, servDECL))
               RETURNFALSE()  //return false;
-          *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL->RelatedDECL/*syn->TypeFlags.Contains(stateObject)*/);
+          *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL->RelatedDECL, syn->TypeFlags.Contains(stateObject));
           if (!*resultObjPtr)
             RETURNFALSE() 
           if (GUIProg->myDoc->isObject
@@ -86,7 +86,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn, LavaVariablePtr resultObjPtr, 
     }
     else
       if (newObj) {
-        *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL/*syn->TypeFlags.Contains(stateObject)*/);
+        *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL, syn->TypeFlags.Contains(stateObject));
         if (!*resultObjPtr) 
           RETURNFALSE() 
         if (GUIProg->myDoc->isObject
@@ -104,7 +104,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn, LavaVariablePtr resultObjPtr, 
         if (!servDECL->WorkFlags.Contains(runTimeOK))
           if (!GUIProg->myDoc->CheckImpl(((CGUIProg*)GUIProg)->ckd, servDECL))
             RETURNFALSE()  //return false;
-        *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RelatedDECL); //??
+        *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RelatedDECL, false); //??
         if (!*resultObjPtr)
           RETURNFALSE() 
         if (GUIProg->myDoc->isObject
@@ -113,7 +113,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn, LavaVariablePtr resultObjPtr, 
       }
     }
     else {
-      *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn); //??
+      *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn, false); //??
       if (!*resultObjPtr) 
         RETURNFALSE() 
       if (GUIProg->myDoc->isObject
@@ -1144,7 +1144,7 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
           else {
             elemObj = HArrayGetEl(multiObj, ii);
             if (!elemObj) {
-              elemObj = AllocateObject(((CGUIProg*)GUIProg)->ckd, iterDECL->RelatedDECL->RuntimeDECL/*iterDECL->RelatedDECL->TypeFlags.Contains(stateObject)*/);
+              elemObj = AllocateObject(((CGUIProg*)GUIProg)->ckd, iterDECL->RelatedDECL->RuntimeDECL, iterDECL->RelatedDECL->TypeFlags.Contains(stateObject));
               if (elemObj) {
   //              ((SynFlags*)(elemObj+1))->INCL(notFromSource);
                 ((SynFlags*)(elemObj+1))->INCL(useDefaults);
@@ -1654,8 +1654,8 @@ bool LavaFormCLASS::OnOK(CHEFormNode *object_first)
     if (actFNode->data.IoSigFlags.Contains(UnprotectedUser)) {
       if (actFNode->data.Atomic || actFNode->data.BasicFlags.Contains(Atomic)) {
         if (!actFNode->data.IterFlags.Contains(Ellipsis)
-          && !actFNode->data.IoSigFlags.Contains(trueValue)) {
-          //&& !((CGUIProg*)GUIProg)->FrozenObject) {
+          && !actFNode->data.IoSigFlags.Contains(trueValue)
+          && !((CGUIProg*)GUIProg)->FrozenObject) {
           //show MessageBox and
           //SetFocus
           QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), ERR_EnterValue,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);

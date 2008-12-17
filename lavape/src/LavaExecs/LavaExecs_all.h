@@ -7,6 +7,7 @@
 
 #include "ExecView.h"
 #include <QPixmap>
+#include "qassistantclient.h"
 
 #include "Check.h"
 #include "ComboBar.h"

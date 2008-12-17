@@ -36,7 +36,7 @@ class  LAVAGUI_DLL CGUIMet : public QObject
   LavaDECL *myDECL;
   LavaVariablePtr ServicePtr;
   CheckData ckd;
-  //int FrozenObject;
+  int FrozenObject;
   int fromFillIn;
   QFont *Font; //this Object is allocated by the application and may not be destroyed
 

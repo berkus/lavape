@@ -48,8 +48,8 @@ QString ERR_OpenInFailed(QObject::tr("Open for input failed for file "));
 QString ERR_OpenOutFailed(QObject::tr("Open for output failed for file "));
 //QString ERR_OpenInOutFailed(QObject::tr("Open for inout failed for file "));
 
-#define OBJALLOC(RESULT, CKD, DECL) {\
-  RESULT = AllocateObject(CKD, DECL);\
+#define OBJALLOC(RESULT, CKD, DECL, ST) {\
+  RESULT = AllocateObject(CKD, DECL, ST);\
   if (!RESULT && !CKD.exceptionThrown) \
     throw CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
 }
@@ -84,7 +84,7 @@ QString ERR_OpenOutFailed(QObject::tr("Open for output failed for file "));
 
 bool TGetChar(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Char])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Char], false)
   LavaObjectPtr object = stack[SFH];
   OPENIN(ckd,object);
   (*(QTextStream*)(object+LSH+1+szQFile)) >> *(char*)(stack[SFH+1]+LSH);
@@ -92,7 +92,7 @@ bool TGetChar(CheckData& ckd, LavaVariablePtr stack)
 }
 bool TGetInt(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer], false)
   LavaObjectPtr object = stack[SFH];
   OPENIN(ckd,object);
   (*(QTextStream*)(object+LSH+1+szQFile)) >> *(int*)(stack[SFH+1]+LSH);
@@ -101,7 +101,7 @@ bool TGetInt(CheckData& ckd, LavaVariablePtr stack)
 
 bool TGetFloat(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Float])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Float], false)
   LavaObjectPtr object = stack[SFH];
   OPENIN(ckd,object);
   (*(QTextStream*)(object+LSH+1+szQFile)) >> *(float*)(stack[SFH+1]+LSH);
@@ -110,7 +110,7 @@ bool TGetFloat(CheckData& ckd, LavaVariablePtr stack)
 
 bool TGetDouble(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Double])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Double], false)
   LavaObjectPtr object = stack[SFH];
   OPENIN(ckd,object);
   (*(QTextStream*)(object+LSH+1+szQFile)) >> *(double*)(stack[SFH+1]+LSH);
@@ -119,7 +119,7 @@ bool TGetDouble(CheckData& ckd, LavaVariablePtr stack)
 
 bool TGetString(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
   LavaObjectPtr object = stack[SFH];
   OPENIN(ckd,object);
   QString str;
@@ -138,7 +138,7 @@ bool TAtEnd(CheckData& ckd, LavaVariablePtr stack)
 
 bool TReadTotal(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
   LavaObjectPtr object = stack[SFH];
   OPENIN(ckd,object);
   QString str;
@@ -197,7 +197,7 @@ bool TNewFuncInOut(CheckData& ckd, LavaVariablePtr stack)
   LavaObjectPtr obj = stack[SFH]-stack[SFH][0]->sectionOffset;
   LavaObjectPtr urlObj = ((RunTimeData*)(obj-LOH))->urlObj;
   QString fileName =  *(QString*)(urlObj+LSH);
-  LavaObjectPtr modeObj = AllocateObject(ckd, ckd.document->DECLTab[B_Bool]);
+  LavaObjectPtr modeObj = AllocateObject(ckd, ckd.document->DECLTab[B_Bool], false);
   *(bool*)(modeObj+LSH) = false;
   *(LavaVariablePtr)(stack[SFH]+LSH) = modeObj;
   new1(stack[SFH]+LSH+1) QFile(fileName);
@@ -219,7 +219,7 @@ bool TDecFuncInOut(CheckData& ckd, LavaVariablePtr stack)
 
 bool DGetInt(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer], false)
   LavaObjectPtr object = stack[SFH];
   OPENIN(ckd,object);
   *(int*)(stack[SFH+1]+LSH) = 0;
@@ -229,7 +229,7 @@ bool DGetInt(CheckData& ckd, LavaVariablePtr stack)
 
 bool DGetFloat(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Float])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Float], false)
   LavaObjectPtr object = stack[SFH];
   OPENIN(ckd,object);
   *(float*)(stack[SFH+1]+LSH) = 0;
@@ -238,7 +238,7 @@ bool DGetFloat(CheckData& ckd, LavaVariablePtr stack)
 }
 bool DGetDouble(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Double])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Double], false)
   LavaObjectPtr object = stack[SFH];
   OPENIN(ckd,object);
   (*(QDataStream*)(object+LSH+1+szQFile)) >> *(double*)(stack[SFH+1]+LSH);
@@ -247,7 +247,7 @@ bool DGetDouble(CheckData& ckd, LavaVariablePtr stack)
 
 bool DGetString(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
   LavaObjectPtr object = stack[SFH];
   OPENIN(ckd,object);
   QString str;
@@ -312,7 +312,7 @@ bool DNewFuncInOut(CheckData& ckd, LavaVariablePtr stack)
   LavaObjectPtr obj = stack[SFH]-stack[SFH][0]->sectionOffset;
   LavaObjectPtr urlObj = ((RunTimeData*)*(obj-LOH))->urlObj;
   QString fileName =  *(QString*)(urlObj+LSH);
-  LavaObjectPtr modeObj = AllocateObject(ckd, ckd.document->DECLTab[B_Bool]);
+  LavaObjectPtr modeObj = AllocateObject(ckd, ckd.document->DECLTab[B_Bool], false);
   //((SynFlags*)(modeObj+1))->INCL(finished);
   *(bool*)(modeObj+LSH) = false;
   *(LavaVariablePtr)(stack[SFH]+LSH) = modeObj;
@@ -333,7 +333,7 @@ bool DDecFuncInOut(CheckData& ckd, LavaVariablePtr stack)
 bool DStreamDDFunc(CheckData& ckd, LavaVariablePtr stack)
 {
   DDMakeClass* dd = new DDStreamClass(true);
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer], false)
   *(stack[SFH+1]+LSH) = (CSectionDesc*)dd;
   return true;
 }
@@ -341,7 +341,7 @@ bool DStreamDDFunc(CheckData& ckd, LavaVariablePtr stack)
 bool TStreamDDFunc(CheckData& ckd, LavaVariablePtr stack)
 {
   DDMakeClass* dd = new DDStreamClass(false);
-  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer])
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer], false)
   *(stack[SFH+1]+LSH) = (CSectionDesc*)dd;
   return true;
 }
