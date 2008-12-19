@@ -118,6 +118,7 @@ public:
 
 public slots:
     void about();
+    void onFocusChanged(QWidget *old, QWidget *now);
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;

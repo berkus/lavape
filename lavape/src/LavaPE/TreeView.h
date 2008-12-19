@@ -109,6 +109,7 @@ public:
 public slots:
    virtual void closeEditor(QWidget* , QAbstractItemDelegate::EndEditHint );
    virtual void commitData(QWidget* );
+   void onItemSelectionChanged();
 
 private:
   Q_OBJECT

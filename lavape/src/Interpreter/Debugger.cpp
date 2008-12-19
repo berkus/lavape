@@ -175,7 +175,7 @@ void CLavaDebugger::connectToClient() {
 
 void CLavaDebugger::connected() {
   isConnected = true;
-  wxTheApp->updateButtonsMenus();
+  //wxTheApp->updateButtonsMenus();
 
   put_cid = new ASN1OutSock (workSocket);
   if (!put_cid->Done) {

@@ -1983,7 +1983,7 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
         CMainItemData clipData;
         defTypeSpicked = clipData.Spick(ar, treeflagsSpicked, secondtflagsSpicked);
       }
-      wxTheApp->updateButtonsMenus();
+      //wxTheApp->updateButtonsMenus();
     }
     else {
       active = false;
@@ -3353,7 +3353,7 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
       DeleteDragChain();
   }
   if (m_hitemDrop) {
-    wxTheApp->updateButtonsMenus();
+    //wxTheApp->updateButtonsMenus();
     return;
   }
 //  ParItemSel = 0;
@@ -3418,8 +3418,8 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
   else
     ItemSel = 0;
   lastCurrent = (CTreeItem*)selItem;
-  if (active)
-    wxTheApp->updateButtonsMenus();
+  //if (active)
+  //  wxTheApp->updateButtonsMenus();
 }
 
 void CLavaPEView::OnShowSpecialView(TDeclType exprType)

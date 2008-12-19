@@ -215,7 +215,7 @@ void wxMainFrame::MoveToNextTabbedWindow(wxTabWidget *tw,int index){
     delete tw;
     equalize();
   }
-  wxTheApp->updateButtonsMenus();
+  //wxTheApp->updateButtonsMenus();
 }
 
 void wxMainFrame::MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index){
@@ -234,7 +234,7 @@ void wxMainFrame::MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index){
     delete tw;
     equalize();
   }
-  wxTheApp->updateButtonsMenus();
+  //wxTheApp->updateButtonsMenus();
 }
 
 void wxMainFrame::DropPage(wxTabWidget* sTw, int sIndex, wxTabWidget* dTw, int dIndex)
@@ -253,7 +253,7 @@ void wxMainFrame::DropPage(wxTabWidget* sTw, int sIndex, wxTabWidget* dTw, int d
   }
   SetCurrentTabWindow(dTw);
   page->Activate(true);
-  wxTheApp->updateButtonsMenus();
+  //wxTheApp->updateButtonsMenus();
 }
 
 void wxMainFrame::equalize() {
@@ -521,7 +521,7 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
           ((wxChildFrame*)tab->widget(0))->Activate(true);
         deleteLater();  
       }
-      wxTheApp->updateButtonsMenus();
+      //wxTheApp->updateButtonsMenus();
     }
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->closeFileAction) {
@@ -531,17 +531,17 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
   else if (triggeredAction == ((wxTabBar*)tabBar())->newTabWidAction) {
     page->Activate(true);
     wxTheApp->m_appWindow->MoveToNewTabbedWindow(this,index);
-    wxTheApp->updateButtonsMenus();
+    //wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->movePageRightAction) {
     page->Activate(true);
     wxTheApp->m_appWindow->MoveToNextTabbedWindow(this,index);
-    wxTheApp->updateButtonsMenus();
+    //wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->movePageLeftAction) {
     page->Activate(true);
     wxTheApp->m_appWindow->MoveToPrecedingTabbedWindow(this,index);
-    wxTheApp->updateButtonsMenus();
+    //wxTheApp->updateButtonsMenus();
   }
 }
 
@@ -570,7 +570,7 @@ void wxTabWidget::closePage() {
         ((wxChildFrame*)tab->widget(0))->Activate(true);
       deleteLater();
     }
-    wxTheApp->updateButtonsMenus();
+    //wxTheApp->updateButtonsMenus();
   }
 }
 

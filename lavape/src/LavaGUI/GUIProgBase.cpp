@@ -260,7 +260,7 @@ void CGUIMet::ScrollIntoFrame(QWidget *win)
 void CGUIProgBase::setFocNode(CHEFormNode *fnode) {
   focNode = fnode;
   //if (fnode)
-  wxTheApp->updateButtonsMenus();
+  //wxTheApp->updateButtonsMenus();
 }
 
 

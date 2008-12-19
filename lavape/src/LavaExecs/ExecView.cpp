@@ -3103,7 +3103,7 @@ void CExecView::OnEditCopy()
   else
     clipBoardObject = (SynObject*)text->currentSynObj->Clone();
   clipBoardDoc = myDoc;
-  wxTheApp->updateButtonsMenus();
+  //wxTheApp->updateButtonsMenus();
 }
 
 void CExecView::OnEditCut()
@@ -3315,7 +3315,7 @@ void CExecView::OnInsertBefore()
   // TODO: Add your command handler code here
 
   insertBefore = !insertBefore;
-  wxTheApp->updateButtonsMenus();
+  //wxTheApp->updateButtonsMenus();
 }
 
 void CExecView::InsertAfter()
@@ -6488,8 +6488,8 @@ void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
     if (Base)
       SetHelpText();
     redCtl->setFocus();
-    if (initialUpdateDone)
-      wxTheApp->updateButtonsMenus();
+    //if (initialUpdateDone)
+    //  wxTheApp->updateButtonsMenus();
   }
   else if (!bActivate) {
     active = false;

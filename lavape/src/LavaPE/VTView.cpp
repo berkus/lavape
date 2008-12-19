@@ -886,8 +886,8 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
       currentBrType = findBaseTID;
     }
   }
-  if (active)
-    wxTheApp->updateButtonsMenus();
+  //if (active)
+  //  wxTheApp->updateButtonsMenus();
 }
 
 void CVTView::OnActivateView(bool bActivate, wxView *deactiveView)
@@ -900,7 +900,7 @@ void CVTView::OnActivateView(bool bActivate, wxView *deactiveView)
       SetVTError(sel);
       if (!Tree->hasFocus())
         Tree->setFocus();
-      wxTheApp->updateButtonsMenus();
+      //wxTheApp->updateButtonsMenus();
     }
     else {
       active = false;

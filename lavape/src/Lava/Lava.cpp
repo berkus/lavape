@@ -106,7 +106,7 @@ int main( int argc, char ** argv ) {
   else
     return 1;
 
-  app.updateButtonsMenus();
+  //app.updateButtonsMenus();
 
   int res = app.exec();
 

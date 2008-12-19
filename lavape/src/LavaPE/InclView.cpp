@@ -410,7 +410,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
       frame->m_UtilityView->ResetError();
       if (!Tree->hasFocus())
         Tree->setFocus();
-      wxTheApp->updateButtonsMenus();
+      //wxTheApp->updateButtonsMenus();
     }
     else {
       active = false;
@@ -425,7 +425,7 @@ void CInclView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
     return;
   if (!selItem->isSelected()) 
     return;
-  wxTheApp->updateButtonsMenus();
+  //wxTheApp->updateButtonsMenus();
 }
 
 void CInclView::OnCollapseAll()

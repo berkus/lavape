@@ -136,7 +136,7 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
 
   SetClassName(argv[0]);
 
-  //QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(updateButtonsMenus()));
+  connect(this,SIGNAL(focusChanged(QWidget *,QWidget *)),this,SLOT(onFocusChanged(QWidget *,QWidget *)));
   appExit = false;
 }
 
@@ -394,35 +394,20 @@ void wxMainFrame::histFile(int i) {
   OnMRUFile(i);
 }
 
-//void wxMainFrame::histWindow(int i) {
-//  OnMRUWindow(i);
-//}
-
 void wxApp::about()
 {
-    QMessageBox::about(m_appWindow,"Qt Application Example","Qt Application Example");
-}
-/*
-QAction::QAction (QObject *parent, const char *name)
-    : QAction(name,parent) {
-    enable = false;
-}*/
-
-/*
-QAction::QAction (const QString &text, const QIcon &icon, const QString &menuText, int accel, QObject *parent, const char *name, bool toggle)
-    : QAction(text,icon,menuText,accel,parent,name,toggle) {
-    enable = false;
+  QMessageBox::about(m_appWindow,"Qt Application Example","Qt Application Example");
 }
 
-QAction::QAction (const QString &text, const QString &menuText, int accel, QObject *parent, const char *name, bool toggle)
-    : QAction(text,menuText,accel,parent,name,toggle) {
-    enable = false;
+void wxApp::onFocusChanged(QWidget *old, QWidget *now) {
+  if (now)
+    updateButtonsMenus();
 }
-*/
+
 static QString FindExtension(const char *path)
 {
-    QFileInfo fi(path);
-    return fi.suffix();
+  QFileInfo fi(path);
+  return fi.suffix();
 }
 
 // ----------------------------------------------------------------------------
@@ -431,11 +416,11 @@ static QString FindExtension(const char *path)
 
 wxDocument::wxDocument(wxDocument *parent)
 {
-    m_documentModified = false;
-    m_documentParent = parent;
-    m_documentTemplate = (wxDocTemplate *) NULL;
-    m_savedYet = false;
-    deleting = false;
+  m_documentModified = false;
+  m_documentParent = parent;
+  m_documentTemplate = (wxDocTemplate *) NULL;
+  m_savedYet = false;
+  deleting = false;
 }
 
 wxDocument::~wxDocument()
@@ -507,7 +492,7 @@ bool wxDocument::DeleteAllChildFrames()
   wxTheApp->m_docManager->SetActiveView(0);
   if (!noTab && tab->widget(0))
     ((wxChildFrame*)tab->widget(0))->Activate(true);
-  wxTheApp->updateButtonsMenus();
+  //wxTheApp->updateButtonsMenus();
   return true;
 }
 
@@ -922,8 +907,11 @@ bool wxView::Close()
 
 void wxView::ActivateView(bool activate)
 {
-  if (activate)
+  if (activate) {
     active = true;
+    setFocus();
+    //wxTheApp->updateButtonsMenus();
+  }
   GetParentFrame()->NotifyActive(this);
   GetParentFrame()->Activate(activate);
 }
@@ -933,7 +921,7 @@ void wxView::OnActivateView(bool activate, wxView *deactiveView)
   if (activate) {
     active = true;
     setFocus();
-    wxTheApp->updateButtonsMenus();
+    //wxTheApp->updateButtonsMenus();
   }
   else
     active = false;
@@ -1827,6 +1815,7 @@ void wxDocManager::SetActiveView(wxView *view, bool activate)
       m_activeView = view;
       view->OnActivateView();
       view->GetParentFrame()->NotifyActive(view);
+      //wxTheApp->updateButtonsMenus();
       wxDocManager::GetDocumentManager()->SetActiveFrame(view->GetParentFrame());
     }
   }

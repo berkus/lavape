@@ -229,6 +229,8 @@ MyListView::MyListView(CTreeView* view)
   viewport()->setAcceptDrops(true);
   setAutoScroll(true);
   setEditTriggers(QAbstractItemView::SelectedClicked);
+
+  QObject::connect(this,SIGNAL(itemSelectionChanged()),SLOT(onItemSelectionChanged()));
 }
 
 void MyListView::setCurAndSel(QTreeWidgetItem* item, bool singleSel)
@@ -419,6 +421,9 @@ void MyListView::commitData(QWidget* editor)
   committed = true;
 }
 
+void MyListView::onItemSelectionChanged() {
+  wxTheApp->updateButtonsMenus();
+}
 
 CTreeItemDelg::CTreeItemDelg(MyListView* tree)
 {
