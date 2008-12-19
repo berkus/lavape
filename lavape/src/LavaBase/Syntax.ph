@@ -1127,5 +1127,5 @@ extern LAVABASE_DLL bool RemoveErrCode(CHAINX* errors, QString* ids);
                       //returns true if removes an error
 
 extern LAVABASE_DLL TAnnotation *NewTAnnotation();
-
+extern LAVABASE_DLL void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 #endif
