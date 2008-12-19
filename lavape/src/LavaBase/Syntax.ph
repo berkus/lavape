@@ -276,7 +276,7 @@ $TYPE +CDP {
     //18/, X0004 0000 the edit show function
     FREE_TYPEFLAG2, //oldIsGUI,
     //19, X0008 0000/ now free flag
-    sameAsSelf,
+    FREE_TYPEFLAG3,//sameAsSelf,
     //20, X0010 0000 IO parameter has same category as "self"
     isNative,
     //21, X0020 0000         Function or interface has native implementation

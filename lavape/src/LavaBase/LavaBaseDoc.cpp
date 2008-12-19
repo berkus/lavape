@@ -1133,7 +1133,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
   bool basetrueCat = false;
   bool reftrueCat = false;
   bool isStateOb = false;
-  bool isSameAsSelf = false;
+  //bool isSameAsSelf = false;
   bool baseabstract = false;
   bool baseSubst = false;
   CHETID* che;
@@ -1150,7 +1150,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
         basedefsCat = basedefsCat || decl->TypeFlags.Contains(definesObjCat);
         basetrueCat = basetrueCat || decl->TypeFlags.Contains(definiteCat);
         isStateOb = isStateOb || decl->TypeFlags.Contains(stateObject);
-        isSameAsSelf = isSameAsSelf || decl->TypeFlags.Contains(sameAsSelf);
+        //isSameAsSelf = isSameAsSelf || decl->TypeFlags.Contains(sameAsSelf);
         baseabstract = baseabstract || decl->TypeFlags.Contains(isAbstract);
         baseSubst = baseSubst || decl->TypeFlags.Contains(substitutable);
       }
@@ -1163,8 +1163,8 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
       inheritedFlags.INCL(definiteCat);
       if (isStateOb)
         inheritedFlags.INCL(stateObject);
-      if (isSameAsSelf)
-        inheritedFlags.INCL(sameAsSelf);
+      //if (isSameAsSelf)
+      //  inheritedFlags.INCL(sameAsSelf);
     }
     if (decl && (memDECL->DeclType == Attr)) { 
       if (decl->TypeFlags.Contains(constituent)) 
@@ -1202,7 +1202,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
             memDECL->TypeFlags.EXCL(substitutable);
         if (!basetrueCat) {
           isStateOb = memDECL->TypeFlags.Contains(stateObject);
-          isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
+          //isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
         }
       }
   }
@@ -1222,7 +1222,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
   else {
     if (!basetrueCat && (memDECL->DeclType != VirtualType)) {
       isStateOb = memDECL->TypeFlags.Contains(stateObject);
-      isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
+      //isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
     }
   }
   /* alt:
@@ -1246,7 +1246,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
         && !memDECL->TypeFlags.Contains(isAbstract)) {
         memDECL->TypeFlags.INCL(definiteCat);
         isStateOb = memDECL->TypeFlags.Contains(stateObject);
-        isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
+        //isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
       }
       else
         memDECL->TypeFlags.EXCL(definiteCat);
@@ -1262,10 +1262,10 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
       memDECL->TypeFlags.INCL(stateObject);
     else 
       memDECL->TypeFlags.EXCL(stateObject);
-    if (isSameAsSelf) 
-      memDECL->TypeFlags.INCL(sameAsSelf);
-    else 
-      memDECL->TypeFlags.EXCL(sameAsSelf);
+    //if (isSameAsSelf) 
+    //  memDECL->TypeFlags.INCL(sameAsSelf);
+    //else 
+    //  memDECL->TypeFlags.EXCL(sameAsSelf);
   }
   return inheritedFlags;
 }

@@ -1663,11 +1663,11 @@ ValOnInit CFuncBox::OnInitDialog()
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     while (cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)) {
       hasOutput = hasOutput || (((LavaDECL*)cheIO->data)->DeclType == OAttr);
-      if (((LavaDECL*)cheIO->data)->TypeFlags.Contains(sameAsSelf)) {
-        StaticFunc->setEnabled(false);
-        cheIO = 0;
-      }
-      else
+      //if (((LavaDECL*)cheIO->data)->TypeFlags.Contains(sameAsSelf)) {
+      //  StaticFunc->setEnabled(false);
+      //  cheIO = 0;
+      //}
+      //else
         cheIO = (CHE*)cheIO->successor;
     }
     hasOutput = hasOutput || myDECL->Inherits.first;
@@ -3466,7 +3466,7 @@ ValOnInit CIOBox::OnInitDialog()
        valkindOfField = 0;
     if (myDECL->ParentDECL->TypeFlags.Contains(isStatic)) {
       SameAsSelf->setChecked(false);
-      myDECL->TypeFlags.EXCL(sameAsSelf);
+      //myDECL->TypeFlags.EXCL(sameAsSelf);
       SameAsSelf->setEnabled(false);
     }
     if (myDECL->TypeFlags.Contains(substitutable)) {
@@ -3502,12 +3502,13 @@ ValOnInit CIOBox::OnInitDialog()
       }
       else {
         StateObject->setChecked(false);
-        if (myDECL->TypeFlags.Contains(sameAsSelf)) {
+/*        if (myDECL->TypeFlags.Contains(sameAsSelf)) {
           ValueObject->setChecked(false);
           SameAsSelf->setChecked(true);
           AnyCategory->setChecked(false);
         }
-        else if (myDECL->TypeFlags.Contains(isAnyCategory)) {
+        else*/ 
+        if (myDECL->TypeFlags.Contains(isAnyCategory)) {
           ValueObject->setChecked(false);
           SameAsSelf->setChecked(false);
           AnyCategory->setChecked(true);
@@ -3737,10 +3738,10 @@ void CIOBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(stateObject);
   else
     myDECL->TypeFlags.EXCL(stateObject);
-  if (SameAsSelf->isChecked())
-    myDECL->TypeFlags.INCL(sameAsSelf);
-  else
-    myDECL->TypeFlags.EXCL(sameAsSelf);
+  //if (SameAsSelf->isChecked())
+  //  myDECL->TypeFlags.INCL(sameAsSelf);
+  //else
+  //  myDECL->TypeFlags.EXCL(sameAsSelf);
   if (AnyCategory->isChecked())
     myDECL->TypeFlags.INCL(isAnyCategory);
   else
@@ -4345,7 +4346,7 @@ void CVTypeBox::on_DefCat_clicked()
   UpdateData(true);
   bool defCat = DefCat->isChecked()
                 && !inheritedFlag.Contains(definiteCat)
-                /*&& !myDECL->TypeFlags.Contains(isAbstract)*/;
+                && !myDECL->TypeFlags.Contains(isAbstract);
   StateObject->setEnabled(defCat);
   ValueObject->setEnabled(defCat);
   AnyCategory->setEnabled(defCat);

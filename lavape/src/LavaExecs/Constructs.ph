@@ -304,7 +304,7 @@ enum ExecFlags {
   isVariable,         //17
   inExecHdr,          //18
   inputArrow,         //19
-  isSameAsSelf,       //20
+  FREEEXECFLAG1,//isSameAsSelf,       //20
   isSubstitutable,    //21
   isUnknownCat,       //22
   isInForeach,        //23
