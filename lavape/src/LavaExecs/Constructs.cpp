@@ -751,7 +751,8 @@ ROContext SynObject::ReadOnlyContext () {
   || obj->primaryToken == ensure_T)
     return assertion;
 
-  if (((SelfVar*)obj)->execDECL->ParentDECL->TypeFlags.Contains(isConst))
+  if (!((SelfVar*)obj)->execDECL->ParentDECL->TypeFlags.Contains(stateObject)
+  && !((SelfVar*)obj)->execDECL->ParentDECL->TypeFlags.Contains(isAnyCategory))
     return roExec;
   else
     return noROContext;

@@ -57,22 +57,6 @@
      </widget>
     </item>
     <item>
-     <widget class="QCheckBox" name="ConstFunc" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="focusPolicy" >
-       <enum>Qt::StrongFocus</enum>
-      </property>
-      <property name="text" >
-       <string>Read-only</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QCheckBox" name="StaticFunc" >
       <property name="sizePolicy" >
        <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
@@ -649,7 +633,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QWidget" name="" >
+  <widget class="QWidget" name="layoutWidget" >
    <property name="geometry" >
     <rect>
      <x>11</x>
@@ -754,7 +738,6 @@
   <tabstop>CHECKOp</tabstop>
   <tabstop>CMBOperator</tabstop>
   <tabstop>Protected</tabstop>
-  <tabstop>ConstFunc</tabstop>
   <tabstop>StaticFunc</tabstop>
   <tabstop>Abstract</tabstop>
   <tabstop>Synch</tabstop>

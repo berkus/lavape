@@ -1219,7 +1219,7 @@ bool SelfVarX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
   if (LBaseData->m_checkInvariants
   && isFuncBody
   && !funcDECL->TypeFlags.Contains(isInitializer)
-  && !funcDECL->TypeFlags.Contains(isConst)
+  && funcDECL->TypeFlags.Contains(stateObject)
   && !((unsigned)stackFrame[2] & 1)
   && idp
   && idp->hasOrInheritsInvariants)

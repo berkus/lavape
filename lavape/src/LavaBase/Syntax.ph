@@ -250,7 +250,7 @@ $TYPE +CDP {
     isPlaceholder,
     // 6/, X0000 0040, an attribute defines a placeHolder
     isConst,
-    // 7/128, X0000 0080,  //const function or property
+    // 7/128, X0000 0080,  // value of member variable must not be replaced
     thisCompoForm,
     // 8/256, X0000 0100, the internal interface of the component objects GUI
     isAbstract,
@@ -276,7 +276,7 @@ $TYPE +CDP {
     //18/, X0004 0000 the edit show function
     FREE_TYPEFLAG2, //oldIsGUI,
     //19, X0008 0000/ now free flag
-    FREE_TYPEFLAG3,//sameAsSelf,
+    FREE_TYPEFLAG3,// sameAsSelf,
     //20, X0010 0000 IO parameter has same category as "self"
     isNative,
     //21, X0020 0000         Function or interface has native implementation

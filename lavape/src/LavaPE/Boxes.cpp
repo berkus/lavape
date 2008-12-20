@@ -666,12 +666,6 @@ void CAttrBox::on_ID_OK_clicked()
       myDECL->TypeFlags.INCL(isAbstract);
     else
       myDECL->TypeFlags.EXCL(isAbstract);
-    /*
-    if (InheritsBody->isChecked())
-      myDECL->TypeFlags.INCL(inheritsBody);
-    else
-      myDECL->TypeFlags.EXCL(inheritsBody);
-    */
   }
   myDECL->TypeFlags.EXCL(isOptional);
   myDECL->TypeFlags.EXCL(isPlaceholder);
@@ -1641,21 +1635,30 @@ ValOnInit CFuncBox::OnInitDialog()
       myDECL->TypeFlags.INCL(isNative);
       Native->setChecked(true);
     }
-    myDECL->TypeFlags.INCL(isConst);
-    ConstFunc->setChecked(true);
     EventType->setCurrentIndex(0);
 
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     EnforceOver->setChecked(myDECL->ParentDECL->DeclType == Impl);
 
     if ((myDECL->ParentDECL->DeclType == Interface)
-         || (myDECL->ParentDECL->DeclType == Impl) ) {
+    || (myDECL->ParentDECL->DeclType == Impl) ) {
       CHECKOp->setEnabled(true);
       CalcOpBox();
     }
     CHECKHandler->setEnabled(false);
   }  
   else {
+    if (myDECL->TypeFlags.Contains(isPropGet)) {
+      SelfCategory->setEnabled(false);
+      myDECL->TypeFlags.INCL(isAnyCategory);
+      SelfCategory->setCurrentIndex(2);
+    }
+    else if (myDECL->TypeFlags.Contains(isPropSet)) {
+      SelfCategory->setEnabled(false);
+      myDECL->TypeFlags.INCL(stateObject);
+      SelfCategory->setCurrentIndex(1);
+    }
+
     valNewName = QString(myDECL->LocalName.c);
     cheIO = (CHE*)myDECL->NestedDecls.first;
     hasParams = cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc);
@@ -1679,7 +1682,7 @@ ValOnInit CFuncBox::OnInitDialog()
       Initializer->setEnabled(false);
       Abstract->setEnabled(false);
       EnforceOver->setEnabled(false);
-      ConstFunc->setEnabled(false);
+      SelfCategory->setEnabled(false);
     }
     else
       Signal->setChecked(false);
@@ -1698,7 +1701,7 @@ ValOnInit CFuncBox::OnInitDialog()
       Initializer->setEnabled(false);
       Abstract->setEnabled(false);
       EnforceOver->setEnabled(false);
-      ConstFunc->setEnabled(false);
+      SelfCategory->setEnabled(false);
       Closed->setEnabled(false);
       Closed->setChecked(false);
     }
@@ -1718,9 +1721,17 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     else
       EnforceOver->setChecked(false);
-    ConstFunc->setChecked(myDECL->TypeFlags.Contains(isConst));
+
+    if (myDECL->TypeFlags.Contains(stateObject))
+      SelfCategory->setCurrentIndex(1);
+    else if (myDECL->TypeFlags.Contains(isAnyCategory))
+      SelfCategory->setCurrentIndex(2);
+    else
+      SelfCategory->setCurrentIndex(0);
+
     if (myDECL->TypeFlags.Contains(isInitializer)) {
-      ConstFunc->setEnabled(true); 
+      SelfCategory->setEnabled(false); 
+      SelfCategory->setCurrentIndex(1);
       Protected->setEnabled(false);
       Initializer->setChecked(true);
       DefaultIni->setEnabled(!hasParams
@@ -1728,8 +1739,6 @@ ValOnInit CFuncBox::OnInitDialog()
                                     || myDECL->TypeFlags.Contains(defaultInitializer)));
       if (myDECL->TypeFlags.Contains(defaultInitializer)) 
         DefaultIni->setChecked(true);
-      //if (myDECL->TypeFlags.Contains(isGUI)) 
-       // Initializer->setEnabled(false);
       myDECL->TypeFlags.EXCL(isAbstract);
       Abstract->setChecked(false);
       Abstract->setEnabled(false);
@@ -1821,7 +1830,7 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     if (myDECL->SecondTFlags.Contains(overrides)) {
       baseDECL = myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data);
-      ConstFunc->setEnabled(!baseDECL->TypeFlags.Contains(isConst)); 
+      SelfCategory->setEnabled(baseDECL->TypeFlags.Contains(stateObject)); 
       Protected->setEnabled(baseDECL->TypeFlags.Contains(isProtected));
       StaticFunc->setEnabled(false);
       RMOverrides->setEnabled(true);
@@ -1863,8 +1872,7 @@ ValOnInit CFuncBox::OnInitDialog()
         }
     }
     if (myDECL->SecondTFlags.Contains(funcImpl)) {
-          //|| myDECL->TypeFlags.Contains(isGUI)) {
-      ConstFunc->setEnabled(false);
+      SelfCategory->setEnabled(false);
       NewName->setEnabled(false);
       Signal->setEnabled(false);
       //Transaction->setEnabled(false);
@@ -1879,12 +1887,10 @@ ValOnInit CFuncBox::OnInitDialog()
       Independent->setEnabled(false);
     }
     if (myDECL->SecondTFlags.Contains(funcImpl)
-        //|| myDECL->TypeFlags.Contains(isGUI)
         || myDECL->SecondTFlags.Contains(overrides)) {
       Initializer->setEnabled(false);
       CHECKOp->setEnabled(false);
       CMBOperator->setEnabled(false);
-//      BasicTypes->setEnabled(false);
     }
     if (myDECL->SecondTFlags.Contains(closed)) {
       //Initializer->setEnabled(false);
@@ -2024,7 +2030,7 @@ void CFuncBox::on_RMOverrides_clicked()
   myDECL->SecondTFlags.EXCL(overrides);  
   second = true;
   Initializer->setEnabled(true);
-  ConstFunc->setEnabled(true);
+  //ConstFunc->setEnabled(true);
   Protected->setEnabled(true);
   CHECKOp->setEnabled(true);
   CMBOperator->setEnabled(true);
@@ -2088,14 +2094,13 @@ void CFuncBox::on_StaticFunc_clicked()
     Initializer->setChecked(false);
     Abstract->setChecked(false);
     EnforceOver->setChecked(false);
-    ConstFunc->setChecked(false);
     Protected->setEnabled(false);
     Initializer->setEnabled(false);
     Abstract->setEnabled(false);
     EnforceOver->setEnabled(false);
     myDECL->TypeFlags.INCL(isConst); 
-    ConstFunc->setChecked(true);
-    ConstFunc->setEnabled(false);
+    //ConstFunc->setChecked(true);
+    //ConstFunc->setEnabled(false);
     Closed->setEnabled(false);
   }
   else {
@@ -2103,7 +2108,7 @@ void CFuncBox::on_StaticFunc_clicked()
     Initializer->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
-    ConstFunc->setEnabled(true);
+    //ConstFunc->setEnabled(true);
     Closed->setEnabled(true);
   }
   UpdateData(false);
@@ -2118,8 +2123,8 @@ void CFuncBox::on_Initializer_clicked()
                             && (!myDECL->ParentDECL->WorkFlags.Contains(hasDefaultIni)
                                 || myDECL->TypeFlags.Contains(defaultInitializer)));
   if (ini) {
-    ConstFunc->setEnabled(false); 
-    ConstFunc->setChecked(false); 
+    //ConstFunc->setEnabled(false); 
+    //ConstFunc->setChecked(false); 
     //Protected->setEnabled(false);
     StaticFunc->setEnabled(false);
     StaticFunc->setChecked(false);
@@ -2134,7 +2139,7 @@ void CFuncBox::on_Initializer_clicked()
     DefaultIni->setChecked(false);
     StaticFunc->setEnabled(true);
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
-    ConstFunc->setEnabled(true); 
+    //ConstFunc->setEnabled(true); 
     Protected->setEnabled(true);
     //Closed->setEnabled(true);
     Signal->setEnabled(true);
@@ -2198,8 +2203,8 @@ void CFuncBox::on_Native_clicked()
 void CFuncBox::on_Signal_clicked()
 {
   if (Signal->isChecked()) {
-    ConstFunc->setChecked(true); 
-    ConstFunc->setEnabled(false);
+    //ConstFunc->setChecked(true); 
+    //ConstFunc->setEnabled(false);
     myDECL->TypeFlags.INCL(isConst); 
     Protected->setChecked(true);
     Protected->setEnabled(false);
@@ -2215,7 +2220,7 @@ void CFuncBox::on_Signal_clicked()
     EnforceOver->setEnabled(false);
   }
   else {
-    ConstFunc->setEnabled(true);
+    //ConstFunc->setEnabled(true);
     Protected->setEnabled(true);
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
     StaticFunc->setEnabled(true); 
@@ -2510,10 +2515,21 @@ void CFuncBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(forceOverride);
   else
     myDECL->TypeFlags.EXCL(forceOverride);
-  if (ConstFunc->isChecked())
-    myDECL->TypeFlags.INCL(isConst); 
-  else
-    myDECL->TypeFlags.EXCL(isConst); 
+
+  switch (SelfCategory->currentIndex()) {
+  case 1:
+    myDECL->TypeFlags.INCL(stateObject);
+    myDECL->TypeFlags.EXCL(isAnyCategory);
+    break;
+  case 2:
+    myDECL->TypeFlags.INCL(isAnyCategory);
+    myDECL->TypeFlags.EXCL(stateObject);
+    break;
+  default:
+    myDECL->TypeFlags.EXCL(stateObject);
+    myDECL->TypeFlags.EXCL(isAnyCategory);
+  }
+
   if (Signal->isChecked())
     myDECL->SecondTFlags.INCL(isLavaSignal); 
   else

@@ -1230,10 +1230,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
             if (memDECL->TypeFlags.Contains(stateObject))
               catComp = stateObj;
             else
-              //if (memDECL->TypeFlags.Contains(sameAsSelf))
-              //  catComp = sameAsSelfObj;
-              //else
-                catComp = valueObj;
+              catComp = valueObj;
           myDoc->MemberTypeContext(memDECL, bContext,0);
           fmvType = myDoc->GetFinalMVType(memDECL->RefID, memDECL->inINCL, bContext, cat, 0);
           if (memDECL->TypeFlags.Contains(substitutable))

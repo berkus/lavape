@@ -697,8 +697,6 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   && formDecl->TypeFlags.Contains(definiteCat))
     if (formDecl->TypeFlags.Contains(stateObject))
       formCat = stateObj;
-    //else if (formDecl->TypeFlags.Contains(sameAsSelf))
-    //  formCat = sameAsSelfObj;
     else
       formCat = valueObj;
   if (NoPH(parm))
@@ -724,8 +722,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
     }
 
     if (actCat != unknownCategory
-    && ((formCat == sameAsSelfObj && actCat != callObjCat)
-        || (formCat != sameAsSelfObj && actCat != formCat))) {
+    && actCat != formCat) {
       parm->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
     }
@@ -768,14 +765,11 @@ bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContex
   && formDecl->TypeFlags.Contains(definiteCat))
     if (formDecl->TypeFlags.Contains(stateObject))
       formCat = stateObj;
-    //else if (formDecl->TypeFlags.Contains(sameAsSelf))
-    //  formCat = sameAsSelfObj;
     else
       formCat = valueObj;
 
   if (actCat != unknownCategory
-  && ((formCat == sameAsSelfObj && actCat != callObjCat)
-      || (formCat != sameAsSelfObj && actCat != formCat))) {
+  && actCat != formCat) {
     if (actSynObj->primaryToken == parameter_T)
       ((SynObject*)((Parameter*)actSynObj)->parameter.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
     else
@@ -1340,8 +1334,6 @@ void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, S
         && declOutparm1->TypeFlags.Contains(definiteCat))
           if (declOutparm1->TypeFlags.Contains(stateObject))
             cat = stateObj;
-          //else if (declOutparm1->TypeFlags.Contains(sameAsSelf))
-          //  cat = sameAsSelfObj;
           else
             cat = valueObj;
       }
@@ -1867,13 +1859,19 @@ void SelfVar::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
   if (!decl) return;
 
   ckd.tempCtx = selfCtx;
-  if (decl->DeclType == VirtualType
-  && decl->TypeFlags.Contains(definesObjCat)
-  && decl->TypeFlags.Contains(definiteCat))
-    if (decl->TypeFlags.Contains(stateObject))
-      cat = stateObj;
-    else
-      cat = valueObj;
+  if (execDECL->ParentDECL->TypeFlags.Contains(stateObject))
+    cat = stateObj;
+  else if (execDECL->ParentDECL->TypeFlags.Contains(isAnyCategory))
+    cat = unknownCategory;
+  else
+    cat = stateObj;
+  //if (decl->DeclType == VirtualType
+  //&& decl->TypeFlags.Contains(definesObjCat)
+  //&& decl->TypeFlags.Contains(definiteCat))
+  //  if (decl->TypeFlags.Contains(stateObject))
+  //    cat = stateObj;
+  //  else
+  //    cat = valueObj;
 }
 
 static void reposBaseInits (CheckData &ckd,SelfVar *selfVar,CHAINX *chain,LavaDECL *formBase,CHE *&actBase) {
@@ -2499,8 +2497,6 @@ void UnaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynF
         && declOutparm1->TypeFlags.Contains(definiteCat))
           if (declOutparm1->TypeFlags.Contains(stateObject))
             cat = stateObj;
-          //else if (declOutparm1->TypeFlags.Contains(sameAsSelf))
-          //  cat = sameAsSelfObj;
           else
             cat = valueObj;
       }
@@ -2726,8 +2722,6 @@ void BinaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
         && declOutparm1->TypeFlags.Contains(definiteCat))
           if (declOutparm1->TypeFlags.Contains(stateObject))
             cat = stateObj;
-          //else if (declOutparm1->TypeFlags.Contains(sameAsSelf))
-          //  cat = sameAsSelfObj;
           else
             cat = valueObj;
       }
@@ -2838,8 +2832,6 @@ bool BinaryOp::Check (CheckData &ckd)
   && formParmDecl->TypeFlags.Contains(definiteCat))
     if (formParmDecl->TypeFlags.Contains(stateObject))
       formCat2 = stateObj;
-    //else if (formParmDecl->TypeFlags.Contains(sameAsSelf))
-    //  formCat2 = sameAsSelfObj;
     else
       formCat2 = valueObj;
 
@@ -2867,8 +2859,7 @@ bool BinaryOp::Check (CheckData &ckd)
       }
     }
     if (cat2 != unknownCategory
-    && ((formCat2 == sameAsSelfObj && cat2 != callObjCat)
-        || (formCat2 != sameAsSelfObj && cat2 != formCat2))) {
+    && cat2 != formCat2) {
       opd2->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
     }
@@ -2958,8 +2949,6 @@ void Reference::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, Sy
   if (cat == unknownCategory)
     if (flags.Contains(isVariable))
       cat = stateObj;
-    //else if (flags.Contains(isSameAsSelf))
-    //  cat = sameAsSelfObj;
     else
       cat = valueObj;
   ctxFlags.bits = 0;
@@ -3220,7 +3209,8 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
         else
           ((CHE*)refIDs.first)->successor = secondChe;
       }
-      if (ckd.myDECL->ParentDECL->TypeFlags.Contains(isConst)
+      if (!ckd.myDECL->ParentDECL->TypeFlags.Contains(stateObject)
+      && !ckd.myDECL->ParentDECL->TypeFlags.Contains(isAnyCategory) // => self of function is immutable
       && (refIDs.first->successor != refIDs.last
           || (!(flags.Contains(isTempVar))
               && !(InInitializer(ckd) && flags.Contains(isSelfVar))))) {
@@ -3473,7 +3463,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   if (flags.Contains(isTempVar) && refIDs.first == refIDs.last)
     return true;
 
-  if (!decl->TypeFlags.Contains(isConst))
+  if (decl->TypeFlags.Contains(stateObject))
     if (ReadOnlyContext() != noROContext
     && (!flags.Contains(isDeclareVar)
         || refIDs.first != refIDs.last)) {
@@ -3635,8 +3625,6 @@ void VarName::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
       if (cat == unknownCategory)
         if (((Reference*)quant->elemType.ptr)->flags.Contains(isVariable))
           cat = stateObj;
-        //else if (((Reference*)quant->elemType.ptr)->flags.Contains(isSameAsSelf))
-        //  cat = sameAsSelfObj;
         else
           cat = valueObj;
       if (((Reference*)quant->elemType.ptr)->flags.Contains(isSubstitutable))
@@ -3725,8 +3713,6 @@ void Constant::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
   decl = ckd.document->IDTable.GetDECL(ckd.document->isStd?0:1,ckd.document->IDTable.BasicTypesID[constType]);
   if (flags.Contains(isVariable))
     cat = stateObj;
-  //else if (flags.Contains(isSameAsSelf))
-  //  cat = sameAsSelfObj;
   else
     cat = valueObj;
   ctxFlags.bits = 0;
@@ -3747,8 +3733,6 @@ void BoolConst::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, Sy
   decl = ckd.document->IDTable.GetDECL(ckd.document->isStd?0:1,ckd.document->IDTable.BasicTypesID[B_Bool]);
   if (flags.Contains(isVariable))
     cat = stateObj;
-  //else if (flags.Contains(isSameAsSelf))
-  //  cat = sameAsSelfObj;
   else
     cat = valueObj;
   ctxFlags.bits = 0;
@@ -3784,8 +3768,6 @@ void EnumConst::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, Sy
   decl = ckd.document->IDTable.GetDECL(refID,ckd.inINCL);
   if (flags.Contains(isVariable))
     cat = stateObj;
-  //else if (flags.Contains(isSameAsSelf))
-  //  cat = sameAsSelfObj;
   else
     cat = valueObj;
   ctxFlags.bits = 0;
@@ -3976,8 +3958,6 @@ void ArrayAtIndex::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat,
     && declOutparm1->TypeFlags.Contains(definiteCat))
       if (declOutparm1->TypeFlags.Contains(stateObject))
         cat = stateObj;
-      //else if (declOutparm1->TypeFlags.Contains(sameAsSelf))
-      //  cat = sameAsSelfObj;
       else
         cat = valueObj;
   }
@@ -3998,8 +3978,6 @@ void ArrayAtIndex::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat,
     && declInparm2->TypeFlags.Contains(definiteCat))
       if (declInparm2->TypeFlags.Contains(stateObject))
         cat = stateObj;
-      //else if (declInparm2->TypeFlags.Contains(sameAsSelf))
-      //  cat = sameAsSelfObj;
       else
         cat = valueObj;
   }
@@ -4100,14 +4078,11 @@ bool ArrayAtIndex::Check (CheckData &ckd)
   && declOp2->TypeFlags.Contains(definiteCat))
     if (declOp2->TypeFlags.Contains(stateObject))
       formCat = stateObj;
-    //else if (declOp2->TypeFlags.Contains(sameAsSelf))
-    //  formCat = sameAsSelfObj;
     else
       formCat = valueObj;
 
   if (actCat != unknownCategory
-  && ((formCat == sameAsSelfObj && actCat != callObjCat)
-  || (formCat != sameAsSelfObj && actCat != formCat))) {
+  && actCat != formCat) {
     opd2->SetError(ckd,&ERR_IncompatibleCategory);
     ok = false;
   }
@@ -4554,7 +4529,7 @@ bool Expression::CallCheck (CheckData &ckd) {
       ok &= false;
     }
 
-  if (!decl->TypeFlags.Contains(isConst))
+  if (decl->TypeFlags.Contains(stateObject))
     if (ReadOnlyContext() != noROContext) {
       funcExpr->SetError(ckd,&ERR_NonROCallInROClause);
       return false;
@@ -5354,8 +5329,7 @@ bool IfExpression::Check (CheckData &ckd)
         ok = false;
       }
       if (cat != unknownCategory
-      && ((targetCat == sameAsSelfObj && cat != callObjCat)
-          || (targetCat != sameAsSelfObj && cat != targetCat))) {
+      && cat != targetCat) {
         ((SynObject*)opd->thenPart.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
         ok = false;
       }
@@ -5393,8 +5367,7 @@ bool IfExpression::Check (CheckData &ckd)
         ok = false;
       }
       if (cat != unknownCategory
-      && ((targetCat == sameAsSelfObj && cat != callObjCat)
-          || (targetCat != sameAsSelfObj && cat != targetCat))) {
+      && cat != targetCat) {
         ((SynObject*)elsePart.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
         ok = false;
       }
@@ -5476,8 +5449,7 @@ bool ElseExpression::Check (CheckData &ckd)
       ok = false;
     }
     if (cat != unknownCategory
-    && ((targetCat == sameAsSelfObj && cat != callObjCat)
-        || (targetCat != sameAsSelfObj && cat != targetCat))) {
+    && cat != targetCat) {
       opd1->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
     }
@@ -5504,8 +5476,7 @@ bool ElseExpression::Check (CheckData &ckd)
       ok = false;
     }
     if (cat != unknownCategory
-    && ((targetCat == sameAsSelfObj && cat != callObjCat)
-        || (targetCat != sameAsSelfObj && cat != targetCat))) {
+    && cat != targetCat) {
       opd2->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
     }
@@ -5885,10 +5856,10 @@ bool Run::Check (CheckData &ckd)
   tidInitiator = ((Reference*)initiator.ptr)->refID;
   ADJUST4(tidInitiator);
   decl = ckd.document->IDTable.GetDECL(tidInitiator);
-  if (!decl->TypeFlags.Contains(isConst) && ReadOnlyContext() != noROContext) {
-    SetError(ckd,&ERR_NonROCallInROClause);
-    ERROREXIT
-  }
+  //if (!decl->TypeFlags.Contains(isConst) && ReadOnlyContext() != noROContext) {
+  //  SetError(ckd,&ERR_NonROCallInROClause);
+  //  ERROREXIT
+  //}
 
   chpFormIn = GetFirstInput(&ckd.document->IDTable,tidInitiator);
   callCtx = ckd.lpc;
@@ -5976,8 +5947,6 @@ void GetUUID::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynF
   decl = ckd.document->IDTable.GetDECL(ckd.document->isStd?0:1,ckd.document->IDTable.BasicTypesID[VLString]);
   if (flags.Contains(isVariable))
     cat = stateObj;
-  //else if (flags.Contains(isSameAsSelf))
-  //  cat = sameAsSelfObj;
   else
     cat = valueObj;
   ctxFlags.bits = 0;
@@ -5996,8 +5965,6 @@ void IntegerInterval::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &c
   decl = ckd.document->IDTable.GetDECL(ckd.document->isStd?0:1,ckd.document->IDTable.BasicTypesID[Integer]);
   if (flags.Contains(isVariable))
     cat = stateObj;
-  //else if (flags.Contains(isSameAsSelf))
-  //  cat = sameAsSelfObj;
   else
     cat = valueObj;
   ctxFlags.bits = 0;
@@ -6169,8 +6136,6 @@ bool Quantifier::Check(CheckData &ckd)
           if (typeCat == unknownCategory)
             if (((Reference*)elemType.ptr)->flags.Contains(isVariable))
               typeCat = stateObj;
-            //else if (((Reference*)elemType.ptr)->flags.Contains(isSameAsSelf))
-            //  typeCat = sameAsSelfObj;
             else
               typeCat = valueObj;
 
