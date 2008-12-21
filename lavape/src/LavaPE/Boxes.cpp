@@ -1650,12 +1650,10 @@ ValOnInit CFuncBox::OnInitDialog()
   else {
     if (myDECL->TypeFlags.Contains(isPropGet)) {
       SelfCategory->setEnabled(false);
-      myDECL->TypeFlags.INCL(isAnyCategory);
       SelfCategory->setCurrentIndex(2);
     }
     else if (myDECL->TypeFlags.Contains(isPropSet)) {
       SelfCategory->setEnabled(false);
-      myDECL->TypeFlags.INCL(stateObject);
       SelfCategory->setCurrentIndex(1);
     }
 

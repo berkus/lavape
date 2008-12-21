@@ -2640,10 +2640,12 @@ LavaDECL* CLavaPEDoc::MakeOneSetGet (TypeFlag setgetflag, LavaDECL* implDECL,
 	if (setgetflag == isPropGet)
 	{
 		setGet->LocalName = DString ("Get_") + propDecl->LocalName;
-		setGet->TypeFlags.INCL (isConst);
+		setGet->TypeFlags.INCL(isAnyCategory);
 	}
-	else
+  else {
 		setGet->LocalName = DString ("Set_") + propDecl->LocalName;
+		setGet->TypeFlags.INCL(stateObject);
+  }
 	cheIOEl = (CHE*) setGet->NestedDecls.first;
 	IOEl = (LavaDECL*) cheIOEl->data;
 	IOEl->RefID = TID (propDecl->RefID.nID, IDTable.IDTab[propDecl->inINCL]->nINCLTrans[propDecl->RefID.nINCL].nINCL);
