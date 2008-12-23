@@ -3415,8 +3415,8 @@ void CLavaPEDoc::OnRunLava()
   QStringList args;
 
 	if (IsModified()
-	        && !wxTheApp->DoSaveAll()
-	        && (QMessageBox::Cancel == QMessageBox::question (wxTheApp->m_appWindow,qApp->applicationName(),ERR_SaveFailed,QMessageBox::Ok,QMessageBox::Cancel,0)))
+	&& !wxTheApp->DoSaveAll()
+	&& (QMessageBox::Cancel == QMessageBox::question (wxTheApp->m_appWindow,qApp->applicationName(),ERR_SaveFailed,QMessageBox::Ok,QMessageBox::Cancel,0)))
 		return;
 	lavaFile = GetFilename();
 	/*
@@ -3445,9 +3445,9 @@ void CLavaPEDoc::OnRunLava()
 void CLavaPEDoc::OnDebugLava()
 {
 	if (IsModified()
-	        && !wxTheApp->DoSaveAll()
-	        && (QMessageBox::Cancel == QMessageBox::question (wxTheApp->m_appWindow,qApp->applicationName(),ERR_SaveFailed,
-	                QMessageBox::Ok,QMessageBox::Cancel,0)))
+	&& !wxTheApp->DoSaveAll()
+	&& (QMessageBox::Cancel == QMessageBox::question (wxTheApp->m_appWindow,qApp->applicationName(),ERR_SaveFailed,
+	    QMessageBox::Ok,QMessageBox::Cancel,0)))
 		return;
 
 	debugOn = true;
