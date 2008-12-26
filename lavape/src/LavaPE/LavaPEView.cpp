@@ -5435,6 +5435,8 @@ void CLavaPEView::OnUpdateShowOptionals(QAction* action)
 
 QString CLavaPEView::text(const QPoint &point) {
   CTreeItem *item=(CTreeItem*)Tree->itemAt(point);
+  if (!item)
+    return QString(QObject::tr("<p>Please point to a declaration item!</p>"));
   CMainItemData *itd=(CMainItemData*)item->getItemData();
   LavaDECL *itemDECL;
 
