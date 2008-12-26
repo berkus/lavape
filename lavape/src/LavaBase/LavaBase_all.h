@@ -30,6 +30,7 @@
 #include "MachDep.h"
 
 #include "mdiframes.h"
+#include <QDialog>
 
 #include <float.h>
 #include <stdio.h>

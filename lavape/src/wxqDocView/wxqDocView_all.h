@@ -10,6 +10,9 @@
 #include "setup.h"
 #include <QList>
 #include <QEvent>
+#include <QSplitter>
+#include <QTabBar>
+#include <QToolButton>
 
 #ifdef MINGW32
 #include <shlobj.h>

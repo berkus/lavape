@@ -34,6 +34,11 @@
 #include <QCDEStyle>
 #include <QPlastiqueStyle>
 #include <QCleanlooksStyle>
+#include <QSplitter>
+#include <QTabBar>
+#include <QTabWidget>
+#include <QToolButton>
+
 #ifdef __Darwin
 #include <QMacStyle>
 #endif

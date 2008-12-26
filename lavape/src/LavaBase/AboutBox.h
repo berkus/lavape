@@ -1,10 +1,13 @@
 #ifndef __CAboutBox_H
 #define __CAboutBox_H
 
+#include "LavaBase_all.h"
 #include "idd_aboutbox.h"
 #include "SynIDTable.h"
 #include "LavaAppBase.h"
 #include "qlineedit.h"
+#include <QDialog>
+
 
 
 class LAVABASE_DLL CAboutBox : public QDialog, public Ui_IDD_AboutBox

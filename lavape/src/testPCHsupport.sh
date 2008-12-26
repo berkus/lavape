@@ -5,7 +5,7 @@ if [ $PCH. != . ]; then
   exit
 fi
 
->precomp_header.h
+echo //>precomp_header.h
 
 PRECOMP_SUPPORT=no
 if gcc -x c-header precomp_header.h >/dev/null 2>&1; then

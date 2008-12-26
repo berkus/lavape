@@ -2,6 +2,7 @@
 #define __CLavaThread
 
 #include "SynIDTable.h"
+#include "Syntax.h"
 #include "qthread.h"
 #include "qthreadstorage.h"
 //Added by qt3to4:

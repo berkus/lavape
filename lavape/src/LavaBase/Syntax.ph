@@ -18,6 +18,7 @@
 #include "wx_obj.h"
 #include "qpixmap.h"
 #include "qmetatype.h"
+//#include "LavaBaseDoc.h"
 
 #define RELEASE 5
 
