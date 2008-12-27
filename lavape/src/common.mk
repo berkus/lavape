@@ -1,6 +1,10 @@
 #to build a release version set REL
 ifeq ($(REL),)
+ifeq ($(OPSYS),Darwin)
+DBG=-gdwarf-2
+else
 DBG=-gstabs+
+endif
 endif
 
 
