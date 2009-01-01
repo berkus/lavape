@@ -80,9 +80,9 @@ ifeq ($(OPSYS),Darwin)
 #  CC = c++
 	ifeq ($(QLIB),/Library/Frameworks)
 	  QFRW = .framework/Headers
-	  QTOOLS = /usr/bin
-	else
-	  QTOOLS = $(QBIN)
+#	  QTOOLS = /usr/bin
+#	else
+#	  QTOOLS = $(QBIN)
 	endif
 else
   ifeq ($(OPSYS),MINGW32)

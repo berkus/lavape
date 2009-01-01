@@ -3,6 +3,8 @@ export
 QBIN = $(shell ./qbin.sh)
 ifeq ($(QBIN),)
   $(error Qt tools/executables couldn't be found!)
+#else
+#  $(error QBIN=$(QBIN))
 endif
 
 SUBPRO=disco Precompiler wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
