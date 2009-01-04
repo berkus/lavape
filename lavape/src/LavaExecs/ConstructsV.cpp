@@ -181,6 +181,8 @@ void VarNameV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
   if (flags.Contains(isVariable))
     t.Insert(Tilde_T);
+  else if (flags.Contains(isUnknownCat))
+    t.Insert(Mult_T);
   if (flags.Contains(isOptionalExpr))
     t.Insert(primaryToken,true,true);
   else

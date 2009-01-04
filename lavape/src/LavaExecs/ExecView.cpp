@@ -5465,37 +5465,22 @@ void CExecView::OnToggleCategory()
 {
   if (!EditOK()) return;
 
-  if (text->currentSynObj->flags.Contains(isVariable))
-    //if (text->ckd.myDECL->ParentDECL->DeclType == Function
-    //&& !text->ckd.myDECL->ParentDECL->TypeFlags.Contains(isStatic)) {
+  if (text->currentSynObj->primaryToken == VarName_T) {
+    if (text->currentSynObj->flags.Contains(isVariable)) {
+      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
+      PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
+    }
+    else if (text->currentSynObj->flags.Contains(isUnknownCat))
+      PutDelFlagHint(SET(isUnknownCat,-1),SET(firstHint,lastHint,-1));
+    else
+      PutInsFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
+  }
+  else {
+    if (text->currentSynObj->flags.Contains(isVariable))
       PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
-      //PutInsFlagHint(SET(isSameAsSelf,-1),SET(lastHint,-1));
-    //}
-    //else if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
-    //&& ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
-    //  PutDelFlagHint(SET(stateObject,-1),SET(firstHint,lastHint,-1));
-    //else if (text->currentSynObj->parentObject->primaryToken == new_T)
-    //  PutDelFlagHint(SET(stateObject,-1),SET(firstHint,lastHint,-1));
-    //else {
-    //  PutDelFlagHint(SET(stateObject,-1),SET(firstHint,-1));
-      //PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
-    //}
-  //}
-  //else if (text->currentSynObj->flags.Contains(isSameAsSelf)) {
-  //  if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
-  //  && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
-  //    PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
-  //  else if (text->currentSynObj->parentObject->primaryToken == new_T)
-  //    PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
-  //  else {
-  //    PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,-1));
-  //    PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
-  //  }
-  //}
-  //else if (text->currentSynObj->flags.Contains(isUnknownCat))
-  //  PutDelFlagHint(SET(isUnknownCat,-1));
-  else
-    PutInsFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
+    else
+      PutInsFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
+  }
 }
 
 bool CExecView::ToggleCatEnabled()
@@ -5516,7 +5501,7 @@ bool CExecView::ToggleCatEnabled()
 
   case VarName_T:
     if (!((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
-    return true;
+      return true;
     break;
 
   //case TypeRef_T:
