@@ -40,12 +40,11 @@ class ExecContents;
 
 class LAVAEXECS_DLL CExecView : public CLavaBaseView
 {
-protected:
+public:
   CExecView(QWidget *parent,wxDocument *doc);
   ~CExecView();
 
 // Attributes
-public:
   bool OnCreate();
   void OnCloseExec();
   bool event(QEvent *ev);

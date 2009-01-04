@@ -180,6 +180,7 @@ public:
   void NotifyActive(wxView* view) {lastActive = view;}
   wxView* GetLastActive() {return lastActive;}
   virtual void Activate(bool activate=true);
+  virtual void focusIn(){}
   //virtual void Activate(bool activate=true,bool windowMenuAction=false);
   wxTabWidget *m_tabWidget;
 

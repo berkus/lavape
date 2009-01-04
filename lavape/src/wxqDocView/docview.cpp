@@ -143,10 +143,19 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
 bool wxApp::notify(QObject* o, QEvent* e)
 {
   QWidget* w;
-  if ((e->type() == QEvent::FocusIn) && o->inherits("QWidget")) {
-    for (w=(QWidget*)o; w && !w->inherits("wxView"); w=w->parentWidget());
-    if (w) 
-      ((wxView*)w)->focusIn();
+  if ((e->type() == QEvent::FocusIn) && o->isWidgetType()) {
+    for (w=(QWidget*)o; w;) {
+      if (w->inherits("wxView")) {
+        ((wxView*)w)->focusIn();
+        break;
+      }
+      else if (w->inherits("wxChildFrame")) {
+        ((wxChildFrame*)w)->focusIn();
+        break;
+      }
+      else
+        w=w->parentWidget();
+    }
   }
   return QApplication::notify(o,e);
 }

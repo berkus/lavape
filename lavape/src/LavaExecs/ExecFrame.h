@@ -14,22 +14,18 @@ public:
   FRAMEFACTORY(CExecFrame)
   virtual void InitialUpdate();
   void closeEvent (QCloseEvent *ev);
+  void focusIn() { if (m_ExecView) m_ExecView->focusIn(); }
 
 // Attributes
-public:
-   CComboBar *m_ComboBar;
-   bool isConstr;
-   LavaDECL* myDECL;
-   wxDocument* myDoc;
-   DString CalcTitle(LavaDECL *decl);
-   void NewTitle(LavaDECL* decl);
+  CComboBar *m_ComboBar;
+  CExecView *m_ExecView;
+  bool isConstr;
+  LavaDECL* myDECL;
+  wxDocument* myDoc;
+
 // Operations
-public:
-
-  public:
-
-// Implementation
-public:
+  DString CalcTitle(LavaDECL *decl);
+  void NewTitle(LavaDECL* decl);
   virtual ~CExecFrame();
 
 protected:

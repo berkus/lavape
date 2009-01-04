@@ -39,6 +39,7 @@ CExecFrame::CExecFrame(QWidget *parent) : wxChildFrame(parent)
   myDoc = LBaseData->actHint->fromDoc;
   LavaDECL *decl = (LavaDECL*)LBaseData->actHint->CommandData1;
   myDECL = decl->ParentDECL;
+  m_ExecView = 0; // for CExecFrame::focusIn
 }
 
 CExecFrame::~CExecFrame() {
@@ -63,20 +64,18 @@ bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   if (!temp->m_viewClassInfo)
     return false;
   m_ComboBar = new CComboBar(decl, (CPEBaseDoc*)myDoc, GetClientWindow());
-  wxView *view = (wxView *)temp->m_viewClassInfo(GetClientWindow(),doc);
-  if (view->OnCreate())
-    wxDocManager::GetDocumentManager()->SetActiveView(view, true);
+  m_ExecView = (CExecView *)temp->m_viewClassInfo(GetClientWindow(),doc);
+  if (m_ExecView->OnCreate())
+    wxDocManager::GetDocumentManager()->SetActiveView(m_ExecView, true);
   else {
-    delete view;
+    delete m_ExecView;
     return false;
   }
-  view->SetDocument(doc);
+  m_ExecView->SetDocument(doc);
   layout->setSpacing(1);
   layout->addWidget(m_ComboBar);
-  layout->addWidget(view);
-//  m_ComboBar->show();
+  layout->addWidget(m_ExecView);
   setWindowIcon(QIcon(QPixmap((const char**) execframe)));
-//  NewTitle(decl);
   return wxChildFrame::OnCreate(temp,doc);
 }
 
