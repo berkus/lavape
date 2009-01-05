@@ -999,10 +999,18 @@ bool SynObject::UpdateReference (CheckData &ckd) {
           objRef->closedLevel = ((VarName*)dw)->ClosedLevel(ckd);
         tdod->parentObject = objRef;
         ((VarName*)dw)->ExprGetFVType(ckd,startDeclV,cat,ctxFlags);
-        if (cat)
+        if (cat == stateObj) {
+          tdod->flags.EXCL(isUnknownCat);
           tdod->flags.INCL(isVariable);
-        else
+        }
+        else if (cat == unknownCategory) {
           tdod->flags.EXCL(isVariable);
+          tdod->flags.INCL(isUnknownCat);
+        }
+        else {
+          tdod->flags.EXCL(isVariable);
+          tdod->flags.EXCL(isUnknownCat);
+        }
         if (objRef->flags.Contains(isSelfVar))
           startDecl = ckd.selfTypeDECL; // static self-type
         else
@@ -2965,10 +2973,12 @@ bool Reference::Check (CheckData &ckd)
 
 void ObjReference::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
   decl = myFinalVType;
-  if (decl)
-    cat = myCategory;
-  else
+  if (flags.Contains(isVariable))
+    cat = stateObj;
+  else if (flags.Contains(isUnknownCat))
     cat = unknownCategory;
+  else
+    cat = valueObj;
   ckd.tempCtx = myContext;
   ctxFlags.bits = 0;
   if (flags.Contains(isSubstitutable))
@@ -3622,11 +3632,12 @@ void VarName::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
     if (quant->elemType.ptr
     && ((SynObject*)quant->elemType.ptr)->primaryToken == TypeRef_T) {
       decl = ckd.document->GetFinalMVType(((Reference*)quant->elemType.ptr)->refID,ckd.inINCL,ckd.tempCtx,cat,&ckd);
-      if (cat == unknownCategory)
-        if (((Reference*)quant->elemType.ptr)->flags.Contains(isVariable))
-          cat = stateObj;
-        else
-          cat = valueObj;
+      if (flags.Contains(isVariable))
+        cat = stateObj;
+      else if (flags.Contains(isUnknownCat))
+        cat = unknownCategory;
+      else
+        cat = valueObj;
       if (((Reference*)quant->elemType.ptr)->flags.Contains(isSubstitutable))
         ctxFlags = SET(multiContext,-1);
       else
