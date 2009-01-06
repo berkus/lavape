@@ -176,7 +176,7 @@ PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h $(h_ui_files) $(h_ph_files)
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
 Generated/%.h: %.ui
-	$(QTOOLS)/uic $< -o $@
+	$(QTOOLS)/uic$(QSUFF) $< -o $@
 #	( grep -q -e 'UI version=\"[0-9]\+\.0\"' $< || \
 #	  sed -i -e 's/\(UI version=\"[0-9]\+\.\)[0-9]\+"/\10\"/' $<; ); \
 #  export LD_LIBRARY_PATH=/usr/X11R6/bin;
@@ -188,9 +188,9 @@ Generated/%.h: %.ui
 
 #MOC rule
 moc_%.cpp: %.h
-	$(QTOOLS)/moc $< -o $@
+	$(QTOOLS)/moc$(QSUFF) $< -o $@
 Generated/moc_%.cpp: %.h
-	$(QTOOLS)/moc $< -o $@
+	$(QTOOLS)/moc$(QSUFF) $< -o $@
 
 #LPC rule:
 ifneq ($(DLL),)
@@ -201,7 +201,7 @@ endif
 	../../bin/LPC $(impex) -I. -I../LavaBase $<
 
 %.cpp: %.qrc
-	$(QTOOLS)/rcc$(SUFF) -o $@ $<
+	$(QTOOLS)/rcc$(QSUFF) -o $@ $<
 
 ifeq ($(suffix $(EXEC)),)
 run:
