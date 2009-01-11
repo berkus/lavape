@@ -363,6 +363,8 @@ public:
   virtual void NLincIndent (CProgTextBase &text);
   virtual void NLdecIndent (CProgTextBase &text);
 
+  Category getCatFromFlags();
+  void setFlagsFromCat(Category cat);
   bool BoolAdmissibleOnly (CheckData &ckd);
   bool EnumAdmissibleOnly (CheckData &ckd);
   bool NullAdmissible (CheckData &ckd);

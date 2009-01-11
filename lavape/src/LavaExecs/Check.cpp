@@ -999,18 +999,6 @@ bool SynObject::UpdateReference (CheckData &ckd) {
           objRef->closedLevel = ((VarName*)dw)->ClosedLevel(ckd);
         tdod->parentObject = objRef;
         ((VarName*)dw)->ExprGetFVType(ckd,startDeclV,cat,ctxFlags);
-        if (cat == stateObj) {
-          tdod->flags.EXCL(isUnknownCat);
-          tdod->flags.INCL(isVariable);
-        }
-        else if (cat == unknownCategory) {
-          tdod->flags.EXCL(isVariable);
-          tdod->flags.INCL(isUnknownCat);
-        }
-        else {
-          tdod->flags.EXCL(isVariable);
-          tdod->flags.EXCL(isUnknownCat);
-        }
         if (objRef->flags.Contains(isSelfVar))
           startDecl = ckd.selfTypeDECL; // static self-type
         else
@@ -1029,6 +1017,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
             objRef->flags.INCL(isSubstitutable);
           objRef->myFinalVType = startDeclV;
           objRef->myCategory = cat;
+          objRef->setFlagsFromCat(cat);
           if (((VarName*)dw)->flags.Contains(isOptionalExpr))
             objRef->flags.INCL(isOptionalExpr);
           else
@@ -1287,6 +1276,30 @@ bool SynObject::Check (CheckData &ckd)
 //  if (!flags.Contains(isDisabled))
     ckd.nPlaceholders++;
   ERROREXIT
+}
+
+Category SynObject::getCatFromFlags() {
+  if (flags.Contains(isVariable))
+    return stateObj;
+  else if (flags.Contains(isUnknownCat))
+    return unknownCategory;
+  else
+    return valueObj;
+}
+
+void SynObject::setFlagsFromCat(Category cat) {
+  if (cat == stateObj) {
+    flags.INCL(isVariable);
+    flags.EXCL(isUnknownCat);
+  }
+  else if (cat == unknownCategory) {
+    flags.INCL(isUnknownCat);
+    flags.EXCL(isVariable);
+  }
+  else {
+    flags.EXCL(isVariable);
+    flags.EXCL(isUnknownCat);
+  }
 }
 
 void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
@@ -6390,7 +6403,7 @@ void NewExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat
     }
     funcTid = ((Reference*)funcStm->function.ptr)->refID;
     funcDecl = ckd.document->IDTable.GetDECL(funcTid,ckd.inINCL);
-    ((SynObject*)objType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags); // for cat only
+    ((SynObject*)objType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
     if (funcDecl)
       decl = funcDecl->ParentDECL;
     else
@@ -6398,6 +6411,7 @@ void NewExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat
   }
   else
     ((SynObject*)objType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
+  cat = getCatFromFlags();
 #ifdef INTERPRETER
   finalType = ckd.document->GetType(decl);
 #endif
@@ -6816,12 +6830,15 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
         parent->myFinalVType = vTypeDECL;
         if (fieldDECL->TypeFlags.Contains(substitutable))
           parent->flags.INCL(isSubstitutable);
-        if (parent->myCategory == unknownCategory
-            && fieldDECL->TypeFlags.Contains(definiteCat))
+        if (/*parent->myCategory == unknownCategory
+        &&*/ fieldDECL->TypeFlags.Contains(definiteCat))
           if (fieldDECL->TypeFlags.Contains(stateObject))
             parent->myCategory = stateObj;
+          else if (fieldDECL->TypeFlags.Contains(isAnyCategory))
+            parent->myCategory = unknownCategory;
           else
             parent->myCategory = valueObj;
+          parent->setFlagsFromCat(parent->myCategory);
       }
 //#ifndef INTERPRETER
       name += fieldDECL->LocalName;
@@ -6896,7 +6913,7 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
 #endif
           ckd.document->MemberTypeContext(fieldDECL, ckd.tempCtx,&ckd);
           vTypeDECL = ckd.document->GetFinalMVType(fieldDECL->RefID, fieldDECL->inINCL, ckd.tempCtx, parent->myCategory,&ckd);
-          if (!cheo->successor) //22.5.01
+          if (!cheo->successor)
             parent->myContext = ckd.tempCtx;
           typeDECL = ckd.document->GetTypeAndContext(vTypeDECL, ckd.tempCtx);
           if (!typeDECL && (!vTypeDECL || (vTypeDECL->RefID.nID >= 0) || cheo->successor)) {
@@ -6913,12 +6930,16 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
             parent->myFinalVType = vTypeDECL;
             if (fieldDECL->TypeFlags.Contains(substitutable))
               parent->flags.INCL(isSubstitutable);
-            if (parent->myCategory == unknownCategory
-                && fieldDECL->TypeFlags.Contains(definiteCat))
+            if (/*parent->myCategory == unknownCategory
+            &&*/ fieldDECL->TypeFlags.Contains(definiteCat)) {
               if (fieldDECL->TypeFlags.Contains(stateObject))
                 parent->myCategory = stateObj;
+              else if (fieldDECL->TypeFlags.Contains(isAnyCategory))
+                parent->myCategory = unknownCategory;
               else
                 parent->myCategory = valueObj;
+              parent->setFlagsFromCat(parent->myCategory);
+            }                                    
           }
         }//if Attr
         else  //not Attr

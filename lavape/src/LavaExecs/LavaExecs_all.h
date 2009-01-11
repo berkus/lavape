@@ -6,6 +6,7 @@
 #include "LavaBase_all.h"
 
 #include "ExecView.h"
+#include "CDPpp.h"
 #include <QPixmap>
 #include "qassistantclient.h"
 
