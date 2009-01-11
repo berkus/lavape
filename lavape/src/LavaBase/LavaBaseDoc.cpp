@@ -665,7 +665,7 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
   }
   else {
     if (decl->TypeFlags.Contains(definesObjCat)
-         && decl->TypeFlags.Contains(definiteCat))
+    && decl->TypeFlags.Contains(definiteCat))
       if (decl->TypeFlags.Contains(stateObject))
         cat = stateObj;
       else

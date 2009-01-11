@@ -3478,11 +3478,11 @@ ValOnInit CIOBox::OnInitDialog()
        valkindOfField = 1;
     else
        valkindOfField = 0;
-    if (myDECL->ParentDECL->TypeFlags.Contains(isStatic)) {
-      SameAsSelf->setChecked(false);
-      //myDECL->TypeFlags.EXCL(sameAsSelf);
-      SameAsSelf->setEnabled(false);
-    }
+    //if (myDECL->ParentDECL->TypeFlags.Contains(isStatic)) {
+    //  SameAsSelf->setChecked(false);
+    //  //myDECL->TypeFlags.EXCL(sameAsSelf);
+    //  SameAsSelf->setEnabled(false);
+    //}
     if (myDECL->TypeFlags.Contains(substitutable)) {
       Substitutable->setChecked(true);
       TypeFlags.INCL(substitutable);
@@ -3493,17 +3493,17 @@ ValOnInit CIOBox::OnInitDialog()
       StateObject->setChecked(false);
       ValueObject->setChecked(false);
       AnyCategory->setChecked(false);
-      SameAsSelf->setChecked(false);
+      //SameAsSelf->setChecked(false);
       StateObject->setEnabled(false);
       ValueObject->setEnabled(false);
-      SameAsSelf->setEnabled(false);
+      //SameAsSelf->setEnabled(false);
       AnyCategory->setEnabled(false);
     }
     else 
       if (myDECL->SecondTFlags.Contains(overrides)) {
         StateObject->setEnabled(false);
         ValueObject->setEnabled(false);
-        SameAsSelf->setEnabled(false);
+        //SameAsSelf->setEnabled(false);
         AnyCategory->setEnabled(false);
         Closed->setEnabled(false);
       }
@@ -3511,7 +3511,7 @@ ValOnInit CIOBox::OnInitDialog()
       if (myDECL->TypeFlags.Contains(stateObject)) {
         StateObject->setChecked(true);
         ValueObject->setChecked(false);
-        SameAsSelf->setChecked(false);
+        //SameAsSelf->setChecked(false);
         AnyCategory->setChecked(false);
       }
       else {
@@ -3524,12 +3524,12 @@ ValOnInit CIOBox::OnInitDialog()
         else*/ 
         if (myDECL->TypeFlags.Contains(isAnyCategory)) {
           ValueObject->setChecked(false);
-          SameAsSelf->setChecked(false);
+          //SameAsSelf->setChecked(false);
           AnyCategory->setChecked(true);
         }
         else {
           ValueObject->setChecked(true);
-          SameAsSelf->setChecked(false);
+          //SameAsSelf->setChecked(false);
           AnyCategory->setChecked(false);
         }
       }
@@ -3586,8 +3586,8 @@ ValOnInit CIOBox::OnInitDialog()
     dstr = myDoc->GetTypeLabel(myDECL, false);
     valNewTypeType = QString(dstr.c);
   }
-  if (myDECL->ParentDECL->TypeFlags.Contains(isStatic)) 
-    SameAsSelf->setEnabled(false);
+  //if (myDECL->ParentDECL->TypeFlags.Contains(isStatic)) 
+  //  SameAsSelf->setEnabled(false);
   if (execAllPatt)
     delete execAllPatt;
   SetSelections(BasicTypes, NamedTypes, valNewTypeType);
@@ -3606,11 +3606,11 @@ ValOnInit CIOBox::OnInitDialog()
     Closed->setEnabled(false);
   }
   Closed->setChecked(myDECL->SecondTFlags.Contains(closed));
-  if (myDECL->SecondTFlags.Contains(funcImpl)
-      || (myDECL->ParentDECL->DeclType != Function)
+  //if (myDECL->SecondTFlags.Contains(funcImpl)
+      //|| (myDECL->ParentDECL->DeclType != Function)
       //|| myDECL->TypeFlags.Contains(isGUI)
-      || myDECL->ParentDECL->TypeFlags.Contains(isInitializer))
-    SameAsSelf->setEnabled(false);
+      //|| myDECL->ParentDECL->TypeFlags.Contains(isInitializer))
+    //SameAsSelf->setEnabled(false);
   if (myDECL->SecondTFlags.Contains(overrides))// || myDECL->TypeFlags.Contains(isGUI)) 
     Substitutable->setEnabled(false);
 
@@ -3631,11 +3631,11 @@ void CIOBox::on_NamedTypes_activated(int pos)
     SynFlags inheritedFlag = myDoc->GetCategoryFlags(myDECL, catErr); 
     StateObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
     ValueObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
-    SameAsSelf->setEnabled(!inheritedFlag.Contains(definesObjCat));
+    //SameAsSelf->setEnabled(!inheritedFlag.Contains(definesObjCat));
     AnyCategory->setEnabled(!inheritedFlag.Contains(definesObjCat));
     
     if (inheritedFlag.Contains(definesObjCat)) {
-      SameAsSelf->setChecked(false);
+      //SameAsSelf->setChecked(false);
       if (myDECL->TypeFlags.Contains(definiteCat)) {
         if (myDECL->TypeFlags.Contains(stateObject)) {
           StateObject->setChecked(true);

@@ -1,21 +1,16 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>IDD_IOBox</class>
  <widget class="QDialog" name="IDD_IOBox" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>314</width>
+    <width>326</width>
     <height>291</height>
    </rect>
   </property>
   <property name="sizePolicy" >
-   <sizepolicy>
-    <hsizetype>1</hsizetype>
-    <vsizetype>1</vsizetype>
+   <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -24,35 +19,35 @@
    <string>Input/output</string>
   </property>
   <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
    <property name="spacing" >
     <number>6</number>
    </property>
+   <property name="margin" >
+    <number>9</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
      </property>
+     <property name="margin" >
+      <number>0</number>
+     </property>
      <item>
       <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
        </property>
+       <property name="margin" >
+        <number>0</number>
+       </property>
        <item>
         <layout class="QVBoxLayout" >
-         <property name="margin" >
-          <number>0</number>
-         </property>
          <property name="spacing" >
           <number>6</number>
+         </property>
+         <property name="margin" >
+          <number>0</number>
          </property>
          <item>
           <widget class="QLabel" name="Label_IDC_STATIC64" >
@@ -81,11 +76,11 @@
        </item>
        <item>
         <layout class="QVBoxLayout" >
-         <property name="margin" >
-          <number>0</number>
-         </property>
          <property name="spacing" >
           <number>6</number>
+         </property>
+         <property name="margin" >
+          <number>0</number>
          </property>
          <item>
           <widget class="QLabel" name="Label_IDC_STATIC65" >
@@ -147,11 +142,11 @@
           <string>Select type of input/output</string>
          </property>
          <layout class="QVBoxLayout" >
-          <property name="margin" >
-           <number>11</number>
-          </property>
           <property name="spacing" >
            <number>6</number>
+          </property>
+          <property name="margin" >
+           <number>11</number>
           </property>
           <item>
            <widget class="QComboBox" name="BasicTypes" >
@@ -178,20 +173,20 @@
      </item>
      <item>
       <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
+       </property>
+       <property name="margin" >
+        <number>0</number>
        </property>
        <item>
         <widget class="QGroupBox" name="BGroup_ObjCat" >
          <layout class="QVBoxLayout" >
-          <property name="margin" >
-           <number>11</number>
-          </property>
           <property name="spacing" >
            <number>6</number>
+          </property>
+          <property name="margin" >
+           <number>11</number>
           </property>
           <item>
            <widget class="QRadioButton" name="ValueObject" >
@@ -210,16 +205,6 @@
             </property>
             <property name="text" >
              <string>State object</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="SameAsSelf" >
-            <property name="focusPolicy" >
-             <enum>Qt::StrongFocus</enum>
-            </property>
-            <property name="text" >
-             <string>Same as ""self""</string>
             </property>
            </widget>
           </item>
@@ -275,11 +260,11 @@
    </item>
    <item>
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="margin" >
+      <number>0</number>
      </property>
      <item>
       <spacer>
@@ -289,7 +274,7 @@
        <property name="sizeType" >
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>41</width>
          <height>26</height>
@@ -300,9 +285,7 @@
      <item>
       <widget class="QPushButton" name="ID_OK" >
        <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>0</hsizetype>
-         <vsizetype>0</vsizetype>
+        <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -327,9 +310,7 @@
      <item>
       <widget class="QPushButton" name="ID_CANCEL" >
        <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>0</hsizetype>
-         <vsizetype>0</vsizetype>
+        <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -351,9 +332,7 @@
      <item>
       <widget class="QPushButton" name="ID_HELP" >
        <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>0</hsizetype>
-         <vsizetype>0</vsizetype>
+        <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -377,7 +356,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
  <tabstops>
   <tabstop>NewName</tabstop>
   <tabstop>Substitutable</tabstop>
@@ -385,7 +363,6 @@
   <tabstop>NamedTypes</tabstop>
   <tabstop>ValueObject</tabstop>
   <tabstop>StateObject</tabstop>
-  <tabstop>SameAsSelf</tabstop>
   <tabstop>AnyCategory</tabstop>
   <tabstop>Mandatory</tabstop>
   <tabstop>Optional</tabstop>

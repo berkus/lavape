@@ -3883,8 +3883,7 @@ bool Assignment::Check (CheckData &ckd)
         ((SynObject*)exprValue.ptr)->SetError(ckd,ckd.errorCode);
         ok = false;
       }
-      if (catSource != unknownCategory
-      && catTarget != unknownCategory
+      if (catTarget != unknownCategory
       && catSource != catTarget) {
         ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
         ok = false;
