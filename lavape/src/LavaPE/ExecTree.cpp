@@ -861,20 +861,20 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     }
     if (elDef->TypeFlags.Contains(stateObject))
       lab = DString("~") + elDef->LocalName;
+    else if (elDef->TypeFlags.Contains(isAnyCategory))
+      lab += DString("*") + elDef->LocalName;
     else
       lab = elDef->LocalName;
     lab += DString(" : ");
     if (elDef->TypeFlags.Contains(substitutable))
       lab += DString("{");
-    if (elDef->TypeFlags.Contains(stateObject))
-      lab += DString("~");
-    else if (elDef->TypeFlags.Contains(isAnyCategory))
-      lab += DString("*");
+    //if (elDef->TypeFlags.Contains(stateObject))
+    //  lab += DString("~");
+    //else if (elDef->TypeFlags.Contains(isAnyCategory))
+    //  lab += DString("*");
     lab += Doc->GetTypeLabel(elDef, true);
     if (elDef->TypeFlags.Contains(substitutable))
       lab += DString("}");
-    //if (elDef->TypeFlags.Contains(sameAsSelf))
-    //  lab += DString(", same category as \"self\"");
     if ( ( elDef->DeclType == Attr)
          && elDef->Supports.first
          && elDef->SecondTFlags.Contains(overrides)) {

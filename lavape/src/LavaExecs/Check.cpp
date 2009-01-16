@@ -722,7 +722,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
       ok = false;
     }
 
-    if (actCat != anyCategory
+    if (formCat != anyCategory
     && actCat != formCat) {
       parm->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
