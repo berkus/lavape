@@ -39,9 +39,10 @@ enum ContextFlag {
 
 
 enum Category {
-  unknownCategory,
+  anyCategory,
   stateObj,
-  valueObj
+  valueObj,
+  unknownCategory
 };
 
 class CSectionDesc;

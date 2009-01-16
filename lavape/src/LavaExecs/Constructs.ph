@@ -418,7 +418,7 @@ public:
   void SetError(CheckData &ckd,QString *error,char *textParam=0);
   void SetRTError(CheckData &ckd,QString *error,LavaVariablePtr stackFrame,const char *textParam=0);
   QString LocationOfConstruct ();
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) { decl = 0; cat = unknownCategory; }
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) { decl = 0; cat = anyCategory; }
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
   virtual LavaObjectPtr Evaluate(CheckData  &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
   virtual bool Recursion (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel, CHE *cheQuant, CHE *cheVar, LavaObjectPtr rSet=0) { return false;};

@@ -693,10 +693,11 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   callContext = callCtx;
   formTypeDecl = ckd.document->GetFinalMVType(formDecl->RefID,formDecl->inINCL,callContext,formCat,&ckd);
   callContext = callCtx;
-  if (formCat == unknownCategory
-  && formDecl->TypeFlags.Contains(definiteCat))
+  if (formCat == unknownCategory)
     if (formDecl->TypeFlags.Contains(stateObject))
       formCat = stateObj;
+    else if (formDecl->TypeFlags.Contains(isAnyCategory))
+      formCat = anyCategory;
     else
       formCat = valueObj;
   if (NoPH(parm))
@@ -721,7 +722,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
       ok = false;
     }
 
-    if (actCat != unknownCategory
+    if (actCat != anyCategory
     && actCat != formCat) {
       parm->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
@@ -761,14 +762,15 @@ bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContex
     ok = false;
   }
 
-  if (formCat == unknownCategory
-  && formDecl->TypeFlags.Contains(definiteCat))
+  if (formCat == unknownCategory)
     if (formDecl->TypeFlags.Contains(stateObject))
       formCat = stateObj;
+    else if (formDecl->TypeFlags.Contains(isAnyCategory))
+      formCat = anyCategory;
     else
       formCat = valueObj;
 
-  if (actCat != unknownCategory
+  if (actCat != anyCategory
   && actCat != formCat) {
     if (actSynObj->primaryToken == parameter_T)
       ((SynObject*)((Parameter*)actSynObj)->parameter.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
@@ -1282,7 +1284,7 @@ Category SynObject::getCatFromFlags() {
   if (flags.Contains(isVariable))
     return stateObj;
   else if (flags.Contains(isUnknownCat))
-    return unknownCategory;
+    return anyCategory;
   else
     return valueObj;
 }
@@ -1292,7 +1294,7 @@ void SynObject::setFlagsFromCat(Category cat) {
     flags.INCL(isVariable);
     flags.EXCL(isUnknownCat);
   }
-  else if (cat == unknownCategory) {
+  else if (cat == anyCategory) {
     flags.INCL(isUnknownCat);
     flags.EXCL(isVariable);
   }
@@ -1313,7 +1315,7 @@ void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, S
 #endif
 
   decl = 0;
-  cat = unknownCategory;
+  cat = anyCategory;
 
 #ifdef INTERPRETER
   tidOperatorFunc = opFunctionID;
@@ -1351,10 +1353,11 @@ void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, S
           ctxFlags = SET(multiContext,-1);
         else
           ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
-        if (cat == unknownCategory
-        && declOutparm1->TypeFlags.Contains(definiteCat))
+        if (cat == unknownCategory)
           if (declOutparm1->TypeFlags.Contains(stateObject))
             cat = stateObj;
+          else if (declOutparm1->TypeFlags.Contains(isAnyCategory))
+            cat = anyCategory;
           else
             cat = valueObj;
       }
@@ -1874,7 +1877,7 @@ bool BaseInit::Check (CheckData &ckd)
 
 void SelfVar::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags)
 {
-  cat = unknownCategory;
+  cat = anyCategory;
   ctxFlags.bits = 0;
   decl = selfType;
   if (!decl) return;
@@ -1883,7 +1886,7 @@ void SelfVar::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
   if (execDECL->ParentDECL->TypeFlags.Contains(stateObject))
     cat = stateObj;
   else if (execDECL->ParentDECL->TypeFlags.Contains(isAnyCategory))
-    cat = unknownCategory;
+    cat = anyCategory;
   else
     cat = stateObj;
   //if (decl->DeclType == VirtualType
@@ -2425,7 +2428,7 @@ bool FailStatement::Check (CheckData &ckd)
   if (!declError)
     ERROREXIT
 
-  if (/*cat != unknownCategory &&*/ cat != valueObj) {
+  if (/*cat != anyCategory &&*/ cat != valueObj) {
     ((SynObject*)exception.ptr)->SetError(ckd,&ERR_InadmissibleCategory);
     ok = false;
   }
@@ -2477,7 +2480,7 @@ void UnaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynF
   CHE *chpOutparm1;
 
   decl = 0;
-  cat = unknownCategory;
+  cat = anyCategory;
 
 #ifdef INTERPRETER
   tidOperatorFunc = opFunctionID;
@@ -2514,10 +2517,11 @@ void UnaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynF
           ctxFlags = SET(multiContext,-1);
         else
           ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
-        if (cat == unknownCategory
-        && declOutparm1->TypeFlags.Contains(definiteCat))
+        if (cat == unknownCategory)
           if (declOutparm1->TypeFlags.Contains(stateObject))
             cat = stateObj;
+          else if (declOutparm1->TypeFlags.Contains(isAnyCategory))
+            cat = anyCategory;
           else
             cat = valueObj;
       }
@@ -2652,8 +2656,8 @@ bool InSetStatement::Check (CheckData &ckd)
       opd1->SetError(ckd,ckd.errorCode);
       ok = false;
     }
-    if (cat1 != unknownCategory
-    && cat2 != unknownCategory
+    if (cat1 != anyCategory
+    && cat2 != anyCategory
     && cat1 != cat2) {
       opd1->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
@@ -2678,8 +2682,8 @@ bool InSetStatement::Check (CheckData &ckd)
           ok = false;
         }
         if (declSetEl
-        && cat1 != unknownCategory
-        && cat2 != unknownCategory
+        && cat1 != anyCategory
+        && cat2 != anyCategory
         && cat1 != cat2) {
           opd1->SetError(ckd,&ERR_IncompatibleCategory);
           ok = false;
@@ -2706,7 +2710,7 @@ void BinaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
   CHE *chpOutparm1;
 
   decl = 0;
-  cat = unknownCategory;
+  cat = anyCategory;
 
 #ifdef INTERPRETER
   tidOperatorFunc = opFunctionID;
@@ -2739,10 +2743,11 @@ void BinaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
           ctxFlags = SET(multiContext,-1);
         else
           ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
-        if (cat == unknownCategory
-        && declOutparm1->TypeFlags.Contains(definiteCat))
+        if (cat == unknownCategory)
           if (declOutparm1->TypeFlags.Contains(stateObject))
             cat = stateObj;
+          else if (declOutparm1->TypeFlags.Contains(isAnyCategory))
+            cat = anyCategory;
           else
             cat = valueObj;
       }
@@ -2849,10 +2854,11 @@ bool BinaryOp::Check (CheckData &ckd)
   formTypeDecl = ckd.document->GetFinalMVType(formTid,formParmDecl->inINCL,ctx,formCat2,&ckd); // Context??
   if (formParmDecl->TypeFlags.Contains(substitutable))
     ctx.ContextFlags = SET(multiContext,-1); //?? stimmt der Context
-  if (formCat2 == unknownCategory
-  && formParmDecl->TypeFlags.Contains(definiteCat))
+  if (formCat2 == unknownCategory)
     if (formParmDecl->TypeFlags.Contains(stateObject))
       formCat2 = stateObj;
+    else if (formParmDecl->TypeFlags.Contains(isAnyCategory))
+      formCat2 = anyCategory;
     else
       formCat2 = valueObj;
 
@@ -2879,7 +2885,7 @@ bool BinaryOp::Check (CheckData &ckd)
         ok = false;
       }
     }
-    if (cat2 != unknownCategory
+    if (cat2 != anyCategory
     && cat2 != formCat2) {
       opd2->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
@@ -2965,13 +2971,13 @@ bool EvalStatement::Check (CheckData &ckd)
 
 void Reference::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
   ckd.tempCtx = ckd.lpc;
-  cat = unknownCategory;
+  cat = anyCategory;
   decl = ckd.document->GetFinalMVType(refID,ckd.inINCL,ckd.tempCtx,cat,&ckd);
-  if (cat == unknownCategory)
-    if (flags.Contains(isVariable))
-      cat = stateObj;
-    else
-      cat = valueObj;
+  //if (cat == unknownCategory)
+  //  if (flags.Contains(isVariable))
+  //    cat = stateObj;
+  //  else
+  //    cat = valueObj;
   ctxFlags.bits = 0;
   if (flags.Contains(isSubstitutable))
     ctxFlags.INCL(multiContext);
@@ -2989,7 +2995,7 @@ void ObjReference::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat,
   if (flags.Contains(isVariable))
     cat = stateObj;
   else if (flags.Contains(isUnknownCat))
-    cat = unknownCategory;
+    cat = anyCategory;
   else
     cat = valueObj;
   ckd.tempCtx = myContext;
@@ -3636,7 +3642,7 @@ void VarName::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
   TID tidSetEl;
 
   decl = 0;
-  cat = unknownCategory;
+  cat = anyCategory;
 
   ckd.tempCtx = ckd.lpc;
   switch (parentObject->primaryToken) {
@@ -3645,18 +3651,19 @@ void VarName::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
     if (quant->elemType.ptr
     && ((SynObject*)quant->elemType.ptr)->primaryToken == TypeRef_T) {
       decl = ckd.document->GetFinalMVType(((Reference*)quant->elemType.ptr)->refID,ckd.inINCL,ckd.tempCtx,cat,&ckd);
-      if (flags.Contains(isVariable))
-        cat = stateObj;
-      else if (flags.Contains(isUnknownCat))
-        cat = unknownCategory;
-      else
-        cat = valueObj;
+      if (cat == unknownCategory)
+        if (flags.Contains(isVariable))
+          cat = stateObj;
+        else if (flags.Contains(isUnknownCat))
+          cat = anyCategory;
+        else
+          cat = valueObj;
       if (((Reference*)quant->elemType.ptr)->flags.Contains(isSubstitutable))
         ctxFlags = SET(multiContext,-1);
       else
         ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
     }
-    else if (!quant->elemType.ptr
+    else if (!quant->elemType.ptr //!!!
     && NoPH(quant->set.ptr)) {
       ((SynObject*)quant->set.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
       if (((SynObject*)quant->set.ptr)->primaryToken == intIntv_T
@@ -3671,7 +3678,7 @@ void VarName::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
 
     }
     break;
-  case caseType_T:
+  case caseType_T: //!!!etc:
     ((SynObject*)((TypeBranch*)parentObject)->exprType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
     break;
   case catch_T:
@@ -3775,7 +3782,7 @@ bool BoolConst::Check (CheckData &ckd) {
 
 void NullConst::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
   decl = (LavaDECL*)-1;
-  cat = unknownCategory;
+  cat = anyCategory;
   ctxFlags.bits = 0;
 #ifdef INTERPRETER
   finalType = decl;
@@ -3883,7 +3890,7 @@ bool Assignment::Check (CheckData &ckd)
         ((SynObject*)exprValue.ptr)->SetError(ckd,ckd.errorCode);
         ok = false;
       }
-      if (catTarget != unknownCategory
+      if (catTarget != anyCategory
       && catSource != catTarget) {
         ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
         ok = false;
@@ -3943,7 +3950,7 @@ void ArrayAtIndex::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat,
   CHE *chpOutparm1, *chpInparm2;
 
   decl = 0;
-  cat = unknownCategory;
+  cat = anyCategory;
 
 #ifdef INTERPRETER
   tidOperatorFunc = opFunctionID;
@@ -3977,10 +3984,11 @@ void ArrayAtIndex::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat,
       ctxFlags = SET(multiContext,-1);
     else
       ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
-    if (cat == unknownCategory
-    && declOutparm1->TypeFlags.Contains(definiteCat))
+    if (cat == unknownCategory)
       if (declOutparm1->TypeFlags.Contains(stateObject))
         cat = stateObj;
+      else if (declOutparm1->TypeFlags.Contains(isAnyCategory))
+        cat = anyCategory;
       else
         cat = valueObj;
   }
@@ -3997,10 +4005,11 @@ void ArrayAtIndex::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat,
       ctxFlags = SET(multiContext,-1);
     else
       ctxFlags = ckd.tempCtx.ContextFlags * SET(undefContext,-1);
-    if (cat == unknownCategory
-    && declInparm2->TypeFlags.Contains(definiteCat))
+    if (cat == anyCategory)//!!!
       if (declInparm2->TypeFlags.Contains(stateObject))
         cat = stateObj;
+      else if (declInparm2->TypeFlags.Contains(isAnyCategory))
+        cat = anyCategory;
       else
         cat = valueObj;
   }
@@ -4097,14 +4106,15 @@ bool ArrayAtIndex::Check (CheckData &ckd)
     opd2->SetError(ckd,ckd.errorCode);
     ERROREXIT
   }
-  if (formCat == unknownCategory
-  && declOp2->TypeFlags.Contains(definiteCat))
+  if (formCat == anyCategory)//!!!
     if (declOp2->TypeFlags.Contains(stateObject))
       formCat = stateObj;
+    else if (declOp2->TypeFlags.Contains(isAnyCategory))
+      formCat = anyCategory;
     else
       formCat = valueObj;
 
-  if (actCat != unknownCategory
+  if (actCat != anyCategory
   && actCat != formCat) {
     opd2->SetError(ckd,&ERR_IncompatibleCategory);
     ok = false;
@@ -4233,8 +4243,8 @@ void FuncExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &ca
   if (cat == unknownCategory)
     if(outParmDecl->TypeFlags.Contains(stateObject))
       cat = stateObj;
-    //else if (outParmDecl->TypeFlags.Contains(sameAsSelf))
-    //  ((SynObject*)handle.ptr)->ExprGetFVType(ckd,callDecl,cat,callSynFlags);
+    else if (outParmDecl->TypeFlags.Contains(isAnyCategory))
+      cat = anyCategory;
     else
       cat = valueObj;
   if (( (LavaDECL*)chpFormOut->data)->TypeFlags.Contains(substitutable))
@@ -4405,7 +4415,7 @@ bool FuncExpression::Check (CheckData &ckd)
 //    if (IsPH(function.ptr))
 //      ERROREXIT
 
-    callObjCat = unknownCategory;
+    callObjCat = anyCategory;
     funcTid = ((Reference*)function.ptr)->refID;
     ADJUST4(funcTid);
     funcDecl = ckd.document->IDTable.GetDECL(funcTid);
@@ -5351,7 +5361,7 @@ bool IfExpression::Check (CheckData &ckd)
         ((SynObject*)opd->thenPart.ptr)->SetError(ckd,ckd.errorCode);
         ok = false;
       }
-      if (cat != unknownCategory
+      if (cat != anyCategory
       && cat != targetCat) {
         ((SynObject*)opd->thenPart.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
         ok = false;
@@ -5389,7 +5399,7 @@ bool IfExpression::Check (CheckData &ckd)
         ((SynObject*)elsePart.ptr)->SetError(ckd,ckd.errorCode);
         ok = false;
       }
-      if (cat != unknownCategory
+      if (cat != anyCategory
       && cat != targetCat) {
         ((SynObject*)elsePart.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
         ok = false;
@@ -5471,7 +5481,7 @@ bool ElseExpression::Check (CheckData &ckd)
       opd1->SetError(ckd,ckd.errorCode);
       ok = false;
     }
-    if (cat != unknownCategory
+    if (cat != anyCategory
     && cat != targetCat) {
       opd1->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
@@ -5498,7 +5508,7 @@ bool ElseExpression::Check (CheckData &ckd)
       opd2->SetError(ckd,ckd.errorCode);
       ok = false;
     }
-    if (cat != unknownCategory
+    if (cat != anyCategory
     && cat != targetCat) {
       opd2->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
@@ -5536,8 +5546,8 @@ bool TypeBranch::Check (CheckData &ckd)
   typeDecl = ckd.document->GetType(declBranchType);
   declSwitchExpression = ckd.document->GetType(declSwitchExpression);
 #endif
-  if (catBranchType != unknownCategory
-  && catSwitchExpression != unknownCategory
+  if (catBranchType != anyCategory
+  && catSwitchExpression != anyCategory
   && catBranchType != catSwitchExpression) {
     ((SynObject*)exprType.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
     ok = false;
@@ -5574,8 +5584,8 @@ bool Branch::Check (CheckData &ckd)
         caseLabel->SetError(ckd,ckd.errorCode);
         ok = false;
       }
-      if (catCaseLabel != unknownCategory
-      && catCaseExpr != unknownCategory
+      if (catCaseLabel != anyCategory
+      && catCaseExpr != anyCategory
       && catCaseLabel != catCaseExpr) {
         caseLabel->SetError(ckd,&ERR_IncompatibleCategory);
         ok = false;
@@ -5886,7 +5896,7 @@ bool Run::Check (CheckData &ckd)
 
   chpFormIn = GetFirstInput(&ckd.document->IDTable,tidInitiator);
   callCtx = ckd.lpc;
-  callObjCat = unknownCategory;
+  callObjCat = anyCategory;
   while (chpFormIn) {
     // locate act. parm. and reposition it if necessary:
     reposition(ckd,this,true,&inputs,chpFormIn,chpActIn);
@@ -6156,11 +6166,11 @@ bool Quantifier::Check(CheckData &ckd)
           ((Reference*)elemType.ptr)->ExprGetFVType(ckd,typeDecl,typeCat,ctxFlags);
           if (ctxFlags.bits)
             ckd.tempCtx.ContextFlags = ctxFlags;
-          if (typeCat == unknownCategory)
-            if (((Reference*)elemType.ptr)->flags.Contains(isVariable))
-              typeCat = stateObj;
-            else
-              typeCat = valueObj;
+          //if (typeCat == anyCategory)
+          //  if (((Reference*)elemType.ptr)->flags.Contains(isVariable))
+          //    typeCat = stateObj;
+          //  else
+          //    typeCat = valueObj;
 
           if (!compatibleTypes(ckd,typeDecl,ckd.tempCtx,setElemDecl,elCtx)) {
             ((SynObject*)elemType.ptr)->SetError(ckd,ckd.errorCode);
@@ -6366,7 +6376,7 @@ bool SelectExpression::Check (CheckData &ckd)
     ok = false;
   }
 
-  if (addCat != unknownCategory && addCat != setElCat) {
+  if (addCat != anyCategory && addCat != setElCat) {
     ((SynObject*)addObject.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
     ok = false;
   }
@@ -6829,12 +6839,11 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
         parent->myFinalVType = vTypeDECL;
         if (fieldDECL->TypeFlags.Contains(substitutable))
           parent->flags.INCL(isSubstitutable);
-        if (/*parent->myCategory == unknownCategory
-        &&*/ fieldDECL->TypeFlags.Contains(definiteCat))
+        if (parent->myCategory == unknownCategory)
           if (fieldDECL->TypeFlags.Contains(stateObject))
             parent->myCategory = stateObj;
           else if (fieldDECL->TypeFlags.Contains(isAnyCategory))
-            parent->myCategory = unknownCategory;
+            parent->myCategory = anyCategory;
           else
             parent->myCategory = valueObj;
           parent->setFlagsFromCat(parent->myCategory);
@@ -6929,12 +6938,11 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
             parent->myFinalVType = vTypeDECL;
             if (fieldDECL->TypeFlags.Contains(substitutable))
               parent->flags.INCL(isSubstitutable);
-            if (/*parent->myCategory == unknownCategory
-            &&*/ fieldDECL->TypeFlags.Contains(definiteCat)) {
+            if (parent->myCategory == unknownCategory) {
               if (fieldDECL->TypeFlags.Contains(stateObject))
                 parent->myCategory = stateObj;
               else if (fieldDECL->TypeFlags.Contains(isAnyCategory))
-                parent->myCategory = unknownCategory;
+                parent->myCategory = anyCategory;
               else
                 parent->myCategory = valueObj;
               parent->setFlagsFromCat(parent->myCategory);

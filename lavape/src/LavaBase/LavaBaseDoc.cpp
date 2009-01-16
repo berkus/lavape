@@ -668,6 +668,8 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
     && decl->TypeFlags.Contains(definiteCat))
       if (decl->TypeFlags.Contains(stateObject))
         cat = stateObj;
+      else if (decl->TypeFlags.Contains(isAnyCategory))
+        cat = anyCategory;
       else
         cat = valueObj;
   }
@@ -686,11 +688,13 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
     else
       declMapped = declVal;
     if (declMapped->RefID.nID >= 0) {
-      if ((cat == unknownCategory)
+      if ((cat == anyCategory)
            && declMapped->TypeFlags.Contains(definesObjCat)
            && declMapped->TypeFlags.Contains(definiteCat))
         if (declMapped->TypeFlags.Contains(stateObject))
           cat = stateObj;
+        else if (declMapped->TypeFlags.Contains(isAnyCategory))
+          cat = anyCategory;
         else
           cat = valueObj;
       declVal = IDTable.GetDECL(declMapped->RefID, declMapped->inINCL);
