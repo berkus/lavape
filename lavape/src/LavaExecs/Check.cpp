@@ -6072,6 +6072,57 @@ bool Quantifier::Check(CheckData &ckd)
   if (set.ptr)
     ((SynObject*)set.ptr)->Check(ckd);
 
+  if (ok && isDclWithIni && NoPH(elemType.ptr)) {
+    ((SynObject*)elemType.ptr)->ExprGetFVType(ckd,typeDecl,cat,ctxFlags);
+    typeDecl = ckd.document->GetType(typeDecl);
+    if (typeDecl->TypeFlags.Contains(isAbstract)) {
+      ((SynObject*)elemType.ptr)->SetError(ckd,&ERR_NonCreatable);
+      ok = false;
+    }
+  }
+
+  if (NoPH(set.ptr)) {
+    ((SynObject*)set.ptr)->ExprGetFVType(ckd,declSetType,elemCat,ctxFlags);
+    declSetType = ckd.document->GetType(declSetType);
+    if (((SynObject*)set.ptr)->primaryToken == intIntv_T
+    || (declSetType && declSetType->SecondTFlags.Contains(isEnum))) {
+      if (elemType.ptr) {
+        ((SynObject*)elemType.ptr)->SetError(ckd,&ERR_EnumIntvType);
+        ok = false;
+      }
+    }
+    else if (declSetType)
+      if (!declSetType->SecondTFlags.Contains(isSet)) {
+        ((SynObject*)set.ptr)->SetError(ckd,&ERR_IsntSet);
+        ok = false;
+      }
+      else {
+        ckd.document->IDTable.GetParamID(declSetType,tidElemType,isSet); // set elem. type
+        if (ctxFlags.bits)
+          ckd.tempCtx.ContextFlags = ctxFlags;
+        setElemDecl = ckd.document->GetFinalMVType(tidElemType,0,ckd.tempCtx,elemCat,&ckd);
+        if (NoPH(elemType.ptr)) {
+          CContext elCtx = ckd.tempCtx;
+          ((Reference*)elemType.ptr)->ExprGetFVType(ckd,typeDecl,typeCat,ctxFlags);
+          if (ctxFlags.bits)
+            ckd.tempCtx.ContextFlags = ctxFlags;
+          if (!compatibleTypes(ckd,typeDecl,ckd.tempCtx,setElemDecl,elCtx)) {
+            ((SynObject*)elemType.ptr)->SetError(ckd,ckd.errorCode);
+            ok = false;
+          }
+#ifdef INTERPRETER
+          typeDecl = ckd.document->GetType(typeDecl);
+        }
+        setElemDecl = ckd.document->GetType(setElemDecl);
+#else
+        }
+#endif
+      }
+    else
+      ERROREXIT
+  }
+
+
   for (chp = (CHE*)quantVars.first;
        chp;
        chp = (CHE*)chp->successor) {
@@ -6080,6 +6131,8 @@ bool Quantifier::Check(CheckData &ckd)
       opd = 0;
     else {
       opd = (VarName*)opdPH;
+      if (NoPH(set.ptr))
+        opd->setFlagsFromCat(elemCat);
       if (isDclWithIni)
         opd->closedLevel = -1;
     }
@@ -6131,62 +6184,6 @@ bool Quantifier::Check(CheckData &ckd)
   ckd.currentStackLevel += nQuantVars;
   ((QuantStmOrExp*)parentObject)->nQuantVars += nQuantVars;
 #endif
-
-  if (ok && isDclWithIni) {
-    ((SynObject*)elemType.ptr)->ExprGetFVType(ckd,typeDecl,cat,ctxFlags);
-    typeDecl = ckd.document->GetType(typeDecl);
-    if (typeDecl->TypeFlags.Contains(isAbstract)) {
-      ((SynObject*)elemType.ptr)->SetError(ckd,&ERR_NonCreatable);
-      ok = false;
-    }
-  }
-
-  if (NoPH(set.ptr)) {
-    ((SynObject*)set.ptr)->ExprGetFVType(ckd,declSetType,elemCat,ctxFlags);
-    declSetType = ckd.document->GetType(declSetType);
-    if (((SynObject*)set.ptr)->primaryToken == intIntv_T
-    || (declSetType && declSetType->SecondTFlags.Contains(isEnum))) {
-      if (elemType.ptr) {
-        ((SynObject*)elemType.ptr)->SetError(ckd,&ERR_EnumIntvType);
-        ok = false;
-      }
-    }
-    else if (declSetType)
-      if (!declSetType->SecondTFlags.Contains(isSet)) {
-        ((SynObject*)set.ptr)->SetError(ckd,&ERR_IsntSet);
-        ok = false;
-      }
-      else {
-        ckd.document->IDTable.GetParamID(declSetType,tidElemType,isSet); // set elem. type
-        if (ctxFlags.bits)
-          ckd.tempCtx.ContextFlags = ctxFlags;
-        setElemDecl = ckd.document->GetFinalMVType(tidElemType,0,ckd.tempCtx,elemCat,&ckd);
-        if (NoPH(elemType.ptr)) {
-          CContext elCtx = ckd.tempCtx;
-          ((Reference*)elemType.ptr)->ExprGetFVType(ckd,typeDecl,typeCat,ctxFlags);
-          if (ctxFlags.bits)
-            ckd.tempCtx.ContextFlags = ctxFlags;
-          //if (typeCat == anyCategory)
-          //  if (((Reference*)elemType.ptr)->flags.Contains(isVariable))
-          //    typeCat = stateObj;
-          //  else
-          //    typeCat = valueObj;
-
-          if (!compatibleTypes(ckd,typeDecl,ckd.tempCtx,setElemDecl,elCtx)) {
-            ((SynObject*)elemType.ptr)->SetError(ckd,ckd.errorCode);
-            ok = false;
-          }
-#ifdef INTERPRETER
-          typeDecl = ckd.document->GetType(typeDecl);
-        }
-        setElemDecl = ckd.document->GetType(setElemDecl);
-#else
-        }
-#endif
-      }
-    else
-      ERROREXIT
-  }
 
   EXIT
 }

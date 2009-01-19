@@ -4454,10 +4454,18 @@ void CVTypeBox::on_ID_OK_clicked()
   if (DefCat->isChecked()) {
     myDECL->TypeFlags.INCL(definesObjCat);
     myDECL->TypeFlags.INCL(definiteCat);
-    if (StateObject->isChecked()) 
+    if (StateObject->isChecked()) {
       myDECL->TypeFlags.INCL(stateObject);
-    else 
+      myDECL->TypeFlags.EXCL(isAnyCategory);
+    }
+    else if (AnyCategory->isChecked()) {
+      myDECL->TypeFlags.INCL(isAnyCategory);
       myDECL->TypeFlags.EXCL(stateObject);
+    }
+    else {
+      myDECL->TypeFlags.EXCL(stateObject);
+      myDECL->TypeFlags.EXCL(isAnyCategory);
+    }
   }
   else {
     myDECL->TypeFlags.EXCL(stateObject);

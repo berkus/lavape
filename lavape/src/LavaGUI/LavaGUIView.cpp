@@ -491,7 +491,7 @@ void CLavaGUIView::OnInitialUpdate()
         ((CLavaGUIFrame*)GetParentFrame())->SetTitle(str);
         myID = TID(myDECL->OwnID, myDECL->inINCL);
         LastBrowseNode = 0;
-        MessToStatusbar();
+        MsgToStatusbar();
         myGUIProg->myDECL = myDECL;
         myGUIProg->OnUpdate( myDECL, ResultDPtr);
         if (!myGUIProg->ckd.exceptionThrown && !myGUIProg->ex) 
@@ -504,7 +504,7 @@ void CLavaGUIView::OnInitialUpdate()
       GetParentFrame()->showMaximized();
       GetDocument()->SelectLcom(true);
       myGUIProg = new CGUIProg;
-      MessToStatusbar();
+      MsgToStatusbar();
       myGUIProg->Create(GetDocument(), this);
       ServicePtr = &GetDocument()->DocObjects[0];
       myGUIProg->ServicePtr = ServicePtr;
@@ -595,7 +595,7 @@ bool CLavaGUIView::event(QEvent* ev)
   }
   else {
     if (ev->type() == QEvent::Enter)
-      MessToStatusbar();
+      MsgToStatusbar();
                 return wxView::event(ev);
   }
 }
@@ -869,7 +869,7 @@ bool CLavaGUIView::OnKill()
   return true;
 }
 
-void CLavaGUIView::MessToStatusbar()
+void CLavaGUIView::MsgToStatusbar()
 {
   if (LBaseData->inRuntime && GetDocument()->isObject) {
     if (StatusbarMess.isEmpty()) {
@@ -890,7 +890,7 @@ void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView)
     if (bActivate) {
       active = true;
       if (LBaseData->inRuntime) {
-        MessToStatusbar();
+        MsgToStatusbar();
       }
       else
         GetDocument()->ResetError();

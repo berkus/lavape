@@ -688,7 +688,7 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
     else
       declMapped = declVal;
     if (declMapped->RefID.nID >= 0) {
-      if ((cat == anyCategory)
+      if ((cat == unknownCategory)
            && declMapped->TypeFlags.Contains(definesObjCat)
            && declMapped->TypeFlags.Contains(definiteCat))
         if (declMapped->TypeFlags.Contains(stateObject))

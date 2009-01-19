@@ -216,7 +216,7 @@ void CFormWid::contextMenuEvent(QContextMenuEvent* ev)
 bool CFormWid::event(QEvent* ev)
 {
   if ((ev->type() == QEvent::Enter) && GUIProg->isView)
-    ((CLavaGUIView*)GUIProg->ViewWin)->MessToStatusbar();
+    ((CLavaGUIView*)GUIProg->ViewWin)->MsgToStatusbar();
   else if ( !LBaseData->inRuntime && ((ev->type() == QEvent::MouseButtonPress)) && ( ((QMouseEvent*)ev)->button() == Qt::LeftButton)) {
     ((CGUIProg*)GUIProg)->ActNode = myFormNode;
     if (((CGUIProg*)GUIProg)->newFocus)
@@ -341,7 +341,7 @@ void CLavaGroupBox::contextMenuEvent(QContextMenuEvent* ev)
 bool CLavaGroupBox::event(QEvent* ev)
 {
   if ((ev->type() == QEvent::Enter) && GUIProg->isView)
-    ((CLavaGUIView*)GUIProg->ViewWin)->MessToStatusbar();
+    ((CLavaGUIView*)GUIProg->ViewWin)->MsgToStatusbar();
   else if ( !LBaseData->inRuntime && ((ev->type() == QEvent::MouseButtonPress)) && ( ((QMouseEvent*)ev)->button() == Qt::LeftButton)) {
     ((CGUIProg*)GUIProg)->ActNode = myFormNode;
     if (((CGUIProg*)GUIProg)->newFocus)

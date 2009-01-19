@@ -103,7 +103,7 @@ public:
   virtual void OnInitialUpdate();
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
   virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
-  void MessToStatusbar();
+  void MsgToStatusbar();
 
   GUIScrollView* scrollView() {return myScrv;}
   GUIVBox* qvbox;
