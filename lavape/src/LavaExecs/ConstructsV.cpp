@@ -1604,10 +1604,11 @@ void ForeachV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
     if (secondaryClause.ptr)
       t.Insert(where_T,false,true);
     else {
+      //t.Insert(do_T);
       t.Insert(holds_T);
-      t.Blank();
-      t.Insert(true_T);
-      t.Insert(Colon_T);
+      //t.Blank();
+      //t.Insert(true_T);
+      //t.Insert(Colon_T);
     }
     NLincIndent(t);
     DRAW(primaryClause.ptr);
