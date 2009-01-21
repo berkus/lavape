@@ -165,6 +165,7 @@ extern "C" DISCO_DLL void bcopy (const unsigned char* const,unsigned char*,unsig
 #define UEV_AttachHandler (QEvent::Type)(QEvent::User+27)
 #define UEV_DebugStop (QEvent::Type)(QEvent::User+28)
 #define UEV_TabChange (QEvent::Type)(QEvent::User+29)
+#define UEV_Activate (QEvent::Type)(QEvent::User+30)
 
 class DISCO_DLL CustomEvent : public  QEvent {
 public:

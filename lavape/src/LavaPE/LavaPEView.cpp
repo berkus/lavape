@@ -1844,6 +1844,7 @@ void CLavaPEView::Gotodef(CTreeItem* item)
     else {
       if (itd->type == TIType_DECL) {
         DECL = *(LavaDECL**)itd->synEl;
+        DECL->WorkFlags.INCL(selAfter);
         id.nID = -1;
         ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext = new CBrowseContext(this, DECL);//item, item->parent());
         id = DECL->RefID;
@@ -3457,6 +3458,71 @@ void CLavaPEView::OnShowSpecialView(TDeclType exprType)
       QMessageBox::critical(this, qApp->applicationName(),IDP_NoExecView,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
 }
 
+void CLavaPEView::StoreSelection()
+{
+  CTreeItem* item;
+  CMainItemData *itd;
+  LavaDECL* decl;
+
+  item = (CTreeItem*)Tree->currentItem();
+  if (!item)
+    return;
+  itd = (CMainItemData*)item->getItemData();
+  if (itd->type == TIType_CHEEnumSel) {
+    item = (CTreeItem*)item->parent();
+    itd = (CMainItemData*)item->getItemData();
+  }
+  decl = *(LavaDECL**)itd->synEl;
+  if (!decl)
+    return;
+  switch (itd->type) {
+    case TIType_DECL:
+      decl->WorkFlags.INCL(selAfter);
+      break;
+    case TIType_CHEEnumSel:   
+      decl->WorkFlags.INCL(selAfter);
+      decl->WorkFlags.INCL(selEnum);
+      break;
+    case TIType_EnumItems:    
+      decl->WorkFlags.INCL(selAfter);
+      decl->WorkFlags.INCL(selEnum);
+      break;
+    case TIType_VTypes:       
+      decl->WorkFlags.INCL(selAfter);
+      decl->WorkFlags.INCL(selPara);
+      break;
+    case TIType_Input:         
+      decl->WorkFlags.INCL(selAfter);
+      decl->WorkFlags.INCL(selIn);
+      break;
+    case TIType_Output:              
+      decl->WorkFlags.INCL(selAfter);
+      decl->WorkFlags.INCL(selOut);
+      break;
+    case TIType_Defs: 
+      decl->WorkFlags.INCL(selAfter);
+      decl->WorkFlags.INCL(selDefs);
+      break;
+    case TIType_Features:
+      decl->WorkFlags.INCL(selAfter);
+      decl->WorkFlags.INCL(selMems);
+      break;
+    case TIType_Require:
+      decl->WorkFlags.INCL(selAfter);
+      decl->WorkFlags.INCL(selRequire);
+      break;
+    case TIType_Ensure:
+      decl->WorkFlags.INCL(selAfter);
+      decl->WorkFlags.INCL(selEnsure);
+      break;
+    case TIType_Exec:
+      decl->WorkFlags.INCL(selAfter);
+      decl->WorkFlags.INCL(selExec);
+      break;
+    default:;
+  }
+}
+
 void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHint)
 {
   if (m_hitemDrag) //in drag drop no tree drawing
@@ -3480,6 +3546,8 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
   drawTree = drawTree || (undoRedoCheck == CHLV_fit)
                       || hint && (hint->com == CPECommand_FromOtherDoc) && !hint->FirstLast.Contains(noDrawHint)
                         && !((CLavaPEApp*)wxTheApp)->inTotalCheck;
+  if (drawTree && (hint && hint->com == CPECommand_FromOtherDoc))
+    StoreSelection();
   if (!updateTree)
     return;
   updateTree = !lastUpdate;

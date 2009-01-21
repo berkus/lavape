@@ -406,8 +406,14 @@ $TYPE +CDP {
 	  //25, X0200 0000, used in updates
     fromPubToPriv,
     //26, X0400 0000, used in refactoring: public to private
-    isIgnored
+    isIgnored,
     //27, X0800 0000, mandatory input parameter is ignored
+    selRequire,
+    //28, X0800 0001 
+    selExec,
+    //29, X0800 0010 
+    selEnsure
+    //30, X0800 0011 
   };
 
   enum BasicFlag {
@@ -854,7 +860,8 @@ $TYPE +CDP {
 
   struct SimpleSyntax {
     int-CDP clipIncl;
-    bool-CDP notFound;   //used in LavaPE
+    bool-CDP notFound;  //used in LavaPE
+    bool-CDP selINCL;   //used in LavaPE
     bool-CDP inWork;
     int nINCL;
     STRING UsersName;
@@ -862,7 +869,7 @@ $TYPE +CDP {
     STRING LocalTopName;
     NESTED<LavaDECL> TopDef;
 
-    SimpleSyntax() {clipIncl = 0; notFound = false; inWork = false;}
+    SimpleSyntax() {clipIncl = 0; notFound = false; inWork = false; selINCL = false;}
   };
 
   typedef CHAINANY<SimpleSyntax> SyntaxDefinition;

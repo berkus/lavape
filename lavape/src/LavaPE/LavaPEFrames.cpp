@@ -1823,6 +1823,8 @@ void CTreeFrame::InitialUpdate()
   if (showIt) {
     wxChildFrame::InitialUpdate();
     wxDocManager::GetDocumentManager()->SetActiveView(viewM, true);
+    //QApplication::postEvent(this, new CustomEvent(UEV_Activate));
+    //wxChildFrame::Activate();
   }
 }
 

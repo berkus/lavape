@@ -805,6 +805,22 @@ void CExecTree::MakeItem(DString& label, int bm, CTreeItem* parent, LavaDECL** p
       viewTree->SelType = Interface;
       elDef->WorkFlags.EXCL(selDefs);
     }
+    else if (elDef->WorkFlags.Contains(selRequire)) {
+      viewTree->SelType = Require;
+      elDef->WorkFlags.EXCL(selRequire);
+    }
+    else if (elDef->WorkFlags.Contains(selEnum)) {
+      viewTree->SelType = EnumDef;
+      elDef->WorkFlags.EXCL(selEnum);
+    }
+    else if (elDef->WorkFlags.Contains(selExec)) {
+      viewTree->SelType = ExecDef;
+      elDef->WorkFlags.EXCL(selExec);
+    }
+    else if (elDef->WorkFlags.Contains(selEnsure)) {
+      viewTree->SelType = Ensure;
+      elDef->WorkFlags.EXCL(selEnsure);
+    }
     else
       viewTree->SelType = NoDef;
   }

@@ -19,6 +19,7 @@ public:
   CInclView(QWidget* parent, wxDocument* doc); 
   CLavaPEDoc* GetDocument(); // non-debug version is inline
 //  int AddIncl(SynDef *LavaCode, CTreeItem* parent = NULL);
+  int SelINCL;
   virtual void OnInitialUpdate();
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
   virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);

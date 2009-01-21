@@ -777,14 +777,18 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
       viewHint = InsDelDECL(hint, undo, redo, localMove);
       break;
     case CPECommand_Exclude:
-      newINCL =((CHESimpleSyntax*)hint->CommandData1)->data.nINCL;
+      che1 = (CHESimpleSyntax*)hint->CommandData1;
+      newINCL =che1->data.nINCL;
+      che1->data.selINCL = true;
       inclFile = *(DString*)hint->CommandData2;
       if (undo) {
         UndoDelSyntax(hint);
         inclDel = false;
       }
       else {
-        DelSyntax((CHESimpleSyntax*)hint->CommandData1);
+        DelSyntax(che1);
+        che1->data.selINCL = true;
+        ((CHESimpleSyntax*)che1->predecessor)->data.selINCL = true,
         inclDel = true;
       }
       UpdateAllViews(NULL, 0, 0);
@@ -794,15 +798,19 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
       break;
     case CPECommand_Include:
       inclFile = *(DString*)hint->CommandData2;
+      che1 = ((CHESimpleSyntax*)hint->CommandData1);
       if (undo) {
-        newINCL =((CHESimpleSyntax*)hint->CommandData1)->data.nINCL;
-        DelSyntax((CHESimpleSyntax*)hint->CommandData1);
+        newINCL = che1->data.nINCL;
+        che1->data.selINCL = true;
+        ((CHESimpleSyntax*)che1->predecessor)->data.selINCL = true;
+        DelSyntax(che1);
         inclDel = true;
       }
       else
         if (redo) {
           UndoDelSyntax(hint);
-          newINCL =((CHESimpleSyntax*)hint->CommandData1)->data.nINCL;
+          newINCL =che1->data.nINCL;
+          che1->data.selINCL = true;
           inclDel = false;
         }
         else {
@@ -814,6 +822,7 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
             return false;
           che1 = (CHESimpleSyntax*)hint->CommandData1;
           newINCL = che1->data.nINCL;
+          che1->data.selINCL = true;
           che1->data.UsersName = *(DString*)hint->CommandData4;
           RelPathName(che1->data.UsersName,IDTable.DocDir);
         }
@@ -825,7 +834,8 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
     case CPECommand_ChangeInclude:
       che1 = (CHESimpleSyntax*)hint->CommandData1;
       che2 = (CHESimpleSyntax*)((CHESimpleSyntax*)hint->CommandData3)->successor;
-
+      che1->data.selINCL = true;
+      che2->data.selINCL = true;
       if (!SameFile(che1->data.SyntaxName, IDTable.DocDir, che2->data.SyntaxName, IDTable.DocDir)) {
         che2 = (CHESimpleSyntax*)mySynDef->SynDefTree.Uncouple(((CHESimpleSyntax*)hint->CommandData3)->successor);
         hint->CommandData1 = che2;

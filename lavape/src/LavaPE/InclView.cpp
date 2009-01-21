@@ -90,6 +90,7 @@ void CInclView::OnInitialUpdate()
   CLavaPEDoc* pDoc = GetDocument();
   if (pDoc && pDoc->mySynDef) {
     Expanded = true;
+    SelINCL = 0;
     OnUpdate(NULL, 0, 0);
     Tree->expandItem(Tree->RootItem);//firstChild()->setOpen(true);
     Tree->setCurrentItem(Tree->RootItem);
@@ -100,12 +101,12 @@ void CInclView::OnInitialUpdate()
 
 void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
 {
-  CTreeItem* parent, *item;
+  CTreeItem *parent, *item, *prevSelItem=0;
   DString lab;
-  CHESimpleSyntax* cheSyn;
-  int bm = lavafileBM;//QPixmapCache::find("l_lavafile");
+  CHESimpleSyntax* cheSyn, lastChe;
+  int bm = lavafileBM, prevSelINCL = SelINCL;//QPixmapCache::find("l_lavafile");
   CLavaPEDoc *doc;
-  bool hasErr= false;
+  bool hasErr= false, curSet = false;
 
   if (pHint && ( ((CLavaPEHint*)pHint)->com != CPECommand_Include)
      && ( ((CLavaPEHint*)pHint)->com != CPECommand_Exclude)
@@ -128,8 +129,17 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
     //                                0, MY_TVI_ROOT, MY_TVI_LAST);
   cheSyn = (CHESimpleSyntax*)doc->mySynDef->SynDefTree.first;
   parent->setItemData( (TItemData*)cheSyn);
-  if (cheSyn)
+  if (cheSyn) {
+    if (cheSyn->data.selINCL) {
+      Tree->setCurrentItem(Tree->RootItem);
+      cheSyn->data.selINCL = false;
+      SelINCL = 0;
+      curSet = true;
+    }
+    if (!prevSelINCL)
+      prevSelItem = Tree->RootItem;
     cheSyn = (CHESimpleSyntax*)cheSyn->successor;
+  }
   while (cheSyn) {
     lab = cheSyn->data.UsersName;
     if (cheSyn->data.LocalTopName.l)
@@ -141,8 +151,18 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
       //Tree->SetItemState(item, INDEXTOOVERLAYMASK(2), TVIS_OVERLAYMASK );
       hasErr = true;
     }
+    if (cheSyn->data.selINCL) {
+      Tree->setCurrentItem(item);
+      cheSyn->data.selINCL = false;
+      SelINCL = cheSyn->data.nINCL;
+      curSet = true;
+    }
+    if (cheSyn->data.nINCL == prevSelINCL)
+      prevSelItem = item;;
     cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   }
+  if (!curSet)
+    Tree->setCurrentItem(prevSelItem);
   if (hasErr) {
     Tree->expandItem(Tree->RootItem);//child(0)->setOpen(true);
     ((CTreeFrame*)GetParentFrame())->CalcSplitters(false, true);
@@ -153,7 +173,6 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
     else
       Tree->collapseItem(Tree->RootItem);
   Tree->update();
-
 }
 
 
@@ -227,11 +246,16 @@ void CInclView::OnDelete()
 
 void CInclView::OnDblclk( QTreeWidgetItem * item, int col )
 {
- //CTreeItem* item = (CTreeItem*)Tree->itemAtIndex(index);
- if (item && (item != Tree->RootItem)) {
-    DString *fn = new DString(((CHESimpleSyntax*)((CTreeItem*)item)->getItemData())->data.UsersName); //.SyntaxName);
-    QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_CalledView,(void*)fn));
+  //CTreeItem* item = (CTreeItem*)Tree->itemAtIndex(index);
 
+  
+  if (item) {
+    CHESimpleSyntax* che = (CHESimpleSyntax*)((CTreeItem*)item)->getItemData();
+    SelINCL = che->data.nINCL;
+    if (item != Tree->RootItem) {
+      DString *fn = new DString(((CHESimpleSyntax*)((CTreeItem*)item)->getItemData())->data.UsersName); //.SyntaxName);
+      QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_CalledView,(void*)fn));
+    }
   }
 }
 
@@ -425,6 +449,8 @@ void CInclView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
     return;
   if (!selItem->isSelected()) 
     return;
+  CHESimpleSyntax* che = (CHESimpleSyntax*)((CTreeItem*)selItem)->getItemData();
+  SelINCL = che->data.nINCL;
   //wxTheApp->updateButtonsMenus();
 }
 

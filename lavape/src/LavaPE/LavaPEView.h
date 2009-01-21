@@ -140,6 +140,7 @@ public:
   TIType GroupType;       //used in OnUpdate...
   TRefacMove RefacCase;   //defined in drop-view
 
+  void StoreSelection();
   bool AddToDragChain(CTreeItem* itemDrag, bool vkControl = false, bool sameCat = true);
   CTreeItem* BrowseTree(LavaDECL* decl, CTreeItem* startItem, DString* enumID=0);
   TIType CanPaste (TDeclType defType, SynFlags typeFlags, SynFlags secondtflags, CTreeItem* toItem/*, bool& toInter*/);

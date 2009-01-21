@@ -117,7 +117,8 @@ void wxMainFrame::windowActivated(int index)
     return;
   theActiveFrame = m_currentTabWidget->widget(index);
   if (theActiveFrame && theActiveFrame->inherits("wxChildFrame"))
-    ((wxChildFrame*)theActiveFrame)->Activate();
+    QApplication::postEvent((wxChildFrame*)theActiveFrame, new CustomEvent(UEV_Activate));
+    //((wxChildFrame*)theActiveFrame)->Activate();
 }
 
 void wxMainFrame::closeEvent (QCloseEvent*)
@@ -353,6 +354,8 @@ bool wxChildFrame::event(QEvent *ev)
 {
   if (ev->type() == QEvent::WindowStateChange)
     wxTheApp->isChMaximized = parentWidget()->isMaximized();
+  else if (ev->type() == UEV_Activate)
+    Activate(true);
   return QWidget::event(ev);
 }
 
@@ -518,7 +521,8 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
           tab = (wxTabWidget*)splitter->widget(0);
         wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
         if (tab->widget(0))
-          ((wxChildFrame*)tab->widget(0))->Activate(true);
+          QApplication::postEvent(((wxChildFrame*)tab->widget(0)), new CustomEvent(UEV_Activate));
+          //((wxChildFrame*)tab->widget(0))->Activate(true);
         deleteLater();  
       }
       //wxTheApp->updateButtonsMenus();
@@ -567,7 +571,8 @@ void wxTabWidget::closePage() {
         tab = (wxTabWidget*)splitter->widget(0);
       wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
       if (tab->widget(0))
-        ((wxChildFrame*)tab->widget(0))->Activate(true);
+        QApplication::postEvent((wxChildFrame*)tab->widget(0), new CustomEvent(UEV_Activate));
+        //((wxChildFrame*)tab->widget(0))->Activate(true);
       deleteLater();
     }
     //wxTheApp->updateButtonsMenus();

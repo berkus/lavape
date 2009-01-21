@@ -500,7 +500,8 @@ bool wxDocument::DeleteAllChildFrames()
   }
   wxTheApp->m_docManager->SetActiveView(0);
   if (!noTab && tab->widget(0))
-    ((wxChildFrame*)tab->widget(0))->Activate(true);
+    QApplication::postEvent(((wxChildFrame*)tab->widget(0)), new CustomEvent(UEV_Activate));
+    //((wxChildFrame*)tab->widget(0))->Activate(true);
   //wxTheApp->updateButtonsMenus();
   return true;
 }
@@ -860,6 +861,9 @@ void wxView::mousePressEvent ( QMouseEvent * e )
 
 void wxView::focusIn( )
 {
+  wxDocument* doc = GetDocument();
+  if (!doc || doc->deleting)
+    return;
   wxTheApp->m_appWindow->SetCurrentTabWindow(myTabWidget);
   wxDocManager::GetDocumentManager()->SetActiveView(this, true);
 }
@@ -1375,7 +1379,8 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
       doc = m_docs[pos];
       if (doc && (fn == doc->GetFilename())) {
         if (doc->GetFirstView() && doc->GetFirstView()->GetParentFrame())  //filename comp
-          doc->GetFirstView()->GetParentFrame()->Activate();
+          QApplication::postEvent(doc->GetFirstView()->GetParentFrame(), new CustomEvent(UEV_Activate));
+          //doc->GetFirstView()->GetParentFrame()->Activate();
         m_fileHistory->SetFirstInHistory(path2);
         return doc;
       }
@@ -1819,7 +1824,7 @@ void wxDocManager::SetActiveView(wxView *view, bool activate)
 {
   if (activate && view) {
     if (view != m_activeView) {
-      if (m_activeView)
+      if (m_activeView && !m_activeView->GetDocument()->deleting)
         m_activeView->OnActivateView(false);
       m_activeView = view;
       view->OnActivateView();
@@ -1862,9 +1867,9 @@ void wxDocManager::SetActiveFrame(wxChildFrame *af, bool doIt, bool deactivate) 
     return;
 
   m_activeFrame->m_tabWidget->setCurrentWidget(m_activeFrame);
-  m_activeFrame->m_tabWidget->setTabTextColor(m_activeFrame->m_tabWidget->indexOf(m_activeFrame),Qt::red);
-  if (m_oldActiveFrame && !m_oldActiveFrame->deleting)
-    m_oldActiveFrame->m_tabWidget->setTabTextColor(m_oldActiveFrame->m_tabWidget->indexOf(m_oldActiveFrame),Qt::black);
+  //m_activeFrame->m_tabWidget->setTabTextColor(m_activeFrame->m_tabWidget->indexOf(m_activeFrame),Qt::red);
+  //if (m_oldActiveFrame && !m_oldActiveFrame->deleting)
+  //  m_oldActiveFrame->m_tabWidget->setTabTextColor(m_oldActiveFrame->m_tabWidget->indexOf(m_oldActiveFrame),Qt::black);
   wxTheApp->m_appWindow->SetCurrentTabWindow(m_activeFrame->m_tabWidget);
   m_oldActiveFrame = m_activeFrame;
 }
