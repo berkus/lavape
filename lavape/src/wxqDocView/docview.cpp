@@ -1867,9 +1867,9 @@ void wxDocManager::SetActiveFrame(wxChildFrame *af, bool doIt, bool deactivate) 
     return;
 
   m_activeFrame->m_tabWidget->setCurrentWidget(m_activeFrame);
-  //m_activeFrame->m_tabWidget->setTabTextColor(m_activeFrame->m_tabWidget->indexOf(m_activeFrame),Qt::red);
-  //if (m_oldActiveFrame && !m_oldActiveFrame->deleting)
-  //  m_oldActiveFrame->m_tabWidget->setTabTextColor(m_oldActiveFrame->m_tabWidget->indexOf(m_oldActiveFrame),Qt::black);
+  m_activeFrame->m_tabWidget->setTabTextColor(m_activeFrame->m_tabWidget->indexOf(m_activeFrame),Qt::red);
+  if (m_oldActiveFrame && !m_oldActiveFrame->deleting)
+    m_oldActiveFrame->m_tabWidget->setTabTextColor(m_oldActiveFrame->m_tabWidget->indexOf(m_oldActiveFrame),Qt::black);
   wxTheApp->m_appWindow->SetCurrentTabWindow(m_activeFrame->m_tabWidget);
   m_oldActiveFrame = m_activeFrame;
 }

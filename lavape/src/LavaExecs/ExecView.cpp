@@ -782,7 +782,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
         }
       }
       else {
-        delete GetParentFrame();
+        GetParentFrame()->closeMyPage();
         return;
       }
       break;
@@ -796,12 +796,12 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
                          || hint->com == CPECommand_FromOtherDoc))
                 )
                 || undoRedo == 3)) {
-          delete GetParentFrame();
+          GetParentFrame()->closeMyPage();
           return;
         }
         else {
           if (hint->CommandData8 && (myDECL->ParentDECL->ParentDECL->DeclType == Interface))
-            delete GetParentFrame();
+            GetParentFrame()->closeMyPage();
           else
             deletePending = true;
           return;
@@ -854,12 +854,12 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
         }
         else
           if(!myNewDECL) {
-            delete GetParentFrame();
+            GetParentFrame()->closeMyPage();
             return;
           }
       }
       else {
-        delete GetParentFrame();
+        GetParentFrame()->closeMyPage();
         return;
       }
     }

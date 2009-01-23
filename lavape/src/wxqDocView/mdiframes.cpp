@@ -376,6 +376,13 @@ void wxChildFrame::correctMyTabWidget(wxTabWidget *tw) {
   m_tabWidget = tw;
 }
 
+void wxChildFrame::closeMyPage() {
+  QSplitter *splitter;
+
+  splitter=(QSplitter*)m_tabWidget->parentWidget();
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(m_tabWidget, m_tabWidget->indexOf(this), ((wxTabBar*)m_tabWidget->m_tabBar)->closePageAction)));
+}
+
 wxChildFrame::~wxChildFrame()
 {
   QString title;

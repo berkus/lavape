@@ -145,7 +145,10 @@ class WXDLLEXPORT wxTabWidget : public QTabWidget {
 public:
   ~wxTabWidget();
 
-  wxTabWidget(QWidget *parent) : QTabWidget(parent) {setTabBar(new wxTabBar(this));}
+  wxTabWidget(QWidget *parent) : QTabWidget(parent) {
+    m_tabBar = new wxTabBar(this);
+    setTabBar(m_tabBar);
+  }
 
   void postTabChange(int index, QAction* triggeredAction);
   void removePage(wxChildFrame *page);
@@ -153,6 +156,7 @@ public:
     tabBar()->setTabTextColor(index,color);
   }
 
+  wxTabBar *m_tabBar;
 
 public slots:
   void closePage();
@@ -172,6 +176,7 @@ public:
 
   bool deleting;
   void correctMyTabWidget(wxTabWidget *tw);
+  void closeMyPage();
   virtual void UpdateUI() {}
   QWidget *GetClientWindow() const { return m_clientWindow; }
   virtual void SetTitle(QString &title);
