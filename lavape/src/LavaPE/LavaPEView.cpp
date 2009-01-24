@@ -3586,7 +3586,8 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
           DString *pHintName=0;
           if ((hint->com == CPECommand_Delete)
               && myDECL->isInSubTree((LavaDECL*)hint->CommandData1) ) {
-            delete GetParentFrame();
+            //delete GetParentFrame();
+            GetParentFrame()->closeMyPage();
             return;
           }
           if (( hint->com == CPECommand_Comment)  && hint->CommandData3)
