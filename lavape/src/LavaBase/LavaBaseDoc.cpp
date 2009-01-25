@@ -146,40 +146,6 @@ CLavaBaseDoc::~CLavaBaseDoc()
   mySynDef = 0;
 }
 
-/*
-/////////////////////////////////////////////////////////////////////////////
-// CLavaBaseDoc Server-Implementierung
-
-COleServerItem* CLavaBaseDoc::OnGetEmbeddedItem()
-{
-  // OnGetEmbeddedItem wird automatisch aufgerufen, um COleServerItem zu erhalten,
-  //  das mit dem Dokument verknüpft ist. Die Funktion wird nur bei Bedarf aufgerufen.
-  CLavaBaseSrvItem* pItem = new CLavaBaseSrvItem(this);
-  ASSERT_VALID(pItem);
-  return pItem;
-  return 0;
-}
-
-/////////////////////////////////////////////////////////////////////////////
-// CLavaBaseDoc Implementierung des ActiveX-Dokument-Servers
-
-CDocObjectServer *CLavaBaseDoc::GetDocObjectServer(LPOLEDOCUMENTSITE pDocSite)
-{
-  return 0; //new CDocObjectServer(this, pDocSite);
-}
-*/
-
-
-/////////////////////////////////////////////////////////////////////////////
-// CLavaBaseDoc commands
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////
-// CLavaBaseDoc serialization
-
-
 void CLavaBaseDoc::CalcNames(const QString& FileName)
 {
   int il;

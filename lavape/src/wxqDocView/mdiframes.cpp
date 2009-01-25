@@ -116,8 +116,8 @@ void wxMainFrame::windowActivated(int index)
   if (index < 0)
     return;
   theActiveFrame = m_currentTabWidget->widget(index);
-  if (theActiveFrame && theActiveFrame->inherits("wxChildFrame"))
-    QApplication::postEvent((wxChildFrame*)theActiveFrame, new CustomEvent(UEV_Activate));
+  //if (theActiveFrame && theActiveFrame->inherits("wxChildFrame"))
+  //  QApplication::postEvent((wxChildFrame*)theActiveFrame, new CustomEvent(UEV_Activate));
     //((wxChildFrame*)theActiveFrame)->Activate();
 }
 
