@@ -196,6 +196,7 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   int splitterIndex = m_ClientArea->indexOf(tw);
   m_ClientArea->insertWidget(splitterIndex+1,newTW);
   page->Activate(true);
+  newTW->setTabTextColor(newTW->indexOf(page),Qt::red);
   connect(newTW ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   equalize();
 }
@@ -212,6 +213,7 @@ void wxMainFrame::MoveToNextTabbedWindow(wxTabWidget *tw,int index){
   nextTW->setCurrentIndex(0);
   SetCurrentTabWindow(nextTW);
   page->Activate(true);
+  nextTW->setTabTextColor(nextTW->indexOf(page),Qt::red);
   if (tw->count() == 0 && m_ClientArea->count() > 1) {
     delete tw;
     equalize();
@@ -231,6 +233,7 @@ void wxMainFrame::MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index){
   precTW->setCurrentIndex(0);
   SetCurrentTabWindow(precTW);
   page->Activate(true);
+  precTW->setTabTextColor(precTW->indexOf(page),Qt::red);
   if (tw->count() == 0 && m_ClientArea->count() > 1) {
     delete tw;
     equalize();
@@ -254,6 +257,7 @@ void wxMainFrame::DropPage(wxTabWidget* sTw, int sIndex, wxTabWidget* dTw, int d
   }
   SetCurrentTabWindow(dTw);
   page->Activate(true);
+  dTw->setTabTextColor(dTw->indexOf(page),Qt::red);
   //wxTheApp->updateButtonsMenus();
 }
 
