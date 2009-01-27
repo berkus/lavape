@@ -878,7 +878,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     if (elDef->TypeFlags.Contains(stateObject))
       lab = DString("~") + elDef->LocalName;
     else if (elDef->TypeFlags.Contains(isAnyCategory))
-      lab += DString("*") + elDef->LocalName;
+      lab = DString("*") + elDef->LocalName;
     else
       lab = elDef->LocalName;
     lab += DString(" : ");

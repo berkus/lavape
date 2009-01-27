@@ -220,7 +220,7 @@ void wxApp::customEvent(QEvent *e)
 
 void wxApp::onUpdateUI()
 {
-  QWidget *focView;
+  wxView *focView;
   char **argv=qApp->argv();
 
   if (appExit /*deletingMainFrame*/)
@@ -231,7 +231,7 @@ void wxApp::onUpdateUI()
     m_appWindow->UpdateUI();
 
   focView = m_docManager->GetActiveView();
-  if (focView) {
+  if (focView && !focView->m_viewFrame->deleting) {
     ((wxView*)focView)->GetParentFrame()->UpdateUI();
     ((wxView*)focView)->UpdateUI();
   }
