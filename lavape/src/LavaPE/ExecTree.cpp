@@ -320,18 +320,18 @@ void CExecTree::ExecVT(LavaDECL *elDef, DString* lab)
     if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract)
         && (elDef->ParentDECL->DeclType != Package))
       new CLavaError(&elDef->DECLError1, &ERR_NoAbstract);
-    if (elDef->TypeFlags.Contains(stateObject))
+    if (elDef->TypeFlags.Contains(isStateObjectY))
       *lab += DString("~");
-    else if (elDef->TypeFlags.Contains(isAnyCategory))
+    else if (elDef->TypeFlags.Contains(isAnyCatY))
       *lab += DString("*");
   }
   else {
     *lab += DString(" = ");
     if (elDef->TypeFlags.Contains(substitutable))
       *lab += DString("{");
-    if (elDef->TypeFlags.Contains(stateObject))
+    if (elDef->TypeFlags.Contains(isStateObjectY))
       *lab += DString("~");
-    else if (elDef->TypeFlags.Contains(isAnyCategory))
+    else if (elDef->TypeFlags.Contains(isAnyCatY))
       *lab += DString("*");
     if (elDef->DeclDescType == NamedType) {
       decl = Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
@@ -875,18 +875,18 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
         new CLavaError(&elDef->DECLError1, &ERR_OverriddenDiffs);
       }
     }
-    if (elDef->TypeFlags.Contains(stateObject))
+    if (elDef->TypeFlags.Contains(isStateObjectY))
       lab = DString("~") + elDef->LocalName;
-    else if (elDef->TypeFlags.Contains(isAnyCategory))
+    else if (elDef->TypeFlags.Contains(isAnyCatY))
       lab = DString("*") + elDef->LocalName;
     else
       lab = elDef->LocalName;
     lab += DString(" : ");
     if (elDef->TypeFlags.Contains(substitutable))
       lab += DString("{");
-    //if (elDef->TypeFlags.Contains(stateObject))
+    //if (elDef->TypeFlags.Contains(isStateObjectY))
     //  lab += DString("~");
-    //else if (elDef->TypeFlags.Contains(isAnyCategory))
+    //else if (elDef->TypeFlags.Contains(isAnyCatY))
     //  lab += DString("*");
     lab += Doc->GetTypeLabel(elDef, true);
     if (elDef->TypeFlags.Contains(substitutable))

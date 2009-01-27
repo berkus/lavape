@@ -179,9 +179,9 @@ VarNameV::VarNameV (const char *vn) {
 
 void VarNameV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  if (flags.Contains(isVariable))
+  if (flags.Contains(isStateObjectX))
     t.Insert(Tilde_T);
-  else if (flags.Contains(isUnknownCat))
+  else if (flags.Contains(isAnyCatX))
     t.Insert(Mult_T);
   if (flags.Contains(isOptionalExpr))
     t.Insert(primaryToken,true,true);
@@ -202,7 +202,7 @@ void FormParmV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) 
   DRAW(parmType.ptr);
   primaryTokenNode = startToken;
   t.Blank();
-  if (flags.Contains(isVariable))
+  if (flags.Contains(isStateObjectX))
     t.Insert(Tilde_T);
   DRAW(formParm.ptr);
 
@@ -415,15 +415,15 @@ void ReferenceV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored)
 
   if (!refName.l)
     UpdateReference(t.ckd);
-  if (flags.Contains(isVariable))
+  if (flags.Contains(isStateObjectX))
     t.Insert(Tilde_T);
   if (flags.Contains(isSubstitutable))
     t.Insert(Lbrace_T);
-  //if (flags.Contains(isVariable))
+  //if (flags.Contains(isStateObjectX))
   //  t.Insert(Tilde_T);
   //else if (flags.Contains(isSameAsSelf))
   //  t.Insert(Equal_T);
-  //else if (flags.Contains(isUnknownCat))
+  //else if (flags.Contains(isAnyCatX))
   //  t.Insert(Mult_T);
   t.Insert(primaryToken,true);
   if (flags.Contains(isSubstitutable))
@@ -471,7 +471,7 @@ EnumConstV::EnumConstV (TToken,TID &tid,QString &name) {
 
 void EnumConstV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  if (flags.Contains(isVariable))
+  if (flags.Contains(isStateObjectX))
     t.Insert(Tilde_T);
   t.Insert(primaryToken,true);
   EXIT
@@ -486,7 +486,7 @@ ConstantV::ConstantV (const char *c) {
 
 void ConstantV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  if (flags.Contains(isVariable))
+  if (flags.Contains(isStateObjectX))
     t.Insert(Tilde_T);
   t.Insert(primaryToken,true);
   EXIT
@@ -501,7 +501,7 @@ BoolConstV::BoolConstV (bool val) {
 
 void BoolConstV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  if (flags.Contains(isVariable))
+  if (flags.Contains(isStateObjectX))
     t.Insert(Tilde_T);
   if (boolValue)
     t.Insert(true_T,true);
@@ -964,7 +964,7 @@ AttachObjectV::AttachObjectV (Reference *ref) {
 
 void AttachObjectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  if (flags.Contains(isVariable))
+  if (flags.Contains(isStateObjectX))
     t.Insert(Tilde_T);
   t.Insert(primaryToken,true);
   t.Blank();
@@ -1186,7 +1186,7 @@ void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   if (isFuncHandle)
     t.Insert(Lparenth_T);
 
-  if (flags.Contains(isVariable) && !showTemp)
+  if (flags.Contains(isStateObjectX) && !showTemp)
     t.Insert(Tilde_T);
 
   if (initializerCall.ptr) {
@@ -1197,7 +1197,7 @@ void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
       iniDecl = t.document->IDTable.GetDECL(((Reference*)((FuncStatement*)initializerCall.ptr)->function.ptr)->refID,t.ckd.inINCL);
     if (showTemp) {
       t.Blank();
-      if (flags.Contains(isVariable))
+      if (flags.Contains(isStateObjectX))
         t.Insert(Tilde_T);
       DRAW(varName.ptr);
     }
@@ -1278,7 +1278,7 @@ void CloneExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ig
   if (!butStatement.ptr
   && parentObject->IsOperation())
     t.Insert(Lparenth_T);
-  //if (flags.Contains(isVariable))
+  //if (flags.Contains(isStateObjectX))
   //  t.Insert(Tilde_T);
   //else if (flags.Contains(isSameAsSelf))
   //  t.Insert(Equal_T);

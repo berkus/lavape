@@ -301,12 +301,12 @@ enum ExecFlags {
   isSelfVar,          //14
   isMemberVar,        //15
   isDeclareVar,       //16
-  isVariable,         //17
+  isStateObjectX,     //17
   inExecHdr,          //18
   inputArrow,         //19
-  FREEEXECFLAG1,//isSameAsSelf,       //20
+  FREEEXECFLAG1,      //isSameAsSelf,       //20
   isSubstitutable,    //21
-  isUnknownCat,       //22
+  isAnyCatX,          //22
   isInForeach,        //23
   free0,              //24
   free1,              //25
@@ -418,7 +418,7 @@ public:
   void SetError(CheckData &ckd,QString *error,char *textParam=0);
   void SetRTError(CheckData &ckd,QString *error,LavaVariablePtr stackFrame,const char *textParam=0);
   QString LocationOfConstruct ();
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) { decl = 0; cat = anyCategory; }
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) { decl = 0; cat = anyCat; }
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
   virtual LavaObjectPtr Evaluate(CheckData  &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
   virtual bool Recursion (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel, CHE *cheQuant, CHE *cheVar, LavaObjectPtr rSet=0) { return false;};

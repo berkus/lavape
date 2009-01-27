@@ -39,10 +39,10 @@ enum ContextFlag {
 
 
 enum Category {
-  anyCategory,
-  stateObj,
-  valueObj,
-  unknownCategory
+  anyCat,
+  stateObjectCat,
+  valueObjectCat,
+  unknownCat
 };
 
 class CSectionDesc;
@@ -354,7 +354,7 @@ struct LAVABASE_DLL CheckData {
     errorCode = 0;
     iArg = 0;
     inINCL = 0;
-    stateObj = false;
+    stateObjectCat = false;
     concernExecs = false;
     criticalScope = false;
     handleOpd = false;
@@ -391,7 +391,7 @@ struct LAVABASE_DLL CheckData {
 	  iArg;
   QString *errorCode;
   Category callObjCat;
-  bool stateObj, iniCheck, concernExecs, criticalScope, handleOpd,
+  bool stateObjectCat, iniCheck, concernExecs, criticalScope, handleOpd,
        inQuant, inInitialUpdate, inIniClause, immediateReturn, exceptionThrown,
 	     checkClosedParmLevel;
   SET flags;
@@ -613,11 +613,11 @@ enum ObjectStateFlag {
    objectLocked      //
 };
 
-extern LAVABASE_DLL LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* typeDECL, bool stateObj, LavaObjectPtr urlObj=0);
-extern LAVABASE_DLL LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObj);
-extern LAVABASE_DLL LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObj);
+extern LAVABASE_DLL LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* typeDECL, bool stateObjectCat, LavaObjectPtr urlObj=0);
+extern LAVABASE_DLL LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObjectCat);
+extern LAVABASE_DLL LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObjectCat);
 extern LAVABASE_DLL bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object);
-extern LAVABASE_DLL CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, LavaVariablePtr resultVarPtr, bool stateObj = false, LavaDECL* resultClassDECL = 0, CCopied* copied = 0);
+extern LAVABASE_DLL CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, LavaVariablePtr resultVarPtr, bool stateObjectCat = false, LavaDECL* resultClassDECL = 0, CCopied* copied = 0);
 extern LAVABASE_DLL bool EqualObjects(CheckData &ckd, LavaObjectPtr leftVarPtr, LavaObjectPtr rightVarPtr, int specialEQ);
 extern LAVABASE_DLL bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& objModf);
 extern LAVABASE_DLL bool OneLevelCopy(CheckData& ckd, LavaObjectPtr& object);

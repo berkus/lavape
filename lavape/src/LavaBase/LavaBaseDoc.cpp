@@ -619,13 +619,12 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
   LavaDECL *declVal, *declMapped, *startDecl=0; 
   TID pID;
   bool inContext = true;
-  Category prelimCat;
 
   if (!decl)
     return 0;
   declVal = decl;
   declMapped = decl;
-  cat = unknownCategory;
+  cat = unknownCat;
   if (decl->DeclType != VirtualType) {
     NextContext(decl, context);
     return decl;
@@ -633,12 +632,12 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
   else {
     if (decl->TypeFlags.Contains(definesObjCat)
     && decl->TypeFlags.Contains(definiteCat))
-      if (decl->TypeFlags.Contains(stateObject))
-        cat = stateObj;
-      else if (decl->TypeFlags.Contains(isAnyCategory))
-        cat = anyCategory;
+      if (decl->TypeFlags.Contains(isStateObjectY))
+        cat = stateObjectCat;
+      else if (decl->TypeFlags.Contains(isAnyCatY))
+        cat = anyCat;
       else
-        cat = valueObj;
+        cat = valueObjectCat;
   }
   while  (declVal   &&  (declVal->DeclType == VirtualType)) {
     if (inContext) {
@@ -655,15 +654,15 @@ LavaDECL* CLavaBaseDoc::GetFinalMVType(LavaDECL *decl, CContext &context, Catego
     else
       declMapped = declVal;
     if (declMapped->RefID.nID >= 0) {
-      if ((cat == unknownCategory)
+      if ((cat == unknownCat)
            && declMapped->TypeFlags.Contains(definesObjCat)
            && declMapped->TypeFlags.Contains(definiteCat))
-        if (declMapped->TypeFlags.Contains(stateObject))
-          cat = stateObj;
-        else if (declMapped->TypeFlags.Contains(isAnyCategory))
-          cat = anyCategory;
+        if (declMapped->TypeFlags.Contains(isStateObjectY))
+          cat = stateObjectCat;
+        else if (declMapped->TypeFlags.Contains(isAnyCatY))
+          cat = anyCat;
         else
-          cat = valueObj;
+          cat = valueObjectCat;
       declVal = IDTable.GetDECL(declMapped->RefID, declMapped->inINCL);
       if (!declVal && (declVal != startDecl))
         return 0;
@@ -1120,7 +1119,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
       if (decl) {
         basedefsCat = basedefsCat || decl->TypeFlags.Contains(definesObjCat);
         basetrueCat = basetrueCat || decl->TypeFlags.Contains(definiteCat);
-        isStateOb = isStateOb || decl->TypeFlags.Contains(stateObject);
+        isStateOb = isStateOb || decl->TypeFlags.Contains(isStateObjectY);
         //isSameAsSelf = isSameAsSelf || decl->TypeFlags.Contains(sameAsSelf);
         baseabstract = baseabstract || decl->TypeFlags.Contains(isAbstract);
         baseSubst = baseSubst || decl->TypeFlags.Contains(substitutable);
@@ -1133,7 +1132,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
     if (basetrueCat) {
       inheritedFlags.INCL(definiteCat);
       if (isStateOb)
-        inheritedFlags.INCL(stateObject);
+        inheritedFlags.INCL(isStateObjectY);
       //if (isSameAsSelf)
       //  inheritedFlags.INCL(sameAsSelf);
     }
@@ -1172,7 +1171,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
           if (!baseabstract)
             memDECL->TypeFlags.EXCL(substitutable);
         if (!basetrueCat) {
-          isStateOb = memDECL->TypeFlags.Contains(stateObject);
+          isStateOb = memDECL->TypeFlags.Contains(isStateObjectY);
           //isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
         }
       }
@@ -1184,15 +1183,15 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
     inheritedFlags.INCL(definesObjCat);
     reftrueCat = !refDECL->TypeFlags.Contains(isAbstract);
     if (reftrueCat) {
-      catErr = basetrueCat && (isStateOb != refDECL->TypeFlags.Contains(stateObject));
+      catErr = basetrueCat && (isStateOb != refDECL->TypeFlags.Contains(isStateObjectY));
       if (!catErr) 
-        isStateOb = refDECL->TypeFlags.Contains(stateObject);
+        isStateOb = refDECL->TypeFlags.Contains(isStateObjectY);
       inheritedFlags.INCL(definiteCat);
     }
   }
   else {
     if (!basetrueCat && (memDECL->DeclType != VirtualType)) {
-      isStateOb = memDECL->TypeFlags.Contains(stateObject);
+      isStateOb = memDECL->TypeFlags.Contains(isStateObjectY);
       //isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
     }
   }
@@ -1216,7 +1215,7 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
       if (memDECL->TypeFlags.Contains(definesObjCat)
         && !memDECL->TypeFlags.Contains(isAbstract)) {
         memDECL->TypeFlags.INCL(definiteCat);
-        isStateOb = memDECL->TypeFlags.Contains(stateObject);
+        isStateOb = memDECL->TypeFlags.Contains(isStateObjectY);
         //isSameAsSelf = memDECL->TypeFlags.Contains(sameAsSelf);
       }
       else
@@ -1230,9 +1229,9 @@ SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)
          memDECL->TypeFlags.INCL(definiteCat);
   if (memDECL->TypeFlags.Contains(definiteCat)) {
     if (isStateOb)  
-      memDECL->TypeFlags.INCL(stateObject);
+      memDECL->TypeFlags.INCL(isStateObjectY);
     else 
-      memDECL->TypeFlags.EXCL(stateObject);
+      memDECL->TypeFlags.EXCL(isStateObjectY);
     //if (isSameAsSelf) 
     //  memDECL->TypeFlags.INCL(sameAsSelf);
     //else 

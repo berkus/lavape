@@ -2640,11 +2640,11 @@ LavaDECL* CLavaPEDoc::MakeOneSetGet (TypeFlag setgetflag, LavaDECL* implDECL,
 	if (setgetflag == isPropGet)
 	{
 		setGet->LocalName = DString ("Get_") + propDecl->LocalName;
-		setGet->TypeFlags.INCL(isAnyCategory);
+		setGet->TypeFlags.INCL(isAnyCatY);
 	}
   else {
 		setGet->LocalName = DString ("Set_") + propDecl->LocalName;
-		setGet->TypeFlags.INCL(stateObject);
+		setGet->TypeFlags.INCL(isStateObjectY);
   }
 	cheIOEl = (CHE*) setGet->NestedDecls.first;
 	IOEl = (LavaDECL*) cheIOEl->data;
@@ -2658,10 +2658,10 @@ LavaDECL* CLavaPEDoc::MakeOneSetGet (TypeFlag setgetflag, LavaDECL* implDECL,
 		IOEl->TypeFlags.INCL (definesObjCat);
 	else
 		IOEl->TypeFlags.EXCL (definesObjCat);
-	if (propDecl->TypeFlags.Contains (stateObject))
-		IOEl->TypeFlags.INCL (stateObject);
+	if (propDecl->TypeFlags.Contains (isStateObjectY))
+		IOEl->TypeFlags.INCL (isStateObjectY);
 	else
-		IOEl->TypeFlags.EXCL (stateObject);
+		IOEl->TypeFlags.EXCL (isStateObjectY);
 
 	setGet->WorkFlags.INCL (checkmark);
 	return returnDECL;

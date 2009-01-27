@@ -1766,13 +1766,13 @@ exp: // Const_T
     && text->currentSynObj->parentObject->primaryToken == EvalStm_T) {
       TID tidBool=TID(text->ckd.document->IDTable.BasicTypesID[B_Bool],myDoc->isStd?0:1);
       decl = myDoc->IDTable.GetDECL(tidBool);
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,nullCtx,valueObj,true);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,nullCtx,valueObjectCat,true);
     }
     else if (text->currentSelection->data.token == Exp_T
     && text->currentSynObj->parentObject->primaryToken == item_T) {
       TID tidInteger=TID(text->ckd.document->IDTable.BasicTypesID[Integer],myDoc->isStd?0:1);
       decl = myDoc->IDTable.GetDECL(tidInteger);
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,nullCtx,valueObj,true);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,nullCtx,valueObjectCat,true);
     }
     else if (text->currentSelection->data.token == Exp_T
     && text->currentSynObj->parentObject->primaryToken == elsif_T) {
@@ -1796,7 +1796,7 @@ exp: // Const_T
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objCombo);
     else if (text->currentSelection->data.token == Exp_T
     && text->currentSynObj->parentObject->primaryToken == Handle_T) {
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,0,nullCtx,valueObj,true);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,0,nullCtx,valueObjectCat,true);
     }
     else if (text->currentSynObj->parentObject->primaryToken == assign_T) {
       assigStm = (Assignment*)text->currentSynObj->parentObject;
@@ -4988,8 +4988,8 @@ crtbl:
             varNamePtr->varName += qPrintable(QString::number(tempNo));
                                         }
           newExp->objType.ptr = new ReferenceV(CrtblPH_T,tid,str.toAscii());
-          if (targetCat == stateObj)
-            ((Reference*)newExp->objType.ptr)->flags.INCL(isVariable);
+          if (targetCat == stateObjectCat)
+            ((Reference*)newExp->objType.ptr)->flags.INCL(isStateObjectX);
           tdod = new TDODV(true);
           ((VarName*)newExp->varName.ptr)->MakeTable((address)&myDoc->IDTable,0,newExp,onNewID,(address)&newExp->varName.ptr,0);
           ((VarName*)newExp->varName.ptr)->varID.nINCL = -1;
@@ -5021,8 +5021,8 @@ crtbl:
   default: // TypeRef
     ref = new ReferenceV(text->currentSynObj->type,refID,refName.toAscii());
     decl = myDoc->IDTable.GetDECL(refID);
-    if (((Expression*)text->currentSynObj->parentObject)->targetCat == stateObj)
-      ref->flags.INCL(isVariable);
+    if (((Expression*)text->currentSynObj->parentObject)->targetCat == stateObjectCat)
+      ref->flags.INCL(isStateObjectX);
     if (text->currentSynObj->parentObject->primaryToken != select_T) {
       PutInsHint(ref);
       return;
@@ -5466,20 +5466,20 @@ void CExecView::OnToggleCategory()
   if (!EditOK()) return;
 
   if (text->currentSynObj->primaryToken == VarName_T) {
-    if (text->currentSynObj->flags.Contains(isVariable)) {
-      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
-      PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
+    if (text->currentSynObj->flags.Contains(isStateObjectX)) {
+      PutDelFlagHint(SET(isStateObjectX,-1),SET(firstHint,-1));
+      PutInsFlagHint(SET(isAnyCatX,-1),SET(lastHint,-1));
     }
-    else if (text->currentSynObj->flags.Contains(isUnknownCat))
-      PutDelFlagHint(SET(isUnknownCat,-1),SET(firstHint,lastHint,-1));
+    else if (text->currentSynObj->flags.Contains(isAnyCatX))
+      PutDelFlagHint(SET(isAnyCatX,-1),SET(firstHint,lastHint,-1));
     else
-      PutInsFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
+      PutInsFlagHint(SET(isStateObjectX,-1),SET(firstHint,lastHint,-1));
   }
   else {
-    if (text->currentSynObj->flags.Contains(isVariable))
-      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
+    if (text->currentSynObj->flags.Contains(isStateObjectX))
+      PutDelFlagHint(SET(isStateObjectX,-1),SET(firstHint,lastHint,-1));
     else
-      PutInsFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
+      PutInsFlagHint(SET(isStateObjectX,-1),SET(firstHint,lastHint,-1));
   }
 }
 
@@ -6309,7 +6309,7 @@ void CExecView::OnUpdateToggleCategory(QAction* action)
   }
 
   action->setEnabled(ToggleCatEnabled());
-  //action->setChecked(text->currentSynObj->flags.Contains(isVariable));
+  //action->setChecked(text->currentSynObj->flags.Contains(isStateObjectX));
 }
 
 void CExecView::OnUpdateConflict(QAction* action)

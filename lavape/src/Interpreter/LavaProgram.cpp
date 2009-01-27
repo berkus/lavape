@@ -631,8 +631,8 @@ bool CLavaProgram::CheckFuncImpl(CheckData& ckd, LavaDECL* funcDECL, LavaDECL* c
 
   funcDECL->TypeFlags.EXCL(isAbstract);
   funcDECL->TypeFlags.EXCL(isNative);
-  if (classFuncDECL->TypeFlags.Contains(stateObject) != funcDECL->TypeFlags.Contains(stateObject)
-  || classFuncDECL->TypeFlags.Contains(isAnyCategory) != funcDECL->TypeFlags.Contains(isAnyCategory)) {
+  if (classFuncDECL->TypeFlags.Contains(isStateObjectY) != funcDECL->TypeFlags.Contains(isStateObjectY)
+  || classFuncDECL->TypeFlags.Contains(isAnyCatY) != funcDECL->TypeFlags.Contains(isAnyCatY)) {
     LavaError(ckd, true, funcDECL, &ERR_funcImpl);
     return false;
   }
@@ -807,10 +807,10 @@ bool CLavaProgram::CheckFuncInOut(CheckData& ckd, LavaDECL* funcDECL)
       LavaError(ckd, true, funcDECL, &ERR_OverriddenStatic);
       return false;
     }
-    if (OverFunc->TypeFlags.Contains(stateObject))
-      funcDECL->TypeFlags.INCL(stateObject);
-    if (OverFunc->TypeFlags.Contains(isAnyCategory))
-      funcDECL->TypeFlags.INCL(isAnyCategory);
+    if (OverFunc->TypeFlags.Contains(isStateObjectY))
+      funcDECL->TypeFlags.INCL(isStateObjectY);
+    if (OverFunc->TypeFlags.Contains(isAnyCatY))
+      funcDECL->TypeFlags.INCL(isAnyCatY);
     if (!OverFunc->TypeFlags.Contains(isProtected))
       funcDECL->TypeFlags.EXCL(isProtected);
     cheOverIO = (CHE*)OverFunc->NestedDecls.first;
@@ -1448,10 +1448,10 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
             return false;
           }
           if (baseDECL && (ElDECL->DeclType == Attr)) {
-            if (!baseDECL->TypeFlags.Contains(stateObject))
-              ElDECL->TypeFlags.EXCL(stateObject);
-            if (!baseDECL->TypeFlags.Contains(isAnyCategory))
-              ElDECL->TypeFlags.EXCL(isAnyCategory);
+            if (!baseDECL->TypeFlags.Contains(isStateObjectY))
+              ElDECL->TypeFlags.EXCL(isStateObjectY);
+            if (!baseDECL->TypeFlags.Contains(isAnyCatY))
+              ElDECL->TypeFlags.EXCL(isAnyCatY);
             if (!baseDECL->TypeFlags.Contains(isProtected))
               ElDECL->TypeFlags.EXCL(isProtected);
           }

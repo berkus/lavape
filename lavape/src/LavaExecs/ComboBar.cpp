@@ -1192,7 +1192,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
  //if decl != 0: decl is final virtual type
  //if decl = 0 local variables only for handle operator (#)
 {
-  Category cat = anyCategory, catComp = anyCategory;
+  Category cat = anyCat, catComp = anyCat;
   CContext compContext = context, bContext;
   LavaDECL *fmvType=0, *memDECL, *enumDecl;
   SynFlags ctxFlags;
@@ -1221,16 +1221,16 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
     if (data && data->IDs.last) {
       lastDOD = (TDOD*)((CHE*)data->IDs.last)->data;
       var = myDoc->IDTable.GetVar(lastDOD->ID, idtype);
-      catComp = anyCategory;
+      catComp = anyCat;
       if (var) {
         if (idtype == globalID) {
           memDECL = *(LavaDECL**)var;
           bContext = lastDOD->context;
           if (memDECL->TypeFlags.Contains(definiteCat))
-            if (memDECL->TypeFlags.Contains(stateObject))
-              catComp = stateObj;
+            if (memDECL->TypeFlags.Contains(isStateObjectY))
+              catComp = stateObjectCat;
             else
-              catComp = valueObj;
+              catComp = valueObjectCat;
           myDoc->MemberTypeContext(memDECL, bContext,0);
           fmvType = myDoc->GetFinalMVType(memDECL->RefID, memDECL->inINCL, bContext, cat, 0);
           if (memDECL->TypeFlags.Contains(substitutable))
@@ -1246,9 +1246,9 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
           else
             forHandle = true;
         }
-        if (catComp == anyCategory)
+        if (catComp == anyCat)
           catComp = cat;
-        if ((forHandle || fmvType) && (forCopy || catComp == category || catComp == anyCategory || category == anyCategory)) {
+        if ((forHandle || fmvType) && (forCopy || catComp == category || catComp == anyCat || category == anyCat)) {
           if (forHandle || !forHandle &&
               (   (( forInput || forCopy)
                               && compatibleTypes(ckd, fmvType, bContext, decl, compContext))

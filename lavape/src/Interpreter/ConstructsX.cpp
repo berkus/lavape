@@ -1219,7 +1219,7 @@ bool SelfVarX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
   if (LBaseData->m_checkInvariants
   && isFuncBody
   && !funcDECL->TypeFlags.Contains(isInitializer)
-  && funcDECL->TypeFlags.Contains(stateObject)
+  && funcDECL->TypeFlags.Contains(isStateObjectY)
   && !((unsigned)stackFrame[2] & 1)
   && idp
   && idp->hasOrInheritsInvariants)
@@ -1611,7 +1611,7 @@ ret:
 LavaObjectPtr EvalExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   LavaObjectPtr trueObj;
 
-  trueObj = AllocateObject(ckd,ckd.document->DECLTab[B_Bool],flags.Contains(isVariable));
+  trueObj = AllocateObject(ckd,ckd.document->DECLTab[B_Bool],flags.Contains(isStateObjectX));
   if (!trueObj) {
     if (!ckd.exceptionThrown)
       SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
@@ -1632,7 +1632,7 @@ bool EvalStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
 
   STOP_AT_STM(ckd, stackFrame, 0)
 
-  trueObj = AllocateObject(ckd,ckd.document->DECLTab[B_Bool],flags.Contains(isVariable));
+  trueObj = AllocateObject(ckd,ckd.document->DECLTab[B_Bool],flags.Contains(isStateObjectX));
   if (!trueObj) {
     if (!ckd.exceptionThrown)
       SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
@@ -2037,7 +2037,7 @@ bool Receiver::callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned
   STOP_AT_FUNC(ckd,stackFrame,((Reference*)signalCall->function.ptr))
 
   if (fDesc->isNative) {
-    ckd.stateObj = stateObj;
+    ckd.stateObjectCat = stateObjectCat;
     NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(Reference*)signalCall->function.ptr)
   }
   else
@@ -2357,7 +2357,7 @@ bool DeclareX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
       for (chpVar = (CHE*)((Quantifier*)chpQuant->data)->quantVars.first;
           chpVar;
           chpVar = (CHE*)chpVar->successor) {
-            object = AllocateObject(ckd,((Quantifier*)chpQuant->data)->typeDecl,((Reference*)((Quantifier*)chpQuant->data)->elemType.ptr)->flags.Contains(isVariable));
+            object = AllocateObject(ckd,((Quantifier*)chpQuant->data)->typeDecl,((Reference*)((Quantifier*)chpQuant->data)->elemType.ptr)->flags.Contains(isStateObjectX));
         if (!object) {
           if (!ckd.exceptionThrown)
             SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
@@ -3005,12 +3005,12 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
 {
   int i, k=-1;
   DString bitset;
-  bool isVar = flags.Contains(isVariable);
+  bool isVar = flags.Contains(isStateObjectX);
 
   if (!value || isVar) {
 //    IFC(value)
 //  else {
-    value = AllocateObject(ckd,typeDECL,flags.Contains(isVariable));
+    value = AllocateObject(ckd,typeDECL,flags.Contains(isStateObjectX));
     if (!value) {
       if (!ckd.exceptionThrown)
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
@@ -3087,7 +3087,7 @@ ConstantX::~ConstantX () {
   CheckData ckd;
   LavaVariablePtr newStackFrame;
 
-  if (!value || flags.Contains(isVariable))
+  if (!value || flags.Contains(isStateObjectX))
     return;
 
   switch (constType) {
@@ -3117,10 +3117,10 @@ ConstantX::~ConstantX () {
 
 LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel)
 {
-  bool isVar = flags.Contains(isVariable);
+  bool isVar = flags.Contains(isStateObjectX);
 
-  if (!value || flags.Contains(isVariable)) {
-    value = AllocateObject(ckd,typeDECL,flags.Contains(isVariable));
+  if (!value || flags.Contains(isStateObjectX)) {
+    value = AllocateObject(ckd,typeDECL,flags.Contains(isStateObjectX));
     if (!value) {
       if (!ckd.exceptionThrown)
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
@@ -3140,7 +3140,7 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
 }
 
 BoolConstX::~BoolConstX () {
-  if (!value || flags.Contains(isVariable))
+  if (!value || flags.Contains(isStateObjectX))
     return;
   delete [] (value-LOH);
   value = 0;
@@ -3148,10 +3148,10 @@ BoolConstX::~BoolConstX () {
 
 LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel)
 {
-  bool isVar = flags.Contains(isVariable);
+  bool isVar = flags.Contains(isStateObjectX);
 
-  if (!value || flags.Contains(isVariable)) {
-    value = AllocateObject(ckd,refDecl,flags.Contains(isVariable));
+  if (!value || flags.Contains(isStateObjectX)) {
+    value = AllocateObject(ckd,refDecl,flags.Contains(isStateObjectX));
     if (!value) {
       if (!ckd.exceptionThrown)
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
@@ -3168,7 +3168,7 @@ LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     if (!isVar)
       ((CLavaBaseDoc*)ckd.document)->numAllocObjects--; // don't count this extra ref as an object allocation:
   }
-  if (!flags.Contains(isVariable)) {
+  if (!flags.Contains(isStateObjectX)) {
     IFC(value); // for permanent ref from Constant
     // read-only constants aren't counted as allocated objects
     // and released only when the program syntax (AST) is released
@@ -3180,7 +3180,7 @@ EnumConstX::~EnumConstX () {
   CheckData ckd;
   LavaObjectPtr newStackFrame[SFH+1];
 
-  if (!value || flags.Contains(isVariable))
+  if (!value || flags.Contains(isStateObjectX))
     return;
   newStackFrame[SFH] = enumBaseObj+1; // +1 since the QString value follows after the int value
   StringDecFunc(ckd,newStackFrame);
@@ -3206,7 +3206,7 @@ LavaObjectPtr CloneExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackF
   obj = ((ObjReferenceX*)fromObj.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown)
     return (LavaObjectPtr)-1;
-  ex = CopyObject(ckd,&obj,&copyOfObj,obj?((SynFlags*)(obj+1))->Contains(stateObjFlag):true/*ckd.stateObj*/);
+  ex = CopyObject(ckd,&obj,&copyOfObj,obj?((SynFlags*)(obj+1))->Contains(stateObjFlag):true/*ckd.stateObjectCat*/);
   ckd.selfVar = mySelfVar;
   if (ex) {
     ex->message = ex->message + DebugStop(ckd,this,stackFrame,ex->message);
@@ -3257,9 +3257,9 @@ bool CopyStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
   }
   nullTarget = copyOfObj?false:true;
   if (nullTarget)
-    ex = CopyObject(ckd,&obj,&copyOfObj,((ObjReferenceX*)ontoObj.ptr)->myCategory == stateObj,ontoTypeDecl);
+    ex = CopyObject(ckd,&obj,&copyOfObj,((ObjReferenceX*)ontoObj.ptr)->myCategory == stateObjectCat,ontoTypeDecl);
   else
-    ex = CopyObject(ckd,&obj,&copyOfObj,((ObjReferenceX*)ontoObj.ptr)->myCategory == stateObj);
+    ex = CopyObject(ckd,&obj,&copyOfObj,((ObjReferenceX*)ontoObj.ptr)->myCategory == stateObjectCat);
   ckd.selfVar = mySelfVar;
   ok = !ex && !ckd.exceptionThrown;
   if (ex) {
@@ -3298,7 +3298,7 @@ LavaObjectPtr EnumItemX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
 
   STOP_AT_STM(ckd, stackFrame, 0)
   enumDecl = ((Reference*)enumType.ptr)->refDecl;
-  value = AllocateObject(ckd,enumDecl,flags.Contains(isVariable));
+  value = AllocateObject(ckd,enumDecl,flags.Contains(isStateObjectX));
   if (!value) {
     if (!ckd.exceptionThrown)
       SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
@@ -3379,7 +3379,7 @@ LavaObjectPtr AttachObjectX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
   if (ckd.exceptionThrown)
     return false;
   if ((cosDecl->nOutput == PROT_LAVA) || (cosDecl->nOutput == PROT_NATIVE)) {
-    rtObj = AttachLavaObject(ckd,urlObj,cosDecl,typeDECL,attachCat == stateObj);
+    rtObj = AttachLavaObject(ckd,urlObj,cosDecl,typeDECL,attachCat == stateObjectCat);
     if (!rtObj && !ckd.exceptionThrown) {
       secn = ckd.document->GetSectionNumber(ckd, (*urlObj)->classDECL, ckd.document->DECLTab[VLString]);
       urlStr = (LavaObjectPtr)(urlObj - (*urlObj)->sectionOffset + (*urlObj)[secn].sectionOffset);
@@ -3414,7 +3414,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
     urlObj = ((Expression*)url.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
     if (ckd.exceptionThrown)
       return (LavaObjectPtr)-1;
-    object = CreateObject(ckd, urlObj, cosDecl, typeDECL, attachCat == stateObj);
+    object = CreateObject(ckd, urlObj, cosDecl, typeDECL, attachCat == stateObjectCat);
     ckd.selfVar = mySelfVar;
     if (!object) {
       if (!ckd.exceptionThrown)
@@ -3425,7 +3425,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
     }
   }
   else {
-    object = AllocateObject(ckd,typeDECL,((Reference*)objType.ptr)->flags.Contains(isVariable));
+    object = AllocateObject(ckd,typeDECL,((Reference*)objType.ptr)->flags.Contains(isStateObjectX));
     if (!object) {
       if (!ckd.exceptionThrown)
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
@@ -3705,14 +3705,14 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
 
   if (objRef)
     if (fDesc->isNative) {
-      ckd.stateObj = stateObj;
+      ckd.stateObjectCat = stateObjectCat;
       NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
     }
     else
       FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
   else
     if (funcDecl->TypeFlags.Contains(isNative)) {
-      ckd.stateObj = stateObj;
+      ckd.stateObjectCat = stateObjectCat;
       NATIVE_FCALL(ckd,((TAdapterFunc)funcDecl->RuntimeDECL),newStackFrame,frameSize,ok,(Reference*)function.ptr)
     }
     else
@@ -3893,14 +3893,14 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
 
   if (objRef)
     if (fDesc->isNative) {
-      ckd.stateObj = stateObj;
+      ckd.stateObjectCat = stateObjectCat;
       NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
     }
     else
       FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
   else
     if (funcDecl->TypeFlags.Contains(isNative)) {
-      ckd.stateObj = stateObj;
+      ckd.stateObjectCat = stateObjectCat;
       NATIVE_FCALL(ckd,((TAdapterFunc)funcDecl->RuntimeDECL),newStackFrame,frameSize,ok,(Reference*)function.ptr)
     }
     else
