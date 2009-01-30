@@ -113,7 +113,7 @@ public slots:
     virtual void on_ID_HELP_clicked();
     virtual void on_RMOverrides_clicked();
     virtual void on_Substitutable_clicked();
-    virtual void on_ValueObject_clicked() {}
+    //virtual void on_ValueObject_clicked() {}
 
 
 private:
@@ -615,8 +615,8 @@ public slots:
     virtual void on_BasicTypes_activated( int );
     virtual void on_NamedTypes_activated( int );
     virtual void on_RMOverrides_clicked();
-    virtual void on_StateObject_clicked();
-    virtual void on_ValueObject_clicked();
+    //virtual void on_StateObject_clicked();
+    //virtual void on_ValueObject_clicked();
     virtual void on_ID_OK_clicked();
     virtual void on_ID_CANCEL_clicked() {reject();}
     virtual void reject();

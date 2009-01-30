@@ -648,10 +648,20 @@ void CAttrBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(consumable);
   else
     myDECL->TypeFlags.EXCL(consumable);
-  if (StateObject->isChecked())
+
+  if (StateObject->isChecked()) {
     myDECL->TypeFlags.INCL(isStateObjectY);
-  else
+    myDECL->TypeFlags.EXCL(isAnyCatY);
+  }
+  else if (AnyCategory->isChecked()) {
+    myDECL->TypeFlags.INCL(isAnyCatY);
     myDECL->TypeFlags.EXCL(isStateObjectY);
+  }
+  else {
+    myDECL->TypeFlags.EXCL(isStateObjectY);
+    myDECL->TypeFlags.EXCL(isAnyCatY);
+  }
+
   if (SetGet->isChecked()) {
     myDECL->TypeFlags.INCL(hasSetGet);
     if (myDECL->ParentDECL && myDECL->ParentDECL->TypeFlags.Contains(isNative)
@@ -4371,20 +4381,27 @@ void CVTypeBox::on_DefCat_clicked()
   else {
     ValueObject->setChecked(false);
     StateObject->setChecked(false);
+    AnyCategory->setChecked(false);
     myDECL->TypeFlags.EXCL(definesObjCat);
   }
   UpdateData(false);  
 }
 
-
-void CVTypeBox::on_StateObject_clicked() 
-{
-  UpdateData(true);
-  if (StateObject->isChecked())
-    myDECL->TypeFlags.INCL(isStateObjectY);
-  else
-    myDECL->TypeFlags.EXCL(isStateObjectY);
-}
+//void CVTypeBox::on_ValueObject_clicked() 
+//{
+//  UpdateData(true);
+//  if (ValueObject->isChecked())
+//    myDECL->TypeFlags.EXCL(isStateObjectY);
+//}
+//
+//void CVTypeBox::on_StateObject_clicked() 
+//{
+//  UpdateData(true);
+//  if (StateObject->isChecked())
+//    myDECL->TypeFlags.INCL(isStateObjectY);
+//  else
+//    myDECL->TypeFlags.EXCL(isStateObjectY);
+//}
 
 
 void CVTypeBox::on_Substitutable_clicked() 
@@ -4403,13 +4420,6 @@ void CVTypeBox::on_Substitutable_clicked()
   if (!SetSelections(BasicTypes, NamedTypes, valNewTypeType))
     valNewTypeType = QString("");
   UpdateData(false);
-}
-
-void CVTypeBox::on_ValueObject_clicked() 
-{
-  UpdateData(true);
-  if (ValueObject->isChecked())
-    myDECL->TypeFlags.EXCL(isStateObjectY);
 }
 
 void CVTypeBox::on_EnableName_clicked() 
@@ -4469,6 +4479,7 @@ void CVTypeBox::on_ID_OK_clicked()
   }
   else {
     myDECL->TypeFlags.EXCL(isStateObjectY);
+    myDECL->TypeFlags.EXCL(isAnyCatY);
     myDECL->TypeFlags.EXCL(definesObjCat);
     myDECL->TypeFlags.EXCL(definiteCat);
   }
