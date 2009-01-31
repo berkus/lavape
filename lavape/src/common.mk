@@ -201,7 +201,7 @@ endif
 	../../bin/LPC $(impex) -I. -I../LavaBase $<
 
 %.cpp: %.qrc
-	$(QTOOLS)/rcc$(QSUFF) -o $@ $<
+	$(QTOOLS)/rcc -o $@ $<
 
 ifeq ($(suffix $(EXEC)),)
 run:
