@@ -2658,10 +2658,18 @@ LavaDECL* CLavaPEDoc::MakeOneSetGet (TypeFlag setgetflag, LavaDECL* implDECL,
 		IOEl->TypeFlags.INCL (definesObjCat);
 	else
 		IOEl->TypeFlags.EXCL (definesObjCat);
-	if (propDecl->TypeFlags.Contains (isStateObjectY))
+  if (propDecl->TypeFlags.Contains (isStateObjectY)) {
 		IOEl->TypeFlags.INCL (isStateObjectY);
-	else
+		IOEl->TypeFlags.EXCL (isAnyCatY);
+  }
+  else if (propDecl->TypeFlags.Contains (isAnyCatY)) {
+		IOEl->TypeFlags.INCL (isAnyCatY);
 		IOEl->TypeFlags.EXCL (isStateObjectY);
+  }
+  else {
+		IOEl->TypeFlags.EXCL (isStateObjectY);
+		IOEl->TypeFlags.EXCL (isAnyCatY);
+  }
 
 	setGet->WorkFlags.INCL (checkmark);
 	return returnDECL;

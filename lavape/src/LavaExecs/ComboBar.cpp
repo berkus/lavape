@@ -1229,6 +1229,8 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
           if (memDECL->TypeFlags.Contains(definiteCat))
             if (memDECL->TypeFlags.Contains(isStateObjectY))
               catComp = stateObjectCat;
+            else if (memDECL->TypeFlags.Contains(isAnyCatY))
+              catComp = anyCat;
             else
               catComp = valueObjectCat;
           myDoc->MemberTypeContext(memDECL, bContext,0);

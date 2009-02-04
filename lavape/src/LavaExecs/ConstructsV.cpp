@@ -204,6 +204,8 @@ void FormParmV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) 
   t.Blank();
   if (flags.Contains(isStateObjectX))
     t.Insert(Tilde_T);
+  else if (flags.Contains(isAnyCatX))
+    t.Insert(Mult_T);
   DRAW(formParm.ptr);
 
   EXIT

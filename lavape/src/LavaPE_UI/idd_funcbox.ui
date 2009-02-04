@@ -197,7 +197,7 @@
       </item>
       <item>
        <property name="text" >
-        <string>Category of "Self" is unknown</string>
+        <string>"Self" is of any category</string>
        </property>
       </item>
      </widget>

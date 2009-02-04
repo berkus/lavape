@@ -1798,8 +1798,8 @@ static void harmonize (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRe
     ((SynObject*)newParmRef->parmType.ptr)->flags.INCL(isSubstitutable);
   if (decl->TypeFlags.Contains(isStateObjectY))
     newParmRef->flags.INCL(isStateObjectX);
-  //else if (decl->TypeFlags.Contains(sameAsSelf))
-  //  ((SynObject*)newParmRef->parmType.ptr)->flags.INCL(isSameAsSelf);
+  else if (decl->TypeFlags.Contains(isAnyCatY))
+    newParmRef->flags.INCL(isAnyCatX);
 #ifdef INTERPRETER
   tdod = new TDOD;
 #else
@@ -6958,9 +6958,9 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
             if (fieldDECL->TypeFlags.Contains(substitutable))
               parent->flags.INCL(isSubstitutable);
             if (parent->myCategory == unknownCat)
-              if (((SynObject*)((CHE*)cheo)->data)->flags.Contains(isStateObjectX))
+              if (fieldDECL->TypeFlags.Contains(isStateObjectY))
                 parent->myCategory = stateObjectCat;
-              else if (((SynObject*)((CHE*)cheo)->data)->flags.Contains(isAnyCatX))
+              else if (fieldDECL->TypeFlags.Contains(isAnyCatY))
                 parent->myCategory = anyCat;
               else
                 parent->myCategory = valueObjectCat;
