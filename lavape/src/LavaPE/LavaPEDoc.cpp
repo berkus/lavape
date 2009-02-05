@@ -2637,8 +2637,7 @@ LavaDECL* CLavaPEDoc::MakeOneSetGet (TypeFlag setgetflag, LavaDECL* implDECL,
 		if (checkLevel == CHLV_inUpdateHigh)
 			implDECL->WorkFlags.INCL (newTreeNode);;
 	}
-	if (setgetflag == isPropGet)
-	{
+	if (setgetflag == isPropGet) {
 		setGet->LocalName = DString ("Get_") + propDecl->LocalName;
 		setGet->TypeFlags.INCL(isAnyCatY);
 	}

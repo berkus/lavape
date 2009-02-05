@@ -1115,6 +1115,8 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     PutComment(pnode0,false,true);
     if (pnode0->TypeFlags.Contains(isStateObjectY))
       code("~");
+    else if (pnode0->TypeFlags.Contains(isAnyCatY))
+      code("~");
     code(pnode0->LocalName.c);
 
     code(" : ");

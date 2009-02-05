@@ -3521,41 +3521,19 @@ ValOnInit CIOBox::OnInitDialog()
       if (myDECL->TypeFlags.Contains(isStateObjectY)) {
         StateObject->setChecked(true);
         ValueObject->setChecked(false);
-        //SameAsSelf->setChecked(false);
         AnyCategory->setChecked(false);
       }
       else {
         StateObject->setChecked(false);
-/*        if (myDECL->TypeFlags.Contains(sameAsSelf)) {
-          ValueObject->setChecked(false);
-          SameAsSelf->setChecked(true);
-          AnyCategory->setChecked(false);
-        }
-        else*/ 
         if (myDECL->TypeFlags.Contains(isAnyCatY)) {
           ValueObject->setChecked(false);
-          //SameAsSelf->setChecked(false);
           AnyCategory->setChecked(true);
         }
         else {
           ValueObject->setChecked(true);
-          //SameAsSelf->setChecked(false);
           AnyCategory->setChecked(false);
         }
       }
-      /*
-    if (myDECL->TypeFlags.Contains(isGUI)) {
-      if (myDECL->DeclType == IAttr) {
-        typeDECL = myDoc->IDTable.GetDECL(myDECL->ParentDECL->ParentDECL->RefID, myDECL->inINCL);
-        if (typeDECL)
-          BaseClassesToCombo(typeDECL);
-      }
-      else {
-        NamedTypes->setEnabled(false);
-        BasicTypes->setEnabled(false);
-      }
-    }
-    else {*/
       che = (CHETID*)myDECL->Supports.first;
       if (myDECL->SecondTFlags.Contains(overrides)) {
         if (OrigDECL->DECLError1.first) {
@@ -3762,10 +3740,6 @@ void CIOBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(isStateObjectY);
   else
     myDECL->TypeFlags.EXCL(isStateObjectY);
-  //if (SameAsSelf->isChecked())
-  //  myDECL->TypeFlags.INCL(sameAsSelf);
-  //else
-  //  myDECL->TypeFlags.EXCL(sameAsSelf);
   if (AnyCategory->isChecked())
     myDECL->TypeFlags.INCL(isAnyCatY);
   else
@@ -4386,23 +4360,6 @@ void CVTypeBox::on_DefCat_clicked()
   }
   UpdateData(false);  
 }
-
-//void CVTypeBox::on_ValueObject_clicked() 
-//{
-//  UpdateData(true);
-//  if (ValueObject->isChecked())
-//    myDECL->TypeFlags.EXCL(isStateObjectY);
-//}
-//
-//void CVTypeBox::on_StateObject_clicked() 
-//{
-//  UpdateData(true);
-//  if (StateObject->isChecked())
-//    myDECL->TypeFlags.INCL(isStateObjectY);
-//  else
-//    myDECL->TypeFlags.EXCL(isStateObjectY);
-//}
-
 
 void CVTypeBox::on_Substitutable_clicked() 
 {

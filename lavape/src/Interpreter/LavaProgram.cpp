@@ -809,7 +809,7 @@ bool CLavaProgram::CheckFuncInOut(CheckData& ckd, LavaDECL* funcDECL)
     }
     if (OverFunc->TypeFlags.Contains(isStateObjectY))
       funcDECL->TypeFlags.INCL(isStateObjectY);
-    if (OverFunc->TypeFlags.Contains(isAnyCatY))
+    else if (OverFunc->TypeFlags.Contains(isAnyCatY))
       funcDECL->TypeFlags.INCL(isAnyCatY);
     if (!OverFunc->TypeFlags.Contains(isProtected))
       funcDECL->TypeFlags.EXCL(isProtected);
