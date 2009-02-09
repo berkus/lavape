@@ -2171,7 +2171,7 @@ void CExecFields::AddToBox(LavaDECL** pdecl, DString& name, QComboBox* fieldList
           nfdata->IDs = fdata->IDs;
           nfdata->QName = fdata->QName;
           nfdata->withClass = true;
-          fieldList->setItemData(pos,nfdata);
+          fieldList->setItemData(pos,QVariant::fromValue(nfdata));
           name += (*pdecl)->FullName;
           ndata = new CFieldsItem();
           ndata->IDs = data->IDs;
