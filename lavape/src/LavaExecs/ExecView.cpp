@@ -1325,7 +1325,7 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
       doubleClick = true;
     }
     Select();
-    //redCtl->update();
+    setFocus();
   }
   doubleClick = false;
   clicked = false;
@@ -1408,10 +1408,10 @@ void CExecView::Select (SynObject *selObj)
   inParameter = ocUpd.inParameter;
   inForeach = ocUpd.inForeach;
 
-//  if (active) {
+  if (active) {
     redCtl->setFocus();
     wxTheApp->updateButtonsMenus();
-//  }
+  }
 
   SetHelpText();
   //redCtl->update();

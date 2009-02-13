@@ -5308,10 +5308,11 @@ void CLavaPEView::OnUpdateEditSel(QAction* action)
 {
   bool enable = false;
   if (myInclView) {
-    enable = (DataSel->type == TIType_DECL)
+    enable = ((DataSel->type == TIType_DECL)
              || (DataSel->type == TIType_Require)
              || (DataSel->type == TIType_Ensure)
-             || (DataSel->type == TIType_Exec);
+             || (DataSel->type == TIType_Exec))
+             && !((CTreeItem*)Tree->currentItem())->inRename;
   }
   action->setEnabled(enable);
 }
