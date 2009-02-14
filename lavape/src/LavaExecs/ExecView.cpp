@@ -1409,7 +1409,7 @@ void CExecView::Select (SynObject *selObj)
   inForeach = ocUpd.inForeach;
 
   if (active) {
-    redCtl->setFocus();
+//    redCtl->setFocus();
     wxTheApp->updateButtonsMenus();
   }
 
