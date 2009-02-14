@@ -1324,8 +1324,8 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
             && !text->currentSelection->data.synObject->EnumAdmissibleOnly(text->ckd)))) {
       doubleClick = true;
     }
+    redCtl->setFocus();
     Select();
-    setFocus();
   }
   doubleClick = false;
   clicked = false;
@@ -1408,10 +1408,8 @@ void CExecView::Select (SynObject *selObj)
   inParameter = ocUpd.inParameter;
   inForeach = ocUpd.inForeach;
 
-  if (active) {
-//    redCtl->setFocus();
+  if (active)
     wxTheApp->updateButtonsMenus();
-  }
 
   SetHelpText();
   //redCtl->update();
