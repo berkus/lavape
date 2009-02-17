@@ -4260,6 +4260,8 @@ void CVTypeBox::on_RMOverrides_clicked()
   RMOverrides->setEnabled(false);
   myDECL->Supports.Destroy();
   myDECL->SecondTFlags.EXCL(overrides);
+  myDECL->SecondTFlags.EXCL(isSet);
+  myDECL->SecondTFlags.EXCL(isArray);
   second = true;
   OnInitDialog();
 }

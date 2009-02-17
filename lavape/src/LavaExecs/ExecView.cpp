@@ -886,8 +886,6 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     externalHint = false;
     if (hint && hint->com == CPECommand_OpenExecView)
       delete hint;
-    //if (active)
-    //  redCtl->setFocus();
   }
 }
 
@@ -2023,11 +2021,7 @@ exp: // Const_T
   if (text->currentSelection->data.token == Exp_T
   || text->currentSelection->data.token == ExpOpt_T
   || text->currentSelection->data.token == Const_T) {
-    //wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(true);
-    //redCtl->repaint();
-      // otherwise the MiniEdit's position would be unknown in the following code
     OnConst();
-    //wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
   }
   else if (text->currentSynObj->type == VarPH_T) {
     if (!editCtl)
@@ -2039,16 +2033,12 @@ exp: // Const_T
     int r=text->currentSelection->data.rect.right();
     redCtl->contentsWidth = qMax(redCtl->contentsWidth,r);
     editCtl->setCursorPosition(str.length());
-    //QApplication::postEvent(this,new CustomEvent(UEV_ShowMiniEdit,0));
     editCtl->show();
-    //qDebug() << "show MiniEdit";
     editCtl->setFocus();
     if (text->currentSynObj->IsPlaceHolder())
       editCtl->selectAll();
-    //editCtl->update();
     editCtlVisible = true;
     redCtl->update();
-    //wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
   }
 }
 
@@ -2367,7 +2357,7 @@ void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLas
     pred);
 
   myDoc->UndoMem.AddToMem(nextHint);
-  //if (firstLastHint.Contains(lastHint))
+  if (firstLastHint.Contains(lastHint))
     myDoc->UpdateDoc(this,false,nextHint);
 }
 
