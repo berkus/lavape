@@ -1412,7 +1412,6 @@ void CExecView::Select (SynObject *selObj)
   }
 
   SetHelpText();
-  //redCtl->update();
 
   if (text->currentSelection->data.token == Comment_T) {
     if (!EditOK() || !clicked) return;
