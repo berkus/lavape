@@ -1192,7 +1192,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
  //if decl != 0: decl is final virtual type
  //if decl = 0 local variables only for handle operator (#)
 {
-  Category cat = anyCat, catComp = anyCat;
+  Category cat = unknownCat, catComp = unknownCat;
   CContext compContext = context, bContext;
   LavaDECL *fmvType=0, *memDECL, *enumDecl;
   SynFlags ctxFlags;
@@ -1221,7 +1221,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
     if (data && data->IDs.last) {
       lastDOD = (TDOD*)((CHE*)data->IDs.last)->data;
       var = myDoc->IDTable.GetVar(lastDOD->ID, idtype);
-      catComp = anyCat;
+      catComp = unknownCat;
       if (var) {
         if (idtype == globalID) {
           memDECL = *(LavaDECL**)var;
@@ -1248,9 +1248,9 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
           else
             forHandle = true;
         }
-        if (catComp == anyCat)
+        if (catComp == unknownCat)
           catComp = cat;
-        if ((forHandle || fmvType) && (forCopy || catComp == category || catComp == anyCat || category == anyCat)) {
+        if ((forHandle || fmvType) && (forCopy || catComp == category || category == anyCat)) {
           if (forHandle || !forHandle &&
               (   (( forInput || forCopy)
                               && compatibleTypes(ckd, fmvType, bContext, decl, compContext))
