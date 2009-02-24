@@ -322,7 +322,9 @@ void RefTable::findObjRef (CheckData &ckd,
       ADJUST4(cheTbl->data.varID);
       cheTbl->data.parent = oldVarDesc;
       cheTbl->data.writeAccess = 0;
-      if (!chp->successor && !ckd.iniCheck) {
+      if (!chp->successor
+      && !ckd.iniCheck
+      && !objRef->parentObject->flags.Contains(isIniCallOrHandle)) {
         newWA = new CWriteAccess;
         cheTbl->data.writeAccess = newWA;
         newWA->objRef = objRef;
@@ -470,7 +472,7 @@ QString *RefTable::AssignCheck (CheckData &ckd, ObjReference *objRef) {
 
   ckd.iniCheck = false;
   findObjRef(ckd,objRefTable,0,newEntry,(CHE*)objRef->refIDs.first);
-  chp = (CHE*)refTableEntries.last->predecessor;
+  chp = refTableEntries.last?(CHE*)refTableEntries.last->predecessor:0;
   if (chp)
     errorCode = findMatchingAccess(ckd,chp,newEntry,false,isAssigned,objRef,wacc);
   //newEntry->writeAccess = true;

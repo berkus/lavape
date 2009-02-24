@@ -422,7 +422,8 @@ void MyListView::commitData(QWidget* editor)
 }
 
 void MyListView::onItemSelectionChanged() {
-  wxTheApp->updateButtonsMenus();
+  if (wxTheApp->m_docManager->GetActiveView() == lavaView)
+    wxTheApp->updateButtonsMenus();
 }
 
 CTreeItemDelg::CTreeItemDelg(MyListView* tree)

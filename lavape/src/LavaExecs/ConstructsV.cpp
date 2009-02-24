@@ -1175,15 +1175,18 @@ NewExpressionV::NewExpressionV (FuncStatement *ref, bool withItf, bool withLoc) 
 }
 
 void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
-  LavaDECL *iniDecl=initializerCall.ptr?((FuncStatement*)initializerCall.ptr)->funcDecl:0;
-  bool isFuncHandle=IsFuncHandle(), showTemp;
-
   ENTRY
 
-  showTemp = butStatement.ptr
+  LavaDECL *iniDecl=initializerCall.ptr && !ignore?
+      ((FuncStatement*)initializerCall.ptr)->funcDecl
+      :0;
+  bool isFuncHandle=IsFuncHandle(), showTemp;
+
+  showTemp = !ignore
+  && (butStatement.ptr
     || !iniDecl
     || !iniDecl->TypeFlags.Contains(defaultInitializer)
-    || errorInInitializer;
+    || errorInInitializer);
 
   if (isFuncHandle)
     t.Insert(Lparenth_T);
@@ -1195,7 +1198,7 @@ void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
     t.Insert(primaryToken,true);
     t.Blank();
     DRAW(objType.ptr);
-    if (!((SynObject*)((FuncStatement*)initializerCall.ptr)->function.ptr)->IsPlaceHolder())
+    if (!((SynObject*)((FuncStatement*)initializerCall.ptr)->function.ptr)->IsPlaceHolder() && !ignore)
       iniDecl = t.document->IDTable.GetDECL(((Reference*)((FuncStatement*)initializerCall.ptr)->function.ptr)->refID,t.ckd.inINCL);
     if (showTemp) {
       t.Blank();
@@ -1203,9 +1206,10 @@ void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
         t.Insert(Tilde_T);
       DRAW(varName.ptr);
     }
-    if (!iniDecl
-    || !iniDecl->TypeFlags.Contains(defaultInitializer)
-    || errorInInitializer) {
+    if (!ignore
+    && (!iniDecl
+      || !iniDecl->TypeFlags.Contains(defaultInitializer)
+      || errorInInitializer)) {
       NLincIndent(t);
       DRAW(initializerCall.ptr);
       NLdecIndent(t);
