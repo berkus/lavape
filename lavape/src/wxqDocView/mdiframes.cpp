@@ -106,19 +106,7 @@ QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
   m_currentTabWidget->setCornerWidget(close);
   close->setToolTip("Close current page");
   connect(close,SIGNAL(clicked()),m_currentTabWidget,SLOT(closePage()));
-  connect(m_currentTabWidget ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   return m_ClientArea;
-}
-
-
-void wxMainFrame::windowActivated(int index)
-{
-  if (index < 0)
-    return;
-  theActiveFrame = m_currentTabWidget->widget(index);
-  //if (theActiveFrame && theActiveFrame->inherits("wxChildFrame"))
-  //  QApplication::postEvent((wxChildFrame*)theActiveFrame, new CustomEvent(UEV_Activate));
-    //((wxChildFrame*)theActiveFrame)->Activate();
 }
 
 void wxMainFrame::closeEvent (QCloseEvent*)
@@ -197,7 +185,7 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   m_ClientArea->insertWidget(splitterIndex+1,newTW);
   page->Activate(true);
   newTW->setTabTextColor(newTW->indexOf(page),Qt::red);
-  connect(newTW ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
+  //connect(newTW ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   equalize();
 }
 
@@ -325,7 +313,7 @@ void wxChildFrame::Activate(bool activate)
   if (title.length() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
   if (activate) {
-    wxDocManager::GetDocumentManager()->SetActiveFrame(this);
+    //wxDocManager::GetDocumentManager()->SetActiveFrame(this);
     if (lastActive)
       wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
     else if (!m_viewList.empty())
@@ -505,11 +493,6 @@ void wxTabBar::dropEvent(QDropEvent *evt)
   else
     evt->ignore();
 }
-wxTabWidget::~wxTabWidget() {
-  //QSplitter *splitter=(QSplitter*)parentWidget();
-  //if (!count() && splitter->count() == 1)
-  //  wxDocManager::GetDocumentManager()->SetActiveFrame(0);
-}
 
 void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
 {
@@ -596,6 +579,7 @@ void wxTabWidget::removePage(wxChildFrame *page)
   wxDocManager::GetDocumentManager()->SetActiveFrame(page,false,true);
   delete page;
 }
+
 
 #define MYSTYLEIMP(sty)\
   int My##sty##Style::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const\

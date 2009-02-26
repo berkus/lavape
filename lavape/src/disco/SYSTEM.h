@@ -19,6 +19,8 @@
 #include <stddef.h>
 #include <new>
 #include "qevent.h"
+#include <QtDebug>
+
 
 
 #ifdef WIN32

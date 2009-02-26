@@ -114,7 +114,6 @@ protected:
 
 public slots:
   virtual void OnFileExit();
-  void windowActivated(int);
   void histFile(int);
   //void histWindow(int);
 
@@ -143,11 +142,10 @@ public:
 
 class WXDLLEXPORT wxTabWidget : public QTabWidget {
 public:
-  ~wxTabWidget();
-
   wxTabWidget(QWidget *parent) : QTabWidget(parent) {
     m_tabBar = new wxTabBar(this);
     setTabBar(m_tabBar);
+    //connect(this ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   }
 
   void postTabChange(int index, QAction* triggeredAction);
@@ -160,6 +158,8 @@ public:
 
 public slots:
   void closePage();
+  //void windowActivated(int);
+
 private:
   Q_OBJECT
 };

@@ -196,7 +196,7 @@ void wxApp::updateButtonsMenus()
   //wxChildFrame *newActMDIChild = (wxChildFrame*)m_appWindow->m_currentTabWidget->currentWidget();
   //if (newActMDIChild != actMDIChild)
   //newActMDIChild->m_tabWidget->setCurrentWidget(newActMDIChild);
-  wxDocManager::GetDocumentManager()->SetActiveFrame(0,true);
+  //wxDocManager::GetDocumentManager()->SetActiveFrame(0,true);
 }
 
 void wxApp::customEvent(QEvent *e)
@@ -409,8 +409,27 @@ void wxApp::about()
 }
 
 void wxApp::onFocusChanged(QWidget *old, QWidget *now) {
-  if (now)
+  QWidget *parent=now;
+  wxChildFrame *activeFrame, *oldActFrame=wxDocManager::GetDocumentManager()->m_oldActiveFrame;
+  wxTabWidget *tabWidget, *oldTabWidget=oldActFrame?oldActFrame->m_tabWidget:0;
+
+  if (now) {
+    for ( parent=now; parent; parent = parent->parentWidget()) {
+      if (parent->inherits("wxChildFrame")) {
+        activeFrame = (wxChildFrame*)parent;
+        tabWidget = activeFrame->m_tabWidget;
+        if (oldActFrame != activeFrame) {
+          tabWidget->setCurrentWidget(activeFrame);
+          tabWidget->setTabTextColor(tabWidget->indexOf(activeFrame),Qt::red);
+          if (oldActFrame && !oldActFrame->deleting)
+            oldTabWidget->setTabTextColor(oldTabWidget->indexOf(oldActFrame),Qt::black);
+          wxDocManager::GetDocumentManager()->SetActiveFrame(activeFrame);
+        }
+        break;
+      }
+    }
     updateButtonsMenus();
+  }
 }
 
 static QString FindExtension(const char *path)
@@ -933,6 +952,7 @@ void wxView::OnActivateView(bool activate, wxView *deactiveView)
 {
   if (activate) {
     active = true;
+    myTabWidget->setCurrentWidget(m_viewFrame);
     setFocus();
     //wxTheApp->updateButtonsMenus();
   }
@@ -1830,7 +1850,7 @@ void wxDocManager::SetActiveView(wxView *view, bool activate)
       view->OnActivateView();
       view->GetParentFrame()->NotifyActive(view);
       //wxTheApp->updateButtonsMenus();
-      wxDocManager::GetDocumentManager()->SetActiveFrame(view->GetParentFrame());
+      //wxDocManager::GetDocumentManager()->SetActiveFrame(view->GetParentFrame());
     }
   }
   else
@@ -1850,6 +1870,7 @@ void wxDocManager::SetActiveFrame(wxChildFrame *af, bool doIt, bool deactivate) 
   }
 
   if (!doIt) {
+    m_oldActiveFrame = m_activeFrame;
     m_activeFrame = af;
     return;
   }
@@ -1867,9 +1888,9 @@ void wxDocManager::SetActiveFrame(wxChildFrame *af, bool doIt, bool deactivate) 
     return;
 
   m_activeFrame->m_tabWidget->setCurrentWidget(m_activeFrame);
-  m_activeFrame->m_tabWidget->setTabTextColor(m_activeFrame->m_tabWidget->indexOf(m_activeFrame),Qt::red);
-  if (m_oldActiveFrame && !m_oldActiveFrame->deleting)
-    m_oldActiveFrame->m_tabWidget->setTabTextColor(m_oldActiveFrame->m_tabWidget->indexOf(m_oldActiveFrame),Qt::black);
+  //m_activeFrame->m_tabWidget->setTabTextColor(m_activeFrame->m_tabWidget->indexOf(m_activeFrame),Qt::red);
+  //if (m_oldActiveFrame && !m_oldActiveFrame->deleting)
+  //  m_oldActiveFrame->m_tabWidget->setTabTextColor(m_oldActiveFrame->m_tabWidget->indexOf(m_oldActiveFrame),Qt::black);
   wxTheApp->m_appWindow->SetCurrentTabWindow(m_activeFrame->m_tabWidget);
   m_oldActiveFrame = m_activeFrame;
 }

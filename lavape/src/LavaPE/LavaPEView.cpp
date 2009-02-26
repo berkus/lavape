@@ -1993,6 +1993,7 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
 
     }
   }
+  wxView::OnActivateView(bActivate,deactiveView);
 }
 
 void CLavaPEView::OnDblclk(  QTreeWidgetItem * itemHit, int col )

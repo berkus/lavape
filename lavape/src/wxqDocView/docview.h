@@ -469,6 +469,7 @@ public:
     static int GetOpenDocCount() { return wxDocManager::sm_docManager->m_docs.count(); };
 
     wxHistory*        m_fileHistory;
+    wxChildFrame      *m_activeFrame, *m_oldActiveFrame;
 
 protected:
     long              m_flags;
@@ -478,7 +479,6 @@ protected:
     wxView            *m_activeView;
     QString           m_lastDirectory;
     static wxDocManager* sm_docManager;
-    wxChildFrame      *m_activeFrame, *m_oldActiveFrame;
 
 public slots:
     // Handlers for common user commands
