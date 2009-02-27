@@ -116,7 +116,11 @@ int main(int argc, char ** argv ) {
     app.m_appWindow->showMaximized();
   else
     return 1;
-  //app.updateButtonsMenus();
+
+  if (!app.cmdLineEvaluated && argc > 1) {
+    app.cmdLineEvaluated = true;
+    app.OpenDocumentFile(argv[1]);
+  }
 
   int res = app.exec();
   return res;
@@ -133,7 +137,7 @@ int xerrcomBM = 33;
 
 CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
 :wxApp(argc, argv )
-{
+ {
   bool b1=false;
   QString lfo;
   

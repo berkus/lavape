@@ -117,11 +117,10 @@ void Trap()
 #endif // Win/Unix
 }
 
-static bool cmdLineEvaluated=false;
 static int cnt=0;
 
-
 WXDLLEXPORT_DATA(wxApp*) wxTheApp;
+
 
 wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
 {
@@ -141,12 +140,7 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
 
   connect(this,SIGNAL(focusChanged(QWidget *,QWidget *)),this,SLOT(onFocusChanged(QWidget *,QWidget *)));
   appExit = false;
-  qDebug("wxApp::wxApp");
-	qDebug() << "cmdline: argc:" << argc << "argv[1]:" << argv[1];
-  if (!cmdLineEvaluated && wxTheApp->argc > 1) {
-    cmdLineEvaluated = true;
-    wxTheApp->OpenDocumentFile(argv[1]);
-  }
+  cmdLineEvaluated = false;
 }
 
 bool wxApp::notify(QObject* o, QEvent* e)
@@ -241,12 +235,12 @@ void wxApp::onUpdateUI()
     ((wxView*)focView)->GetParentFrame()->UpdateUI();
     ((wxView*)focView)->UpdateUI();
   }
-  qDebug("wxApp::onUpdateUI");
-	qDebug() << "cmdline:" << wxTheApp->argc;
-  if (!cmdLineEvaluated && wxTheApp->argc > 1) {
-    cmdLineEvaluated = true;
-    wxTheApp->OpenDocumentFile(argv[1]);
-  }
+ // qDebug("wxApp::onUpdateUI");
+	//qDebug() << "cmdline:" << wxTheApp->argc;
+  //if (!cmdLineEvaluated && wxTheApp->argc > 1) {
+  //  cmdLineEvaluated = true;
+  //  wxTheApp->OpenDocumentFile(argv[1]);
+  //}
 }
 
 wxView *wxApp::activeView() {
@@ -417,7 +411,8 @@ void wxApp::about()
 
 void wxApp::onFocusChanged(QWidget *old, QWidget *now) {
   QWidget *parent=now;
-  wxChildFrame *activeFrame, *oldActFrame=wxDocManager::GetDocumentManager()->m_oldActiveFrame;
+  wxDocManager *docMan=wxDocManager::GetDocumentManager();
+  wxChildFrame *activeFrame, *oldActFrame=docMan?docMan->m_oldActiveFrame:0;
   wxTabWidget *tabWidget, *oldTabWidget=oldActFrame?oldActFrame->m_tabWidget:0;
 
   if (now) {
@@ -1123,7 +1118,7 @@ wxDocManager::~wxDocManager()
     Clear();
     if (m_fileHistory)
         delete m_fileHistory;
-    sm_docManager = (wxDocManager*) NULL;
+    sm_docManager = 0;
 }
 
 bool wxDocManager::Clear(bool force)

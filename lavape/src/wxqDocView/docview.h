@@ -71,6 +71,8 @@ public:
     bool deletingMainFrame;
     bool isChMaximized;
     bool appExit;
+    bool cmdLineEvaluated;
+
     bool notify(QObject* o, QEvent* e);
 
     int argc;

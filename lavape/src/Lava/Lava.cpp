@@ -106,7 +106,10 @@ int main( int argc, char ** argv ) {
   else
     return 1;
 
-  //app.updateButtonsMenus();
+  if (!app.cmdLineEvaluated && argc > 1) {
+    app.cmdLineEvaluated = true;
+    app.OpenDocumentFile(argv[1]);
+  }
 
   int res = app.exec();
 
