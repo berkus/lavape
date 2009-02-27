@@ -421,7 +421,7 @@ void wxApp::onFocusChanged(QWidget *old, QWidget *now) {
         activeFrame = (wxChildFrame*)parent;
         tabWidget = activeFrame->m_tabWidget;
         if (oldActFrame != activeFrame) {
-          qDebug() << "wxApp::onFocusChanged, tabWidget->setCurrentWidget" << activeFrame;
+          //qDebug() << "wxApp::onFocusChanged, tabWidget->setCurrentWidget" << activeFrame;
           tabWidget->setCurrentWidget(activeFrame);
           tabWidget->setTabTextColor(tabWidget->indexOf(activeFrame),Qt::red);
           if (oldActFrame && !oldActFrame->deleting)
@@ -1865,7 +1865,7 @@ void wxDocManager::SetActiveFrame(wxChildFrame *af, bool doIt, bool deactivate) 
   wxTabWidget *currTW;
 
 
-  qDebug() << "wxDocManager::SetActiveFrame af=" << af << "doIt=" << doIt;
+  //qDebug() << "wxDocManager::SetActiveFrame af=" << af << "doIt=" << doIt;
   if (deactivate) {
     if (af == m_activeFrame)
       m_activeFrame = 0;

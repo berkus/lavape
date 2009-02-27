@@ -312,7 +312,7 @@ void wxChildFrame::Activate(bool activate)
 
 
   if (activate) {
-    qDebug() << "wxChildFrame::Activate" << this;
+    //qDebug() << "wxChildFrame::Activate" << this;
 
     wxDocManager::GetDocumentManager()->SetActiveFrame(this);
     if (lastActive)
