@@ -3441,8 +3441,14 @@ void CLavaPEDoc::OnRunLava()
 	args << lavaFile;
   args << "startedFromLavaPE";
 
-	if (! ((CLavaPEApp*) qApp)->interpreter.startDetached (interpreterPath,args))
-	{
+//	if (! ((CLavaPEApp*) qApp)->interpreter.startDetached (interpreterPath,args))
+//	{
+//		QMessageBox::critical (wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaStartFailed.arg (errno),QMessageBox::Ok,0,0);
+//		return;
+//	}
+  qDebug() << interpreterPath + " " + lavaFile + " startedFromLavaPE";
+	QProcess::startDetached(interpreterPath + " " + lavaFile + " startedFromLavaPE");
+	if (!interpreter.waitForStarted(3000)) {
 		QMessageBox::critical (wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaStartFailed.arg (errno),QMessageBox::Ok,0,0);
 		return;
 	}

@@ -117,6 +117,9 @@ void Trap()
 #endif // Win/Unix
 }
 
+static bool cmdLineEvaluated=false;
+static int cnt=0;
+
 
 WXDLLEXPORT_DATA(wxApp*) wxTheApp;
 
@@ -138,6 +141,12 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
 
   connect(this,SIGNAL(focusChanged(QWidget *,QWidget *)),this,SLOT(onFocusChanged(QWidget *,QWidget *)));
   appExit = false;
+  qDebug("wxApp::wxApp");
+	qDebug() << "cmdline: argc:" << argc << "argv[1]:" << argv[1];
+  if (!cmdLineEvaluated && wxTheApp->argc > 1) {
+    cmdLineEvaluated = true;
+    wxTheApp->OpenDocumentFile(argv[1]);
+  }
 }
 
 bool wxApp::notify(QObject* o, QEvent* e)
@@ -179,9 +188,6 @@ void wxApp::SetAppName(const QString& name) {
   m_appName = name;
   m_settingsPath += "/" + name;
 }
-
-static bool cmdLineEvaluated=false;
-static int cnt=0;
 
 void wxApp::updateButtonsMenus()
 {
@@ -235,7 +241,8 @@ void wxApp::onUpdateUI()
     ((wxView*)focView)->GetParentFrame()->UpdateUI();
     ((wxView*)focView)->UpdateUI();
   }
-
+  qDebug("wxApp::onUpdateUI");
+	qDebug() << "cmdline:" << wxTheApp->argc;
   if (!cmdLineEvaluated && wxTheApp->argc > 1) {
     cmdLineEvaluated = true;
     wxTheApp->OpenDocumentFile(argv[1]);
