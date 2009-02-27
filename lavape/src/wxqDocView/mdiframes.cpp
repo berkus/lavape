@@ -45,6 +45,7 @@
 #include <QCloseEvent>
 #include <QList>
 #include <QEvent>
+#include <QtDebug>
 
 #pragma hdrstop
 
@@ -306,14 +307,14 @@ void wxChildFrame::InitialUpdate()
 
 void wxChildFrame::Activate(bool activate)
 {
-  QString title=windowTitle();
-
   if (!m_tabWidget || this == wxDocManager::GetDocumentManager()->GetActiveFrame())
     return;
-  if (title.length() && title.at(title.length()-1) == '*')
-    title = title.left(title.length()-1);
+
+
   if (activate) {
-    //wxDocManager::GetDocumentManager()->SetActiveFrame(this);
+    qDebug() << "wxChildFrame::Activate" << this;
+
+    wxDocManager::GetDocumentManager()->SetActiveFrame(this);
     if (lastActive)
       wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
     else if (!m_viewList.empty())
