@@ -412,7 +412,7 @@ void wxApp::about()
 void wxApp::onFocusChanged(QWidget *old, QWidget *now) {
   QWidget *parent=now;
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
-  wxChildFrame *activeFrame, *oldActFrame=docMan?docMan->m_oldActiveFrame:0;
+  wxChildFrame *activeFrame, *oldActFrame=docMan?docMan->m_activeFrame:0;
   wxTabWidget *tabWidget, *oldTabWidget=oldActFrame?oldActFrame->m_tabWidget:0;
 
   if (now) {
@@ -422,12 +422,12 @@ void wxApp::onFocusChanged(QWidget *old, QWidget *now) {
         tabWidget = activeFrame->m_tabWidget;
         qDebug() << activeFrame << oldActFrame;
         if (oldActFrame != activeFrame) {
+          wxDocManager::GetDocumentManager()->SetActiveFrame(activeFrame);
           tabWidget->setCurrentWidget(activeFrame);
           m_appWindow->SetCurrentTabWindow(activeFrame->m_tabWidget);
           tabWidget->setTabTextColor(tabWidget->indexOf(activeFrame),Qt::red);
           if (oldActFrame && !oldActFrame->deleting)
             oldTabWidget->setTabTextColor(oldTabWidget->indexOf(oldActFrame),Qt::black);
-          wxDocManager::GetDocumentManager()->SetActiveFrame(activeFrame);
         }
         break;
       }
@@ -949,7 +949,7 @@ void wxView::ActivateView(bool activate)
     //wxTheApp->updateButtonsMenus();
   }
   GetParentFrame()->NotifyActive(this);
-  GetParentFrame()->Activate(activate);
+  //GetParentFrame()->Activate(activate);
 }
 
 void wxView::OnActivateView(bool activate, wxView *deactiveView)
@@ -1880,10 +1880,10 @@ void wxDocManager::SetActiveFrame(wxChildFrame *af, bool doIt, bool deactivate) 
 
   //if (!doIt) {
     //qDebug() << "wxDocManager::SetActiveFrame, deactivate af=" << af << "doIt=" << doIt;
-    m_oldActiveFrame = m_activeFrame;
-    m_activeFrame = af;
-  //  return;
-  //}
+  if (af == m_activeFrame)
+    return;
+  m_oldActiveFrame = m_activeFrame;
+  m_activeFrame = af;
 
   if (!m_activeFrame) {
     currTW = wxTheApp->m_appWindow->GetCurrentTabWindow();

@@ -314,7 +314,7 @@ void wxChildFrame::Activate(bool activate)
   if (activate) {
     //qDebug() << "wxChildFrame::Activate" << this;
 
-    wxDocManager::GetDocumentManager()->SetActiveFrame(this);
+    //wxDocManager::GetDocumentManager()->SetActiveFrame(this);
     if (lastActive)
       wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
     else if (!m_viewList.empty())
