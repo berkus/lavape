@@ -443,6 +443,11 @@ void CLavaPEApp::OnPopcontext()
     return;
   ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext = back->prev;
   wxView *backView = back->fromView;
+  if (backView == wxDocManager::GetDocumentManager()->GetActiveView())
+    backView->OnActivateView();
+  else
+    backView->ActivateView(true);
+
   if (backView->inherits("CExecView"))
     ((CExecView*)backView)->Select((SynObject*)back->synObjSel);
   else if (backView->inherits("CLavaGUIView"))
@@ -469,11 +474,6 @@ void CLavaPEApp::OnPopcontext()
     }
   }
   delete back;
-  if (backView == wxDocManager::GetDocumentManager()->GetActiveView())
-    backView->OnActivateView();
-  else
-    backView->ActivateView(true);
-  //wxTheApp->updateButtonsMenus();
 }
 
 void CLavaPEApp::OnEditRedo()

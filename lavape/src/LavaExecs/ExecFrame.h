@@ -5,6 +5,8 @@
 #include "docview.h"
 #include "mdiframes.h"
 #include "Constructs.h"
+#include "ExecView.h"
+#include "ExecFrame.h"
 
 
 class LAVAEXECS_DLL CExecFrame : public wxChildFrame
@@ -31,6 +33,9 @@ public:
 protected:
   bool OnCreate(wxDocTemplate *temp, wxDocument *doc);
   void OnDestroy();
+
+private:
+  Q_OBJECT
 };
 
 

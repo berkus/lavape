@@ -609,227 +609,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Header-Dateien"
-			Filter="h;hpp;hxx;hm;inl;fi;fd"
-			>
-			<File
-				RelativePath="Check.h"
-				>
-			</File>
-			<File
-				RelativePath="ComboBar.h"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
-						Outputs="Generated\moc_$(InputName).cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
-						Outputs="Generated\moc_$(InputName).cpp"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Constructs.h"
-				>
-			</File>
-			<File
-				RelativePath="Constructs.ph"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
-						Outputs="$(InputName).h;$(InputName)G.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
-						Outputs="$(InputName).h;$(InputName)G.cpp"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\ConstructsV.h"
-				>
-			</File>
-			<File
-				RelativePath="ExecFrame.h"
-				>
-			</File>
-			<File
-				RelativePath="ExecUpdate.h"
-				>
-			</File>
-			<File
-				RelativePath="ExecView.h"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
-						Outputs="Generated\moc_$(InputName).cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
-						Outputs="Generated\moc_$(InputName).cpp"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\LavaExecs_all.h"
-				>
-			</File>
-			<File
-				RelativePath="LavaExecsStringInit.h"
-				>
-			</File>
-			<File
-				RelativePath="Scanner.h"
-				>
-			</File>
-			<File
-				RelativePath="Tokens.h"
-				>
-			</File>
-			<File
-				RelativePath="Tokens.ph"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Applying LPC to $(InputFileName)"
-						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
-						Outputs="$(InputName).h;$(InputName)G.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Applying LPC to $(InputFileName)"
-						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
-						Outputs="$(InputName).h;$(InputName)G.cpp"
-					/>
-				</FileConfiguration>
-			</File>
-			<Filter
-				Name="Generated"
-				>
-				<File
-					RelativePath="Generated\ComboBarDlg.h"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-							Description=""
-							CommandLine="&#x0D;&#x0A;"
-							Outputs=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="Generated\Comment.h"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-							Description=""
-							CommandLine="&#x0D;&#x0A;"
-							Outputs=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="Generated\moc_ComboBar.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="2"
-							PrecompiledHeaderThrough="..\ComboBar.h"
-							PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							PrecompiledHeaderThrough="..\ComboBar.h"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="Generated\moc_ExecView.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="2"
-							PrecompiledHeaderThrough="..\ExecView.h"
-							PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							PrecompiledHeaderThrough="..\ExecView.h"
-						/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
 			Name="Ressourcendateien"
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe"
 			>
@@ -1088,6 +867,249 @@
 						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
+					/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated"
+			>
+			<File
+				RelativePath="Generated\ComboBarDlg.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description=""
+						CommandLine="&#x0D;&#x0A;"
+						Outputs=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Generated\Comment.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description=""
+						CommandLine="&#x0D;&#x0A;"
+						Outputs=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Generated\moc_ComboBar.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\ComboBar.h"
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\ComboBar.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Generated\moc_ExecFrame.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="..\ExecFrame.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Generated\moc_ExecView.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\ExecView.h"
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\ExecView.h"
+					/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header-Dateien"
+			Filter="h;hpp;hxx;hm;inl;fi;fd"
+			>
+			<File
+				RelativePath="Check.h"
+				>
+			</File>
+			<File
+				RelativePath="ComboBar.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Constructs.h"
+				>
+			</File>
+			<File
+				RelativePath="Constructs.ph"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Applying LPC to $(InputPath)"
+						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
+						Outputs="$(InputName).h;$(InputName)G.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Applying LPC to $(InputPath)"
+						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
+						Outputs="$(InputName).h;$(InputName)G.cpp"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\ConstructsV.h"
+				>
+			</File>
+			<File
+				RelativePath="ExecFrame.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="moc&apos;ing $(InputFileName)"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ExecUpdate.h"
+				>
+			</File>
+			<File
+				RelativePath="ExecView.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\LavaExecs_all.h"
+				>
+			</File>
+			<File
+				RelativePath="LavaExecsStringInit.h"
+				>
+			</File>
+			<File
+				RelativePath="Scanner.h"
+				>
+			</File>
+			<File
+				RelativePath="Tokens.h"
+				>
+			</File>
+			<File
+				RelativePath="Tokens.ph"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Applying LPC to $(InputFileName)"
+						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
+						Outputs="$(InputName).h;$(InputName)G.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Applying LPC to $(InputFileName)"
+						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
+						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>
 			</File>

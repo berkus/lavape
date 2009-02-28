@@ -1,6 +1,6 @@
 PRJ = LavaExecs
 
-MOCABLES = ComboBar.h ExecView.h
+MOCABLES = ComboBar.h ExecView.h ExecFrame.h
 
 EXEC = LavaExecs.so
 SUBPRO=disco wxqDocView LavaBase LavaPE_UI
