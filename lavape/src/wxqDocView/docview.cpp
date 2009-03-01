@@ -420,7 +420,7 @@ void wxApp::onFocusChanged(QWidget *old, QWidget *now) {
       if (parent->inherits("wxChildFrame")) {
         activeFrame = (wxChildFrame*)parent;
         tabWidget = activeFrame->m_tabWidget;
-        qDebug() << activeFrame << oldActFrame;
+        //qDebug() << activeFrame << oldActFrame;
         if (oldActFrame != activeFrame) {
           wxDocManager::GetDocumentManager()->SetActiveFrame(activeFrame);
           tabWidget->setCurrentWidget(activeFrame);
