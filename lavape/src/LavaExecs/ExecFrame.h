@@ -16,7 +16,7 @@ public:
   FRAMEFACTORY(CExecFrame)
   virtual void InitialUpdate();
   void closeEvent (QCloseEvent *ev);
-  void focusIn() { if (m_ExecView) m_ExecView->focusIn(); }
+  //void focusIn() { if (m_ExecView) m_ExecView->focusIn(); }
 
 // Attributes
   CComboBar *m_ComboBar;

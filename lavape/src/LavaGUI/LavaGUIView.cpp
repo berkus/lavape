@@ -888,7 +888,6 @@ void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView)
 {
   if (myGUIProg) {
     if (bActivate) {
-      active = true;
       if (LBaseData->inRuntime) {
         MsgToStatusbar();
       }
@@ -898,15 +897,14 @@ void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView)
         if (!myGUIProg->focNode->data.FIP.widget->hasFocus() && (LBaseData->inRuntime || (myGUIProg->focNode == myGUIProg->ActNode)))
           myGUIProg->focNode->data.FIP.widget->setFocus();
       clipboard_text_notEmpty = !QApplication::clipboard()->text().isEmpty();
-      //wxTheApp->updateButtonsMenus();
     }
     else {
-      active = false;
       QString msg("");
       wxTheApp->m_appWindow->statusBar()->showMessage(msg);
       DisableActions();
     }
   }
+  wxView::OnActivateView(bActivate,deactiveView);
 }
 
 

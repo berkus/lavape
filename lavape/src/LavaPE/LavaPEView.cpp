@@ -1976,7 +1976,6 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
       SetErrAndCom(sel);
       if (!Tree->hasFocus())
         Tree->setFocus();
-//??      sel->repaint();
       clipboard_lava_notEmpty = wxTheApp->clipboard()->mimeData(QClipboard::Clipboard)->hasFormat(m_nIDClipFormat);
       if (clipboard_lava_notEmpty) {
         QByteArray ar = ((LavaSource*)wxTheApp->clipboard()->mimeData(QClipboard::Clipboard))->data(m_nIDClipFormat);
@@ -1984,7 +1983,6 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
         CMainItemData clipData;
         defTypeSpicked = clipData.Spick(ar, treeflagsSpicked, secondtflagsSpicked);
       }
-      //wxTheApp->updateButtonsMenus();
     }
     else {
       active = false;

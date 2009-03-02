@@ -186,7 +186,6 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   m_ClientArea->insertWidget(splitterIndex+1,newTW);
   page->Activate(true);
   newTW->setTabTextColor(newTW->indexOf(page),Qt::red);
-  //connect(newTW ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   equalize();
 }
 
@@ -576,11 +575,16 @@ void wxTabWidget::closePage() {
 
 void wxTabWidget::removePage(wxChildFrame *page)
 {
+  qDebug() << "1: currentWidget:" << currentWidget() << "page:" << page;
   removeTab(indexOf(page));
-  wxDocManager::GetDocumentManager()->SetActiveFrame(page,false,true);
+  qDebug() << "2: currentWidget:" << currentWidget() << "page:" << page;
+  //wxDocManager::GetDocumentManager()->SetActiveFrame(page,false,true);
   delete page;
 }
 
+void wxTabWidget::windowActivated (int index) {
+  wxDocManager::GetDocumentManager()->SetActiveFrame(((wxChildFrame*)widget(index)));
+}
 
 #define MYSTYLEIMP(sty)\
   int My##sty##Style::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const\

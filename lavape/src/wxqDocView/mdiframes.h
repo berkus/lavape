@@ -145,7 +145,7 @@ public:
   wxTabWidget(QWidget *parent) : QTabWidget(parent) {
     m_tabBar = new wxTabBar(this);
     setTabBar(m_tabBar);
-    //connect(this ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
+    connect(this ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   }
 
   void postTabChange(int index, QAction* triggeredAction);
@@ -158,7 +158,7 @@ public:
 
 public slots:
   void closePage();
-  //void windowActivated(int);
+  void windowActivated(int);
 
 private:
   Q_OBJECT
@@ -185,7 +185,7 @@ public:
   void NotifyActive(wxView* view) {lastActive = view;}
   wxView* GetLastActive() {return lastActive;}
   virtual void Activate(bool activate=true);
-  virtual void focusIn(){}
+  //virtual void focusIn();
   //virtual void Activate(bool activate=true,bool windowMenuAction=false);
   wxTabWidget *m_tabWidget;
 

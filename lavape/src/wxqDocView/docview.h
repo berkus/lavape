@@ -30,6 +30,7 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QSignalMapper>
+#include <QAbstractEventDispatcher>
 
 #if wxUSE_PRINTING_ARCHITECTURE
     #include "print.h"
@@ -72,6 +73,7 @@ public:
     bool isChMaximized;
     bool appExit;
     bool cmdLineEvaluated;
+    bool selChanged;
 
     bool notify(QObject* o, QEvent* e);
 
@@ -117,14 +119,16 @@ public:
     wxMainFrame *m_appWindow;
 //    QSettings *settings;
     QString lastFileOpen; //last file open from history or file dialog
+    QAbstractEventDispatcher *m_eventLoop;
 
 public slots:
     void about();
     void onFocusChanged(QWidget *old, QWidget *now);
+    void aboutToBlock();
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
-
+    wxView *m_activeView;
 
     Q_OBJECT
 };
@@ -252,7 +256,6 @@ public:
     wxChildFrame *m_viewFrame;
 
     virtual void UpdateUI() {}
-    virtual void focusIn( );
     //virtual void mousePressEvent ( QMouseEvent * e );
     wxDocument *GetDocument() const { return m_viewDocument; }
     void SetDocument(wxDocument *doc);
@@ -387,15 +390,6 @@ public:
     void OnUpdateUndo(QAction *action);
     void OnUpdateRedo(QAction *action);
 
-//    void OnUpdatePrint(QAction *action);
-//    void OnUpdatePrintSetup(QAction *action);
-//    void OnUpdatePreview(QAction *action);
-
-    // called when file format detection didn't work, can be overridden to do
-    // something in this case
-    // This is of course completely stupid, because if the file dialog is
-    // cancelled you get an assert. Brilliant. -- JACS
-//    virtual void OnOpenFileFailure() { wxFAIL_MSG(_T("file format mismatch")); }
     virtual void OnOpenFileFailure() { } //!!!
 
     virtual wxDocument *CreateDocument(const QString& path, long flags=0); //path is the used path name (no links resolved)
@@ -500,96 +494,6 @@ private:
 };
 
 
-// ----------------------------------------------------------------------------
-// Provide simple default printing facilities
-// ----------------------------------------------------------------------------
-/*
-#if wxUSE_PRINTING_ARCHITECTURE
-class WXDLLEXPORT wxDocPrintout : public wxPrintout
-{
-public:
-    wxDocPrintout(wxView *view = (wxView *) NULL, const QString& title = "Printout");
-    bool OnPrintPage(int page);
-    bool HasPage(int page);
-    bool OnBeginDocument(int startPage, int endPage);
-    void GetPageInfo(int *minPage, int *maxPage, int *selPageFrom, int *selPageTo);
-
-    virtual wxView *GetView() { return m_printoutView; }
-
-protected:
-    wxView*       m_printoutView;
-
-private:
-    Q_OBJECT;
-};
-#endif // wxUSE_PRINTING_ARCHITECTURE
-*/
-
-// ----------------------------------------------------------------------------
-// Command processing framework
-// ----------------------------------------------------------------------------
-/*
-class WXDLLEXPORT wxCommand : public QObject
-{
-public:
-    wxCommand(bool canUndoIt = FALSE, const QString& name = "");
-    virtual ~wxCommand();
-
-    // Override this to perform a command
-    virtual bool Do() =0;
-
-    // Override this to undo a command
-    virtual bool Undo() =0;
-
-    virtual bool CanUndo() const { return m_canUndo; }
-    virtual QString GetName() const { return m_commandName; }
-
-protected:
-    bool     m_canUndo;
-    QString m_commandName;
-
-private:
-    Q_OBJECT
-};
-
-class WXDLLEXPORT wxCommandProcessor : public QObject
-{
-public:
-    wxCommandProcessor(int maxCommands = 100);
-    virtual ~wxCommandProcessor();
-
-    // Pass a command to the processor. The processor calls Do(); if
-    // successful, is appended to the command history unless storeIt is FALSE.
-    virtual bool Submit(wxCommand *command, bool storeIt = true);
-    virtual bool Undo();
-    virtual bool Redo();
-    virtual bool CanUndo() const;
-    virtual bool CanRedo() const;
-
-    // Call this to manage an edit menu.
-    void SetEditMenu(QMenu *menu) { m_commandEditMenu = menu; }
-    QMenu *GetEditMenu() const { return m_commandEditMenu; }
-    virtual void SetMenuStrings();
-    virtual void Initialize();
-
-    QList<wxCommand*>& GetCommands() const { return (QList<wxCommand*>&) m_commands; }
-    int GetMaxCommands() const { return m_maxNoCommands; }
-    virtual void ClearCommands();
-
-protected:
-    unsigned           m_maxNoCommands;
-    QList<wxCommand*>        m_commands;
-    QList<wxCommand*>::iterator       m_currentCommand;
-    QMenu*       m_commandEditMenu;
-
-private:
-    Q_OBJECT
-};
-*/
-// ----------------------------------------------------------------------------
-// File history management
-// ----------------------------------------------------------------------------
-
 class WXDLLEXPORT wxHistory : public QObject
 {
 public:
@@ -602,11 +506,6 @@ public:
     virtual void SetFirstInHistory(const QString& file);
     virtual void RemoveItemFromHistory(int histFileIndex);
     virtual void RemoveItemFromHistory(QString name);
-    //virtual void OnChangeOfWindowTitle(QString &oldName, QString &newName);
-//    virtual void UseMenu(QPopupMenu *menu);
-
-    // Remove menu from the list (MDI child may be closing)
-//    virtual void RemoveMenu(QPopupMenu *menu);
 
 #if wxUSE_CONFIG
     virtual void Load(QSettings& config);
@@ -642,20 +541,5 @@ private:
 extern WXDLLEXPORT QString ResolveLinks(QFileInfo &qf);
 
 extern WXDLLEXPORT_DATA(wxApp*) wxTheApp;
-
-
-/*
-#if wxUSE_STD_IOSTREAM
-// For compatibility with existing file formats:
-// converts from/to a stream to/from a temporary file.
-bool WXDLLEXPORT wxTransferFileToStream(const QString& filename, ostream& stream);
-bool WXDLLEXPORT wxTransferStreamToFile(istream& stream, const QString& filename);
-#else
-// For compatibility with existing file formats:
-// converts from/to a stream to/from a temporary file.
-bool WXDLLEXPORT wxTransferFileToStream(const QString& filename, wxOutputStream& stream);
-bool WXDLLEXPORT wxTransferStreamToFile(wxInputStream& stream, const QString& filename);
-#endif
-*/
 
 #endif // _WX_DOCH__

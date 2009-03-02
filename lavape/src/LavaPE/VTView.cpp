@@ -895,17 +895,15 @@ void CVTView::OnActivateView(bool bActivate, wxView *deactiveView)
   CTreeItem* sel;
   if (GetDocument()->mySynDef)
     if (bActivate) {
-      active = true;
       sel = (CTreeItem*)Tree->currentItem();
       SetVTError(sel);
       if (!Tree->hasFocus())
         Tree->setFocus();
-      //wxTheApp->updateButtonsMenus();
     }
     else {
-      active = false;
       DisableActions();
     }
+  wxView::OnActivateView(bActivate,deactiveView);
 }
 
 void CVTView::OnCollapseAll()

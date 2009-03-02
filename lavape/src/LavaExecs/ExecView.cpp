@@ -1408,7 +1408,7 @@ void CExecView::Select (SynObject *selObj)
 
   if (active) {
     redCtl->setFocus();
-    //wxTheApp->updateButtonsMenus();
+    wxTheApp->selChanged = true;
   }
 
   SetHelpText();
@@ -6458,17 +6458,14 @@ void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
   QString empty;
 
   if (GetDocument()->mySynDef && !destroying && bActivate) {
-    active = true;
     if (Base)
       SetHelpText();
     redCtl->setFocus();
-    //if (initialUpdateDone)
-    //  wxTheApp->updateButtonsMenus();
   }
   else if (!bActivate) {
-    active = false;
     DisableActions();
   }
+  wxView::OnActivateView(bActivate,deactiveView);
 }
 
 void CExecView::OnUpdateInterval(QAction* action)
