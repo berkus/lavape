@@ -273,15 +273,9 @@ void CInclView::customEvent(QEvent *ev0)
     fn.replace(0,1,driveLetter);
 #endif
     CLavaPEDoc* doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(fn);
-    //doc->SetUserFilename( fn);
     delete usersFn;
     if (doc) {
-      doc->MainView->ActivateView(true);
-      /*
-      doc->SetTitle( fi.absoluteFilePath());
-			abs_fn = fi.absoluteFilePath();
-      doc->MainView->GetParentFrame()->SetTitle(abs_fn);
-      */
+      doc->MainView->Activate(false);
     }
   }
 }
@@ -438,7 +432,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
       DisableActions();
     }
   }
-  wxView::OnActivateView(bActivate,deactiveView);
+  //wxView::OnActivateView(bActivate,deactiveView);
 }
 
 void CInclView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )

@@ -904,7 +904,7 @@ void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView)
       DisableActions();
     }
   }
-  wxView::OnActivateView(bActivate,deactiveView);
+  //wxView::OnActivateView(bActivate,deactiveView);
 }
 
 

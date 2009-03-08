@@ -45,7 +45,7 @@ public:
   ~CExecView();
 
 // Attributes
-  bool OnCreate();
+  //bool OnCreate();
   void OnCloseExec();
   bool event(QEvent *ev);
   void focusInEvent(QFocusEvent *ev);

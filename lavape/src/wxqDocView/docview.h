@@ -260,7 +260,6 @@ public:
     wxChildFrame *m_viewFrame;
 
     virtual void UpdateUI() {}
-    //virtual void mousePressEvent ( QMouseEvent * e );
     wxDocument *GetDocument() const { return m_viewDocument; }
     void SetDocument(wxDocument *doc);
 
@@ -268,11 +267,7 @@ public:
     void SetViewName(const QString& name) { m_viewTypeName = name; };
 
     wxChildFrame *GetParentFrame() const { return m_viewFrame ; }
-//    void SetFrame(wxChildFrame *frame) { m_viewFrame = frame; }
-    virtual void ActivateView(bool activate);
-    virtual void OnActivateView(bool activate=true, wxView *deactiveView=0);
-//    virtual void OnDraw(QPainter *dc) = 0;
-//    virtual void OnPrint(wxDC *dc, QObject *info);
+    virtual void Activate(bool activate);
     virtual void OnUpdate(wxView *sender, unsigned param, QObject *hint = (QObject *) NULL);
     virtual void OnChangeFilename();
 
@@ -284,12 +279,6 @@ public:
 
     // Override to do cleanup/veto close
     virtual bool on_cancelButton_clicked(/*bool deleteWindow*/);
-
-    // Extend event processing to search the document's event table
-//    virtual bool ProcessEvent(wxEvent& event);
-
-    // A view's window can call this to notify the view it is (in)active.
-    // The function then notifies the document manager.
 
 #if wxUSE_PRINTING_ARCHITECTURE
     virtual wxPrintout *OnCreatePrintout();
@@ -424,10 +413,10 @@ public:
 
     // Views or windows should inform the document manager
     // when a view is going in or out of focus
-    virtual void RememberActiveView(wxView *view, bool activate = true);
+    virtual void RememberActiveView(wxView *view);
     virtual wxView *GetActiveView();// const;
     virtual wxChildFrame *GetActiveFrame() { return m_activeFrame; }
-    virtual void RememberActiveFrame(wxChildFrame *af, bool doIt=false, bool deactivate=false);
+    virtual void RememberActiveFrame(wxChildFrame *af);
 
     virtual QList<wxDocument*>& GetDocuments() const { return (QList<wxDocument*>&) m_docs; }
 

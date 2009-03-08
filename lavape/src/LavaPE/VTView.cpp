@@ -893,17 +893,17 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
 void CVTView::OnActivateView(bool bActivate, wxView *deactiveView)
 {
   CTreeItem* sel;
-  if (GetDocument()->mySynDef)
-    if (bActivate) {
+  if (GetDocument()->mySynDef) {
+    //if (bActivate) {
       sel = (CTreeItem*)Tree->currentItem();
       SetVTError(sel);
       if (!Tree->hasFocus())
         Tree->setFocus();
-    }
-    else {
-      DisableActions();
-    }
-  wxView::OnActivateView(bActivate,deactiveView);
+  }
+    //else {
+    //  DisableActions();
+    //}
+  //wxView::OnActivateView(bActivate,deactiveView);
 }
 
 void CVTView::OnCollapseAll()

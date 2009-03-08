@@ -443,10 +443,10 @@ void CLavaPEApp::OnPopcontext()
     return;
   ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext = back->prev;
   wxView *backView = back->fromView;
-  if (backView == wxDocManager::GetDocumentManager()->GetActiveView())
-    backView->OnActivateView();
-  else
-    backView->ActivateView(true);
+  //if (backView == wxDocManager::GetDocumentManager()->GetActiveView())
+  //  backView->OnActivateView();
+  //else
+    backView->Activate(false);
 
   if (backView->inherits("CExecView"))
     ((CExecView*)backView)->Select((SynObject*)back->synObjSel);
@@ -1260,11 +1260,11 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
         view = doc->MainView; //find the documents main view
       if (view) {
         popUp = (view == doc->MainView) && formDECL;
-        if (wxDocManager::GetDocumentManager()->GetActiveView() == view)
-          view->OnActivateView();
-        else
+        //if (wxDocManager::GetDocumentManager()->GetActiveView() == view)
+        //  view->OnActivateView();
+        //else
           if (!popUp)
-            view->ActivateView(true);
+            view->Activate(false);
         if (popUp)
           item = ((CLavaPEView*)view)->BrowseTree(formDECL, (CTreeItem*)((CLavaPEView*)view)->Tree->RootItem, enumID);
         else

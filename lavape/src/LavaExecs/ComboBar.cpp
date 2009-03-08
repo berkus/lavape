@@ -381,7 +381,6 @@ void CComboBar::OnNewPFunc()
   CExecView *view = (CExecView*)wxDocManager::GetDocumentManager()->GetActiveView();
   id.nID = myDoc->MakeFunc(SelfTypeDECL, false, view);
   id.nINCL = 0;
-  view->GetParentFrame()->Activate(true);
   if (id.nID > 0) {
     funcDecl = myDoc->IDTable.GetDECL(id);
     QString refName = QString(funcDecl->LocalName.c);
@@ -412,7 +411,6 @@ void CComboBar::OnNewFunc()
   }
   if (destDECL)
     id.nID = doc->MakeFunc(destDECL, doc != myDoc, view);
-  view->GetParentFrame()->Activate(true);
   if (id.nID > 0) {
     otherID = TID(id.nID, 0);
     funcDecl = doc->IDTable.GetDECL(otherID);

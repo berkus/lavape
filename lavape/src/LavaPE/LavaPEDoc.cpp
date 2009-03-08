@@ -3495,9 +3495,6 @@ void CLavaPEDoc::OnTotalCheck()
 			absName  = IDTable.IDTab[ii]->FileName;
 			AbsPathName (absName, IDTable.DocDir);
 			absName2.Reset (0);
-			/*pos = mana->GetFirstDocPos();
-			while (pos && !SameFile(absName, absName2)) {
-			  doc = (CLavaPEDoc*)mana->GetNextDoc(pos);*/
 			for (pos = 0; pos < mana->m_docs.size(); pos++)
 			{
 				doc = (CLavaPEDoc*) mana->m_docs[pos];
@@ -3521,8 +3518,6 @@ void CLavaPEDoc::OnTotalCheck()
 				if (doc->nErrors || doc->nPlaceholders)
 				{
 					nErrBoxShown++;
-					//if (!doc->openInTotalCheck)
-					//  doc->MainView->GetParentFrame()->Activate(true);
 					doc->ShowErrorBox (true);
           QString efile(absName.c);
           ((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView->setErrorFile(efile);
@@ -3554,12 +3549,10 @@ void CLavaPEDoc::OnTotalCheck()
 		if (doc->openInTotalCheck)
 		{
 			QApplication::postEvent (wxTheApp, new CustomEvent (UEV_LavaPE_CloseDoc, (void*) doc));
-			//doc->OnCloseDocument();
-			//pos--;
 		}
 	}
 	((CLavaPEApp*) wxTheApp)->inTotalCheck = false;
-	mana->RememberActiveView (actView, true);
+	//mana->RememberActiveView (actView);
 }
 
 void CLavaPEDoc::OnUpdateRunLava (QAction* action)
@@ -3637,16 +3630,13 @@ bool CLavaPEDoc::OpenGUIView (LavaDECL** pdecl)
 		formChild->InitialUpdate();
 		delete ((CLavaPEApp*) wxTheApp)->LBaseData.actHint;
 		((CLavaPEApp*) wxTheApp)->LBaseData.actHint = 0;
-
 	}
 	if (active)
 	{
 		formChild->Activate (true);
-		// if (wxDocManager::GetOpenDocCount() == 1)
-		//	  QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new CustomEvent(QEvent::User,0));
 	}
 	return true;
-}//OpenGUIView
+}
 
 bool CLavaPEDoc::OpenVTView (LavaDECL** pdecl, unsigned long autoUpdate)
 {

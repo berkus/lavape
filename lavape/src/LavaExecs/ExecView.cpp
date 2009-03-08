@@ -139,7 +139,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   Base = 0;
   myDoc = 0;
   editCtlVisible = false;
-  //redCtl->update();
+  sv->setFont(LBaseData->m_ExecFont);
 }
 
 CExecView::~CExecView()
@@ -153,11 +153,11 @@ CExecView::~CExecView()
     lastDebugStopExec = 0;
 }
 
-bool CExecView::OnCreate()
-{
-  sv->setFont(LBaseData->m_ExecFont);
-  return true;
-}
+//bool CExecView::OnCreate()
+//{
+//  sv->setFont(LBaseData->m_ExecFont);
+//  return true;
+//}
 
 void CExecView::OnCloseExec()
 {
@@ -560,7 +560,7 @@ bool ExecContents::event(QEvent *ev) {
 QString ExecContents::text(const QPoint &point) {
   execView->text->NewSel(&point);
   if (execView->text->newSelection) {
-    wxDocManager::GetDocumentManager()->RememberActiveView(execView,true);
+    //wxDocManager::GetDocumentManager()->RememberActiveView(execView,true);
     execView->Select();
     return execView->text->currentSynObj->whatsThisText();
   }
@@ -6465,7 +6465,7 @@ void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
   else if (!bActivate) {
     DisableActions();
   }
-  wxView::OnActivateView(bActivate,deactiveView);
+  //wxView::OnActivateView(bActivate,deactiveView);
 }
 
 void CExecView::OnUpdateInterval(QAction* action)

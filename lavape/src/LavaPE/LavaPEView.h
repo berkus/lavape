@@ -167,7 +167,7 @@ public:
   void IOnEditCopy();
   bool IsChildNodeOf(CTreeItem* hitemChild, CTreeItem* hitemSuspectedParent);
   CMainItemData* Navigate(bool all, CTreeItem*& item, int& level);
-  virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
+  virtual void OnActivateView();
   QDrag*  OnDragBegin();
   void OnDragEnter(QDragEnterEvent* ev);
   void OnDragLeave(QDragLeaveEvent* ev);

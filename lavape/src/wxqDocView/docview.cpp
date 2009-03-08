@@ -530,11 +530,9 @@ bool wxDocument::DeleteAllChildFrames()
   bool delTab = false, noTab = true;
 
   while (m_docChildFrames.size()) {
-    //delete m_docChildFrames.takeAt(0);
     child = m_docChildFrames.takeAt(0);
     tab = child->m_tabWidget;
     if (tab) {
-      //tab->setCurrentWidget(child);
       tab->removePage(child);
       if (tab->count() == 0 && ((QSplitter*)tab->parentWidget())->count() > 1) {
         delete tab;
@@ -547,11 +545,8 @@ bool wxDocument::DeleteAllChildFrames()
     else 
       delete child;
   }
-  //wxTheApp->m_docManager->RememberActiveView(0);
   if (!noTab && tab->widget(0))
     QApplication::postEvent(((wxChildFrame*)tab->widget(0)), new CustomEvent(UEV_Activate));
-    //((wxChildFrame*)tab->widget(0))->Activate(true);
-  //wxTheApp->updateButtonsMenus();
   return true;
 }
 
@@ -924,9 +919,7 @@ wxChildFrame *wxView::CalcParentFrame()
 wxView::~wxView()
 {
   deleting = true;
-  wxDocManager::GetDocumentManager()->RememberActiveView(this, false);
-  //m_viewFrame->RemoveView(this); // at this time the frame and its m_viewList has already been destroyed
-  //m_viewDocument->RemoveView(this);
+  //wxDocManager::GetDocumentManager()->RememberActiveView(this, false);
 }
 
 
@@ -961,27 +954,27 @@ bool wxView::Close()
       return false;
 }
 
-void wxView::ActivateView(bool activate)
+void wxView::Activate(bool topDown)
 {
-  if (activate) {
-    active = true;
-    setFocus();
-    //wxTheApp->updateButtonsMenus();
-  }
+  active = true;
   GetParentFrame()->NotifyActive(this);
-  //GetParentFrame()->Activate(activate);
+  wxDocManager::GetDocumentManager()->RememberActiveView(this);
+  setFocus();
+  if (!topDown)
+    GetParentFrame()->Activate(topDown);
+  wxTheApp->updateButtonsMenus();
 }
 
-void wxView::OnActivateView(bool activate, wxView *deactiveView)
-{
-  if (activate) {
-    active = true;
-    myTabWidget->setCurrentWidget(m_viewFrame);
-    //setFocus();
-  }
-  else
-    active = false;
-}
+//void wxView::OnActivateView(bool activate, wxView *deactiveView)
+//{
+//  if (activate) {
+//    active = true;
+//    myTabWidget->setCurrentWidget(m_viewFrame);
+//    //setFocus();
+//  }
+//  else
+//    active = false;
+//}
 
 bool wxView::on_cancelButton_clicked()
 {
@@ -1864,38 +1857,35 @@ void wxDocManager::RemoveDocument(wxDocument *doc)
 
 // Views should inform the document manager
 // when a view is going in or out of focus
-void wxDocManager::RememberActiveView(wxView *view, bool activate)
+void wxDocManager::RememberActiveView(wxView *view)
 {
-  qDebug() << "RememberActiveView" << view << "activate:" << activate;
-  if (activate) {
-    if (view && view != m_activeView) {
-      if (m_activeView && !m_activeView->GetDocument()->deleting)
-        m_activeView->OnActivateView(false);
-      m_activeView = view;
-      view->OnActivateView();
-      view->GetParentFrame()->NotifyActive(view);
-    }
-    wxTheApp->updateButtonsMenus();
-  }
-  else {
-    if (view)
-      view->GetParentFrame()->NotifyActive(0);
-    m_activeView = 0;
-  }
+  //qDebug() << "RememberActiveView" << view;
+  m_activeView = view;
+  //if (view) {
+  //  if (view != m_activeView) {
+  //    if (m_activeView && !m_activeView->GetDocument()->deleting)
+  //      m_activeView->OnActivateView(false);
+  //    m_activeView = view;
+  //    view->OnActivateView();
+  //    view->GetParentFrame()->NotifyActive(view);
+  //  }
+  //}
+  //else {
+  //  0;
+  //}
 }
 
-void wxDocManager::RememberActiveFrame(wxChildFrame *af, bool doIt, bool deactivate) {
-  wxTabWidget *currTW;
-
+void wxDocManager::RememberActiveFrame(wxChildFrame *af) {
+  //wxTabWidget *currTW;
 
   //qDebug() << "wxDocManager::RememberActiveFrame af=" << af << "doIt=" << doIt;
-  if (deactivate) {
-    if (af == m_activeFrame)
-      m_activeFrame = 0;
-    else if (af == m_oldActiveFrame)
-      m_oldActiveFrame = 0;
-    return;
-  }
+  //if (deactivate) {
+  //  if (af == m_activeFrame)
+  //    m_activeFrame = 0;
+  //  else if (af == m_oldActiveFrame)
+  //    m_oldActiveFrame = 0;
+  //  return;
+  //}
 
   if (af == m_activeFrame)
     return;
@@ -1903,14 +1893,14 @@ void wxDocManager::RememberActiveFrame(wxChildFrame *af, bool doIt, bool deactiv
   m_oldActiveFrame = m_activeFrame;
   m_activeFrame = af;
 
-  if (!m_activeFrame) {
-    currTW = wxTheApp->m_appWindow->GetCurrentTabWindow();
-    if (!currTW)
-      return;
-    m_activeFrame = (wxChildFrame*)currTW->widget(0);
-    if (!m_activeFrame)
-      return;
-  }
+  //if (!m_activeFrame) {
+  //  currTW = wxTheApp->m_appWindow->GetCurrentTabWindow();
+  //  if (!currTW)
+  //    return;
+  //  m_activeFrame = (wxChildFrame*)currTW->widget(0);
+  //  if (!m_activeFrame)
+  //    return;
+  //}
 
   //m_activeFrame->m_tabWidget->setCurrentWidget(m_activeFrame);
   //wxTheApp->m_appWindow->SetCurrentTabWindow(m_activeFrame->m_tabWidget);

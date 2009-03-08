@@ -1822,9 +1822,7 @@ void CTreeFrame::InitialUpdate()
 {
   if (showIt) {
     wxChildFrame::InitialUpdate();
-    wxDocManager::GetDocumentManager()->RememberActiveView(viewM, true);
-    //QApplication::postEvent(this, new CustomEvent(UEV_Activate));
-    //wxChildFrame::Activate();
+    //wxDocManager::GetDocumentManager()->RememberActiveView(viewM, true);
   }
 }
 
@@ -1837,11 +1835,10 @@ void CTreeFrame::closeEvent(QCloseEvent *e)
   QApplication::postEvent(viewM->GetDocument(),new CustomEvent(UEV_Close,(void*)this));
 }
 
-void CTreeFrame::Activate(bool activate)
+void CTreeFrame::Activate(bool topDown)
 {
-  showIt = activate && (showIt || !((CLavaPEApp*)wxTheApp)->inTotalCheck);
-  if (showIt)
-    wxChildFrame::Activate(showIt);
+  if (!((CLavaPEApp*)wxTheApp)->inTotalCheck)
+    wxChildFrame::Activate(topDown);
   else
     hide();
 }
@@ -1967,7 +1964,7 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 void CFormFrame::InitialUpdate()
 {
   wxChildFrame::InitialUpdate();
-  wxDocManager::GetDocumentManager()->RememberActiveView(viewR, true);
+  //wxDocManager::GetDocumentManager()->RememberActiveView(viewR, true);
 }
 
 void CFormFrame::CalcSplitters()

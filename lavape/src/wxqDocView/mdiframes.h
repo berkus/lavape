@@ -184,9 +184,7 @@ public:
   void RemoveView(wxView *v);
   void NotifyActive(wxView* view) {lastActive = view;}
   wxView* GetLastActive() {return lastActive;}
-  virtual void Activate(bool activate=true);
-  //virtual void focusIn();
-  //virtual void Activate(bool activate=true,bool windowMenuAction=false);
+  virtual void Activate(bool topDown);
   wxTabWidget *m_tabWidget;
 
 //  FRAMEFACTORY(wxChildFrame)

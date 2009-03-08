@@ -151,14 +151,7 @@ void wxMainFrame::OnMRUFile(int histFileIndex)
         delete file;
 }
 
-//void wxMainFrame::OnMRUWindow(int histWindowIndex)
-//{
-//  HistWindow *hw = (HistWindow*)m_childFrameHistory->GetHistoryItem(histWindowIndex);
-//  hw->window->Activate(true,true);
-//}
-
 void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
-  //QSplitter *split=(QSplitter*)tw->parentWidget()->parentWidget();
   wxTabWidget *newTW=new wxTabWidget(0);
   newTW->setTabShape(QTabWidget::Triangular);
   newTW->setUsesScrollButtons(true);
@@ -206,7 +199,6 @@ void wxMainFrame::MoveToNextTabbedWindow(wxTabWidget *tw,int index){
     delete tw;
     equalize();
   }
-  //wxTheApp->updateButtonsMenus();
 }
 
 void wxMainFrame::MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index){
@@ -226,7 +218,6 @@ void wxMainFrame::MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index){
     delete tw;
     equalize();
   }
-  //wxTheApp->updateButtonsMenus();
 }
 
 void wxMainFrame::DropPage(wxTabWidget* sTw, int sIndex, wxTabWidget* dTw, int dIndex)
@@ -246,7 +237,6 @@ void wxMainFrame::DropPage(wxTabWidget* sTw, int sIndex, wxTabWidget* dTw, int d
   SetCurrentTabWindow(dTw);
   page->Activate(true);
   dTw->setTabTextColor(dTw->indexOf(page),Qt::red);
-  //wxTheApp->updateButtonsMenus();
 }
 
 void wxMainFrame::equalize() {
@@ -304,21 +294,18 @@ void wxChildFrame::InitialUpdate()
   show();
 }
 
-void wxChildFrame::Activate(bool activate)
+void wxChildFrame::Activate(bool topDown)
 {
   if (!m_tabWidget || this == wxDocManager::GetDocumentManager()->GetActiveFrame())
     return;
 
-
-  if (activate) {
-    //qDebug() << "wxChildFrame::Activate" << this;
-
-    //wxDocManager::GetDocumentManager()->RememberActiveFrame(this);
+  wxDocManager::GetDocumentManager()->RememberActiveFrame(this);
+  m_tabWidget->setCurrentWidget(this);
+  if (topDown)
     if (lastActive)
-      wxDocManager::GetDocumentManager()->RememberActiveView(lastActive, true);
+      lastActive->Activate(topDown);
     else if (!m_viewList.empty())
-      wxDocManager::GetDocumentManager()->RememberActiveView(m_viewList.first(),true);
-  }
+      m_viewList.first()->Activate(topDown);
 }
 
 void wxChildFrame::SetTitle(QString &title)
@@ -379,18 +366,13 @@ wxChildFrame::~wxChildFrame()
 {
   QString title;
 
-  //title = windowTitle();
-  //if (!title.isEmpty() && title.at(title.length()-1) == '*')
-  //  title = title.left(title.length()-1);
   deleting = true;
-  wxDocManager::GetDocumentManager()->RememberActiveFrame(this,false,true); // deactivate this frame
+  //wxDocManager::GetDocumentManager()->RememberActiveFrame(this,false,true); // deactivate this frame
   while (m_viewList.size()) {
     m_document->RemoveView(m_viewList.at(0));
     RemoveView(m_viewList.at(0));
   }
   int count = m_document->RemoveChildFrame(this);
-  //if (!wxTheApp->deletingMainFrame)
-  //  wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
   if (!count && !m_document->deleting)
     delete m_document;
 }
@@ -411,7 +393,7 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
   int index=tabAt(pt), splitterIndex=splitter->indexOf(tw);
 
   if ((index >= 0) && (evt->button() == Qt::LeftButton)) {
-    ((wxChildFrame*)tw->widget(index))->Activate();
+    ((wxChildFrame*)tw->widget(index))->Activate(true);
     dragStartPosition = evt->pos();
   }
   else {
@@ -483,7 +465,7 @@ void wxTabBar::dropEvent(QDropEvent *evt)
     QByteArray ba = evt->encodedData(wxDragFormat);
     wxTabChangeData* dragData = (wxTabChangeData*)ba.data();
     if ((parentWidget() != dragData->source) || (index != dragData->sIndex)) {
-      wxDocManager::GetDocumentManager()->RememberActiveView(0,false);
+      //wxDocManager::GetDocumentManager()->RememberActiveView(0,false);
       QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(dragData->source, dragData->sIndex, (wxTabWidget*)parentWidget(), index)));
       evt->acceptProposedAction();
     }
@@ -502,7 +484,7 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
   if (triggeredAction == ((wxTabBar*)tabBar())->closePageAction) {
     if (page->inherits("CTreeFrame")
     || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
-      page->Activate(true);
+      //page->Activate(true);
       QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
     }
     else {
@@ -516,30 +498,25 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
         wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
         if (tab->widget(0))
           QApplication::postEvent(((wxChildFrame*)tab->widget(0)), new CustomEvent(UEV_Activate));
-          //((wxChildFrame*)tab->widget(0))->Activate(true);
         deleteLater();  
       }
-      //wxTheApp->updateButtonsMenus();
     }
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->closeFileAction) {
-    page->Activate(true);
+    //page->Activate(true);
     QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->newTabWidAction) {
-    page->Activate(true);
+    //page->Activate(true);
     wxTheApp->m_appWindow->MoveToNewTabbedWindow(this,index);
-    //wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->movePageRightAction) {
-    page->Activate(true);
+    //page->Activate(true);
     wxTheApp->m_appWindow->MoveToNextTabbedWindow(this,index);
-    //wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->movePageLeftAction) {
-    page->Activate(true);
+    //page->Activate(true);
     wxTheApp->m_appWindow->MoveToPrecedingTabbedWindow(this,index);
-    //wxTheApp->updateButtonsMenus();
   }
 }
 
@@ -550,7 +527,7 @@ void wxTabWidget::closePage() {
   wxTabWidget* tab;
 
 
-  page->Activate(true);
+  //page->Activate(true);
   if (page->inherits("CTreeFrame")
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
     QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
@@ -575,12 +552,12 @@ void wxTabWidget::closePage() {
 
 void wxTabWidget::removePage(wxChildFrame *page)
 {
-  qDebug() << "1: currentWidget:" << currentWidget() << "page:" << page;
+  //qDebug() << "1: currentWidget:" << currentWidget() << "page:" << page;
   removeTab(indexOf(page));
-  qDebug() << "2: currentWidget:" << currentWidget() << "page:" << page;
+  //qDebug() << "2: currentWidget:" << currentWidget() << "page:" << page;
   if (page == wxTheApp->m_oldActFrame)
     wxTheApp->m_oldActFrame = 0;
-  wxDocManager::GetDocumentManager()->RememberActiveFrame(page,false,true);
+  //wxDocManager::GetDocumentManager()->RememberActiveFrame(page,false,true);
   delete page;
 }
 
