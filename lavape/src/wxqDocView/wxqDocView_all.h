@@ -13,6 +13,7 @@
 #include <QSplitter>
 #include <QTabBar>
 #include <QToolButton>
+#include <QTimer>
 #include <QAbstractEventDispatcher>
 
 #ifdef MINGW32

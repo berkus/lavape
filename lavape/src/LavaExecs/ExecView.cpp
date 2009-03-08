@@ -560,7 +560,7 @@ bool ExecContents::event(QEvent *ev) {
 QString ExecContents::text(const QPoint &point) {
   execView->text->NewSel(&point);
   if (execView->text->newSelection) {
-    wxDocManager::GetDocumentManager()->SetActiveView(execView,true);
+    wxDocManager::GetDocumentManager()->RememberActiveView(execView,true);
     execView->Select();
     return execView->text->currentSynObj->whatsThisText();
   }

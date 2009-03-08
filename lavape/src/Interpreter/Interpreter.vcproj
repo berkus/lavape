@@ -347,7 +347,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
-						PrecompiledHeaderThrough=""
+						PrecompiledHeaderThrough="Interpreter_all.h"
 						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>

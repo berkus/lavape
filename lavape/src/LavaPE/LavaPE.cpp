@@ -1272,7 +1272,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
         if (item) {
           itemOld = (CTreeItem*)((CLavaPEView*)view)->Tree->currentItem();
           if (itemOld)
-            itemOld->setSelected(false);//->setSelected(false);
+            itemOld->setSelected(false);
           ((CLavaPEView*)view)->Tree->setCurAndSel(item);
           if (((CLavaPEView*)view)->myFormView && (item != ((CLavaPEView*)view)->Tree->RootItem))
             ((CLavaGUIView*)((CLavaPEView*)view)->myFormView)->SyncForm(declsel);

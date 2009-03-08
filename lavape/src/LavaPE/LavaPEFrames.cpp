@@ -1822,7 +1822,7 @@ void CTreeFrame::InitialUpdate()
 {
   if (showIt) {
     wxChildFrame::InitialUpdate();
-    wxDocManager::GetDocumentManager()->SetActiveView(viewM, true);
+    wxDocManager::GetDocumentManager()->RememberActiveView(viewM, true);
     //QApplication::postEvent(this, new CustomEvent(UEV_Activate));
     //wxChildFrame::Activate();
   }
@@ -1967,7 +1967,7 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 void CFormFrame::InitialUpdate()
 {
   wxChildFrame::InitialUpdate();
-  wxDocManager::GetDocumentManager()->SetActiveView(viewR, true);
+  wxDocManager::GetDocumentManager()->RememberActiveView(viewR, true);
 }
 
 void CFormFrame::CalcSplitters()

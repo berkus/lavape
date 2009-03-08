@@ -313,11 +313,11 @@ void wxChildFrame::Activate(bool activate)
   if (activate) {
     //qDebug() << "wxChildFrame::Activate" << this;
 
-    //wxDocManager::GetDocumentManager()->SetActiveFrame(this);
+    //wxDocManager::GetDocumentManager()->RememberActiveFrame(this);
     if (lastActive)
-      wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
+      wxDocManager::GetDocumentManager()->RememberActiveView(lastActive, true);
     else if (!m_viewList.empty())
-      wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),true);
+      wxDocManager::GetDocumentManager()->RememberActiveView(m_viewList.first(),true);
   }
 }
 
@@ -383,7 +383,7 @@ wxChildFrame::~wxChildFrame()
   //if (!title.isEmpty() && title.at(title.length()-1) == '*')
   //  title = title.left(title.length()-1);
   deleting = true;
-  wxDocManager::GetDocumentManager()->SetActiveFrame(this,false,true); // deactivate this frame
+  wxDocManager::GetDocumentManager()->RememberActiveFrame(this,false,true); // deactivate this frame
   while (m_viewList.size()) {
     m_document->RemoveView(m_viewList.at(0));
     RemoveView(m_viewList.at(0));
@@ -483,7 +483,7 @@ void wxTabBar::dropEvent(QDropEvent *evt)
     QByteArray ba = evt->encodedData(wxDragFormat);
     wxTabChangeData* dragData = (wxTabChangeData*)ba.data();
     if ((parentWidget() != dragData->source) || (index != dragData->sIndex)) {
-      wxDocManager::GetDocumentManager()->SetActiveView(0,false);
+      wxDocManager::GetDocumentManager()->RememberActiveView(0,false);
       QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(dragData->source, dragData->sIndex, (wxTabWidget*)parentWidget(), index)));
       evt->acceptProposedAction();
     }
@@ -578,12 +578,14 @@ void wxTabWidget::removePage(wxChildFrame *page)
   qDebug() << "1: currentWidget:" << currentWidget() << "page:" << page;
   removeTab(indexOf(page));
   qDebug() << "2: currentWidget:" << currentWidget() << "page:" << page;
-  //wxDocManager::GetDocumentManager()->SetActiveFrame(page,false,true);
+  if (page == wxTheApp->m_oldActFrame)
+    wxTheApp->m_oldActFrame = 0;
+  wxDocManager::GetDocumentManager()->RememberActiveFrame(page,false,true);
   delete page;
 }
 
 void wxTabWidget::windowActivated (int index) {
-  wxDocManager::GetDocumentManager()->SetActiveFrame(((wxChildFrame*)widget(index)));
+  wxDocManager::GetDocumentManager()->RememberActiveFrame(((wxChildFrame*)widget(index)));
 }
 
 #define MYSTYLEIMP(sty)\

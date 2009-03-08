@@ -1243,7 +1243,7 @@ bool CLavaPEView::event(QEvent *ev)
   CTreeItem* item;
 
   if (ev->type() == UEV_LavaPE_CalledView) {
-    wxDocManager::GetDocumentManager()->SetActiveView(this);
+    wxDocManager::GetDocumentManager()->RememberActiveView(this);
     return true;
   }
   else if (ev->type() == UEV_LavaPE_SyncTree) {
@@ -3418,8 +3418,8 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
   else
     ItemSel = 0;
   lastCurrent = (CTreeItem*)selItem;
-  //if (active)
-  //  wxTheApp->updateButtonsMenus();
+  if (active)
+    wxTheApp->updateButtonsMenus();
 }
 
 void CLavaPEView::OnShowSpecialView(TDeclType exprType)
@@ -4489,8 +4489,6 @@ void CLavaPEView::UpdateUI()
         else
           ItemSel = 0;
       }
-      //else
-      //  ItemSel = 0;
     }
     else
       ItemSel = 0;
@@ -4498,6 +4496,7 @@ void CLavaPEView::UpdateUI()
   else
     ItemSel = 0;
 
+  //qDebug() << "ItemSel:" << ItemSel;
   if (ItemSel) {
     ItemSel = (CTreeItem*)Tree->currentItem();
     DataSel = (CMainItemData*)ItemSel->getItemData();
@@ -5313,6 +5312,7 @@ void CLavaPEView::OnUpdateEditSel(QAction* action)
              || (DataSel->type == TIType_Exec))
              && !((CTreeItem*)Tree->currentItem())->inRename;
   }
+  qDebug() << "OnUpdateEditSel, enable:" << enable;
   action->setEnabled(enable);
 }
 

@@ -3559,7 +3559,7 @@ void CLavaPEDoc::OnTotalCheck()
 		}
 	}
 	((CLavaPEApp*) wxTheApp)->inTotalCheck = false;
-	mana->SetActiveView (actView, true);
+	mana->RememberActiveView (actView, true);
 }
 
 void CLavaPEDoc::OnUpdateRunLava (QAction* action)

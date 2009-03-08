@@ -155,7 +155,7 @@ void CTComboBox::mousePressEvent(QMouseEvent* ev)
   else {
     if (GUIProg->isView && 
       (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin))
-      wxDocManager::GetDocumentManager()->SetActiveView((wxView*)GUIProg->ViewWin);
+      wxDocManager::GetDocumentManager()->RememberActiveView((wxView*)GUIProg->ViewWin);
     QComboBox::mousePressEvent(ev);
   }
 }

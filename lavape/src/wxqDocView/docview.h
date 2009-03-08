@@ -31,6 +31,7 @@
 #include <QMouseEvent>
 #include <QSignalMapper>
 #include <QAbstractEventDispatcher>
+#include <QTimer>
 
 #if wxUSE_PRINTING_ARCHITECTURE
     #include "print.h"
@@ -60,6 +61,7 @@ enum
 
 class WXDLLEXPORT wxDocManager;
 class WXDLLEXPORT wxMainFrame;
+class WXDLLEXPORT wxChildFrame;
 
 class WXDLLEXPORT wxApp : public QApplication
 {
@@ -79,7 +81,7 @@ public:
 
     int argc;
     char **argv;
-    //int timerID;
+    QAbstractEventDispatcher *m_eventLoop;
 
     virtual void saveSettings() {}
     virtual void UpdateUI() {}
@@ -117,14 +119,16 @@ public:
     //QTimer *idleTimer;
     wxDocManager* m_docManager;
     wxMainFrame *m_appWindow;
+    wxChildFrame *m_oldActFrame;
 //    QSettings *settings;
     QString lastFileOpen; //last file open from history or file dialog
-    QAbstractEventDispatcher *m_eventLoop;
+    //QTimer *m_timer;
+    QWidget *m_oldFocWid;
 
 public slots:
     void about();
-    void onFocusChanged(QWidget *old, QWidget *now);
-    void aboutToBlock();
+    //void onFocusChanged(QWidget *old, QWidget *now);
+    void noMoreEvents();
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
@@ -379,7 +383,6 @@ public:
     virtual ~wxDocManager();
     QList<wxDocument*> m_docs;
 
-public:
     // Handlers for UI update commands
     void OnUpdateFileOpen(QAction *action);
     void OnUpdateFileClose(QAction *action);
@@ -421,10 +424,10 @@ public:
 
     // Views or windows should inform the document manager
     // when a view is going in or out of focus
-    virtual void SetActiveView(wxView *view, bool activate = true);
+    virtual void RememberActiveView(wxView *view, bool activate = true);
     virtual wxView *GetActiveView();// const;
     virtual wxChildFrame *GetActiveFrame() { return m_activeFrame; }
-    virtual void SetActiveFrame(wxChildFrame *af, bool doIt=false, bool deactivate=false);
+    virtual void RememberActiveFrame(wxChildFrame *af, bool doIt=false, bool deactivate=false);
 
     virtual QList<wxDocument*>& GetDocuments() const { return (QList<wxDocument*>&) m_docs; }
 
@@ -465,14 +468,12 @@ public:
     static int GetOpenDocCount() { return wxDocManager::sm_docManager->m_docs.count(); };
 
     wxHistory*        m_fileHistory;
-    wxChildFrame      *m_activeFrame, *m_oldActiveFrame;
 
 protected:
     long              m_flags;
     int               m_defaultDocumentNameCounter;
     int               m_maxDocsOpen;
     QList<wxDocTemplate*>  m_templates;
-    wxView            *m_activeView;
     QString           m_lastDirectory;
     static wxDocManager* sm_docManager;
 
@@ -489,7 +490,10 @@ public slots:
 //    void OnPreview();
     void OnUndo();
     void OnRedo();
+
 private:
+    wxChildFrame      *m_activeFrame, *m_oldActiveFrame;
+    wxView            *m_activeView;
     Q_OBJECT
 };
 

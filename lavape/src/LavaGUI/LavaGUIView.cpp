@@ -582,7 +582,7 @@ void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint)
 bool CLavaGUIView::event(QEvent* ev)
 {
   if (ev->type() == UEV_LavaPE_CalledView) {
-    wxDocManager::GetDocumentManager()->SetActiveView(this);
+    wxDocManager::GetDocumentManager()->RememberActiveView(this);
     if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.widget && (myGUIProg->focNode == myGUIProg->ActNode))
       myGUIProg->focNode->data.FIP.widget->setFocus();
     //myGUIProg->MakeGUI.CursorOnField(myGUIProg->focNode);

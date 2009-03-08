@@ -209,7 +209,7 @@ void CFormWid::contextMenuEvent(QContextMenuEvent* ev)
   else
     if (GUIProg->isView && 
       (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin))
-      wxDocManager::GetDocumentManager()->SetActiveView((wxView*)GUIProg->ViewWin);
+      wxDocManager::GetDocumentManager()->RememberActiveView((wxView*)GUIProg->ViewWin);
 }
 
 
@@ -335,7 +335,7 @@ void CLavaGroupBox::contextMenuEvent(QContextMenuEvent* ev)
   else
     if (GUIProg->isView && 
       (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin))
-      wxDocManager::GetDocumentManager()->SetActiveView((wxView*)GUIProg->ViewWin);
+      wxDocManager::GetDocumentManager()->RememberActiveView((wxView*)GUIProg->ViewWin);
 }
 
 bool CLavaGroupBox::event(QEvent* ev)

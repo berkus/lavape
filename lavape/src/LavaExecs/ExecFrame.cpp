@@ -54,7 +54,7 @@ void CExecFrame::InitialUpdate()
 {
   wxChildFrame::InitialUpdate();
   lastActive = m_viewList.first();
-  wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
+  wxDocManager::GetDocumentManager()->RememberActiveView(lastActive, true);
 }
 
 bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
@@ -66,7 +66,7 @@ bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   m_ComboBar = new CComboBar(decl, (CPEBaseDoc*)myDoc, GetClientWindow());
   m_ExecView = (CExecView *)temp->m_viewClassInfo(GetClientWindow(),doc);
   if (m_ExecView->OnCreate())
-    wxDocManager::GetDocumentManager()->SetActiveView(m_ExecView, true);
+    wxDocManager::GetDocumentManager()->RememberActiveView(m_ExecView, true);
   else {
     delete m_ExecView;
     return false;
