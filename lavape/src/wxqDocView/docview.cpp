@@ -146,12 +146,6 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
   //connect(this,SIGNAL(focusChanged(QWidget *,QWidget *)),this,SLOT(onFocusChanged(QWidget *,QWidget *)));
   appExit = false;
   cmdLineEvaluated = false;
-  //m_eventLoop = QAbstractEventDispatcher::instance();
-  //connect(m_eventLoop,SIGNAL(awake()),this,SLOT(awake()));
-  //m_timer = new QTimer(this);
-  //m_timer->setSingleShot(true);
-  //connect(m_timer, SIGNAL(timeout()), this, SLOT(noMoreEvents()));
-  //m_timer->start(0);
 }
 
 bool wxApp::notify(QObject* o, QEvent* e)
@@ -201,14 +195,9 @@ void wxApp::updateButtonsMenus()
     return;
   if (wxDocManager::GetDocumentManager()->GetActiveDocument() && wxDocManager::GetDocumentManager()->GetActiveDocument()->deleting)
     return;
-  //wxChildFrame *actMDIChild = (wxChildFrame*)m_appWindow->m_currentTabWidget->currentWidget();
 
   onUpdateUI();
 
-  //wxChildFrame *newActMDIChild = (wxChildFrame*)m_appWindow->m_currentTabWidget->currentWidget();
-  //if (newActMDIChild != actMDIChild)
-  //newActMDIChild->m_tabWidget->setCurrentWidget(newActMDIChild);
-  //wxDocManager::GetDocumentManager()->RememberActiveFrame(0,true);
 }
 
 void wxApp::customEvent(QEvent *e)
@@ -244,7 +233,7 @@ void wxApp::onUpdateUI()
 
   focView = m_docManager->GetActiveView();
   if (focView && !focView->m_viewFrame->deleting) {
-    qDebug() << "view upateUI:" << focView;
+    //qDebug() << "view upateUI:" << focView;
     ((wxView*)focView)->GetParentFrame()->UpdateUI();
     ((wxView*)focView)->UpdateUI();
   }
@@ -414,52 +403,6 @@ void wxMainFrame::histFile(int i) {
 void wxApp::about()
 {
   QMessageBox::about(m_appWindow,"Qt Application Example","Qt Application Example");
-}
-
-void wxApp::noMoreEvents() {
-  //wxView *actView = wxDocManager::GetDocumentManager()->GetActiveView();
-  QWidget *focWid=focusWidget(), *parent;
-  //qDebug() << "focWid:" << focWid << "m_oldFocWid:" << m_oldFocWid << "selChanged:" << selChanged;
-  //m_timer->stop();
-  if (focWid == m_oldFocWid && !selChanged)
-    return;
-  wxDocManager *docMan=wxDocManager::GetDocumentManager();
-  wxChildFrame *activeFrame;
-  wxTabWidget *tabWidget, *oldTabWidget=m_oldActFrame?m_oldActFrame->m_tabWidget:0;
-
-  if (focWid) {
-    for ( parent=focWid; parent; parent = parent->parentWidget()) {
-      if (parent->inherits("wxChildFrame")) {
-        activeFrame = (wxChildFrame*)parent;
-        tabWidget = activeFrame->m_tabWidget;
-        qDebug() << activeFrame << m_oldActFrame;
-        docMan->RememberActiveFrame(activeFrame);
-        if (m_oldActFrame != activeFrame) {
-          tabWidget->setCurrentWidget(activeFrame);
-          m_appWindow->SetCurrentTabWindow(activeFrame->m_tabWidget);
-          tabWidget->setTabTextColor(tabWidget->indexOf(activeFrame),Qt::red);
-          if (m_oldActFrame && !m_oldActFrame->deleting)
-            oldTabWidget->setTabTextColor(oldTabWidget->indexOf(m_oldActFrame),Qt::black);
-          m_oldActFrame = activeFrame;
-        }
-        updateButtonsMenus();
-        break;
-      }
-    }
-  }
-
-  //qDebug() << "aboutToBlock";
-  //if (actView == m_activeView) {
-  //  if (selChanged)
-  //    updateButtonsMenus();
-  //}
-  //else {
-  //  m_activeView = actView;
-  //  updateButtonsMenus();
-  //}
-  m_oldFocWid = focWid;
-  selChanged = false;
-  //m_timer->start(0);
 }
 
 static QString FindExtension(const char *path)
@@ -946,12 +889,10 @@ void wxView::SetDocument(wxDocument *doc)
 
 bool wxView::Close()
 {
-  if (on_cancelButton_clicked()) {
-      //deleteLater();
-      return true;
-  }
+  if (on_cancelButton_clicked())
+    return true;
   else
-      return false;
+    return false;
 }
 
 void wxView::Activate(bool topDown)
@@ -959,34 +900,17 @@ void wxView::Activate(bool topDown)
   active = true;
   GetParentFrame()->NotifyActive(this);
   wxDocManager::GetDocumentManager()->RememberActiveView(this);
-  setFocus();
   if (!topDown)
     GetParentFrame()->Activate(topDown);
+  setFocus();
   wxTheApp->updateButtonsMenus();
 }
-
-//void wxView::OnActivateView(bool activate, wxView *deactiveView)
-//{
-//  if (activate) {
-//    active = true;
-//    myTabWidget->setCurrentWidget(m_viewFrame);
-//    //setFocus();
-//  }
-//  else
-//    active = false;
-//}
 
 bool wxView::on_cancelButton_clicked()
 {
   return true;
 }
 
-#if wxUSE_PRINTING_ARCHITECTURE
-wxPrintout *wxView::OnCreatePrintout()
-{
-    return new wxDocPrintout(this);
-}
-#endif // wxUSE_PRINTING_ARCHITECTURE
 
 // ----------------------------------------------------------------------------
 // wxDocTemplate
@@ -1118,7 +1042,7 @@ wxDocManager::wxDocManager(long flags)
   setObjectName(QString("wxDocManager"));
   m_defaultDocumentNameCounter = 1;
   m_flags = flags;
-  m_activeView = (wxView *) NULL;
+  m_activeView = 0;
   m_maxDocsOpen = 10000;
   m_fileHistory = (wxHistory *) NULL;
   sm_docManager = this;
@@ -1297,7 +1221,7 @@ wxView *wxDocManager::GetActiveView()
 {
   if (m_docs.isEmpty())
     return 0;
-  qDebug() << "GetActiveView, m_activeView:" << m_activeView;
+  //qDebug() << "GetActiveView, m_activeView:" << m_activeView;
   if (m_activeView)
     return m_activeView;
   if (m_docs.count() == 1) {
@@ -1306,37 +1230,6 @@ wxView *wxDocManager::GetActiveView()
   }
   return 0;
 }
-
-/*
-POSITION wxDocManager::GetFirstDocPos()
-{
-  if (m_docs.isEmpty())
-    return 0;
-  QList<wxDocument*>::iterator* iter = new QList<wxDocument*>::iterator(m_docs.begin());
-  return (POSITION)iter;
-}
-
-wxDocument* wxDocManager::GetNextDoc(POSITION& pos)
-{
-  if (!pos)
-    return 0;
-  QList<wxDocument*>::iterator* iter = (QList<wxDocument*>::iterator*)pos;
-  wxDocument *doc = **iter;
-  ++(*iter);
-  if (*iter == m_docs.end()) {
-    delete iter;
-    pos = 0;
-  }
-  return doc;
-}
-
-void wxDocManager::DocPosRelease(POSITION pos)
-{
-  if (pos) {
-    QList<wxDocument*>::iterator iter = *(QList<wxDocument*>::iterator*)pos;
-    m_docs.erase(iter);
-  }
-}*/
 
 wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
 {
@@ -1859,51 +1752,16 @@ void wxDocManager::RemoveDocument(wxDocument *doc)
 // when a view is going in or out of focus
 void wxDocManager::RememberActiveView(wxView *view)
 {
-  //qDebug() << "RememberActiveView" << view;
   m_activeView = view;
-  //if (view) {
-  //  if (view != m_activeView) {
-  //    if (m_activeView && !m_activeView->GetDocument()->deleting)
-  //      m_activeView->OnActivateView(false);
-  //    m_activeView = view;
-  //    view->OnActivateView();
-  //    view->GetParentFrame()->NotifyActive(view);
-  //  }
-  //}
-  //else {
-  //  0;
-  //}
 }
 
 void wxDocManager::RememberActiveFrame(wxChildFrame *af) {
-  //wxTabWidget *currTW;
-
-  //qDebug() << "wxDocManager::RememberActiveFrame af=" << af << "doIt=" << doIt;
-  //if (deactivate) {
-  //  if (af == m_activeFrame)
-  //    m_activeFrame = 0;
-  //  else if (af == m_oldActiveFrame)
-  //    m_oldActiveFrame = 0;
-  //  return;
-  //}
 
   if (af == m_activeFrame)
     return;
 
   m_oldActiveFrame = m_activeFrame;
   m_activeFrame = af;
-
-  //if (!m_activeFrame) {
-  //  currTW = wxTheApp->m_appWindow->GetCurrentTabWindow();
-  //  if (!currTW)
-  //    return;
-  //  m_activeFrame = (wxChildFrame*)currTW->widget(0);
-  //  if (!m_activeFrame)
-  //    return;
-  //}
-
-  //m_activeFrame->m_tabWidget->setCurrentWidget(m_activeFrame);
-  //wxTheApp->m_appWindow->SetCurrentTabWindow(m_activeFrame->m_tabWidget);
 }
 
 

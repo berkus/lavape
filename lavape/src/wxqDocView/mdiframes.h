@@ -145,7 +145,7 @@ public:
   wxTabWidget(QWidget *parent) : QTabWidget(parent) {
     m_tabBar = new wxTabBar(this);
     setTabBar(m_tabBar);
-    connect(this ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
+    //connect(this ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   }
 
   void postTabChange(int index, QAction* triggeredAction);

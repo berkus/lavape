@@ -140,6 +140,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   myDoc = 0;
   editCtlVisible = false;
   sv->setFont(LBaseData->m_ExecFont);
+  setFocusProxy(redCtl);
 }
 
 CExecView::~CExecView()
@@ -1267,7 +1268,7 @@ void MyScrollView::mousePressEvent (QMouseEvent *e) {
 void MyScrollView::mouseDoubleClickEvent (QMouseEvent *e) {
   if (e->button() != Qt::LeftButton)
     return;
-  execView->OnLButtonDblClk(e);
+  //execView->OnLButtonDblClk(e);
 }
 
 MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
@@ -1322,8 +1323,9 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
             && !text->currentSelection->data.synObject->EnumAdmissibleOnly(text->ckd)))) {
       doubleClick = true;
     }
-    redCtl->setFocus();
-    Select();
+    Select(); //Select before Activate/updateButtonsMenus!
+    if (!doubleClick)
+      Activate(false);
   }
   doubleClick = false;
   clicked = false;
@@ -1418,7 +1420,7 @@ void CExecView::Select (SynObject *selObj)
     clicked = false;
 
     if (doubleClick) {
-      doubleClick = false;
+      //doubleClick = false;
 
       pComment = new CComment(this);
       synObj = text->currentSynObj;
@@ -1457,7 +1459,7 @@ void CExecView::Select (SynObject *selObj)
   switch (text->currentSynObj->primaryToken) {
   case FuncRef_T:
     if (doubleClick && EnableGotoDecl()) {
-      doubleClick = false;
+      //doubleClick = false;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       OnGotoDecl();
       redCtl->update();
@@ -1863,7 +1865,7 @@ exp: // Const_T
 
   case TDOD_T:
     if (doubleClick && EnableGotoDecl()) {
-      doubleClick = false;
+      //doubleClick = false;
       OnGotoDecl();
       redCtl->update();
       return;
@@ -1897,14 +1899,14 @@ exp: // Const_T
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       }
     }
-    doubleClick = false;
+    //doubleClick = false;
     redCtl->update();
     return;
 
   case TypePH_T:
   case TypeRef_T:
     if (doubleClick && EnableGotoDecl()) {
-      doubleClick = false;
+      //doubleClick = false;
       OnGotoDecl();
       redCtl->update();
       return;
@@ -1937,7 +1939,7 @@ exp: // Const_T
     }
     else
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(typeCombo);
-    doubleClick = false;
+    //doubleClick = false;
     redCtl->update();
     return;
 
@@ -1946,7 +1948,7 @@ exp: // Const_T
   case CompObj_T:
   case CrtblRef_T:
     if (doubleClick && EnableGotoDecl()) {
-      doubleClick = false;
+      //doubleClick = false;
       OnGotoDecl();
       redCtl->update();
       return;
@@ -1962,7 +1964,7 @@ exp: // Const_T
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(newAndCObjCombo);
     else // "call" statement
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(callCombo);
-    doubleClick = false;
+    //doubleClick = false;
     redCtl->update();
     return;
 
@@ -1991,11 +1993,11 @@ exp: // Const_T
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
     if (doubleClick && EnableGotoDecl()) {
       OnGotoDecl();
-      doubleClick = false;
+      //doubleClick = false;
       break;
     }
     else {
-      doubleClick = false;
+      //doubleClick = false;
       goto exp;
     }
 
@@ -2017,7 +2019,7 @@ exp: // Const_T
     return;
   }
 
-  doubleClick = false;
+  //doubleClick = false;
 
   if (text->currentSelection->data.token == Exp_T
   || text->currentSelection->data.token == ExpOpt_T

@@ -128,7 +128,6 @@ public:
 public slots:
     void about();
     //void onFocusChanged(QWidget *old, QWidget *now);
-    void noMoreEvents();
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
@@ -279,10 +278,6 @@ public:
 
     // Override to do cleanup/veto close
     virtual bool on_cancelButton_clicked(/*bool deleteWindow*/);
-
-#if wxUSE_PRINTING_ARCHITECTURE
-    virtual wxPrintout *OnCreatePrintout();
-#endif
 
 protected:
     wxDocument*               m_viewDocument;

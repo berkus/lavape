@@ -296,11 +296,20 @@ void wxChildFrame::InitialUpdate()
 
 void wxChildFrame::Activate(bool topDown)
 {
-  if (!m_tabWidget || this == wxDocManager::GetDocumentManager()->GetActiveFrame())
-    return;
+  wxChildFrame *oldFrame=wxDocManager::GetDocumentManager()->GetActiveFrame();
+  wxTabWidget *oldTabWidget=oldFrame?oldFrame->m_tabWidget:0;
 
-  wxDocManager::GetDocumentManager()->RememberActiveFrame(this);
-  m_tabWidget->setCurrentWidget(this);
+  if (this == oldFrame)
+    return;
+  else {//correct tab colors
+    wxDocManager::GetDocumentManager()->RememberActiveFrame(this);
+    m_tabWidget->setCurrentWidget(this);
+    wxTheApp->m_appWindow->SetCurrentTabWindow(m_tabWidget);
+    m_tabWidget->setTabTextColor(m_tabWidget->indexOf(this),Qt::red);
+    if (oldFrame && !oldFrame->deleting)
+      oldTabWidget->setTabTextColor(oldTabWidget->indexOf(oldFrame),Qt::black);
+  }
+
   if (topDown)
     if (lastActive)
       lastActive->Activate(topDown);

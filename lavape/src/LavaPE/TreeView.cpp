@@ -452,8 +452,7 @@ CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name)
 {
   Tree = new MyListView(this);
   layout->addWidget(Tree);
-  //  setFocusProxy(Tree);
-//  Tree->setSorting(-1);
+  setFocusProxy(Tree);
   Tree->setColumnCount(1);
   Tree->setRootIsDecorated(true);
   Tree->header()->hide();
