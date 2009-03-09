@@ -376,7 +376,8 @@ wxChildFrame::~wxChildFrame()
   QString title;
 
   deleting = true;
-  //wxDocManager::GetDocumentManager()->RememberActiveFrame(this,false,true); // deactivate this frame
+  if (wxDocManager::GetDocumentManager()->GetActiveFrame() == this)
+    wxDocManager::GetDocumentManager()->RememberActiveFrame(0);
   while (m_viewList.size()) {
     m_document->RemoveView(m_viewList.at(0));
     RemoveView(m_viewList.at(0));
@@ -401,8 +402,10 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
   QSplitter *splitter=(QSplitter*)tw->parentWidget();
   int index=tabAt(pt), splitterIndex=splitter->indexOf(tw);
 
-  if ((index >= 0) && (evt->button() == Qt::LeftButton)) {
+  if (index >= 0) 
     ((wxChildFrame*)tw->widget(index))->Activate(true);
+
+  if (mb == Qt::LeftButton) {
     dragStartPosition = evt->pos();
   }
   else {

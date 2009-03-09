@@ -215,10 +215,6 @@ void wxApp::customEvent(QEvent *e)
   }
 }
 
-//bool wxApp::notify (QObject *receiver,QEvent *evt ) {
-//  return QCoreApplication::notify(receiver,evt);
-//}
-
 void wxApp::onUpdateUI()
 {
   wxView *focView;
@@ -1756,10 +1752,12 @@ void wxDocManager::RememberActiveView(wxView *view)
 }
 
 void wxDocManager::RememberActiveFrame(wxChildFrame *af) {
-
+  if (!af) {
+    m_activeFrame = 0;
+    return;
+  }
   if (af == m_activeFrame)
     return;
-
   m_oldActiveFrame = m_activeFrame;
   m_activeFrame = af;
 }
