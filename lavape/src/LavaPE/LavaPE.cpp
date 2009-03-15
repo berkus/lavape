@@ -726,7 +726,7 @@ void CLavaPEApp::HtmlHelp()
 
 void CLavaPEApp::EditingLavaProgs()
 {
-  QString path("/usr/local/Trolltech/Qt-4.3.2/bin/assistant.app/Contents/MacOS/assistant");
+  QString path(QASSISTANT);
   QStringList args;
   args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 
@@ -750,22 +750,6 @@ void CLavaPEApp::LearningLava()
   }
 
   qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
-/*      QString buf;
-
-  if (LBaseData.m_myWebBrowser.isEmpty()) {
-QMessageBox::critical(m_appWindow,applicationName(),ERR_MissingBrowserPath,QMessageBox::Ok,0,0);
-          return;
-  }
-
-  QStringList args;
-  args << LBaseData.m_myWebBrowser << "file://" + ExeDir+"/../doc/html/LavaBySamples.htm";
-  QProcess browser(args);
-
-  if (!browser.launch(buf)) {
-QMessageBox::critical(m_appWindow,applicationName(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok,0,0);
-          return;
-  }
-*/
 }
 
 void CLavaPEApp::OnSaveAll()
@@ -773,25 +757,10 @@ void CLavaPEApp::OnSaveAll()
   DoSaveAll();
 }
 
-/*
-bool CLavaPEApp::DoSaveAll()
-{
-  bool ret = true;
-  CLavaPEDoc* doc;
-  int pos;
-  for (pos = 0; pos < wxDocManager::GetDocumentManager()->m_docs.size(); pos++) {
-    doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->m_docs[pos];
-    if (doc->IsModified())
-      ret = ret && doc->Save();
-  }
-  return ret;
-}*/
 
 void CLavaPEApp::OnImport()
 {
-  // TODO: Add your command handler code here
-
-  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), applicationName(), "Not yet implemented!",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), applicationName(), "Not yet implemented!",QMessageBox::Ok| QMessageBox::Default,Qt::NoButton);
 }
 
 void CLavaPEApp::OnFindByName()

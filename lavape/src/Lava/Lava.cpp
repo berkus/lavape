@@ -625,8 +625,8 @@ void CLavaApp::HtmlHelp()
   QStringList args;
   args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
   if (!qacl) {
-          qacl = new QAssistantClient(path,m_appWindow);
-          qacl->setArguments(args);
+    qacl = new QAssistantClient(path,m_appWindow);
+    qacl->setArguments(args);
   }
 
   qacl->showPage(ExeDir + "/../doc/html/FAQ.htm");
@@ -639,8 +639,8 @@ void CLavaApp::EditingLavaProgs()
   args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 
   if (!qacl) {
-          qacl = new QAssistantClient(path,m_appWindow);
-          qacl->setArguments(args);
+    qacl = new QAssistantClient(path,m_appWindow);
+    qacl->setArguments(args);
   }
 
   qacl->showPage(ExeDir + "/../doc/html/BasicEditing.htm");
@@ -653,8 +653,8 @@ void CLavaApp::LearningLava()
   args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 
   if (!qacl) {
-          qacl = new QAssistantClient(path,m_appWindow);
-          qacl->setArguments(args);
+    qacl = new QAssistantClient(path,m_appWindow);
+    qacl->setArguments(args);
   }
 
   qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
