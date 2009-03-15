@@ -1,60 +1,72 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta content="text/html; charset=iso-8859-1">
-    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-    <title>
-      IfStatement
-    </title>
-    <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
-  </head>
-  <body>
-  <h2 align="center">If-then-elsif-else statement</h2>
-  <p>The <font color="#FF0000"><i><b>Lava</b></i></font> <font color="#0000FF">
-  <b>if</b></font>-<font color="#0000FF"><b>then</b></font>-<font color="#0000FF"><b>elsif</b></font>-<font color="#0000FF"><b>else</b></font> 
-  branching statement is different from corresponding statements in other 
-  languages in so far as its <font color="#0000FF"><b>if</b></font>- and
-  <font color="#0000FF"><b>elsif</b></font>-conditions aren't <b>expressions</b> 
-  but <b>statements</b><i> </i>and as such may be <b>true</b> or <b>false</b>. 
-  This is a consequence of the <a href="../SingleAssigLogSem.htm">logical 
-  semantics</a> of <font color="#FF0000"><i><b>Lava</b></i></font>.</p>
-  <p>The <font color="#0000FF"><b>elsif</b></font> and <font color="#0000FF"><b>
-  else</b></font> branches are optional and may be omitted (by deleting them 
-  using the DEL key or the scissors button).</p>
-  <p><b>Please note</b> that <font color="#FF0000"><i><b>Lava</b></i></font> 
-  performs <a href="../IniChecks.htm">comprehensive initialization checks</a> 
-  for all kinds of variables. This may particularly involve a check whether a 
-  value is assigned to a certain variable <b>in all branches</b> of a
-  <font color="#FF0000"><i><b>Lava</b></i></font> <a href="../EditExec.htm#exec">
-  exec</a>, or <b>in all preceding branches</b> before a read reference to that 
-  variable. These checks will succeed only if you don't distribute these 
-  assignments over separate <font color="#0000FF"><b>if</b></font> statements as 
-  in the following example:</p>
-  <blockquote>
-    <pre><font color="#0000FF"><b>if</b></font>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>IfStatement</title>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  i.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  b.c1 {color:Blue}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+      }
+      .style2
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style3
+      {
+          color: #CC00CC;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">If-then-elsif-else statement</h2>
+
+  <p>The <i class="c2">Lava</i> <b>i<span class="style1">f</span></b><span 
+          class="style1">-<b>then</b>-<b>elsif</b>-<b>else</b></span> branching statement is different from corresponding statements in other languages in so far as its 
+      <span class="style2">if</span>- and <span class="style3">elsif</span>-conditions aren&#39;t <b>expressions</b> but <b>statements</b> and as such may be 
+      <span class="style2">true</span> or <span class="style2">false</span>. This is a consequence of the <a href="../SingleAssigLogSem.htm">logical semantics</a> of <i class="c2">Lava</i>.</p>
+
+  <p>The <span class="style3">elsif</span> and <span class="style3">else</span> branches are optional and may be omitted (by deleting them using the 
+      <b>DEL</b> key or the scissors button).</p>
+
+  <p><b>Please note</b> that <i class="c2">Lava</i> performs <a href="../IniChecks.htm">comprehensive initialization checks</a> for all kinds of variables. This may particularly involve a check whether a value is assigned to a certain variable <b>in all branches</b> of a <i class="c2">Lava</i> <a href="../EditExec.htm#exec">exec</a>, or <b>in all preceding branches</b> before a read reference to that variable. These checks will succeed only if you don&#39;t distribute these assignments over separate 
+      <span class="style2">if</span> statements as in the following example:</p>
+
+<pre xml:space="preserve">
+<span class="style2">if</span>
   A
-<font color="#0000FF"><b>then</b></font>
-  <font color="#0000FF"><b>set</b></font> var1 <font color="#0000FF"><b>&lt;==</b></font> x
-<font color="#0000FF"><b>#if</b></font>;
-<font color="#0000FF"><b>if</b></font>
-  <font color="#0000FF"><b>not</b></font> A
-<font color="#0000FF"><b>then</b></font>
-  <font color="#0000FF"><b>set</b></font> var1 <font color="#0000FF"><b>&lt;==</b></font> y
-<font color="#0000FF"><b>#if</b></font></pre>
-  </blockquote>
-  <p><font color="#FF0000"><i><b>Lava</b></i></font> won't be able to recognize 
-  that these two <font color="#0000FF"><b>if</b></font> statements constitute a 
-  complete disjunction, but you should use a single if-then-else statement as 
-  follows:</p>
-  <blockquote>
-    <pre><font color="#0000FF"><b>if</b></font>
+<b class="c1">then</b>
+  <b class="c1">set</b> var1 <b class="c1">&lt;==</b> x
+<b class="c1">#if</b>;
+<b class="c1">if</b>
+  <b class="c1">not</b> A
+<b class="c1">then</b>
+  <b class="c1">set</b> var1 <b class="c1">&lt;==</b> y
+<b class="c1">#if</b>
+</pre>
+
+  <p><i class="c2">Lava</i> won&#39;t be able to recognize that these two 
+      <span class="style2">if</span> statements constitute a complete disjunction, but you should use a single 
+      <span class="style2">if-then-else</span> statement as follows:</p>
+
+<pre xml:space="preserve">
+<b class="c1">if</b>
   A
-<font color="#0000FF"><b>then</b></font>
-  <font color="#0000FF"><b>set</b></font> var1 <font color="#0000FF"><b>&lt;==</b></font> x
-<font color="#0000FF"><b>else</b></font>
-  <font color="#0000FF"><b>set</b></font> var1 <font color="#0000FF"><b>&lt;==</b></font> y
-<font color="#0000FF"><b>#if</b></font></pre>
-  </blockquote>
-  </body>
+<b class="c1">then</b>
+  <b class="c1">set</b> var1 <b class="c1">&lt;==</b> x
+<b class="c1">else</b>
+  <b class="c1">set</b> var1 <b class="c1">&lt;==</b> y
+<b class="c1">#if</b>
+</pre>
+</body>
 </html>

@@ -1,142 +1,97 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<HTML><HEAD>
-<meta http-equiv="Content-Language" content="en-us">
-<TITLE>Non-substitutable virtual type samples</TITLE>
-<META http-equiv=Content-Type content="text/html; charset=windows-1252">
-<META content="Klaus D. Günther" name=Author>
-<META content="Microsoft FrontPage 5.0" name=GENERATOR>
-<meta name="ProgId" content="FrontPage.Editor.Document">
-<LINK href="LavaStyles.css" 
-type=text/css rel=STYLESHEET></HEAD>
-<BODY>
-<H2 align=center>Basic virtual type samples </H2>
-<H3>Sample files</H3>
-<p>Please open <b>ChoralSociety.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
-<P>Das gleiche Beispiel auf Deutsch&nbsp;(the same sample in German):&nbsp;</P>
-<P>Please open <b>Gesangverein.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</P>
-<P>Please open <b>ModelView.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</P>
-<P>Please open <b>QueueOfPoint.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</P>
-<P>Please open <b>Visitor.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</P>
-<H3>Topic </H3>
-<P>Interfaces and packages with type parameters ("<A 
-href="PatternsFrameworks.htm#VT">virtual types</A>"), <A 
-href="PatternsFrameworks.htm#covariant">covariant specialization</A>. </P>
-<H3>Overview</H3>
-<P><STRONG>ChoralSociety:</STRONG></P>
-<P>The ChoralSociety sample provides a package <EM>S</EM> ("Society") with two 
-virtual types <EM>society</EM> and <EM>member</EM>. In <EM>S</EM> the value of 
-<EM>society</EM> is the type <EM>Society</EM>, the value of <EM>member</EM> is 
-<EM>Member</EM>. A second package <EM>CS</EM> ("ChoralSociety") is derived from 
-<EM>S</EM> by specializing <EM>society</EM> to become <EM>ChoralSociety</EM> (in 
-turn derived fro <EM>Society</EM>) and <EM>member</EM> to become <EM>Singer</EM> 
-(derived from <EM>Member). </EM>As a consequence, the <EM>MemberList</EM> 
-becomes a list of <EM>Singer</EM>s in <EM>CS</EM> automatically, and the 
-chairman is also a <EM>Singer</EM> in <EM>CS</EM> rather than just a 
-<EM>Member</EM>.</P>
-<P><STRONG>Gesangverein:</STRONG></P>
-<P>Das Gesangvereins-Beispiel enthält ein Package&nbsp;<EM>V</EM> ("Verein") mit 
-zwei virtuellen Typen <EM>verein</EM> und <EM>mitglied</EM>. In&nbsp;<EM>V</EM> 
-ist der Wert von&nbsp;<EM>verein </EM>der Typ <EM>Verein</EM>, der Wert von 
-<EM>mitglied</EM> ist <EM>Mitglied.</EM> Aus <EM>V</EM> wird ein weiteres 
-Package <EM>GV</EM> ("Gesangverein") abgeleitet, und zwar dadurch, dass 
-<EM>verein</EM> zu <EM>Gesangverein</EM> (aus <EM>Verein</EM> abgeleitet) und 
-<EM>mitglied</EM> zu <EM>Saenger</EM> (aus <EM>Mitglied</EM> abgeleitet) 
-spezialisiert werden.&nbsp;Infolgedessen wird automatisch aus der 
-<EM>Mitgliederliste</EM> des <EM>Verein</EM>s eine Liste von <EM>Saenger</EM>n 
-im <EM>Gesangverein</EM>, und der Vorsitzende des Gesangvereins ist ebenfalls 
-ein <EM>Saenger</EM> und nicht nur ein <EM>Mitglied</EM>. </P>
-<P><STRONG>ModelView:</STRONG></P>
-<P>The ModelView sample (based on the well-known subject/observer pattern) 
-reconstructs the corresponding sample from <A href="TypeSafety.htm#TT">[16]</A>. 
-It provides a package <EM>ModelViewFW</EM> ("model/view framework") with two 
-type parameters "model" and "view".&nbsp; "ModelViewFW" contains two mutually 
-recursive types "Model" and "View". "Model" contains a member vList which is a 
-<I>homogeneous</I> "ViewList" all of whose elements have the same virtual type 
-setElem=~&lt;view&gt;. (The tilde "~" marks variable <A 
-href="TwoObjectCategories.htm">state objects</A> in <B><I><FONT 
-color=#ff0000>Lava</FONT></I></B>.) </P>
-<P>Package "DrawFW" shows how the (rudimentary) framework "ModelViewFW" could be 
-specialized by overriding its virtual types (= type parameters) "model" and 
-"view". </P>
-<P>See our <A href="SubstitutableSamples.htm">ModelManyViews</A> sample for 
-another variant of Model/View that provides an <I>inhomogeneous</I> "ViewList" 
-containing <I>different</I> types of views (on the basis of "<A 
-href="TypeSafety.htm#substitutableType">substitutable types</A>"). </P>
-<P><B>QueueOfPoint:</B></P>
-<P>The QueueOfPoint sample corresponds to a similar sample in <A 
-href="TypeSafety.htm#TT">[16]</A>, too. Compared to <A 
-href="TypeSafety.htm#TT">[16]</A>, it shows again the advantage of making 
-virtual types non-substitutable by default: We need not view the virtual type 
-"elemType" as a special, type-valued <I>member variable</I> of "Queue" objects 
-but we can introduce virtual types in a more static way as <I>type</I> 
-<I>parameters</I> of classes and packages. </P>
-<P><b>Visitor:</b></P>
-<P>The Visitor sample illustrates a special case of the well-known 
-&quot;Visitor&quot; pattern of <a href="TypeSafety.htm#GOF">[8]</a> and also a special 
-case of <a href="RepetComputSamples.htm">indirect tree recursion</a>.</P>
-<H3>Where to look and what to do</H3>
-<P><B>ModelView:<br/>
-</B>
-<br/>
-Note in particular the "<A href="PatternsFrameworks.htm#covariant">covariant 
-specialization</A>" of the only input parameter of function <I>registerView</I> 
-of class <I>Model</I>.&nbsp; </P>
-<P>Note how this is exploited in the exec of the initiator <I>ModelViewDemo</I> 
-to pass a view object of the derived type <I>DrawFW::View</I> to this 
-function.&nbsp; </P>
-<P>Note that <I>DrawFW::View </I>is <B>not</B> compatible in the traditional 
-sense (of <A href="TypeSafety.htm#c-derived">c-derivation</A>) to 
-ModelViewFW::View, since it contains member variables (<I>myModel</I>) and 
-function parameters (m of initializer <I>ini</I>) that are of a more derived 
-type in pattern <I>DrawFW</I> than in <I>ModelViewFW</I> (as a consequence of 
-covariant specialization of the VT <I>&lt;model&gt;</I>).&nbsp; </P>
-<P><B><A name=queueOfPoint></A>QueueOfPoint:<br/>
-</B>
-<br/>
-Note the two versions of class <I>X</I>: One belongs to pattern 
-<I>Queue</I> (a class having a VT <I>elemType</I>), the other is declared 
-outside <I>Queue</I>. Both have a member function <I>f</I> with almost identical 
-implementations. Look at these:</P>
-<P>The difference between the implementations of the two versions of <I>f </I>is 
-that one of them belongs to pattern <I>Queue,</I> and one doesn't. The former 
-<B>has to</B> use the virtual type <I>&lt;Queue::elemType&gt;</I> of 
-<I>Queue</I> to declare the local variable <I>p</I>, the latter <B>cannot</B> 
-use this but <B>must</B> use the concrete class <I>Point</I> to declare 
-<I>p</I>. The reasons are:</P>
-<OL>
-  <LI>If a class <I>A</I> is the value of a virtual type <I>V</I> then 
-  <I>A</I> cannot be referenced directly at any place where <I>V</I> is visible. 
-  It can only be referenced indirectly by references to <I>V</I> in these 
-  places. If A1 is derived from A within the same pattern, then A1 cannot be 
-  referenced directly, either. 
-  <LI>From outside a pattern the VTs of that pattern cannot be referenced (they 
-  are invisible to the "outside world"). </LI></OL>
-<P>The first rule corresponds to <A 
-href="PatternsFrameworks.htm#VTandNonVT">rule 9</A> in our <FONT 
-color=#ff0000><I><B>Lava</B></I></FONT> genericity section. Its motivation is 
-explained in our <A href="IsSelfVirtualSample.htm">IsSelfVirtual sample</A>.</P>
-<P>The reason for the validity of the second rule is simple: The value of a VT 
-(= type parameter) is determined by the respective <A 
-href="PatternsFrameworks.htm#patternContext">pattern context</A>. So if you are 
-outside a pattern P and outside of any pattern that is derived from P, the 
-values of P's VTs at the actual place of reference are just undefined.</P>
-<P><b><a name="visitor"></a>VirtualVisitor:<br/>
-</b>
-<br/>
-The <i>Visitor</i> pattern defines an abstract virtual type <i>R</i> for the 
-result of the visitor's tree evaluation function <i>evaluate</i>. The way how 
-the visitor walks through the tree is described by this <i>evaluate</i> method 
-and doesn't depend on <i>R</i>, while the treatment of the individual tree nodes 
-depends on <i>R</i> and is implemented by the overridden methods <i>evalLeaf</i> 
-and <i>evalNode</i> of <i>StringVisitor</i> and <i>IntVisitor</i>. The initiator
-<i>VisitorDemo</i> shows how a sample tree is constructed and how this same tree 
-is evaluated twice: once by the <i>StringVisitor</i> and once by the <i>
-IntVisitor</i>.</P>
-<P>Please notice the comments in the VisitorDemo initiator.</P>
-<P><B>See also</B> our <A 
-href="CallbackSample.htm"><B>CallbackSample</B></A></P></BODY></HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Non-substitutable virtual type samples</title>
+  <link href="LavaStyles.css" type="text/css" rel="STYLESHEET" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  a.c5 {font-weight: bold}
+  i.c4 {font-weight: bold; color: Red}
+  p.c3 {font-weight: bold}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Basic virtual type samples</h2>
+
+  <h3>Sample files</h3>
+
+  <p>Please open <b>ChoralSociety.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <p>Das gleiche Beispiel auf Deutsch (the same sample in German):</p>
+
+  <p>Please open <b>Gesangverein.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <p>Please open <b>ModelView.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <p>Please open <b>QueueOfPoint.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <p>Please open <b>Visitor.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <h3>Topic</h3>
+
+  <p>Interfaces and packages with type parameters (&quot;<a href="PatternsFrameworks.htm#VT">virtual types</a>&quot;), <a href="PatternsFrameworks.htm#covariant">covariant specialization</a>.</p>
+
+  <h3>Overview</h3>
+
+  <p><strong>ChoralSociety:</strong></p>
+
+  <p>The ChoralSociety sample provides a package <em>S</em> (&quot;Society&quot;) with two virtual types <em>society</em> and <em>member</em>. In <em>S</em> the value of <em>society</em> is the type <em>Society</em>, the value of <em>member</em> is <em>Member</em>. A second package <em>CS</em> (&quot;ChoralSociety&quot;) is derived from <em>S</em> by specializing <em>society</em> to become <em>ChoralSociety</em> (in turn derived fro <em>Society</em>) and <em>member</em> to become <em>Singer</em> (derived from <em>Member).</em> As a consequence, the <em>MemberList</em> becomes a list of <em>Singer</em>s in <em>CS</em> automatically, and the chairman is also a <em>Singer</em> in <em>CS</em> rather than just a <em>Member</em>.</p>
+
+  <p><strong>Gesangverein:</strong></p>
+
+  <p>Das Gesangvereins-Beispiel enth&#228;lt ein Package <em>V</em> (&quot;Verein&quot;) mit zwei virtuellen Typen <em>verein</em> und <em>mitglied</em>. In <em>V</em> ist der Wert von <em>verein</em> der Typ <em>Verein</em>, der Wert von <em>mitglied</em> ist <em>Mitglied.</em> Aus <em>V</em> wird ein weiteres Package <em>GV</em> (&quot;Gesangverein&quot;) abgeleitet, und zwar dadurch, dass <em>verein</em> zu <em>Gesangverein</em> (aus <em>Verein</em> abgeleitet) und <em>mitglied</em> zu <em>Saenger</em> (aus <em>Mitglied</em> abgeleitet) spezialisiert werden. Infolgedessen wird automatisch aus der <em>Mitgliederliste</em> des <em>Verein</em>s eine Liste von <em>Saenger</em>n im <em>Gesangverein</em>, und der Vorsitzende des Gesangvereins ist ebenfalls ein <em>Saenger</em> und nicht nur ein <em>Mitglied</em>.</p>
+
+  <p><strong>ModelView:</strong></p>
+
+  <p>The ModelView sample (based on the well-known subject/observer pattern) reconstructs the corresponding sample from <a href="TypeSafety.htm#TT">[16]</a>. It provides a package <em>ModelViewFW</em> (&quot;model/view framework&quot;) with two type parameters &quot;model&quot; and &quot;view&quot;. &quot;ModelViewFW&quot; contains two mutually recursive types &quot;Model&quot; and &quot;View&quot;. &quot;Model&quot; contains a member vList which is a <i>homogeneous</i> &quot;ViewList&quot; all of whose elements have the same virtual type setElem=~&lt;view&gt;. (The tilde &quot;~&quot; marks variable <a href="TwoObjectCategories.htm">state objects</a> in <b class="c2">Lava</b>.)</p>
+
+  <p>Package &quot;DrawFW&quot; shows how the (rudimentary) framework &quot;ModelViewFW&quot; could be specialized by overriding its virtual types (= type parameters) &quot;model&quot; and &quot;view&quot;.</p>
+
+  <p>See our <a href="SubstitutableSamples.htm">ModelManyViews</a> sample for another variant of Model/View that provides an <i>inhomogeneous</i> &quot;ViewList&quot; containing <i>different</i> types of views (on the basis of &quot;<a href="TypeSafety.htm#substitutableType">substitutable types</a>&quot;).</p>
+
+  <p class="c3">QueueOfPoint:</p>
+
+  <p>The QueueOfPoint sample corresponds to a similar sample in <a href="TypeSafety.htm#TT">[16]</a>, too. Compared to <a href="TypeSafety.htm#TT">[16]</a>, it shows again the advantage of making virtual types non-substitutable by default: We need not view the virtual type &quot;elemType&quot; as a special, type-valued <i>member variable</i> of &quot;Queue&quot; objects but we can introduce virtual types in a more static way as <i>type</i> <i>parameters</i> of classes and packages.</p>
+
+  <p class="c3">Visitor:</p>
+
+  <p>The Visitor sample illustrates a special case of the well-known &quot;Visitor&quot; pattern of <a href="TypeSafety.htm#GOF">[8]</a> and also a special case of <a href="RepetComputSamples.htm">indirect tree recursion</a>.</p>
+
+  <h3>Where to look and what to do</h3>
+
+  <p><b>ModelView:<br /></b><br />
+  Note in particular the &quot;<a href="PatternsFrameworks.htm#covariant">covariant specialization</a>&quot; of the only input parameter of function <i>registerView</i> of class <i>Model</i>.</p>
+
+  <p>Note how this is exploited in the exec of the initiator <i>ModelViewDemo</i> to pass a view object of the derived type <i>DrawFW::View</i> to this function.</p>
+
+  <p>Note that <i>DrawFW::View</i> is <b>not</b> compatible in the traditional sense (of <a href="TypeSafety.htm#c-derived">c-derivation</a>) to ModelViewFW::View, since it contains member variables (<i>myModel</i>) and function parameters (m of initializer <i>ini</i>) that are of a more derived type in pattern <i>DrawFW</i> than in <i>ModelViewFW</i> (as a consequence of covariant specialization of the VT <i>&lt;model&gt;</i>).</p>
+
+  <p><b><span style="color:()">()</span>"queueOfPoint"></a>QueueOfPoint:<br /></b><br />
+  Note the two versions of class <i>X</i>: One belongs to pattern <i>Queue</i> (a class having a VT <i>elemType</i>), the other is declared outside <i>Queue</i>. Both have a member function <i>f</i> with almost identical implementations. Look at these:</p>
+
+  <p>The difference between the implementations of the two versions of <i>f</i> is that one of them belongs to pattern <i>Queue,</i> and one doesn&#39;t. The former <b>has to</b> use the virtual type <i>&lt;Queue::elemType&gt;</i> of <i>Queue</i> to declare the local variable <i>p</i>, the latter <b>cannot</b> use this but <b>must</b> use the concrete class <i>Point</i> to declare <i>p</i>. The reasons are:</p>
+
+  <ol>
+    <li>If a class <i>A</i> is the value of a virtual type <i>V</i> then <i>A</i> cannot be referenced directly at any place where <i>V</i> is visible. It can only be referenced indirectly by references to <i>V</i> in these places. If A1 is derived from A within the same pattern, then A1 cannot be referenced directly, either.</li>
+
+    <li>From outside a pattern the VTs of that pattern cannot be referenced (they are invisible to the &quot;outside world&quot;).</li>
+  </ol>
+
+  <p>The first rule corresponds to <a href="PatternsFrameworks.htm#VTandNonVT">rule 9</a> in our <i class="c4">Lava</i> genericity section. Its motivation is explained in our <a href="IsSelfVirtualSample.htm">IsSelfVirtual sample</a>.</p>
+
+  <p>The reason for the validity of the second rule is simple: The value of a VT (= type parameter) is determined by the respective <a href="PatternsFrameworks.htm#patternContext">pattern context</a>. So if you are outside a pattern P and outside of any pattern that is derived from P, the values of P&#39;s VTs at the actual place of reference are just undefined.</p>
+
+  <p><b><span style="color:()">()</span>"visitor"></a>VirtualVisitor:<br /></b><br />
+  The <i>Visitor</i> pattern defines an abstract virtual type <i>R</i> for the result of the visitor&#39;s tree evaluation function <i>evaluate</i>. The way how the visitor walks through the tree is described by this <i>evaluate</i> method and doesn&#39;t depend on <i>R</i>, while the treatment of the individual tree nodes depends on <i>R</i> and is implemented by the overridden methods <i>evalLeaf</i> and <i>evalNode</i> of <i>StringVisitor</i> and <i>IntVisitor</i>. The initiator <i>VisitorDemo</i> shows how a sample tree is constructed and how this same tree is evaluated twice: once by the <i>StringVisitor</i> and once by the <i>IntVisitor</i>.</p>
+
+  <p>Please notice the comments in the VisitorDemo initiator.</p>
+
+  <p><b>See also</b> our <a class="c5" href="CallbackSample.htm">CallbackSample</a></p>
+</body>
+</html>

@@ -1,30 +1,44 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta content="text/html; charset=iso-8859-1">
-    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-    <title>
-      Attach expression
-    </title>
-    <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
-  </head>
-  <body>
-  <h2 align="center">Attach a component object</h2>
-  <p>Use the <font color="#0000FF"><b>attach</b> </font>expression to make an 
-  existing <a href="../Components.htm">component 
-  object</a> accessible through one of its component object interfaces.</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Attach expression</title>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  i.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #0000FF;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Attach a component object</h2>
+
+  <p>Use the <b>attach</b> expression to make an existing <a href="../Components.htm">component object</a> accessible through one of its component object interfaces.</p>
+
   <p>For example,</p>
-  <blockquote>
-    <pre><font color="#0000FF"><b>declare</b></font>
+
+  <pre xml:space="preserve">
+<span class="style1">declare</span>
   DOM itf1;
-<font color="#0000FF"><b>do</b></font>
-  <font color="#0000FF"><b>set</b></font> itf1 <font color="#0000FF"><b>&lt;==</b></font> <font color="#0000FF"><b>attach</b></font> HTTP,
-               <font color="#0000FF"><b>interface</b></font> DOM,
-               <font color="#0000FF"><b>url</b></font> &quot;http://lavape.sourceforge.net&quot;;
-<font color="#0000FF"><b>#declare</b></font></pre>
-  </blockquote>
-  <p>could be used to access the <font color="#FF0000"><i><b>Lava</b></i></font> home page through a &quot;Document Object 
-  Model&quot; interface (not yet implemented).</p>
-  </body>
+<span class="style1">do</span>
+  <span class="style1">set</span> itf1 <b>&lt;==</b> <span class="style1">attach</span> HTTP,
+               <span class="style1">interface</span> DOM,
+               <span class="style1">url</span> &quot;http://lavape.sourceforge.net&quot;;
+<span class="style2"><b>#declare</b>
+</span></pre>
+
+  <p>could be used to access the <i class="c2">Lava</i> home page through a &quot;Document Object Model&quot; interface (not yet implemented).</p>
+</body>
 </html>

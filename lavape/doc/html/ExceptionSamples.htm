@@ -1,208 +1,163 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Language" content="en-us">
-<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-<meta name="ProgId" content="FrontPage.Editor.Document">
-<title>Exception samples</title>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<link href="LavaStyles.css" type="text/css" rel="STYLESHEET">
+  <title>Exception samples</title>
+  <link href="LavaStyles.css" type="text/css" rel="STYLESHEET" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  h3.c4 {font-weight: bold}
+  i.c3 {font-weight: bold; color: Red}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #FF0000;
+      }
+      .style3
+      {
+          color: #FF0000;
+          font-family: Arial;
+      }
+      .style4
+      {
+          font-family: Arial;
+      }
+      .style5
+      {
+          color: #0000FF;
+      }
+      .style6
+      {
+          font-family: Arial;
+          color: #0000FF;
+      }
+  </style>
 </head>
 
 <body>
+  <h2 class="c1">Exception samples</h2>
 
-<h2 align="center">Exception samples</h2>
-<h3>Sample files</h3>
-<p>Please open <b>Exception.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
-<p>
+  <h3>Sample files</h3>
 
-Please open <b>ExceptionDemo.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
-<p>
+  <p>Please open <b>Exception.lava</b> in <b class="c2">LavaPE</b>.</p>
 
-Please open <b>OutFuncFailDemo.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
-<h3>Topics</h3>
-<p>Exception handling in <font color="#FF0000"><i><b>Lava</b></i></font>.</p>
-<h3>Overview</h3>
-<h4><font face="Arial">Exceptions as a way to prevent the use of undefined 
-function output parameters</font></h4>
-<p>You frequently have the situation that a member function of a class is unable 
-to provide the expected output parameters: it &quot;fails&quot;. In this case the function 
-would either return an &quot;error code&quot; that must be evaluated by the caller, or it 
-will &quot;throw an exception&quot;. </p>
-<p>Error codes may be ignored by the caller, and there is a serious danger that 
-the caller will make use of undefined output parameters then.</p>
-<p>This and similar kinds of programming errors, caused by inadvertent use of 
-undefined/uninitialized local, member, and output variables, will be hard to 
-locate and fix in many cases. So it is one of the major goals of the entire
-<font color="#FF0000"><i><b>Lava</b></i></font> development to prevent such 
-errors by appropriate static or run time checks, and particularly by enforcing 
-proper use of exceptions.</p>
-<h4><font face="Arial"><font color="#FF0000"><i>Lava</i></font><font color="#008080"> enforces</font> the use 
-of exceptions if a function fails</font></h4>
-<p><font color="#FF0000"><i><b>LavaPE</b></i></font> checks already at 
-programming time if every branch of a function assigns a value to every 
-non-optional output parameter. If you cannot fulfill this condition in a branch 
-then you can exit from this branch only by throwing an exception (using the
-<font color="#0000FF"><b>throw</b></font> <font color="#FF0000">&lt;expr&gt;</font> 
-statement, see <a href="#failStatement">below</a>) at the end of the branch.</p>
-<p>Even if (formally) all branches define all non-optional outputs it may happen 
-that a branch &quot;fails logically&quot; before all outputs could be set, i.e., it 
-contains some relational statement (like &quot;a &lt; b&quot;) or the invocation of a 
-function that hasn't output parameters but may evaluate to &quot;false&quot;. To catch 
-also these implicit failures, <font color="#FF0000"><i><b>Lava</b></i></font> 
-checks on exit from a function if it has output parameters and if its body 
-&quot;failed logically&quot;, and if true, an &quot;output function failed&quot; exception is thrown 
-automatically by the run time system. (Cf. the <a href="#lastSample">last</a> 
-sample program.)</p>
-<p>So <font color="#FF0000"><i><b>Lava</b></i></font> guarantees under all 
-circumstances that the caller of a function cannot inadvertently use undefined 
-outputs of failed function invocations. He/she may, however, catch the exception 
-and then use output parameters of the function call &quot;on his/her own account&quot;. 
-The worst thing that may happen then is a &quot;null object&quot; exception or an &quot;access 
-to zombified object&quot; exception. &quot;Dangling pointers&quot; aren't possible in
-<font color="#FF0000"><i><b>Lava</b></i></font> because of the
-<font color="#FF0000"><i><b>Lava</b></i></font> storage management by reference 
-counting. However, it could also happen that the failing function has already 
-set certain outputs before it fails and that those outputs actually don't make 
-sense then. So the programmer will have to account on his/her own risk in 
-these cases.</p>
-<h4><font face="Arial"><a name="failStatement"></a>Using the
-<font color="#0000FF">throw </font>
-<font color="#FF0000">&lt;expr&gt;</font><font color="#0000FF"> </font>statement to 
-raise<span lang="de">/throw</span> exceptions</font></h4>
-<p>The <font color="#0000FF"><b>throw</b></font> statement of <b><i>
-<font color="#FF0000">Lava</font></i></b> is a special variant of the
-<font color="#0000FF"><b>fail</b></font> statement and is inserted by clicking 
-the <font color="#0000FF"><b>fail</b></font> button of then keyword toolbar. If 
-you delete the parameter after the inserted <font color="#0000FF"><b>throw</b></font> 
-keword then <font color="#0000FF"><b>throw</b></font> will be replaced by
-<font color="#0000FF"><b>fail</b></font>. The <font color="#0000FF"><b>fail</b></font> 
-statement may be used to terminate a function execution with result
-<font color="#0000FF"><b>false</b></font>. It may be used only if all mandatory 
-output parameters of the function have been set before.</p>
-<p>If this isn't possible 
-you must <font color="#0000FF"><b>throw</b></font> an exception. The parameter 
-of <font color="#0000FF"><b>throw</b></font> is an expression whose value provides the
-<i>exception object </i>of the throw statement. You may only throw exceptions 
-whose type is mentioned in the &quot;throws&quot; clause of the declaration of the 
-containing function and is derived from the basic built-in exception class <i>
-Exception</i> (see <i>std.lava</i>).</p>
-<p>An interesting alternative would be to associate such a throws clause with an 
-entire class or even <a href="PatternsFrameworks.htm">pattern</a> and to enforce 
-the translation of lower-level exceptions into exceptions of this class or 
-pattern in some way or other. The users of the class or pattern would then be 
-sure to get only such exceptions, rather than low-level exceptions that they 
-often won't understand anyway.</p>
-<h4><font face="Arial">Using the <font color="#0000FF">try ... catch</font> 
-statement to catch exceptions</font></h4>
-<p>The <font color="#0000FF"><b>try ... catch</b></font> statement of
-<font color="#FF0000"><i><b>Lava</b></i></font> has essentially the same 
-structure and semantics as that of <font color="#FF0000"><i><b>C++</b></i></font>:</p>
-<pre><font color="#0000FF"><b>try</b></font>
+  <p>Please open <b>ExceptionDemo.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <p>Please open <b>OutFuncFailDemo.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <h3>Topics</h3>
+
+  <p>Exception handling in <i class="c3">Lava</i>.</p>
+
+  <h3>Overview</h3>
+
+  <h4>Exceptions as a way to prevent the use of undefined function output parameters</h4>
+
+  <p>You frequently have the situation that a member function of a class is unable to provide the expected output parameters: it &quot;fails&quot;. In this case the function would either return an &quot;error code&quot; that must be evaluated by the caller, or it will &quot;throw an exception&quot;.</p>
+
+  <p>Error codes may be ignored by the caller, and there is a serious danger that the caller will make use of undefined output parameters then.</p>
+
+  <p>This and similar kinds of programming errors, caused by inadvertent use of undefined/uninitialized local, member, and output variables, will be hard to locate and fix in many cases. So it is one of the major goals of the entire <i class="c3">Lava</i> development to prevent such errors by appropriate static or run time checks, and particularly by enforcing proper use of exceptions.</p>
+
+  <h4><i>Lava</i> enforces the use of exceptions if a function fails</h4>
+
+  <p><i class="c3">LavaPE</i> checks already at programming time if every branch of a function assigns a value to every non-optional output parameter. If you cannot fulfill this condition in a branch then you can exit from this branch only by throwing an exception (using the 
+      <span class="style1">throw</span> <span class="style2">&lt;expr&gt;</span> statement, see <a href="#failStatement">below</a>) at the end of the branch.</p>
+
+  <p>Even if (formally) all branches define all non-optional outputs it may happen that a branch &quot;fails logically&quot; before all outputs could be set, i.e., it contains some relational statement (like &quot;a 
+      <span class="style1">&lt;</span> b&quot;) or the invocation of a function that hasn&#39;t output parameters but may evaluate to &quot;<span 
+          class="style1">false</span>&quot;. To catch also these implicit failures, <i class="c3">Lava</i> checks on exit from a function if it has output parameters and if its body &quot;failed logically&quot;, and if true, an &quot;output function failed&quot; exception is thrown automatically by the run time system. (Cf. the <a href="#lastSample">last</a> sample program.)</p>
+
+  <p>So <i class="c3">Lava</i> guarantees under all circumstances that the caller of a function cannot inadvertently use undefined outputs of failed function invocations. He/she may, however, catch the exception and then use output parameters of the function call &quot;on his/her own account&quot;. The worst thing that may happen then is a &quot;null object&quot; exception or an &quot;access to zombified object&quot; exception. &quot;Dangling pointers&quot; aren&#39;t possible in <i class="c3">Lava</i> because of the <i class="c3">Lava</i> storage management by reference counting. However, it could also happen that the failing function has already set certain outputs before it fails and that those outputs actually don&#39;t make sense then. So the programmer will have to account on his/her own risk in these cases.</p>
+
+  <h4><a id="failStatement"></a>Using the <span class="style4">
+      <span class="style5">throw</span> </span><span class="style3">&lt;expr&gt;</span> statement to raise/throw exceptions</h4>
+
+  <p>The <span class="style1">throw</span> statement of <b class="c2">Lava</b> is a special variant of the 
+      <span class="style1">fail</span> statement and is inserted by clicking the 
+      <span class="style1">fail</span> button of then keyword toolbar. If you delete the parameter after the inserted 
+      <span class="style1">throw</span> keword then <span class="style1">throw</span> will be replaced by 
+      <span class="style1">fail</span>. The <span class="style1">fail</span> statement may be used to terminate a function execution with result 
+      <span class="style1">false</span>. It may be used only if all mandatory output parameters of the function have been set before.</p>
+
+  <p>If this isn&#39;t possible you must <span class="style1">throw</span> an exception. The parameter of 
+      <span class="style1">throw</span> is an expression whose value provides the <i>exception object</i> of the throw statement. You may only throw exceptions whose type is mentioned in the &quot;throws&quot; clause of the declaration of the containing function and is derived from the basic built-in exception class <i>Exception</i> (see <i>std.lava</i>).</p>
+
+  <p>An interesting alternative would be to associate such a throws clause with an entire class or even <a href="PatternsFrameworks.htm">pattern</a> and to enforce the translation of lower-level exceptions into exceptions of this class or pattern in some way or other. The users of the class or pattern would then be sure to get only such exceptions, rather than low-level exceptions that they often won&#39;t understand anyway.</p>
+
+  <h4>Using the <span class="style6">try ... catch</span> statement to catch exceptions</h4>
+
+  <p>The <span class="style1">try ... catch</span> statement of <i class="c3">Lava</i> has essentially the same structure and semantics as that of <i class="c3">C++</i>:</p>
+  <pre xml:space="preserve">
+<span class="style1">try</span>
   &lt;guarded compound statement&gt;
-<font color="#0000FF"><b>catch</b></font> &lt;exception class&gt; &lt;exception variable&gt;
+<span class="style1">catch</span> &lt;exception class&gt; &lt;exception variable&gt;
   &lt;compound statement&gt;
-<font color="#0000FF"><b>catch</b></font> &lt;exception class&gt; &lt;exception variable&gt;
+<span class="style1">catch</span> &lt;exception class&gt; &lt;exception variable&gt;
   &lt;compound statement&gt;
 ...
-<font color="#0000FF"><b>catch</b></font> &lt;exception class&gt; &lt;exception variable&gt;
+<span class="style1">catch</span> &lt;exception class&gt; &lt;exception variable&gt;
   &lt;compound statement&gt;
-<font color="#0000FF"><b>#try</b></font></pre>
-<p>If an exception occurs deeply nested within the &lt;guarded compound statement&gt; 
-that isn't caught already on a lower level of the current call stack then it 
-will be caught and processed by the first <font color="#0000FF"><b>catch</b></font> 
-clause whose &lt;exception class&gt; is a base class (or the exact class) of the run 
-time class of the current exception object. All exception classes must be 
-derived from the basic built-in class <i>Exception</i>, and you can use the 
-members of <i>Exception</i> to display a meaningful exception message and the 
-current call stack.</p>
-<p>You may also throw a new exception from within a catch clause and in this way 
-raise the exception to a higher level which is possibly more meaningful for the 
-caller.</p>
-<p>You may also re-throw the original exception if you decide that the exception 
-should rather be processed on a higher level of the call stack.</p>
-<h4><font face="Arial">Class &quot;Exception&quot;</font></h4>
-<p>In <i> <font color="#FF0000"><b>Lava</b></font></i>, all exception classes 
-are
-<a href="TypeSafety.htm#p-derived">p-derived</a> from the same base class <i>
-Exception</i>. Class <i>Exception</i> is non-creatable and has two member 
-variables <i>code</i> and <i>message</i>. The type <i>&lt;ERRORCODE&gt;</i> of <i>code</i> 
-is <a href="PatternsFrameworks.htm#VT">virtual</a> with default value <i>
-Enumeration</i>. When&nbsp; a concrete exception type is
-<a href="TypeSafety.htm#p-derived">p-derived</a>&nbsp; from <i>Exception</i> the 
-base value <i>Enumeration</i> of <i>&lt;ERRORCODE&gt;</i> will be specialized <i>&nbsp;</i>to 
-become a concrete enumeration type whose enumerated items distinguish the 
-various individual manifestations of the concrete exception type, for instance <i>
-ZeroDivideException</i> or <i>IntegerOverflow</i> for a <i>HardwareExeption</i>, 
-see below.</p>
-<p>An item of a <font color="#FF0000"><b><i>Lava</i></b></font> enumeration type 
-may be associated with an explanatory text/comment, which can also be accessed 
-and displayed as a <i>String</i> object. In the exception context this comment 
-is used as a default error text associated with the respective error code.</p>
-<p>Class <i>Exception</i> (declared in <i>std.lava</i>) has a static member 
-function <i>callStack.</i> It delivers the call stack at the time when the 
-exception occurred as a String to the caller.</p>
-<p>Exceptions may be raised also implicitly by the hardware (<i>hardware 
-exceptions</i>) or by the <b><i><font color="#FF0000">Lava</font></i></b> run 
-time system (<i>run time exceptions</i>). &quot;Division by zero&quot;,&nbsp; &quot;integer 
-overflow&quot;, &quot;access violation&quot; are typical hardware exceptions, &quot;assertion 
-violation&quot;, &quot;array index out of range&quot;, &quot;out-of-memory exception&quot; are typical 
-run time exceptions.</p>
-<p>The common base class <i>Exception</i> for all types of exceptions provides a 
-default exception handler function <i>catch</i>, as well as a member function <i>
-show</i>, which simply displays the respective exception code and the associated 
-message text. <i>Catch</i> simply calls <i>show</i>, but may be overridden in 
-user-defined exception classes to exhibit a more specific behavior.</p>
-<p>The default <i>catch</i> function is called automatically if the respective 
-program doesn't handle the pending exception and its call stack is finally left &quot;at its upper 
-end&quot; as a consequence. </p>
-<h3>Where to look and what to do</h3>
-<p>
-Please open <b>Exception.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
-<p>This sample demonstrates a user-defined exception type (<i>MyException</i>) 
-which is raised by a <font color="#0000FF"><b>throw</b></font> statement (in 
-function <i>C1::f1</i>). It is caught in the <i>ExceptionDemo</i> initiator, 
-first in more object-oriented style by the <i>MyException::catch</i> method 
-(which overrides Exception::catch), and then in 
-&quot;old-fashioned style&quot; by a <font color="#0000FF"><b>try</b></font> 
-statement with several <font color="#0000FF"><b>catch</b></font> clauses.</p>
-<p>Additionally you could provoke a run time exception by changing the 
-invariant of class C1.</p>
-<p>
+<span class="style1">#try</span>
+</pre>
 
-Please open <b>ExceptionDemo.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
-<p>This sample demonstrates a hardware exception and two run time exceptions.</p>
-<p>
-<a name="lastSample"></a>
+  <p>If an exception occurs deeply nested within the &lt;guarded compound statement&gt; that isn&#39;t caught already on a lower level of the current call stack then it will be caught and processed by the first 
+      <span class="style1">catch</span> clause whose &lt;exception class&gt; is a base class (or the exact class) of the run time class of the current exception object. All exception classes must be derived from the basic built-in class <i>Exception</i>, and you can use the members of <i>Exception</i> to display a meaningful exception message and the current call stack.</p>
 
-Please open <b>OutFuncFailDemo.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
-<p>This sample shows that <i><font color="#FF0000"><b>Lava</b></font></i> throws 
-an &quot;output function failed&quot; exception automatically if the body of a function 
-evaluates to &quot;false&quot; and the function has output parameters and doesn't throw an 
-exception explicitly.</p>
-<p>Sample<i> </i><b>Array.lava</b> provokes an &quot;array index out of range&quot; exception.</p>
-<h3><b>Summary</b></h3>
-<ol>
-  <li><b><i><font color="#FF0000">Lava</font></i> </b>supports the traditional
-  <font color="#0000FF"><b>try</b></font>...<font color="#0000FF"><b>catch</b></font> 
-  style of exception handling, but it makes essential use of <a href="PatternsFrameworks.htm#VT">
-  virtual</a> and <a href="TypeSafety.htm#substitutableType">substitutable types</a>. </li>
-  <li>A more 
-  object-oriented style of exception handling can also be achieved by providing 
-  only a single <font color="#0000FF"><b>catch</b></font> clause for the basic
-  <i>Exception</i> class and by overriding its <i>Exception::catch</i> member 
-  function. This solution is available, however, only if the programmer who 
-  catches an exception has the freedom to provide the respective exception class 
-  himself.</li>
-</ol>
+  <p>You may also throw a new exception from within a catch clause and in this way raise the exception to a higher level which is possibly more meaningful for the caller.</p>
 
+  <p>You may also re-throw the original exception if you decide that the exception should rather be processed on a higher level of the call stack.</p>
+
+  <h4>Class &quot;Exception&quot;</h4>
+
+  <p>In <i class="c3">Lava</i>, all exception classes are <a href="TypeSafety.htm#p-derived">p-derived</a> from the same base class <i>Exception</i>. Class <i>Exception</i> is non-creatable and has two member variables <i>code</i> and <i>message</i>. The type <i>&lt;ERRORCODE&gt;</i> of <i>code</i> is <a href="PatternsFrameworks.htm#VT">virtual</a> with default value <i>Enumeration</i>. When a concrete exception type is <a href="TypeSafety.htm#p-derived">p-derived</a> from <i>Exception</i> the base value <i>Enumeration</i> of <i>&lt;ERRORCODE&gt;</i> will be specialized to become a concrete enumeration type whose enumerated items distinguish the various individual manifestations of the concrete exception type, for instance <i>ZeroDivideException</i> or <i>IntegerOverflow</i> for a <i>HardwareExeption</i>, see below.</p>
+
+  <p>An item of a <b class="c2">Lava</b> enumeration type may be associated with an explanatory text/comment, which can also be accessed and displayed as a <i>String</i> object. In the exception context this comment is used as a default error text associated with the respective error code.</p>
+
+  <p>Class <i>Exception</i> (declared in <i>std.lava</i>) has a static member function <i>callStack.</i> It delivers the call stack at the time when the exception occurred as a String to the caller.</p>
+
+  <p>Exceptions may be raised also implicitly by the hardware (<i>hardware exceptions</i>) or by the <b class="c2">Lava</b> run time system (<i>run time exceptions</i>). &quot;Division by zero&quot;, &quot;integer overflow&quot;, &quot;access violation&quot; are typical hardware exceptions, &quot;assertion violation&quot;, &quot;array index out of range&quot;, &quot;out-of-memory exception&quot; are typical run time exceptions.</p>
+
+  <p>The common base class <i>Exception</i> for all types of exceptions provides a default exception handler function <i>catch</i>, as well as a member function <i>show</i>, which simply displays the respective exception code and the associated message text. <i>Catch</i> simply calls <i>show</i>, but may be overridden in user-defined exception classes to exhibit a more specific behavior.</p>
+
+  <p>The default <i>catch</i> function is called automatically if the respective program doesn&#39;t handle the pending exception and its call stack is finally left &quot;at its upper end&quot; as a consequence.</p>
+
+  <h3>Where to look and what to do</h3>
+
+  <p>Please open <b>Exception.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <p>This sample demonstrates a user-defined exception type (<i>MyException</i>) which is raised by a 
+      <span class="style1">throw</span> statement (in function <i>C1::f1</i>). It is caught in the <i>ExceptionDemo</i> initiator, first in more object-oriented style by the <i>MyException::catch</i> method (which overrides Exception::catch), and then in &quot;old-fashioned style&quot; by a 
+      <span class="style1">try</span> statement with several <span class="style1">catch</span> clauses.</p>
+
+  <p>Additionally you could provoke a run time exception by changing the invariant of class C1.</p>
+
+  <p>Please open <b>ExceptionDemo.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <p>This sample demonstrates a hardware exception and two run time exceptions.</p>
+
+  <p><a id="lastSample"></a> Please open <b>OutFuncFailDemo.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <p>This sample shows that <i class="c3">Lava</i> throws an &quot;output function failed&quot; exception automatically if the body of a function evaluates to &quot;false&quot; and the function has output parameters and doesn&#39;t throw an exception explicitly.</p>
+
+  <p>Sample <b>Array.lava</b> provokes an &quot;array index out of range&quot; exception.</p>
+
+  <h3 class="c4">Summary</h3>
+
+  <ol>
+    <li><b class="c2">Lava</b> supports the traditional <span class="style1">try</span><span 
+            class="style5">...<b>catch</b></span> style of exception handling, but it makes essential use of <a href="PatternsFrameworks.htm#VT">virtual</a> and <a href="TypeSafety.htm#substitutableType">substitutable types</a>.</li>
+
+    <li>A more object-oriented style of exception handling can also be achieved by providing only a single 
+        <span class="style1">catch</span> clause for the basic <i>Exception</i> class and by overriding its <i>Exception::catch</i> member function. This solution is available, however, only if the programmer who catches an exception has the freedom to provide the respective exception class himself.</li>
+  </ol>
 </body>
-
 </html>

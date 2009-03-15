@@ -1,76 +1,39 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="Author" CONTENT="Klaus D. Günther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Protected/friend</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER">&quot;Private&quot; / &quot;protected&quot; / &quot;friend&quot;
-    counterparts in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B></H2>
-    
-    <H3>Private / friend</H3>
-    
-    <P>The <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> counterpart of
-      <B>&quot;private&quot;</B> features of <B><I><FONT COLOR="#FF0000">C++</FONT></I></B>
-      or <B><I><FONT COLOR="#FF0000">Java</FONT></I></B> classes are the
-      features contained in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      implementations. All <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      implementations are completely <B>opaque</B>. You cannot reference any
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> entity that is declared
-      within a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> implementation
-      from outside that implementation.</P>
-    
-    <P>The analogous effect can be achieved also for
-      <A HREF="Packages.htm#packages">packages</A> by declaring them to be <B>opaque</B>.
-      Within an implementation or opaque package <I>IP</I> you can derive
-      classes from &quot;outer&quot; base classes or declare new
-      classes and <B>share these within <I>IP</I> without making them
-      visible to the outside world</B>. </P>
-    
-    <P>Implementations of these new classes may be even located in separate
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> files but nevertheless
-      have the same scope (visibility domain) as the classes they implement.
-      The accessibility of <I>implementations</I> at run time is not restricted by these
-      <I>&quot;opaque&quot;</I> specifiers. (Note that implementations need
-      never be referenced expressly in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>.)</P>
-    
-    <P>We leave it to the reader to compare this opaqueness notion of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      with the capabilities inherent in the <B><I><FONT COLOR="#FF0000">C++</FONT></I></B>
-      <B>friend specification</B> or the <B>inner classes</B> of <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>.</P>
-    
-    <H3><A NAME="protected"></A>Protected</H3>
-    
-    <P>If a class <I>A</I> has a feature (= member variable or member
-      function) <I>f </I>and interface <I>B</I> is derived from <I>A</I> then
-      in some cases you would like to prevent users of <I>B</I> to directly
-      access <I>f</I>. By analogy to the <B><I><FONT COLOR="#FF0000">C++</FONT></I></B>
-      and <B><I><FONT COLOR="#FF0000">Java</FONT></I></B> &quot;protected&quot;
-      specifier you can declare such a feature to be <B>protected</B> in the
-      associated variable or function property sheet of <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>
-      to make<I> f </I>invisible to the clients of <I>B</I> while remaining
-      visible to <I>B</I> and its implementation. </P>
-    
-    <H3><A NAME="staticCalls"></A>Restrictions concerning static function
-    calls</H3>
-    
-    <P>To call a function statically means that you circumvent the usual virtual
-    function call (&quot;late binding&quot;) mechanism but you specify precisely
-    which version of the function from which interface shall be called. If <I>f</I> is a member <I>function</I> of <I>A</I> then<I> f</I>
-      can be <B><I>called</I></B> <I><B>statically</B></I> only from derived
-      classes in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, i.e., from
-      functions that are declared in a derived interface <I>B</I> of <I>A</I>
-      or in the implementation thereof. So if functions are declared in <I>A</I>
-      and overridden in <I>B</I> then clients of <I>B</I> are forced to use the
-      overridden version; they are not allowed to statically call the base
-      version.</P>
-  </BODY>
-</HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Protected/friend</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  i.c3 {font-weight: bold; color: Red}
+  h2.c2 {text-align: center}
+  b.c1 {font-style: italic; color: Red}
+  /*]]>*/
+  </style>
+</head>
+
+<body>
+  <h2 class="c2">&quot;Private&quot; / &quot;protected&quot; / &quot;friend&quot; counterparts in <b class="c1">Lava</b></h2>
+
+  <h3>Private / friend</h3>
+
+  <p>The <b class="c1">Lava</b> counterpart of <b>&quot;private&quot;</b> features of <b class="c1">C++</b> or <b class="c1">Java</b> classes are the features contained in <b class="c1">Lava</b> implementations. All <b class="c1">Lava</b> implementations are completely <b>opaque</b>. You cannot reference any <b class="c1">Lava</b> entity that is declared within a <b class="c1">Lava</b> implementation from outside that implementation.</p>
+
+  <p>The analogous effect can be achieved also for <a href="Packages.htm#packages">packages</a> by declaring them to be <b>opaque</b>. Within an implementation or opaque package <i>IP</i> you can derive classes from &quot;outer&quot; base classes or declare new classes and <b>share these within <i>IP</i> without making them visible to the outside world</b>.</p>
+
+  <p>Implementations of these new classes may be even located in separate <b class="c1">Lava</b> files but nevertheless have the same scope (visibility domain) as the classes they implement. The accessibility of <i>implementations</i> at run time is not restricted by these <i>&quot;opaque&quot;</i> specifiers. (Note that implementations need never be referenced expressly in <b class="c1">Lava</b>.)</p>
+
+  <p>We leave it to the reader to compare this opaqueness notion of <b class="c1">Lava</b> with the capabilities inherent in the <b class="c1">C++</b> <b>friend specification</b> or the <b>inner classes</b> of <b class="c1">Java</b>.</p>
+
+  <h3><a id="protected"></a>Protected</h3>
+
+  <p>If a class <i>A</i> has a feature (= member variable or member function) <i>f</i> and interface <i>B</i> is derived from <i>A</i> then in some cases you would like to prevent users of <i>B</i> to directly access <i>f</i>. By analogy to the <b class="c1">C++</b> and <b class="c1">Java</b> &quot;protected&quot; specifier you can declare such a feature to be <b>protected</b> in the associated variable or function property sheet of <b class="c1">LavaPE</b> to make <i>f</i> invisible to the clients of <i>B</i> while remaining visible to <i>B</i> and its implementation.</p>
+
+  <h3><a id="staticCalls"></a>Restrictions concerning static function calls</h3>
+
+  <p>To call a function statically means that you circumvent the usual virtual function call (&quot;late binding&quot;) mechanism but you specify precisely which version of the function from which interface shall be called. If <i>f</i> is a member <i>f</i>unction of A then <i>f</i> can be 
+      <b>called statically</b> only from derived classes in <b class="c1">Lava</b>, i.e., from functions that are declared in a derived interface <i>B</i> of <i>A</i> or in the implementation thereof. So if functions are declared in <i>A</i> and overridden in <i>B</i> then clients of <i>B</i> are forced to use the overridden version; they are not allowed to statically call the base version.</p>
+</body>
+</html>

@@ -1,34 +1,46 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta content="text/html; charset=iso-8859-1">
-    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-    <title>
-      Clone expression
-    </title>
-    <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
-  </head>
-  <body>
-  <h2 align="center">&quot;Clone&quot; expression</h2>
-  <p>Use the <font color="#0000FF"><b>clone</b> </font>expression to produce a 
-  complete copy of an existing <font color="#FF0000"><i><b>Lava</b></i></font> 
-  object.</p>
-  <p><b>Note</b> that <font color="#FF0000"><i><b>Lava</b></i></font> provides a 
-  distinction between <b>constituent</b> and <b>acquaintance</b> members of an 
-  object. Only the constituents are copied by <font color="#0000FF"><b>clone </b>
-  </font>&nbsp;(&quot;deep copy&quot;). Acquaintances are considered to be separate, 
-  independent objects. <font color="#0000FF"><b>Clone</b></font> copies only the
-  <b>pointers</b> to acquaintances.</p>
-  <p>Like the <font color="#0000FF"><b>new</b></font> expression,
-  <font color="#0000FF"><b>clone</b></font> provides a <font color="#0000FF"><b>
-  but</b></font> clause where you can modify the cloned object before its 
-  creation state is switched to &quot;finished&quot;. (Note that &quot;finished&quot;
-  <a href="../TwoObjectCategories.htm">value objects</a>  are &quot;frozen&quot;, i.e., 
-  they become constant and thus their direct or recursive constituents cannot be modified any more.)</p>
-  <p><b>See also:/b></p>
-  <p><a href="Copy.htm">Copy</a></p>
-  <p><a href="../Unsolved.htm#pointers">Application-level pointer notion</a></p>
-  <p><a href="../PointersRefCounts.htm#refTypes">Pointers and reference counts</a></p>
-  </body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Clone expression</title>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c3 {font-weight: bold}
+  i.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #CC00CC;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">&quot;Clone&quot; expression</h2>
+
+  <p>Use the <b>clone</b> expression to produce a complete copy of an existing <i class="c2">Lava</i> object.</p>
+
+  <p><b>Note</b> that <i class="c2">Lava</i> provides a distinction between <b>constituent</b> and <b>acquaintance</b> members of an object. Only the constituents are copied by 
+      <span class="style1">clone</span> (&quot;deep copy&quot;). Acquaintances are considered to be separate, independent objects. <b>Clone</b> copies only the <b>pointers</b> to acquaintances.</p>
+
+  <p>Like the <span class="style1">new</span> expression, <span class="style1">clone</span> provides a 
+      <span class="style2">but</span> clause where you can modify the cloned object before its creation state is switched to &quot;finished&quot;. (Note that &quot;finished&quot; <a href="../TwoObjectCategories.htm">value objects</a> are &quot;frozen&quot;, i.e., they become constant and thus their direct or recursive constituents cannot be modified any more.)</p>
+
+  <p class="c3">See also:</p>
+
+  <p class="c3"><a href="Copy.htm">Copy</a></p>
+
+  <p class="c3"><a href="../Unsolved.htm#pointers">Application-level pointer notion</a></p>
+
+  <p class="c3"><a href="../PointersRefCounts.htm#refTypes">Pointers and reference counts</a></p>
+</body>
 </html>

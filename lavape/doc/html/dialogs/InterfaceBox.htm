@@ -1,94 +1,64 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="Author" CONTENT="Klaus D. Günther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Interface property sheet</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="../LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER">Class interface property sheet</H2>
-    
-    <H3>Name</H3>
-    
-    <P>The name of a class may contain only letters, digits, and &quot;_&quot;.
-      The first character must not be a digit.</P>
-    
-    <H3>Declare also &quot;Set&quot; of ...</H3>
-    
-    <P>Generates also a nested declaration of a class &quot;Set&quot;,
-      where the set elements support the present class interface.</P>
-    
-    <H3><A NAME="creatable"></A>Creatable / Non-creatable</H3>
-    
-    <P>New objects of type XY can be created (using the <B><FONT COLOR="#0000FF">new</FONT></B>
-      expression) only if XY is a <I>creatable</I> class; only creatable
-      classes are listed in the combo-box associated with the
-      <FONT COLOR="#FF0000">&lt;creatable&gt;</FONT> placeholder of the <B><FONT COLOR="#0000FF">new</FONT><FONT COLOR="#0000FF">
-      </FONT></B>construct. (New objects may emerge also as output objects of
-      other built-in or native functions, e.g., the <I>Handle</I> objects
-      associated with <I>Chain</I> elements.)</P>
-    
-    <P>As a consequence, creatable classes must not contain <I>abstract</I>
-      functions. If a class interface contains abstract functions or if it would not
-      make sense to create objects supporting this and only this class interface, for
-      instance a general <I>Print</I>  class, then you will declare it to be
-      non-creatable. </P>
-    
-    <H3>Component object interface</H3>
-    
-    <P><A HREF="../Components.htm">Component object interfaces</A> are the
-      basic ingredients of <A HREF="COSpecBox.htm">component object
-        specifications</A>. The parameters of their functions are subject to
-      special restrictions, and their member variables must be accessed through
-      set/get functions.</P>
-    
-    <H3></A>Element category combo box</H3>
-  <p>If the current class is a collection class, i.e., it is derived directly or 
-    indirectly from one of the built-in base classes Set, Chain, or Array, and if the 
-    current class is the first class in the inheritance chain to define the 
-    collection element class (through the ELEMTYPE virtual type), then you may 
-    specify the <a href="../TwoObjectCategories.htm">category</a> of the collection elements here.</p>
-  <H3><A NAME="native">Native</H3>
-    
-    <P>If a class is to contain <A HREF="FunctionBox.htm#native">native</A>
-      functions (implemented in some other language) then you must declare it to
-      be native. Native classes are implemented in a special way as dynamic
-      link libraries (DLLs). A native class may nevertheless contain
-      non-native functions .</P>
-    
-    <H3>Select classes to be extended</H3>
-    
-    <P>A new class may extend one or several existing <I>base classes</I>.
-      These may be selected from the combo-boxes &quot;Basic classes&quot;
-      and &quot;Other classes&quot;. &quot;Basic classes&quot; lists all
-      classes whose declaration is contained in the basic include file <I>std.lava</I>.
-      If you don't explicitly select a base class then the new class is derived 
-    from class <I>Object</I> in <I>std.lava</I>.</P>
-    
-    <p><A NAME="GUIservice">T</A>he base class GUI is the common base class of all 
-      Lava GUI service classes: For any user-defined class C, LavaPE can semi-automatically create a GUI 
-    representation of C. This is a class that is derived from the common base 
-    class GUI (contained in std.lava) of all GUI service classes by assigning 
-    the concrete class C to the abstract virtual type DATATYPE of class GUI.</p>
-    
-    <P>LavaPE provides a <a href="../EditForm.htm">special view</a> for editing 
-    GUI specifications. It allows you to modify various representation 
-    attributes of individual atomic or composite class members and to associate 
-    handlers (callbacks) with input fields and input events.</P>
-    
-    <H3>Interface UUID</H3>
-    
-    <p>
-      Interfaces of <A HREF="../Components.htm">component objects</A> are
-      designated by an external identifier: A <U><B>U</B></U>niversally <U><B>U</B></U>nique<B>
-      <U>ID</U></B>entifier.</p>
-    </BODY>
-</HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Interface property sheet</title>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  b.c3 {text-decoration: underline}
+  span.c2 {font-weight: bold; text-decoration: underline}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Class interface property sheet</h2>
+
+  <h3>Name</h3>
+
+  <p>The name of a class may contain only letters, digits, and &quot;_&quot;. The first character must not be a digit.</p>
+
+  <h3>Declare also &quot;Set&quot; of ...</h3>
+
+  <p>Generates also a nested declaration of a class &quot;Set&quot;, where the set elements support the present class interface.</p>
+
+  <h3>Creatable / Non-creatable</h3>
+
+  <p>New objects of type XY can be created (using the <b>new</b> expression) only if XY is a <i>creatable</i> class; only creatable classes are listed in the combo-box associated with the &lt;creatable&gt; placeholder of the <b>new</b>construct. (New objects may emerge also as output objects of other built-in or native functions, e.g., the <i>Handle</i> objects associated with <i>Chain</i> elements.)</p>
+
+  <p>As a consequence, creatable classes must not contain <i>abstract</i> functions. If a class interface contains abstract functions or if it would not make sense to create objects supporting this and only this class interface, for instance a general <i>Print</i> class, then you will declare it to be non-creatable.</p>
+
+  <h3>Component object interface</h3>
+
+  <p><a href="../Components.htm">Component object interfaces</a> are the basic ingredients of <a href="COSpecBox.htm">component object specifications</a>. The parameters of their functions are subject to special restrictions, and their member variables must be accessed through set/get functions.</p>
+
+  <h3>Element category combo box</h3>
+
+  <p>If the current class is a collection class, i.e., it is derived directly or indirectly from one of the built-in base classes Set, Chain, or Array, and if the current class is the first class in the inheritance chain to define the collection element class (through the ELEMTYPE virtual type), then you may specify the <a href="../TwoObjectCategories.htm">category</a> of the collection elements here.</p>
+
+  <h3>Native</h3>
+
+  <p>If a class is to contain <a href="FunctionBox.htm#native">native</a> functions (implemented in some other language) then you must declare it to be native. Native classes are implemented in a special way as dynamic link libraries (DLLs). A native class may nevertheless contain non-native functions .</p>
+
+  <h3>Select classes to be extended</h3>
+
+  <p>A new class may extend one or several existing <i>base classes</i>. These may be selected from the combo-boxes &quot;Basic classes&quot; and &quot;Other classes&quot;. &quot;Basic classes&quot; lists all classes whose declaration is contained in the basic include file <i>std.lava</i>. If you don&#39;t explicitly select a base class then the new class is derived from class <i>Object</i> in <i>std.lava</i>.</p>
+
+  <p>The base class <b>GUI</b> is the common base class of all Lava GUI service classes: For any user-defined class C, LavaPE can semi-automatically create a GUI representation of C. This is a class that is derived from the common base class GUI (contained in std.lava) of all GUI service classes by assigning the concrete class C to the abstract virtual type DATATYPE of class GUI.</p>
+
+  <p><span class="style1">LavaPE</span> provides a <a href="../EditForm.htm">special view</a> for editing GUI specifications. It allows you to modify various representation attributes of individual atomic or composite class members and to associate handlers (callbacks) with input fields and input events.</p>
+
+  <h3>Interface UUID</h3>
+
+  <p>Interfaces of <a href="../Components.htm">component objects</a> are designated by an external identifier: A <span class="c2">U</span>niversally <span class="c2">U</span>nique <b class="c3">ID</b>entifier.</p>
+</body>
+</html>

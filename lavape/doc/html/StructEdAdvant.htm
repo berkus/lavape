@@ -1,67 +1,64 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="Author" CONTENT="Klaus D. Günther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Advantages of Lava structure editing</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER">Advantages of <FONT COLOR="#FF0000">Lava</FONT>
-    structure editing</H2>
-    
-    <UL>
-      <LI><b>No syntax-learning:</b> You need not learn and meticulously observe the <font color="#FF0000">
-      <b><i>Lava</i></b></font> syntax; <font color="#FF0000"><i><b>Lava</b></i></font> 
-      does not even <i>have</i> a fixed textual syntax.</LI>
-      <LI><b>Minimum text-entry:</b> You need not textually enter individual keywords, operators,
-        separators, variable/function/type references in <B><FONT COLOR="#FF0000">LavaPE</FONT></B>
-        but only comments, constants and new identifiers.</LI>
-      <LI><b>Drag-and-Drop/Cut-Copy-Paste of syntactic units only:</b> You can 
-      only select complete syntactic units in the <font color="#FF0000"><i><b>
-      Lava</b></i></font> structure editors; Drag-and-Drop/Cut-Copy-Paste 
-      copy/move such units only to places where they are acceptable, and an <b>
-      automatic maintenance of existing references</b> is performed 
-      subsequently.</LI>
-      <LI><b>No syntactic errors:</b> Many clerical errors, like unbalanced 
-      parentheses, misspelled keywords or other context-free syntax errors are 
-      impossible with structure editing.</LI>
-      <LI><b>Early error reporting:</b> Context-related errors are reported at the earliest possible moment,
-        i.e., immediately after the edit operation that caused the error. </LI>
-      <LI>Variable/function/type <b>references need not be keyed in</b> but you select
-        them from specific combo boxes.</LI>
-      <LI>These combo boxes list <b>only references that are permissible</b> at the
-        current selection. E.g., if you are about to insert a variable as an
-        actual input or output parameter of a function call then only variables
-        that are compatible with the type of the corresponding formal parameter
-        are listed in the &quot;objects combo box&quot;. Only more complex,
-        context-dependent potential errors would remain owing to this &quot;preselection&quot;
-        of insertable references.</LI>
-      <LI><b>Automatic maintenance of references:</b> If you rename a <B><FONT COLOR="#FF0000">Lava</FONT></B> entity or
-        move it (via drag-and-drop in the declaration view) to another place
-        then all references in the declaration view and in all execs are changed
-        automatically. Cumbersome string replacement procedures are not required
-        to this end. </LI>
-      <LI><b>Automatic maintenance of actual parameter lists:</b> If you add, remove, or permute parameters of a function in the
-        declaration view then all required modifications in all execs that are
-        affected by that change are performed automatically, at the latest when
-        you re-open the affected exec if it was closed at the time of the
-        change.</LI>
-      <LI><b>Automatic maintenance of implementations, derived classes and 
-      packages</b> when classes or base classes/packages are changed.</LI>
-    </UL>
-    <p><b>See also:</b></p>
-    <p><a href="BasicEditing.htm"><b>Basic program editing</b></a> procedures in
-    Lava.</p>
-    <p><a href="PointAndClick.htm"><b>Point-and-click nature</b></a> of <b><i><font color="#FF0000">LavaPE</font></i></b>.</p>
-    <p><a href="LavaReadability.htm"><b>Improved readability</b></a> of <b><i><font color="#FF0000"> Lava</font></i></b>
-    programs.</p>
-  </BODY>
-</HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Advantages of Lava structure editing</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  a.c5 {font-weight: bold}
+  p.c4 {font-weight: bold}
+  i.c3 {font-weight: bold; color: Red}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+      .style2
+      {
+          color: #FF0000;
+          font-style: italic;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Advantages of <span class="style1">Lava</span> structure editing</h2>
+
+  <ul>
+    <li><b>No syntax-learning:</b> You need not learn and meticulously observe the <b class="c2">Lava</b> syntax; <i class="c3">Lava</i> does not even <i>have</i> a fixed textual syntax.</li>
+
+    <li><b>Minimum text-entry:</b> You need not textually enter individual keywords, operators, separators, variable/function/type references in 
+        <span class="style2">LavaPE</span> but only comments, constants and new identifiers.</li>
+
+    <li><b>Drag-and-Drop/Cut-Copy-Paste of syntactic units only:</b> You can only select complete syntactic units in the <i class="c3">Lava</i> structure editors; Drag-and-Drop/Cut-Copy-Paste copy/move such units only to places where they are acceptable, and an <b>automatic maintenance of existing references</b> is performed subsequently.</li>
+
+    <li><b>No syntactic errors:</b> Many clerical errors, like unbalanced parentheses, misspelled keywords or other context-free syntax errors are impossible with structure editing.</li>
+
+    <li><b>Early error reporting:</b> Context-related errors are reported at the earliest possible moment, i.e., immediately after the edit operation that caused the error.</li>
+
+    <li>Variable/function/type <b>references need not be keyed in</b> but you select them from specific combo boxes.</li>
+
+    <li>These combo boxes list <b>only references that are permissible</b> at the current selection. E.g., if you are about to insert a variable as an actual input or output parameter of a function call then only variables that are compatible with the type of the corresponding formal parameter are listed in the &quot;objects combo box&quot;. Only more complex, context-dependent potential errors would remain owing to this &quot;preselection&quot; of insertable references.</li>
+
+    <li><b>Automatic maintenance of references:</b> If you rename a <span class="style2">Lava</span> entity or move it (via drag-and-drop in the declaration view) to another place then all references in the declaration view and in all execs are changed automatically. Cumbersome string replacement procedures are not required to this end.</li>
+
+    <li><b>Automatic maintenance of actual parameter lists:</b> If you add, remove, or permute parameters of a function in the declaration view then all required modifications in all execs that are affected by that change are performed automatically, at the latest when you re-open the affected exec if it was closed at the time of the change.</li>
+
+    <li><b>Automatic maintenance of implementations, derived classes and packages</b> when classes or base classes/packages are changed.</li>
+  </ul>
+
+  <p class="c4">See also:</p>
+
+  <p><a class="c5" href="BasicEditing.htm">Basic program editing</a> procedures in Lava.</p>
+
+  <p><a class="c5" href="PointAndClick.htm">Point-and-click nature</a> of <b class="c2">LavaPE</b>.</p>
+
+  <p><a class="c5" href="LavaReadability.htm">Improved readability</a> of <b class="c2">Lava</b> programs.</p>
+</body>
+</html>

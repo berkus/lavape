@@ -1,148 +1,94 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META CONTENT="en-us">
-    <META CONTENT="text/html; charset=windows-1252">
-    <META NAME="Author" CONTENT="Klaus D. G&uuml;nther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <META NAME="ProgId" CONTENT="FrontPage.Editor.Document">
-    <TITLE>Projects, programming in the large</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  <BODY>
-    <H2 ALIGN="CENTER">
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> projects, programming in the large
-    </H2>
-    <H3 ALIGN="LEFT">
-      Projects, directories
-    </H3>
-    <P>
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> doesn't provide a specific project notion. We believe that it is the primary purpose of <B>file systems</B> and <B>directories</B> to arrange
-      sets of files in groups and subgroups of more or less closely related files, and we believe that you should not confuse the users by providing additional, redundant structures in the absence of
-      a really strong motivation.
-    </P>
-    <H3>
-      <A NAME="include"></A>Lava files, file inclusion
-    </H3>
-    <P>
-      The file name suffix of a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> file indicates the intended <A HREF="ExecEnvironment.htm">execution environment</A> of the contained <B><I><FONT COLOR= 
-      "#FF0000">Lava</FONT></I></B> application. Our considerations concerning execution environments are still in a very early and provisory state. Presently the <B><I><FONT COLOR="#FF0000">
-      Lava</FONT></I></B> interpreter supports only a provisory version of a forms-oriented MDI execution environment (MDI = Multiple-Document Interface), which is associated with the <B><I><FONT
-      COLOR="#FF0000">.lava</FONT></I></B> suffix.
-    </P>
-    <P>
-      A <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> file contains a top-level <B>package</B> (see below) which is unnamed by default. If you assign a name to it then all references to contained
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> entities will be qualified with this package name.
-    </P>
-    <P>
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> files may <B>"include"</B> other <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> files. The basic <B><I><FONT COLOR="#FF0000">
-      std.lava</FONT></I></B> file is always included. It contains the declarations of the basic built-in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> data types (Boolean, Double, Float, Integer,
-      String, Enumeration, Set, Chains, Array, Callback, ...). There is no special kind of "include files" like the "header files" of <B><I><FONT COLOR="#FF0000">C++</FONT></I></B>. The include
-      mechanism is just a means to make the contents of another file available as if it were part of the including file. So it isn't an error if two <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      files include each other, and you need not worry about circular includes.
-    </P>
-    <P>
-      <A NAME="nameClash"></A>Name clashes between <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> entities contained in two included files or in the including and the included file can be resolved
-      within the including file F by assigning unique "local alias names" ("use as" names) to the top level packages of the included files within F.
-    </P>
-    <H3>
-      <A NAME="packages"></A>Packages
-    </H3>
-    <P>
-      In <FONT COLOR="#FF0000"><I><B>Java</B></I></FONT> a file "belongs" always to a single package and a package may extend over many files. On the other hand the <A HREF="EditTree.htm"><B><I><FONT
-      COLOR="#FF0000">Lava</FONT></I></B> declaration tree</A> which makes up a <FONT COLOR="#FF0000"><B>Lava</B></FONT> file may consist of many nested packages, and every <FONT COLOR="#FF0000"><I>
-      <B>Lava</B></I></FONT> package is completely contained in one <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> file.
-    </P>
-    <P>
-      This complete containment even of a huge package in a single <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> file is greatly facilitated by the fact that implementations can be <A HREF= 
-      "SepItfImpl.htm">separated</A> from class interfaces and stored in separate files in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> whereas the bodies of <B><I><FONT COLOR="#FF0000">
-      Java</FONT></I></B> member functions have to be included in their respective class declarations. In this way you can have a combination of pure package and 
-      class declaration files and
-      perhaps many separate implementation files in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, where every implementation file might perhaps contain the implementation of only one 
-      class.
-    </P>
-    <P>
-      You can declare a package to be <B><A NAME="opaque"></A><A HREF="ProtectedFriend.htm">opaque</A></B> to prevent access to the contained declarations from the "outside world". In this way you
-      can achieve similar effects as with <B>private/friend</B> declarations in <B><I><FONT COLOR="#FF0000">C++</FONT></I></B> or with <B>inner classes</B> in <B><I><FONT COLOR="#FF0000">
-      Java</FONT></I></B>.
-    </P>
-    <P>
-      Packages may have <B>"pattern parameters"</B> or <B>"virtual types"</B>. Based on these they can be used to define <A HREF="PatternsFrameworks.htm"><B>"patterns/frameworks"</B></A>, i.e.,
-      groups of parameterized classes that can be derived/specialized collectively and consistently.
-    </P>
-    <H3>
-      <FONT COLOR="#FF0000"><I>Lava</I></FONT> f<B>iles and packages in perspective</B>
-    </H3>
-    <P>
-      <FONT COLOR="#FF0000"><B><I>Lava</I></B></FONT> packages may be <I>nested</I> within <I><FONT COLOR="#FF0000"><B>Lava</B></FONT></I> files. The leaf nodes of this package tree are primarily
-      used to constitute <B>families</B>of closely related, possibly parameterized, <B>cooperating classes</B>, or implementations thereof. Non-leaf nodes in the package tree would constitute <B>
-      collections of related families</B>.
-    </P>
-    <P>
-      On the other hand, <FONT COLOR="#FF0000"><B><I>Lava</I></B></FONT> <I>files</I> are bigger software units that play a role on the level of <I>project and product&nbsp; organization</I>:
-    </P>
-    <UL>
-      <LI>
-        Files are the smallest units that can be <B>loaded independently</B> into the <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> interpreter.
-      </LI>
-      <LI>
-        Therefore they may be viewed also as <B>units of software reuse</B>,
-      </LI>
-      <LI>
-        or as reasonable <B>work items / units of responsibility</B> that are assigned to programmers.
-      </LI>
-    </UL>
-    <H3>
-      <A NAME="initiator"></A>Initiators / main programs</H3>
-    <P>
-      If you want to <B>execute</B> a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> file you just have to make sure that the first <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> entity in its
-      top-level package is an <B>initiator</B>. Initiators play the role of <B>"autonomous main programs"</B> in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> and start with the ke<SPAN LANG=
-      "de">y</SPAN>word <SPAN LANG="de">"</SPAN><FONT COLOR="#0000FF"><B>main</B></FONT><SPAN LANG="de">"</SPAN>. They may have input parameters but once started they run autonomously (even
-      as <A HREF="Transactions.htm">concurrently executing threads/transactions</A>). In particular they don't return output parameters and cannot throw exceptions to the calling level. A <B><I><FONT
-      COLOR="#FF0000">Lava</FONT></I></B> program may (recursively) launch any number of subordinate initiators and thus consist of a collection of concurrently executing threads.
-    </P>
-    <H3>
-      <A NAME="implSearch"></A>How <FONT COLOR="#FF0000"><I>Lava</I></FONT> 
-      locates implementations of classes
-    </H3>
-    <P>
-      First note that <A HREF="commands/NewImplementation.htm">implementations</A> cannot and need never be referenced expressly in <FONT COLOR="#FF0000"><B><I>Lava</I></B></FONT> but only
-      implicitly:
-    </P>
-    <P>
-      If C is a "<A HREF="SepItfImpl.htm#objectCreation">creatable</A>" <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> <A HREF="SepItfImpl.htm">
-      class</A> and a new object of type <I>C</I> is to
-      be created then the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> interpreter searches the current file and all directly or indirectly included files for an implementation of <I>C</I>. As
-      soon as an implementation <I>Imp</I> of <I>C</I> is found a (transient) pointer to <I>Imp</I> 
-      is stored in the internal representation of the class <I>C</I>, with the effect that this same
-      implementation <I>Imp</I> of <I>C</I> is used throughout the entire run of this application.
-    </P>
-    <P>
-      So you have to make sure that for every class that doesn't consist solely of abstract functions a suitable file containing the desired implementation is included anywhere in such a way that
-      this implementation will be found at run time by searching the "include tree".
-    </P>
-    <P>
-      Note that it isn't a problem in <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> if two <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> files include each other or if circular include paths
-      consisting of more than two files occur. The implementation search process reads every included file at most once.
-    </P>
-    <P>
-      Because <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> strictly separates 
-      class interfaces and implementations you can even have several different implementations of the same 
-      class. They should
-      be contained in different <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> files since otherwise only the first of them (in "tree search order") will be found. In such a case it is obvious to
-      use special "implementation include files" that don't contain anything else but include directives for implementation files. These "implementation include files" would in turn be included by
-      the actual <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> program files and would in this way control the proper selection of implementation variants. You could then provide a number of
-      versions of these implementation include files for various combinations of class implementation variants.
-    </P>
-    <P>
-      <B>See also</B>
-    </P>
-    <P>
-      <B><A HREF="ProtectedFriend.htm">"Private" / "protected" / "friend" counterparts in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B></A></B>
-    </P>
-    <P>
-      <B><A HREF="PatternsFrameworks.htm">Patterns / frameworks</A></B>
-    </P>
-  </BODY>
-</HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Projects, programming in the large</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c6 {font-weight: bold}
+  a.c5 {font-weight: bold}
+  i.c4 {font-weight: bold; color: Red}
+  h3.c3 {text-align: left}
+  h2.c2 {text-align: center}
+  b.c1 {font-style: italic; color: Red}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+      .style2
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c2"><b class="c1">Lava</b> projects, programming in the large</h2>
+
+  <h3 class="c3">Projects, directories</h3>
+
+  <p><b class="c1">Lava</b> doesn&#39;t provide a specific project notion. We believe that it is the primary purpose of <b>file systems</b> and <b>directories</b> to arrange sets of files in groups and subgroups of more or less closely related files, and we believe that you should not confuse the users by providing additional, redundant structures in the absence of a really strong motivation.</p>
+
+  <h3><a id="include"></a><span class="style1">Lava</span> files, file inclusion</h3>
+
+  <p>The file name suffix of a <b class="c1">Lava</b> file indicates the intended <a href="ExecEnvironment.htm">execution environment</a> of the contained <b class="c1">Lava</b> application. Our considerations concerning execution environments are still in a very early and provisory state. Presently the <b class="c1">Lava</b> interpreter supports only a provisory version of a forms-oriented MDI execution environment (MDI = Multiple-Document Interface), which is associated with the <b class="c1">.lava</b> suffix.</p>
+
+  <p>A <b class="c1">Lava</b> file contains a top-level <b>package</b> (see below) which is unnamed by default. If you assign a name to it then all references to contained <b class="c1">Lava</b> entities will be qualified with this package name.</p>
+
+  <p><b class="c1">Lava</b> files may <b>&quot;include&quot;</b> other <b class="c1">Lava</b> files. The basic <b class="c1">std.lava</b> file is always included. It contains the declarations of the basic built-in <b class="c1">Lava</b> data types (Boolean, Double, Float, Integer, String, Enumeration, Set, Chains, Array, Callback, ...). There is no special kind of &quot;include files&quot; like the &quot;header files&quot; of <b class="c1">C++</b>. The include mechanism is just a means to make the contents of another file available as if it were part of the including file. So it isn&#39;t an error if two <b class="c1">Lava</b> files include each other, and you need not worry about circular includes.</p>
+
+  <p><a id="nameClash"></a>Name clashes between <b class="c1">Lava</b> entities contained in two included files or in the including and the included file can be resolved within the including file F by assigning unique &quot;local alias names&quot; (&quot;use as&quot; names) to the top level packages of the included files within F.</p>
+
+  <h3><a id="packages"></a>Packages</h3>
+
+  <p>In <i class="c4">Java</i> a file &quot;belongs&quot; always to a single package and a package may extend over many files. On the other hand the <a href="EditTree.htm"><b class="c1">Lava</b> declaration tree</a> which makes up a <b>Lava</b> file may consist of many nested packages, and every <i class="c4">Lava</i> package is completely contained in one <i class="c4">Lava</i> file.</p>
+
+  <p>This complete containment even of a huge package in a single <b class="c1">Lava</b> file is greatly facilitated by the fact that implementations can be <a href="SepItfImpl.htm">separated</a> from class interfaces and stored in separate files in <b class="c1">Lava</b> whereas the bodies of <b class="c1">Java</b> member functions have to be included in their respective class declarations. In this way you can have a combination of pure package and class declaration files and perhaps many separate implementation files in <b class="c1">Lava</b>, where every implementation file might perhaps contain the implementation of only one class.</p>
+
+  <p>You can declare a package to be <b><a id="opaque"></a><a href="ProtectedFriend.htm">opaque</a></b> to prevent access to the contained declarations from the &quot;outside world&quot;. In this way you can achieve similar effects as with <b>private/friend</b> declarations in <b class="c1">C++</b> or with <b>inner classes</b> in <b class="c1">Java</b>.</p>
+
+  <p>Packages may have <b>&quot;pattern parameters&quot;</b> or <b>&quot;virtual types&quot;</b>. Based on these they can be used to define <a class="c5" href="PatternsFrameworks.htm">&quot;patterns/frameworks&quot;</a>, i.e., groups of parameterized classes that can be derived/specialized collectively and consistently.</p>
+
+  <h3><i>Lava</i> f<b>iles and packages in perspective</b></h3>
+
+  <p><b class="c1">Lava</b> packages may be <i>nested</i> within <i class="c4">Lava</i> files. The leaf nodes of this package tree are primarily used to constitute <b>families</b>of closely related, possibly parameterized, <b>cooperating classes</b>, or implementations thereof. Non-leaf nodes in the package tree would constitute <b>collections of related families</b>.</p>
+
+  <p>On the other hand, <b class="c1">Lava</b> <i>files</i> are bigger software units that play a role on the level of <i>project and product organization</i>:</p>
+
+  <ul>
+    <li>Files are the smallest units that can be <b>loaded independently</b> into the <i class="c4">Lava</i> interpreter.</li>
+
+    <li>Therefore they may be viewed also as <b>units of software reuse</b>,</li>
+
+    <li>or as reasonable <b>work items / units of responsibility</b> that are assigned to programmers.</li>
+  </ul>
+
+  <h3><a id="initiator"></a>Initiators / main programs</h3>
+
+  <p>If you want to <b>execute</b> a <b class="c1">Lava</b> file you just have to make sure that the first <b class="c1">Lava</b> entity in its top-level package is an <b>initiator</b>. Initiators play the role of <b>&quot;autonomous main programs&quot;</b> in <b class="c1">Lava</b> and start with the keyword &quot;<span 
+          class="style2">main</span>&quot;. They may have input parameters but once started they run autonomously (even as <a href="Transactions.htm">concurrently executing threads/transactions</a>). In particular they don&#39;t return output parameters and cannot throw exceptions to the calling level. A <b class="c1">Lava</b> program may (recursively) launch any number of subordinate initiators and thus consist of a collection of concurrently executing threads.</p>
+
+  <h3><a id="implSearch"></a>How <span class="style1">Lava</span> locates implementations of classes</h3>
+
+  <p>First note that <a href="commands/NewImplementation.htm">implementations</a> cannot and need never be referenced expressly in <b class="c1">Lava</b> but only implicitly:</p>
+
+  <p>If C is a &quot;<a href="SepItfImpl.htm#objectCreation">creatable</a>&quot; <b class="c1">Lava</b> <a href="SepItfImpl.htm">class</a> and a new object of type <i>C</i> is to be created then the <b class="c1">Lava</b> interpreter searches the current file and all directly or indirectly included files for an implementation of <i>C</i>. As soon as an implementation <i>Imp</i> of <i>C</i> is found a (transient) pointer to <i>Imp</i> is stored in the internal representation of the class <i>C</i>, with the effect that this same implementation <i>Imp</i> of <i>C</i> is used throughout the entire run of this application.</p>
+
+  <p>So you have to make sure that for every class that doesn&#39;t consist solely of abstract functions a suitable file containing the desired implementation is included anywhere in such a way that this implementation will be found at run time by searching the &quot;include tree&quot;.</p>
+
+  <p>Note that it isn&#39;t a problem in <i class="c4">Lava</i> if two <i class="c4">Lava</i> files include each other or if circular include paths consisting of more than two files occur. The implementation search process reads every included file at most once.</p>
+
+  <p>Because <i class="c4">Lava</i> strictly separates class interfaces and implementations you can even have several different implementations of the same class. They should be contained in different <i class="c4">Lava</i> files since otherwise only the first of them (in &quot;tree search order&quot;) will be found. In such a case it is obvious to use special &quot;implementation include files&quot; that don&#39;t contain anything else but include directives for implementation files. These &quot;implementation include files&quot; would in turn be included by the actual <i class="c4">Lava</i> program files and would in this way control the proper selection of implementation variants. You could then provide a number of versions of these implementation include files for various combinations of class implementation variants.</p>
+
+  <p class="c6">See also</p>
+
+  <p class="c6"><a href="ProtectedFriend.htm">&quot;Private&quot; / &quot;protected&quot; / &quot;friend&quot; counterparts in <b class="c1">Lava</b></a></p>
+
+  <p class="c6"><a href="PatternsFrameworks.htm">Patterns / frameworks</a></p>
+</body>
+</html>

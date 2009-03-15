@@ -1,12 +1,15 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>HTML Help Java Applet</title>
-</head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<SCRIPT language="JavaScript">
-function msieversion()
-{
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>HTML Help Java Applet</title>
+  <script language="JavaScript" type="text/javascript" xml:space="preserve">
+//<![CDATA[
+  function msieversion()
+  {
         var ua = window.navigator.userAgent;
         var msie = ua.indexOf("MSIE ");
         if (msie > 0) {
@@ -16,10 +19,10 @@ function msieversion()
 
         // is other browser
         return(0);
-}
+  }
 
-function ResizeApplet()
-{
+  function ResizeApplet()
+  {
         if (msieversion() < 4) {
                 // Can only dynamically resize in IE4
                 return;
@@ -27,19 +30,24 @@ function ResizeApplet()
         var hhctrl = document.HHCtrl;
         hhctrl.width = document.body.offsetWidth - hhctrl.offsetLeft * 2;
         hhctrl.height = document.body.offsetHeight - hhctrl.offsetTop * 2;
-}
-</SCRIPT>
+  }
+  //]]>
+  </script>
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  body {
+  background-color: #C0C0C0;
+  }
+  /*]]>*/
+  </style>
+</head>
 
-<body bgcolor="#C0C0C0" onLoad="ResizeApplet()" onResize="ResizeApplet()">
-
-<p>
-<applet code="HHCtrl.class" align="baseline" width="300" height="500"
-name="HHCtrl">
-<param name="command" value="index">
-<param name="background" value="c0c0c0">
-<param name="item1" value="LavaPE.hhk">
-<param name="cabbase" value="HHCtrl.cab">
-</applet>
-</p>
+<body onload="ResizeApplet()">
+  <p><object classid="java:HHCtrl.class" codetype="application/java" width="300" height="500" name="HHCtrl" id="HHCtrl">
+    <param name="command" value="index" />
+    <param name="background" value="c0c0c0" />
+    <param name="item1" value="LavaPE.hhk" />
+    <param name="cabbase" value="HHCtrl.cab" />
+  </object></p>
 </body>
 </html>

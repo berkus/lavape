@@ -1,59 +1,65 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Database integration</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER"><STRONG>Integrated database expressive means</STRONG></H2>
-    
-    <P ALIGN="left">It is one of the most important features of
-      <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT> that it
-      neither needs <b> &quot;embedded <I><FONT COLOR="#FF0000">SQL</FONT></I>&quot;</b>
-      nor any other <I>special</I> expressive means for database or
-      <A HREF="Transactions.htm">transaction</A> management.
-      <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT> is based on
-      (bounded) quantifier logic and provides finite sets of objects,
-      quantifiers <FONT COLOR="#0000FF"><STRONG>exists</STRONG></FONT>,
-      <FONT COLOR="#0000FF"><STRONG>foreach</STRONG></FONT>, logical conjunctions <FONT COLOR="#0000FF"><STRONG>and</STRONG></FONT>,
-      <FONT COLOR="#0000FF"><STRONG>or</STRONG></FONT>, <FONT COLOR="#0000FF"><STRONG>not</STRONG></FONT>,
-      <B><FONT COLOR="#0000FF">xor</FONT></B>, <FONT COLOR="#0000FF"><STRONG>if</STRONG></FONT>-<FONT COLOR="#0000FF"><STRONG>then</STRONG></FONT>-<FONT COLOR="#0000FF"><STRONG>else</STRONG></FONT>,
-      and a set construction expression <FONT COLOR="#0000FF"><STRONG>select</STRONG></FONT>,
-      that roughly corresponds to the <B><I><FONT COLOR="#FF0000">SQL</FONT></I></B>
-      &quot;select&quot; expression. These can be used to express object and set
-      queries and data manipulation algorithms, and these expressive means are
-      independent of the persistent or transient nature of the underlying data.
-    </P>
-    
-    <P ALIGN="left">The <B><FONT COLOR="#0000FF">where</FONT></B> clause of
-      the quantifiers and the <B><FONT COLOR="#0000FF">select</FONT></B>
-      expression corresponds roughly to the &quot;where&quot; clause of the <FONT COLOR="#FF0000"><I> <B>SQL </B></I></FONT>
-    &quot;select&quot; construct.
-      We shall need further clauses corresponding to the various clauses of &quot;select&quot;
-      in <B><I><FONT COLOR="#FF0000">SQL</FONT></I></B> (for further study).</P>
-    
-    <P>A database, including external <B><I><FONT COLOR="#FF0000">SQL</FONT></I></B>
-      or object-oriented databases, appears in <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT>
-      as a special (persistent) <A HREF="Components.htm">component object</A>.
-      The <B><FONT COLOR="#0000FF"><A HREF="Components.htm#attach">attach</A></FONT></B>
-      construct is used to &quot;open&quot; it, which means to make it
-      accessible through a specific interface. Subsequently the database may be
-      used in the same way as any other <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      object.</P>
-    
-    <P><STRONG>See also</STRONG></P>
-    
-    <P><B><A HREF="Transactions.htm"><I><FONT COLOR="#FF0000">Lava</FONT></I>
-        transaction management</A></B> </P>
-    
-    <P><B><A HREF="DatabaseSample.htm">Database sample</A></B></P>
-  </BODY>
-</HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Database integration</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c5 {font-weight: bold}
+  i.c4 {font-weight: bold}
+  p.c3 {text-align: left}
+  b.c2 {font-style: italic}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+      .style2
+      {
+          color: #0000FF;
+      }
+      .style3
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style4
+      {
+          color: #FF0000;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1"><strong>Integrated database expressive means</strong></h2>
+
+  <p class="c3">It is one of the most important features of <span class="style1"><strong>Lava</strong></span> that it neither needs <b>&quot;embedded 
+      <span class="style1">SQL</span>&quot;</b> nor any other <i>special</i> expressive means for database or <a href="Transactions.htm">transaction</a> management. 
+      <span class="style1"><strong>Lava</strong></span> is based on (bounded) quantifier logic and provides finite sets of objects, quantifiers 
+      <span class="style2"> <strong>exists</strong></span>, <span class="style2"> <strong>foreach</strong></span>, logical conjunctions 
+      <span class="style2"> <strong>and</strong></span>, <span class="style2"> <strong>or</strong></span>, 
+      <span class="style2"> <strong>not</strong></span>, <span class="style3">xor</span>, 
+      <span class="style2"> <strong>if</strong>-<strong>then</strong>-<strong>else</strong></span>, and a set construction expression 
+      <span class="style2"> <strong>select</strong></span>, that roughly corresponds to the 
+      <span class="style4"> <b class="c2">SQL</b></span> &quot;select&quot; expression. These can be used to express object and set queries and data manipulation algorithms, and these expressive means are independent of the persistent or transient nature of the underlying data.</p>
+
+  <p class="c3">The <b>where</b> clause of the quantifiers and the 
+      <span class="style3">select</span> expression corresponds roughly to the &quot;where&quot; clause of the 
+      <span class="style4"> <i class="c4">SQL</i></span> &quot;select&quot; construct. We shall need further clauses corresponding to the various clauses of &quot;select&quot; in 
+      <span class="style4"> <b class="c2">SQL</b></span> (for further study).</p>
+
+  <p>A database, including external <span class="style4"> <b class="c2">SQL</b></span> or object-oriented databases, appears in 
+      <span class="style1"><strong>Lava</strong></span> as a special (persistent) <a href="Components.htm">component object</a>. The <b><a href="Components.htm#attach">attach</a></b> construct is used to &quot;open&quot; it, which means to make it accessible through a specific interface. Subsequently the database may be used in the same way as any other 
+      <span class="style4"> <b class="c2">Lava</b></span> object.</p>
+
+  <p><strong>See also</strong></p>
+
+  <p class="c5"><a href="Transactions.htm"><i>Lava</i> transaction management</a></p>
+
+  <p class="c5"><a href="DatabaseSample.htm">Database sample</a></p>
+</body>
+</html>

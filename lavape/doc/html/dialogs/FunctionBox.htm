@@ -1,221 +1,128 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="Author" CONTENT="Klaus D. Günther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Function property sheet</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="../LavaStyles.css">
-    <style type="text/css">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Function property sheet</title>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c8 {font-weight: bold}
+  a.c7 {font-style: italic}
+  p.c6 {text-align: left}
+  a.c5 {font-weight: bold}
+  h3.c4 {font-weight: bold}
+  i.c3 {font-weight: bold; color: Red}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
       .style1
       {
-        color: #FF0000;
-        font-style: italic;
-        font-weight: bold;
+          color: #0000FF;
+          font-weight: bold;
       }
-    </style>
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER">Function property sheet</H2>
-    
-    <H3>Name</H3>
-    
-    <P>The name of a function may contain only letters, digits, and &quot;_&quot;.
-      The first character must not be a digit.</P>
-    
-    <H3>Enable renaming</H3>
-    
-    <p>You may change the names of functions, member variables and virtual types
-    when you override them in a derived class or pattern (for instance in
-    order to resolve name collisions in cases of multiple inheritance). They
-    inherit the names of the base versions by default (and their name is changed
-    accordingly if the inherited base name is changed).&nbsp;</p>
-    
-    <p> Check this check-box if
-    you would like to assign a different name (which will not be changed then if
-    the base name is changed). But note that you have to provide a new
-    implementation for overridden functions. Also note that all Lava entities
-    have a unique internal identifier. Therefore name clashes caused by multiple
-    inheritance actually doesn't matter in Lava since the external, readable
-    identifiers are not used and not needed for the distinction of Lava
-    entities. The only problem is that the <i>programmer</i> possibly cannot
-    distinguish these entities at first sight but has to click the &quot;go to
-    declaration&quot; button to this end.</p>
-    
-    <H3>Operator</H3>
-    
-    <P>You can also use one of the usual operator symbols for relational and
-      arithmetic operators for your new function instead of a name. The number
-      of arguments and their types are determined automatically in this case.
-    </P>
-    <h3>Handler</h3>
-    <P>Handler functions aren&#39;t introduced through this dialog but through the
-      <span class="style1">Lava</span> form view. They serve as handlers for GUI 
-      events. If a handler function has been introduced in this way then it appears 
-      also here in the ordinary <span class="style1">Lava</span> declaration tree and can, for instance, be 
-      deprived of its handler status and changed into a quite normal non-handler 
-      function.</P>
-    
-    <H3>Initializer</H3>
-    
-    <P>Every class (except for component object interfaces) must have at
-      least one <A HREF="../ObjectLifeCycle.htm#creation">initializer</A>
-      function. Initializers are used to bring newly created objects into a
-      state where all their non-optional member variables have a non-null value.
-      Member functions may be invoked for a new object only after this state has
-      been reached. <I>Base initializers</I> are called automatically for every
-      base class at the beginning of the body of any initializer in order to
-      properly initialize the base parts of the current object.</P>
-    
-    <P>In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> you must always
-      specify an <I>initializer</I> (rather than a creatable class) when
-      using a <B><FONT COLOR="#0000FF">new</FONT></B> expression to create a
-      new object.</P>
-    
-    <H3>Default initializer</H3>
-    
-    <P>A default initializer has no arguments. It is suppressed in <B><FONT COLOR="#0000FF">new</FONT></B>
-      expressions and this way enables a more compact syntax of <B><FONT COLOR="#0000FF">new</FONT></B>
-      expressions.</P>
-    
-    <H3>Protected</H3>
-    
-    <P>A <A HREF="../ProtectedFriend.htm">protected</A> function can be
-      invoked only from functions contained in the implementation of this or a
-      derived class.</P>
-    
-    <h3><a name="static"></a>Static</h3>
-    
-    <P>A class may have static member functions. These are invoked without
-    call expression and have no &quot;self&quot; variable.
-    Interfaces with static member functions are used primarily if you want to
-    add further functions to an existing class C of objects without
-    extending C.</P>
-  <P><b>Example:</b> Mathematical functions that can be applied to
-    Integers/Floats/Doubles but that are not contained in the
-    Integer/Float/Double interfaces: You may declare then, for instance, a class &quot;Math&quot; containing static functions &quot;sin&quot;,
-    &quot;cos&quot;, &quot;exp&quot;, &quot;log&quot;, etc. that accept
-    &quot;Float x&quot; as input parameter and you can invoke these in the usual
-    form &quot;sin(x)&quot;, rather than &quot;x.sin()&quot;, &quot;log(x)&quot;,
-    rather than &quot;x.log()&quot;.</P>
-    
-    <P><b>Note:</b> <font color="#FF0000"><i><b>Lava</b></i></font> doesn't 
-    make a distinction between virtual and non-virtual non-static member functions of 
-    classes, as for instance <b><i><font color="#FF0000">C++</font></i></b> 
-    does, but all non-static member functions are virtual automatically and thus 
-    may be overridden in derived classes.</P>
-    
-    <p><b>Note: </b>To call a non-static function statically means that you circumvent the usual virtual
-    function call (&quot;late binding&quot;) mechanism but you specify precisely
-    which version of the function from which class shall be called. If <I>f</I> is a member <I>function</I> of <I>A</I> then<I> f</I>
-      can be called statically <b>only from derived
-      classes</b> in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, i.e., from 
-    functions that are declared in a derived class <I>B</I> of <I>A</I>
-      or in the implementation thereof. So if functions are declared in <I>A</I>
-      and overridden in <I>B</I> then clients of <I>B</I> are forced to use the
-      overridden version; they are not allowed to statically call the base
-      version.</p>
-    
-    <H3>Abstract</H3>
-    
-    <P>An abstract function is not implemented in the implementation of the
-      containing class. Its implementation is deferred to a derived
-      class. Interfaces containing abstract functions cannot be creatable;
-    therefore the &quot;abstract&quot; check-box is disabled if the function
-    belongs to a creatable class.</P>
-    
-    <H3><a name="selfClosed"></a>&quot;Self&quot;<i> </i>&nbsp;is closed</H3>
-    
-    <P>If checked, then this means that the <i>self</i> object of this method may be 
-    in a not yet fully initialized state. Although a method may be called only 
-    if a non-null value has been assigned to all non-optional member variables 
-    of its <i>self</i> object within the object's initializer, these values might in 
-    turn contain non-fully initialized nested members. <font color="#FF0000"><i>
-    <b>LavaPE</b></i></font> guarantees that such
-    <a href="../UnfinishedObjects.htm">unfinished objects</a> are in a sense 
-    &quot;closed&quot; or &quot;opaque&quot;: A &quot;closed&quot; object may only be passed, assigned and 
-    referenced &quot;as a whole&quot;. Referencing its member objects 
-    is prohibited (and prevented by <font color="#FF0000"><i><b>LavaPE</b></i></font> 
-    already at programming time!).</P>
-    
-    <H3>&quot;Self&quot; category combo box</H3>
-    
-    <P>A function doesn&#39;t modify &quot;self&quot; if it treats its &quot;self&quot; object as immutable, 
-      i.e., it doesn&#39;t modify the immediate and nested       <a href="../PointersRefCounts.htm#refTypes">constituents</a> of &quot;self&quot;.</P>
-    
-    <H3><A NAME="native"></A>Native</H3>
-    
-    <P>See <A HREF="InterfaceBox.htm#native">native interfaces</A>.</P>
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Function property sheet</h2>
+
+  <h3>Name</h3>
+
+  <p>The name of a function may contain only letters, digits, and &quot;_&quot;. The first character must not be a digit.</p>
+
+  <h3>Enable renaming</h3>
+
+  <p>You may change the names of functions, member variables and virtual types when you override them in a derived class or pattern (for instance in order to resolve name collisions in cases of multiple inheritance). They inherit the names of the base versions by default (and their name is changed accordingly if the inherited base name is changed).</p>
+
+  <p>Check this check-box if you would like to assign a different name (which will not be changed then if the base name is changed). But note that you have to provide a new implementation for overridden functions. Also note that all Lava entities have a unique internal identifier. Therefore name clashes caused by multiple inheritance actually doesn&#39;t matter in Lava since the external, readable identifiers are not used and not needed for the distinction of Lava entities. The only problem is that the <i>programmer</i> possibly cannot distinguish these entities at first sight but has to click the &quot;go to declaration&quot; button to this end.</p>
+
+  <h3>Operator</h3>
+
+  <p>You can also use one of the usual operator symbols for relational and arithmetic operators for your new function instead of a name. The number of arguments and their types are determined automatically in this case.</p>
+
+  <h3>Handler</h3>
+
+  <p>Handler functions aren&#39;t introduced through this dialog but through the Lava form view. They serve as handlers for GUI events. If a handler function has been introduced in this way then it appears also here in the ordinary Lava declaration tree and can, for instance, be deprived of its handler status and changed into a quite normal non-handler function.</p>
+
+  <h3>Initializer</h3>
+
+  <p>Every class (except for component object interfaces) must have at least one <a href="../ObjectLifeCycle.htm#creation">initializer</a> function. Initializers are used to bring newly created objects into a state where all their non-optional member variables have a non-null value. Member functions may be invoked for a new object only after this state has been reached. <i>Base initializers</i> are called automatically for every base class at the beginning of the body of any initializer in order to properly initialize the base parts of the current object.</p>
+
+  <p>In <b class="c2">Lava</b> you must always specify an <i>initializer</i> (rather than a creatable class) when using a 
+      <span class="style1">new</span> expression to create a new object.</p>
+
+  <h3>Default initializer</h3>
+
+  <p>A default initializer has no arguments. It is suppressed in <span class="style1">new</span> expressions and this way enables a more compact syntax of 
+      <span class="style1">new</span> expressions.</p>
+
+  <h3>Protected</h3>
+
+  <p>A <a href="../ProtectedFriend.htm">protected</a> function can be invoked only from functions contained in the implementation of this or a derived class.</p>
+
+  <h3><span style="color:()">()</span>"static"></a>Static</h3>
+
+  <p>A class may have static member functions. These are invoked without call expression and have no &quot;self&quot; variable. Interfaces with static member functions are used primarily if you want to add further functions to an existing class C of objects without extending C.</p>
+
+  <p><b>Example:</b> Mathematical functions that can be applied to Integers/Floats/Doubles but that are not contained in the Integer/Float/Double interfaces: You may declare then, for instance, a class &quot;Math&quot; containing static functions &quot;sin&quot;, &quot;cos&quot;, &quot;exp&quot;, &quot;log&quot;, etc. that accept &quot;Float x&quot; as input parameter and you can invoke these in the usual form &quot;sin(x)&quot;, rather than &quot;x.sin()&quot;, &quot;log(x)&quot;, rather than &quot;x.log()&quot;.</p>
+
+  <p><b>Note:</b> <i class="c3">Lava</i> doesn&#39;t make a distinction between virtual and non-virtual non-static member functions of classes, as for instance <b class="c2">C++</b> does, but all non-static member functions are virtual automatically and thus may be overridden in derived classes.</p>
+
+  <p><b>Note:</b> To call a non-static function statically means that you circumvent the usual virtual function call (&quot;late binding&quot;) mechanism but you specify precisely which version of the function from which class shall be called. If <i>f</i> is a member <i>function</i> of <i>A</i> then <i>f</i> can be called statically <b>only from derived classes</b> in <b class="c2">Lava</b>, i.e., from functions that are declared in a derived class <i>B</i> of <i>A</i> or in the implementation thereof. So if functions are declared in <i>A</i> and overridden in <i>B</i> then clients of <i>B</i> are forced to use the overridden version; they are not allowed to statically call the base version.</p>
+
+  <h3>Abstract</h3>
+
+  <p>An abstract function is not implemented in the implementation of the containing class. Its implementation is deferred to a derived class. Interfaces containing abstract functions cannot be creatable; therefore the &quot;abstract&quot; check-box is disabled if the function belongs to a creatable class.</p>
+
+  <h3><span style="color:()">()</span>"selfClosed"></a>&quot;Self&quot; is closed</h3>
+
+  <p>If checked, then this means that the <i>self</i> object of this method may be in a not yet fully initialized state. Although a method may be called only if a non-null value has been assigned to all non-optional member variables of its <i>self</i> object within the object&#39;s initializer, these values might in turn contain non-fully initialized nested members. <i class="c3">LavaPE</i> guarantees that such <a href="../UnfinishedObjects.htm">unfinished objects</a> are in a sense &quot;closed&quot; or &quot;opaque&quot;: A &quot;closed&quot; object may only be passed, assigned and referenced &quot;as a whole&quot;. Referencing its member objects is prohibited (and prevented by <i class="c3">LavaPE</i> already at programming time!).</p>
+
+  <h3>&quot;Self&quot; category combo box</h3>
+
+  <p>A function doesn&#39;t modify &quot;self&quot; if it treats its &quot;self&quot; object as immutable, i.e., it doesn&#39;t modify the immediate and nested <a href="../PointersRefCounts.htm#refTypes">constituents</a> of &quot;self&quot;.</p>
+
+  <h3><span style="color:()">()</span>"native"></a>Native</h3>
+
+  <p>See <a href="InterfaceBox.htm#native">native interfaces</a>.</p>
+
   <h3>Signal</h3>
-  <P>Check this if the function shall be eligible as a signal function in the 
-    context of the <a href="../Callbacks.htm"><span class="style1">Lava</span> 
-    callback concept</a>.</P>
-    
-    <!--<H3>Transaction</H3>
-    
-    <P>A function may be executed as an atomic
-      <A HREF="../Transactions.htm#transact">transaction</A>.</P> -->
-    
-    <H3>Synchronous</H3>
-    
-    <P>A function is executed in <a href="../Transactions.htm">synchronous</a> mode by default, i.e., the caller
-      waits until it returns.</P>
-    
-    <H3>Concurrent</H3>
-    
-    <P>If a function is to be executed in <a href="../Transactions.htm"> concurrent</a> mode then a concurrently
-      executing thread is allocated and assigned to it.</P>
-    
-    <H3>Autonomous </H3>
-    
-    <P><a href="../Transactions.htm">Autonomous</a> execution means <I>concurrent</I> execution but,
-      moreover, the function neither has output parameters nor can it throw
-      exceptions.</P>
-    
-    <H3>Select exception types</H3>
-    
-    <P>A function may throw exceptions (using the <font color="#0000FF"><b>throw</b></font> 
-    statement) of one or several types that you must select here:
-    <font color="#0000FF"><b>throw</b></font> may only throw exeptions that are 
-    compatible with some type from this list.</P>
-    
-    <H3>Remove overrides</H3>
-    
-    <P>Transforms an overridden function into a non-overridden function, as if it
-      had been newly declared in the containing class.</P>
-    
-    <H3><a name="forceOverride"></a>Callable only from this VT context</H3>
-    
-    
-<P>The function together with its containing class must always be 
-<a href="../OverrideView.htm">overridden</a> when the containing pattern is derived. Thus it cannot 
-  be called with a <I>self</I> object of a more 
-<a href="../TypeSafety.htm#p-derived">p-derived</a> run-time type, and static calls are forbidden 
-  either.</P>
-    
-    
-<P>This may be necessary particularly if a local variable or formal parameter 
-  whose type is <a href="../PatternsFrameworks.htm#multiform">multiform</a> occurs 
-  on the target side of an assignment in the  body of this function and the source side 
-  of the assignment is non-multiform. </P>
-    
-    
-<P>Example: the right-hand side is a &quot;<font color="#0000FF"><b>new</b></font> <i>
-type</i>&quot; - expression, the left-hand side is a variable having some virtual 
-type whose concrete value is <i>type</i> in the context of the function body. 
-This is the typical purpose and behavior of a &quot;factory function&quot; which is 
-overridden when the respective class is specialized.</P>
-<h3><b>See also</b></h3>
-    <p align="left"><a href="../SepItfImpl.htm"><b><i><font color="#FF0000">Lava</font></i> 
-    classes/interfaces/implementations</b></a></p>
-    <p><b><font color="#FF0000"><a href="../ObjectLifeCycle.htm"><i>
-    <font color="#FF0000">Lava</font></i></a></font><a href="../ObjectLifeCycle.htm"> 
-    variables</a></b></p>
-  </BODY>
-</HTML>
+
+  <p>Check this if the function shall be eligible as a signal function in the context of the <a href="../Callbacks.htm">Lava callback concept</a>.</p>
+
+  <h3>Synchronous</h3>
+
+  <p>A function is executed in <a href="../Transactions.htm">synchronous</a> mode by default, i.e., the caller waits until it returns.</p>
+
+  <h3>Concurrent</h3>
+
+  <p>If a function is to be executed in <a href="../Transactions.htm">concurrent</a> mode then a concurrently executing thread is allocated and assigned to it.</p>
+
+  <h3>Autonomous</h3>
+
+  <p><a href="../Transactions.htm">Autonomous</a> execution means <i>concurrent</i> execution but, moreover, the function neither has output parameters nor can it throw exceptions.</p>
+
+  <h3>Select exception types</h3>
+
+  <p>A function may throw exceptions (using the <b>throw</b> statement) of one or several types that you must select here: <b>throw</b> may only throw exeptions that are compatible with some type from this list.</p>
+
+  <h3>Remove overrides</h3>
+
+  <p>Transforms an overridden function into a non-overridden function, as if it had been newly declared in the containing class.</p>
+
+  <h3><span style="color:()">()</span>"forceOverride"></a>Callable only from this VT context</h3>
+
+  <p>The function together with its containing class must always be <a href="../OverrideView.htm">overridden</a> when the containing pattern is derived. Thus it cannot be called with a <i>self</i> object of a more <a href="../TypeSafety.htm#p-derived">p-derived</a> run-time type, and static calls are forbidden either.</p>
+
+  <p>This may be necessary particularly if a local variable or formal parameter whose type is <a href="../PatternsFrameworks.htm#multiform">multiform</a> occurs on the target side of an assignment in the body of this function and the source side of the assignment is non-multiform.</p>
+
+  <p>Example: the right-hand side is a &quot;<span class="style1">new</span> <i>type</i>&quot; - expression, the left-hand side is a variable having some virtual type whose concrete value is <i>type</i> in the context of the function body. This is the typical purpose and behavior of a &quot;factory function&quot; which is overridden when the respective class is specialized.</p>
+
+  <h3 class="c4">See also</h3>
+
+  <p class="c6"><a class="c5" href="../SepItfImpl.htm"><i>Lava</i> classes/interfaces/implementations</a></p>
+
+  <p class="c8"><a class="c7" href="../ObjectLifeCycle.htm">Lava</a> <a href="../ObjectLifeCycle.htm">variables</a></p>
+</body>
+</html>

@@ -1,38 +1,63 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta content="text/html; charset=iso-8859-1">
-    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-    <title>
-      Query interface
-    </title>
-    <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
-  </head>
-  <body>
-  <h2 align="center">&quot;Query interface&quot; for a component object</h2>
-  <p>First use the <font color="#0000FF"><b>attach</b> </font>expression to make an 
-  existing <a href="../Components.htm">component 
-  object</a> accessible through one of its component object interfaces.</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Query interface</title>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  i.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #FF0000;
+      }
+      .style3
+      {
+          text-align: left;
+      }
+      .style4
+      {
+          color: #0000FF;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">&quot;Query interface&quot; for a component object</h2>
+
+  <p class="style3">First use the <span class="style1">attach</span> expression to make an existing <a href="../Components.htm">component object</a> accessible through one of its component object interfaces.</p>
+
   <p>For example</p>
-  <blockquote>
-    <pre><font color="#0000FF"><b>declare</b></font>
+
+<pre xml:space="preserve">
+<span class="style1">declare</span>
   DOM itf1;
   I2 itf2
-<font color="#0000FF"><b>do</b></font>
-  <font color="#0000FF"><b>set</b></font> itf1 <font color="#0000FF"><b>&lt;==</b></font> <font color="#0000FF"><b>attach</b></font> HTTP,
-               <font color="#0000FF"><b>interface</b></font> DOM,
-               <font color="#0000FF"><b>url</b></font> &quot;http://lavape.sourceforge.net&quot;;
+<span class="style1">do</span>
+  <span class="style1">set</span> itf1 <span class="style1">&lt;==</span> <span 
+          class="style1">attach</span> HTTP,
+               <span class="style1">interface</span> DOM,
+               <span class="style1">url</span> &quot;http://lavape.sourceforge.net&quot;;
   ...
 
-  <font color="#0000FF"><b>set</b></font> itf2 = <font color="#0000FF"><b>interface</b></font> I2 <font color="#0000FF"><b>of</b></font> itf1<font color="#0000FF"><b>
-#declare</b></font></pre>
-  </blockquote>
-  <p>could be used to access the <font color="#FF0000"><i><b>Lava</b></i></font> home page through a &quot;Document Object 
-  Model&quot; interface (not yet implemented).</p>
-  <p>Thereafter you can use the &quot;query interface&quot; expression &quot;<b>interface</b>
-  <font color="#FF0000">&lt;type&gt;</font> <font color="#0000FF"><b>of</b></font>
-  <font color="#FF0000">&lt;expr&gt;</font>&quot; to make another interface accessible that 
-  is also supported by this component object.</p>
-  </body>
+  <span class="style1">set</span> itf2 <span class="style1">&lt;==</span> <span 
+          class="style1">interface</span> I2 <span class="style1">of</span> itf1<b>
+<span class="style1">#declare</span></b></pre>
+
+  <p>could be used to access the <i class="c2">Lava</i> home page through a &quot;Document Object Model&quot; interface (not yet implemented).</p>
+
+  <p>Thereafter you can use the &quot;query interface&quot; expression &quot;<span 
+          class="style1">interface</span> <span class="style2">&lt;type&gt;</span>
+      <span class="style1">of</span>
+      <span class="style2">&lt;expr&gt;</span>&quot; to make another interface (of 
+      type I2) accessible that is also supported by this component object.</p>
+</body>
 </html>

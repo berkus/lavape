@@ -1,51 +1,44 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head>
-<meta http-equiv="Content-Language" content="en-us">
-<meta content="text/html; charset=iso-8859-1">
-<meta name="GENERATOR" content="Microsoft FrontPage 5.0"><title>Copy statement</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Copy statement</title>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c3 {font-weight: bold}
+  i.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+  </style>
 </head>
 
-  <body>
-<h2 align="center">"Copy" statement</h2>
-<p>Use the <font color="#0000ff"><b>copy</b>
-</font>statement to copy an existing <font color="#ff0000"><i><b>Lava</b></i></font>
-object onto another object.</p>
-<p>If the target object does not yet exist (i.e, is = <font color="#0000ff"> <b>0</b></font>) then <font color="#0000ff"><b>copy</b></font>
-allocates a new target object whose type is the ("static") type of the
-target variable on the left side of <font color="#0000ff"><b>copy</b></font>.
-(<font color="#0000ff"><b>Copy</b></font>
-uses the default initializer of that class to initialize the new target
-object.) Subsequently it copies those parts of the source object onto
-the new target object that correspond to common base classes of source
-and target object. (Here we count the whole object class also as a base
-class.)</p>
-<p>If the target object exists (i.e, is &#8800; <font color="#0000ff"><b>0</b></font>) then it
-is "overwritten" by a copy of the source object. Again those parts of
-the source object are copied onto the (existing) target object that
-correspond to common base classes of source and target object.</p>
-<p><b>Note</b> that <font color="#ff0000"><i><b>Lava</b></i></font>
-provides a distinction between <b>constituent</b> and <b>acquaintance</b>
-members of an object. Only the constituents are copied by <font color="#0000ff"><b>copy</b></font> ("deep
-copy"). Acquaintances are considered to be separate, independent
-objects. <font color="#0000ff"><b>Copy</b></font>
-copies only the <b>pointers</b> to acquaintances.</p>
-<p><b>Note</b> that <font color="#0000ff"><b>copy</b></font>
-doesn't make much sense in cases where source and target object don't
-have common base classes. <font color="#0000ff"><b>Copy</b></font>
-is used primarily to copy a "less derived" onto a "more derived" object
-or to create a "snapshot" of the current state of a <a href="../TwoObjectCategories.htm">state object</a>.
-(The snapshot may be an immutable value object or again a state object.)</p>
-<p><b>See also:</b></p>
-<b> </b>
-<p><b><a href="Clone.htm">Clone</a></b></p>
-<b> </b>
-<p><b><a href="../Unsolved.htm#pointers">Application-level
-pointer notion</a></b></p>
-<b> </b>
-<p><b><a href="../PointersRefCounts.htm#refTypes">Pointers
-and reference counts</a></b></p>
-<b> </b>
-</body></html>
+<body>
+  <h2 class="c1">&quot;Copy&quot; statement</h2>
 
+  <p>Use the <b>copy</b> statement to copy an existing <i class="c2">Lava</i> object onto another object.</p>
+
+  <p>If the target object does not yet exist (i.e, is = <b>0</b>) then <b>copy</b> allocates a new target object whose type is the (&quot;static&quot;) type of the target variable on the left side of <b>copy</b>. (<b>Copy</b> uses the default initializer of that class to initialize the new target object.) Subsequently it copies those parts of the source object onto the new target object that correspond to common base classes of source and target object. (Here we count the whole object class also as a base class.)</p>
+
+  <p>If the target object exists (i.e, is &#8800; <b>0</b>) then it is &quot;overwritten&quot; by a copy of the source object. Again those parts of the source object are copied onto the (existing) target object that correspond to common base classes of source and target object.</p>
+
+  <p><b>Note</b> that <i class="c2">Lava</i> provides a distinction between <b>constituent</b> and <b>acquaintance</b> members of an object. Only the constituents are copied by 
+      <span class="style1">copy</span> (&quot;deep copy&quot;). Acquaintances are considered to be separate, independent objects. <b>Copy</b> copies only the <b>pointers</b> to acquaintances.</p>
+
+  <p><b>Note</b> that <b>copy</b> doesn&#39;t make much sense in cases where source and target object don&#39;t have common base classes. <b>Copy</b> is used primarily to copy a &quot;less derived&quot; onto a &quot;more derived&quot; object or to create a &quot;snapshot&quot; of the current state of a <a href="../TwoObjectCategories.htm">state object</a>. (The snapshot may be an immutable value object or again a state object.)</p>
+
+  <p class="c3">See also:</p>
+
+  <p class="c3"><a href="Clone.htm">Clone</a></p>
+
+  <p class="c3"><a href="../Unsolved.htm#pointers">Application-level pointer notion</a></p>
+
+  <p class="c3"><a href="../PointersRefCounts.htm#refTypes">Pointers and reference counts</a></p>
+</body>
+</html>

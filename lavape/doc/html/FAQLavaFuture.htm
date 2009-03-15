@@ -1,222 +1,118 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="Author" CONTENT="Klaus D. G&uuml;nther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Next steps, future plans, desirable contributions</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <h2 ALIGN="CENTER">Next steps, future plans, desirable contributions</h2>
-    
-    <p ALIGN="left">We are two full-time developers presently. The development 
-    of an entirely new programming language and of a fully fledged programming 
-    environment is a big effort, however. So we shall depend on contributions by 
-    volunteers who share our opinion that <b><i><font color="#FF0000">Lava</font></i></b> 
-    provides quite a number of promising features and improvements which should 
-    be further explored, enhanced, and made accessible to a broad community of 
-    people who, like us, are discontented with the presently prevailing 
-    classical textual programming languages and loosely integrated tools. </p>
-    
-    <h3 ALIGN="left">Next steps</h3>
-    
-    <p ALIGN="left">Clearly it must be our primary goal to reach a state of
-    <font color="#FF0000"><i><b>Lava</b></i></font>/<font color="#FF0000"><i><b>LavaPE</b></i></font> 
-    where it is sufficiently complete and attractive for sufficiently many <i>
-    users</i> in order to cause further <i>developers</i> to contribute to the
-    <b><i><font color="#FF0000">Lava</font></i></b> open source project. To this 
-    end we have</p>
-    <ol>
-    <li>
-    
-    <p ALIGN="left">to provide proper access to sufficiently many useful class 
-    libraries,</li>
-    <li>
-    
-    <p ALIGN="left">to generalize the <b><i><font color="#FF0000">Lava</font></i></b> 
-    GUI builder so as to support the construction of dialogs as well as of 
-    application main windows.</li>
-</ol>
-    
-    <p ALIGN="left">As to the second issue, we cannot afford presently to write 
-    such class libraries from scratch ourselves. On the other hand, it would 
-    anyway be preferable to make the great variety of existing class libraries 
-    accessible through uniform, language-independent component interfaces, and 
-    in our present opinion this appears to be the
-    <a href="FAQClassLibraries.htm">most attractive approach</a>. </p>
-    
-    <p ALIGN="left">The third issue is a typical example of a &quot;desirable 
-    contribution&quot;, since we shall not be able to realize it ourselves in the 
-    near future.</p>
-    
-    <h3 ALIGN="left">Desirable extensions</h3>
-    
-    <ol>
-    
-    <li>
-    <A NAME="debugging"></A><B>Remote
-    debugging of <font color="#FF0000"><i>Lava</i></font>
-    programs<br/>
-    </B><br/>for instance via OLE automation. It should be possible to
-      start and debug any <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      program from within <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>
-      (even remotely, on another computer). It should also be possible for a
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> program do enter this
-      debug mode afterwards (e.g., after an exception has occurred).<br/>
-    </br>
-    
-      </li>
-      <li> <A NAME="SQL"></A><b>Integration of existing
-      SQL or object-oriented databases into <I><FONT COLOR="#FF0000">Lava<br/>
-      </FONT></I></b><br/>
-      for instance via OLE-DB / ODBC. <br/>
-&nbsp;</li>
-    
-      <li> <b>Experimental<i><font color="#FF0000"> </font></i>support of 
-      Generative and Aspect-Oriented Programming and of incremental 
-      specialization of methods<br/>
-      <br/>
-      </b>(To be outlined in a forthcoming paper.)<br/>
-&nbsp;</li>
-    
-      <li> <b>(Semi-)automatic generation of various kinds of
-      <a href="FAQUML.htm">UML diagrams</a> from <i><font color="#FF0000">Lava</font></i> 
-      programs<br/>
-      </b>
-    </br>
-    </li>
-    
-    <li>    
-    <b><I><FONT COLOR="#FF0000"><A NAME="utilities"></A> </FONT></I>Various<FONT COLOR="#FF0000"><I> LavaPE </I> </FONT>utility 
-    functions<br/>
-    </B>
-    
-    <br/>For example: Walking through all references to some <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      entity, searching implementations of a given class, analysis and
-      representation of dependencies (inheritance trees, include files, function
-      calls, ...)<br/>
-      </br>
-    </li>
-    
-    <li>
-    <A NAME="organization"></A> <B>Web-based support of synchronous and asynchronous distributed
-    applications<br/>
-    </B><br/>Before we started the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      development we had designed and implemented a programming environment <B><I><FONT COLOR="#FF0000">DISCO</FONT></I></B>
-      (<B>DIS</B>tributed <B>C</B>ooperative <B>O</B>ffice applications).
-      Applications programming in <B><I><FONT COLOR="#FF0000">DISCO</FONT></I></B>
-      was based on <B><I><FONT COLOR="#FF0000">C++</FONT></I></B> with
-      precompiler enhancements. The major <B><I><FONT COLOR="#FF0000">DISCO</FONT></I></B>
-      highlights were: Support of synchronous as well as asynchronous form-based
-      distributed applications, support of restart after interruptions without
-      loss of data, automatic generation of form representations for (annotated)
-      <B><I><FONT COLOR="#FF0000">C++ </FONT></I></B>type declarations,
-      support of multiple digital signatures within forms and of data
-      encryption, provision of a hierarchical name space of &quot;organizational
-      units&quot; (OUs) and users, &quot;agendas&quot; of OUs from where you can
-      activate &quot;tasks&quot; belonging to some distributed application (or &quot;business
-      process&quot;), management of &quot;transition or proxy rights&quot;
-      between OUs. Central components of <B><I><FONT COLOR="#FF0000">DISCO</FONT></I></B>
-      were: a distributed communication service based on stored messages (having
-      unique identifiers) and a distributed &quot;application manager&quot; (AM)
-      for managing all those above-mentioned static and dynamic <B><I><FONT COLOR="#FF0000">DISCO</FONT></I></B>
-      entities.</br>
-    
-    <br/>We should like to reconstruct these advantageous features of <B><I><FONT COLOR="#FF0000">DISCO</FONT></I></B>
-      on the basis of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      component facilities. This would mean in particular to integrate the &quot;application
-      manager&quot; AM into a Web server and to replace the <B><I><FONT COLOR="#FF0000">DISCO</FONT></I></B>
-      communication service by a combination of &quot;asynchronous component
-      interface function calls&quot; and a closely related mechanism of
-      activation/deactivation of component objects by the AM.<br/>
-    </br>
-    </li>
-    
-     <li>
-     <B><I><FONT COLOR="#FF0000"><A NAME="XML"></A>Lava</FONT></I> XML support<br/>
-     </B>
-      <br/>Translation of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      objects into XML representation and vice versa. <br/>
-     </br>
-    </li>
-    
-    <li>
-    <b>Implementation of a version migration concept<br/>
-    </b>
-    
-    <br/>for automatic upgrading of &quot;old&quot; <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      programs after modifications/extensions of the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      program storage format.<br/>
-    </br>
-    </li>
-    
-    <li>    
-    <b>Completion of the <I><FONT COLOR="#FF0000">Lava </FONT></I>online 
-    documentation<br/>
-    </B>
-    
-    <br/>(Command of the English language and sufficient understanding of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      required.)<br/>
-    </br>
-    </li>
-    
-    <li>    
-    <b><A NAME="samples"></A>Development of <FONT COLOR="#FF0000"> <I>Lava </I></FONT>
-    sample programs for various application areas<br/>
-    </b>
-    
-    <br/>(Theoretical and practical understanding of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      and sufficient command of the English language required.)<br/>
-    </br>
-    </li>
-    
-    <li>    
-    <b><A NAME="security"></A> Design and implementation of a
-    <FONT COLOR="#FF0000"><I>Lava</I> </FONT>service
-    security concept<br/>
-    </b>
-    
-    <br/>This should make sure that <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      component interfaces (or individual functions thereof) can be used only in
-      specific ways and/or by specific organizational units.
-      It concept should be sufficiently general, simple, and clear to guarantee
-      that a dedicated <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      computer would be &quot;burglarproof&quot;. The basic idea of such a
-      concept will probably be that of &quot;programmable interception of
-      function calls&quot;. <br/>
-    </br>
-    </li>
-    
-    <li>    
-    <b>Design and implementation of a <I><FONT COLOR="#FF0000">Lava </FONT>
-    encryption and digital signature</I> support</b>
-    
-    <br/>Based on our former DISCO mechanisms (cf. 4 above) for embedding digital
-      signatures and for using data encryption in structured forms,
-      corresponding expressive means and run time functions should be integrated
-      into <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>.<br/>
-    </br>
-    </li>
-    
-    <li>    
-    <b>Formal semantics of
-    <I><FONT COLOR="#FF0000">Lava</FONT></I> programs, proof of Turing
-    equivalence</b>
-    </li>
-    </ol>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Next steps, future plans, desirable contributions</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c6 {font-weight: bold}
+  i.c5 {font-weight: bold; color: Red}
+  h3.c4 {text-align: left}
+  p.c3 {text-align: left}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+      .style2
+      {
+          color: #FF0000;
+      }
+      .style3
+      {
+          color: #FF0000;
+          font-style: italic;
+          font-weight: bold;
+      }
+  </style>
+</head>
 
-    <P></P>
+<body>
+  <h2 class="c1">Next steps, future plans, desirable contributions</h2>
+
+  <p class="c3">We are two full-time developers presently. The development of an entirely new programming language and of a fully fledged programming environment is a big effort, however. So we shall depend on contributions by volunteers who share our opinion that <b class="c2">Lava</b> provides quite a number of promising features and improvements which should be further explored, enhanced, and made accessible to a broad community of people who, like us, are discontented with the presently prevailing classical textual programming languages and loosely integrated tools.</p>
+
+  <h3 class="c4">Next steps</h3>
+
+  <p class="c3">Clearly it must be our primary goal to reach a state of <i class="c5">Lava</i>/<i class="c5">LavaPE</i> where it is sufficiently complete and attractive for sufficiently many <i>users</i> in order to cause further <i>developers</i> to contribute to the <b class="c2">Lava</b> open source project. To this end we have</p>
+
+  <ol>
+    <li>
+      <p class="c3">to provide proper access to sufficiently many useful class libraries,</p>
+    </li>
+
+    <li>
+      <p class="c3">to generalize the <b class="c2">Lava</b> GUI builder so as to support the construction of dialogs as well as of application main windows.</p>
+    </li>
+  </ol>
+
+  <p class="c3">As to the second issue, we cannot afford presently to write such class libraries from scratch ourselves. On the other hand, it would anyway be preferable to make the great variety of existing class libraries accessible through uniform, language-independent component interfaces, and in our present opinion this appears to be the <a href="FAQClassLibraries.htm">most attractive approach</a>.</p>
+
+  <p class="c3">The third issue is a typical example of a &quot;desirable contribution&quot;, since we shall not be able to realize it ourselves in the near future.</p>
+
+  <h3 class="c4">Desirable extensions</h3>
+
+  <ol>
+    <li><a id="debugging"></a><b>Remote debugging of <i>Lava</i> programs<br /></b><br />
+    for instance via OLE automation. It should be possible to start and debug any <b class="c2">Lava</b> program from within <b class="c2">LavaPE</b> (even remotely, on another computer). It should also be possible for a <b class="c2">Lava</b> program do enter this debug mode afterwards (e.g., after an exception has occurred).<br />
+    <br /></li>
+
+    <li><a id="SQL"></a><b>Integration of existing <span class="style1">SQL</span> or object-oriented databases into <i>
+        <span class="style2">Lava</span><br /></i></b><br />
+    for instance via OLE-DB / ODBC.<br /></li>
+
+    <li><b>Experimental support of Generative and Aspect-Oriented Programming and of incremental specialization of methods<br />
+    <br /></b> (To be outlined in a forthcoming paper.)<br /></li>
+
+    <li><b>(Semi-)automatic generation of various kinds of <a href="FAQUML.htm">UML diagrams</a> from 
+        <span class="style1">Lava</span> programs<br /></b><br /></li>
+
+    <li><b><i><a id="utilities"></a></i> Various <span class="style1">LavaPE</span> utility functions<br /></b><br />
+    For example: Walking through all references to some <b class="c2">Lava</b> entity, searching implementations of a given class, analysis and representation of dependencies (inheritance trees, include files, function calls, ...)<br />
+    <br /></li>
+
+    <li><a id="organization"></a> <b>Web-based support of synchronous and asynchronous distributed applications<br /></b><br />
+    Before we started the <b class="c2">Lava</b> development we had designed and implemented a programming environment <b class="c2">DISCO</b> (<b>DIS</b>tributed <b>C</b>ooperative <b>O</b>ffice applications). Applications programming in <b class="c2">DISCO</b> was based on <b class="c2">C++</b> with precompiler enhancements. The major <b class="c2">DISCO</b> highlights were: Support of synchronous as well as asynchronous form-based distributed applications, support of restart after interruptions without loss of data, automatic generation of form representations for (annotated) <b class="c2">C++</b> type declarations, support of multiple digital signatures within forms and of data encryption, provision of a hierarchical name space of &quot;organizational units&quot; (OUs) and users, &quot;agendas&quot; of OUs from where you can activate &quot;tasks&quot; belonging to some distributed application (or &quot;business process&quot;), management of &quot;transition or proxy rights&quot; between OUs. Central components of <b class="c2">DISCO</b> were: a distributed communication service based on stored messages (having unique identifiers) and a distributed &quot;application manager&quot; (AM) for managing all those above-mentioned static and dynamic <b class="c2">DISCO</b> entities.<br />
+    <br />
+    We should like to reconstruct these advantageous features of <b class="c2">DISCO</b> on the basis of <b class="c2">Lava</b> component facilities. This would mean in particular to integrate the &quot;application manager&quot; AM into a Web server and to replace the <b class="c2">DISCO</b> communication service by a combination of &quot;asynchronous component interface function calls&quot; and a closely related mechanism of activation/deactivation of component objects by the AM.<br />
+    <br /></li>
+
+    <li><b><i><a id="XML"></a><span class="style2">Lava XML</span></i> support<br /></b><br />
+    Translation of <b class="c2">Lava</b> objects into <span class="style3">XML</span> representation and vice versa.<br />
+    <br /></li>
+
+    <li><b>Implementation of a version migration concept<br /></b><br />
+    for automatic upgrading of &quot;old&quot; <b class="c2">Lava</b> programs after modifications/extensions of the <b class="c2">Lava</b> program storage format.<br />
+    <br /></li>
+
+    <li><b>Completion of the <span class="style1">Lava</span> online documentation<br /></b><br />
+    (Command of the English language and sufficient understanding of <b class="c2">Lava</b> required.)<br />
+    <br /></li>
+
+    <li><b><a id="samples"></a>Development of <span class="style1">Lava</span> sample programs for various application areas<br /></b><br />
+    (Theoretical and practical understanding of <b class="c2">Lava</b> and sufficient command of the English language required.)<br />
+    <br /></li>
+
+    <li><b><a id="security"></a> Design and implementation of a 
+        <span class="style1">Lava</span> service security concept<br /></b><br />
+    This should make sure that <b class="c2">Lava</b> component interfaces (or individual functions thereof) can be used only in specific ways and/or by specific organizational units. It concept should be sufficiently general, simple, and clear to guarantee that a dedicated <b class="c2">Lava</b> computer would be &quot;burglarproof&quot;. The basic idea of such a concept will probably be that of &quot;programmable interception of function calls&quot;.<br />
+    <br /></li>
+
+    <li><b>Design and implementation of a <i><span class="style2">Lava</span> encryption and digital signature</i> support</b><br />
+    Based on our former DISCO mechanisms (cf. 4 above) for embedding digital signatures and for using data encryption in structured forms, corresponding expressive means and run time functions should be integrated into <b class="c2">Lava</b>.<br />
+    <br /></li>
+
+    <li><b>Formal semantics of <span class="style1">Lava</span> programs, proof of Turing equivalence</b></li>
+  </ol>
+
   <h3>See also</h3>
-  <p>
-    
-    <b><a href="FAQContributions.htm">How can I contribute to the <font color="#FF0000"><i>Lava </i>
-      </font>development?</a></b></p>
-    </BODY>
-</HTML>
+
+  <p class="c6"><a href="FAQContributions.htm">How can I contribute to the 
+      <span class="style1">Lava</span> development?</a></p>
+</body>
+</html>

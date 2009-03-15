@@ -1,107 +1,71 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="Author" CONTENT="Klaus D. Günther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Counter-counterexamples</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER">Counter - counterexamples </H2>
-    
-    <H3>Sample files</H3>
-    
-    <P>Please open <b>Zipper.lava</b> in
-    <font color="#FF0000"><b><i>LavaPE</i></b></font>.</P>
-    
-    <p>Please open <b>StringList.lava</b> in
-    <font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
-    
-    <H3>Topic </H3>
-    
-    <p>Rebuttal of two counterexamples presented in <a href="TypeSafety.htm#BOW">[4]</a>
-    as an evidence for the difficulty to cope with certain situations on the
-    basis of virtual types. </p>
-    
-    <H3>Overview </H3>
-    
-    <p>The article <a href="TypeSafety.htm#BOW">[4]</a> by Bruce, Odersky and
-    Wadler presents two little samples that shall demonstrate inherent flaws of
-    virtual types. We show that they actually don't cause any problems in <b><i><font color="#FF0000">Lava</font></i></b>.&nbsp;</p>
-    
-    <p><b>Zipper:</b> </p>
-    
-    <p>This sample reads as follows on the basis of &quot;parametric
-    polymorphism&quot; in <font color="#FF0000"><i><b>Java</b></i></font>-like
-    syntax: </p>
-    
-    <pre>public class Pair&lt;Fst,Snd&gt; {
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Counter-counterexamples</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  i.c4 {font-weight: bold; color: Red}
+  p.c3 {font-weight: bold}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Counter - counterexamples</h2>
+
+  <h3>Sample files</h3>
+
+  <p>Please open <b>Zipper.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <p>Please open <b>StringList.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <h3>Topic</h3>
+
+  <p>Rebuttal of two counterexamples presented in <a href="TypeSafety.htm#BOW">[4]</a> as an evidence for the difficulty to cope with certain situations on the basis of virtual types.</p>
+
+  <h3>Overview</h3>
+
+  <p>The article <a href="TypeSafety.htm#BOW">[4]</a> by Bruce, Odersky and Wadler presents two little samples that shall demonstrate inherent flaws of virtual types. We show that they actually don&#39;t cause any problems in <b class="c2">Lava</b>.</p>
+
+  <p class="c3">Zipper:</p>
+
+  <p>This sample reads as follows on the basis of &quot;parametric polymorphism&quot; in <i class="c4">Java</i>-like syntax:</p>
+  <pre xml:space="preserve">
+public class Pair&lt;Fst,Snd&gt; {
   public Fst fst;
   public Snd snd;
-}</pre>
-    
-    <pre>public class List&lt;A&gt; {
+}
+</pre>
+  <pre xml:space="preserve">
+public class List&lt;A&gt; {
   ...
   public &lt;B&gt; List&lt;Pair&lt;A,B&gt; zip (List&lt;B&gt; y) { ... }
-}</pre>
-    
-    <p>Semantics: The member function <i>zip</i> of class List&lt;A&gt; composes a list of
-    pairs of elements of type <i>A</i> and <i>B</i> by combining the corresponding elements
-    of its &quot;this&quot; object (of type List&lt;A&gt;) and its input <i>y</i> (of
-    type List&lt;B&gt;, where <i>B</i> is a type parameter of <i>zip</i>).
-    According to <a href="TypeSafety.htm#BOW">[4]</a>  the problem is the declaration of <i>zip</i> on the basis of virtual
-    types. Our Zipper.lava sample demonstrates that this doesn't cause any
-    problems in <b><i><font color="#FF0000">Lava</font></i></b>. Note, however, that we use a containing package with two virtual
-    types, a concept that the authors of <a href="TypeSafety.htm#BOW">[4]</a>  do not provide in their notion of
-    virtual types. </p>
-    
-    <p>Note also that the <font color="#FF0000"><i><b>Lava</b></i></font>
-    version is longer since <font color="#FF0000"><i><b>Lava</b></i></font> has
-    no type expressions, but the specialization of virtual types requires the
-    explicit declaration of a derived package or class (including the
-    assignment of a name).&nbsp; We believe, however, that this assignment of
-    individual names makes programs more readable in general, while the
-    ubiquitous nature of type expressions with parameters rather impairs the
-    comprehensibility of programs. (A look into the &quot;Standard Template
-    Library&quot; (STL) of C++ should suffice as an evidence.) </p>
-    
-    <p><b><a name="StringList"></a>StringList:</b> </p>
-    
-    <p>Using &quot;parametric polymorphism&quot; this sample reads: </p>
-    
-    <pre>public class Collection&lt;A&gt; { ... }
-public class List&lt;A&gt; extends Collection&lt;A&gt; { ... }</pre>
-    
-    <p>Then one can pass, say, an argument of type List&lt;String&gt; where one
-    of type Collection&lt;String&gt; is expected. The same, however, is true for
-    our StringList.lava sample, as is demonstrated in its initiator &quot;StringListDemo&quot;.
-    (The role of the &quot;Collection&quot; type is played by the basic built-in
-    type &quot;Set&quot; of <b><i><font color="#FF0000">Lava</font></i></b>.)&nbsp; </p>
-    
-    <p>What matters here is that we have multiple inheritance in <b><i><font color="#FF0000">Lava</font></i></b>,
-    while <b><i><font color="#FF0000">Java</font></i></b> classes support only
-    single inheritance. This allows us to derive &quot;StringList&quot; from
-    &quot;List&quot; <i>and</i> from &quot;StringSet&quot; and thus makes &quot;StringList&quot;
-    compatible with &quot;StringSet&quot; </p>
-    
-    <p>The <a href="SubstitutableSamples.htm"> CarMeeting sample</a> illustrates
-    essentially the same situation but uses a substitutable type for the input
-    parameter of the meet function. This allows us to pass an actual parameter
-    of type CarList to a formal parameter of type VehicleSet (which would be
-    incompatible otherwise).&nbsp; </p>
-    
-    <p>So the proper conclusion from these two samples isn't that virtual types are
-    principally&nbsp; inappropriate in such situations but that they should be combined with
-    multiple inheritance in order to make normal class derivations and the
-    specific &quot;VT-specialization derivations&quot; independent of each
-    other. </p>
-    
-  </BODY>
-</HTML>
+}
+</pre>
+
+  <p>Semantics: The member function <i>zip</i> of class List&lt;A&gt; composes a list of pairs of elements of type <i>A</i> and <i>B</i> by combining the corresponding elements of its &quot;this&quot; object (of type List&lt;A&gt;) and its input <i>y</i> (of type List&lt;B&gt;, where <i>B</i> is a type parameter of <i>zip</i>). According to <a href="TypeSafety.htm#BOW">[4]</a> the problem is the declaration of <i>zip</i> on the basis of virtual types. Our Zipper.lava sample demonstrates that this doesn&#39;t cause any problems in <b class="c2">Lava</b>. Note, however, that we use a containing package with two virtual types, a concept that the authors of <a href="TypeSafety.htm#BOW">[4]</a> do not provide in their notion of virtual types.</p>
+
+  <p>Note also that the <i class="c4">Lava</i> version is longer since <i class="c4">Lava</i> has no type expressions, but the specialization of virtual types requires the explicit declaration of a derived package or class (including the assignment of a name). We believe, however, that this assignment of individual names makes programs more readable in general, while the ubiquitous nature of type expressions with parameters rather impairs the comprehensibility of programs. (A look into the &quot;Standard Template Library&quot; (STL) of C++ should suffice as an evidence.)</p>
+
+  <p class="c3"><a id="StringList"></a>StringList:</p>
+
+  <p>Using &quot;parametric polymorphism&quot; this sample reads:</p>
+  <pre xml:space="preserve">
+public class Collection&lt;A&gt; { ... }
+public class List&lt;A&gt; extends Collection&lt;A&gt; { ... }
+</pre>
+
+  <p>Then one can pass, say, an argument of type List&lt;String&gt; where one of type Collection&lt;String&gt; is expected. The same, however, is true for our StringList.lava sample, as is demonstrated in its initiator &quot;StringListDemo&quot;. (The role of the &quot;Collection&quot; type is played by the basic built-in type &quot;Set&quot; of <b class="c2">Lava</b>.)</p>
+
+  <p>What matters here is that we have multiple inheritance in <b class="c2">Lava</b>, while <b class="c2">Java</b> classes support only single inheritance. This allows us to derive &quot;StringList&quot; from &quot;List&quot; <i>and</i> from &quot;StringSet&quot; and thus makes &quot;StringList&quot; compatible with &quot;StringSet&quot;</p>
+
+  <p>The <a href="SubstitutableSamples.htm">CarMeeting sample</a> illustrates essentially the same situation but uses a substitutable type for the input parameter of the meet function. This allows us to pass an actual parameter of type CarList to a formal parameter of type VehicleSet (which would be incompatible otherwise).</p>
+
+  <p>So the proper conclusion from these two samples isn&#39;t that virtual types are principally inappropriate in such situations but that they should be combined with multiple inheritance in order to make normal class derivations and the specific &quot;VT-specialization derivations&quot; independent of each other.</p>
+</body>
+</html>

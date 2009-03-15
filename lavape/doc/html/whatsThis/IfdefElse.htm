@@ -1,87 +1,122 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta content="text/html; charset=iso-8859-1">
-    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-    <title>
-      Ifdef statement, else expression
-    </title>
-    <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
-  </head>
-  <body>
-  <h2 align="center"><font color="#0000FF">Ifdef</font> statement,
-  <font color="#0000FF">else</font> expression</h2>
-  <h3><b><font color="#0000FF">Ifdef</font> statement</b></h3>
-  <p>The <font color="#FF0000"><i><b>Lava</b></i></font> <font color="#0000FF">
-  <b>ifdef</b></font> 
-  branching statement, like the <font color="#FF0000"><i><b>Lava</b></i></font>
-  <font color="#0000FF"><b>else</b></font> expression (see below), can  be used 
-  (and <font color="#FF0000"><i><b>LavaPE</b></i></font> <b>enforces</b> their 
-  use!) to secure assignments to
-  <a href="../dialogs/MemVarBox.htm#mandatory">mandatory</a> variables if the 
-  assignment source is an <a href="../dialogs/MemVarBox.htm#mandatory">optional</a> 
-  variable. Example:</p>
-  <blockquote>
-    <pre><font color="#0000FF"><b>function </b></font>f1
-<font color="#0000FF"><b>inputs:</b></font>
-  Integer <font color="#FF00FF">i1</font>, i2; <i><font color="#009933">the color of i1 means &quot;optional&quot;</font></i>
-<font color="#0000FF"><b>outputs:</b></font>
-  Integer o1;</pre>
-    <pre><font color="#0000FF"><b>ifdef</b></font>
-  <font color="#FF00FF">i1</font>
-<font color="#FF00FF"><b>then</b></font>
-  <font color="#0000FF"><b>set</b></font> o1 <font color="#0000FF"><b>&lt;==</b></font> <font color="#FF00FF">i1
-  </font><i><font color="#009933">this <a href="../IniChecks.htm#optional">optional-to-mandatory</a> assignment would be rejected by </font><font color="#FF0000"><b>LavaPE</b></font><font color="#009933">
-  if it were not secured by ifdef</font></i>
-<font color="#FF00FF"><b>else</b></font>
-  <font color="#0000FF"><b>set</b></font> o1 <font color="#0000FF"><b>&lt;==</b></font> i2
-<font color="#0000FF"><b>#ifdef</b></font></pre>
-  </blockquote>
-  <p>The <font color="#FF00FF"><b>then</b></font> and <font color="#FF00FF"><b>
-  else</b></font> clauses of <font color="#0000FF"><b>ifdef</b></font> are both 
-  optional, as the their color indicates, but at least one of them must be 
-  present.</p>
-  <p><b>Please note</b> that <font color="#FF0000"><i><b>Lava</b></i></font> 
-  performs <a href="../IniChecks.htm">comprehensive initialization checks</a> 
-  for all kinds of variables. This may particularly involve a check whether a 
-  value is assigned to a certain variable <b>in all branches</b> of a
-  <font color="#FF0000"><i><b>Lava</b></i></font> <a href="../EditExec.htm#exec">
-  exec</a>, or <b>in all preceding branches</b> before a read reference to that 
-  variable. These checks will succeed only if you don't distribute these 
-  assignments over separate<font color="#0000FF"><b> ifdef</b></font> statements 
-  as in the following, modified example:</p>
-  <blockquote>
-    <pre><font color="#0000FF"><b>function </b></font>f1
-<font color="#0000FF"><b>inputs:</b></font>
-  Integer <font color="#FF00FF">i1</font>, i2; <i><font color="#009933">the color of i1 means &quot;optional&quot;</font></i>
-<font color="#0000FF"><b>outputs:</b></font>
-  Integer o1;</pre>
-    <pre><font color="#0000FF"><b>ifdef</b></font>
-  <font color="#FF00FF">i1</font>
-<font color="#FF00FF"><b>then</b></font>
-  <font color="#0000FF"><b>set</b></font> o1 <font color="#0000FF"><b>&lt;==</b></font> <font color="#FF00FF">i1
-</font><font color="#0000FF"><b>#ifdef
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Ifdef statement, else expression</title>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  i.c3 {font-weight: bold; color: Red}
+  h3.c2 {font-weight: bold}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #CC00CC;
+          font-weight: bold;
+      }
+      .style3
+      {
+          color: #009933;
+      }
+      .style4
+      {
+          color: #0000FF;
+      }
+      .style5
+      {
+          color: #009933;
+          font-style: italic;
+      }
+      .style6
+      {
+          color: #CC00CC;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Ifdef statement, else expression</h2>
+
+  <h3 class="c2">Ifdef statement</h3>
+
+  <p>The <i class="c3">Lava</i> <span class="style1">ifdef</span> branching statement, like the <i class="c3">Lava</i> 
+      <span class="style1">else</span> expression (see below), can be used (and <i class="c3">LavaPE</i> <b>enforces</b> their use!) to secure assignments to <a href="../dialogs/MemVarBox.htm#mandatory">mandatory</a> variables if the assignment source is an <a href="../dialogs/MemVarBox.htm#mandatory">optional</a> variable. Example:</p>
+
+    <pre xml:space="preserve">
+<b><span class="style4">function</span> </b>f1
+<span class="style1">inputs:</span>
+  Integer <span class="style6">i1</span>, i2; <span class="style5">the color of i1 means &quot;optional&quot;</span>
+<span class="style1">outputs:</span>
+  Integer o1;
+
+<span class="style1">ifdef</span>
+  i1
+<span class="style1">then</span>
+  <span class="style1">set</span> o1 <span class="style1">&lt;==</span> i1
+  <i><span class="style3">this </span><a href="../IniChecks.htm#optional"><span 
+        class="style3">optional-to-mandatory</span></a><span class="style3"> assignment would be rejected by <b>LavaPE</b></span>
+<span class="style3">  if it were not secured by ifdef</span></i>
+<span class="style1">else</span>
+  <span class="style1">set</span> o1 <span class="style1">&lt;==</span> i2
+<span class="style4"><b>#ifdef</b></span>
+</pre>
+
+<p>The <span class="style2">then</span> and <span class="style2">else</span> clauses of 
+<span class="style1">ifdef</span> are both optional, as the their color indicates, but at least one of them must be present.</p>
+
+  <p><b>Please note</b> that <i class="c3">Lava</i> performs <a href="../IniChecks.htm">comprehensive initialization checks</a> for all kinds of variables. This may particularly involve a check whether a value is assigned to a certain variable <b>in all branches</b> of a <i class="c3">Lava</i> <a href="../EditExec.htm#exec">exec</a>, or <b>in all preceding branches</b> before a read reference to that variable. These checks will succeed only if you don&#39;t distribute these assignments over separate 
+      <span class="style1">ifdef</span> statements as in the following, modified example:</p>
+
+<pre xml:space="preserve">
+<b><span class="style4">function</span> </b>f1
+<span class="style1">inputs:</span>
+  Integer <span class="style6">i1</span>, i2; <span class="style5">the color of i1 means &quot;optional&quot;</span>
+<b style="color: #0000FF">outputs:</b>
+  Integer o1;
+
+<b style="color: #0000FF">ifdef</b>
+  i1
+<b style="color: #0000FF">then</b>
+  <b style="color: #0000FF">set</b> o1 <b style="color: #0000FF">&lt;==</b> i1
+<b style="color: #0000FF">#ifdef
 ifdef
-  </font><font color="#FF00FF">i1</font><font color="#0000FF">
-</font></b><font color="#FF00FF"><b>else</b></font>
-  <font color="#0000FF"><b>set</b></font> o1 <font color="#0000FF"><b>&lt;==</b></font> i2
-<b><font color="#0000FF">#ifdef
-</font></b><font color="#009933"><i>Here LavaPE would blame that the mandatory output parameter
-isn't set in all branches of funktion f1</i></font></pre>
-  </blockquote>
-  <h3><font color="#0000FF"><a name="elseExpr"></a>Else</font> expression</h3>
-  <p>The <font color="#0000FF"><b>else</b></font> expression combines two (or a 
-  sequence of) expressions in such a way that their values are tested (at run 
-  time) from left to right for being non-null (i.e., != <font color="#0000FF">
-  <b>Ø</b></font>). The first non-null value is taken as the result of the 
-  compound <font color="#0000FF"><b>else</b></font> expression.</p>
-  <p>LavaPE reports an error (i.e., at programming time!) if the result of an
-  <font color="#0000FF"><b>else</b></font> expression is assigned to a mandatory 
-  variable but none of the component expressions yields a mandatory result. An 
-  error is reported also if the <font color="#0000FF"><b>else</b></font> 
-  expression is unnecessary since already its first operand is mandatory.</p>
+  </b><b>i1
+</b><b style="color: #0000FF">else</b>
+  <b style="color: #0000FF">set</b> o1 <b style="color: #0000FF">&lt;==</b> i2
+<b style="color: #0000FF">#ifdef
+</b><i style="color: #009933">Here LavaPE would blame that the mandatory output parameter o1
+isn&#39;t set in all branches of funktion f1...</i></pre>
+
+<pre xml:space="preserve">
+<span class="style5">... but this would be correct:</span><b style="color: #0000FF">
+ifdef</b>
+  i1
+<b style="color: #0000FF">then</b>
+  <b style="color: #0000FF">set</b> o1 <b style="color: #0000FF">&lt;==</b> i1
+<b style="color: #0000FF">else</b>
+  <b style="color: #0000FF">set</b> o1 <b style="color: #0000FF">&lt;==</b> i2
+<b style="color: #0000FF">#ifdef</b>
+</pre>
+
+  <h3>Else expression</h3>
+
+  <p>The <span class="style1">else</span> expression combines two (or a sequence of) expressions in such a way that their values are tested (at run time) from left to right for being non-null (i.e., != 
+      <span class="style1">&#216;</span>). The first non-null value is taken as the result of the compound 
+      <span class="style1">else</span> expression.</p>
+
+  <p>LavaPE reports an error (i.e., at programming time!) if the result of an 
+      <span class="style1">else</span> expression is assigned to a mandatory variable but none of the component expressions yields a mandatory result. An error is reported also if the 
+      <span class="style1">else</span> expression is unnecessary since already its first operand is mandatory.</p>
+
   <h3>See also</h3>
+
   <p><a href="../IniChecks.htm">Comprehensive initialization checks</a></p>
-  </body>
+</body>
 </html>

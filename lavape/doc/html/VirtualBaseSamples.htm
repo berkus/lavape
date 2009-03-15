@@ -1,106 +1,63 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="Author" CONTENT="Klaus D. Günther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Virtual base samples</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER">Virtual base sample </H2>
-    
-    <H3>Sample files</H3>
-    
-    <p>Please open <b>VirtualBase.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
-    
-    <H3>Topic </H3>
-    
-    <p><b>&quot;Mix-in&quot;</b>: Specifying a <a href="PatternsFrameworks.htm#VT">virtual type</a> (rather
-    than a concrete class) as a base type of a new class.&nbsp; (In <i>
-    <b><font color="#FF0000">C++</font></b></i> you can use &quot;templates&quot; to 
-    achieve a similar effect, although there is a principal difference between 
-    templates and virtual types.) </p>
-    
-    <H3>Overview </H3>
-    
-    <p>First remember that the term &quot;<a href="SepItfImpl.htm#virtualBaseClasses">virtual
-    base class</a>&quot; has a different meaning in <b><i><font color="#FF0000">Lava</font></i></b>
-    than in C++.&nbsp; </p>
-    
-    <p>While in other OO languages you can extend only concrete
-    classes/interfaces, <b><i><font color="#FF0000">Lava</font></i></b> allows
-    you to specify <i>virtual</i> types (= type parameters of containing
-    patterns) as base interfaces of a new class.&nbsp; </p>
-    
-    <p>This unique feature of <b><i><font color="#FF0000">Lava</font></i></b>
-    provides a much more natural and convenient realization of the well-known
-    &quot;decorator&quot; pattern (cf. the frequently cited &quot;Design
-    Patterns&quot; book <a href="TypeSafety.htm#GOF">[8]</a> of the &quot;Gang
-    of Four&quot;).&nbsp; </p>
-    
-    <p>A typical application of the decorator pattern is, for instance, to
-    &quot;decorate&quot; all kinds of windows of a graphical user interface by
-    scrollbars or borders (or first scrollbars and then borders). More
-    precisely: </p>
-    
-    <p>There is a common base class B of all types of windows. There are special
-    window classes W<sub>1</sub>, W<sub>2</sub>, W<sub>3</sub>, ... that are all
-    derived from B. In order to attach a border to any type of window you need
-    to use only functions that are already declared in B, for instance a
-    function <i>reqSize</i> that computes the &quot;required size&quot; of the
-    respective window, which will, of course, depend on the respective content
-    of that type of window. Therefore <i>reqSize</i> will be overridden by the
-    special window types W<sub>1</sub>, W<sub>2</sub>, W<sub>3</sub>, ..., and
-    the decorator extension DW<sub>n</sub> of any special window type W<sub>n</sub>
-    (which adds the border to W<sub>n</sub>) will have to call this overridden W<sub>n</sub>-version
-    of <i>reqSize</i> <font color="#FF0000">statically</font>.&nbsp; </p>
-    
-    <p> Actually we could
-    declare and implement the border extension of special window classes without
-    knowing anything about a concrete W<sub>n</sub> except that it is derived
-    from B. All we need is a way to specify a type <i>parameter</i> (rather than
-    a concrete type) as a base type of a new type and a way to express a static
-    call of a member function of such a parameter type. Both features are
-    supported by <b><i><font color="#FF0000">Lava</font></i></b>, as is
-    demonstrated by our virtual base sample. </p>
-    
-    <p>A particular advantage of the <b><i><font color="#FF0000">Lava </font></i></b>solution
-    to the decorator problem is that DW<sub>n</sub> is a true extension of W<sub>n</sub>
-    and thus inherits all features of W<sub>n</sub> (including those of B). The
-    solution of <a href="TypeSafety.htm#GOF">[8]</a>  establishes the
-    specialized windows W<sub>n </sub>as child windows (i.e., as member
-    variables) of the decorated windows DW<sub>n</sub>. Thus DW<sub>n</sub>
-    doesn't inherit the features of W<sub>n</sub> automatically, but you have to
-    reconstruct them explicitly in DW<sub>n</sub> by &quot;delegating&quot; the
-    respective function calls to the corresponding functions of the W<sub>n</sub>
-    member object of DW<sub>n</sub>. </p>
-    
-    <p><b>Summary:</b> The virtual base types of <b><i><font color="#FF0000">Lava
-    </font></i></b>provide a new kind of abstraction that enables us to specify
-    and implement&nbsp; extension interfaces (in a generic way, &quot;once for
-    all&quot;) without knowing the precise concrete type(s) of the base
-    class(es). </p>
-    
-    <H3>Where to look and what to do</H3>
-    
-    <p>
-    Please open <b>VirtualBase.lava</b> in <b>
-<font color="#FF0000"><i>LavaPE</i></font><i>.</i></b></p>
-    
-    <p><a href="EditTree.htm">Read the comments</a> in the declaration tree.</p>
-    <p>Open the body (&quot;exec&quot;) of the initiator &quot;<i>DecoratorDemo</i>&quot;.</p>
-    <p>Look at the different implementations of <i>func</i>, <i>func1</i>, <i>func2</i>. </p>
-    <p><a href="EditTree.htm">Run</a> the sample program and watch the outputs
-    (message boxes) that are generated by the successive function calls in the
-    initiator body. They indicate which function version is actually called. </p>
-    
-  </BODY>
-</HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Virtual base samples</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  i.c3 {font-weight: bold; color: Red}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Virtual base sample</h2>
+
+  <h3>Sample files</h3>
+
+  <p>Please open <b>VirtualBase.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <h3>Topic</h3>
+
+  <p><b>&quot;Mix-in&quot;</b>: Specifying a <a href="PatternsFrameworks.htm#VT">virtual type</a> (rather than a concrete class) as a base type of a new class. (In <i class="c3">C++</i> you can use &quot;templates&quot; to achieve a similar effect, although there is a principal difference between templates and virtual types.)</p>
+
+  <h3>Overview</h3>
+
+  <p>First remember that the term &quot;<a href="SepItfImpl.htm#virtualBaseClasses">virtual base class</a>&quot; has a different meaning in <b class="c2">Lava</b> than in C++.</p>
+
+  <p>While in other OO languages you can extend only concrete classes/interfaces, <b class="c2">Lava</b> allows you to specify <i>virtual</i> types (= type parameters of containing patterns) as base interfaces of a new class.</p>
+
+  <p>This unique feature of <b class="c2">Lava</b> provides a much more natural and convenient realization of the well-known &quot;decorator&quot; pattern (cf. the frequently cited &quot;Design Patterns&quot; book <a href="TypeSafety.htm#GOF">[8]</a> of the &quot;Gang of Four&quot;).</p>
+
+  <p>A typical application of the decorator pattern is, for instance, to &quot;decorate&quot; all kinds of windows of a graphical user interface by scrollbars or borders (or first scrollbars and then borders). More precisely:</p>
+
+  <p>There is a common base class B of all types of windows. There are special window classes W<sub>1</sub>, W<sub>2</sub>, W<sub>3</sub>, ... that are all derived from B. In order to attach a border to any type of window you need to use only functions that are already declared in B, for instance a function <i>reqSize</i> that computes the &quot;required size&quot; of the respective window, which will, of course, depend on the respective content of that type of window. Therefore <i>reqSize</i> will be overridden by the special window types W<sub>1</sub>, W<sub>2</sub>, W<sub>3</sub>, ..., and the decorator extension DW<sub>n</sub> of any special window type W<sub>n</sub> (which adds the border to W<sub>n</sub>) will have to call this overridden W<sub>n</sub>-version of <i>reqSize</i> statically.</p>
+
+  <p>Actually we could declare and implement the border extension of special window classes without knowing anything about a concrete W<sub>n</sub> except that it is derived from B. All we need is a way to specify a type <i>parameter</i> (rather than a concrete type) as a base type of a new type and a way to express a static call of a member function of such a parameter type. Both features are supported by <b class="c2">Lava</b>, as is demonstrated by our virtual base sample.</p>
+
+  <p>A particular advantage of the <b class="c2">Lava</b> solution to the decorator problem is that DW<sub>n</sub> is a true extension of W<sub>n</sub> and thus inherits all features of W<sub>n</sub> (including those of B). The solution of <a href="TypeSafety.htm#GOF">[8]</a> establishes the specialized windows W<sub>n</sub> as child windows (i.e., as member variables) of the decorated windows DW<sub>n</sub>. Thus DW<sub>n</sub> doesn&#39;t inherit the features of W<sub>n</sub> automatically, but you have to reconstruct them explicitly in DW<sub>n</sub> by &quot;delegating&quot; the respective function calls to the corresponding functions of the W<sub>n</sub> member object of DW<sub>n</sub>.</p>
+
+  <p><b>Summary:</b> The virtual base types of <b class="c2">Lava</b> provide a new kind of abstraction that enables us to specify and implement extension interfaces (in a generic way, &quot;once for all&quot;) without knowing the precise concrete type(s) of the base class(es).</p>
+
+  <h3>Where to look and what to do</h3>
+
+  <p>Please open <b>VirtualBase.lava</b> in <b><span class="style1">LavaPE</span><i>.</i></b></p>
+
+  <p><a href="EditTree.htm">Read the comments</a> in the declaration tree.</p>
+
+  <p>Open the body (&quot;exec&quot;) of the initiator &quot;<i>DecoratorDemo</i>&quot;.</p>
+
+  <p>Look at the different implementations of <i>func</i>, <i>func1</i>, <i>func2</i>.</p>
+
+  <p><a href="EditTree.htm">Run</a> the sample program and watch the outputs (message boxes) that are generated by the successive function calls in the initiator body. They indicate which function version is actually called.</p>
+</body>
+</html>

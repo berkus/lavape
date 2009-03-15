@@ -1,43 +1,46 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta content="text/html; charset=iso-8859-1">
-    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-    <title>
-      Sets and Chains
-    </title>
-    <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
-  </head>
-  <body>
-  <h2 align="center">Sets and Chains</h2>
-  <p><font color="#FF0000"><i><b>Lava</b></i></font> provides two basic container classes &quot;Set&quot; and &quot;Chain&quot; 
-  (see the standard include file std.lava), with more or less obvious methods.</p>
-  <p>A <font color="#FF0000"><i><b>Lava</b></i></font> Set is actually a 
-  &quot;multi-set&quot;: It may contain the same object more than once. (&quot;Count&quot; counts how often an object is 
-  contained in the set. For <a href="../TwoObjectCategories.htm">state objects</a> 
-  it counts how many <i>identical</i> objects are in the set, for
-  <a href="../TwoObjectCategories.htm">value objects</a> how many set elements 
-  have the <i>same value</i>, i.e., the <i>same contents</i>.)</p>
-  <p>The type of the set elements is specified by the virtual type ELEMTYPE. <br/>
-  <br/>
-  You can use the &quot;foreach&quot;, &quot;exists&quot; and &quot;select&quot; quantifiers to run through and process the elements of a set.</p>
-  <hr>
-  <p>The Chain class is derived from Set and is essentially a doubly-linked list 
-  of elements. It gives you more control over the order of elements and the 
-  place of insertion/deletion.</p>
-  <hr>
-  <p>Set and Chain elements can be identified through &quot;handles&quot; that may be 
-  returned on insertion. </p>
-  <p>In quantification constructs <font color="#0000FF"><b>foreach</b></font>,
-  <font color="#0000FF"><b>exists</b></font> and <font color="#0000FF"><b>select</b></font> 
-  the handle operator <font color="#0000FF"><b>@</b></font> may be used to get 
-  the handle of an object found by the construct. (The object found is 
-  represented by a local variable of the set element type.)</p>
-  <p>Sets and Chains, together with quantifiers <font color="#0000FF"><b>foreach</b></font>,
-  <font color="#0000FF"><b>exists</b></font> and <font color="#0000FF"><b>select</b></font>, 
-  logical conjunctions and other constructs are the basis for the close 
-  integration of <a href="../DatabaseIntegration.htm">database functionality</a> 
-  in <font color="#FF0000"><i><b>Lava</b></i></font>.</p>
-  </body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Sets and Chains</title>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  i.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Sets and Chains</h2>
+
+  <p><i class="c2">Lava</i> provides two basic container classes &quot;Set&quot; and &quot;Chain&quot; (see the standard include file std.lava), with more or less obvious methods.</p>
+
+  <p>A <i class="c2">Lava</i> Set is actually a &quot;multi-set&quot;: It may contain the same object more than once. (&quot;Count&quot; counts how often an object is contained in the set. For <a href="../TwoObjectCategories.htm">state objects</a> it counts how many <i>identical</i> objects are in the set, for <a href="../TwoObjectCategories.htm">value objects</a> how many set elements have the <i>same value</i>, i.e., the <i>same contents</i>.)</p>
+
+  <p>The type of the set elements is specified by the virtual type ELEMTYPE.<br />
+  <br />
+  You can use the <span class="style1">foreach</span>, <span class="style1">exists</span> 
+      and <span class="style1">select</span> quantifiers to run through and process the elements of a set.</p>
+  <hr />
+
+  <p>The Chain class is derived from Set and is essentially a doubly-linked list of elements. It gives you more control over the order of elements and the place of insertion/deletion.</p>
+  <hr />
+
+  <p>Set and Chain elements can be identified through &quot;handles&quot; that may be returned on insertion.</p>
+
+  <p>In quantification constructs <span class="style1">foreach</span>, 
+      <span class="style1">exists</span> and <span class="style1">select</span> the handle operator 
+      <span class="style1">@</span> may be used to get the handle of an object found by the construct. (The object found is represented by a local variable of the set element type.)</p>
+
+  <p>Sets and Chains, together with quantifiers <span class="style1">foreach</span>, 
+      <span class="style1">exists</span> and <span class="style1">select</span>, logical conjunctions and other constructs are the basis for the close integration of <a href="../DatabaseIntegration.htm">database functionality</a> in <i class="c2">Lava</i>.</p>
+</body>
 </html>

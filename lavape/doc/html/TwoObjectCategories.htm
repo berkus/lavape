@@ -1,227 +1,178 @@
-<HTML> 
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Two categories of objects</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-    <style type="text/css">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Two categories of objects</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  table.c11 {background-color: #FCFEA0}
+  i.c10 {font-style: italic; font-weight: bold}
+  p.c9 {text-align: left}
+  p.c8 {font-weight: bold}
+  b.c7 {font-style: italic; color: Red}
+  i.c6 {font-weight: bold; color: Red}
+  a.c5 {font-weight: bold}
+  div.c4 {text-align: center}
+  table.c3 {background-color: #D1C6FF}
+  p.c2 {text-align: center}
+  h2.c1 {text-align: center}
+  /*]]>*/
       .style1
       {
-        color: #FF0000;
-        font-style: italic;
-        font-weight: bold;
+          color: #FF0000;
+          font-style: italic;
       }
       .style2
       {
-        color: #0000FF;
-        font-weight: bold;
+          color: #FF0000;
+          font-style: italic;
+          font-weight: bold;
       }
-    </style>
-  </HEAD>
-  
-  <BODY>
-      
-    <H2 ALIGN="center">Two object categories:<br/>
-      Variable <I><FONT COLOR="#FF0000">state objects</FONT></I> (or
-    <i>services</i>) and immutable <I><FONT COLOR="#FF0000">value objects</FONT></I> 
-      (or <I>structures</I>)<br/>
-     <br/>
-    </H2>
-    
-    <CENTER>
-    <TABLE BORDER="5" CELLPADDING="10" BGCOLOR="#D1C6FF">
-      <TR>
-        <TD ALIGN="right">
-        
-        <P ALIGN="center"><FONT COLOR="#0000FF" FACE="Arial"><STRONG>These are </STRONG></FONT><FONT COLOR="#FF0000" FACE="Arial"><I><STRONG>
-          state</STRONG></I></FONT><FONT COLOR="#0000FF" FACE="Arial"><STRONG>
-          objects <I><FONT COLOR="#FF0000">(services)</FONT></I></STRONG></FONT></P>
-        
-        <P ALIGN="center"><IMG SRC="../images/down.gif" HSPACE="35" width="16" height="52"><IMG SRC="../images/down.gif" HSPACE="35" width="16" height="52"></P>
-        
-        <P ALIGN="center"><IMG SRC="../images/cmail.gif" width="122" height="28"></P>
-        
-        <P ALIGN="center"><IMG SRC="../images/up.gif" width="16" height="52"></P>
-        
-        <P ALIGN="center"><FONT COLOR="#0000FF" FACE="Arial"><STRONG>These are </STRONG></FONT><FONT COLOR="#FF0000" FACE="Arial"><I><STRONG>
-          value
-          </STRONG></I></FONT><FONT COLOR="#0000FF" FACE="Arial"><STRONG>objects
-          <I><FONT COLOR="#FF0000">(structures)</FONT></I></STRONG></FONT></P>
-        </TD>
-      </TR>
-    </TABLE> </CENTER>
-    
-    <P><A HREF="Unsolved.htm#stateValue"><B>Problem statement</B></A> </P>
-    
-    <H3 id="constituents"><a name="stateObject"></a>State objects </H3>
-    
-    <P>The essence of a state object is that new values may be assigned to its member 
-      variables again and again, and that two state objects are considered to be 
-      &quot;equal&quot; if they are identical, i.e., the
-      <FONT COLOR="#FF0000">same</FONT> object. Copying/cloning a state object will 
-      normally contradict their &quot;uniqueness semantics&quot;. </P>
-    
-    <H3>Value objects </H3>
-    
-    <P><a name="valueObject"></a>The essence of a value object is that its
-      immediate and also its recursive
-    <a href="PointersRefCounts.htm#refTypes">constituent</a> objects are  cannot be 
-    replaced by other objects any more as soon as the object leaves the &quot;<FONT COLOR="#0000FF">new</FONT>&quot; 
-      construct (which creates new objects of some specifiable class). In this 
-    sense, the object is <b>frozen</b> after creation.</P>
-    
-    <P>Furthermore, comparing two 
-      value objects amounts to a <b>recursive comparison</b> of all their <A HREF="PointersRefCounts.htm#refTypes">
-      constituents</A>. 
-    </P>
-    
-    <P>If you don't want to completely freeze an entire object, including all 
-    its nested constituents, then you can specifically declare individual member 
-    objects of a <font color="#FF0000"><i><b>Lava</b></i></font> class to be 
-    &quot;constant&quot;. Then only these members are protected against replacement by 
-    other objects.</P>
-  <P>Since<b> </b><span class="style1">Lava</span><b> 0.9.1 we have modified the 
-    category notion in the following way:</b></P>
+      .style3
+      {
+          color: #FF0000;
+      }
+      .style4
+      {
+          font-family: Arial;
+          font-size: x-large;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Two object categories:<br />
+  Variable <span class="style1">state objects</span> (or <span class="style1">services</span>) and immutable 
+      <span class="style1">value objects</span> (or <span class="style1">structures</span>)<br />
+  <br /></h2>
+
+  <div class="c4">
+    <table class="c3" align="center" border="5" cellpadding="10">
+      <tr>
+        <td align="right">
+          <p class="c2"><strong>These are</strong> <i><strong>state</strong></i> <strong>objects <i>(services)</i></strong></p>
+
+          <p class="c2"><img src="../images/down.gif" width="16" height="52" alt="img" /><img src="../images/down.gif" width="16" height="52" alt="img" /></p>
+
+          <p class="c2"><img src="../images/cmail.gif" width="122" height="28" alt="img" /></p>
+
+          <p class="c2"><img src="../images/up.gif" width="16" height="52" alt="img" /></p>
+
+          <p class="c2"><strong>These are</strong> <i><strong>value</strong></i> <strong>objects <i>(structures)</i></strong></p>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <p><a class="c5" href="Unsolved.htm#stateValue">Problem statement</a></p>
+
+  <h3 id="constituents"><a id="stateObject"></a>State objects</h3>
+
+  <p>The essence of a state object is that new values may be assigned to its member variables again and again, and that two state objects are considered to be &quot;equal&quot; if they are identical, i.e., the same object. Copying/cloning a state object will normally contradict their &quot;uniqueness semantics&quot;.</p>
+
+  <h3>Value objects</h3>
+
+  <p><a id="valueObject"></a>The essence of a value object is that its immediate and also its recursive <a href="PointersRefCounts.htm#refTypes">constituent</a> objects are cannot be replaced by other objects any more as soon as the object leaves the &quot;new&quot; construct (which creates new objects of some specifiable class). In this sense, the object is <b>frozen</b> after creation.</p>
+
+  <p>Furthermore, comparing two value objects amounts to a <b>recursive comparison</b> of all their <a href="PointersRefCounts.htm#refTypes">constituents</a>.</p>
+
+  <p>If you don&#39;t want to completely freeze an entire object, including all its nested constituents, then you can specifically declare individual member objects of a <i class="c6">Lava</i> class to be &quot;constant&quot;. Then only these members are protected against replacement by other objects.</p>
+
+  <p>Since <span class="style2">Lava</span> <b>0.9.1 we have modified the category notion in the following way:</b></p>
+
   <ol>
-    <li>In variable declarations the category of a variable is now attached directly 
-      to the variable and no longer to its class.</li>
-      <li>The category isn&#39;t a property of the objects themselves any longer: objects 
-        don&#39;t know their category, but the object category of a variable 
-      specifies a way how objects are treated when accessed 
-        through that variable. <span class="style1">LavaPE</span> makes sure by its 
-        comprehensive static checks that categories of variables are used consistently. 
-        So, for instance, the value of an expression that has been declared to deliver a 
-        value object cannot be assigned to a state variable.</li>
-      <li>The &quot;immutable&quot;/&quot;value object&quot; category is now inherited by all immediate <b>
-        and also</b> all recursive constituents. In other words: &quot;Immutable&quot; is now 
-        applied to the entire object including all its nested constituents, even if the 
-        latter are declared to be state variables (but not including its acquaintances, 
-        which are considered to be independent objects in <span class="style1">Lava</span>).</li>
-    </ol>
-    
-    <H3><a name="declaration"></a>Declaration of state and value objects</H3>
-    
-    <P><B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> objects can be referenced only 
-      indirectly as values of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      variables: <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variables
-      <I>point</I> to <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      objects, they are always of &quot;reference type&quot; as you would say in
-      <B><I><FONT COLOR="#FF0000">Eiffel</FONT></I></B> or <B><I><FONT COLOR="#FF0000">
-      Java</FONT></I></B>. Several variables may point to the same object. The <B>data 
-      type</B> of a
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variable v is described by a <B><I><FONT COLOR="#FF0000">
-      Lava</FONT></I></B> class, say A. The value of a <B><I><FONT COLOR="#FF0000">
-      Lava</FONT></I></B> variable may be any object of class A (or a class derived 
-      from A).</P>
-    
-    <P>The same <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> class may be used to 
-      declare variables of either category : state or value. The
-      <B>category</B> is specified as part of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      variable declarations. If a variable is declared to be of the &quot;state object&quot; 
-      category then a &quot;~&quot; (tilde) precedes the name of the variable in the
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> declaration tree and in the 
-      quantifiers/<span class="style2">declare</span> constructs where they are 
-      declared in executable code.</P>
-    
-    <P>A variable may be </P>
-    <UL>
-      <LI>a member variable of a class or implementation,</LI>
-      <LI>or an input/output parameter of a member function of a class or of an <a href="Packages.htm#initiator"> 
-        initiator</a> (~ kind of <I>main program</I> of an application or thread),</LI>
-      <LI>or a local variable that is declared within an <I>exec</I> (= executable body 
-        of a function or initiator) or <I>invariant</I> (which is executed on completion 
-        of a new object and after every method invocation on the object).</LI>
-    </UL>
-    
-    <P><B>See also: <A HREF="ObjectLifeCycle.htm">Stages in the life of
-        <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> objects (sample)</A></B></P>
-    
-    <H3><a name="component"></a>Component objects</H3>
-    
-    <P>are special state objects that are dynamically created or static &quot;inhabitants&quot; 
-      of &quot;<A HREF="Components.htm">components</A>&quot;. Components are dynamically 
-      loadable software modules in which component objects may be activated/created 
-      that can communicate with other component objects over well-defined 
-      language-independent function-call interfaces. </P>
-    
-    <P><B>See also: <A HREF="Components.htm"><FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT>
-        as a component integration language</A></B></P>
-    
-    <H3><a name="database"></a>Persistent, particularly database objects</H3>
-    
-    <P ALIGN="left">Persistent objects are component objects that can be &quot;attached&quot; by 
-      other components. It is expected that they exist already at this time, although 
-      they may exist in a deactivated state and thus must be activated before they are 
-      attached. In <FONT COLOR="#FF0000"><I><STRONG>Lava,</STRONG></I></FONT>
-      <A HREF="DatabaseIntegration.htm">databases</A> are treated as special 
-      persistent objects.</P>
-    
-    <P ALIGN="left">&nbsp;</P>
-    <DIV ALIGN="LEFT">
-    <CENTER>
-    <TABLE BORDER="5" CELLPADDING="10" BGCOLOR="#FCFEA0">
-      <CAPTION ALIGN="top"><FONT SIZE="5" FACE="Arial"><STRONG>Summary: State and value 
-        objects</STRONG></FONT><br/>
-       <br/></CAPTION>
-      <TR>
-        <TD ALIGN="center"><FONT COLOR="#000080" SIZE="4" FACE="Arial"><STRONG>Value 
-          objects ...</STRONG></FONT></TD>
-        <TD ALIGN="center"><FONT COLOR="#000080" SIZE="4" FACE="Arial"><STRONG>State 
-          objects ...</STRONG></FONT></TD>
-      </TR>
-      <TR>
-        <TD ALIGN="center"><FONT FACE="Arial">... are </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><STRONG>
-          frozen after completion</STRONG></I></FONT></TD>
-        <TD ALIGN="center"><FONT FACE="Arial">... can be <B><I><FONT COLOR="#FF0000">
-          changed again and again even after completion</FONT></I></B></FONT></TD>
-      </TR>
-      <TR>
-        <TD ALIGN="center"><FONT FACE="Arial">... serve, e.g., as </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>
-          messages</B></I></FONT><FONT FACE="Arial">
-          exchanged <b>between </b>and as </FONT><B><FONT COLOR="#FF0000" FACE="Arial"><I>
-          member objects<B></I></FONT><FONT FACE="Arial"> <I <b> <I>of</I></i></FONT></b><I <b><FONT FACE="Arial"> </FONT>
-          </i></b><FONT FACE="Arial"> state objects</FONT></TD>
-        <TD ALIGN="center"><FONT FACE="Arial">... provide <span class="style1">continuous
-          </span><FONT COLOR="#FF0000" FACE="Arial"><I><B>services</B></I></FONT></TD>
-      </TR>
-      <TR>
-        <TD ALIGN="center"><FONT FACE="Arial">Equal relation (&quot;=&quot;)
-        </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>compares values (&quot;equality 
-          semantics&quot;)</B></I></FONT></TD>
-        <TD ALIGN="center"><FONT FACE="Arial">Equal relation (&quot;=&quot;)
-        </FONT><FONT COLOR="#FF0000" FACE="Arial"><I><B>compares pointers (&quot;identity 
-          semantics&quot;)</B></I></FONT></TD>
-      </TR>
-      <TR>
-        <TD ALIGN="center"><FONT FACE="Arial">... are <FONT COLOR="#FF0000"><I><B>passed</B></I></FONT><span 
-            class="style1"> by value</span> <b>between</b>, by reference <b>within</b> <a href="Components.htm">
-          components</a></FONT></TD>
-        <TD ALIGN="center"><FONT FACE="Arial">... are always
-          <FONT COLOR="#FF0000" FACE="Arial"><I><B>passed</B></I></FONT><span 
-            class="style1"> by reference</span></TD>
-      </TR>
-      <TR>
-        <TD ALIGN="center"><FONT FACE="Arial">... can be <FONT COLOR="#FF0000"><B><I>
-          persistent only as constituents</I></B></FONT> of component objects</FONT></TD>
-        <TD ALIGN="center"><FONT FACE="Arial">... can <B><I><FONT COLOR="#FF0000">be</FONT></I></B>
-          persistent component objects</FONT></TD>
-      </TR>
-      <TR>
-        <TD ALIGN="center"><FONT FACE="Arial">Their member objects are usually accessed <B><I><FONT COLOR="#FF0000">
-          directly</FONT></I></B></FONT></TD>
-        <TD ALIGN="center"><FONT FACE="Arial">Their member objects are usually accessed <B><I><FONT COLOR="#FF0000">
-          via set/get functions</FONT></I></B>, those of component objects <b>always</b></FONT></TD>
-      </TR>
-    </TABLE> </CENTER> </DIV>
-    
-    <H3>See also:</H3>
-    
-    <P><A HREF="CategorySample.htm"><B>State/value objects (sample)</B></A></P>
-    
-    <P><B><A HREF="ObjectLifeCycle.htm">Stages in the life of <I><FONT COLOR="#FF0000">
-      Lava</FONT></I>
-        objects (sample)</A></B></P>
-  </BODY>
-</HTML>
+    <li>In variable declarations the category of a variable is now attached directly to the variable and no longer to its class.</li>
+
+    <li>The category isn&#39;t a property of the objects themselves any longer: objects don&#39;t know their category, but the object category of a variable specifies a way how objects are treated when accessed through that variable. 
+        <span class="style2">LavaPE</span> makes sure by its comprehensive static checks that categories of variables are used consistently. So, for instance, the value of an expression that has been declared to deliver a value object cannot be assigned to a state variable.</li>
+
+    <li>The &quot;immutable&quot;/&quot;value object&quot; category is now inherited by all immediate <b>and also</b> all recursive constituents. In other words: &quot;Immutable&quot; is now applied to the entire object including all its nested constituents, even if the latter are declared to be state variables (but not including its acquaintances, which are considered to be independent objects in 
+        <span class="style2">Lava</span>).</li>
+  </ol>
+
+  <h3><a id="declaration"></a>Declaration of state and value objects</h3>
+
+  <p><b class="c7">Lava</b> objects can be referenced only indirectly as values of <b class="c7">Lava</b> variables: <b class="c7">Lava</b> variables <i>point</i> to <b class="c7">Lava</b> objects, they are always of &quot;reference type&quot; as you would say in <b class="c7">Eiffel</b> or <b class="c7">Java</b>. Several variables may point to the same object. The <b>data type</b> of a <b class="c7">Lava</b> variable v is described by a <b class="c7">Lava</b> class, say A. The value of a <b class="c7">Lava</b> variable may be any object of class A (or a class derived from A).</p>
+
+  <p>The same <b class="c7">Lava</b> class may be used to declare variables of either category : state or value. The <b>category</b> is specified as part of <b class="c7">Lava</b> variable declarations. If a variable is declared to be of the &quot;state object&quot; category then a &quot;~&quot; (tilde) precedes the name of the variable in the <b class="c7">Lava</b> declaration tree and in the quantifiers/declare constructs where they are declared in executable code.</p>
+
+  <p>A variable may be</p>
+
+  <ul>
+    <li>a member variable of a class or implementation,</li>
+
+    <li>or an input/output parameter of a member function of a class or of an <a href="Packages.htm#initiator">initiator</a> (~ kind of <i>main program</i> of an application or thread),</li>
+
+    <li>or a local variable that is declared within an <i>exec</i> (= executable body of a function or initiator) or <i>invariant</i> (which is executed on completion of a new object and after every method invocation on the object).</li>
+  </ul>
+
+  <p class="c8">See also: <a href="ObjectLifeCycle.htm">Stages in the life of <b class="c7">Lava</b> objects (sample)</a></p>
+
+  <h3><a id="component"></a>Component objects</h3>
+
+  <p>are special state objects that are dynamically created or static &quot;inhabitants&quot; of &quot;<a href="Components.htm">components</a>&quot;. Components are dynamically loadable software modules in which component objects may be activated/created that can communicate with other component objects over well-defined language-independent function-call interfaces.</p>
+
+  <p class="c8">See also: <a href="Components.htm"><strong><span class="style1">Lava</span></strong> as a component integration language</a></p>
+
+  <h3><a id="database"></a>Persistent, particularly database objects</h3>
+
+  <p class="c9">Persistent objects are component objects that can be &quot;attached&quot; by other components. It is expected that they exist already at this time, although they may exist in a deactivated state and thus must be activated before they are attached. In <i><strong>
+      <span class="style3">Lava</span>,</strong></i> <a href="DatabaseIntegration.htm">databases</a> are treated as special persistent objects.</p>
+
+  <div class="c4">
+    <table class="style4" border="5" cellpadding="10">
+      <caption class="bold">
+        Summary: State and value objects
+      </caption>
+
+      <tr>
+        <td align="center"><strong>Value objects ...</strong></td>
+
+        <td align="center"><strong>State objects ...</strong></td>
+      </tr>
+
+      <tr>
+        <td align="center">... are <i><strong>frozen after completion</strong></i></td>
+
+        <td align="center">... can be <b class="c7">changed again and again even after completion</b></td>
+      </tr>
+
+      <tr>
+        <td align="center">... serve, e.g., as <i class="c6">messages</i> exchanged <b>between</b> and as <b><i>member objects</i> <i class="c10">of</i> state objects</b></td>
+
+        <td align="center">... provide continuous <i class="c6">services</i></td>
+      </tr>
+
+      <tr>
+        <td align="center">Equal relation (&quot;=&quot;) <i class="c6">compares values (&quot;equality semantics&quot;)</i></td>
+
+        <td align="center">Equal relation (&quot;=&quot;) <i class="c6">compares pointers (&quot;identity semantics&quot;)</i></td>
+      </tr>
+
+      <tr>
+        <td align="center">... are <i class="c6">passed</i> by value <b>between</b>, by reference <b>within</b> <a href="Components.htm">components</a></td>
+
+        <td align="center">... are always <i class="c6">passed</i> by reference</td>
+      </tr>
+
+      <tr>
+        <td align="center">... can be <b class="c7">persistent only as constituents</b> of component objects</td>
+
+        <td align="center">... can <b class="c7">be</b> persistent component objects</td>
+      </tr>
+
+      <tr>
+        <td align="center">Their member objects are usually accessed <b class="c7">directly</b></td>
+
+        <td align="center">Their member objects are usually accessed <b class="c7">via set/get functions</b>, those of component objects <b>always</b></td>
+      </tr>
+    </table>
+  </div>
+
+  <h3>See also:</h3>
+
+  <p class="c8"><a href="ObjectLifeCycle.htm">Stages in the life of <i>Lava</i> objects (sample)</a></p>
+</body>
+</html>

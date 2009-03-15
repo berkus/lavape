@@ -1,165 +1,163 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Overview of the Lava solutions</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <P ALIGN="center"><FONT COLOR="#FF0000" SIZE="4"><STRONG>Caution:</STRONG></FONT><FONT SIZE="4"><STRONG>
-      you are about to enter the</STRONG></FONT><IMG SRC="../images/JavaFreeZone.png" ALIGN="middle" HSPACE="10" width="95" height="123"></P>
-    
-    <H2 ALIGN="center"><FONT COLOR="#FF0000" SIZE="6"><I><STRONG>Lava</STRONG></I></FONT><FONT SIZE="6">
-    solutions and highlights</FONT></H2>
-    
-    <P><B><FONT COLOR="#FF0000" SIZE="4"><I><STRONG><FONT SIZE="+2">Lava .
-      . .</FONT></STRONG></I></FONT></B></P>
-    <UL>
-      <LI><B>... is perfectly <A HREF="PointAndClick.htm">&quot;point-and-click&quot;</A>.
-        Minimum syntax learning, no syntax errors, no text entry at all except
-        for comments, constants and new identifiers. Context-related errors are
-        reported at the earliest possible moment. Automatic update of all
-        affected references when identifiers are changed, when formal
-        parameters of functions are permuted, inserted or deleted, or when the
-        nested tree structure of <font color="#FF0000"><i>Lava</i></font>
-        declarations is rearranged. <br/>
-      <br/>
-      This uncompromising point-and-click style pertains also to <i>
-      <font color="#FF0000">Lava</font></i>'s <a href="Refactoring.htm">
-      refactoring support</a>, which doesn't appear as an add-on but is built-in 
-      from the beginning.</B></LI><br/>
-      <br/>
-        
-      <LI><B>... provides <A HREF="SepItfImpl.htm">strict separation</A> of
-        &quot;class interfaces&quot;, or short: &quot;classes&quot; (with &quot;multiple inheritance&quot; and &quot;<a href="SepItfImpl.htm#virtualBaseClasses">shared 
-      base classes</a>&quot;) and &quot;class implementations&quot;, or short: 
-      &quot;implementations&quot; (each of which
-        <a href="SepItfImpl.htm#implements">
-        implements</a> exactly one class interface). Only class interfaces can be used to
-        specify the types of variables. In contrast to <font color="#FF0000"><i>Java</i></font>
-        interfaces, <i><font color="#FF0000">Lava</font></i> interfaces can be
-        implemented separately and these implementations are inherited then by
-        the implementations of derived classes.</B><br/>
-      <br/>
-      <LI><B>... provides a clean distinction between
-        <A HREF="TwoObjectCategories.htm">variable state and immutable value
-          objects</A> and enforces a <a href="ObjectLifeCycle.htm#creation"> strict initialization discipline</a> for these.</B></LI><br/><br/>
-      <LI><B>... is a <A HREF="Components.htm">component integration
-          language</A>. Component objects appear as special objects having an &quot;external&quot;
-        implementation. Databases are special persistent component objects.
-        Components may interact in various and sophisticated ways: embedded or
-        linked user interfaces, menu sharing, compound documents, ActiveX
-        Controls/Documents, Automation servers and clients, drag-and-drop,
-        clipboard, etc..</B></LI><br/><br/>
-      <LI><b>... supports &quot;<a href="DBC.htm">Design By Contract</a>™&quot; through 
-      &quot;attached assertions&quot;.</b></LI><br/><br/>
-      <LI><b>... offers special support for &quot;<a href="OOPS-MIMM.htm">Object-Oriented 
-      Problem Separation</a>&quot; through &quot;Many Irreducible Mini-Methods&quot; (OOPS:MIMM) 
-      and recommends this as the preferred programming discipline of the
-      <font color="#FF0000"><i>Lava</i></font> programmer.</b></LI><br/><br/>       
-      <LI><B>... supports <A HREF="PatternsFrameworks.htm">design patterns /
-          frameworks</A> by a conception of &quot;packages and classes with virtual type parameters&quot; and &quot;specialization/derivation&quot;
-        thereof. (The <font color="#FF0000"><i>Lava</i></font> &quot;virtual
-        type&quot; notion is different from the virtual type notion <a href="TypeSafety.htm#relatedWork"> being
-        discussed</a> in the context of the envisaged <i><font color="#FF0000">Java</font></i>
-        extension, however.)</B></LI><br/><br/>
-      <LI><B>... renders &quot;<A HREF="Unsolved.htm#typeCasts">type casts</A>&quot;
-        superfluous by providing more comprehensive, pattern-oriented derivation
-        and specialization mechanisms (&quot;<a href="PatternsFrameworks.htm">virtual
-        types</a>&quot; and &quot;<a href="PatternsFrameworks.htm#covariant">covariant
-        specialization</a>&quot;).</B></LI><br/><br/>
-      <LI><B><a name="dataFlow"></a>... <a HREF="RepetComputSamples.htm#topToBottom">clarifies</a> the
-        <a href="Unsolved.htm#singleAssign"> data flow</a>
-        of programs by being a <A HREF="SingleAssigLogSem.htm">single-assignment
-          language</A>, much like abandoning &quot;go to&quot; has clarified the
-        control flow.</B></LI><br/><br/>
-      <LI><B>... allows you to distinguish <A HREF="PointersRefCounts.htm">three
-          kinds of references</A> between objects: <a HREF="Unsolved.htm#pointers" name="constituent">constituents</a> (= member objects),
-        <A HREF="Unsolved.htm#pointers">acquaintances</A> (= pointers to
-        independent objects), and <A HREF="PointersRefCounts.htm#reverse">reverse
-          references</A> (= auxiliary, typically &quot;backward&quot; references
-        that facilitate automatic storage management based on reference counts).</B></LI><br/><br/>
-      <LI><b>... undertakes really serious efforts to prevent inadvertent use of uninitialized 
-      data by quite a number of <a href="IniChecks.htm">radical measures</a> 
-      which are constitutive for the whole language design.</b></LI><br/><br/>
-      <LI><B>... is a logic-based language including logical conjunctions,
-        quantifiers, and sets. This enables the natural integration of
-        <A HREF="DatabaseIntegration.htm">database expressive means</A> and
-        renders &quot;embedded SQL&quot; superfluous.</B></LI><br/><br/>
-      <LI><B>... treats <A HREF="Transactions.htm">transactions,
-          multi-threading, synchronization</A> in a purely declarative way
-        without requiring delicate and error-prone executable primitives.</B></LI><br/><br/>
-      <LI><B>... provides a straightforward<B> type-safe<B></B></B>
-        <A HREF="Callbacks.htm">callback/event notification</A> concept with
-        direct server-to-client callbacks that doesn't require <B> intermediate
-        &quot;event listeners&quot;, </B><B></B>function pointers or awkward
-        auxiliary constructs like the anonymous, inner, and adapter classes of
-        <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>.</B></LI><br/><br/>
-      <LI><B>... automatically generates a customizable <A HREF="EditForm.htm">default
-        form representation</A> for any given class on demand. A
-        fundamental requirement of RAD support (RAD = rapid application
-        development) is fulfilled in this way.</B></LI><br/><br/>
-      <LI><B>... has an <A HREF="Interpreter.htm">object-oriented interpreter</A>
-        that operates directly on the internal tree-representation (a kind of &quot;abstract
-        syntax tree&quot;) of the <I><FONT COLOR="#FF0000">Lava</FONT></I>
-        program. A compilation into &quot;byte code&quot;, a &quot;byte code
-        verifier&quot; and a &quot;<I><FONT COLOR="#FF0000">Lava</FONT></I>
-        virtual machine&quot; are not required.</B></LI><br/><br/>
-      <LI><B>... is intended to be <A HREF="OrganizationAwareness.htm">organization-aware</A>
-        (which means support of hierarchical namespaces of organizational units
-        (OUs), support of their to-do lists, their data and class access
-        rights, their data ownership, their right to perform all or some
-        functions of other OUs. (&quot;For further study&quot;.)</B></LI><br/><br/>
-      <LI><B>... is intended to be <A HREF="Security.htm">security-aware</A>
-        by having an inherent conception of preventive and defensive security (=
-        support of class access rights and encryption/digital signatures,
-        respectively; &quot;For further study&quot;).</B></LI><br/><br/>
-    </UL>
-    <p><b>See also:</b></p>
-    <p><b><a href="StructEdAdvant.htm">Advantages of structure editing</a>.</b></p>
-    <p><b> <a href="LavaReadability.htm">Improved comprehensibility</a> of <i><font color="#FF0000">Lava</font></i>
-    programs.</b></p>
-    <HR>
-    <P><a name="aesthetic"></a>Generally the <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT>
-      design is based on our firm belief that what Ch. Morgenstern says about
-      the difference between the <A HREF="Aesthetics.htm">aesthetic</A> value
-      of a chair and its pragmatic value doesn't apply to purely mental
-      constructs, like programming languages:</P>
-    
-    <P>The pragmatic value and user acceptance of a programming language are
-      decisively determined by its beauty, in particular by properties like</P>
-    <UL>
-      <LI>simplicity, irreducibility, orthogonality, non-redundant conceptual
-        structure,<br/>
-         </LI>
-      <LI>clean separation of concerns,<br/>
-         </LI>
-      <LI>support of abstraction and information-hiding,<br/>
-         </LI>
-      <LI>the capability to split off common features of similar solutions in
-        reusable building blocks: inheritance, polymorphism, parameterized
-        design patterns,<br/>
-         </LI>
-      <LI>non-cryptic textual expressive means, close to natural language,<br/>
-         </LI>
-      <LI>intuitively appealing graphical and iconic expressive means that one
-        can easily learn and keep in mind.</LI>
-    </UL>
-    
-    <HR>
-    
-    <P>The design of a completely new programming language requires a great lot
-      of decisions that must fit to each other, and, of course, our thoughts
-      about <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT> used to
-      <A HREF="Snail.htm">go round in circles</A> many times before we had
-      reached a more stable design, and the decisions taken remain open to
-      further discussion. So don't hesitate to contact us!</P>
-  </BODY>
-</HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Overview of the Lava solutions</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c5 {font-weight: bold}
+  b.c4 {font-style: italic; color: Red}
+  p.c3 {font-style: italic; font-weight: bold}
+  h2.c2 {text-align: center}
+  p.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+      .style2
+      {
+          color: #FF0000;
+      }
+  </style>
+</head>
+
+<body>
+  <p class="c1"><strong>Caution:</strong> <strong>you are about to enter the</strong><img src="../images/JavaFreeZone.png" align="middle" hspace="10" width="95" height="123" alt="img" /></p>
+
+  <h2 class="c2"><span class="style1"><strong>Lava</strong></span> solutions and highlights</h2>
+
+  <p class="c3"><strong><span class="style2">Lava</span> . . .</strong></p>
+
+  <ul>
+    <li><b>... is perfectly <a href="PointAndClick.htm">&quot;point-and-click&quot;</a>. Minimum syntax learning, no syntax errors, no text entry at all except for comments, constants and new identifiers. Context-related errors are reported at the earliest possible moment. Automatic update of all affected references when identifiers are changed, when formal parameters of functions are permuted, inserted or deleted, or when the nested tree structure of 
+        <span class="style1">Lava</span> declarations is rearranged.<br />
+    <br />
+    This uncompromising point-and-click style pertains also to <span class="style1">Lava</span>&#39;s <a href="Refactoring.htm">refactoring support</a>, which doesn&#39;t appear as an add-on but is built-in from the beginning.</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... provides <a href="SepItfImpl.htm">strict separation</a> of &quot;class interfaces&quot;, or short: &quot;classes&quot; (with &quot;multiple inheritance&quot; and &quot;<a href="SepItfImpl.htm#virtualBaseClasses">shared base classes</a>&quot;) and &quot;class implementations&quot;, or short: &quot;implementations&quot; (each of which <a href="SepItfImpl.htm#implements">implements</a> exactly one class interface). Only class interfaces can be used to specify the types of variables. In contrast to 
+        <span class="style1">Java</span> interfaces, <span class="style1">Lava</span> interfaces can be implemented separately and these implementations are inherited then by the implementations of derived classes.</b><br />
+    <br /></li>
+
+    <li><b>... provides a clean distinction between <a href="TwoObjectCategories.htm">variable state and immutable value objects</a> and enforces a <a href="ObjectLifeCycle.htm#creation">strict initialization discipline</a> for these.</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... is a <a href="Components.htm">component integration language</a>. Component objects appear as special objects having an &quot;external&quot; implementation. Databases are special persistent component objects. Components may interact in various and sophisticated ways: embedded or linked user interfaces, menu sharing, compound documents, ActiveX Controls/Documents, Automation servers and clients, drag-and-drop, clipboard, etc..</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... supports &quot;<a href="DBC.htm">Design By Contract</a>&#8482;&quot; through &quot;attached assertions&quot;.</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... offers special support for &quot;<a href="OOPS-MIMM.htm">Object-Oriented Problem Separation</a>&quot; through &quot;Many Irreducible Mini-Methods&quot; (OOPS:MIMM) and recommends this as the preferred programming discipline of the 
+        <span class="style1">Lava</span> programmer.</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... supports <a href="PatternsFrameworks.htm">design patterns / frameworks</a> by a conception of &quot;packages and classes with virtual type parameters&quot; and &quot;specialization/derivation&quot; thereof. (The 
+        <span class="style1">Lava</span> &quot;virtual type&quot; notion is different from the virtual type notion <a href="TypeSafety.htm#relatedWork">being discussed</a> in the context of the envisaged 
+        <span class="style1">Java</span> extension, however.)</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... renders &quot;<a href="Unsolved.htm#typeCasts">type casts</a>&quot; superfluous by providing more comprehensive, pattern-oriented derivation and specialization mechanisms (&quot;<a href="PatternsFrameworks.htm">virtual types</a>&quot; and &quot;<a href="PatternsFrameworks.htm#covariant">covariant specialization</a>&quot;).</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b><a id="dataFlow"></a>... <a href="RepetComputSamples.htm#topToBottom">clarifies</a> the <a href="Unsolved.htm#singleAssign">data flow</a> of programs by being a <a href="SingleAssigLogSem.htm">single-assignment language</a>, much like abandoning &quot;go to&quot; has clarified the control flow.</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... allows you to distinguish <a href="PointersRefCounts.htm">three kinds of references</a> between objects: <a href="Unsolved.htm#pointers" name="constituent" id="constituent">constituents</a> (= member objects), <a href="Unsolved.htm#pointers">acquaintances</a> (= pointers to independent objects), and <a href="PointersRefCounts.htm#reverse">reverse references</a> (= auxiliary, typically &quot;backward&quot; references that facilitate automatic storage management based on reference counts).</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... undertakes really serious efforts to prevent inadvertent use of uninitialized data by quite a number of <a href="IniChecks.htm">radical measures</a> which are constitutive for the whole language design.</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... is a logic-based language including logical conjunctions, quantifiers, and sets. This enables the natural integration of <a href="DatabaseIntegration.htm">database expressive means</a> and renders &quot;embedded SQL&quot; superfluous.</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... treats <a href="Transactions.htm">transactions, multi-threading, synchronization</a> in a purely declarative way without requiring delicate and error-prone executable primitives.</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... provides a straightforward</b> type-safe <a href="Callbacks.htm">callback/event notification</a> concept with direct server-to-client callbacks that doesn&#39;t require <b>intermediate &quot;event listeners&quot;,</b> function pointers or awkward auxiliary constructs like the anonymous, inner, and adapter classes of <b class="c4">Java</b>.</li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... automatically generates a customizable <a href="EditForm.htm">default form representation</a> for any given class on demand. A fundamental requirement of RAD support (RAD = rapid application development) is fulfilled in this way.</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... has an <a href="Interpreter.htm">object-oriented interpreter</a> that operates directly on the internal tree-representation (a kind of &quot;abstract syntax tree&quot;) of the <i>Lava</i> program. A compilation into &quot;byte code&quot;, a &quot;byte code verifier&quot; and a &quot;<span 
+            class="style1">Lava</span> virtual machine&quot; are not required.</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... is intended to be <a href="OrganizationAwareness.htm">organization-aware</a> (which means support of hierarchical namespaces of organizational units (OUs), support of their to-do lists, their data and class access rights, their data ownership, their right to perform all or some functions of other OUs. (&quot;For further study&quot;.)</b></li>
+
+    <li><br />
+    <br /></li>
+
+    <li><b>... is intended to be <a href="Security.htm">security-aware</a> by having an inherent conception of preventive and defensive security (= support of class access rights and encryption/digital signatures, respectively; &quot;For further study&quot;).</b></li>
+
+    <li><br />
+    <br /></li>
+  </ul>
+
+  <p class="c5">See also:</p>
+
+  <p class="c5"><a href="StructEdAdvant.htm">Advantages of structure editing</a>.</p>
+
+  <p class="c5"><a href="LavaReadability.htm">Improved comprehensibility</a> of 
+      <span class="style1">Lava</span> programs.</p>
+  <hr />
+
+  <p><a id="aesthetic"></a>Generally the <span class="style1"><strong>Lava</strong></span> design is based on our firm belief that what Ch. Morgenstern says about the difference between the <a href="Aesthetics.htm">aesthetic</a> value of a chair and its pragmatic value doesn&#39;t apply to purely mental constructs, like programming languages:</p>
+
+  <p>The pragmatic value and user acceptance of a programming language are decisively determined by its beauty, in particular by properties like</p>
+
+  <ul>
+    <li>simplicity, irreducibility, orthogonality, non-redundant conceptual structure,<br /></li>
+
+    <li>clean separation of concerns,<br /></li>
+
+    <li>support of abstraction and information-hiding,<br /></li>
+
+    <li>the capability to split off common features of similar solutions in reusable building blocks: inheritance, polymorphism, parameterized design patterns,<br /></li>
+
+    <li>non-cryptic textual expressive means, close to natural language,<br /></li>
+
+    <li>intuitively appealing graphical and iconic expressive means that one can easily learn and keep in mind.</li>
+  </ul>
+  <hr />
+
+  <p>The design of a completely new programming language requires a great lot of decisions that must fit to each other, and, of course, our thoughts about 
+      <span class="style1"><strong>Lava</strong></span> used to <a href="Snail.htm">go round in circles</a> many times before we had reached a more stable design, and the decisions taken remain open to further discussion. So don&#39;t hesitate to contact us!</p>
+</body>
+</html>

@@ -1,62 +1,90 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-<HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
-	<TITLE>The interactive Lava run time debugger</TITLE>
-	<META NAME="GENERATOR" CONTENT="StarOffice 9 Beta (Win32)">
-	<META NAME="AUTHOR" CONTENT="Klaus D. G&uuml;nther">
-	<META NAME="CREATED" CONTENT="0;0">
-	<META NAME="CHANGEDBY" CONTENT="Klaus D. G&uuml;nther">
-	<META NAME="CHANGED" CONTENT="20080718;14294500">
-	<META NAME="ProgId" CONTENT="FrontPage.Editor.Document">
-	<META HTTP-EQUIV="Content-Language" CONTENT="en-us">
-	<STYLE TYPE="text/css">
-	<!--
-		@page { size: 21cm 29.7cm }
-		P { margin-top: 0.18cm; color: #000000; font-family: "Arial" }
-		H2 { color: #000000; font-family: "Arial"; font-size: 24pt; font-style: italic }
-	-->
-	</STYLE>
-</HEAD>
-<BODY LANG="en-US" TEXT="#000000" BGCOLOR="#d8dddd" DIR="LTR">
-<H2 ALIGN=CENTER>The interactive <FONT COLOR="#ff0000"><I>Lava</I></FONT>
-run time debugger</H2>
-<P ALIGN=LEFT><FONT COLOR="#ff0000"><I><B>LavaPE</B></I></FONT>
-provides an interactive run time debugger, which allows you to set
-breakpoints, to step from statement to statement and into functions,
-and to inspect the values of local variables and formal parameters.</P>
-<P ALIGN=LEFT>The <B>debug tool bar</B></P>
-<P ALIGN=CENTER><IMG SRC="../images/DebugTB.png" NAME="Grafik1" ALIGN=BOTTOM WIDTH=219 HEIGHT=24 BORDER=0></P>
-<P>provides the following operations (from left to right):</P>
-<UL>
-	<LI><P STYLE="margin-bottom: 0cm"><IMG SRC="../images/DebugCont.png" NAME="Grafik2" ALIGN=BOTTOM WIDTH=23 HEIGHT=22 BORDER=0>&nbsp;&nbsp;Start/continue
-	debugging. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><IMG SRC="../images/DebugNext.png" NAME="Grafik3" ALIGN=BOTTOM WIDTH=23 HEIGHT=22 BORDER=0>&nbsp;&nbsp;Stop
-	at next statement. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><IMG SRC="../images/DebugNextFunc.png" NAME="Grafik4" ALIGN=BOTTOM WIDTH=23 HEIGHT=22 BORDER=0>&nbsp;&nbsp;Stop
-	at next function call. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><IMG SRC="../images/DebugInto.png" NAME="Grafik5" ALIGN=BOTTOM WIDTH=23 HEIGHT=22 BORDER=0>&nbsp;&nbsp;Step
-	into function. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><IMG SRC="../images/DebugStepOut.png" NAME="Grafik6" ALIGN=BOTTOM WIDTH=23 HEIGHT=22 BORDER=0>
-	&nbsp;&nbsp;Execute and then leave the current function. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><IMG SRC="../images/DebugUpTo.png" NAME="Grafik7" ALIGN=BOTTOM WIDTH=23 HEIGHT=22 BORDER=0>
-	&nbsp;&nbsp;Continue up to the selected construct. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><IMG SRC="../images/DebugBreakpoint.png" NAME="Grafik8" ALIGN=BOTTOM WIDTH=23 HEIGHT=22 BORDER=0>
-	&nbsp;&nbsp;Set/remove breakpoint at the selected construct. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm"><IMG SRC="../images/DebugDelBPs.png" NAME="Grafik9" ALIGN=BOTTOM WIDTH=23 HEIGHT=22 BORDER=0>&nbsp;&nbsp;Remove
-	all breakpoints. 
-	</P>
-	<LI><P><IMG SRC="../images/DebugStop.png" NAME="Grafik10" ALIGN=BOTTOM WIDTH=23 HEIGHT=22 BORDER=0>&nbsp;&nbsp;Stop/abort
-	the current debugging session. 
-	</P>
-</UL>
-<P>&nbsp;</P>
-</BODY>
-</HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=us-ascii" />
+
+  <title>The interactive Lava run time debugger</title>
+  <meta name="GENERATOR" content="StarOffice 9 Beta (Win32)" />
+  <meta name="AUTHOR" content="Klaus D. G&#252;nther" />
+  <meta name="CREATED" content="0;0" />
+  <meta name="CHANGEDBY" content="Klaus D. G&#252;nther" />
+  <meta name="CHANGED" content="20080718;14294500" />
+  <meta name="ProgId" content="FrontPage.Editor.Document" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+    <!--
+        @page { size: 21cm 29.7cm }
+        P { margin-top: 0.18cm; color: #000000; font-family: "Arial" }
+        H2 { color: #000000; font-family: "Arial"; font-size: 24pt; font-style: italic }
+    -->
+  /*]]>*/
+  </style>
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  body {
+  background-color: #D8DDDD;
+  color: #000000;
+  }
+  p.c6 {margin-bottom: 0cm}
+  p.c5 {text-align: center}
+  p.c4 {text-align: left}
+  span.c3 {color: #FF0000; font-style: italic; font-weight: bold}
+  h2.c2 {text-align: center}
+  span.c1 {color: #FF0000; font-style: italic}
+  /*]]>*/
+  </style>
+</head>
+
+<body lang="en-US" dir="ltr" xml:lang="en-US">
+  <h2 class="c2">The interactive <span class="c1">Lava</span> run time debugger</h2>
+
+  <p class="c4"><span class="c3">LavaPE</span> provides an interactive run time debugger, which allows you to set breakpoints, to step from statement to statement and into functions, and to inspect the values of local variables and formal parameters.</p>
+
+  <p class="c4">The <b>debug tool bar</b></p>
+
+  <p class="c5"><img src="../images/DebugTB.png" name="Grafik1" align="bottom" width="219" height="24" border="0" alt="img" id="Grafik1" /></p>
+
+  <p>provides the following operations (from left to right):</p>
+
+  <ul>
+    <li>
+      <p class="c6"><img src="../images/DebugCont.png" name="Grafik2" align="bottom" width="23" height="22" border="0" alt="img" id="Grafik2" /> Start/continue debugging.</p>
+    </li>
+
+    <li>
+      <p class="c6"><img src="../images/DebugNext.png" name="Grafik3" align="bottom" width="23" height="22" border="0" alt="img" id="Grafik3" /> Stop at next statement.</p>
+    </li>
+
+    <li>
+      <p class="c6"><img src="../images/DebugNextFunc.png" name="Grafik4" align="bottom" width="23" height="22" border="0" alt="img" id="Grafik4" /> Stop at next function call.</p>
+    </li>
+
+    <li>
+      <p class="c6"><img src="../images/DebugInto.png" name="Grafik5" align="bottom" width="23" height="22" border="0" alt="img" id="Grafik5" /> Step into function.</p>
+    </li>
+
+    <li>
+      <p class="c6"><img src="../images/DebugStepOut.png" name="Grafik6" align="bottom" width="23" height="22" border="0" alt="img" id="Grafik6" /> Execute and then leave the current function.</p>
+    </li>
+
+    <li>
+      <p class="c6"><img src="../images/DebugUpTo.png" name="Grafik7" align="bottom" width="23" height="22" border="0" alt="img" id="Grafik7" /> Continue up to the selected construct.</p>
+    </li>
+
+    <li>
+      <p class="c6"><img src="../images/DebugBreakpoint.png" name="Grafik8" align="bottom" width="23" height="22" border="0" alt="img" id="Grafik8" /> Set/remove breakpoint at the selected construct.</p>
+    </li>
+
+    <li>
+      <p class="c6"><img src="../images/DebugDelBPs.png" name="Grafik9" align="bottom" width="23" height="22" border="0" alt="img" id="Grafik9" /> Remove all breakpoints.</p>
+    </li>
+
+    <li>
+      <p><img src="../images/DebugStop.png" name="Grafik10" align="bottom" width="23" height="22" border="0" alt="img" id="Grafik10" /> Stop/abort the current debugging session.</p>
+    </li>
+  </ul>
+</body>
+</html>

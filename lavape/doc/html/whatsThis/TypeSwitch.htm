@@ -1,34 +1,51 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta content="text/html; charset=iso-8859-1">
-    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-    <title>
-      Type switch statement
-    </title>
-    <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
-  </head>
-  <body>
-  <h2 align="center">Type switch statement</h2>
-  <p>The <font color="#FF0000"><i><b>Lava</b></i></font> <font color="#0000FF">
-  <b>type of</b> </font>statement is similar to the<font color="#FF0000"><i><b> Lava</b></i></font>
-  <font color="#0000FF"><b><a href="Switch.htm">switch</a></b></font> statement.</p>
-  <p><b>Differences:</b></p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Type switch statement</title>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c3 {font-weight: bold}
+  i.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+      }
+      .style2
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style3
+      {
+          color: #CC00CC;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Type switch statement</h2>
+
+  <p>The <i class="c2">Lava</i> <b>t<span class="style1">ype of</span></b> statement is similar to the <i class="c2">Lava</i> <b><a href="Switch.htm">switch</a></b> statement.</p>
+
+  <p class="c3">Differences:</p>
+
   <ul>
-    <li>It branches over the run time type of the result object of its switch 
-    expression.</li>
-    <li>Every <font color="#0000FF"><b>case</b></font> clause specifies a single 
-    (real or <a href="../PatternsFrameworks.htm">virtual</a>) type and 
-    introduces a new local variable of that type whose scope is the respective 
-    branch. The result object of the switch expression is assigned to this 
-    variable.</li>
+    <li>It branches over the run time type of the result object of its switch expression.</li>
+
+    <li>Every <span class="style2">case</span> clause specifies a single (real or <a href="../PatternsFrameworks.htm">virtual</a>) type and introduces a new local variable of that type whose scope is the respective branch. The result object of the switch expression is assigned to this variable.</li>
   </ul>
-  <p>The <font color="#0000FF"><b>else</b></font> branch is optional and may be 
-  deleted using the DEL key or the scissors button.</p>
-  <p>W.r.t. variable initialization checks, the same remarks apply as for the <b>
-  <a href="IfStm.htm">if</a></b> statement.</p>
-  <p><b><a href="../Unsolved.htm#typeCasts">Don't use the type switch statement 
-  unless really unavoidable!</a></b></p>
-  </body>
+
+  <p>The <span class="style3">else</span> branch is optional and may be deleted using the 
+      <b>DEL</b> key or the scissors button.</p>
+
+  <p>W.r.t. variable initialization checks, the same remarks apply as for the <b><a href="IfStm.htm">if</a></b> statement.</p>
+
+  <p class="c3"><a href="../Unsolved.htm#typeCasts">Don&#39;t use the type switch statement unless really unavoidable!</a></p>
+</body>
 </html>

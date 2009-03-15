@@ -1,264 +1,133 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Transaction support</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER">Multi-threading, synchronization, and transactions in
-    <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B></H2>
-    
-    <p ALIGN="CENTER">(Not yet implemented)</p>
-    
-    <P><B><FONT COLOR="#FF0000"><I>Lava</I></FONT></B> is a sequential
-      programming language with built-in multi-threading support. It treats
-      multi-threading, synchronization, and transactions in a purely declarative
-      way without requiring delicate and error-prone executable primitives. Let
-      us start with</P>
-    
-    <H3>Concurrent execution using implicit thread creation and termination
-    </H3>
-    
-    <P><B>Functions</B> occurring in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> 
-    classes may be declared to run in <B>synchronous</B>, <B>concurrent</B>,
-      or <B>autonomous</B> mode. <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      <B>initiators</B><I>,</I>  which play the role of autonomous <b>
-    <font color="#0000FF">main</font></b>
-    programs, may be declared to run in <B>synchronous</B>  or <B>concurrent </B>mode.&nbsp;</P>
-    
-    <P> <B>Concurrent</B> execution means that
-      the function or initiator is executed within a thread of its own. <b>Autonomous
-    </b>execution of a function means that, in addition to being executed concurrently, the function does not
-      return output parameters or throw exceptions (using the
-    <a href="whatsThis/FailSucceed.htm"><b>throw</b></a> statement) to its caller. Member
-      functions are executed in synchronous mode by default. Initiators have no
-    output parameters and cannot throw exceptions.</P>
-    
-    <P>When a transaction function or initiator returns then this does not
-      necessarily mean that its associated thread is destroyed. For performance
-      reasons the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> run time
-      system may prefer to return such a thread into a pool of &quot;unused
-      threads&quot; and reuse these whenever a new thread is required. New
-      threads would then be created only if this pool is empty (not yet
-      implemented!). </P>
-    
-    <H3><a name="mutualExclusion"></a>Mutual-exclusion synchronization using transactions</H3>
-    
-    <P>Irrespective of their execution mode, functions and initiators may be
-      declared to be <B>transactions</B>. The purpose of transactions is to
-      synchronize read and write access operations that are performed on shared
-      data by concurrent threads or processes.</P>
-    
-    <P>At this place you should recall that <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      distinguishes two categories of objects: Variable state objects (&quot;services&quot;
-      or &quot;servers&quot;) that can be modified again and again, and value
-      objects (&quot;structures&quot;) that can be modified only during
-      construction and that become immutable after &quot;completion&quot;. For
-      this reason <B>a value object does not need access synchronization</B>
-      after completion.</P>
-    
-    <P>Before completion <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      prevents any <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> objects
-      from being passed on as function or initiator parameters. Thus they can be
-      processed only by member functions of their own class, and these cannot be
-      executed in concurrent mode in this stage. As a consequence <B>access
-      synchronization is not needed for incomplete <I><FONT COLOR="#FF0000">Lava</FONT></I>
-      objects</B>, and for value objects access synchronization is never
-      required.</P>
-    
-    <P>The traditional transaction notion defines that a set of concurrent
-      transactions is synchronized correctly if they have &quot;the same effect&quot;
-      as if they were executed in some proper, strictly sequential order one
-      after the other. The problem with this definition is that the term &quot;same
-      effect&quot; means that you must compare the objects that are inserted,
-      updated, deleted, or just read by those transactions for the properly
-      synchronized concurrent and the strictly sequential case. Two problems
-      arise in this context:</P>
-    <OL>
-      <LI>When comparing objects you must know precisely what <I>belongs</I>
-        to an object and what is only a <I>reference</I> to some other,
-        independent object. In traditional databases you may sometimes doubt
-        whether, e.g., a &quot;foreign key&quot;, or a link in a network
-        database points to an <I>acquaintance</I> or to a <I>constituent</I>
-        of the containing primary object from the application's point of view.
-        In the second case the target of such a pointer should be included in
-        the comparison (and should be locked, together with its containing
-        parent object, as a consequence).<br/>
-         <br/>
-         In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> this problem
-        doesn't occur owing to the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-        <A HREF="PointersRefCounts.htm#refTypes">constituent</A> notion.<br/>
-         </LI>
-      <LI>On the other hand, you may ask whether it is necessary and justified
-        indeed to always lock entire objects that are touched by a transaction,
-        including all their constituents. This might unnecessarily restrict
-        potential parallelism.<br/>
-         <br/>
-        <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> gives a negative
-        answer to this question. Owing to the single-assignment nature of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-        the body of a transaction function or initiator in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-        can be viewed as a <A HREF="SingleAssigLogSem.htm">complex logical
-          statement</A>, which is to be rendered true at some proper instant,
-        and this gives rise to our specifically redefined</LI>
-    </OL>
-    
-    <P><B><I><FONT COLOR="#FF0000"><A NAME="transact"></A>Lava</FONT></I>
-      transaction notion:</B><br/>
-       <br/><B>If a function or initiator is declared to be a transaction then this
-      means that its body, viewed as a complex logical statement, is to be
-      rendered true as a whole at some proper instant.</B></P>
-    
-    <P>Actually this concerns only the <I>Atomicity</I> part of the usual ACID
-      definition of the transaction notion. The C (<I>Consistency</I>), I (<I>Isolation</I>)
-      and D (<I>Durability</I>) parts remain unchanged in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>.</P>
-    
-    <P>A particular consequence of this revised transaction notion is that <B>not
-      entire objects but only individual object references (= <I>member
-      variables</I>) occurring expressly in this complex statement need to be
-      protected against concurrent access</B>. Clearly the <I>entire access
-      path</I> of an object, for instance a.b.c.d, has to be protected by proper
-      locks, including also the <I>intermediate</I> references a.b, a.b.c; the
-      local variable &quot;a&quot; itself need not be protected since it cannot
-      be referenced/changed from elsewhere.</P>
-    
-    <P>Member variables of state objects and incomplete value objects are
-      protected in the usual way against colliding access operations: Readers
-      put write locks on the respective variable. A write lock is granted if the
-      variable is not blocked currently by a read lock. Writers put read locks
-      on the respective variables. A read lock is granted if the variable is not
-      blocked currently by a write lock. Locks are kept until end of transaction
-      and are released then. </P>
-    
-    <P>Clearly <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> has to
-      support <B>nested transactions</B> since function and initiator calls may
-      be nested. <B>Distributed transactions</B> are closely related to the
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> component notion since
-      distribution is supported only on the component level (not yet
-      implemented) in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>.</P>
-    
-    <P><B>Summary: <I><FONT COLOR="#FF0000">Lava</FONT></I></B> replaces the
-      usual indirect definition of atomicity (<B>&quot;same effect as with
-      properly sequentialized execution&quot;</B>) by a quite direct definition
-      as <B>&quot;truth of a complex logical statement at some proper instant&quot;</B>.
-      This is enabled by the ambivalent (<A HREF="SingleAssigLogSem.htm">logical
-        and imperative</A>) nature of the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      semantics which is a consequence of its single-assignment nature in turn.
-      The <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> implementation of
-      transactions does not lock entire objects touched by a transaction but
-      only individual member variables contained in some access path that is
-      really used in the transaction. </P>
-    
-    <H3><A NAME="exception"></A>Aborting transactions by throwing exceptions</H3>
-    
-    <P>A special &quot;abort&quot; primitive for transactions is not required
-      in <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT> since you
-      can simply use the <FONT COLOR="#FF0000"><I><STRONG>Lava </STRONG></I></FONT>exception
-      signalling statement</P>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Transaction support</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c6 {font-weight: bold}
+  i.c5 {font-weight: bold; color: Red}
+  a.c4 {font-weight: bold}
+  p.c3 {text-align: center}
+  h2.c2 {text-align: center}
+  b.c1 {font-style: italic; color: Red}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+      .style2
+      {
+          color: #0000FF;
+      }
+      .style3
+      {
+          color: #FF0000;
+      }
+      .style4
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+  </style>
+</head>
 
-<PRE>      <FONT COLOR="#0000FF" FACE="Arial"><STRONG>throw </STRONG></FONT><FONT COLOR="#0000FF">&lt;expr&gt;</FONT> </PRE>
-    
-    <P>(analogous to <FONT COLOR="#0000FF"><STRONG>throw</STRONG></FONT> in
-      <FONT COLOR="#FF0000"><I><STRONG>C++/Java</STRONG></I></FONT>) to
-      trigger the general <font color="#FF0000"><i><b>Lava</b></i></font> 
-    exception handling mechanism immediately.</P>
-    
-    <P>If an exception is not handled within the current transaction then the
-      transaction is terminated and the exception is forwarded in upward
-      direction within the current execution stack, provided the transaction
-      function has not been declared &quot;autonomous&quot; (recall that
-    initiators are always autonomous). For non-autonomous concurrent transactions this means that the exception has to be
-      propagated from the transaction thread to the caller thread.</P>
-    
-    <H3>Waiting for <I>output parameters</I> returned by a concurrently
-    executing method</H3>
-    
-    <P>This is the typical asymmetric client/server relationship with
-      asynchronous service requests. In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>,
-      a subsequent read access to such output parameters blocks the caller until
-      the asynchronous method has returned. For simplicity concurrently 
-    executing methods are always &quot;autonomous&quot; in <font color="#FF0000">
-    <i><b>Lava</b></i></font>, i.e., they 
-    don't throw exceptions to the caller. (Otherwise the caller would possibly 
-    have to wait yet since the method could still throw an exception.</P>
-    
-    <H3><A NAME="producerConsumer"></A>Waiting for <I><font color="#FF0000">new</font> property values</I>
-    to be assigned by concurrently executing methods</H3>
-    
-    <P>This is the typical symmetric <b>producer/consumer</b> relationship between
-      concurrent threads. In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>,
-      this is handled by special <a href="dialogs/MemVarBox.htm#consumable">&quot;consumable&quot; member variables</a> of <A HREF="TwoObjectCategories.htm">services</A>. 
-    (Remember that member variables of services/state objects are called 
-    &quot;properties&quot;.) Such an
-      object is &quot;consumed&quot; by every read access. Readers are blocked
-      until a writer has assigned a new value to this property. Writers are
-      blocked until the object has been consumed by all readers. Only one writer
-      is admitted at a time. Several readers may access the object concurrently
-      but it is consumed only once by this entire group of readers. If a reader
-      wants to access <I>this same</I> copy of the object several times then he
-      must assign it to a different (e.g., local) variable first. (Note that
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variables contain only
-      references to objects. So when a new value is assigned to a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      variable then the old value (= object) is not necessarily destroyed, but
-      the life time of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      objects is controlled by their <I>reference count</I>. An object is
-      destroyed only when its reference count reaches 0.)</P>
-    
-    <H3>Implementing servers that wait indefinitely for service requests</H3>
-    
-    <P>A server process will typically wait indefinitely for service requests
-      and process these either sequentially one after the other or as concurrent
-      transactions. In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> you
-      would create a service object to this end whose methods are transactions.
-      Whether they should be declared &quot;synchronous&quot; (= default) or &quot;concurrent&quot;
-      will depend on whether the clients are willing to wait for the response or
-      would prefer an asynchronous processing of the request. Strictly
-      sequential processing of requests as a brute force method to guarantee
-      correct synchronization is not needed since transaction synchronization is
-      automatic and easy in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      and does not charge the programmer with additional efforts.</P>
-    
-    <P>Special case of waiting for service requests: waiting for
-      <A HREF="Callbacks.htm">callbacks</A>.</P>
-    
-    <H3>Summary</H3>
-    
-    <P>We are convinced that</P>
-    <UL>
-      <LI>transaction synchronization, </LI>
-      <LI>the two types of waiting for requests (ordinary servers and callback
-        receivers), </LI>
-      <LI>and the two types of waiting for data produced by concurrent threads
-        (waiting for asynchronous outputs, and the concurrent producer/consumer
-        case)</LI>
-    </UL>
-    
-    <P>are sufficient to appropriately handle all cases of multi-threading and
-      synchronization that may reasonably occur in application level
-      programming. None of these cases requires special executable primitives,
-      they can all be handled by purely declarative expressive means in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>.</P>
-    
-    <P>However, to make proper use of this you should be ready to think about a
-      proper structuring of your application. For instance, <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      does not support <I>alternative</I> waits for <I>several</I> objects in
-      the producer/consumer case but this case should better be handled by
-      <A HREF="Callbacks.htm">callbacks</A> (= client-defined notification
-      functions, client = consumer) or by server-defined notifications (server =
-      producer) in our opinion. </P>
-    
-    <P><B>We expect and hope that this reduction of expressive means to the
-      really required minimum will lead to more standardized application
-      structures and to an improved common understanding as to these
-      traditionally very delicate problems &quot;multi-threading,
-      synchronization, and transactions&quot;.</B></P>
-    
-    <P></P>
-  </BODY>
-</HTML>
+<body>
+  <h2 class="c2">Multi-threading, synchronization, and transactions in <b class="c1">Lava</b></h2>
+
+  <p class="c3">(Not yet implemented)</p>
+
+  <p><b class="c1">Lava</b> is a sequential programming language with built-in multi-threading support. It treats multi-threading, synchronization, and transactions in a purely declarative way without requiring delicate and error-prone executable primitives. Let us start with</p>
+
+  <h3>Concurrent execution using implicit thread creation and termination</h3>
+
+  <p><b>Functions</b> occurring in <b class="c1">Lava</b> classes may be declared to run in <b>synchronous</b>, <b>concurrent</b>, or <b>autonomous</b> mode. <b class="c1">Lava</b> <b>initiators</b><i>,</i> which play the role of autonomous <b>main</b> programs, may be declared to run in <b>synchronous</b> or <b>concurrent</b> mode.</p>
+
+  <p><b>Concurrent</b> execution means that the function or initiator is executed within a thread of its own. <b>Autonomous</b> execution of a function means that, in addition to being executed concurrently, the function does not return output parameters or throw exceptions (using the <a class="c4" href="whatsThis/FailSucceed.htm">throw</a> statement) to its caller. Member functions are executed in synchronous mode by default. Initiators have no output parameters and cannot throw exceptions.</p>
+
+  <p>When a transaction function or initiator returns then this does not necessarily mean that its associated thread is destroyed. For performance reasons the <b class="c1">Lava</b> run time system may prefer to return such a thread into a pool of &quot;unused threads&quot; and reuse these whenever a new thread is required. New threads would then be created only if this pool is empty (not yet implemented!).</p>
+
+  <h3><a id="mutualExclusion"></a>Mutual-exclusion synchronization using transactions</h3>
+
+  <p>Irrespective of their execution mode, functions and initiators may be declared to be <b>transactions</b>. The purpose of transactions is to synchronize read and write access operations that are performed on shared data by concurrent threads or processes.</p>
+
+  <p>At this place you should recall that <b class="c1">Lava</b> distinguishes two categories of objects: Variable state objects (&quot;services&quot; or &quot;servers&quot;) that can be modified again and again, and value objects (&quot;structures&quot;) that can be modified only during construction and that become immutable after &quot;completion&quot;. For this reason <b>a value object does not need access synchronization</b> after completion.</p>
+
+  <p>Before completion <b class="c1">Lava</b> prevents any <b class="c1">Lava</b> objects from being passed on as function or initiator parameters. Thus they can be processed only by member functions of their own class, and these cannot be executed in concurrent mode in this stage. As a consequence <b>access synchronization is not needed for incomplete <i>Lava</i> objects</b>, and for value objects access synchronization is never required.</p>
+
+  <p>The traditional transaction notion defines that a set of concurrent transactions is synchronized correctly if they have &quot;the same effect&quot; as if they were executed in some proper, strictly sequential order one after the other. The problem with this definition is that the term &quot;same effect&quot; means that you must compare the objects that are inserted, updated, deleted, or just read by those transactions for the properly synchronized concurrent and the strictly sequential case. Two problems arise in this context:</p>
+
+  <ol>
+    <li>When comparing objects you must know precisely what <i>belongs</i> to an object and what is only a <i>reference</i> to some other, independent object. In traditional databases you may sometimes doubt whether, e.g., a &quot;foreign key&quot;, or a link in a network database points to an <i>acquaintance</i> or to a <i>constituent</i> of the containing primary object from the application&#39;s point of view. In the second case the target of such a pointer should be included in the comparison (and should be locked, together with its containing parent object, as a consequence).<br />
+    <br />
+    In <b class="c1">Lava</b> this problem doesn&#39;t occur owing to the <b class="c1">Lava</b> <a href="PointersRefCounts.htm#refTypes">constituent</a> notion.<br /></li>
+
+    <li>On the other hand, you may ask whether it is necessary and justified indeed to always lock entire objects that are touched by a transaction, including all their constituents. This might unnecessarily restrict potential parallelism.<br />
+    <br />
+    <b class="c1">Lava</b> gives a negative answer to this question. Owing to the single-assignment nature of <b class="c1">Lava</b> the body of a transaction function or initiator in <b class="c1">Lava</b> can be viewed as a <a href="SingleAssigLogSem.htm">complex logical statement</a>, which is to be rendered true at some proper instant, and this gives rise to our specifically redefined</li>
+  </ol>
+
+  <p><b><i><a id="transact"></a>Lava</i> transaction notion:</b><br />
+  <br />
+  <b>If a function or initiator is declared to be a transaction then this means that its body, viewed as a complex logical statement, is to be rendered true as a whole at some proper instant.</b></p>
+
+  <p>Actually this concerns only the <i>Atomicity</i> part of the usual ACID definition of the transaction notion. The C (<i>Consistency</i>), I (<i>Isolation</i>) and D (<i>Durability</i>) parts remain unchanged in <b class="c1">Lava</b>.</p>
+
+  <p>A particular consequence of this revised transaction notion is that <b>not entire objects but only individual object references (= <i>member variables</i>) occurring expressly in this complex statement need to be protected against concurrent access</b>. Clearly the <i>entire access path</i> of an object, for instance a.b.c.d, has to be protected by proper locks, including also the <i>intermediate</i> references a.b, a.b.c; the local variable &quot;a&quot; itself need not be protected since it cannot be referenced/changed from elsewhere.</p>
+
+  <p>Member variables of state objects and incomplete value objects are protected in the usual way against colliding access operations: Readers put write locks on the respective variable. A write lock is granted if the variable is not blocked currently by a read lock. Writers put read locks on the respective variables. A read lock is granted if the variable is not blocked currently by a write lock. Locks are kept until end of transaction and are released then.</p>
+
+  <p>Clearly <b class="c1">Lava</b> has to support <b>nested transactions</b> since function and initiator calls may be nested. <b>Distributed transactions</b> are closely related to the <b class="c1">Lava</b> component notion since distribution is supported only on the component level (not yet implemented) in <b class="c1">Lava</b>.</p>
+
+  <p><b>Summary: <i>Lava</i></b> replaces the usual indirect definition of atomicity (<b>&quot;same effect as with properly sequentialized execution&quot;</b>) by a quite direct definition as <b>&quot;truth of a complex logical statement at some proper instant&quot;</b>. This is enabled by the ambivalent (<a href="SingleAssigLogSem.htm">logical and imperative</a>) nature of the <b class="c1">Lava</b> semantics which is a consequence of its single-assignment nature in turn. The <b class="c1">Lava</b> implementation of transactions does not lock entire objects touched by a transaction but only individual member variables contained in some access path that is really used in the transaction.</p>
+
+  <h3><a id="exception"></a>Aborting transactions by throwing exceptions</h3>
+
+  <p>A special &quot;abort&quot; primitive for transactions is not required in 
+      <span class="style1"><strong>Lava</strong></span> since you can simply use the 
+      <span class="style1"><strong>Lava</strong></span> exception signalling statement</p>
+  <pre xml:space="preserve">
+<span class="style4">throw</span><strong> </strong><span class="style3">&lt;expr&gt;</span> 
+</pre>
+
+  <p>(analogous to <span class="style2"> <strong>throw</strong></span> in <i><strong>
+      <span class="style3">C++</span>/<span class="style3">Java</span></strong></i>) to trigger the general <i class="c5">Lava</i> exception handling mechanism immediately.</p>
+
+  <p>If an exception is not handled within the current transaction then the transaction is terminated and the exception is forwarded in upward direction within the current execution stack, provided the transaction function has not been declared &quot;autonomous&quot; (recall that initiators are always autonomous). For non-autonomous concurrent transactions this means that the exception has to be propagated from the transaction thread to the caller thread.</p>
+
+  <h3>Waiting for <i>output parameters</i> returned by a concurrently executing method</h3>
+
+  <p>This is the typical asymmetric client/server relationship with asynchronous service requests. In <b class="c1">Lava</b>, a subsequent read access to such output parameters blocks the caller until the asynchronous method has returned. For simplicity concurrently executing methods are always &quot;autonomous&quot; in <i class="c5">Lava</i>, i.e., they don&#39;t throw exceptions to the caller. (Otherwise the caller would possibly have to wait yet since the method could still throw an exception.</p>
+
+  <h3><a id="producerConsumer"></a>Waiting for <i>new property values</i> to be assigned by concurrently executing methods</h3>
+
+  <p>This is the typical symmetric <b>producer/consumer</b> relationship between concurrent threads. In <b class="c1">Lava</b>, this is handled by special <a href="dialogs/MemVarBox.htm#consumable">&quot;consumable&quot; member variables</a> of <a href="TwoObjectCategories.htm">services</a>. (Remember that member variables of services/state objects are called &quot;properties&quot;.) Such an object is &quot;consumed&quot; by every read access. Readers are blocked until a writer has assigned a new value to this property. Writers are blocked until the object has been consumed by all readers. Only one writer is admitted at a time. Several readers may access the object concurrently but it is consumed only once by this entire group of readers. If a reader wants to access <i>this same</i> copy of the object several times then he must assign it to a different (e.g., local) variable first. (Note that <b class="c1">Lava</b> variables contain only references to objects. So when a new value is assigned to a <b class="c1">Lava</b> variable then the old value (= object) is not necessarily destroyed, but the life time of <b class="c1">Lava</b> objects is controlled by their <i>reference count</i>. An object is destroyed only when its reference count reaches 0.)</p>
+
+  <h3>Implementing servers that wait indefinitely for service requests</h3>
+
+  <p>A server process will typically wait indefinitely for service requests and process these either sequentially one after the other or as concurrent transactions. In <b class="c1">Lava</b> you would create a service object to this end whose methods are transactions. Whether they should be declared &quot;synchronous&quot; (= default) or &quot;concurrent&quot; will depend on whether the clients are willing to wait for the response or would prefer an asynchronous processing of the request. Strictly sequential processing of requests as a brute force method to guarantee correct synchronization is not needed since transaction synchronization is automatic and easy in <b class="c1">Lava</b> and does not charge the programmer with additional efforts.</p>
+
+  <p>Special case of waiting for service requests: waiting for <a href="Callbacks.htm">callbacks</a>.</p>
+
+  <h3>Summary</h3>
+
+  <p>We are convinced that</p>
+
+  <ul>
+    <li>transaction synchronization,</li>
+
+    <li>the two types of waiting for requests (ordinary servers and callback receivers),</li>
+
+    <li>and the two types of waiting for data produced by concurrent threads (waiting for asynchronous outputs, and the concurrent producer/consumer case)</li>
+  </ul>
+
+  <p>are sufficient to appropriately handle all cases of multi-threading and synchronization that may reasonably occur in application level programming. None of these cases requires special executable primitives, they can all be handled by purely declarative expressive means in <b class="c1">Lava</b>.</p>
+
+  <p>However, to make proper use of this you should be ready to think about a proper structuring of your application. For instance, <b class="c1">Lava</b> does not support <i>alternative</i> waits for <i>several</i> objects in the producer/consumer case but this case should better be handled by <a href="Callbacks.htm">callbacks</a> (= client-defined notification functions, client = consumer) or by server-defined notifications (server = producer) in our opinion.</p>
+
+  <p class="c6">We expect and hope that this reduction of expressive means to the really required minimum will lead to more standardized application structures and to an improved common understanding as to these traditionally very delicate problems &quot;multi-threading, synchronization, and transactions&quot;.</p>
+</body>
+</html>

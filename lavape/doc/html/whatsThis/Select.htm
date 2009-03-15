@@ -1,44 +1,56 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
-  <meta http-equiv="Content-Language" content="en-us">
-
-  <meta content="text/html; charset=iso-8859-1">
-
-  <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
   <title>Select</title>
-
-
-  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
-
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c3 {font-weight: bold}
+  i.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #FF0000;
+      }
+      .style3
+      {
+          color: #CC00CC;
+      }
+  </style>
 </head>
 
+<body>
+  <h2 class="c1">Select</h2>
 
-  <body>
-
-<h2 align="center">Select</h2>
-
-<p>Use the <font color="#0000ff"><b>select</b></font>
-expression</p>
-
-<pre><font color="#0000ff"><b>   select</b></font> <br/> <font color="#ff0000">    [type]&lt;varName&gt;</font> <font color="#0000ff"><b>from</b></font> <font color="#ff0000">&lt;set&gt;</font><br/><font color="#0000ff"><b>   where</b></font><br/><font color="#ff0000">     &lt;stm&gt;</font><br/><font color="#0000ff"><b>   add</b></font><br/><font color="#ff0000">     &lt;expr&gt;<br/></font><b><font color="#0000ff">   to<br/> </font></b><font color="#ff0000">    &lt;expr&gt;<br/></font><b><font color="#0000ff">   #select</font></b>
+  <p>Use the <span class="style1">select</span> expression</p>
+<pre xml:space="preserve">
+<span class="style1">select</span>
+  <span class="style3">[type]</span><span class="style2">&lt;varName&gt;</span> <span class="style1">from</span> <span 
+        class="style2">&lt;set&gt;</span>
+<span class="style1">where</span>
+  <span class="style2">&lt;stm&gt;</span>
+<span class="style1">add</span>
+  <span class="style2">&lt;expr&gt;</span>
+<span class="style1">to</span>
+  <span class="style2">&lt;expr&gt;</span>
+<span class="style1">#select</span>
 </pre>
 
-<p><font face="Arial">to search a finite set of <font color="#ff0000"><i><b>Lava</b></i></font>
-objects for objects that fulfill a certain condition (expressed by the
-optional <font color="#ff0000">[type]</font>
-specification and the <b><font color="#0000ff">where</font></b>
-clause), evaluate the first expression and add its result object to the
-set that is represented by the value of the second expression.</font></p>
+  <p>to search a finite set of <i class="c2">Lava</i> objects for objects that fulfill a certain condition (expressed by the optional [type] specification and the 
+      <span class="style1">where</span> clause), evaluate the first expression and add its result object to the set that is represented by the value of the second expression.</p>
 
-<p><b>See also:</b></p>
+  <p class="c3">See also:</p>
 
-<p><a href="../DatabaseIntegration.htm">Database
-integration</a></p>
+  <p><a href="../DatabaseIntegration.htm">Database integration</a></p>
 
-<p><a href="../QuantifierSamples.htm">Quantifier and
-select samples</a></p>
-
+  <p><a href="../QuantifierSamples.htm">Quantifier and select samples</a></p>
 </body>
 </html>

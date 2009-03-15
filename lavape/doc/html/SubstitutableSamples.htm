@@ -1,84 +1,55 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="Author" CONTENT="Klaus D. Günther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Substitutable samples</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER">Substitutable type samples </H2>
-    
-    <H3>Sample files</H3>
-    
-    <p>Please open <b>ModelManyViews.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
-    
-    <p>Please open <b>CarMeeting.lava</b> in
-<font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
-    
-    <H3>Topic </H3>
-    
-    <p>Classes and packages with type parameters (&quot;<a href="PatternsFrameworks.htm#VT">virtual
-    types</a>&quot;), <a href="TypeSafety.htm#substitutableType">substitutable types</a>. </p>
-    
-    <H3>Overview </H3>
-    
-    <p>If the type T of any kind of <font color="#FF0000"><i><b>Lava</b></i></font>
-    variable is marked as being <i>substitutable</i> (by putting the name of the
-    type in braces: {T})&nbsp; then the variable may assume values (= concrete <font color="#FF0000"><i><b>Lava</b></i></font>
-    objects) whose types need not be derived in the <i> traditional</i> sense from T, but
-    they may also be derived from T in the sense of <a href="PatternsFrameworks.htm#derivedPattern"> pattern
-    derivation</a>.&nbsp; </p>
-    
-    <p><b>ModelManyViews:</b> </p>
-    
-    <p>While the ModelView sample supports only a single type of views, the
-    ModelManyViews sample allows you to derive many different types of views
-    from &quot;View&quot; and to append corresponding view objects to the <i>heterogeneous</i>
-    list vList of type &quot;ViewList&quot; whose elements have the <a href="TypeSafety.htm#substitutableType">substitutable</a>
-    virtual type setElem={~View}. (The tilde designates variable
-    <a href="TwoObjectCategories.htm">state objects</a>.) </p>
-    
-    <p><b>CarMeeting:</b> </p>
-    
-    <p>The CarMeeting sample corresponds also to a similar sample in <a href="TypeSafety.htm#TT">[16]</a>.
-    It uses a substitutable virtual type
-    to allow subtype-substitution for a formal parameter of a function. The type
-    of the formal parameter is a substitutable but <i> homogeneous</i> list type
-    (whose element type is <b>not</b> substitutable in turn!): You cannot add elements
-    of a type that is p-derived from Vehicle (for instance a Car) to a VehicleList
-    unless this happens in the proper pattern context (for instance that of
-    CarList). </p>
-    
-    <H3>Where to look and what to do</H3>
-    
-    <p><b>ModelManyViews:</b> </p>
-    
-    <p>Look at the declaration of member variable <i>vList</i> of class <i>Model</i>.
-    It is of type <i>ViewList</i>, whose declaration is nested into that of <i>Model</i>.
-    <i>ViewList</i> defines a heterogeneous list whose elements may be of any
-    type that is <a href="TypeSafety.htm#c-derived">c- or p-derived</a> from <i>View</i>.&nbsp; </p>
-    
-    <p>Look at the declaration of member function <i>registerView</i> of class <i>Model</i>. Its only input parameter is of (substitutable) type
-    {~View} and thus accepts all kinds of views whose types are <a href="TypeSafety.htm#c-derived">c-
-    or p-derived</a> from <i>View</i>. Look into the implementation of
-    registerView and see how the respective view is added to <i>Model</i>'s <i>ViewList</i>
-    <i>vList.</i> </p>
-    
-    <p><b>CarMeeting:</b> </p>
-    
-    <p>Look at the declaration of member function <i>meet</i> of class <i>Meeting</i>.
-    The type of its first input parameter is substitutable. Look into the exec
-    of initiator <i>meetingDemo</i> and read the comments. Look into the
-    implementation of function <i>meet</i> and read the comments. </p>
-    
-  </BODY>
-</HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Substitutable samples</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c4 {font-weight: bold}
+  i.c3 {font-weight: bold; color: Red}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Substitutable type samples</h2>
+
+  <h3>Sample files</h3>
+
+  <p>Please open <b>ModelManyViews.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <p>Please open <b>CarMeeting.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <h3>Topic</h3>
+
+  <p>Classes and packages with type parameters (&quot;<a href="PatternsFrameworks.htm#VT">virtual types</a>&quot;), <a href="TypeSafety.htm#substitutableType">substitutable types</a>.</p>
+
+  <h3>Overview</h3>
+
+  <p>If the type T of any kind of <i class="c3">Lava</i> variable is marked as being <i>substitutable</i> (by putting the name of the type in braces: {T}) then the variable may assume values (= concrete <i class="c3">Lava</i> objects) whose types need not be derived in the <i>traditional</i> sense from T, but they may also be derived from T in the sense of <a href="PatternsFrameworks.htm#derivedPattern">pattern derivation</a>.</p>
+
+  <p class="c4">ModelManyViews:</p>
+
+  <p>While the ModelView sample supports only a single type of views, the ModelManyViews sample allows you to derive many different types of views from &quot;View&quot; and to append corresponding view objects to the <i>heterogeneous</i> list vList of type &quot;ViewList&quot; whose elements have the <a href="TypeSafety.htm#substitutableType">substitutable</a> virtual type setElem={~View}. (The tilde designates variable <a href="TwoObjectCategories.htm">state objects</a>.)</p>
+
+  <p class="c4">CarMeeting:</p>
+
+  <p>The CarMeeting sample corresponds also to a similar sample in <a href="TypeSafety.htm#TT">[16]</a>. It uses a substitutable virtual type to allow subtype-substitution for a formal parameter of a function. The type of the formal parameter is a substitutable but <i>homogeneous</i> list type (whose element type is <b>not</b> substitutable in turn!): You cannot add elements of a type that is p-derived from Vehicle (for instance a Car) to a VehicleList unless this happens in the proper pattern context (for instance that of CarList).</p>
+
+  <h3>Where to look and what to do</h3>
+
+  <p class="c4">ModelManyViews:</p>
+
+  <p>Look at the declaration of member variable <i>vList</i> of class <i>Model</i>. It is of type <i>ViewList</i>, whose declaration is nested into that of <i>Model</i>. <i>ViewList</i> defines a heterogeneous list whose elements may be of any type that is <a href="TypeSafety.htm#c-derived">c- or p-derived</a> from <i>View</i>.</p>
+
+  <p>Look at the declaration of member function <i>registerView</i> of class <i>Model</i>. Its only input parameter is of (substitutable) type {~View} and thus accepts all kinds of views whose types are <a href="TypeSafety.htm#c-derived">c- or p-derived</a> from <i>View</i>. Look into the implementation of registerView and see how the respective view is added to <i>Model</i>&#39;s <i>ViewList</i> <i>vList.</i></p>
+
+  <p class="c4">CarMeeting:</p>
+
+  <p>Look at the declaration of member function <i>meet</i> of class <i>Meeting</i>. The type of its first input parameter is substitutable. Look into the exec of initiator <i>meetingDemo</i> and read the comments. Look into the implementation of function <i>meet</i> and read the comments.</p>
+</body>
+</html>

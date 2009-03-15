@@ -1,67 +1,62 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta content="text/html; charset=iso-8859-1">
-    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-    <title>
-      Throw/succeed statements
-    </title>
-    <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
-  </head>
-  <body>
-  <h2 align="center">Fail/succeed statements</h2>
-  <p>Use the <font color="#0000FF"><b>succeed</b> </font>statement to induce an 
-  immediate <b>successful</b> return from the current
-  <a href="../EditExec.htm#exec">exec</a>. If the function or operator has been 
-  invoked as a statement then the resulting truth value of that statement is <b>
-  &quot;true&quot;</b>.</p>
-  <p>Use the <font color="#0000FF"><b>fail</b></font> statement to terminate 
-  execution of the current
-  <a href="../EditExec.htm#exec">exec</a> <b>unsuccessfully</b>. If the function 
-  or operator has been invoked as a statement then the resulting truth value of 
-  that statement is <b>
-  &quot;false&quot;</b>.</p>
-  <p>Every <font color="#FF0000"><i><b>Lava</b></i></font> statement yields a 
-  truth value <font color="#0000FF"><b>true</b></font> or <font color="#0000FF">
-  <b>false</b></font>. The condition part of a <font color="#FF0000"><i><b>Lava</b></i></font>
-  <font color="#0000FF"><b>if</b></font> statement or an <font color="#0000FF">
-  <b>ifx</b></font> expression is a quite normal <font color="#FF0000"><i><b>
-  Lava</b></i></font> statement whose truth value is tested by the
-  <font color="#0000FF"><b>if</b></font> / <font color="#0000FF"><b>ifx</b></font>. 
-  This truth value may be set explicitly by using <font color="#0000FF"><b>
-  succeed</b></font> or <font color="#0000FF"><b>fail</b></font>. A function 
-  call may terminate immediately and yield the truth value <font color="#0000FF">
-  <b>false</b></font> also implicitly if a failing function
-  <font color="#0000FF"><b>call</b></font> statement or a failing relational 
-  statement (like 1 &lt; 0) is executed within the function body.</p>
-  <p><b>Note:</b> If you are in a function with mandatory output parameters then
-  <font color="#0000FF"><b>succeed</b></font> and <font color="#0000FF"><b>fail</b></font> 
-  are admissible only at places in the function body where values have 
-  already been assigned to all mandatory output parameters. (This is checked and 
-  enforced by <font color="#FF0000"><i><b>LavaPE </b></i></font>already at 
-  programming time!)</p>
-  <p>Use the <font color="#0000FF"><b>throw</b> </font>statement to throw an 
-  <a href="../ExceptionSamples.htm">exception</a> and to induce an 
-  immediate <b>negative/unsuccessful</b> return from the current
-  <a href="../EditExec.htm#exec">exec</a>. If the function or operator has been 
-  invoked as a statement then the resulting truth value of that statement is <b>
-  &quot;false&quot;</b>.</p>
-  <p>The <font color="#0000FF"><b>fail</b></font> and <font color="#0000FF"><b>
-  throw</b></font> statements are both inserted by clicking the fail button on 
-  the keyword toolbar.<font color="#0000FF"><b> Throw</b></font> has an  exception 
-  parameter, i.e., an expression whose value will be thrown as an exception 
-  object if present. if you delete this exception parameter then
-  <font color="#0000FF"><b>throw</b></font> will be replaced by
-  <font color="#0000FF"><b>fail</b></font>.</p>
-  <p><b>Note:</b> You can leave a function body only if values have been 
-  assigned to all mandatory output parameters, or by throwing an exception.&nbsp; 
-  (This is checked and enforced by <font color="#FF0000"><i><b>LavaPE</b></i></font>! 
-  In this way inadvertent use of undefined outputs by the caller is prevented in
-  <font color="#FF0000"><i><b>Lava</b></i></font>.)</p>
-  <p><b>See also:</b></p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Throw/succeed statements</title>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c3 {font-weight: bold}
+  i.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #0000FF;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Fail/succeed statements</h2>
+
+  <p>Use the <span class="style1">succeed</span> statement to induce an immediate <b>successful</b> return from the current <a href="../EditExec.htm#exec">exec</a>. If the function or operator has been invoked as a statement then the resulting truth value of that statement is <b>&quot;true&quot;</b>.</p>
+
+  <p>Use the <span class="style1">fail</span> statement to terminate execution of the current <a href="../EditExec.htm#exec">exec</a> <b>unsuccessfully</b>. If the function or operator has been invoked as a statement then the resulting truth value of that statement is <b>&quot;false&quot;</b>.</p>
+
+  <p>Every <i class="c2">Lava</i> statement yields a truth value <span class="style1">true</span> or 
+      <span class="style1">false</span>. The condition part of a <i class="c2">Lava</i> 
+      <span class="style1">if</span> statement or an <span class="style1">ifx</span> expression is a quite normal <i class="c2">Lava</i> statement whose truth value is tested by the 
+      <span class="style1">if</span> / <span class="style1">ifx</span>. This truth value may be set explicitly by using 
+      <span class="style1">succeed</span> or <span class="style1">fail</span>. A function call may terminate immediately and yield the truth value 
+      <span class="style1">false</span> also implicitly if a failing function 
+      <span class="style1">call</span> statement or a failing relational statement (like 1 
+      <span class="style1">&lt;</span> 0) is executed within the function body.</p>
+
+  <p><b>Note:</b> If you are in a function with mandatory output parameters then 
+      <span class="style1">succeed</span> and <span class="style1">fail</span> are admissible only at places in the function body where values have already been assigned to all mandatory output parameters. (This is checked and enforced by <i class="c2">LavaPE</i> already at programming time!)</p>
+
+  <p>Use the <span class="style1">throw</span> statement to throw an <a href="../ExceptionSamples.htm">exception</a> and to induce an immediate <b>negative/unsuccessful</b> return from the current <a href="../EditExec.htm#exec">exec</a>. If the function or operator has been invoked as a statement then the resulting truth value of that statement is 
+      <b><span class="style2">false</span></b>.</p>
+
+  <p>The <span class="style1">fail</span> and <span class="style1">throw</span> statements are both inserted by clicking the fail button on the keyword toolbar. 
+      t<span class="style1">hrow</span> has an exception parameter, i.e., an expression whose value will be thrown as an exception object if present. if you delete this exception parameter then 
+      <span class="style1">throw</span> will be replaced by <span class="style1">fail</span>.</p>
+
+  <p><b>Note:</b> You can leave a function body only if values have been assigned to all mandatory output parameters, or by throwing an exception. (This is checked and enforced by <i class="c2">LavaPE</i>! In this way inadvertent use of undefined outputs by the caller is prevented in <i class="c2">Lava</i>.)</p>
+
+  <p class="c3">See also:</p>
+
   <p><a href="../IniChecks.htm">Comprehensive initialization checks</a></p>
+
   <p><a href="../ExceptionSamples.htm">Exception samples</a></p>
+
   <p><a href="Assert.htm">Assert statement</a></p>
-  </body>
+</body>
 </html>

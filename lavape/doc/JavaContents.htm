@@ -1,17 +1,23 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type"
-content="text/html; charset=iso-8859-1">
-<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
-<title>HTML Help Java Applet</title>
+  <title>HTML Help Java Applet</title>
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  body {
+  background-color: #C0C0C0;
+  }
+  /*]]>*/
+  </style>
 </head>
 
-<body bgcolor="#C0C0C0" onload="LoadApplet() "
-onresize="ResizeApplet()">
-<script language="JavaScript">
-function msieversion()
-{
+<body onload="LoadApplet() ">
+  <script language="JavaScript" type="text/javascript" xml:space="preserve">
+//<![CDATA[
+  function msieversion()
+  {
         var ua = window.navigator.userAgent;
         var msie = ua.indexOf("MSIE ");
         if (msie > 0) {
@@ -21,15 +27,15 @@ function msieversion()
 
         // is other browser
         return(0);
-}
+  }
 
-function LoadApplet()
-{
+  function LoadApplet()
+  {
         ResizeApplet();
-}
+  }
 
-function ResizeApplet()
-{
+  function ResizeApplet()
+  {
         if (msieversion() < 4) {
                 // Can only dynamically resize in IE4
                 return;
@@ -37,12 +43,16 @@ function ResizeApplet()
         var hhctrl = document.HHCtrl;
         hhctrl.width = document.body.offsetWidth - hhctrl.offsetLeft * 2;
         hhctrl.height = document.body.offsetHeight - hhctrl.offsetTop * 2;
-}
-</script><applet
-code="HHCtrl.class" align="baseline" width="300" height="400"
-name="HHCtrl"><param name="background"
-value="ffffff"><param name="cabbase" value="HHCtrl.cab"><param
-name="command" value="contents"><param name="flags"
-value="0x200,0x7"><param name="item1" value="LavaPE.hhc"></applet>
+  }
+  //]]>
+  </script>
+
+  <p><object classid="java:HHCtrl.class" codetype="application/java" width="300" height="400" id="HHCtrl">
+    <param name="background" value="ffffff" />
+    <param name="cabbase" value="HHCtrl.cab" />
+    <param name="command" value="contents" />
+    <param name="flags" value="0x200,0x7" />
+    <param name="item1" value="LavaPE.hhc" />
+  </object></p>
 </body>
 </html>

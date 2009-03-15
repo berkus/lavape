@@ -1,130 +1,80 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en-us">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
-  <meta http-equiv="Content-Language" content="en-us"/>
-
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-
-  <meta name="GENERATOR" content="Microsoft FrontPage 5.0"/>
-
-  <meta name="ProgId" content="FrontPage.Editor.Document"/>
   <title>Unfinished objects</title>
-
-
-  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css"/>
-
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  i.c3 {font-weight: bold; color: Red}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #CC00CC;
+          font-weight: bold;
+      }
+  </style>
 </head>
 
-
 <body>
+  <h2 class="c1">Recursive, mutual, and multi-phase initialization</h2>
 
-<h2 align="center">Recursive, mutual,  and multi-phase 
-initialization</h2>
+  <p>In this section we shall consider more complex initialization processes that require the coordinated initialization of possibly large object collections.</p>
 
-<p>In this section we shall consider more complex initialization processes that 
-require the coordinated initialization of possibly large object collections.</p>
+  <h3>A) Recursive initialization</h3>
 
-<h3>A) Recursive initialization</h3>
+  <p>Assume you want to construct a tree structure of objects that are all of the same class, and every object x may depend on some or all objects contained in the sub-trees beginning at x. The objects in the sub-trees may in turn contain backward/reverse pointers to x or depend on members of x that have already been initialized. No matter whether you prefer a depth-first or a breadth-first recursive initialization process, on the basis of the following mechanisms all this should be no problem in <b class="c2">Lava</b>: Within an initializer of a new tree node</p>
 
-<p>Assume you want to construct a tree structure of objects that are all of the 
-same class, and every object x may depend on some or all objects contained in 
-the sub-trees beginning at x. The objects in the sub-trees may in turn contain 
-backward/reverse pointers to x or depend on members of x that have already been initialized. 
-No matter whether you prefer a depth-first or a breadth-first recursive 
-initialization process, on the basis of the following mechanisms all this 
-should be no 
-problem in <font color="#FF0000"><b><i>Lava</i></b></font><span lang="de">: </span>
-Within an initializer of a new tree node</p>
+  <ul>
+    <li>you may create links to sub-objects by assigning the results of 
+        <span class="style1">new</span> operations to member variables of the currently initialized object.</li>
 
-<ul>
-  <li>you may create links to sub-objects by assigning the results of
-  <b style="color: blue">new</b> operations to member variables of the 
-  currently initialized object.</li>
-  <li>you may pass the current <i>self</i> object as input parameters to the 
-  initializers of sub-objects. If <i>self</i> has not yet been fully initialized 
-  at that point, then the formal input parameter must be declared &quot;closed&quot; and 
-  you are not allowed to access members of the parameter within the invoked 
-  initializer of the sub-object.</li>
-  <li>you may pass the values of (closed/non-closed) local variables to 
-  initializers of sub-objects (through closed/non-closed, respectively, formal input 
-  parameters). A member <i>self.x</i> of the current <i>self</i> object cannot 
-  be passed as a parameter as long as <i>self</i> has not yet been completely 
-  initialized, even if <i>self.x</i> is already complete. But, instead of <i>
-  self.x</i>, you may pass a local variable having the same value as <i>self.x</i> 
-  as a parameter, of course.</li>
-</ul>
+    <li>you may pass the current <i>self</i> object as input parameters to the initializers of sub-objects. If <i>self</i> has not yet been fully initialized at that point, then the formal input parameter must be declared &quot;closed&quot; and you are not allowed to access members of the parameter within the invoked initializer of the sub-object.</li>
 
-<h3><a name="initialize"></a>B) Mutual initialization</h3>
+    <li>you may pass the values of (closed/non-closed) local variables to initializers of sub-objects (through closed/non-closed, respectively, formal input parameters). A member <i>self.x</i> of the current <i>self</i> object cannot be passed as a parameter as long as <i>self</i> has not yet been completely initialized, even if <i>self.x</i> is already complete. But, instead of <i>self.x</i>, you may pass a local variable having the same value as <i>self.x</i> as a parameter, of course.</li>
+  </ul>
 
-<p>The optional <font color="#CC00CC"><b>initialize</b></font> clause of the<font color="#FF0000"><i><b> Lava</b></i></font>
-<font color="#0000FF"><b>declare</b></font> construct facilitates the collective 
-initialization of mutually dependent objects (i.e., that may point to one another). 
-Although you can also use recursive initializer calls to this end, the 
-initializer clause of <font color="#0000FF"><b>declare</b></font> is much 
-clearer in many cases of a more complex dependency between objects:</p>
+  <h3><a id="initialize"></a>B) Mutual initialization</h3>
 
-<p>In the recursive case you would have to pass objects through several steps of 
-initializer calls to the objects that depend on the former objects, and you 
-would have to provide corresponding parameters for the intermediate initializers 
-of this call tree, whereas with the <b><font color="#CC00CC">initialize</font></b> 
-clause all involved objects are available at once for being passed as parameters 
-to initializer calls: </p>
+  <p>The optional <span class="style2">initialize</span> clause of the <i class="c3">Lava</i>
+      <span class="style1">declare</span> construct facilitates the collective initialization of mutually dependent objects (i.e., that may point to one another). Although you can also use recursive initializer calls to this end, the initializer clause of 
+      <span class="style1">declare</span> is much clearer in many cases of a more complex dependency between objects:</p>
 
-<p>The <font color="#CC00CC"><b>initialize</b></font> clause provides a more 
-symmetric, one-level initialization style, in contrast to the unsymmetric, 
-hierarchical initialization by recursion.</p>
+  <p>In the recursive case you would have to pass objects through several steps of initializer calls to the objects that depend on the former objects, and you would have to provide corresponding parameters for the intermediate initializers of this call tree, whereas with the 
+      <span class="style2">initialize</span> clause all involved objects are available at once for being passed as parameters to initializer calls:</p>
 
-<p>On the other hand, recursive initialization may be more appropriate or the 
-only feasible approach in cases where you have to initialize a dynamic 
-collection of objects whose size isn't known at programming time.</p>
+  <p>The <span class="style2">initialize</span> clause provides a more symmetric, one-level initialization style, in contrast to the unsymmetric, hierarchical initialization by recursion.</p>
 
-<p>See the <font color="#800000">cyclicDep.lava</font> and <font color="#800000">
-cyclicDepError.lava</font> samples.</p>
+  <p>On the other hand, recursive initialization may be more appropriate or the only feasible approach in cases where you have to initialize a dynamic collection of objects whose size isn&#39;t known at programming time.</p>
 
-<h3>C) Multi-phase initialization</h3>
+  <p>See the cyclicDep.lava and cyclicDepError.lava samples.</p>
 
-<p>While the single-phase recursive initialization of a tree-structure of objects 
-is a rather straightforward process in <font color="#FF0000"><i><b>Lava</b></i></font>,
-the construction of complex object collections in several completely 
-separate phases may require a more thorough planning and separation of the 
-object structures related to the individual phases in order to comply with the 
-complete initialization checks of <font color="#FF0000"><i><b>Lava</b></i></font>.</p>
+  <h3>C) Multi-phase initialization</h3>
 
-<p>Let's again consider the tree structure of sub-section A) above, but let's 
-assume that it shall be initialized in two phases. Then you have several options 
-how to separate the data associated with either phase. For instance</p>
+  <p>While the single-phase recursive initialization of a tree-structure of objects is a rather straightforward process in <i class="c3">Lava</i>, the construction of complex object collections in several completely separate phases may require a more thorough planning and separation of the object structures related to the individual phases in order to comply with the complete initialization checks of <i class="c3">Lava</i>.</p>
 
-<ol>
-  <li>you can provide two member variables on the top-level of every tree node, 
-  one pointing to the phase-1 data, the other pointing to the phase-2 data. The 
-  value of the latter would be optional and thus would not have to be 
-  initialized during phase 1 but, if at all, only during phase 2. The entire 
-  top-level object would have to be a state object in order to permit the 
-  phase-2 member to be set subsequently after the completion of phase 1.</li>
-  <li>you can declare separate classes for phase-1 nodes and phase-2 nodes, 
-  where the phase-2 class would be derived from the phase-1 class and contain 
-  the additional phase-2 data. This solution wouldn't depend on the optional 
-  character of the phase-2 member of the preceding solution and thus guarantee a 
-  more safe initialization of the phase-2 part of a tree node, while solution 1 
-  could erroneously fail to initialize the phase-2 member during phase 2.<br/>
-  <br/>
-  The disadvantage of solution 2 is that it requires a reconstruction of the 
-  entire tree structure in phase 2, particularly of the pointers between tree 
-  nodes that now would have to point to phase-2 nodes instead of phase-1 nodes. 
-  To avoid the latter disadvantage you could alternatively provide reverse 
-  pointers from the phase-1 nodes to the corresponding phase-2 nodes and reuse 
-  the sub-tree pointers from phase 1 and use those additional reverse pointers 
-  to find the corresponding phase-2 targets of the phase-1 sub-tree pointers.</li>
-</ol>
+  <p>Let&#39;s again consider the tree structure of sub-section A) above, but let&#39;s assume that it shall be initialized in two phases. Then you have several options how to separate the data associated with either phase. For instance</p>
 
-<h3>See also</h3>
+  <ol>
+    <li>you can provide two member variables on the top-level of every tree node, one pointing to the phase-1 data, the other pointing to the phase-2 data. The value of the latter would be optional and thus would not have to be initialized during phase 1 but, if at all, only during phase 2. The entire top-level object would have to be a state object in order to permit the phase-2 member to be set subsequently after the completion of phase 1.</li>
 
-<p><a href="IniChecks.htm">Complete
-initialization checks</a></p>
+    <li>you can declare separate classes for phase-1 nodes and phase-2 nodes, where the phase-2 class would be derived from the phase-1 class and contain the additional phase-2 data. This solution wouldn&#39;t depend on the optional character of the phase-2 member of the preceding solution and thus guarantee a more safe initialization of the phase-2 part of a tree node, while solution 1 could erroneously fail to initialize the phase-2 member during phase 2.<br />
+    <br />
+    The disadvantage of solution 2 is that it requires a reconstruction of the entire tree structure in phase 2, particularly of the pointers between tree nodes that now would have to point to phase-2 nodes instead of phase-1 nodes. To avoid the latter disadvantage you could alternatively provide reverse pointers from the phase-1 nodes to the corresponding phase-2 nodes and reuse the sub-tree pointers from phase 1 and use those additional reverse pointers to find the corresponding phase-2 targets of the phase-1 sub-tree pointers.</li>
+  </ol>
 
-<p><strong style="font-weight: 400"><a href="UnfinishedObjects.htm">Unfinished/closed/opaque/quarantined
-objects</a></strong></p>
+  <h3>See also</h3>
 
+  <p><a href="IniChecks.htm">Complete initialization checks</a></p>
+
+  <p><strong><a href="UnfinishedObjects.htm">Unfinished/closed/opaque/quarantined objects</a></strong></p>
 </body>
 </html>

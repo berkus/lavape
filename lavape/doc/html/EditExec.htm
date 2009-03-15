@@ -1,296 +1,235 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head><title>Editing
-executable code</title>
-<meta content="Microsoft FrontPage 5.0" name="GENERATOR"><meta http-equiv="Content-Language" content="en-us"><meta http-equiv="Content-Type" content="text/html; charset=us-ascii"><meta content="Klaus D. G|nther" name="Author"><meta content="Microsoft FrontPage 5.0" name="GENERATOR"><meta content="FrontPage.Editor.Document" name="ProgId"><link href="LavaStyles.css" type="text/css" rel="STYLESHEET"></head>
-<body><h2 align="center">Editing executable code</h2>
-<p align="left">Executable code is represented in the <a href="EditTree.htm">declaration tree</a> by the
-keywords "Exec" and "Invariant/Require/Ensure". You may double-click
-these keywords or click the spectacles <b><img alt="Open property sheet" src="../images/Spectacles.png" align="middle" height="20" width="22"></b>
-to view the code in the <b><i>Lava</i></b> <a href="#exec">exec</a> editor.</p>
-<p>The <b><i>Lava</i></b> exec view
-displays executable <b><i>Lava</i></b> code in
-a so-called "rich edit view" window as normal text, but the normal text
-editing functions are disabled and replaced by the so-called <b>structure
-editing</b> mode. Unlike normal text editing, structure editing
-allows you to select, insert, delete, replace, etc. only whole
-syntactic constructs (rather than individual characters). This
-fundamental difference would require some relearning but once you have
-understood its principles structure editing is much more productive and
-much less error-prone than traditional program development based on
-text editing.</p>
-<h3>The basic ideas of structure editing are:</h3>
-<p><b>You just select a <i>Lava</i> construct
-for insertion by clicking an associated tool button. You need not know
-its syntactical structure in advance: <i>LavaPE</i> will
-insert a "template" of that construct for you which exhibits its
-syntactical structure and contains placeholders for nested constructs
-that you may insert subsequently.</b></p>
-<p><b>Optional parts of a construct can be deleted or
-reinserted if required.</b></p>
-<p><b>Clicking a special <i>insertion button</i>
-or pressing the RETURN key causes an additional "empty" copy of a
-repeatable sub-construct to be inserted after or before the selected
-copy (depending on the current state of the</b> <b>"Insert
-before"</b> <b>button</b> <img style="width: 20px; height: 20px;" alt="insert before" src="../images/InsertBefore.png"><b>).</b></p>
-<p><b><a href="StructEdAdvant.htm"><b>Advantages
-of <i>Lava</i> structure editing</b></a></b></p>
-<h3><a name="exec"></a>The three types of <i>Lava</i>
-executables</h3>
-<p>Three types of <b><i>Lava</i></b>
-entities may or must be associated with executable code:</p>
-<ul> <li><b>Initiators</b>, which serve as
-autonomous "<b>main</b> programs" or "top level threads" in
-<i><b>Lava</b></i>. They must have an
-executable body, or short: an <b>"exec"</b> (which starts
-with the keyword "<b>main</b>"). </li><li><b>Member
-functions</b> of classes and implementations, which must have an <b>exec</b>,
-too (except if they are declared to be "abstract", i.e., their
-implementation is deferred to a derived class). A member function of a
-class is automatically included in all implementations of that class,
-but its exec occurs only in the implementation, not in the class. </li><li><b><a href="DBC.htm" name="constraint">attached assertions</a></b>
-(invariants attached to classes and implementations, pre- and
-postconditions attached to functions). </li></ul>
-<p>In the <b><i>LavaPE</i></b> tree
-view, execs and invariants are associated with a specific little icon <img alt="exec icon" src="../images/constrai.png" height="15" width="21">which you may double-click to open the
-corresponding <b><i>LavaPE</i></b> exec view.
-Alternatively you may <i>select</i> the exec/invariant
-node of the declaration tree and then click the spectacles <img alt="spectacles" src="../images/Spectacles.png" height="20" width="22"> on the <a href="EditTree.htm#declBar">declaration bar</a> to
-open the selected exec in a new exec view window.</p>
-<h3>The three exec editing toolbars</h3>
-<p>Three specific toolbars belong to the <b><i>Lava</i></b>
-exec view:</p>
-<p>The <b>Exec switches toolbar</b></p>
-<p align="center"><img alt="Exec switches toolbar" src="../images/ExecSwitches.png" align="middle" border="0" height="23" width="311"></p><p>displaying
-various symbols of editing operations and of buttons that switch forth
-and back between different display modes and formats,<br><br>the
-<b>Exec operations toolbar</b></p>
-<p align="center"><img alt="Exec operations toolbar" src="../images/ExecOps.png" align="middle" border="0" height="23" width="622"></p><p>displaying
-various <b><i>Lava</i> operators</b> that can
-be used to construct <b><i>Lava</i></b>
-expressions and statements, and the vertical <b>keyword toolbar</b>,
-displaying the primary keywords of all <b><i>Lava</i>
-keyword constructs</b>:</p>
-<h3><img alt="Keyword toolbar" src="../images/KeywordTB.png" align="left" border="0" height="612" hspace="10" vspace="10" width="77">Basics
-of exec editing</h3>
-<p><b>Context-sensitive help</b></p>
-<p>Use the context-sensitive help of <i><b>LavaPE</b></i>
-to get information about individual menu items and operator and keyword
-tool buttons: Click the context help tool button <img alt="context help" src="../images/CtxHelp.png" height="23" width="22">, drag it to the respective <i><b>Lava</b></i>
-tool button or menu item for which you want to get an explanation and
-drop it there.</p>
-<p><b>Pay attention to status bar hints</b></p>
-<p>Depending on the current selection, the status bar will in
-many cases display hints on what you can do next. <b><i>Lava</i></b>
-beginners should pay attention to these hints.</p>
-<p><b>How to insert/delete statements</b></p>
-<p>If you have selected a statement placeholder
-&lt;stm&gt; and if you then click one of the enabled statement
-tool buttons then the placeholder is <b><i>replaced</i></b>
-with the corresponding statement template.</p>
-<p>If you have selected an existing statement, rather than a
-placeholder, and if you then click one of the enabled statement tool
-buttons then the corresponding statement template is <b>inserted
-after</b> or <b>before</b> the selected statement,
-depending on the state of the "Insert before" tool button <img alt="insert before" src="../images/InsertBefore.png" align="middle" height="15" width="16">. If the
-selected statement was an operand of a logical conjunction (<b>and</b>
-/ <b>;</b>, <b>or</b>, <b>xor</b>)
-then the inserted statement is a new operand of the same logical
-conjunction. If the selected statement wasn't part of a conjunction
-then the inserted statement is connected by a logical "<b>and</b>
-/ <b>;</b>" conjunction to the selected statement.</p>
-<p>If you have selected an existing statement <b>or</b>
-a placeholder and if you then click the "Insert" tool button <img alt="insert placeholder" src="../images/Insert.png" align="middle" height="15" width="16"> or
-press the RETURN key then a new placeholder &lt;stm&gt; is <b>inserted
-after</b> or <i><b>before</b></i> the
-selected statement, depending on the state of the "Insert before" tool
-button <img alt="insert before" src="../images/InsertBefore.png" align="middle" height="15" width="16">. The same rule as in the
-preceding paragraph applies to the logical conjunction that is used for
-the new placeholder.</p>
-<p>If you have selected an existing (non-placeholder) statement
-and if you then click the "scissors" tool button <img alt="scissors" src="../images/Scissors.png" height="20" width="16">
-then he selected statement is deleted and written to the clipboard if
-it was an operand of a logical conjunction; if it wasn't, then the
-statement is replaced with a &lt;stm&gt; placeholder in a first
-step; only if you attempt to delete the latter in turn the entire
-containing construct will be deleted.</p>
-<p>If you press the <b>DEL</b> key instead of
-clicking the scissors<img alt="scissors" src="../images/Scissors.png" height="20" width="16">
-then the statement is deleted but not written to the clipboard.</p>
-<p>See also "<a href="#returnKey">Using the return
-key ...</a>".</p>
-<p><b>How to insert/delete expressions</b></p>
-<p>If you have selected an existing expression <i>or</i>
-an expression placeholder &lt;expr&gt; and if you then click
-one of the enabled expression tool buttons from the operator or
-keywords toolbar then the expression/placeholder is <b>replaced</b>
-with the corresponding expression template.</p>
-<p>If you have selected an existing expression <i>or</i>
-expression placeholder and if you then click the "Insert" tool button <img alt="insert placeholder" src="../images/Insert.png" align="middle" height="15" width="16"> then a
-new placeholder &lt;expr&gt; is inserted <b>after</b>
-or <b>before</b> the selected expression, depending on the
-state of the "Insert before" tool button <img alt="insert before" src="../images/InsertBefore.png" align="middle" height="15" width="16">. But note that for
-expressions the "Insert empty copy" button is only enabled if the
-selected expression is an operand of an operation supporting multiple
-operands, like "+" or "*". The inserted new placeholder is treated as
-an additional operand of this same operation.</p>
-<p>If you have selected an existing expression and if you then
-click the "scissors" button <img alt="scissors" src="../images/Scissors.png" height="20" width="16">
-then he selected expression is replaced with a placeholder
-&lt;expr&gt; and written to the clipboard. If you press the <b>DEL</b>
-key instead then it is deleted but not written to the clipboard.</p>
-<p>If you click the scissors or press the <b>DEL</b>
-key on an expression placeholder then the latter is deleted if the
-placeholder was an operand of a multiple operand operation; otherwise
-the entire containing construct is deleted.</p>
-<p>See also "<a href="#returnKey">Using the return
-key ...</a>".</p>
-<p><b>How to insert/delete other kinds of repeatable
-constructs</b></p>
-<p><b><i>Lava</i></b> provides a number
-of constructs containing repeatable clauses other than statements and
-expressions, for instance the <b>elsif</b> clauses of <b>if</b>
-statements and <b>ifx</b> expressions, the <b>case</b>
-clauses of the <b>switch</b> and <b>type</b>
-statements, and the quantifier clauses of the <b>declare</b>,
-<b>exists</b>, <b>foreach</b>, <b>delete</b>
-statements and of the <b>select</b> expression. They all
-begin, except for the quantifiers, with a characteristic keyword which
-you can click to select the entire clause. You can delete the selected
-clause in the usual way using the scissors <img alt="scissors" src="../images/Scissors.png" height="20" width="16">
-or the <b>DEL</b> key. You can click the "Insert empty
-copy" button to insert a new template of this kind of clauses <b>after</b>
-or <b>before</b> the selected clause, depending on the
-state of the "Insert before" tool button <img alt="insert before" src="../images/InsertBefore.png" align="middle" height="15" width="16">.</p>
-<p>The quantifiers of <b>declare</b> don't contain
-any keyword that could be clicked to select the entire quantifier
-clause. As a substitute you can select the &lt;type&gt;
-placeholder or the specified concrete type reference that has replaced
-it before you click <img alt="scissors" src="../images/Scissors.png" height="20" width="16">or
-<img style="width: 16px; height: 15px;" alt="insert placeholder" src="../images/Insert.png">
-or press <b>DEL</b>. In the delete case a type reference
-will be replaced with a &lt;type&gt; placeholder in a first
-step before you can then delete the entire quantifier.</p>
-<p>The other quantifiers, running through finite sets of objects,
-can be selected also by clicking their characteristic <b>in</b>
-keyword.</p>
-<p>Every quantifier contains a list of one or several variables.
-You can use <img style="width: 16px; height: 15px;" alt="insert placeholder" src="../images/Insert.png">,
-<img style="width: 16px; height: 15px;" alt="insert before" src="../images/InsertBefore.png">, <img alt="Cut/Copy/Paste" src="../images/CutCopyPaste.png" height="22" width="70">, and <b>DEL</b>
-in the obvious way for these.</p>
-<p>See also "<a href="#returnKey">Using the return
-key ...</a>".</p>
-<p><b>How to insert/delete optional parts</b></p>
-<p>Optional parts of a <b><i>Lava</i></b>
-construct begin with a purple keyword, for instance <b>elsif</b>,
-<b>else</b>, <b>but</b>, or <b>where</b>.
-By clicking this keyword and pressing the <b>DEL</b>
-button you can delete the optional part.</p>
-<p>Select the <b><i>Lava</i></b>
-construct and click the "Show empty optionals" tool button <img alt="{short description of image}" src="../images/ShowOpts.png" height="20" width="24"> to reinsert templates for all
-currently non-existing optional parts of that construct.</p>
-<p><b>How to insert, edit and step through comments</b></p>
-<p>The yellow balloon <img alt="Comment" src="../images/Comment.png" height="21" width="22">
-may be clicked to add or change a comment that is associated with the <b><i>Lava</i></b>
-construct that is currently selected in the exec view. The button <img alt="Toggle comments" src="../images/ToggleComments.png" height="21" width="22"> may be used to toggle the
-visibility of comments in <b><i>Lava</i></b>
-execs. Comments are shown directly within the exec text, while in the
-tree view they are displayed in the comment page of the utility window
-if you select a commented tree node.</p>
-<p><b>Error navigation</b></p>
-<p>The two buttons <img alt="Errors" src="../images/Errors.png" height="23" width="48">
-may be used to open/close the error message window and to step from
-error to error in forward or backward direction. If you select a faulty
-(=red) construct then the first error message referring to that
-construct is displayed also in the status bar.</p>
-<p><b>Cut/copy/paste</b></p>
-<p>Cut/copy/paste work in the usual way, but for execs currently
-only <i>within the same exec</i>. Proper
-enabling/disabling of the corresponding buttons <img alt="Cut/Copy/Paste" src="../images/CutCopyPaste.png" height="22" width="70"> combined with subsequent
-checks that are performed anyway after each edit operation prevent
-syntactically inadmissible operations. Drag-and-drop, which is
-available in the declaration view, would be desirable also in the exec
-view. But its implementation is not quite easy and has been postponed
-so far.</p>
-<p><b>Undo/Redo</b></p>
-<p>Use the "Undo" and "Redo" buttons <img alt="Undo/redo" src="../images/UndoRedo.png" border="0" height="23" width="43"> to undo or redo individual edit operations in
-any of the <b><i>LavaPE</i></b> views step by
-step on a "per document" basis. (Every document (= <b><i>Lava</i></b>
-file) has its own undo/redo memory.) The redo memory is deleted in the
-usual way after a new edit operation, the undo memory when the current
-document is saved.</p>
-<p><b>Go to declaration / return to reference</b></p>
-<p>You can double-click any reference to a <b><i>Lava</i></b>
-entity in an exec to jump to its declaration. Alternatively you can
-select the reference and click the "Go to declaration" button <img alt="go to declaration" src="../images/GoToDecl.png" height="21" width="22">. Use the "Return to
-reference" button <img alt="return to reference" src="../images/ReturnToRef.png" height="21" width="23">
-to follow the sequence of such "Go to declaration" operations in
-backward direction (= back to the locations from where you came). Both
-operations may jump forth and back between exec and declaration views
-and even between different ("included") <b><i>Lava</i></b>
-documents.</p>
-<p><b><a name="arrowKeys"></a>Using the
-arrow keys (up/down/left/right) to walk through the exec constructs</b></p>
-<p>You can use the arrow keys to move the current selection
-through the nested exec constructs in up/down/left/right direction:
-"Cursor right/left" means to move the selection forth and back between
-"siblings" having the same containing ("parent") construct, for
-instance from statement to statement within the <b>then</b>
-part of an <b>if</b> statement. "Cursor up" means to move
-the selection to the containing ("parent") construct. "Cursor down"
-means to move the selection to the first child construct (if there is
-one).</p>
-<p><b>How to open/close the little edit windows for
-constants and variable names</b></p>
-<p>If the selection is on a constant or on a variable name (in
-the declaration of the variable) or on an &lt;expr&gt; or
-&lt;varName&gt; placeholder then "cursor down" opens a little
-edit window that allows you to edit the constant or the variable name.
-The same effect is achieved by double-clicking that item or by clicking
-the spectacles or by clicking again on the item <img alt="spectacles" src="../images/Spectacles.png" height="20" width="22"> after you have selected it.</p>
-<p>You close a little edit window by pressing the return or ESC
-or "cursor up" key or by clicking on another construct outside the
-window.</p>
-<p><b><a name="returnKey"></a>Using the
-return key to insert another placeholder</b></p>
-<p>If the selection is on any repeatable construct then you can
-press the return key to insert a placeholder for another construct of
-this same type, e.g., a statement placeholder &lt;stm&gt; if
-the selection is on a statement, an expression placeholder
-&lt;expr&gt; if it is on an expression, an <b>elsif</b>
-<b>... then</b> clause if it is on <b>elsif</b>
-or <b>then</b>, a new quantifier if it is on the type name
-or on the &lt;type&gt; placeholder of an existing quantifier, a
-new local variable if it is on a variable name or on a
-&lt;varName&gt; placeholder in a <b>declare</b>, <b>exists</b>,
-<b>foreach</b>, or <b>select</b> construct.</p>
-<p><b><a name="keyboardCentric"></a>Keyboard-centric
-editing of <i>Lava</i> execs</b></p>
-<p>You can invoke the more important and frequent exec editing
-operations without using the mouse. Most of the keyword constructs can
-be inserted by pressing the underlined character of the keyword. For
-the operation toolbar, the tool tips on the status line tell you which
-character to use. You can use CTRL-1, CTRL-2, CTRL-3 to open the list
-box associated with the first, second, or third exec combo-box, and you
-can use the down and up arrow keys to step through the list items;
-finally you press the RETURN key to select the currently highlighted
-item. Use the arrow keys to <a href="#arrowKeys">navigate</a>
-between parent, child, and sibling constructs as described above. Use
-the RETURN key to <a href="#returnKey">insert
-templates/placeholders</a> for repeatable constructs.</p>
-<p><b><a name="arithExpr"></a>Top-down,
-bottom-up, and mixed-order construction of arithmetic expressions</b></p>
-<p>Expressions containing operators can be constructed in the
-standard top-down style of <b><i>Lava</i></b>
-exec editing, but also in bottom-up or mixed order. For instance, if
-you have already constructed "1 + 2" and you want to make this sum
-appear as the second factor of a product "<font color="#ff0000">&lt;expr&gt;</font>
-<b>*</b> (1 <b>+</b> 2)", then just do the
-following:</p>
-<ol> <li>Depress the "Insert before" button <img alt="insert before" src="../images/InsertBefore.png" align="middle" height="15" width="16">. This
-causes the <font color="#ff0000">&lt;expr&gt;</font>
-to be inserted <i>before</i> the "1 + 2". </li><li>Select
-the entire sum "1 + 2": Either click the plus sign, or select one of
-the two addends ("1" or "2") and <a href="#arrowKeys">press
-the up-arrow key</a> to select its parent construct "1 + 2". </li><li>Click
-the "*" tool button or press the "*" key to produce "<font color="#ff0000">&lt;expr&gt;</font> * (1 + 2)"
-as desired. </li></ol></body></html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Editing executable code</title>
+  <link href="LavaStyles.css" type="text/css" rel="STYLESHEET" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c7 {text-align: center}
+  i.c6 {font-weight: bold; color: Red}
+  a.c5 {font-weight: bold}
+  p.c4 {font-weight: bold}
+  p.c3 {text-align: left}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  img#kwtb {float: left; margin-right: 20pt}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+      .style2
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style3
+      {
+          color: #FF0000;
+      }
+      .style4
+      {
+          color: #CC00CC;
+          font-weight: bold;
+      }
+      .style5
+      {
+          color: #CC00CC;
+      }
+      .style6
+      {
+          color: #0000FF;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Editing executable code</h2>
+
+  <p class="c3">Executable code is represented in the <a href="EditTree.htm">declaration tree</a> by the keywords &quot;Exec&quot; and &quot;Invariant/Require/Ensure&quot;. You may double-click these keywords or click the spectacles <b><img alt="Open property sheet" src="../images/Spectacles.png" height="20" width="22" /></b> to view the code in the <b class="c2">Lava</b> <a href="#exec">exec</a> editor.</p>
+
+  <p>The <b class="c2">Lava</b> exec view displays executable <b class="c2">Lava</b> code in a so-called &quot;rich edit view&quot; window as normal text, but the normal text editing functions are disabled and replaced by the so-called <b>structure editing</b> mode. Unlike normal text editing, structure editing allows you to select, insert, delete, replace, etc. only whole syntactic constructs (rather than individual characters). This fundamental difference would require some relearning but once you have understood its principles structure editing is much more productive and much less error-prone than traditional program development based on text editing.</p>
+
+  <h3>The basic ideas of structure editing are:</h3>
+
+  <p class="c4">You just select a <span class="style1">Lava</span> construct for insertion by clicking an associated tool button. You need not know its syntactical structure in advance: 
+      <span class="style1">LavaPE</span> will insert a &quot;template&quot; of that construct for you which exhibits its syntactical structure and contains placeholders for nested constructs that you may insert subsequently.</p>
+
+  <p class="c4">Optional parts of a construct can be deleted or reinserted if required.</p>
+
+  <p><b>Clicking a special <i>insertion button</i> or pressing the RETURN key causes an additional &quot;empty&quot; copy of a repeatable sub-construct to be inserted after or before the selected copy (depending on the current state of the</b> <b>&quot;Insert before&quot;</b> <b>button</b> <img alt="insert before" src="../images/InsertBefore.png" /><b>).</b></p>
+
+  <p class="c4"><a class="c5" href="StructEdAdvant.htm">Advantages of 
+      <span class="style1">Lava</span> structure editing</a></p>
+
+  <h3><a id="exec"></a>The three types of <span class="style1">Lava</span> executables</h3>
+
+  <p>Three types of <b class="c2">Lava</b> entities may or must be associated with executable code:</p>
+
+  <ul>
+    <li><b>Initiators</b>, which serve as autonomous &quot;<b>main</b> programs&quot; or &quot;top level threads&quot; in <i class="c6">Lava</i>. They must have an executable body, or short: an <b>&quot;exec&quot;</b> (which starts with the keyword &quot;<span 
+            class="style2">main</span>&quot;).</li>
+
+    <li><b>Member functions</b> of classes and implementations, which must have an <b>exec</b>, too (except if they are declared to be &quot;abstract&quot;, i.e., their implementation is deferred to a derived class). A member function of a class is automatically included in all implementations of that class, but its exec occurs only in the implementation, not in the class.</li>
+
+    <li><b><a href="DBC.htm" id="constraint">attached assertions</a></b> (invariants attached to classes and implementations, pre- and postconditions attached to functions).</li>
+  </ul>
+
+  <p>In the <b class="c2">LavaPE</b> tree view, execs and invariants are associated with a specific little icon <img alt="exec icon" src="../images/constrai.png" height="15" width="21" />which you may double-click to open the corresponding <b class="c2">LavaPE</b> exec view. Alternatively you may <i>select</i> the exec/invariant node of the declaration tree and then click the spectacles <img alt="spectacles" src="../images/Spectacles.png" height="20" width="22" /> on the <a href="EditTree.htm#declBar">declaration bar</a> to open the selected exec in a new exec view window.</p>
+
+  <h3>The three exec editing toolbars</h3>
+
+  <p>Three specific toolbars belong to the <b class="c2">Lava</b> exec view:</p>
+
+  <p>The <b>Exec switches toolbar</b></p>
+
+  <p class="c7"><img alt="Exec switches toolbar" src="../images/ExecSwitches.png" height="23" width="311" /></p>
+
+  <p>displaying various symbols of editing operations and of buttons that switch forth and back between different display modes and formats,<br />
+  <br />
+  the <b>Exec operations toolbar</b></p>
+
+  <p class="c7"><img alt="Exec operations toolbar" src="../images/ExecOps.png" height="23" width="622" /></p>
+
+  <p>displaying various <b><span class="style1">Lava</span> operators</b> that can be used to construct <b class="c2">Lava</b> expressions and statements, and the vertical <b>keyword toolbar</b>, displaying the primary keywords of all <b>
+      <span class="style1">Lava</span> keyword constructs</b>:</p>
+
+  <h3><img alt="Keyword toolbar" src="../images/KeywordTB.png" height="612" 
+          width="77" id="kwtb" />Basics of exec editing</h3>
+
+  <p class="c4">Context-sensitive help</p>
+
+  <p>Use the context-sensitive help of <i class="c6">LavaPE</i> to get information about individual menu items and operator and keyword tool buttons: Click the context help tool button <img alt="context help" src="../images/CtxHelp.png" height="23" width="22" />, drag it to the respective <i class="c6">Lava</i> tool button or menu item for which you want to get an explanation and drop it there.</p>
+
+  <p class="c4">Pay attention to status bar hints</p>
+
+  <p>Depending on the current selection, the status bar will in many cases display hints on what you can do next. <b class="c2">Lava</b> beginners should pay attention to these hints.</p>
+
+  <p class="c4">How to insert/delete statements</p>
+
+  <p>If you have selected a statement placeholder &lt;stm&gt; and if you then click one of the enabled statement tool buttons then the placeholder is <b>replaced</b> with the corresponding statement template.</p>
+
+  <p>If you have selected an existing statement, rather than a placeholder, and if you then click one of the enabled statement tool buttons then the corresponding statement template is <b>inserted after</b> or <b>before</b> the selected statement, depending on the state of the &quot;Insert before&quot; tool button <img alt="insert before" src="../images/InsertBefore.png" height="15" width="16" />. If the selected statement was an operand of a logical conjunction (<b>and</b> / <b>;</b>, <b>or</b>, <b>xor</b>) then the inserted statement is a new operand of the same logical conjunction. If the selected statement wasn&#39;t part of a conjunction then the inserted statement is connected by a logical &quot;<b>and</b> / <b>;</b>&quot; conjunction to the selected statement.</p>
+
+  <p>If you have selected an existing statement <b>or</b> a placeholder and if you then click the &quot;Insert&quot; tool button <img alt="insert placeholder" src="../images/Insert.png" height="15" width="16" /> or press the RETURN key then a new placeholder 
+      <span class="style3">&lt;stm&gt;</span> is <b>inserted after</b> or <i class="c6">before</i> the selected statement, depending on the state of the &quot;Insert before&quot; tool button <img alt="insert before" src="../images/InsertBefore.png" height="15" width="16" />. The same rule as in the preceding paragraph applies to the logical conjunction that is used for the new placeholder.</p>
+
+  <p>If you have selected an existing (non-placeholder) statement and if you then click the &quot;scissors&quot; tool button <img alt="scissors" src="../images/Scissors.png" height="20" width="16" /> then he selected statement is deleted and written to the clipboard if it was an operand of a logical conjunction; if it wasn&#39;t, then the statement is replaced with a &lt;stm&gt; placeholder in a first step; only if you attempt to delete the latter in turn the entire containing construct will be deleted.</p>
+
+  <p>If you press the <b>DEL</b> key instead of clicking the scissors<img alt="scissors" src="../images/Scissors.png" height="20" width="16" /> then the statement is deleted but not written to the clipboard.</p>
+
+  <p>See also &quot;<a href="#returnKey">Using the return key ...</a>&quot;.</p>
+
+  <p class="c4">How to insert/delete expressions</p>
+
+  <p>If you have selected an existing expression <i>or</i> an expression placeholder 
+      <span class="style3">&lt;expr&gt;</span> and if you then click one of the enabled expression tool buttons from the operator or keywords toolbar then the expression/placeholder is <b>replaced</b> with the corresponding expression template.</p>
+
+  <p>If you have selected an existing expression <i>or</i> expression placeholder and if you then click the &quot;Insert&quot; tool button <img alt="insert placeholder" src="../images/Insert.png" height="15" width="16" /> then a new placeholder 
+      <span class="style3">&lt;expr&gt;</span> is inserted <b>after</b> or <b>before</b> the selected expression, depending on the state of the &quot;Insert before&quot; tool button <img alt="insert before" src="../images/InsertBefore.png" height="15" width="16" />. But note that for expressions the &quot;Insert empty copy&quot; button is only enabled if the selected expression is an operand of an operation supporting multiple operands, like &quot;<span 
+          class="style2">+</span>&quot; or &quot;<span class="style6">*</span>&quot;. The inserted new placeholder is treated as an additional operand of this same operation.</p>
+
+  <p>If you have selected an existing expression and if you then click the &quot;scissors&quot; button <img alt="scissors" src="../images/Scissors.png" height="20" width="16" /> then he selected expression is replaced with a placeholder 
+      <span class="style3">&lt;expr&gt;</span> and written to the clipboard. If you press the <b>DEL</b> key instead then it is deleted but not written to the clipboard.</p>
+
+  <p>If you click the scissors or press the <b>DEL</b> key on an expression placeholder then the latter is deleted if the placeholder was an operand of a multiple operand operation; otherwise the entire containing construct is deleted.</p>
+
+  <p>See also &quot;<a href="#returnKey">Using the return key ...</a>&quot;.</p>
+
+  <p class="c4">How to insert/delete other kinds of repeatable constructs</p>
+
+  <p><b class="c2">Lava</b> provides a number of constructs containing repeatable clauses other than statements and expressions, for instance the 
+      <span class="style4">elsif</span> clauses of <span class="style2">if</span> statements and 
+      <span class="style2">ifx</span> expressions, the <span class="style2">case</span> clauses of the 
+      <span class="style2">switch</span> and <span class="style2">type</span> statements, and the quantifier clauses of the 
+      <span class="style2">declare</span>, <span class="style2">exists</span>, 
+      <span class="style2">foreach</span>, <span class="style2">delete</span> statements and of the 
+      <span class="style2">select</span> expression. They all begin, except for the quantifiers, with a characteristic keyword which you can click to select the entire clause. You can delete the selected clause in the usual way using the scissors <img alt="scissors" src="../images/Scissors.png" height="20" width="16" /> or the <b>DEL</b> key. You can click the &quot;Insert empty copy&quot; button to insert a new template of this kind of clauses <b>after</b> or <b>before</b> the selected clause, depending on the state of the &quot;Insert before&quot; tool button <img alt="insert before" src="../images/InsertBefore.png" height="15" width="16" />.</p>
+
+  <p>The quantifiers of <span class="style2">declare</span> don&#39;t contain any keyword that could be clicked to select the entire quantifier clause. As a substitute you can select the &lt;type&gt; placeholder or the specified concrete type reference that has replaced it before you click <img alt="scissors" src="../images/Scissors.png" height="20" width="16" />or <img alt="insert placeholder" src="../images/Insert.png" /> or press <b>DEL</b>. In the delete case a type reference will be replaced with a 
+      <span class="style3">&lt;type&gt;</span> placeholder in a first step before you can then delete the entire quantifier.</p>
+
+  <p>The other quantifiers, running through finite sets of objects, can be selected also by clicking their characteristic 
+      <span class="style2">in</span> keyword.</p>
+
+  <p>Every quantifier contains a list of one or several variables. You can use <img alt="insert placeholder" src="../images/Insert.png" />, <img alt="insert before" src="../images/InsertBefore.png" />, <img alt="Cut/Copy/Paste" src="../images/CutCopyPaste.png" height="22" width="70" />, and <b>DEL</b> in the obvious way for these.</p>
+
+  <p>See also &quot;<a href="#returnKey">Using the return key ...</a>&quot;.</p>
+
+  <p class="c4">How to insert/delete optional parts</p>
+
+  <p>Optional parts of a <b class="c2">Lava</b> construct begin with a purple keyword, for instance 
+      <span class="style4">elsif</span>, <span class="style4">else</span>, 
+      <span class="style4">but</span>, or <span class="style4">where</span>. By clicking this keyword and pressing the <b>DEL</b> button you can delete the optional part.</p>
+
+  <p>Select the <b class="c2">Lava</b> construct and click the &quot;Show empty optionals&quot; tool button <img alt="{short description of image}" src="../images/ShowOpts.png" height="20" width="24" /> to reinsert templates for all currently non-existing optional parts of that construct.</p>
+
+  <p class="c4">How to insert, edit and step through comments</p>
+
+  <p>The yellow balloon <img alt="Comment" src="../images/Comment.png" height="21" width="22" /> may be clicked to add or change a comment that is associated with the <b class="c2">Lava</b> construct that is currently selected in the exec view. The button <img alt="Toggle comments" src="../images/ToggleComments.png" height="21" width="22" /> may be used to toggle the visibility of comments in <b class="c2">Lava</b> execs. Comments are shown directly within the exec text, while in the tree view they are displayed in the comment page of the utility window if you select a commented tree node.</p>
+
+  <p class="c4">Error navigation</p>
+
+  <p>The two buttons <img alt="Errors" src="../images/Errors.png" height="23" width="48" /> may be used to open/close the error message window and to step from error to error in forward or backward direction. If you select a faulty (=red) construct then the first error message referring to that construct is displayed also in the status bar.</p>
+
+  <p class="c4">Cut/copy/paste</p>
+
+  <p>Cut/copy/paste work in the usual way, but for execs currently only <i>within the same exec</i>. Proper enabling/disabling of the corresponding buttons <img alt="Cut/Copy/Paste" src="../images/CutCopyPaste.png" height="22" width="70" /> combined with subsequent checks that are performed anyway after each edit operation prevent syntactically inadmissible operations. Drag-and-drop, which is available in the declaration view, would be desirable also in the exec view. But its implementation is not quite easy and has been postponed so far.</p>
+
+  <p class="c4">Undo/Redo</p>
+
+  <p>Use the &quot;Undo&quot; and &quot;Redo&quot; buttons <img alt="Undo/redo" src="../images/UndoRedo.png" height="23" width="43" /> to undo or redo individual edit operations in any of the <b class="c2">LavaPE</b> views step by step on a &quot;per document&quot; basis. (Every document (= <b class="c2">Lava</b> file) has its own undo/redo memory.) The redo memory is deleted in the usual way after a new edit operation, the undo memory when the current document is saved.</p>
+
+  <p class="c4">Go to declaration / return to reference</p>
+
+  <p>You can double-click any reference to a <b class="c2">Lava</b> entity in an exec to jump to its declaration. Alternatively you can select the reference and click the &quot;Go to declaration&quot; button <img alt="go to declaration" src="../images/GoToDecl.png" height="21" width="22" />. Use the &quot;Return to reference&quot; button <img alt="return to reference" src="../images/ReturnToRef.png" height="21" width="23" /> to follow the sequence of such &quot;Go to declaration&quot; operations in backward direction (= back to the locations from where you came). Both operations may jump forth and back between exec and declaration views and even between different (&quot;included&quot;) <b class="c2">Lava</b> documents.</p>
+
+  <p class="c4"><a id="arrowKeys"></a>Using the arrow keys (up/down/left/right) to walk through the exec constructs</p>
+
+  <p>You can use the arrow keys to move the current selection through the nested exec constructs in up/down/left/right direction: &quot;Cursor right/left&quot; means to move the selection forth and back between &quot;siblings&quot; having the same containing (&quot;parent&quot;) construct, for instance from statement to statement within the <b>then</b> part of an <b>if</b> statement. &quot;Cursor up&quot; means to move the selection to the containing (&quot;parent&quot;) construct. &quot;Cursor down&quot; means to move the selection to the first child construct (if there is one).</p>
+
+  <p class="c4">How to open/close the little edit windows for constants and variable names</p>
+
+  <p>If the selection is on a constant or on a variable name (in the declaration of the variable) or on an &lt;expr&gt; or &lt;varName&gt; placeholder then &quot;cursor down&quot; opens a little edit window that allows you to edit the constant or the variable name. The same effect is achieved by double-clicking that item or by clicking the spectacles or by clicking again on the item <img alt="spectacles" src="../images/Spectacles.png" height="20" width="22" /> after you have selected it.</p>
+
+  <p>You close a little edit window by pressing the return or ESC or &quot;cursor up&quot; key or by clicking on another construct outside the window.</p>
+
+  <p class="c4"><a id="returnKey"></a>Using the return key to insert another placeholder</p>
+
+  <p>If the selection is on any repeatable construct then you can press the return key to insert a placeholder for another construct of this same type, e.g., a statement placeholder 
+      <span class="style3">&lt;stm&gt;</span> if the selection is on a statement, an expression placeholder
+      <span class="style3">&lt;expr&gt;</span> if it is on an expression, an
+      <span class="style5"> <b>elsif</b> <b>... then</b></span> clause if it is on 
+      <span class="style4">elsif</span> or <span class="style4">then</span>, a new quantifier if it is on the type name or on the 
+      <span class="style3">&lt;type&gt;</span> placeholder of an existing quantifier, a new local variable if it is on a variable name or on a 
+      <span class="style3">&lt;varName&gt;</span> placeholder in a
+      <span class="style2">declare</span>, <span class="style2">exists</span>, 
+      <span class="style2">foreach</span>, or <span class="style2">select</span> construct.</p>
+
+  <p class="c4"><a id="keyboardCentric"></a>Keyboard-centric editing of <i>Lava</i> execs</p>
+
+  <p>You can invoke the more important and frequent exec editing operations without using the mouse. Most of the keyword constructs can be inserted by pressing the underlined character of the keyword. For the operation toolbar, the tool tips on the status line tell you which character to use. You can use CTRL-1, CTRL-2, CTRL-3 to open the list box associated with the first, second, or third exec combo-box, and you can use the down and up arrow keys to step through the list items; finally you press the RETURN key to select the currently highlighted item. Use the arrow keys to <a href="#arrowKeys">navigate</a> between parent, child, and sibling constructs as described above. Use the RETURN key to <a href="#returnKey">insert templates/placeholders</a> for repeatable constructs.</p>
+
+  <p class="c4"><a id="arithExpr"></a>Top-down, bottom-up, and mixed-order construction of arithmetic expressions</p>
+
+  <p>Expressions containing operators can be constructed in the standard top-down style of <b class="c2">Lava</b> exec editing, but also in bottom-up or mixed order. For instance, if you have already constructed &quot;1 
+      <span class="style2">+</span> 2&quot; and you want to make this sum appear as the second factor of a product &quot;<span 
+          class="style3">&lt;expr&gt; </span> <b>*</b> (1 <span class="style2">+</span> 2)&quot;, then just do the following:</p>
+
+  <ol>
+    <li>Depress the &quot;Insert before&quot; button <img alt="insert before" src="../images/InsertBefore.png" height="15" width="16" />. This causes the 
+        <span class="style3">&lt;expr&gt;</span> to be inserted <i>before</i> the &quot;1 
+        <span class="style2">+</span> 2&quot;.</li>
+
+    <li>Select the entire sum &quot;1 <span class="style2">+</span> 2&quot;: Either click the plus sign, or select one of the two addends (&quot;1&quot; or &quot;2&quot;) and <a href="#arrowKeys">press the up-arrow key</a> to select its parent construct &quot;1 
+        <span class="style2">+</span> 2&quot;.</li>
+
+    <li>Click the &quot;*&quot; tool button or press the &quot;*&quot; key to produce &quot;<span 
+            class="style3">&lt;expr&gt;</span> <span class="style2">*</span> (1
+        <span class="style2">+</span> 2)&quot; as desired.</li>
+  </ol>
+</body>
+</html>

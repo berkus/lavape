@@ -1,25 +1,20 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type"
-content="text/html; charset=iso-8859-1">
-<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
-<title>HTML Help Java Applet Version</title>
+  <title>HTML Help Java Applet Version</title>
 </head>
 
-<body
-onload="document.formVersion.txtVersion.value = document.HHCtrl.getAppletInfo()">
+<body onload="document.formVersion.txtVersion.value = document.HHCtrl.getAppletInfo()">
+  <form action="" method="post" id="formVersion">
+    <p>
+    <textarea name="txtVersion" rows="2" cols="80" readonly="readonly">
+</textarea></p>
+  </form>
 
-<form method="POST" name="formVersion">
-    <p><textarea name="txtVersion" rows="2" cols="80" readonly>
-	</textarea> </p>
-</form>
-
-<p>
-<applet code="HHCtrl.class" align="baseline" width="0"
-height="0" name="HHCtrl">
-<param name="cabbase" value="HHCtrl.cab">
-</applet>
-</p>
+  <p><object classid="java:HHCtrl.class" codetype="application/java" width="0" height="0" name="HHCtrl" id="HHCtrl">
+    <param name="cabbase" value="HHCtrl.cab" />
+  </object></p>
 </body>
 </html>

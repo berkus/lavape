@@ -1,105 +1,84 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="Author" CONTENT="Klaus D. Günther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>A type is either virtual or non-virtual</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER"><font color="#000000">A type is either virtual or
-    non-virtual</font> </H2>
-    
-    <H3>Sample file</H3>
-    
-    <P>Please open <b>IsSelfVirtual.lava</b> in
-    <font color="#FF0000"><b><i>LavaPE</i></b></font>.</P>
-    
-    <H3>Topic </H3>
-    
-    <p>Motivation of <a href="PatternsFrameworks.htm#VTandNonVT">rule 9</a> in
-    our section on <font color="#FF0000"><i><b>Lava</b></i></font> support for
-     <a href="PatternsFrameworks.htm">genericity, design
-    patterns, and frameworks</a>, which reads: </p>
-    
-    <ul>
-      <li>If a class <i> A</i> is the value of a virtual type <i> V</i> then
-        <i> A</i> cannot be
-        referenced directly at any place where <i> V</i> is visible. It can only be
-        referenced indirectly by references to <i> V</i> in these places. If A1
-        is derived from A within the same pattern, then A1 cannot be referenced
-        directly, either.</li>
-    </ul>
-    
-    <H3>Overview </H3>
-    
-    <p> Roughly
-    spoken, the reason for this rule is that a type cannot be used as a virtual
-    and as a non-virtual type at the same time within the containing pattern,
-    similarly as in <font color="#FF0000"><i><b> C++</b></i></font> a member function of a class cannot be
-    virtual and
-    non-virtual at the same time. </p>
-    
-    <p>In the <b><i><font color="#FF0000">C++</font></i></b> case it would not
-    be clear otherwise whether a concrete invocation of that function should be
-    executed as a virtual or as a non-virtual call. </p>
-    
-    <p>In <font color="#FF0000"><i><b>Lava</b></i></font>, without the above
-    rule it would not be clear at check time (but only at run time) whether the
-    type of the special variable <i>self</i> is virtual or non-virtual. As a consequence,
-    a <i>static</i> type check would not be possible in important
-    cases, viz. if <i>self</i> occurs on the right-hand side of assignments or as
-    an input parameter of a function call. In more detail: </p>
-    
-    <p>Assume that a member function <i>f</i> of a <b><i> <font color="#FF0000">Lava
-    </font></i></b>class <i>A</i> is called with a &quot;call variable&quot;
-    <i>c</i>: </p>
-    
-    <blockquote>
-    
-    <pre><font color="#0000FF"><b>call</b></font> c.f(...)</pre>
-    
-    </blockquote>
-    <p>and that <i>A</i> is the value of some virtual type <i>vt</i>: </p>
-    
-    <blockquote>
-      <pre>&lt;vt&gt; = A</pre>
-    
-    </blockquote>
-    <p>Now if <i>self</i> is assigned to some variable within<i> f </i>then we
-    ought to know whether the type of <i>self</i> is virtual or not, in order to
-    apply the <a href="TypeSafety.htm#compatibility">type compatibility rules</a>
-    in our section on &quot;<a href="TypeSafety.htm">Static type-safety of <font color="#FF0000"><i><b>Lava</b></i></font></a><b><i><font color="#FF0000">
-    </font></i></b>&quot;.&nbsp;&nbsp; </p>
-    
-    <p>The type of <i>self</i>  apparently will comply with the type of<i> c</i>.
-    The latter isn't known, however, when the body of<i> f </i>is checked,
-    rather it is known only at run time. If we could choose to declare <i>c</i>
-    as being of the virtual type <i>&lt;vt&gt;</i>: </p>
-    
-    <blockquote>
-      <pre>&lt;vt&gt; c;</pre>
-    
-    </blockquote>
-    <p>or also as being of the concrete type <i>A</i>: </p>
-    
-    <blockquote>
-      <pre>A c;</pre>
-    
-    </blockquote>
-    <p>then we couldn't decide at check time whether the type of <i>self</i> is
-    virtual or not. Rule 9 excludes the second case and this way enables a
-    static type check by removing this ambiguity. </p>
-    
-    <h3>Where to look and what to do</h3>
-    <p>Look into the implementation of function <i>A::fa</i>.</p>
-    
-  </BODY>
-</HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>A type is either virtual or non-virtual</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  i.c3 {font-weight: bold; color: Red}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">A type is either virtual or non-virtual</h2>
+
+  <h3>Sample file</h3>
+
+  <p>Please open <b>IsSelfVirtual.lava</b> in <b class="c2">LavaPE</b>.</p>
+
+  <h3>Topic</h3>
+
+  <p>Motivation of <a href="PatternsFrameworks.htm#VTandNonVT">rule 9</a> in our section on <i class="c3">Lava</i> support for <a href="PatternsFrameworks.htm">genericity, design patterns, and frameworks</a>, which reads:</p>
+
+  <ul>
+    <li>If a class <i>A</i> is the value of a virtual type <i>V</i> then <i>A</i> cannot be referenced directly at any place where <i>V</i> is visible. It can only be referenced indirectly by references to <i>V</i> in these places. If A1 is derived from A within the same pattern, then A1 cannot be referenced directly, either.</li>
+  </ul>
+
+  <h3>Overview</h3>
+
+  <p>Roughly spoken, the reason for this rule is that a type cannot be used as a virtual and as a non-virtual type at the same time within the containing pattern, similarly as in <i class="c3">C++</i> a member function of a class cannot be virtual and non-virtual at the same time.</p>
+
+  <p>In the <b class="c2">C++</b> case it would not be clear otherwise whether a concrete invocation of that function should be executed as a virtual or as a non-virtual call.</p>
+
+  <p>In <i class="c3">Lava</i>, without the above rule it would not be clear at check time (but only at run time) whether the type of the special variable <i>self</i> is virtual or non-virtual. As a consequence, a <i>static</i> type check would not be possible in important cases, viz. if <i>self</i> occurs on the right-hand side of assignments or as an input parameter of a function call. In more detail:</p>
+
+  <p>Assume that a member function <i>f</i> of a <b class="c2">Lava</b> class <i>A</i> is called with a &quot;call variable&quot; <i>c</i>:</p>
+
+  <blockquote>
+    <pre xml:space="preserve">
+<span class="style1">call</span> c.f(...)
+</pre>
+  </blockquote>
+
+  <p>and that <i>A</i> is the value of some virtual type <i>vt</i>:</p>
+
+  <blockquote>
+    <pre xml:space="preserve">
+&lt;vt&gt; = A
+</pre>
+  </blockquote>
+
+  <p>Now if <i>self</i> is assigned to some variable within <i>f</i> then we ought to know whether the type of <i>self</i> is virtual or not, in order to apply the <a href="TypeSafety.htm#compatibility">type compatibility rules</a> in our section on &quot;<a href="TypeSafety.htm">Static type-safety of <i class="c3">Lava</i></a> &quot;.</p>
+
+  <p>The type of <i>self</i> apparently will comply with the type of <i>c</i>. The latter isn&#39;t known, however, when the body of <i>f</i> is checked, rather it is known only at run time. If we could choose to declare <i>c</i> as being of the virtual type <i>&lt;vt&gt;</i>:</p>
+
+  <blockquote>
+    <pre xml:space="preserve">
+&lt;vt&gt; c;
+</pre>
+  </blockquote>
+
+  <p>or also as being of the concrete type <i>A</i>:</p>
+
+  <blockquote>
+    <pre xml:space="preserve">
+A c;
+</pre>
+  </blockquote>
+
+  <p>then we couldn&#39;t decide at check time whether the type of <i>self</i> is virtual or not. Rule 9 excludes the second case and this way enables a static type check by removing this ambiguity.</p>
+
+  <h3>Where to look and what to do</h3>
+
+  <p>Look into the implementation of function <i>A::fa</i>.</p>
+</body>
+</html>

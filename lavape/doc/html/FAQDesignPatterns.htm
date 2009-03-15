@@ -1,43 +1,42 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<HTML>
-  
-  <HEAD>
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <TITLE>FAQ design patterns</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
-    
-    <H2 ALIGN="CENTER"><b>Does <font color="#FF0000"><i>Lava</i></font> support design patterns?</b></H2>
-    
-    <p>The answer is <b><i>yes</i></b>, and this is one of the most important 
-    and advanced features of <b><i><font color="#FF0000">Lava.</font></i></b></p>
-    <p><b><i><font color="#FF0000">Lava </font></i></b>provides particular 
-    support for groups (&quot;packages&quot;) of interrelated classes that refer 
-    indirectly to one another through type parameters (&quot;virtual types&quot;). The <i>
-    <font color="#FF0000"><b>Lava</b></font></i> derivation notion applies not 
-    only to classes, but also to such parameterized packages. In a derived 
-    package more derived classes will be assigned to the virtual types / type 
-    parameters of the package. </p>
-    <p>It is well known that such a <i>virtual type</i> approach is more 
-    appropriate than the traditional <i>template</i> / <i>parametric types</i> 
-    approach for describing <i>groups of interrelated classes with common type 
-    parameters</i>. Many design patterns are based on such groups of 
-    interrelated classes.</p>
-    <p>Nevertheless the recent proposals concerning genericity enhancements for 
-    the <b><i><font color="#FF0000">Java</font></i></b> language are based on 
-    the older <i>parametric types</i> approach, presumably because it is easier 
-    to incorporate it in the existing <b><i><font color="#FF0000">Java</font></i></b> 
-    language without or with only minor changes to the <b><i>
-    <font color="#FF0000">Java</font></i></b> Virtual Machine.</p>
-    <p>We believe that in a new experimental language like <b><i>
-    <font color="#FF0000">Lava</font></i></b> the <i>virtual type</i> approach 
-    should get a real chance to show its apparent advantages.</p>
-    <p>See our section on <a href="PatternsFrameworks.htm">patterns/frameworks</a> 
-    and our <a href="PatternSamples.htm">pattern samples</a> for more details.</p>
-    
-    </BODY>
-</HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>FAQ design patterns</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  i.c3 {font-weight: bold}
+  b.c2 {font-style: italic; color: Red}
+  h2.c1 {font-weight: bold; text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+      .style2
+      {
+          color: #FF0000;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Does <span class="style1">Lava</span> support design patterns?</h2>
+
+  <p>The answer is <b class="c2">yes</b>, and this is one of the most important and advanced features of <b class="c2">Lava.</b></p>
+
+  <p><b class="c2">Lava</b> provides particular support for groups (&quot;packages&quot;) of interrelated classes that refer indirectly to one another through type parameters (&quot;virtual types&quot;). The 
+      <span class="style2"> <i class="c3">Lava</i></span> derivation notion applies not only to classes, but also to such parameterized packages. In a derived package more derived classes will be assigned to the virtual types / type parameters of the package.</p>
+
+  <p>It is well known that such a <i>virtual type</i> approach is more appropriate than the traditional <i>template</i> / <i>parametric types</i> approach for describing <i>groups of interrelated classes with common type parameters</i>. Many design patterns are based on such groups of interrelated classes.</p>
+
+  <p>Nevertheless the recent proposals concerning genericity enhancements for the <b class="c2">Java</b> language are based on the older <i>parametric types</i> approach, presumably because it is easier to incorporate it in the existing <b class="c2">Java</b> language without or with only minor changes to the <b class="c2">Java</b> Virtual Machine.</p>
+
+  <p>We believe that in a new experimental language like <b class="c2">Lava</b> the <i>virtual type</i> approach should get a real chance to show its apparent advantages.</p>
+
+  <p>See our section on <a href="PatternsFrameworks.htm">patterns/frameworks</a> and our <a href="PatternSamples.htm">pattern samples</a> for more details.</p>
+</body>
+</html>
