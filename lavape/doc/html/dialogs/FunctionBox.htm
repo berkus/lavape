@@ -61,7 +61,7 @@
 
   <p>A <a href="../ProtectedFriend.htm">protected</a> function can be invoked only from functions contained in the implementation of this or a derived class.</p>
 
-  <h3><span style="color:()">()</span>"static"></a>Static</h3>
+  <h3><a id="static"></a>Static</h3>
 
   <p>A class may have static member functions. These are invoked without call expression and have no &quot;self&quot; variable. Interfaces with static member functions are used primarily if you want to add further functions to an existing class C of objects without extending C.</p>
 
@@ -75,7 +75,7 @@
 
   <p>An abstract function is not implemented in the implementation of the containing class. Its implementation is deferred to a derived class. Interfaces containing abstract functions cannot be creatable; therefore the &quot;abstract&quot; check-box is disabled if the function belongs to a creatable class.</p>
 
-  <h3><span style="color:()">()</span>"selfClosed"></a>&quot;Self&quot; is closed</h3>
+  <h3><a id="selfClosed"></a>&quot;Self&quot; is closed</h3>
 
   <p>If checked, then this means that the <i>self</i> object of this method may be in a not yet fully initialized state. Although a method may be called only if a non-null value has been assigned to all non-optional member variables of its <i>self</i> object within the object&#39;s initializer, these values might in turn contain non-fully initialized nested members. <i class="c3">LavaPE</i> guarantees that such <a href="../UnfinishedObjects.htm">unfinished objects</a> are in a sense &quot;closed&quot; or &quot;opaque&quot;: A &quot;closed&quot; object may only be passed, assigned and referenced &quot;as a whole&quot;. Referencing its member objects is prohibited (and prevented by <i class="c3">LavaPE</i> already at programming time!).</p>
 
@@ -83,7 +83,7 @@
 
   <p>A function doesn&#39;t modify &quot;self&quot; if it treats its &quot;self&quot; object as immutable, i.e., it doesn&#39;t modify the immediate and nested <a href="../PointersRefCounts.htm#refTypes">constituents</a> of &quot;self&quot;.</p>
 
-  <h3><span style="color:()">()</span>"native"></a>Native</h3>
+  <h3><a id="native"></a>Native</h3>
 
   <p>See <a href="InterfaceBox.htm#native">native interfaces</a>.</p>
 
@@ -111,7 +111,7 @@
 
   <p>Transforms an overridden function into a non-overridden function, as if it had been newly declared in the containing class.</p>
 
-  <h3><span style="color:()">()</span>"forceOverride"></a>Callable only from this VT context</h3>
+  <h3><a id="forceOverride"></a>Callable only from this VT context</h3>
 
   <p>The function together with its containing class must always be <a href="../OverrideView.htm">overridden</a> when the containing pattern is derived. Thus it cannot be called with a <i>self</i> object of a more <a href="../TypeSafety.htm#p-derived">p-derived</a> run-time type, and static calls are forbidden either.</p>
 

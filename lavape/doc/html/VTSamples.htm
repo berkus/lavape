@@ -72,7 +72,7 @@
 
   <p>Note that <i>DrawFW::View</i> is <b>not</b> compatible in the traditional sense (of <a href="TypeSafety.htm#c-derived">c-derivation</a>) to ModelViewFW::View, since it contains member variables (<i>myModel</i>) and function parameters (m of initializer <i>ini</i>) that are of a more derived type in pattern <i>DrawFW</i> than in <i>ModelViewFW</i> (as a consequence of covariant specialization of the VT <i>&lt;model&gt;</i>).</p>
 
-  <p><b><span style="color:()">()</span>"queueOfPoint"></a>QueueOfPoint:<br /></b><br />
+  <p><b><a id="queueOfPoint"></a>QueueOfPoint:<br /></b><br />
   Note the two versions of class <i>X</i>: One belongs to pattern <i>Queue</i> (a class having a VT <i>elemType</i>), the other is declared outside <i>Queue</i>. Both have a member function <i>f</i> with almost identical implementations. Look at these:</p>
 
   <p>The difference between the implementations of the two versions of <i>f</i> is that one of them belongs to pattern <i>Queue,</i> and one doesn&#39;t. The former <b>has to</b> use the virtual type <i>&lt;Queue::elemType&gt;</i> of <i>Queue</i> to declare the local variable <i>p</i>, the latter <b>cannot</b> use this but <b>must</b> use the concrete class <i>Point</i> to declare <i>p</i>. The reasons are:</p>
@@ -87,7 +87,7 @@
 
   <p>The reason for the validity of the second rule is simple: The value of a VT (= type parameter) is determined by the respective <a href="PatternsFrameworks.htm#patternContext">pattern context</a>. So if you are outside a pattern P and outside of any pattern that is derived from P, the values of P&#39;s VTs at the actual place of reference are just undefined.</p>
 
-  <p><b><span style="color:()">()</span>"visitor"></a>VirtualVisitor:<br /></b><br />
+  <p><b><a id="visitor"></a>VirtualVisitor:<br /></b><br />
   The <i>Visitor</i> pattern defines an abstract virtual type <i>R</i> for the result of the visitor&#39;s tree evaluation function <i>evaluate</i>. The way how the visitor walks through the tree is described by this <i>evaluate</i> method and doesn&#39;t depend on <i>R</i>, while the treatment of the individual tree nodes depends on <i>R</i> and is implemented by the overridden methods <i>evalLeaf</i> and <i>evalNode</i> of <i>StringVisitor</i> and <i>IntVisitor</i>. The initiator <i>VisitorDemo</i> shows how a sample tree is constructed and how this same tree is evaluated twice: once by the <i>StringVisitor</i> and once by the <i>IntVisitor</i>.</p>
 
   <p>Please notice the comments in the VisitorDemo initiator.</p>
