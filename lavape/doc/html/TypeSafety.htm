@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>Type-safety of Lava</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
   <link href="LavaStyles.css" type="text/css" rel="STYLESHEET" />
   <style type="text/css" xml:space="preserve">
 /*<![CDATA[*/
@@ -67,11 +68,11 @@
 
   <h3><a id="derivationType"></a>2. Classic vs. pattern-induced derivations</h3>
 
-  <p class="c7"><a name="p-derived" id="p-derived"></a>Pattern-induced derivation:</p>
+  <p class="c7"><a id="p-derived"></a>Pattern-induced derivation:</p>
 
   <p>If vt<sub>1</sub> is a virtual type of pattern P1 and vt<sub>2</sub> overrides it in pattern P2 then vt<sub>2</sub> is said to be &quot;p-derived&quot; from vt<sub>1</sub>. Likewise, if the value of vt<sub>1</sub> is a concrete class A1 and A2 is the corresponding derived class in P2 then A2 is said to be p-derived from A1. We speak of a pattern-induced derivation or p-derivation in this case.</p>
 
-  <p class="c7"><a name="c-derived" id="c-derived"></a>Classic derivation:</p>
+  <p class="c7"><a id="c-derived"></a>Classic derivation:</p>
 
   <p>In all other cases, particularly in the absence of virtual types, or in the case of class derivations within the same pattern, we speak off &quot;classic&quot;, or class, or c-derivations. (A single class is also considered to be c-derived from itself.)</p>
 
@@ -270,7 +271,7 @@
 
   <p>Note that parameter passing to a function or from a function must also be considered as a special kind of assignments: An actual input parameter is assigned to the corresponding formal input parameter, a formal output parameter is assigned to a receiving variable.</p>
 
-  <h3><a id=.1 Type-Checking in the Absence of Subtype-Substitutability</h3>
+  <h3>Type-Checking in the Absence of Subtype-Substitutability</h3>
 
   <p class="c7">An expression expr may be assigned to a variable var if</p>
 
@@ -438,13 +439,14 @@
 
     <li>Bracha, G., Odersky, M., Stoutamire, D., Wadler, Ph.: Making the future safe for the past: Adding Genericity to the Java<sup>TM</sup> Programming Language. Proceedings OOPSLA&#39;98.</li>
 
- <a id="BOW"></a>Bruce, K.B., Odersky, M., Wadler, Ph.: A Statically Safe Alternative to Virtual Types. Proceedings ECOOP.98, p.523-549.</li>
+    <li><a id="BOW"></a>Bruce, K.B., Odersky, M., Wadler, Ph.: A Statically Safe Alternative to Virtual Types. Proceedings ECOOP.98, p.523-549.</li>
 
     <li>Bruce, K.B., Vanderwaart, J.: Semantics-Driven Language Design: Statically Type-Safe Virtual Types in Object-Oriented Languages. Proceedings MFPS&#39;99.</li>
 
     <li>Cartwright, R., Steele, G.J.: Compatible Genericity with Run-time Types for the Java<sup>TM</sup> Programming Language. Proceedings OOPSLA&#39;98.</li>
 
-    <li>Chambers, C., Harrison, B., Vlissides, J.: A Debate on Language and Tool Support for Design Patterns. Proceedings POPL.00, p.277<span style="color:()">()</span> <li><a id="GOF"></a>Gamma, E., Helm, R., Johnson, R., Vlissides, J.: Design Patterns: Elements of Reusable Object-Oriented Software. Addison-Wesley, 1995, ISBN 0201633612.</li>
+    <li>Chambers, C., Harrison, B., Vlissides, J.: A Debate on Language and Tool Support for Design Patterns. Proceedings POPL.00, p.277.</li>
+    <li><a id="GOF"></a>Gamma, E., Helm, R., Johnson, R., Vlissides, J.: Design Patterns: Elements of Reusable Object-Oriented Software. Addison-Wesley, 1995, ISBN 0201633612.</li>
 
     <li>Gosling, J., Joy, B., Steele, G.: Java Language Specification. Sun Microsystems, 1996, ISBN 0201634511.</li>
 
