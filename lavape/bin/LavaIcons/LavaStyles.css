@@ -5,3 +5,10 @@ pre {font-size: 10pt}
 div {margin-left:0.7cm; font-size: 10pt}
 div.Element {margin-left:0cm; font-size: 10pt}
 div.Category {margin-left:0cm; font-size: 10pt; font-style:italic; font-size: 10pt; font-weight:bold; color:#b51806; cursor:pointer}
+.center { text-align: center }
+.red { color: Red }
+.pink { color: "#d1009e" }
+.green { color: Green }
+.green2 { color: "#00a000" }
+.blue { color: Blue }
+.black { color:Black }
