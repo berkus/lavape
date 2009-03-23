@@ -80,13 +80,13 @@
 
   <p>If a member variable <i>xy</i> has this property then <a href="../Unsolved.htm#setGetFunctions">set/get functions</a> are generated for it in the implementation of the containing class. Every read or write access to the variable is redirected implicitly through these get/set functions. Only these set/get functions themselves may directly access the variable. In this way you can supervise every access attempt to the variable and, by properly modifying the default set/get functions, achieve additional side effects or perform access permission checks.</p>
 
-  <h3>Consumable</h3>
+  <a id="consumable" /><h3>Consumable</h3>
 
   <p><i>Consumable</i> member variables are used for <a href="../Transactions.htm#producerConsumer">producer/consumer synchronization</a> in <i class="c2">Lava</i> (not yet implemented).</p>
 
   <h3>Mode</h3>
 
-  <p>The mode of a member variable may be <b>mandatory</b> (default), <b>optional</b>, or <b>placeholder</b>. If <i>optional</i>, the parameter may assume the special <i>null value</i> 
+  <p>The mode of a member variable may be <a id="mandatory" /><b>mandatory</b> (default), <b>optional</b>, or <b>placeholder</b>. If <i>optional</i>, the parameter may assume the special <i>null value</i> 
       <span class="style1">&#216;</span> (&quot;undefined&quot;). <i>Placeholder</i> members cannot be accessed at all. They are used in <a href="../EditForm.htm">forms</a> to describe fields that are to be <i>filled in</i> only in a later step by some other person, although they are <i>visible</i> from the beginning.</p>
 
   <h3>See also</h3>

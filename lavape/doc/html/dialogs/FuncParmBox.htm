@@ -33,13 +33,13 @@
 
   <h3>Mode</h3>
 
-  <p>The mode of a function parameter may be<b> mandatory</b> (default) or <b>optional</b>. If optional, the parameter may assume the special <i>null value</i> <b>&#216;</b> (&quot;undefined&quot;). Note that all combinations of mandatory/optional and <a href="../UnfinishedObjects.htm">closed/non-closed</a> are possible</p>
+  <p>The mode of a function parameter may be <a id="mandatory" /><b>mandatory</b> (default) or <b>optional</b>. If optional, the parameter may assume the special <i>null value</i> <b>&#216;</b> (&quot;undefined&quot;). Note that all combinations of mandatory/optional and <a href="../UnfinishedObjects.htm">closed/non-closed</a> are possible</p>
 
   <h3><a href="../TwoObjectCategories.htm">Category</a> of the formal parameter</h3>
 
   <p>The <a href="../TwoObjectCategories.htm">object category</a> of a formal function parameter may be <i>value object</i> (default) or <i>state object</i>. If the function is a member function of a collection class (derived from one of the built-in classes Set/Chain/Array) then you may want to express that the formal parameter category should be the same as that of the elements of the underlying collection class. Check the check box in this case.</p>
 
-  <h3>&quot;Closed&quot; object</h3>
+  <a id="closed" /><h3>&quot;Closed&quot; object</h3>
 
   <p>If checked, then this means that the actual parameter may be in a not yet fully initialized state. Although an object may be passed as an input or output parameter only if non-null values have been assigned to all its non-optional member variables, these values might in turn contain non-fully initialized nested members. <i class="c2">LavaPE</i> enforces already at programming time(!) that such <a href="../UnfinishedObjects.htm">unfinished objects</a> are in a sense &quot;closed&quot; or &quot;opaque&quot;: Read access to their members is forbidden, and you cannot use their members as &quot;self&quot; objects of method invocations. A &quot;closed&quot; object may only be passed, assigned and referenced &quot;as a whole&quot;. Read and method call access to its member objects is prohibited (and prevented by <i class="c2">LavaPE</i> at programming time).</p>
 
