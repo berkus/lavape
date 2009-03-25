@@ -865,8 +865,8 @@ void CLavaBaseData::Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate)
 
   OperatorNames [OP_equal ] =    DString("operator \"=\"");
   OperatorNames [OP_notequal ] = DString("operator \"=\"");
-  OperatorNames [OP_lessthen ] = DString("operator \"<\"");
-  OperatorNames [OP_greaterthen ] = DString("operator \">\"");
+  OperatorNames [OP_lessthan ] = DString("operator \"<\"");
+  OperatorNames [OP_greaterthan ] = DString("operator \">\"");
   OperatorNames [OP_lessequal] = DString("operator \"<=\"");
   OperatorNames [OP_greaterequal] = DString("operator \">=\"");
   OperatorNames [OP_plus ] =     DString("operator \"+\"");
@@ -886,8 +886,8 @@ void CLavaBaseData::Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate)
 
   OpFuncNames [OP_equal ] =    DString("equal");
   OpFuncNames [OP_notequal ] = DString("not_equal");
-  OpFuncNames [OP_lessthen ] = DString("less_then");
-  OpFuncNames [OP_greaterthen ] = DString("greater_then");
+  OpFuncNames [OP_lessthan ] = DString("less_then");
+  OpFuncNames [OP_greaterthan ] = DString("greater_then");
   OpFuncNames [OP_lessequal] = DString("less_equal");
   OpFuncNames [OP_greaterequal] = DString("greater_equal");
   OpFuncNames [OP_plus ] =     DString("plus");

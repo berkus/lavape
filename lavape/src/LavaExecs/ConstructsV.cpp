@@ -2678,21 +2678,25 @@ void DrawExec (DString file,bool singleFile,CLavaBaseDoc *doc,LavaDECL *myDECL,S
 
   text.currentSynObj = newObj->parentObject;
   if (!singleFile) {
-    codeNl("<HTML>");
-    codeNl("<HEAD>");
-    codeNl("<META http-equiv=\"Content-Type\" CONTENT=\"text/html; charset=iso-8859-1\">");
-    codeNl("<META NAME=\"GENERATOR\" CONTENT=\"Lava HTML Generator\">");
-    code("<TITLE>");
+    codeNl("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"");
+    codeNl("    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+    codeNl("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+    codeNl("<head>");
+    codeNl("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
+    codeNl("<meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\"/>");
+    codeNl("<meta http-equiv=\"Content-Style-Type\" content=\"text/css\"/>");
+    codeNl("<meta name=\"GENERATOR\" content=\"Lava HTML Generator\"/>");
+    code("<title>");
     code(file.c);
-    codeNl("</TITLE>");
-    codeNl("<LINK REL=\"STYLESHEET\" TYPE=\"text/css\" HREF=\"../LavaIcons/LavaStyles.css\">");
-    codeNl("</HEAD>");
-    codeNl("<BODY><PRE>");
+    codeNl("</title>");
+    codeNl("<link rel=\"STYLESHEET\" type=\"text/css\" href=\"../LavaIcons/LavaStyles.css\"/>");
+    codeNl("</head>");
+    codeNl("<body><pre>");
   }
   UpdateParameters(text.ckd);
   newObj->Check(text.ckd);
   newObj->Draw(text,newObj->whereInParent,0,false);
   if (!singleFile)
-    codeNl("</PRE></BODY></HTML>");
+    codeNl("</pre></body></html>");
   text.insertedChars = 0;
 }

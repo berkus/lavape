@@ -2708,8 +2708,8 @@ void CLavaPEDoc::MakeOperator (LavaDECL* opDecl)
 		delete cheArg2;
 	if ((opDecl->op == OP_equal)
 	        || (opDecl->op == OP_notequal)
-	        || (opDecl->op == OP_lessthen)
-	        || (opDecl->op == OP_greaterthen)
+	        || (opDecl->op == OP_lessthan)
+	        || (opDecl->op == OP_greaterthan)
 	        || (opDecl->op == OP_lessequal)
 	        || (opDecl->op == OP_greaterequal)
 	        || (opDecl->op == OP_arraySet))
@@ -2754,8 +2754,8 @@ void CLavaPEDoc::MakeOperator (LavaDECL* opDecl)
 	{
 		case OP_equal:
 		case OP_notequal:
-		case OP_lessthen:
-		case OP_greaterthen:
+		case OP_lessthan:
+		case OP_greaterthan:
 		case OP_lessequal:
 		case OP_greaterequal:
 		case OP_plus:

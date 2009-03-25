@@ -130,10 +130,9 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
   this->argv = argv;
   appDir = QCoreApplication::applicationDirPath();
   m_appName = argv[0];
-  m_activeView = 0;
-  m_oldActFrame = 0;
-  m_oldFocWid = 0;
-  selChanged = false;
+  //m_activeView = 0;
+  //m_oldActFrame = 0;
+  //selChanged = false;
   mainThread = QThread::currentThread();
 
   //// Create a document manager
@@ -466,16 +465,16 @@ bool wxDocument::DeleteAllChildFrames()
 {
   wxChildFrame* child;
   wxTabWidget* tab;
-  bool delTab = false, noTab = true;
+  bool noTab = true;
 
   while (m_docChildFrames.size()) {
     child = m_docChildFrames.takeAt(0);
     tab = child->m_tabWidget;
     if (tab) {
-      tab->removePage(child);
+      tab->removeTab(tab->indexOf(child));
+      delete child;
       if (tab->count() == 0 && ((QSplitter*)tab->parentWidget())->count() > 1) {
         delete tab;
-        delTab = true;
         tab = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
         wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
       }
@@ -1121,7 +1120,7 @@ void wxDocManager::OnFileSaveAs()
 void wxDocManager::OnFileClose()
 {
   wxDocument *doc = GetActiveDocument();
-  if (!doc)
+  if (!doc || doc->deleting)
     return;
   if (doc->Close())
     delete doc;

@@ -1410,7 +1410,7 @@ void CExecView::Select (SynObject *selObj)
 
   if (active) {
     redCtl->setFocus();
-    wxTheApp->selChanged = true;
+    //wxTheApp->selChanged = true;
   }
 
   SetHelpText();

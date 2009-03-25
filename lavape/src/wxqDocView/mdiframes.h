@@ -149,7 +149,7 @@ public:
   }
 
   void postTabChange(int index, QAction* triggeredAction);
-  void removePage(wxChildFrame *page);
+  //void removePage(wxChildFrame *page);
   void setTabTextColor (int index, const QColor &color) {
     tabBar()->setTabTextColor(index,color);
   }
@@ -167,6 +167,8 @@ private:
 
 class WXDLLEXPORT wxChildFrame : public QFrame
 {
+  friend class wxTabBar;
+
 public:
   wxChildFrame(QWidget *parent);
   virtual bool OnCreate(wxDocTemplate *temp, wxDocument *doc);
@@ -190,13 +192,14 @@ public:
 //  FRAMEFACTORY(wxChildFrame)
 	//Qt::WindowState oldWindowState;
 
+
 protected:
+  wxDocument *m_document;
   void resizeEvent(QResizeEvent *ev);
   bool event (QEvent * e);
   QList<wxView*> m_viewList;
   QWidget *m_clientWindow;
   wxView* lastActive;
-  wxDocument *m_document;
   QVBoxLayout *layout;
 
 private:

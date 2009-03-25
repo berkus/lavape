@@ -109,42 +109,50 @@ void CLavaPEView::OnGenHtmlI()
 	QFileInfo sf(dclFile);
   shortFile = sf.baseName();
 
-  codeNl("<HTML>");
-  codeNl("<HEAD>");
-  codeNl("<META http-equiv=\"Content-Type\" CONTENT=\"text/html; charset=iso-8859-1\">");
-  codeNl("<META NAME=\"GENERATOR\" CONTENT=\"Lava HTML Generator\">");
-  code("<TITLE>");
+  codeNl("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"");
+  codeNl("    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+  codeNl("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+  codeNl("<head>");
+  codeNl("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
+  codeNl("<meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\"/>");
+  codeNl("<meta http-equiv=\"Content-Style-Type\" content=\"text/css\"/>");
+  codeNl("<meta name=\"GENERATOR\" content=\"Lava HTML Generator\"/>");
+  code("<title>");
   code(shortFile.toAscii());
-  codeNl("</TITLE>");
-  codeNl("<LINK REL=\"STYLESHEET\" TYPE=\"text/css\" HREF=\"LavaIcons/LavaStyles.css\">");
-  codeNl("<SCRIPT LANGUAGE=\"JavaScript\" SRC=\"LavaIcons/toggleDisplay.js\" TYPE=\"text/javascript\">");
-  codeNl("</SCRIPT>");
-  codeNl("<SCRIPT LANGUAGE=\"JavaScript\" SRC=\"LavaIcons/gotoTarget.js\" TYPE=\"text/javascript\">");
-  codeNl("</SCRIPT>");
-  codeNl("</HEAD>");
-  codeNl("<BODY>");
-  code("<CENTER><H1>");
+  codeNl("</title>");
+  codeNl("<link rel=\"STYLESHEET\" type=\"text/css\" href=\"LavaIcons/LavaStyles.css\"/>");
+  codeNl("<style type=\"text/css\" xml:space=\"preserve\">");
+  codeNl(".black { color: Black }");
+  codeNl(".blue { color: Blue }");
+  codeNl(".green { color: Green }");
+  codeNl(".red { color: Red }");
+  codeNl("</style>");
+  codeNl("<script language=\"JavaScript\" src=\"LavaIcons/toggleDisplay.js\" type=\"text/javascript\"></script>");
+  codeNl("<script language=\"JavaScript\" src=\"LavaIcons/gotoTarget.js\" type=\"text/javascript\"></script>");
+  codeNl("</head>");
+  codeNl("<body>");
+  code("<div class=\"center\"><h1>");
   if (baseName == "std")
     code(shortFile.toAscii());
   else
     code(dclFile.toAscii());
-  codeNl("</H1>");
+  codeNl("</h1>");
   if (!singleFile) {
-    code("<A HREF=\"#index\">");
-    codeNl("<B>Go To Symbol Index</B></A><BR>");
+    code("<a href=\"#index\">");
+    codeNl("<b>Go To Symbol Index</b></a><br />");
     chpSimSyn=(CHESimpleSyntax*)synDef.first;
     chpSimSyn=(CHESimpleSyntax*)chpSimSyn->successor;
     if (chpSimSyn) {
-      code("<A HREF=\"#imported\">");
-      codeNl("<B>Go To Imported Files</B></A>");
+      code("<a href=\"#imported\">");
+      codeNl("<b>Go To Imported Files</b></a>");
     }
   }
-  codeNl("</CENTER><BR><BR><DIV CLASS=Element>");
+  codeNl("</div><br /><br /><div class=\"Element\">");
 
   GenHTML(myDECL,localCategory,firstChild);
   GenIndex(this,false);
 
-  codeNl("</DIV></BODY></HTML>");
+  codeNl("</body></html>");
   IO.CloseOutput();
 }
 
@@ -168,17 +176,17 @@ static inline void codeCard (unsigned c)
 
 static void codeDIV ()
 {
-  IO.WriteString("\n<DIV>");
+  IO.WriteString("\n<div>");
 }
 
 static void codeElementDIV ()
 {
-  IO.WriteString("\n<DIV class=\"Element\">");
+  IO.WriteString("\n<div class=\"Element\">");
 }
 
 static void codeDIVid (int id,const char idType='S')
 {
-  IO.WriteString("\n<DIV ID=\"");
+  IO.WriteString("\n<div id=\"");
 	IO.Write(idType);
   codeCard(id);
   code("\">");
@@ -186,19 +194,20 @@ static void codeDIVid (int id,const char idType='S')
 
 static void codeEndDIV ()
 {
-  IO.WriteString("</DIV>");
+  IO.WriteString("</div>");
 }
 
 static void printCommentLines (DString comment) {
   DString comm;
   QString str(comment.c);
 
-  code("<pre><I><FONT color=#00ff00>");
+  code("<pre><i><span class=\"green\">");
   str = str.replace('<',"&lt;");
+  str = str.replace('>',"&gt;");
   str = str.replace('\r',"");
   comm = qPrintable(str);
   code(comm.c);
-  code(":</FONT></I></pre>");
+  code(":</span></i></pre>");
 }
 
 
@@ -236,28 +245,32 @@ static void GenFramesHTML() {
   QString file = baseFile + ".htm";
 
   IO.OpenOutput(file.toAscii());
-  codeNl("<HTML>");
-  codeNl("<HEAD>");
-  code("<META http-equiv=\"Content-Type\" ");
-  codeNl("CONTENT=\"text/html; charset=iso-8859-1\">");
-  codeNl("<META NAME=\"GENERATOR\" CONTENT=\"Lava HTML Generator\">");
-  code("<TITLE>");
+  codeNl("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Frameset//EN\"");
+  codeNl("   \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd\">");
+  codeNl("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+  codeNl("<head>");
+  code("<meta http-equiv=\"Content-Type\" ");
+  codeNl("content=\"text/html; charset=iso-8859-1\"/>");
+  codeNl("<meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\"/>");
+  codeNl("<meta http-equiv=\"Content-Style-Type\" content=\"text/css\"/>");
+  codeNl("<meta name=\"GENERATOR\" content=\"Lava HTML Generator\"/>");
+  code("<title>");
   code(file.toAscii());
-  codeNl("</TITLE>");
-  codeNl("<LINK REL=\"stylesheet\" TYPE=\"text/css\" HREF=\"LavaIcons/LavaStyles.css\">");
+  codeNl("</title>");
+  codeNl("<link rel=\"stylesheet\" type=\"text/css\" href=\"LavaIcons/LavaStyles.css\"/>");
   codeNl("</head>");
 
-  codeNl("<FRAMESET COLS=\"50%,*\">");
-  code("<FRAME SRC=\"");
+  codeNl("<frameset cols=\"50%,*\">");
+  code("<frame src=\"");
   file = baseName + "_m.htm";
   code(file.toAscii());
-  codeNl("\" NAME=\"frmLeft\">");
-  codeNl("<FRAME SRC=\"LavaIcons/EmptyExec.htm\" NAME=\"frmRight\">");
-  codeNl("<NOFRAMES>");
-  codeNl("<P>This web page uses frames, but your browser doesn't support them.</P>");
-  codeNl("</NOFRAMES>");
-  codeNl("</FRAMESET>");
-  codeNl("</HTML>");
+  codeNl("\" name=\"frmLeft\" title=\"frmLeft\"/>");
+  codeNl("<frame src=\"LavaIcons/EmptyExec.htm\" name=\"frmRight\" title=\"frmRight\"/>");
+  codeNl("<noframes><body>");
+  codeNl("This web page uses frames, but your browser doesn't support them.");
+  codeNl("</body></noframes>");
+  codeNl("</frameset>");
+  codeNl("</html>");
   IO.CloseOutput();
 }
 
@@ -313,34 +326,34 @@ static void GenIndex(CLavaPEView *dartView,bool withINCL)
   }//for
   symList.sort();
 
-  codeNl("\n\n<BR><BR><A NAME=\"index\"></A><H2>Index of symbols defined in this file</H2>");
-  codeNl("<P>(Order: by lines from left to right,<BR>");
-  codeNl("capital letters before small letters)</P>");
-  codeNl("<FONT SIZE=1>");
-  code("<TABLE BORDER=\"0\" BGCOLOR=\"#FFFFA0\" WIDTH=\"100%\" COLS=\"");
+  codeNl("\n\n<br /><br /><a id=\"index\"></a><h2>Index of symbols defined in this file</h2>");
+  codeNl("<p>(Order: by lines from left to right,<br />");
+  codeNl("capital letters before small letters)</p>");
+  codeNl("<table border=\"0\" bgcolor=\"#FFFFA0\" width=\"100%\" style=\"font-size:10pt\">");
+  code("<colgroup span=\"");
   codeCard(COLNO);
-  codeNl("\" STYLE=\"font-size:10pt\">");
+  codeNl("\"/>");
   for (i =  symList.begin(); i != symList.end(); ++i) {
     if (index % COLNO == 0)
-      code("<TR>");
-    code("<TD>");
+      code("<tr>");
+    code("<td>");
     PutLink(&dartView->GetDocument()->IDTable,(*i).refID,singleFile);
-    codeNl("</TD>");
+    codeNl("</td>");
     if (++index % COLNO == 0)
-      codeNl("</TR>");
+      codeNl("</tr>");
   }
   if (index % COLNO != 0)
-    codeNl("</TR>");
-  codeNl("</TABLE></FONT>");
+    codeNl("</tr>");
+  codeNl("</table>");
 
   chpSimSyn=(CHESimpleSyntax*)synDef.first;
   chpSimSyn=(CHESimpleSyntax*)chpSimSyn->successor;
   if (chpSimSyn) {
-    codeNl("<BR><A NAME=\"imported\"></A><H2>Imported files</H2>");
+    codeNl("<br /><a id=\"imported\"></a><h2>Imported files</h2>");
     firstImport = true;
     for (; chpSimSyn; chpSimSyn=(CHESimpleSyntax*)chpSimSyn->successor) {
       PutFileLink(chpSimSyn->data.SyntaxName.c);
-      codeNl("<BR>");
+      codeNl("<br />");
       firstImport = false;
     }
   }
@@ -405,10 +418,10 @@ static void PutLink(TIDTable *IDTable,TID &refID,bool singleFile)
 
   }
 
-	link = importedFile + "#" + QString("%1").arg(refID.nID);
+	link = importedFile + "#T" + QString("%1").arg(refID.nID);
 
 	if (pnode) {
-		code("<A HREF=\"");
+		code("<a href=\"");
 		if (link[0] == '#') {
 			code("javascript:gotoTarget('");
 			code(link.toAscii());
@@ -420,10 +433,10 @@ static void PutLink(TIDTable *IDTable,TID &refID,bool singleFile)
 			code(link.toAscii());
 			code("\">");
 		}
-		code("<FONT color=#000000>");
+		code("<span class=\"black\">");
 		if (pnode->DeclType == VirtualType) {
-			link = QString("&lt;") + QString(pnode->FullName.c) + QString(">");
-			code((QString("&lt;") + QString(pnode->FullName.c) + QString(">")).toAscii());
+			link = QString("&lt;") + QString(pnode->FullName.c) + QString("&gt;");
+			code((QString("&lt;") + QString(pnode->FullName.c) + QString("&gt;")).toAscii());
 		}
 		else {
 				symName = pnode->FullName.c;
@@ -434,22 +447,24 @@ static void PutLink(TIDTable *IDTable,TID &refID,bool singleFile)
             && pnode->ParentDECL->ParentDECL->DeclType == Impl))
           symName += "::impl";
 				symName.replace('<',"&lt;");
+				symName.replace('>',"&gt;");
+				symName.replace('&',"&amp;");
 				code(symName.toAscii());
 		}
-		code("</FONT></A>");
+		code("</span></a>");
 	}
 	else {
-		code("<FONT color=#FF0000>");
+		code("<span class=\"red\">");
 		code(QString("(%1,%2)").arg(nINCLstring).arg(nIDstring).toAscii());
-		code("</FONT>");
+		code("</span>");
 	}
 }
 
 static void PutExecLink(DString fileName)
 {
-  code("<A HREF=\"");
+  code("<a href=\"");
   code(fileName.c);
-  code("\" TARGET=\"frmRight\"><B><I>");
+  code("\" target=\"frmRight\"><b><i>");
   switch (currentNode->DeclType) {
   case Require:
     code("Require");
@@ -467,7 +482,7 @@ static void PutExecLink(DString fileName)
       code("Invariant");
     }
   }
-  code("</I></B></A>");
+  code("</i></b></a>");
 }
 
 static void PutFileLink(QString fileName)
@@ -494,11 +509,11 @@ static void PutFileLink(QString fileName)
     fileName.replace('\\',"/");
   }
 
-  code("<A HREF=\"");
+  code("<a href=\"");
   code(fileName.toAscii());
   code("\">");
   code(linkText.toAscii());
-  code("</A>");
+  code("</a>");
 }
 
 
@@ -521,15 +536,15 @@ static void PutCategory(TDeclType myCategory,TDeclType &parentCategory, bool &fi
 
   switch (myCategory) {
   case VirtualType:
-    code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('V");
+    code("\n<div class=\"Category\" title=\"click to hide/show details\" onclick=\"toggleDisplay('V");
     codeCard(currentNode->OwnID);
-    code("')\">Virtual types:</DIV>");
+    code("')\">Virtual types:</div>");
 		codeDIVid(currentNode->OwnID,'V');
     break;
   case IsDef:
-    code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('D");
+    code("\n<div class=\"Category\" title=\"click to hide/show details\" onclick=\"toggleDisplay('D");
     codeCard(currentNode->OwnID);
-    code("')\">Declarations:</DIV>");
+    code("')\">Declarations:</div>");
 		codeDIVid(currentNode->OwnID,'D');
     break;
   case Attr:
@@ -539,28 +554,28 @@ static void PutCategory(TDeclType myCategory,TDeclType &parentCategory, bool &fi
     case CompObjSpec:
     case CompObj:
     case Initiator:
-			code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('F");
+			code("\n<div class=\"Category\" title=\"click to hide/show details\" onclick=\"toggleDisplay('F");
 			codeCard(currentNode->OwnID);
-			code("')\">Features:</DIV>");
+			code("')\">Features:</div>");
  			codeDIVid(currentNode->OwnID,'F');
      break;
     default:
-			code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('A");
+			code("\n<div class=\"Category\" title=\"click to hide/show details\" onclick=\"toggleDisplay('A");
 			codeCard(currentNode->OwnID);
-			code("')\">Attributes:</DIV>");
+			code("')\">Attributes:</div>");
  			codeDIVid(currentNode->OwnID,'A');
     }
     break;
   case IAttr:
-		code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('I");
+		code("\n<div class=\"Category\" title=\"click to hide/show details\" onclick=\"toggleDisplay('I");
 		codeCard(currentNode->OwnID);
-		code("')\">Inputs:</DIV>");
+		code("')\">Inputs:</div>");
  		codeDIVid(currentNode->OwnID,'I');
     break;
   case OAttr:
-		code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('O");
+		code("\n<div class=\"Category\" title=\"click to hide/show details\" onclick=\"toggleDisplay('O");
 		codeCard(currentNode->OwnID);
-		code("')\">Outputs:</DIV>");
+		code("')\">Outputs:</div>");
  		codeDIVid(currentNode->OwnID,'O');
     break;
   case ExecDef:
@@ -569,30 +584,30 @@ static void PutCategory(TDeclType myCategory,TDeclType &parentCategory, bool &fi
     switch (currentNode->ParentDECL->DeclType) {
     case Function:
     case Initiator:
-			code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('X");
+			code("\n<div class=\"Category\" TITLE=\"click to hide/show details\" onclick=\"toggleDisplay('X");
 			codeCard(currentNode->ParentDECL->OwnID);
       switch (currentNode->DeclType) {
       case ExecDef:
-			  code("')\">Exec:</DIV>");
+			  code("')\">Exec:</div>");
         break;
       case Require:
         if (currentNode->ParentDECL->ParentDECL->DeclType == Impl)
 			    code("_ReqI')\">Require:</DIV>");
         else
-			    code("_Req')\">Require:</DIV>");
+			    code("_Req')\">Require:</div>");
         break;
       case Ensure:
         if (currentNode->ParentDECL->ParentDECL->DeclType == Impl)
-			      code("_EnsI')\">Ensure:</DIV>");
+			      code("_EnsI')\">Ensure:</div>");
         else
-			    code("_Ens')\">Ensure:</DIV>");
+			    code("_Ens')\">Ensure:</div>");
         break;
       }
       break;
     default:
-			code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('X");
+			code("\n<div class=\"Category\" title=\"click to hide/show details\" onclick=\"toggleDisplay('X");
 			codeCard(currentNode->ParentDECL->OwnID);
-			code("')\">Invariant:</DIV>");
+			code("')\">Invariant:</div>");
     }
     break;
   }
@@ -624,32 +639,32 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
   case Component:
     myCategory = IsDef;
     PutCategory(myCategory,parentCategory,fstChild);
-    code("<A NAME=\"");
+    code("<a id=\"T");
     codeCard(pnode->OwnID);
-    code("\"></A>");
+    code("\"></a>");
     PutComment(pnode0,false,false);
     chp = (CHE*)pnode->NestedDecls.first;
-    code("<IMG SRC=\"LavaIcons/package.png\"");
+    code("<img src=\"LavaIcons/package.png\" alt=\"img\"");
     if (chp) {
-      code(" ALT=\"\" TITLE=\"click to hide/show details\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
+      code(" title=\"click to hide/show details\" style=\"cursor:pointer\" onclick=\"toggleDisplay('S");
       codeCard(pnode->OwnID);
       code("')\"");
     }
-    code(">\n");
+    code("/>\n");
     if (pnode->LocalName.l) {
       PutComment(pnode0,false,true);
       code(pnode->LocalName.c);
       code(" := ");
     }
     if (pnode->TypeFlags.Contains(isProtected))
-      code("<B>opaque package</B>");
+      code("<b>opaque package</b>");
     else
-      code("<B>package</B>");
+      code("<b>package</b>");
     for ( chpTID = (CHETID*)pnode->Supports.first;
           chpTID;
           chpTID = (CHETID*)chpTID->successor) {
       if (isFirst) {
-        code(", <B>extends</B> ");
+        code(", <b>extends</b> ");
         isFirst = false;
       }
       else
@@ -672,11 +687,11 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
   case VirtualType:
     myCategory = VirtualType;
     PutCategory(myCategory,parentCategory,fstChild);
-    code("<A NAME=\"");
+    code("<a id=\"T");
     codeCard(pnode->OwnID);
-    code("\"></A>");
+    code("\"></a>");
     PutComment(pnode0,false,false);
-    code("<IMG SRC=\"LavaIcons/patpara.png\">\n");
+    code("<img src=\"LavaIcons/patpara.png\" alt=\"img\"/>\n");
 
     PutComment(pnode0,false,true);
     code(pnode0->LocalName.c);
@@ -690,7 +705,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
           chpTID;
           chpTID = (CHETID*)chpTID->successor) {
       if (isFirst) {
-        code(", <B>overrides</B> ");
+        code(", <b>overrides</b> ");
         isFirst = false;
       }
       else
@@ -705,58 +720,58 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
   case Interface:
     myCategory = IsDef;
     PutCategory(myCategory,parentCategory,fstChild);
-    code("<A NAME=\"");
+    code("<a id=\"T");
     codeCard(pnode->OwnID);
-    code("\"></A>");
+    code("\"></a>");
     PutComment(pnode0,false,false);
     chp = (CHE*)pnode->NestedDecls.first;
     if (pnode->SecondTFlags.Contains(isSet)) {
-      code("<IMG SRC=\"LavaIcons/settyp.png\"");
+      code("<img src=\"LavaIcons/settyp.png\" alt=\"img\"");
       if (chp) {
-        code(" ALT=\"\" TITLE=\"click to hide/show details\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
+        code(" title=\"click to hide/show details\" style=\"cursor:pointer\" onclick=\"toggleDisplay('S");
         codeCard(pnode->OwnID);
         code("')\"");
       }
     }
     else if (pnode->SecondTFlags.Contains(isGUI)) {
-      code("<IMG SRC=\"LavaIcons/formint.png\"");
+      code("<img src=\"LavaIcons/formint.png\" alt=\"img\"");
       if (chp) {
-        code(" ALT=\"\" TITLE=\"click to hide/show details\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
+        code(" title=\"click to hide/show details\" style=\"cursor:pointer\" onclick=\"toggleDisplay('S");
         codeCard(pnode->OwnID);
         code("')\"");
       }
     }
     else if (pnode->DeclDescType == EnumType) {
 			isEnum = true;
-      code("<IMG SRC=\"LavaIcons/enum.png\"");
+      code("<img src=\"LavaIcons/enum.png\" alt=\"img\"");
       enumsel = (CHEEnumSelId*)((TEnumDescription*)pnode->EnumDesc.ptr)->EnumField.Items.first;
       if (enumsel) {
-        code(" ALT=\"\" TITLE=\"click to hide/show details\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
+        code(" title=\"click to hide/show details\" style=\"cursor:pointer\" onclick=\"toggleDisplay('S");
         codeCard(pnode->OwnID);
         code("')\"");
       }
     }
     else {
-      code("<IMG SRC=\"LavaIcons/classint.png\"");
+      code("<img src=\"LavaIcons/classint.png\" alt=\"img\"");
       if (chp) {
-        code(" ALT=\"\" TITLE=\"click to hide/show details\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
+        code(" title=\"click to hide/show details\" style=\"cursor:pointer\" onclick=\"toggleDisplay('S");
         codeCard(pnode->OwnID);
         code("')\"");
       }
     }
-    code(">\n");
+    code("/>\n");
     PutComment(pnode0,false,true);
     code(pnode->LocalName.c);
     code(" := ");
     if (pnode->TypeFlags.Contains(isComponent))
-      code("<B>component object interface</B>");
+      code("<b>component object interface</b>");
     else if (pnode->DeclDescType == EnumType)
-      code("<B>enumeration</B>");
+      code("<b>enumeration</b>");
     else {
       if (pnode->SecondTFlags.Contains(isGUI))
-        code("<B>GUI service</B>");
+        code("<b>GUI service</b>");
       else
-        code("<B>interface</B>");
+        code("<b>interface</b>");
     }
     for ( chpTID = (CHETID*)pnode->Supports.first;
           chpTID;
@@ -765,7 +780,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
         if (chpTID->data == objectTID)
           break;
         else
-          code(", <B>extends</B> ");
+          code(", <b>extends</b> ");
         isFirst = false;
       }
       else
@@ -777,7 +792,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
           chpTID;
           chpTID = (CHETID*)chpTID->successor) {
       if (isFirst) {
-        code(", <B>signals</B> ");
+        code(", <b>signals</b> ");
         isFirst = false;
       }
       else
@@ -792,8 +807,8 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
         if (isFirst)
           isFirst = false;
         else
-          code("<BR>\n");
-        code("<IMG SRC=\"LavaIcons/enumsel.png\"> ");
+          code("<br />\n");
+        code("<img src=\"LavaIcons/enumsel.png\" alt=\"img\"/> ");
         code(enumsel->data.Id.c);
         enumsel = (CHEEnumSelId*)enumsel->successor;
       }
@@ -804,7 +819,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
 			if (!isEnum)
 				codeDIVid(pnode->OwnID);
 			else
-				code("<BR>");
+				code("<br />");
       while (chp) {
         GenHTML((LavaDECL*)chp->data,localCategory,firstChild);
         chp = (CHE*)chp->successor;
@@ -817,29 +832,29 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
   case CompObjSpec:
     myCategory = IsDef;
     PutCategory(myCategory,parentCategory,fstChild);
-    code("<A NAME=\"");
+    code("<a id=\"T");
     codeCard(pnode->OwnID);
-    code("\"></A>");
+    code("\"></a>");
     PutComment(pnode0,false,false);
     chp = (CHE*)pnode->NestedDecls.first;
-    code("<IMG SRC=\"LavaIcons/cospec.png\"");
+    code("<img src=\"LavaIcons/cospec.png\" alt=\"img\"");
     if (chp) {
-      code(" ALT=\"\" TITLE=\"click to hide/show details\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
+      code(" title=\"click to hide/show details\" style=\"cursor:pointer\" onclick=\"toggleDisplay('S");
       codeCard(pnode->OwnID);
       code("')\"");
     }
-    code(">\n");
+    code("/>\n");
     PutComment(pnode0,false,true);
     code(pnode->LocalName.c);
     code(" := ");
     if (pnode->TypeFlags.Contains(isPersistent))
-      code("<B>persistent</B> ");
-    code("<B>compon. obj. spec.</B>");
+      code("<b>persistent</b> ");
+    code("<b>compon. obj. spec.</b>");
     for ( chpTID = (CHETID*)pnode->Supports.first;
           chpTID;
           chpTID = (CHETID*)chpTID->successor) {
       if (isFirst) {
-        code(", <B>supports</B> ");
+        code(", <b>supports</b> ");
         isFirst = false;
       }
       else
@@ -853,27 +868,27 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
   case Impl:
     myCategory = IsDef;
     PutCategory(myCategory,parentCategory,fstChild);
-    code("<A NAME=\"");
+    code("<a id=\"T");
     codeCard(pnode->OwnID);
-    code("\"></A>");
+    code("\"></a>");
     PutComment(pnode0,false,false);
     chp = (CHE*)pnode->NestedDecls.first;
     if (pnode->SecondTFlags.Contains(isGUI))
-      code("<IMG SRC=\"LavaIcons/formimpl.png\"");
+      code("<img src=\"LavaIcons/formimpl.png\" alt=\"img\"");
     else
-      code("<IMG SRC=\"LavaIcons/classimpl.png\"");
+      code("<img src=\"LavaIcons/classimpl.png\" alt=\"img\"");
     if (chp) {
-      code(" ALT=\"\" TITLE=\"click to hide/show details\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
+      code(" title=\"click to hide/show details\" style=\"cursor:pointer\" onclick=\"toggleDisplay('S");
       codeCard(pnode->OwnID);
       code("')\"");
     }
-    code(">\n");
+    code("/>\n");
     PutComment(pnode0,false,true);
-    code("<B>implementation of ");
+    code("<b>implementation of ");
     if (pnode->SecondTFlags.Contains(isGUI))
-      code("GUI service </B>");
+      code("GUI service </b>");
     else
-      code("</B>");
+      code("</b>");
     for ( chpTID = (CHETID*)pnode->Supports.first;
           chpTID;
           chpTID = (CHETID*)chpTID->successor) {
@@ -899,18 +914,18 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
   case CompObj:
     myCategory = IsDef;
     PutCategory(myCategory,parentCategory,fstChild);
-    code("<A NAME=\"");
+    code("<a id=\"T");
     codeCard(pnode->OwnID);
-    code("\"></A>");
+    code("\"></a>");
     PutComment(pnode0,false,false);
-    code("<IMG SRC=\"LavaIcons/coimpl.png\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
+    code("<img src=\"LavaIcons/coimpl.png\" style=\"cursor:pointer\" onclick=\"toggleDisplay('S");
     codeCard(pnode->OwnID);
     code("')\"");
-    code(" ALT=\"\" TITLE=\"click to hide/show details\"");
-    code(">\n");
+    code(" alt=\"img\" title=\"click to hide/show details\"");
+    code("/>\n");
     PutComment(pnode0,false,true);
     code(pnode->LocalName.c);
-    code(" := <B>component object, implements </B>");
+    code(" := <b>component object, implements </b>");
     for ( chpTID = (CHETID*)pnode->Supports.first;
           chpTID;
           chpTID = (CHETID*)chpTID->successor) {
@@ -933,14 +948,14 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     codeCard(pnode->OwnID);
     code("\"></A>");
     PutComment(pnode0,false,false);
-    code("<IMG SRC=\"LavaIcons/form.png\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
+    code("<IMG SRC=\"LavaIcons/form.png\" STYLE=\"cursor:pointer\" onclick=\"toggleDisplay('S");
     codeCard(pnode->OwnID);
     code("')\"");
     code(" ALT=\"\" TITLE=\"click to hide/show details\"");
     code(">\n");
     PutComment(pnode0,false,true);
     code(pnode->LocalName.c);
-    code(" := <B>form </B>");
+    code(" := <b>form </b>");
     PutLink(&GetDocument()->IDTable,pnode->RefID,singleFile);
     PutComment(pnode0,true,true);
     PutComment(pnode0,true,false);*/
@@ -949,21 +964,21 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
   case Initiator:
     myCategory = IsDef;
     PutCategory(myCategory,parentCategory,fstChild);
-    code("<A NAME=\"");
+    code("<a id=\"T");
     codeCard(pnode->OwnID);
-    code("\"></A>");
+    code("\"></a>");
     PutComment(pnode0,false,false);
     chp = (CHE*)pnode->NestedDecls.first;
-    code("<IMG SRC=\"LavaIcons/initiato.png\"");
+    code("<img src=\"LavaIcons/initiato.png\" alt=\"img\"");
     if (chp) {
-      code(" ALT=\"\" TITLE=\"click to hide/show details\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
+      code(" title=\"click to hide/show details\" style=\"cursor:pointer\" onclick=\"toggleDisplay('S");
       codeCard(pnode->OwnID);
       code("')\"");
     }
-    code(">\n");
+    code("/>\n");
     PutComment(pnode0,false,true);
     code(pnode->LocalName.c);
-    code(" := <B>main program</B>");
+    code(" := <b>main program</b>");
     PutComment(pnode0,true,true);
     PutComment(pnode0,true,false);
     if (chp) {
@@ -980,31 +995,43 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
   case Function:
     myCategory = Attr;
     PutCategory(myCategory,parentCategory,fstChild);
-    code("<A NAME=\"");
+    code("<a id=\"T");
     codeCard(pnode->OwnID);
-    code("\"></A>");
+    code("\"></a>");
     PutComment(pnode0,false,false);
     chp = (CHE*)pnode->NestedDecls.first;
-    code("<IMG SRC=\"LavaIcons/function.png\"");
+    code("<img src=\"LavaIcons/function.png\" alt=\"img\"");
     if (chp) {
-      code(" ALT=\"\" TITLE=\"click to hide/show details\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
+      code(" title=\"click to hide/show details\" style=\"cursor:pointer\" onclick=\"toggleDisplay('S");
       codeCard(pnode->OwnID);
       code("')\"");
     }
-    code(">\n");
+    code("/>\n");
     PutComment(pnode0,false,true);
     if (pnode->op == OP_noOp)
       code(pnode->LocalName.c);
     else
       switch (pnode->op) {
-      case OP_lessthen:
+      case OP_bwAnd:
+        code("operator \"&amp;\"");
+        break;
+      case OP_lessthan:
         code("operator \"&lt;\"");
         break;
       case OP_lessequal:
         code("operator \"&lt;=\"");
         break;
+      case OP_greaterthan:
+        code("operator \"&gt;\"");
+        break;
+      case OP_greaterequal:
+        code("operator \"&gt;=\"");
+        break;
       case OP_lshift:
         code("operator \"&lt;&lt;\"");
+        break;
+      case OP_rshift:
+        code("operator \"&gt;&gt;\"");
         break;
       case OP_arrayGet:
         code("operator \"&lt;-[]\"");
@@ -1017,26 +1044,26 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
       }
     code(" := ");
     if (pnode->TypeFlags.Contains(isProtected))
-      code("<B>protected</B> ");
+      code("<b>protected</b> ");
     if (pnode->TypeFlags.Contains(isAbstract))
-      code("<B>abstract</B> ");
+      code("<b>abstract</b> ");
     if (pnode->TypeFlags.Contains(isConst))
-      code("<B>read-only</B> ");
+      code("<b>read-only</b> ");
     if (pnode->TypeFlags.Contains(forceOverride))
-      code("<B>force_override</B> ");
+      code("<b>force_override</b> ");
     if (pnode->TypeFlags.Contains(defaultInitializer))
-      code("<B>default initializer</B>");
+      code("<b>default initializer</b>");
     else if (pnode->TypeFlags.Contains(isInitializer))
-      code("<B>initializer</B>");
+      code("<b>initializer</b>");
     else
-      code("<B>function</B>");
+      code("<b>function</b>");
 
     if (!pnode->SecondTFlags.Contains(funcImpl))
       for ( chpTID = (CHETID*)pnode0->Supports.first;
             chpTID;
             chpTID = (CHETID*)chpTID->successor) {
         if (isFirst) {
-          code(", <B>overrides</B> ");
+          code(", <b>overrides</b> ");
           isFirst = false;
         }
         else
@@ -1049,7 +1076,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
           chpTID;
           chpTID = (CHETID*)chpTID->successor) {
       if (isFirst) {
-        code(", <B>throws</B> ");
+        code(", <b>throws</b> ");
         isFirst = false;
       }
       else
@@ -1077,39 +1104,39 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     else
       myCategory = pnode->DeclType;
     PutCategory(myCategory,parentCategory,fstChild);
-    code("<A NAME=\"");
+    code("<a id=\"T");
     codeCard(pnode->OwnID);
-    code("\"></A>");
+    code("\"></a>");
     PutComment(pnode0,false,false);
 
     if (pnode0->DeclType == Alias)
-      code("<IMG SRC=\"LavaIcons/alias.png\">\n");
+      code("<img src=\"LavaIcons/alias.png\" alt=\"img\"/>\n");
     else if (pnode->DeclDescType == BasicType)
-      code("<IMG SRC=\"LavaIcons/basicatt.png\">\n");
+      code("<img src=\"LavaIcons/basicatt.png\" alt=\"img\"/>\n");
     else {
       pnodeType = GetDocument()->IDTable.GetDECL(pnode->RefID);
       if (pnodeType)
         switch (pnodeType->DeclType) {
         case VirtualType:
-          code("<IMG SRC=\"LavaIcons/paramatt.png\">\n");
+          code("<img src=\"LavaIcons/paramatt.png\" alt=\"img\"/>\n");
           break;
         case Interface:
           if (pnodeType->SecondTFlags.Contains(isSet))
-            code("<IMG SRC=\"LavaIcons/setatt.png\">\n");
+            code("<img src=\"LavaIcons/setatt.png\" alt=\"img\"/>\n");
           else
-            code("<IMG SRC=\"LavaIcons/classattr.png\">\n");
+            code("<img src=\"LavaIcons/classattr.png\" alt=\"img\"/>\n");
           break;
         case FormDef:
-          code("<IMG SRC=\"LavaIcons/formAt.png\">\n");
+          code("<img src=\"LavaIcons/formAt.png\" alt=\"img\"/>\n");
           break;
         case EnumDef:
-          code("<IMG SRC=\"LavaIcons/enumattr.png\">\n");
+          code("<img src=\"LavaIcons/enumattr.png\" alt=\"img\"/>\n");
           break;
         default:
-          code("<IMG SRC=\"LavaIcons/undefine.png\">\n");
+          code("<img src=\"LavaIcons/undefine.png\" alt=\"img\"/>\n");
         }
       else
-        code("<IMG SRC=\"LavaIcons/undefine.png\">\n");
+        code("<img src=\"LavaIcons/undefine.png\" alt=\"img\"/>\n");
     }
 
     PutComment(pnode0,false,true);
@@ -1132,37 +1159,37 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
         ;
       else
         if (pnode->TypeFlags.Contains(acquaintance)) 
-          code("<B>, acquaintance</B>");
+          code("<b>, acquaintance</b>");
         else
-          code("<B>, reverse reference</B>");
+          code("<b>, reverse reference</b>");
 
 
     if (pnode->TypeFlags.Contains(isProtected))
-      code("<B>, protected</B>");
+      code("<b>, protected</b>");
 
     if (pnode->TypeFlags.Contains(isOptional))
-      code("<B>, optional</B>");
+      code("<b>, optional</b>");
     else if (pnode->TypeFlags.Contains(isPlaceholder))
-      code("<B>, placeholder</B>");
+      code("<b>, placeholder</b>");
 
     if (pnode->TypeFlags.Contains(isConst))
-      code("<B>, read-only</B>");
+      code("<b>, read-only</b>");
 
     if (pnode->TypeFlags.Contains(hasSetGet))
-      code("<B>, access via set/get functions</B>");
+      code("<b>, access via set/get functions</b>");
 
     if (pnode->TypeFlags.Contains(isAbstract))
-      code("<B>, abstract</B>");
+      code("<b>, abstract</b>");
 
     if (pnode->TypeFlags.Contains(consumable))
-      code("<B>, consumable</B>");
+      code("<b>, consumable</b>");
 
     if (pnode->DeclType == Attr)
       for ( chpTID = (CHETID*)pnode0->Supports.first;
             chpTID;
             chpTID = (CHETID*)chpTID->successor) {
         if (isFirst) {
-          code(", <B>overrides</B> ");
+          code(", <b>overrides</b> ");
           isFirst = false;
         }
         else
@@ -1213,14 +1240,14 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
       }
 			if (!fstChild)
 				codeEndDIV();
-			code("<DIV class=\"Category\">"); 
+			code("<div class=\"Category\">"); 
 			// just to simulate a category DIV which will be terminated on the calling GenHTML level
 
       PutExecLink(DString(qPrintable(baseName)) + "/" + fullName + "_" + ownID + ".htm");
     }
 
     if (singleFile) {
-      code("<DIV ID=X");
+      code("<div id=X");
       codeCard(pnode->ParentDECL->OwnID);
       switch (pnode->DeclType) {
       case Require:
@@ -1237,7 +1264,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
         break;
       default:;
       }
-      code(">\n\n<HR><PRE>");
+      code(">\n\n<hr><pre>");
     }
     else {
       DString ef(DString(qPrintable(baseFile)) + "/" + fullName + "_" + ownID + ".htm");
@@ -1254,7 +1281,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     DrawExec(fullName + ".htm",singleFile,GetDocument(),pnode0,(SynObject*)pnode0->Exec.ptr);
 
     if (singleFile) {
-      code("</PRE><HR>\n\n");
+      code("</pre><hr>\n\n");
     }
     else {
       IO.CloseOutput();

@@ -76,7 +76,7 @@ static void PutLink(TIDTable *IDTable,TID refID,bool singleFile,bool error,char 
   }
 
   if (/*!singleFile && */linkDefined) {
-    code("<A HREF=\"");
+    code("<a href=\"");
     if (idtype == globalID) {
       if (refID.nINCL != 1) { // other Lava doc != std.lava
         importedFile = IDTable->GetRelSynFileName(refID);
@@ -100,23 +100,23 @@ static void PutLink(TIDTable *IDTable,TID refID,bool singleFile,bool error,char 
       code(importedFile.c);
     }
 
-    code("#");
+    code("#T");
     IO.WriteCard(refID.nID,1);
     code("\"");
     if (idtype == globalID && !singleFile)
-      code(" TARGET=\"frmLeft\">");
+      code(" target=\"frmLeft\">");
     else
       code(">");
   }
 
   if (isFuncRef || error)
-    code("<B>");
+    code("<b>");
   if (error)
-    code("<FONT color=#FF0000>");
+    code("<span class=\"red\">");
   else if (opt)
-    code("<FONT color=#D1009E>");
+    code("<span class=\"pink\">");
   else
-    code("<FONT color=#000000>");
+    code("<span class=\"black\">");
 
   if (refName[0] == '<') {
     drefName = drefName.Substr(1,0);
@@ -124,12 +124,12 @@ static void PutLink(TIDTable *IDTable,TID refID,bool singleFile,bool error,char 
   }
   code(drefName.c);
 
-  code("</FONT>");
+  code("</span>");
   if (isFuncRef || error)
-    code("</B>");
+    code("</b>");
 
   if (/*!singleFile && */linkDefined)
-    code("</A>");
+    code("</a>");
 }
 
 void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
@@ -291,6 +291,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
 			}
 		}
 		str.replace('<',"&lt;");
+		str.replace('>',"&gt;");
 		indent = indent.fill(' ',currentSynObj->startPosHTML);
 		str.replace('\n',"\n"+indent);
 		if (lengthLastLine < maxLine)
@@ -330,6 +331,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     }
     if (currentSynObj->IsPlaceHolder())
       str.replace('<',"&lt;");
+      str.replace('>',"&gt;");
   }
 
   posInLine += len;
@@ -338,17 +340,17 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
   || token == RarrowHTML
 	|| token == NewLineSym_T) {
     if (ignored) {
-      code("<I>");
+      code("<i>");
       italic = true;
-      code("<FONT color=#00A000>"); // red
+      code("<span class=\"green2\">"); // dark green
       color = true;
     }
     else if (isPrimToken && currentSynObj->lastError) {
-      code("<FONT color=#FF0000>"); // red
+      code("<span class=\"red\">"); // red
       color = true;
     }
     else {
-      code("<FONT color=#0000FF>"); // blue
+      code("<span class=\"blue\">"); // blue
       color = true;
     }
     code(str.toAscii());
@@ -359,14 +361,14 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
   || token == enumConst_T
   ) {
     if (ignored) {
-      code("<I>");
+      code("<i>");
       italic = true;
-      code("<FONT color=#00A000>"); // red
+      code("<span class=\"green2\">"); // dark green
       color = true;
       code(str.toAscii());
     }
     else if (TOKENSTR[token][0] == '(') { //currentSynObj->errorCode == &ERR_Broken_ref) {
-      code("<FONT color=#FF0000>"); // red
+      code("<span class=\"red\">"); // red
       color = true;
       code(str.toAscii());
     }
@@ -383,18 +385,18 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
   }
   else if (token == VarName_T) {
     if (ignored) {
-      code("<I>");
+      code("<i>");
       italic = true;
-      code("<FONT color=#00A000>"); // red
+      code("<span class=\"green2\">"); // dark green
       color = true;
       code(((VarName*)currentSynObj)->varName.c);
     }
     else {
-      code("<A NAME=\"");
+      code("<a id=\"");
       IO.WriteCard(((VarName*)currentSynObj)->varID.nID,1);
-      code("\"</A>");
+      code("\"</a>");
       if (currentSynObj->flags.Contains(isOptionalExpr)) {
-        code("<FONT color=#D1009E>"); // pink
+        code("<span class=\"pink\">"); // pink
         color = true;
       }
       code(((VarName*)currentSynObj)->varName.c);
@@ -404,7 +406,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     if (ignored) {
       code("<I>");
       italic = true;
-      code("<FONT color=#00A000>"); // red
+      code("<span class=\"green2\">"); // dark green
       color = true;
       code(((TDOD*)currentSynObj)->name.c);
     }
@@ -417,9 +419,9 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     }
   }
   else if (token == Comment_T) {
-    code("<I>");
+    code("<i>");
     italic = true;
-    code("<FONT color=#000700>"); // green
+    code("<span class=\"green2\">"); // dark green
     color = true;
     code(str.toAscii());
   }
@@ -429,19 +431,19 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
   || TOKENSTR[token][0]==':'
   || TOKENSTR[token][0]=='Ø') {
     if (ignored) {
-      code("<I><FONT color=#00A000>"); // red
+      code("<i><span class=\"green2\">"); // dark green
       italic = true;
       color = true;
     }
     else if (isPrimToken && currentSynObj->lastError) {
-      code("<FONT color=#FF0000>"); // red
+      code("<span class=\"red\">"); // red
       color = true;
     }
     else {
       if (isOpt)
-        code("<FONT color=#D1009E>"); // violet
+        code("<span class=\"pink\">"); // pink
       else
-        code("<FONT color=#0000FF>"); // blue
+        code("<span class=\"blue\">"); // blue
       color = true;
     }
     code(str.toAscii());
@@ -452,37 +454,37 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     && token != CrtblDisabled_T
     && token != ObjDisabled_T) {
     if (ignored) {
-      code("<I>");
+      code("<i>");
       italic = true;
-      code("<FONT color=#00A000>"); // red
+      code("<span class=\"green2\">"); // dark green
       color = true;
     }
     else {
-      code("<FONT color=#FF0000>"); // red
+      code("<span class=\"red\">"); // red
       color = true;
     }
     code(str.toAscii());
   }
   else {
     if (ignored) {
-      code("<I>");
+      code("<i>");
       italic = true;
-      code("<FONT color=#00A000>"); // red
+      code("<span class=\"green2\">"); // dark green
       color = true;
     }
     else if (isPrimToken && currentSynObj->lastError) {
-      code("<FONT color=#FF0000>"); // red
+      code("<span class=\"red\">"); // red
       color = true;
     }
     code(str.toAscii());
   }
 
   if (color)
-    code("</FONT>");
+    code("</span>");
   if (italic)
-    code("</I>");
+    code("</i>");
   if (bold)
-    code("</B>");
+    code("</b>");
 }
 
 void CProgText::NewSel (const QPoint *point) {

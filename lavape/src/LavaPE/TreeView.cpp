@@ -230,7 +230,7 @@ MyListView::MyListView(CTreeView* view)
   setAutoScroll(true);
   setEditTriggers(QAbstractItemView::SelectedClicked);
 
-  QObject::connect(this,SIGNAL(itemSelectionChanged()),SLOT(onItemSelectionChanged()));
+  //QObject::connect(this,SIGNAL(itemSelectionChanged()),SLOT(onItemSelectionChanged()));
 }
 
 void MyListView::setCurAndSel(QTreeWidgetItem* item, bool singleSel)
@@ -421,11 +421,11 @@ void MyListView::commitData(QWidget* editor)
   committed = true;
 }
 
-void MyListView::onItemSelectionChanged() {
-  if (wxTheApp->m_docManager->GetActiveView() == lavaView)
-    wxTheApp->selChanged = true;
-    //wxTheApp->updateButtonsMenus();
-}
+//void MyListView::onItemSelectionChanged() {
+//  if (wxTheApp->m_docManager->GetActiveView() == lavaView)
+//    wxTheApp->selChanged = true;
+//    //wxTheApp->updateButtonsMenus();
+//}
 
 CTreeItemDelg::CTreeItemDelg(MyListView* tree)
 {

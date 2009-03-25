@@ -5312,7 +5312,7 @@ void CLavaPEView::OnUpdateEditSel(QAction* action)
              || (DataSel->type == TIType_Exec))
              && !((CTreeItem*)Tree->currentItem())->inRename;
   }
-  qDebug() << "OnUpdateEditSel, enable:" << enable;
+  //qDebug() << "OnUpdateEditSel, enable:" << enable;
   action->setEnabled(enable);
 }
 

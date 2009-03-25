@@ -299,9 +299,12 @@ void wxChildFrame::Activate(bool topDown)
   wxChildFrame *oldFrame=wxDocManager::GetDocumentManager()->GetActiveFrame();
   wxTabWidget *oldTabWidget=oldFrame?oldFrame->m_tabWidget:0;
 
-  if (this == oldFrame)
+  if (this == oldFrame) {
+    qDebug() << "wxChildFrame::Activate0" << this;
     return;
+  }
   else {//correct tab colors
+    qDebug() << "wxChildFrame::Activate1" << this;
     wxDocManager::GetDocumentManager()->RememberActiveFrame(this);
     m_tabWidget->setCurrentWidget(this);
     wxTheApp->m_appWindow->SetCurrentTabWindow(m_tabWidget);
@@ -312,9 +315,9 @@ void wxChildFrame::Activate(bool topDown)
 
   if (topDown)
     if (lastActive)
-      lastActive->Activate(topDown);
+      lastActive->Activate(true);
     else if (!m_viewList.empty())
-      m_viewList.first()->Activate(topDown);
+      m_viewList.first()->Activate(true);
 }
 
 void wxChildFrame::SetTitle(QString &title)
@@ -374,10 +377,12 @@ void wxChildFrame::closeMyPage() {
 wxChildFrame::~wxChildFrame()
 {
   QString title;
+  wxChildFrame *oldAF = wxDocManager::GetDocumentManager()?wxDocManager::GetDocumentManager()->GetOldActiveFrame():0;
 
   deleting = true;
-  if (wxDocManager::GetDocumentManager()->GetActiveFrame() == this)
-    wxDocManager::GetDocumentManager()->RememberActiveFrame(0);
+ 
+  //if (wxDocManager::GetDocumentManager()->GetActiveFrame() == this)
+  //  wxDocManager::GetDocumentManager()->RememberActiveFrame(0);
   while (m_viewList.size()) {
     m_document->RemoveView(m_viewList.at(0));
     RemoveView(m_viewList.at(0));
@@ -385,6 +390,9 @@ wxChildFrame::~wxChildFrame()
   int count = m_document->RemoveChildFrame(this);
   if (!count && !m_document->deleting)
     delete m_document;
+
+  if (oldAF)
+    oldAF->Activate(true);
 }
 
 wxTabBar::wxTabBar(QWidget* parent) : QTabBar(parent)
@@ -429,8 +437,12 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
       movePageLeftAction->setEnabled(false);
 
     triggeredAction = tabMenu.exec(QCursor::pos());
-    if (triggeredAction)  
-      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(tw, index, triggeredAction)));
+    if (triggeredAction)
+      if (triggeredAction == closeFileAction
+      || (triggeredAction == closePageAction && ((wxChildFrame*)tw->widget(index))->m_document->m_docChildFrames.size() == 1))
+        wxDocManager::GetDocumentManager()->OnFileClose();
+      else
+        QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(tw, index, triggeredAction)));
   }
 }
 
@@ -546,7 +558,7 @@ void wxTabWidget::closePage() {
     return;
   }
   else {
-    removePage(page);
+    //removePage(page);
     if (count() == 0 && splitter->count() > 1) {
       if (splitter->widget(0) == this)
         tab = (wxTabWidget*)splitter->widget(1);
@@ -562,16 +574,14 @@ void wxTabWidget::closePage() {
   }
 }
 
-void wxTabWidget::removePage(wxChildFrame *page)
-{
-  //qDebug() << "1: currentWidget:" << currentWidget() << "page:" << page;
-  removeTab(indexOf(page));
-  //qDebug() << "2: currentWidget:" << currentWidget() << "page:" << page;
-  if (page == wxTheApp->m_oldActFrame)
-    wxTheApp->m_oldActFrame = 0;
-  //wxDocManager::GetDocumentManager()->RememberActiveFrame(page,false,true);
-  delete page;
-}
+//void wxTabWidget::removePage(wxChildFrame *page)
+//{
+//  removeTab(indexOf(page));
+//  if (page != wxTheApp->m_actFrame)
+//    page->Activate(true);
+//  if (wxTheApp->m_actFrame
+//  delete page;
+//}
 
 void wxTabWidget::windowActivated (int index) {
   wxDocManager::GetDocumentManager()->RememberActiveFrame(((wxChildFrame*)widget(index)));

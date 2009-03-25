@@ -75,7 +75,7 @@ public:
     bool isChMaximized;
     bool appExit;
     bool cmdLineEvaluated;
-    bool selChanged;
+    //bool selChanged;
 
     bool notify(QObject* o, QEvent* e);
 
@@ -119,11 +119,10 @@ public:
     //QTimer *idleTimer;
     wxDocManager* m_docManager;
     wxMainFrame *m_appWindow;
-    wxChildFrame *m_oldActFrame;
+    //wxChildFrame *m_oldActFrame;
 //    QSettings *settings;
     QString lastFileOpen; //last file open from history or file dialog
     //QTimer *m_timer;
-    QWidget *m_oldFocWid;
 
 public slots:
     void about();
@@ -131,7 +130,7 @@ public slots:
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
-    wxView *m_activeView;
+    //wxView *m_activeView;
 
     Q_OBJECT
 };
@@ -140,6 +139,8 @@ class wxChildFrame;
 
 class WXDLLEXPORT wxDocument : public QObject
 {
+  friend class wxTabBar;
+
 public:
     wxDocument(wxDocument *parent = (wxDocument *) NULL);
     virtual ~wxDocument();
@@ -226,7 +227,6 @@ public:
     virtual  int GetChildFrameCount() {
       return m_docChildFrames.count();
     }
-
 
 protected:
     QList<wxChildFrame*> m_docChildFrames;
@@ -411,6 +411,7 @@ public:
     virtual void RememberActiveView(wxView *view);
     virtual wxView *GetActiveView();// const;
     virtual wxChildFrame *GetActiveFrame() { return m_activeFrame; }
+    virtual wxChildFrame *GetOldActiveFrame() { return m_oldActiveFrame; }
     virtual void RememberActiveFrame(wxChildFrame *af);
 
     virtual QList<wxDocument*>& GetDocuments() const { return (QList<wxDocument*>&) m_docs; }
