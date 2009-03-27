@@ -57,7 +57,6 @@ wxMainFrame::wxMainFrame() : QMainWindow()
 {
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
 
-  m_currentTabWidget = 0;
   QStatusBar *stb=new QStatusBar(this);
   completelyCreated = false;
 
@@ -91,10 +90,13 @@ bool wxMainFrame::eventFilter(QObject *o, QEvent *e) {
 
 QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
 {
+  wxTabWidget *tabWid;
+
   m_ClientArea=new QSplitter(parent);
-  m_currentTabWidget = new wxTabWidget(m_ClientArea);
-  m_currentTabWidget->setTabShape(QTabWidget::Triangular);
-  m_currentTabWidget->setUsesScrollButtons(true);
+  tabWid = new wxTabWidget(m_ClientArea);
+  wxDocManager::GetDocumentManager()->SetCurrentTabWidget(tabWid);
+  tabWid->setTabShape(QTabWidget::Triangular);
+  tabWid->setUsesScrollButtons(true);
   QToolButton *close = new QToolButton();
   QPalette pal = palette();
   pal.setColor(QPalette::Active, QPalette::Button, pal.color(QPalette::Active, QPalette::Window));
@@ -104,9 +106,9 @@ QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
   close->setCursor(Qt::ArrowCursor);
   close->setAutoRaise(true);
   close->setIcon(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/close.xpm")));
-  m_currentTabWidget->setCornerWidget(close);
+  tabWid->setCornerWidget(close);
   close->setToolTip("Close current page");
-  connect(close,SIGNAL(clicked()),m_currentTabWidget,SLOT(closePage()));
+  connect(close,SIGNAL(clicked()),tabWid,SLOT(closePage()));
   return m_ClientArea;
 }
 
@@ -162,7 +164,7 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   page->correctMyTabWidget(newTW);
   newTW->setTabText(0,tt);
   newTW->setTabToolTip(0,ttt);
-  SetCurrentTabWindow(newTW);
+  wxDocManager::GetDocumentManager()->SetCurrentTabWidget(newTW);
   QToolButton *close = new QToolButton();
   QPalette pal = palette();
   pal.setColor(QPalette::Active, QPalette::Button, pal.color(QPalette::Active, QPalette::Window));
@@ -173,7 +175,7 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   close->setCursor(Qt::ArrowCursor);
   close->setAutoRaise(true);
   newTW->setCornerWidget(close);
-  connect(close,SIGNAL(clicked()),m_currentTabWidget,SLOT(closePage()));
+  connect(close,SIGNAL(clicked()),newTW,SLOT(closePage()));
 
   int splitterIndex = m_ClientArea->indexOf(tw);
   m_ClientArea->insertWidget(splitterIndex+1,newTW);
@@ -192,7 +194,7 @@ void wxMainFrame::MoveToNextTabbedWindow(wxTabWidget *tw,int index){
   page->correctMyTabWidget(nextTW);
   nextTW->setTabToolTip(0,ttt);
   nextTW->setCurrentIndex(0);
-  SetCurrentTabWindow(nextTW);
+  wxDocManager::GetDocumentManager()->SetCurrentTabWidget(nextTW);
   page->Activate(true);
   nextTW->setTabTextColor(nextTW->indexOf(page),Qt::red);
   if (tw->count() == 0 && m_ClientArea->count() > 1) {
@@ -211,7 +213,7 @@ void wxMainFrame::MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index){
   page->correctMyTabWidget(precTW);
   precTW->setTabToolTip(0,ttt);
   precTW->setCurrentIndex(0);
-  SetCurrentTabWindow(precTW);
+  wxDocManager::GetDocumentManager()->SetCurrentTabWidget(precTW);
   page->Activate(true);
   precTW->setTabTextColor(precTW->indexOf(page),Qt::red);
   if (tw->count() == 0 && m_ClientArea->count() > 1) {
@@ -234,7 +236,7 @@ void wxMainFrame::DropPage(wxTabWidget* sTw, int sIndex, wxTabWidget* dTw, int d
     delete sTw;
     equalize();
   }
-  SetCurrentTabWindow(dTw);
+  wxDocManager::GetDocumentManager()->SetCurrentTabWidget(dTw);
   page->Activate(true);
   dTw->setTabTextColor(dTw->indexOf(page),Qt::red);
 }
@@ -307,7 +309,7 @@ void wxChildFrame::Activate(bool topDown)
     qDebug() << "wxChildFrame::Activate1" << this;
     wxDocManager::GetDocumentManager()->RememberActiveFrame(this);
     m_tabWidget->setCurrentWidget(this);
-    wxTheApp->m_appWindow->SetCurrentTabWindow(m_tabWidget);
+    wxDocManager::GetDocumentManager()->SetCurrentTabWidget(m_tabWidget);
     m_tabWidget->setTabTextColor(m_tabWidget->indexOf(this),Qt::red);
     if (oldFrame && !oldFrame->deleting)
       oldTabWidget->setTabTextColor(oldTabWidget->indexOf(oldFrame),Qt::black);
@@ -377,12 +379,9 @@ void wxChildFrame::closeMyPage() {
 wxChildFrame::~wxChildFrame()
 {
   QString title;
-  wxChildFrame *oldAF = wxDocManager::GetDocumentManager()?wxDocManager::GetDocumentManager()->GetOldActiveFrame():0;
 
   deleting = true;
  
-  //if (wxDocManager::GetDocumentManager()->GetActiveFrame() == this)
-  //  wxDocManager::GetDocumentManager()->RememberActiveFrame(0);
   while (m_viewList.size()) {
     m_document->RemoveView(m_viewList.at(0));
     RemoveView(m_viewList.at(0));
@@ -390,9 +389,6 @@ wxChildFrame::~wxChildFrame()
   int count = m_document->RemoveChildFrame(this);
   if (!count && !m_document->deleting)
     delete m_document;
-
-  if (oldAF)
-    oldAF->Activate(true);
 }
 
 wxTabBar::wxTabBar(QWidget* parent) : QTabBar(parent)
@@ -500,6 +496,9 @@ void wxTabBar::dropEvent(QDropEvent *evt)
     evt->ignore();
 }
 
+void wxTabWidget::setCurrentAfterDelete() {
+}
+
 void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
 {
   wxChildFrame *page=(wxChildFrame*)widget(index);
@@ -519,7 +518,7 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
           tab = (wxTabWidget*)splitter->widget(1);
         else
           tab = (wxTabWidget*)splitter->widget(0);
-        wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
+        wxDocManager::GetDocumentManager()->SetCurrentTabWidget(tab);
         if (tab->widget(0))
           QApplication::postEvent(((wxChildFrame*)tab->widget(0)), new CustomEvent(UEV_Activate));
         deleteLater();  
@@ -564,7 +563,7 @@ void wxTabWidget::closePage() {
         tab = (wxTabWidget*)splitter->widget(1);
       else
         tab = (wxTabWidget*)splitter->widget(0);
-      wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
+      wxDocManager::GetDocumentManager()->SetCurrentTabWidget(tab);
       if (tab->widget(0))
         QApplication::postEvent((wxChildFrame*)tab->widget(0), new CustomEvent(UEV_Activate));
         //((wxChildFrame*)tab->widget(0))->Activate(true);
@@ -582,10 +581,6 @@ void wxTabWidget::closePage() {
 //  if (wxTheApp->m_actFrame
 //  delete page;
 //}
-
-void wxTabWidget::windowActivated (int index) {
-  wxDocManager::GetDocumentManager()->RememberActiveFrame(((wxChildFrame*)widget(index)));
-}
 
 #define MYSTYLEIMP(sty)\
   int My##sty##Style::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const\

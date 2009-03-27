@@ -118,8 +118,6 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
   installToolButtonEvtFilters(Toolbar_5);
   installToolButtonEvtFilters(Toolbar_6);
 
-  theActiveFrame = 0;
-
   makeStyle(LBaseData->m_style);
 
   m_UtilityView = 0;
@@ -278,10 +276,6 @@ void CLavaMainFrame::makeStyle(const QString &style)
     delete LBaseData->myWhatsThisAction;
   }
   fillHelpToolbar(HelpToolbar);
-
-  //wxTheApp->updateButtonsMenus();
-  //if (theActiveFrame && QString(theActiveFrame->objectName()) != "ExecFrame")
-  //  CExecView::DisableKwdButtons();
 }
 
 CLavaMainFrame::~CLavaMainFrame()

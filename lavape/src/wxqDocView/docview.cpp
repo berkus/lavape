@@ -190,7 +190,7 @@ void wxApp::SetAppName(const QString& name) {
 
 void wxApp::updateButtonsMenus()
 {
-  if (!m_appWindow->m_currentTabWidget)
+  if (!wxDocManager::GetDocumentManager()->GetCurrentTabWidget())
     return;
   if (wxDocManager::GetDocumentManager()->GetActiveDocument() && wxDocManager::GetDocumentManager()->GetActiveDocument()->deleting)
     return;
@@ -427,13 +427,6 @@ wxDocument::~wxDocument()
   wxDocManager::GetDocumentManager()->RemoveDocument(this);
 }
 
-//wxDocument* wxDocument::CreateFailed() {
-//  deleting = true;
-//  DeleteAllChildFrames();
-//  deleteLater();
-//  return (wxDocument *) NULL;
-//}
-
 void wxDocument::customEvent(QEvent *ev) {
   switch (ev->type()) {
   case UEV_Close:
@@ -453,38 +446,38 @@ bool wxDocument::Close()
 
 bool wxDocument::OnCloseDocument()
 {
-  //DeleteContents();
-  //DeleteAllChildFrames();
-  //deleteLater();
   return true;
 }
 
-// Note that this implicitly deletes the document when the last view is
-// deleted.
 bool wxDocument::DeleteAllChildFrames()
 {
+  wxDocManager *docMan=wxDocManager::GetDocumentManager();
   wxChildFrame* child;
-  wxTabWidget* tab;
-  bool noTab = true;
+  wxTabWidget* tabWid;
+  wxChildFrame *oldAF = docMan->GetOldActiveFrame();
 
   while (m_docChildFrames.size()) {
     child = m_docChildFrames.takeAt(0);
-    tab = child->m_tabWidget;
-    if (tab) {
-      tab->removeTab(tab->indexOf(child));
+    tabWid = child->m_tabWidget;
+    if (tabWid) {
+      tabWid->removeTab(tabWid->indexOf(child));
       delete child;
-      if (tab->count() == 0 && ((QSplitter*)tab->parentWidget())->count() > 1) {
-        delete tab;
-        tab = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
-        wxTheApp->m_appWindow->SetCurrentTabWindow(tab);
+      if (child == oldAF)
+        docMan->ResetOldActiveFrame();
+      if (tabWid->count() == 0 && ((QSplitter*)tabWid->parentWidget())->count() > 1) {
+        delete tabWid;
+        tabWid = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
+        docMan->SetCurrentTabWidget(tabWid);
       }
-      noTab = false;
     }
     else 
       delete child;
   }
-  if (!noTab && tab->widget(0))
-    QApplication::postEvent(((wxChildFrame*)tab->widget(0)), new CustomEvent(UEV_Activate));
+  docMan->GetCurrentTabWidget()->setCurrentAfterDelete();
+  //if (oldAF && !oldAFDeleted)
+  //  oldAF->Activate(true);
+  //if (!noTab && tabWid->widget(0))
+  //  QApplication::postEvent(((wxChildFrame*)tabWid->widget(0)), new CustomEvent(UEV_Activate));
   return true;
 }
 
@@ -826,7 +819,7 @@ wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : QWidget(par
   layout->setMargin(0);
   setLayout(layout);
 
-  myTabWidget = wxTheApp->m_appWindow->GetCurrentTabWindow();
+  myTabWidget = wxDocManager::GetDocumentManager()->GetCurrentTabWidget();
   m_viewDocument = doc;
   m_viewFrame = CalcParentFrame();
   m_viewFrame->AddView(this);
@@ -837,7 +830,7 @@ wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : QWidget(par
 //void wxChildFrame::focusIn( )
 //{
 //  qDebug() << "wxChildFrame::focusIn" << this << "lastActive:" << lastActive << "focWid:" << qApp->focusWidget();
-//  wxTheApp->m_appWindow->SetCurrentTabWindow(myTabWidget);
+//  wxTheApp->m_appWindow->SetCurrentTabWidget(myTabWidget);
 //  if (lastActive) {
 //    wxDocManager::GetDocumentManager()->RememberActiveView(lastActive, true);
 //    lastActive->setFocus();
@@ -1005,8 +998,8 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
 
 wxChildFrame *wxDocTemplate::CreateChildFrame(wxDocument *doc)
 {
-  wxMainFrame *mw = wxTheApp->m_appWindow;
-  wxChildFrame *frame = (wxChildFrame *)m_frameClassInfo(mw->GetCurrentTabWindow());
+  wxDocManager *docMan=wxDocManager::GetDocumentManager();
+  wxChildFrame *frame = (wxChildFrame *)m_frameClassInfo(docMan->GetCurrentTabWidget());
   if (frame->m_tabWidget)
     frame->m_tabWidget->setCurrentWidget(frame);
 
@@ -1043,6 +1036,7 @@ wxDocManager::wxDocManager(long flags)
   sm_docManager = this;
   m_activeFrame = 0;
   m_oldActiveFrame = 0;
+  m_currentTabWidget = 0;
 }
 
 wxDocManager::~wxDocManager()

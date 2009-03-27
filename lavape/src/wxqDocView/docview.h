@@ -413,6 +413,10 @@ public:
     virtual wxChildFrame *GetActiveFrame() { return m_activeFrame; }
     virtual wxChildFrame *GetOldActiveFrame() { return m_oldActiveFrame; }
     virtual void RememberActiveFrame(wxChildFrame *af);
+    virtual void ResetOldActiveFrame() { m_oldActiveFrame = 0; };
+
+    wxTabWidget *GetCurrentTabWidget() const { return m_currentTabWidget; }
+    void SetCurrentTabWidget(wxTabWidget *tw) { m_currentTabWidget = tw; }
 
     virtual QList<wxDocument*>& GetDocuments() const { return (QList<wxDocument*>&) m_docs; }
 
@@ -477,6 +481,7 @@ public slots:
     void OnRedo();
 
 private:
+    wxTabWidget *m_currentTabWidget;
     wxChildFrame      *m_activeFrame, *m_oldActiveFrame;
     wxView            *m_activeView;
     Q_OBJECT

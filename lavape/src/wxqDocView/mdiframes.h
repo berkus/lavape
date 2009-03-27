@@ -70,6 +70,7 @@ class WXDLLEXPORT wxMainFrame: public QMainWindow
 {
     friend class wxChildFrame;
     friend class wxApp;
+
 public:
   wxMainFrame();
   virtual ~wxMainFrame();
@@ -77,13 +78,6 @@ public:
   virtual bool OnCreate();
   virtual void UpdateUI() {}
 
-//  wxChildFrame *GetActiveChild() const;
-
-  // Get the client window
-  wxTabWidget *GetCurrentTabWindow() const { return m_currentTabWidget; }
-  void SetCurrentTabWindow(wxTabWidget *tw) { m_currentTabWidget = tw; }
-
-//  bool eventFilter(QObject *obj, QEvent *ev);
   void resizeEvent(QResizeEvent& event);
   void closeEvent (QCloseEvent*);
   bool eventFilter(QObject *o, QEvent *e);
@@ -93,9 +87,6 @@ public:
   void LoadFileHistory();
 	//wxHistory *GetWindowHistory () { return m_childFrameHistory; }
   virtual void helpContents(){}
-  virtual wxTabWidget* Workspace() {
-    return m_currentTabWidget;
-  }
   void MoveToNewTabbedWindow(wxTabWidget *tw,int index);
   void MoveToNextTabbedWindow(wxTabWidget *tw,int index);
   void MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index);
@@ -110,7 +101,6 @@ protected:
 	//wxHistory *m_childFrameHistory;
   QWidget *theActiveFrame;
 	bool completelyCreated;
-  wxTabWidget *m_currentTabWidget;
 
 public slots:
   virtual void OnFileExit();
@@ -145,11 +135,10 @@ public:
   wxTabWidget(QWidget *parent) : QTabWidget(parent) {
     m_tabBar = new wxTabBar(this);
     setTabBar(m_tabBar);
-    //connect(this ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   }
 
+  void setCurrentAfterDelete();
   void postTabChange(int index, QAction* triggeredAction);
-  //void removePage(wxChildFrame *page);
   void setTabTextColor (int index, const QColor &color) {
     tabBar()->setTabTextColor(index,color);
   }
@@ -158,7 +147,6 @@ public:
 
 public slots:
   void closePage();
-  void windowActivated(int);
 
 private:
   Q_OBJECT
