@@ -30,9 +30,9 @@
 #include "qt_windows.h"
 #include "commdlg.h"
 #define QASSISTANT "assistant_adp.exe"
-#elif __Darwin
-#define QASSISTANT "."
-#else
+//#elif __Darwin
+//#define QASSISTANT "."
+//#else
 #endif
 
 
