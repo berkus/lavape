@@ -34,7 +34,7 @@ else
   ifeq ($(OSCAT),WIN32)
     QASSCALL = \"assistant.exe\"
   else
-    QASSCALL = \"./$(QASSLINK)\"
+    QASSCALL = \"$(QBIN)/$(QASSLINK)\"
 	endif
 endif
 
