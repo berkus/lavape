@@ -1,13 +1,14 @@
 #!/usr/bin/env sh
 
 QBIN=`./qbin.sh`
+#echo QBIN=$QBIN
 
-if [ -d $QBIN/Assistant_adp.app ]; then
+if [ -r $QBIN/Assistant_adp.app ]; then
   echo Assistant_adp.app
-elif [ -x $QBIN/assistant.app ]; then
-  echo assistant.app
-elif [ -x $QBIN/assistant_adp ]; then
-  echo assistant_adp
+elif [ -d $QBIN/Assistant.app ]; then
+  echo Assistant.app
+#elif [ -x $QBIN/assistant_adp ]; then
+#  echo assistant_adp
 elif [ -x $QBIN/assistant ]; then
   echo assistant
 elif [ -x $QBIN/assistant_adp.exe ]; then

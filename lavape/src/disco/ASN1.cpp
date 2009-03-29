@@ -50,7 +50,6 @@ static const unsigned PrintableString = 4; /* actually 19 */
 static const unsigned bitsPerCard=BitsPerCARDINAL;
 static DString dummy;
 
-
 /************************************************************************/
 
 

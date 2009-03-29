@@ -140,7 +140,7 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
  {
   bool b1=false;
   QString lfo;
-  
+
   LBaseData.stdUpdate = 0;
   //stop here and set stdUpdate = 1 to allow updates in std.lava
 
@@ -359,7 +359,7 @@ bool CLavaPEApp::event(QEvent *e)
     return true;
   case UEV_LavaGUIEvent:
     actView = wxDocManager::GetDocumentManager()->GetActiveView();
-    if ( actView->inherits("CLavaGUIView") ) 
+    if ( actView->inherits("CLavaGUIView") )
       ((CLavaGUIView*)actView)->myGUIProg->CmdExec.GUIEvent( e);
     return true;
    default:
@@ -711,9 +711,10 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 
 void CLavaPEApp::HtmlHelp()
 {
-  QString path(QASSISTANT);
 
-  QStringList args;// env=QProcess::systemEnvironment ();
+	QString path(QASSISTANT);
+
+  QStringList args;
 
   args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
   if (!qacl) {
@@ -1533,11 +1534,3 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
   return false;
 }
 
-
-/*
-QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption)
-{
-  return wxTheApp->wxGetOpenFileName(parent, startFileName, caption,
-          "Lava file (*.lava)", "LavaCom file (*.lcom)");
-
-}*/
