@@ -454,30 +454,25 @@ bool wxDocument::DeleteAllChildFrames()
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
   wxChildFrame* child;
   wxTabWidget* tabWid;
-  wxChildFrame *oldAF = docMan->GetOldActiveFrame();
+  wxChildFrame *oldAF = docMan->GetOldActiveFrame(), *actFrame=docMan->GetActiveFrame();
 
   while (m_docChildFrames.size()) {
     child = m_docChildFrames.takeAt(0);
     tabWid = child->m_tabWidget;
-    if (tabWid) {
-      tabWid->removeTab(tabWid->indexOf(child));
-      delete child;
-      if (child == oldAF)
-        docMan->ResetOldActiveFrame();
-      if (tabWid->count() == 0 && ((QSplitter*)tabWid->parentWidget())->count() > 1) {
+    tabWid->removeTab(tabWid->indexOf(child));
+    if (child == oldAF)
+      docMan->ResetOldActiveFrame();
+    if (child == actFrame)
+      docMan->RememberActiveFrame(0);
+    delete child;
+    if (tabWid->count() == 0) {
+      if (((QSplitter*)tabWid->parentWidget())->count() > 1)
         delete tabWid;
-        tabWid = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
-        docMan->SetCurrentTabWidget(tabWid);
-      }
+      tabWid = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
+      docMan->SetCurrentTabWidget(tabWid);
     }
-    else 
-      delete child;
   }
-  docMan->GetCurrentTabWidget()->setCurrentAfterDelete();
-  //if (oldAF && !oldAFDeleted)
-  //  oldAF->Activate(true);
-  //if (!noTab && tabWid->widget(0))
-  //  QApplication::postEvent(((wxChildFrame*)tabWid->widget(0)), new CustomEvent(UEV_Activate));
+  docMan->SetNewCurrentFrame();
   return true;
 }
 

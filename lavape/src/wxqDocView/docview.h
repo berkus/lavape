@@ -414,6 +414,7 @@ public:
     virtual wxChildFrame *GetOldActiveFrame() { return m_oldActiveFrame; }
     virtual void RememberActiveFrame(wxChildFrame *af);
     virtual void ResetOldActiveFrame() { m_oldActiveFrame = 0; };
+    void SetNewCurrentFrame();
 
     wxTabWidget *GetCurrentTabWidget() const { return m_currentTabWidget; }
     void SetCurrentTabWidget(wxTabWidget *tw) { m_currentTabWidget = tw; }

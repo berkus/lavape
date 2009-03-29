@@ -48,7 +48,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;.\Generated;..\wxqDocView;..\disco;..\LavaBase;..\LavaBase\Generated;..\LavaGUI;..\LavaExecs;..\LavaExecs\Generated;..\LavaExecs\res\ToolButtons;res;res\ToolButtons;res\TreeIcons;..\LavaPE_UI;..\LavaPE_UI\Generated"
-				PreprocessorDefinitions="_DEBUG;WIN32;EXECVIEW"
+				PreprocessorDefinitions="WIN32;EXECVIEW;_DEBUG"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -397,7 +397,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
+						PreprocessorDefinitions="_DEBUG"
 						UsePrecompiledHeader="2"
 						PrecompiledHeaderThrough=""
 						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
@@ -421,6 +421,7 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
+						PreprocessorDefinitions="WIN32;_DEBUG"
 						UsePrecompiledHeader="1"
 						PrecompiledHeaderThrough=""
 						PrecompiledHeaderFile="PCH\LavaPE_all.pch"

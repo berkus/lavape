@@ -298,22 +298,19 @@ void wxChildFrame::InitialUpdate()
 
 void wxChildFrame::Activate(bool topDown)
 {
-  wxChildFrame *oldFrame=wxDocManager::GetDocumentManager()->GetActiveFrame();
+  wxDocManager *docMan=wxDocManager::GetDocumentManager();
+  wxChildFrame *oldFrame=docMan->GetActiveFrame();
   wxTabWidget *oldTabWidget=oldFrame?oldFrame->m_tabWidget:0;
 
-  if (this == oldFrame) {
-    qDebug() << "wxChildFrame::Activate0" << this;
+  if (this == oldFrame)
     return;
-  }
-  else {//correct tab colors
-    qDebug() << "wxChildFrame::Activate1" << this;
-    wxDocManager::GetDocumentManager()->RememberActiveFrame(this);
-    m_tabWidget->setCurrentWidget(this);
-    wxDocManager::GetDocumentManager()->SetCurrentTabWidget(m_tabWidget);
-    m_tabWidget->setTabTextColor(m_tabWidget->indexOf(this),Qt::red);
-    if (oldFrame && !oldFrame->deleting)
-      oldTabWidget->setTabTextColor(oldTabWidget->indexOf(oldFrame),Qt::black);
-  }
+
+  docMan->RememberActiveFrame(this);
+  m_tabWidget->setCurrentWidget(this);
+  docMan->SetCurrentTabWidget(m_tabWidget);
+  m_tabWidget->setTabTextColor(m_tabWidget->indexOf(this),Qt::red);
+  if (oldFrame && !oldFrame->deleting)
+    oldTabWidget->setTabTextColor(oldTabWidget->indexOf(oldFrame),Qt::black);
 
   if (topDown)
     if (lastActive)
@@ -438,7 +435,8 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
       || (triggeredAction == closePageAction && ((wxChildFrame*)tw->widget(index))->m_document->m_docChildFrames.size() == 1))
         wxDocManager::GetDocumentManager()->OnFileClose();
       else
-        QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(tw, index, triggeredAction)));
+        tw->postTabChange(index,triggeredAction);
+        //QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(tw, index, triggeredAction)));
   }
 }
 
@@ -496,49 +494,46 @@ void wxTabBar::dropEvent(QDropEvent *evt)
     evt->ignore();
 }
 
-void wxTabWidget::setCurrentAfterDelete() {
+void wxDocManager::SetNewCurrentFrame() {
+  if (m_oldActiveFrame) {
+    m_oldActiveFrame->Activate(true);
+    return;
+  }
+  if (m_currentTabWidget && m_currentTabWidget->currentWidget())
+    ((wxChildFrame*)m_currentTabWidget->currentWidget())->Activate(true);
 }
 
 void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
 {
   wxChildFrame *page=(wxChildFrame*)widget(index);
   QSplitter *splitter=(QSplitter*)parentWidget();
-  wxTabWidget* tab;
+  //wxTabWidget* tab;
+  wxDocManager *docMan=wxDocManager::GetDocumentManager();
+
   if (triggeredAction == ((wxTabBar*)tabBar())->closePageAction) {
     if (page->inherits("CTreeFrame")
     || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
-      //page->Activate(true);
-      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
+      docMan->OnFileClose();
+      //QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
     }
     else {
       removeTab(index);
       delete page;
-      if (count() == 0 && splitter->count() > 1) {
-        if (splitter->widget(0) == this)
-          tab = (wxTabWidget*)splitter->widget(1);
-        else
-          tab = (wxTabWidget*)splitter->widget(0);
-        wxDocManager::GetDocumentManager()->SetCurrentTabWidget(tab);
-        if (tab->widget(0))
-          QApplication::postEvent(((wxChildFrame*)tab->widget(0)), new CustomEvent(UEV_Activate));
-        deleteLater();  
-      }
+      docMan->RememberActiveFrame(0);
+      docMan->SetNewCurrentFrame();
     }
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->closeFileAction) {
-    //page->Activate(true);
-    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
+    wxDocManager::GetDocumentManager()->OnFileClose();
+    //QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->newTabWidAction) {
-    //page->Activate(true);
     wxTheApp->m_appWindow->MoveToNewTabbedWindow(this,index);
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->movePageRightAction) {
-    //page->Activate(true);
     wxTheApp->m_appWindow->MoveToNextTabbedWindow(this,index);
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->movePageLeftAction) {
-    //page->Activate(true);
     wxTheApp->m_appWindow->MoveToPrecedingTabbedWindow(this,index);
   }
 }
