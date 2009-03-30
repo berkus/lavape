@@ -444,6 +444,7 @@ bool wxDocument::DeleteAllChildFrames()
       docMan->ResetOldActiveFrame();
     if (child == actFrame)
       docMan->RememberActiveFrame(0);
+    tabWid->removeTab(tabWid->indexOf(child));
     delete child;
     if (tabWid->count() == 0) {
       if (((QSplitter*)tabWid->parentWidget())->count() > 1)
