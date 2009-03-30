@@ -233,7 +233,7 @@ void wxMainFrame::DropPage(wxTabWidget* sTw, int sIndex, wxTabWidget* dTw, int d
   dTw->setTabToolTip(0,ttt);
   dTw->setCurrentIndex(dIndex);
   if (sTw->count() == 0 && m_ClientArea->count() > 1) {
-    delete sTw;
+    sTw->deleteLater();
     equalize();
   }
   wxDocManager::GetDocumentManager()->SetCurrentTabWidget(dTw);
@@ -542,6 +542,8 @@ void wxTabWidget::closePage() {
   else {
     removeTab(index);
     delete page;
+    if (!count() && splitter->count() > 1)
+      deleteLater();
     docMan->RememberActiveFrame(0);
     docMan->SetNewCurrentFrame();
   }

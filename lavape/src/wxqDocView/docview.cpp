@@ -448,7 +448,7 @@ bool wxDocument::DeleteAllChildFrames()
     delete child;
     if (tabWid->count() == 0) {
       if (((QSplitter*)tabWid->parentWidget())->count() > 1)
-        delete tabWid;
+        tabWid->deleteLater();
       tabWid = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
       docMan->SetCurrentTabWidget(tabWid);
     }
