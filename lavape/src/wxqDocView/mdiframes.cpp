@@ -436,7 +436,6 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
         wxDocManager::GetDocumentManager()->OnFileClose();
       else
         tw->postTabChange(index,triggeredAction);
-        //QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(tw, index, triggeredAction)));
   }
 }
 
@@ -507,25 +506,17 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
 {
   wxChildFrame *page=(wxChildFrame*)widget(index);
   QSplitter *splitter=(QSplitter*)parentWidget();
-  //wxTabWidget* tab;
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
 
   if (triggeredAction == ((wxTabBar*)tabBar())->closePageAction) {
     if (page->inherits("CTreeFrame")
-    || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
+    || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp")))
       docMan->OnFileClose();
-      //QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
-    }
-    else {
-      removeTab(index);
-      delete page;
-      docMan->RememberActiveFrame(0);
-      docMan->SetNewCurrentFrame();
-    }
+    else
+      closePage();
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->closeFileAction) {
     wxDocManager::GetDocumentManager()->OnFileClose();
-    //QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->newTabWidAction) {
     wxTheApp->m_appWindow->MoveToNewTabbedWindow(this,index);
@@ -542,40 +533,19 @@ void wxTabWidget::closePage() {
   wxChildFrame *page=(wxChildFrame*)currentWidget();
   int index=currentIndex();
   QSplitter *splitter=(QSplitter*)parentWidget();
-  wxTabWidget* tab;
+  wxDocManager *docMan=wxDocManager::GetDocumentManager();
 
-
-  //page->Activate(true);
   if (page->inherits("CTreeFrame")
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
-    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_TabChange,(void*)new wxTabChangeData(0,0,0)));
-    return;
+    docMan->OnFileClose();
   }
   else {
-    //removePage(page);
-    if (count() == 0 && splitter->count() > 1) {
-      if (splitter->widget(0) == this)
-        tab = (wxTabWidget*)splitter->widget(1);
-      else
-        tab = (wxTabWidget*)splitter->widget(0);
-      wxDocManager::GetDocumentManager()->SetCurrentTabWidget(tab);
-      if (tab->widget(0))
-        QApplication::postEvent((wxChildFrame*)tab->widget(0), new CustomEvent(UEV_Activate));
-        //((wxChildFrame*)tab->widget(0))->Activate(true);
-      deleteLater();
-    }
-    //wxTheApp->updateButtonsMenus();
+    removeTab(index);
+    delete page;
+    docMan->RememberActiveFrame(0);
+    docMan->SetNewCurrentFrame();
   }
 }
-
-//void wxTabWidget::removePage(wxChildFrame *page)
-//{
-//  removeTab(indexOf(page));
-//  if (page != wxTheApp->m_actFrame)
-//    page->Activate(true);
-//  if (wxTheApp->m_actFrame
-//  delete page;
-//}
 
 #define MYSTYLEIMP(sty)\
   int My##sty##Style::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const\
@@ -590,9 +560,6 @@ void wxTabWidget::closePage() {
   }\
   return px;\
 }
-    //case PM_ToolBarFrameWidth:\
-    //case PM_ToolBarIconSize:\
-    //  px = 16; break;
 
 #ifdef WIN32
 MYSTYLEIMP(WindowsXP)
