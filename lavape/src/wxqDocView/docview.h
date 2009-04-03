@@ -262,7 +262,7 @@ public:
     void SetViewName(const QString& name) { m_viewTypeName = name; };
 
     wxChildFrame *GetParentFrame() const { return m_viewFrame ; }
-    virtual void Activate(bool activate);
+    virtual void Activate(bool topDown);
     virtual void OnUpdate(wxView *sender, unsigned param, QObject *hint = (QObject *) NULL);
     virtual void OnChangeFilename();
 

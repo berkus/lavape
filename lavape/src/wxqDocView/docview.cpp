@@ -862,7 +862,7 @@ bool wxView::Close()
 void wxView::Activate(bool topDown)
 {
   active = true;
-  GetParentFrame()->NotifyActive(this);
+  GetParentFrame()->RememberLastActive(this);
   wxDocManager::GetDocumentManager()->RememberActiveView(this);
   if (!topDown)
     GetParentFrame()->Activate(topDown);
@@ -1186,7 +1186,6 @@ wxView *wxDocManager::GetActiveView()
 {
   if (m_docs.isEmpty())
     return 0;
-  //qDebug() << "GetActiveView, m_activeView:" << m_activeView;
   if (m_activeView)
     return m_activeView;
   if (m_docs.count() == 1) {

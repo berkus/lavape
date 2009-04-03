@@ -443,7 +443,7 @@ void CInclView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
     return;
   CHESimpleSyntax* che = (CHESimpleSyntax*)((CTreeItem*)selItem)->getItemData();
   SelINCL = che->data.nINCL;
-  //wxTheApp->updateButtonsMenus();
+  wxTheApp->updateButtonsMenus();
 }
 
 void CInclView::OnCollapseAll()

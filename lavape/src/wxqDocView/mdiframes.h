@@ -171,7 +171,7 @@ public:
   virtual void SetTitle(QString &title);
   void AddView(wxView *v);
   void RemoveView(wxView *v);
-  void NotifyActive(wxView* view) {lastActive = view;}
+  void RememberLastActive(wxView* view) {lastActive = view;}
   wxView* GetLastActive() {return lastActive;}
   virtual void Activate(bool topDown);
   wxTabWidget *m_tabWidget;

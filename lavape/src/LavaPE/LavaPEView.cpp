@@ -3297,12 +3297,9 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
   CTreeItem *itemDrag, *item;
   LavaDECL *itemDECL;
 
-
-//  QTreeWidgetItem* selItem = Tree->currentItem();
   if (!selItem)
     return;
-  //if (!Tree->isItemSelected(selItem)) //selItem->isSelected())
-  //  return;
+
   if (lastCurrent && (Tree->withControl && !Tree->withShift || Tree->withShift && !Tree->withControl)) {
     if (!CollectDECL) {
       CanDelete = true;
@@ -3353,7 +3350,8 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
       DeleteDragChain();
   }
   if (m_hitemDrop) {
-    //wxTheApp->updateButtonsMenus();
+    if (!active)
+      Activate(false);
     return;
   }
 //  ParItemSel = 0;
@@ -3418,8 +3416,10 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
   else
     ItemSel = 0;
   lastCurrent = (CTreeItem*)selItem;
-  if (active)
-    wxTheApp->updateButtonsMenus();
+
+  if (!active)
+    Activate(false);
+  wxTheApp->updateButtonsMenus();
 }
 
 void CLavaPEView::OnShowSpecialView(TDeclType exprType)
