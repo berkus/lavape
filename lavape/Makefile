@@ -209,6 +209,7 @@ ifeq ($(OPSYS),Darwin)
 binclean:
 	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX); rm -rf $(QASSLINK)
 else
+binclean:
 	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX) $(QASSLINK)
 endif
 
