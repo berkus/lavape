@@ -205,8 +205,12 @@ endif
 clean: cleanall binclean libclean
 distclean: cleanall binclean libclean
 
+ifeq ($(OPSYS),Darwin)
 binclean:
+	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX); rm -rf $(QASSLINK)
+else
 	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX) $(QASSLINK)
+endif
 
 libclean:
 	cd $(LAVADIR)/lib; rm -f lib*
