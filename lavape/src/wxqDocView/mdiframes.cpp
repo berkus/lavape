@@ -535,6 +535,7 @@ void wxTabWidget::closePage() {
   QSplitter *splitter=(QSplitter*)parentWidget();
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
 
+  page->Activate(true);
   if (page->inherits("CTreeFrame")
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
     docMan->OnFileClose();
