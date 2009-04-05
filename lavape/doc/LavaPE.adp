@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<assistantconfig version="3.3.4">
+<assistantconfig version="3.2.0">
 	<profile>
 		<property name="name">LavaDoc</property>
 		<property name="title">Lava Online Documentation</property>
