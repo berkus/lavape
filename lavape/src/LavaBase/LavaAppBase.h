@@ -29,7 +29,7 @@
 #ifdef WIN32
 #include "qt_windows.h"
 #include "commdlg.h"
-#define QASSISTANT "assistant_adp.exe"
+//#define QASSISTANT "assistant_adp.exe"
 #endif
 
 
