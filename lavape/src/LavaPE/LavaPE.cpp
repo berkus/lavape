@@ -711,8 +711,12 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 
 void CLavaPEApp::HtmlHelp()
 {
+<<<<<<< .mine
+  QString path(QASSISTANT);
+=======
 
 	QString path(QASSISTANT);
+>>>>>>> .r1518
   QStringList args;
 
   args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
