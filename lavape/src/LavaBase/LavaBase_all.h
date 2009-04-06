@@ -31,6 +31,8 @@
 
 #include "mdiframes.h"
 #include <QDialog>
+#include <QProcess>
+#include <QByteArray>
 
 #include <float.h>
 #include <stdio.h>

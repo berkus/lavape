@@ -711,6 +711,7 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 
 void CLavaPEApp::HtmlHelp()
 {
+
 	QString path(QASSISTANT);
   QStringList args;
 

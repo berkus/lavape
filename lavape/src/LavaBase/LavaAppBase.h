@@ -573,6 +573,19 @@ public:
   QPoint pos, globalPos;
 };
 
+class LAVABASE_DLL Assistant
+{
+public:
+    Assistant();
+    ~Assistant();
+    void ShowPage(const QString &file);
+
+private:
+    bool startAssistant();
+    QProcess *proc;
+};
+
+
 extern LAVABASE_DLL int critical(QWidget *parent, const QString &caption,
 			 const QString& text,
 			 int button0, int button1=0, int button2=0);
