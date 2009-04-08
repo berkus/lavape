@@ -9,7 +9,7 @@ endif
 
 SUBPRO=disco Precompiler wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
 
-all: dirs links $(SUBPRO)
+all: qhelp dirs links $(SUBPRO)
 
 LAVADIR=$(shell pwd)
 OPSYS = $(shell uname)
@@ -160,6 +160,8 @@ endif
 bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
 	rm -f $@; $(LN) ../$< $@
 
+qhelp:
+	cd doc; $(MAKE)
 
 bindist:
 	rm -rf $(HOME)/lavadistro; mkdir $(HOME)/lavadistro $(HOME)/lavadistro/lavadir; cp *.txt $(HOME)/lavadistro/lavadir; \
@@ -202,8 +204,8 @@ else
 endif
 
 
-clean: cleanall binclean libclean
-distclean: cleanall binclean libclean
+clean: cleanall binclean docclean libclean
+distclean: cleanall binclean docclean libclean
 
 ifeq ($(OPSYS),Darwin)
 binclean:
@@ -213,5 +215,8 @@ binclean:
 	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX) $(QASSLINK)
 endif
 
+docclean:
+	cd $(LAVADIR)/doc; rm -f LavaPE.qhc LavaPE.qch
+	
 libclean:
 	cd $(LAVADIR)/lib; rm -f lib*
