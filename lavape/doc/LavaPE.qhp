@@ -356,7 +356,7 @@
             <keyword name="parentheses in arithmetic expressions" ref="html/EditExec.htm#arithExpr" id="EditExec::parentheses in arithmetic expressions"/>
             <keyword name="forms, semi-automatic generation" ref="html/EditForm.htm" id="EditForm::forms, semi-automatic generation"/>
             <keyword name="GUI, semi-automatic generation" ref="html/EditForm.htm" id="EditForm::GUI, semi-automatic generation"/>
-            <keyword name="debugger&gt;" ref="html/Debugger.htm" id="Debugger::debugger&gt;"/>
+            <keyword name="debugger" ref="html/Debugger.htm" id="Debugger::debugger"/>
             <keyword name="functions" ref="html/dialogs/FunctionBox.htm" id="FunctionBox::functions"/>
             <keyword name="static functions" ref="html/dialogs/FunctionBox.htm#static" id="FunctionBox::static functions"/>
             <keyword name="read-only functions" ref="html/dialogs/FunctionBox.htm#readOnly" id="FunctionBox::read-only functions"/>
