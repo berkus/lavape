@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QtHelpProject version="1.0">
     <namespace>lavape.com</namespace>
-    <virtualFolder>doc</virtualFolder>
+    <virtualFolder>lavadoc</virtualFolder>
     <filterSection>
         <toc>
             <section title="LavaPE Manual" ref="LavaOnlineDoc.htm">
@@ -159,224 +159,217 @@
             </section>
         </toc>
         <keywords>
-            <keyword name="design patterns" ref="html/Unsolved.htm#patterns" id="Unsolved::design patterns"/>
-            <keyword name="refactoring" ref="html/Refactoring.htm" id="Refactoring::refactoring"/>
-            <keyword name="COM" ref="html/AdvantJava.htm" id="AdvantJava::COM"/>
-            <keyword name="Ada" ref="html/AdvantJava.htm" id="AdvantJava::Ada"/>
-            <keyword name="C++" ref="html/AdvantJava.htm" id="AdvantJava::C++"/>
-            <keyword name="CORBA" ref="html/AdvantJava.htm" id="AdvantJava::CORBA"/>
-            <keyword name="DCE" ref="html/AdvantJava.htm" id="AdvantJava::DCE"/>
-            <keyword name="advantages of java" ref="html/AdvantJava.htm" id="AdvantJava::advantages of java"/>
-            <keyword name="threads" ref="html/AdvantJava.htm" id="AdvantJava::threads"/>
-            <keyword name="SmallTalk" ref="html/AdvantJava.htm" id="AdvantJava::SmallTalk"/>
-            <keyword name="Pascal" ref="html/AdvantJava.htm" id="AdvantJava::Pascal"/>
-            <keyword name="Oberon" ref="html/AdvantJava.htm" id="AdvantJava::Oberon"/>
-            <keyword name="Modula-2" ref="html/AdvantJava.htm" id="AdvantJava::Modula-2"/>
-            <keyword name="LISP" ref="html/AdvantJava.htm" id="AdvantJava::LISP"/>
-            <keyword name="Java" ref="html/AdvantJava.htm" id="AdvantJava::Java"/>
-            <keyword name="IDL" ref="html/AdvantJava.htm" id="AdvantJava::IDL"/>
-            <keyword name="garbage collection" ref="html/AdvantJava.htm" id="AdvantJava::garbage collection"/>
-            <keyword name="event handling" ref="html/AdvantJava.htm" id="AdvantJava::event handling"/>
-            <keyword name="COM" ref="html/AdvantVB.htm" id="AdvantVB::COM"/>
-            <keyword name="DCOM" ref="html/AdvantVB.htm" id="AdvantVB::DCOM"/>
-            <keyword name="Visual Basic" ref="html/AdvantVB.htm" id="AdvantVB::Visual Basic"/>
-            <keyword name="RAD (Rapid Application Development)" ref="html/AdvantVB.htm" id="AdvantVB::RAD (Rapid Application Development)"/>
-            <keyword name="OLE" ref="html/AdvantVB.htm" id="AdvantVB::OLE"/>
-            <keyword name="IDE (Integrated Development Environment)" ref="html/AdvantVB.htm" id="AdvantVB::IDE (Integrated Development Environment)"/>
-            <keyword name="C++" ref="html/Unsolved.htm" id="Unsolved::C++"/>
-            <keyword name="component objects" ref="html/Unsolved.htm#components" id="Unsolved::component objects"/>
-            <keyword name="objects, two categories" ref="html/Unsolved.htm#stateValue" id="Unsolved::objects, two categories"/>
-            <keyword name="CORBA" ref="html/Unsolved.htm" id="Unsolved::CORBA"/>
-            <keyword name="design patterns" ref="html/Unsolved.htm#patterns" id="Unsolved::design patterns"/>
-            <keyword name="patterns, frameworks" ref="html/Unsolved.htm#patterns" id="Unsolved::patterns, frameworks"/>
-            <keyword name="transactions" ref="html/Unsolved.htm#synch" id="Unsolved::transactions"/>
-            <keyword name="semaphores" ref="html/Unsolved.htm#synch" id="Unsolved::semaphores"/>
-            <keyword name="Unsolved problems" ref="html/Unsolved.htm" id="Unsolved::Unsolved problems"/>
-            <keyword name="textual programming" ref="html/Unsolved.htm" id="Unsolved::textual programming"/>
-            <keyword name="SQL" ref="html/Unsolved.htm#SQL" id="Unsolved::SQL"/>
-            <keyword name="point and click" ref="html/Unsolved.htm" id="Unsolved::point and click"/>
-            <keyword name="Modula-2" ref="html/Unsolved.htm#sepItfImpl" id="Unsolved::Modula-2"/>
-            <keyword name="Java Beans" ref="html/Unsolved.htm#components" id="Unsolved::Java Beans"/>
-            <keyword name="interface" ref="html/Unsolved.htm" id="Unsolved::interface"/>
-            <keyword name="frameworks" ref="html/Unsolved.htm#patterns" id="Unsolved::frameworks"/>
-            <keyword name="Eiffel" ref="html/Unsolved.htm#Eiffel1" id="Unsolved::Eiffel"/>
-            <keyword name="Eiffel" ref="html/Unsolved.htm#Eiffel2" id="Unsolved::Eiffel"/>
-            <keyword name="aesthetic vs. pragmatic value" ref="html/LavaOverview.htm#aesthetic" id="LavaOverview::aesthetic vs. pragmatic value"/>
-            <keyword name="constraint" ref="html/PointAndClick.htm#constraint" id="PointAndClick::constraint"/>
-            <keyword name="documentation generator" ref="html/PointAndClick.htm#HTMLdoc" id="PointAndClick::documentation generator"/>
-            <keyword name="point and click" ref="html/PointAndClick.htm" id="PointAndClick::point and click"/>
-            <keyword name="exec" ref="html/PointAndClick.htm#exec" id="PointAndClick::exec"/>
-            <keyword name="editing executable code" ref="html/PointAndClick.htm#exec" id="PointAndClick::editing executable code"/>
-            <keyword name="textual syntax of Lava" ref="html/PointAndClick.htm#textualSyntax" id="PointAndClick::textual syntax of Lava"/>
-            <keyword name="textual programming" ref="html/PointAndClick.htm" id="PointAndClick::textual programming"/>
-            <keyword name="point and click" ref="html/PointAndClick.htm" id="PointAndClick::point and click"/>
-            <keyword name="placeholder" ref="html/PointAndClick.htm#placeholder" id="PointAndClick::placeholder"/>
-            <keyword name="combo boxes" ref="html/StructEdAdvant.htm" id="StructEdAdvant::combo boxes"/>
-            <keyword name="code refactoring" ref="html/Refactoring.htm" id="Refactoring::code refactoring"/>
-            <keyword name="declarations, nesting of" ref="html/LavaReadability.htm#declnesting" id="LavaReadability::declarations, nesting of"/>
-            <keyword name="nesting of declarations" ref="html/LavaReadability.htm#declnesting" id="LavaReadability::nesting of declarations"/>
-            <keyword name="multiple inheritance versus code generation wizards" ref="html/LavaReadability.htm#codeGeneration" id="LavaReadability::multiple inheritance versus code generation wizards"/>
-            <keyword name="pattern language" ref="html/OOanalysis.htm#patternLanguage" id="OOanalysis::pattern language"/>
-            <keyword name="Many Irreducible Mini-Methods (MIMM)" ref="html/OOPS-MIMM.htm" id="OOPS-MIMM::Many Irreducible Mini-Methods (MIMM)"/>
-            <keyword name="OOPS:MIMM" ref="html/OOPS-MIMM.htm" id="OOPS-MIMM::OOPS:MIMM"/>
-            <keyword name="DBC" ref="html/DBC.htm" id="DBC::DBC"/>
-            <keyword name="design by contract(TM)" ref="html/DBC.htm" id="DBC::design by contract(TM)"/>
-            <keyword name="attached assertions" ref="html/DBC.htm" id="DBC::attached assertions"/>
-            <keyword name="Ada" ref="html/SepItfImpl.htm" id="SepItfImpl::Ada"/>
-            <keyword name="class notion" ref="html/SepItfImpl.htm#classNotion" id="SepItfImpl::class notion"/>
-            <keyword name="COM" ref="html/SepItfImpl.htm" id="SepItfImpl::COM"/>
-            <keyword name="CORBA" ref="html/SepItfImpl.htm" id="SepItfImpl::CORBA"/>
-            <keyword name="creation of objects" ref="html/SepItfImpl.htm#objectCreation" id="SepItfImpl::creation of objects"/>
-            <keyword name="object creation" ref="html/SepItfImpl.htm#objectCreation" id="SepItfImpl::object creation"/>
-            <keyword name="information hiding principle" ref="html/SepItfImpl.htm#infoHiding" id="SepItfImpl::information hiding principle"/>
-            <keyword name="inheritance" ref="html/SepItfImpl.htm" id="SepItfImpl::inheritance"/>
-            <keyword name="virtual base classes" ref="html/SepItfImpl.htm#virtualBaseClasses" id="SepItfImpl::virtual base classes"/>
-            <keyword name="multiple inheritance with shared base classes" ref="html/SepItfImpl.htm#virtualBaseClasses" id="SepItfImpl::multiple inheritance with shared base classes"/>
-            <keyword name="multiple inheritance in Java" ref="html/SepItfImpl.htm#multipleInheritance" id="SepItfImpl::multiple inheritance in Java"/>
-            <keyword name="inheritance of implementations" ref="html/SepItfImpl.htm#implInheritance" id="SepItfImpl::inheritance of implementations"/>
-            <keyword name="multiple inheritance in Lava" ref="html/SepItfImpl.htm" id="SepItfImpl::multiple inheritance in Lava"/>
-            <keyword name="Modula-2" ref="html/SepItfImpl.htm" id="SepItfImpl::Modula-2"/>
-            <keyword name="mixins" ref="html/SepItfImpl.htm#mixins" id="SepItfImpl::mixins"/>
-            <keyword name="members, private/public" ref="html/SepItfImpl.htm" id="SepItfImpl::members, private/public"/>
-            <keyword name="Java interfaces" ref="html/SepItfImpl.htm#JavaInterfaces" id="SepItfImpl::Java interfaces"/>
-            <keyword name="interface" ref="html/SepItfImpl.htm" id="SepItfImpl::interface"/>
-            <keyword name="member functions and variables" ref="html/SepItfImpl.htm" id="SepItfImpl::member functions and variables"/>
-            <keyword name="methods" ref="html/SepItfImpl.htm" id="SepItfImpl::methods"/>
-            <keyword name="categories of objects" ref="html/TwoObjectCategories.htm" id="TwoObjectCategories::categories of objects"/>
-            <keyword name="component objects" ref="html/TwoObjectCategories.htm#component" id="TwoObjectCategories::component objects"/>
-            <keyword name="objects, two categories" ref="html/TwoObjectCategories.htm" id="TwoObjectCategories::objects, two categories"/>
-            <keyword name="two categories of objects" ref="html/TwoObjectCategories.htm" id="TwoObjectCategories::two categories of objects"/>
-            <keyword name="objects, database" ref="html/TwoObjectCategories.htm#database" id="TwoObjectCategories::objects, database"/>
-            <keyword name="Eiffel" ref="html/TwoObjectCategories.htm#declaration" id="TwoObjectCategories::Eiffel"/>
-            <keyword name="value object (structure)" ref="html/TwoObjectCategories.htm" id="TwoObjectCategories::value object (structure)"/>
-            <keyword name="state object (service)" ref="html/TwoObjectCategories.htm" id="TwoObjectCategories::state object (service)"/>
-            <keyword name="persistent data" ref="html/TwoObjectCategories.htm#database" id="TwoObjectCategories::persistent data"/>
-            <keyword name="categories: state, value" ref="html/TwoObjectCategories.htm" id="TwoObjectCategories::categories: state, value"/>
-            <keyword name="attribute" ref="html/TwoObjectCategories.htm#valueObject" id="TwoObjectCategories::attribute"/>
-            <keyword name="property" ref="html/TwoObjectCategories.htm" id="TwoObjectCategories::property"/>
-            <keyword name="component objects" ref="html/Components.htm" id="Components::component objects"/>
-            <keyword name="design patterns" ref="html/PatternsFrameworks.htm" id="PatternsFrameworks::design patterns"/>
-            <keyword name="patterns/frameworks" ref="html/PatternsFrameworks.htm" id="PatternsFrameworks::patterns/frameworks"/>
-            <keyword name="Eiffel" ref="html/PatternsFrameworks.htm" id="PatternsFrameworks::Eiffel"/>
-            <keyword name="virtual types" ref="html/PatternsFrameworks.htm" id="PatternsFrameworks::virtual types"/>
-            <keyword name="VTs" ref="html/PatternsFrameworks.htm" id="PatternsFrameworks::VTs"/>
-            <keyword name="specialization, collective" ref="html/PatternsFrameworks.htm" id="PatternsFrameworks::specialization, collective"/>
-            <keyword name="pattern parameters" ref="html/PatternsFrameworks.htm" id="PatternsFrameworks::pattern parameters"/>
-            <keyword name="frameworks" ref="html/PatternsFrameworks.htm" id="PatternsFrameworks::frameworks"/>
-            <keyword name="Eiffel" ref="html/TypeSafety.htm#Eiffel" id="TypeSafety::Eiffel"/>
-            <keyword name="type-safety of Lava" ref="html/TypeSafety.htm" id="TypeSafety::type-safety of Lava"/>
-            <keyword name="substitutable types" ref="html/TypeSafety.htm#substitutableType" id="TypeSafety::substitutable types"/>
-            <keyword name="Eiffel" ref="html/TypeCasts.htm" id="TypeCasts::Eiffel"/>
-            <keyword name="type casts" ref="html/TypeCasts.htm" id="TypeCasts::type casts"/>
-            <keyword name="assignment, single" ref="html/SingleAssigLogSem.htm" id="SingleAssigLogSem::assignment, single"/>
-            <keyword name="single assignment" ref="html/SingleAssigLogSem.htm" id="SingleAssigLogSem::single assignment"/>
-            <keyword name="read-only clauses/functions/invariants" ref="html/ReadOnly.htm" id="ReadOnly::read-only clauses/functions/invariants"/>
-            <keyword name="constructor" ref="html/ObjectLifeCycle.htm#initializer" id="ObjectLifeCycle::constructor"/>
-            <keyword name="initialization; initializer" ref="html/ObjectLifeCycle.htm#creation" id="ObjectLifeCycle::initialization; initializer"/>
-            <keyword name="object" ref="html/ObjectLifeCycle.htm#creation" id="ObjectLifeCycle::object"/>
-            <keyword name="new" ref="html/ObjectLifeCycle.htm#creation" id="ObjectLifeCycle::new"/>
-            <keyword name="life-time" ref="html/ObjectLifeCycle.htm" id="ObjectLifeCycle::life-time"/>
-            <keyword name="initialization checks" ref="html/IniChecks.htm" id="IniChecks::initialization checks"/>
-            <keyword name="mandatory variable" ref="html/IniChecks.htm" id="IniChecks::mandatory variable"/>
-            <keyword name="optional variable" ref="html/IniChecks.htm" id="IniChecks::optional variable"/>
-            <keyword name="unfinished objects" ref="html/UnfinishedObjects.htm" id="UnfinishedObjects::unfinished objects"/>
-            <keyword name="closed objects" ref="html/UnfinishedObjects.htm" id="UnfinishedObjects::closed objects"/>
-            <keyword name="quarantined objects" ref="html/UnfinishedObjects.htm" id="UnfinishedObjects::quarantined objects"/>
-            <keyword name="initialize clause of declare" ref="html/MultiPhaseRecIni.htm" id="MultiPhaseRecIni::initialize clause of declare"/>
-            <keyword name="application-level pointers" ref="html/PointersRefCounts.htm" id="PointersRefCounts::application-level pointers"/>
-            <keyword name="destructor" ref="html/PointersRefCounts.htm#finalize" id="PointersRefCounts::destructor"/>
-            <keyword name="storage managent" ref="html/PointersRefCounts.htm" id="PointersRefCounts::storage managent"/>
-            <keyword name="reference counts" ref="html/PointersRefCounts.htm" id="PointersRefCounts::reference counts"/>
-            <keyword name="pointers" ref="html/PointersRefCounts.htm" id="PointersRefCounts::pointers"/>
-            <keyword name="constituents" ref="html/PointersRefCounts.htm" id="PointersRefCounts::constituents"/>
-            <keyword name="acquaintances" ref="html/PointersRefCounts.htm" id="PointersRefCounts::acquaintances"/>
-            <keyword name="memory management" ref="html/PointersRefCounts.htm" id="PointersRefCounts::memory management"/>
-            <keyword name="garbage collection" ref="html/PointersRefCounts.htm" id="PointersRefCounts::garbage collection"/>
-            <keyword name="finalizer, finalization" ref="html/PointersRefCounts.htm#finalize" id="PointersRefCounts::finalizer, finalization"/>
-            <keyword name="database" ref="html/DatabaseIntegration.htm" id="DatabaseIntegration::database"/>
-            <keyword name="transactions" ref="html/DatabaseIntegration.htm" id="DatabaseIntegration::transactions"/>
-            <keyword name="select expression" ref="html/DatabaseIntegration.htm" id="DatabaseIntegration::select expression"/>
-            <keyword name="SQL" ref="html/DatabaseIntegration.htm" id="DatabaseIntegration::SQL"/>
-            <keyword name="quantifiers" ref="html/DatabaseIntegration.htm" id="DatabaseIntegration::quantifiers"/>
-            <keyword name="persistent data" ref="html/DatabaseIntegration.htm" id="DatabaseIntegration::persistent data"/>
-            <keyword name="logical conjunctions" ref="html/DatabaseIntegration.htm" id="DatabaseIntegration::logical conjunctions"/>
-            <keyword name="abort transaction" ref="html/Transactions.htm#exception" id="Transactions::abort transaction"/>
-            <keyword name="transaction" ref="html/Transactions.htm" id="Transactions::transaction"/>
-            <keyword name="transaction abort" ref="html/Transactions.htm#exception" id="Transactions::transaction abort"/>
-            <keyword name="try block" ref="html/Transactions.htm#exception" id="Transactions::try block"/>
-            <keyword name="synchronization" ref="html/Transactions.htm" id="Transactions::synchronization"/>
-            <keyword name="threads" ref="html/Transactions.htm" id="Transactions::threads"/>
-            <keyword name="multi-threading" ref="html/Transactions.htm" id="Transactions::multi-threading"/>
-            <keyword name="mutual exclusion" ref="html/Transactions.htm#mutualExclusion" id="Transactions::mutual exclusion"/>
-            <keyword name="consumer/producer" ref="html/Transactions.htm#producerConsumer" id="Transactions::consumer/producer"/>
-            <keyword name="producer/consumer" ref="html/Transactions.htm#producerConsumer" id="Transactions::producer/consumer"/>
-            <keyword name="callbacks" ref="html/Callbacks.htm" id="Callbacks::callbacks"/>
-            <keyword name="event handling" ref="html/Callbacks.htm" id="Callbacks::event handling"/>
-            <keyword name="signals/handlers" ref="html/Callbacks.htm" id="Callbacks::signals/handlers"/>
-            <keyword name="connect" ref="html/Callbacks.htm" id="Callbacks::connect"/>
-            <keyword name="disconnect" ref="html/Callbacks.htm" id="Callbacks::disconnect"/>
-            <keyword name="software signals" ref="html/Callbacks.htm" id="Callbacks::software signals"/>
-            <keyword name="handler" ref="html/Callbacks.htm" id="Callbacks::handler"/>
-            <keyword name="packages" ref="html/Packages.htm#packages" id="Packages::packages"/>
-            <keyword name="include files" ref="html/Packages.htm#include" id="Packages::include files"/>
-            <keyword name="initiator" ref="html/Packages.htm#initiator" id="Packages::initiator"/>
-            <keyword name="static function calls" ref="html/ProtectedFriend.htm#staticCalls" id="ProtectedFriend::static function calls"/>
-            <keyword name="protected features" ref="html/ProtectedFriend.htm" id="ProtectedFriend::protected features"/>
-            <keyword name="opaque packages" ref="html/ProtectedFriend.htm" id="ProtectedFriend::opaque packages"/>
-            <keyword name="Execution modes/environments of Lava programs" ref="html/ExecEnvironment.htm" id="ExecEnvironment::Execution modes/environments of Lava programs"/>
-            <keyword name="learning lava by samples" ref="html/LavaBySamples.htm" id="LavaBySamples::learning lava by samples"/>
-            <keyword name="assignment" ref="html/ObjectLifeCycle.htm" id="ObjectLifeCycle::assignment"/>
-            <keyword name="object creation" ref="html/ObjectLifeCycle.htm#creation" id="ObjectLifeCycle::object creation"/>
-            <keyword name="creation of objects" ref="html/ObjectLifeCycle.htm" id="ObjectLifeCycle::creation of objects"/>
-            <keyword name="declarations" ref="html/ObjectLifeCycle.htm" id="ObjectLifeCycle::declarations"/>
-            <keyword name="initializer" ref="html/ObjectLifeCycle.htm#initializer" id="ObjectLifeCycle::initializer"/>
-            <keyword name="single assignment" ref="html/SingleAssigSample.htm" id="SingleAssigSample::single assignment"/>
-            <keyword name="input/output" ref="html/LavaStreamIO.htm" id="LavaStreamIO::input/output"/>
-            <keyword name="file input/output" ref="html/LavaStreamIO.htm" id="LavaStreamIO::file input/output"/>
-            <keyword name="stream input/output" ref="html/LavaStreamIO.htm" id="LavaStreamIO::stream input/output"/>
-            <keyword name="Eiffel" ref="html/PatternSamples.htm" id="PatternSamples::Eiffel"/>
-            <keyword name="pattern samples" ref="html/PatternSamples.htm" id="PatternSamples::pattern samples"/>
-            <keyword name="virtual base classes" ref="html/PatternSamples.htm" id="PatternSamples::virtual base classes"/>
-            <keyword name="virtual base classes" ref="html/VirtualBaseSamples.htm" id="VirtualBaseSamples::virtual base classes"/>
-            <keyword name="substitutable types" ref="html/SubstitutableSamples.htm" id="SubstitutableSamples::substitutable types"/>
-            <keyword name="multiple inheritance and virtual types" ref="html/CounterSamples.htm#StringList" id="CounterSamples::multiple inheritance and virtual types"/>
-            <keyword name="exception handling" ref="html/ExceptionSamples.htm" id="ExceptionSamples::exception handling"/>
-            <keyword name="callbacks" ref="html/CallbackSample.htm" id="CallbackSample::callbacks"/>
-            <keyword name="event handling" ref="html/CallbackSample.htm" id="CallbackSample::event handling"/>
-            <keyword name="editing Lava programs" ref="html/BasicEditing.htm" id="BasicEditing::editing Lava programs"/>
-            <keyword name="views of LavaPE" ref="html/BasicEditing.htm" id="BasicEditing::views of LavaPE"/>
-            <keyword name="combo boxes" ref="html/EditTree.htm" id="EditTree::combo boxes"/>
-            <keyword name="declarations" ref="html/EditTree.htm" id="EditTree::declarations"/>
-            <keyword name="override view" ref="html/OverrideView.htm" id="OverrideView::override view"/>
-            <keyword name="exec" ref="html/EditExec.htm#constraint" id="EditExec::exec"/>
-            <keyword name="placeholder" ref="html/EditExec.htm" id="EditExec::placeholder"/>
-            <keyword name="invariant" ref="html/EditExec.htm#constraint" id="EditExec::invariant"/>
-            <keyword name="arithmetic expressions" ref="html/EditExec.htm#arithExpr" id="EditExec::arithmetic expressions"/>
-            <keyword name="nested arithmetic expressions" ref="html/EditExec.htm#arithExpr" id="EditExec::nested arithmetic expressions"/>
-            <keyword name="parentheses in arithmetic expressions" ref="html/EditExec.htm#arithExpr" id="EditExec::parentheses in arithmetic expressions"/>
-            <keyword name="forms, semi-automatic generation" ref="html/EditForm.htm" id="EditForm::forms, semi-automatic generation"/>
-            <keyword name="GUI, semi-automatic generation" ref="html/EditForm.htm" id="EditForm::GUI, semi-automatic generation"/>
-            <keyword name="debugger" ref="html/Debugger.htm" id="Debugger::debugger"/>
-            <keyword name="functions" ref="html/dialogs/FunctionBox.htm" id="FunctionBox::functions"/>
-            <keyword name="static functions" ref="html/dialogs/FunctionBox.htm#static" id="FunctionBox::static functions"/>
-            <keyword name="read-only functions" ref="html/dialogs/FunctionBox.htm#readOnly" id="FunctionBox::read-only functions"/>
-            <keyword name="execution of Lava programs" ref="html/commands/CheckAndRun.htm" id="CheckAndRun::execution of Lava programs"/>
-            <keyword name="starting a Lava program" ref="html/commands/CheckAndRun.htm" id="CheckAndRun::starting a Lava program"/>
-            <keyword name="launching a Lava program" ref="html/commands/CheckAndRun.htm" id="CheckAndRun::launching a Lava program"/>
-            <keyword name="file menu commands" ref="html/commands/FileMenuCommands.htm" id="FileMenuCommands::file menu commands"/>
-            <keyword name="documentation generator" ref="html/commands/GenHtmlCommand.htm" id="GenHtmlCommand::documentation generator"/>
-            <keyword name="printing Lava source programs" ref="html/commands/GenHtmlCommand.htm" id="GenHtmlCommand::printing Lava source programs"/>
-            <keyword name="HTML repr. of Lava programs" ref="html/commands/GenHtmlCommand.htm" id="GenHtmlCommand::HTML repr. of Lava programs"/>
-            <keyword name="importing external copmponents" ref="html/commands/ImportCommand.htm" id="ImportCommand::importing external copmponents"/>
+            <keyword name="design patterns" ref="html/Unsolved.htm#patterns"/>
+            <keyword name="refactoring" ref="html/Refactoring.htm"/>
+            <keyword name="COM" ref="html/AdvantJava.htm"/>
+            <keyword name="Ada" ref="html/AdvantJava.htm"/>
+            <keyword name="C++" ref="html/AdvantJava.htm"/>
+            <keyword name="CORBA" ref="html/AdvantJava.htm"/>
+            <keyword name="DCE" ref="html/AdvantJava.htm"/>
+            <keyword name="advantages of java" ref="html/AdvantJava.htm"/>
+            <keyword name="threads" ref="html/AdvantJava.htm"/>
+            <keyword name="SmallTalk" ref="html/AdvantJava.htm"/>
+            <keyword name="Pascal" ref="html/AdvantJava.htm"/>
+            <keyword name="Oberon" ref="html/AdvantJava.htm"/>
+            <keyword name="Modula-2" ref="html/AdvantJava.htm"/>
+            <keyword name="LISP" ref="html/AdvantJava.htm"/>
+            <keyword name="Java" ref="html/AdvantJava.htm"/>
+            <keyword name="IDL" ref="html/AdvantJava.htm"/>
+            <keyword name="garbage collection" ref="html/AdvantJava.htm"/>
+            <keyword name="event handling" ref="html/AdvantJava.htm"/>
+            <keyword name="COM" ref="html/AdvantVB.htm"/>
+            <keyword name="DCOM" ref="html/AdvantVB.htm"/>
+            <keyword name="Visual Basic" ref="html/AdvantVB.htm"/>
+            <keyword name="RAD (Rapid Application Development)" ref="html/AdvantVB.htm"/>
+            <keyword name="OLE" ref="html/AdvantVB.htm"/>
+            <keyword name="IDE (Integrated Development Environment)" ref="html/AdvantVB.htm"/>
+            <keyword name="C++" ref="html/Unsolved.htm"/>
+            <keyword name="component objects" ref="html/Unsolved.htm#components"/>
+            <keyword name="objects, two categories" ref="html/Unsolved.htm#stateValue"/>
+            <keyword name="CORBA" ref="html/Unsolved.htm"/>
+            <keyword name="design patterns" ref="html/Unsolved.htm#patterns"/>
+            <keyword name="patterns, frameworks" ref="html/Unsolved.htm#patterns"/>
+            <keyword name="transactions" ref="html/Unsolved.htm#synch"/>
+            <keyword name="semaphores" ref="html/Unsolved.htm#synch"/>
+            <keyword name="Unsolved problems" ref="html/Unsolved.htm"/>
+            <keyword name="textual programming" ref="html/Unsolved.htm"/>
+            <keyword name="SQL" ref="html/Unsolved.htm#SQL"/>
+            <keyword name="point and click" ref="html/Unsolved.htm"/>
+            <keyword name="Modula-2" ref="html/Unsolved.htm#sepItfImpl"/>
+            <keyword name="Java Beans" ref="html/Unsolved.htm#components"/>
+            <keyword name="interface" ref="html/Unsolved.htm"/>
+            <keyword name="frameworks" ref="html/Unsolved.htm#patterns"/>
+            <keyword name="Eiffel" ref="html/Unsolved.htm#Eiffel1"/>
+            <keyword name="Eiffel" ref="html/Unsolved.htm#Eiffel2"/>
+            <keyword name="aesthetic vs. pragmatic value" ref="html/LavaOverview.htm#aesthetic"/>
+            <keyword name="constraint" ref="html/PointAndClick.htm#constraint"/>
+            <keyword name="documentation generator" ref="html/PointAndClick.htm#HTMLdoc"/>
+            <keyword name="point and click" ref="html/PointAndClick.htm"/>
+            <keyword name="exec" ref="html/PointAndClick.htm#exec"/>
+            <keyword name="editing executable code" ref="html/PointAndClick.htm#exec"/>
+            <keyword name="textual syntax of Lava" ref="html/PointAndClick.htm#textualSyntax"/>
+            <keyword name="textual programming" ref="html/PointAndClick.htm"/>
+            <keyword name="point and click" ref="html/PointAndClick.htm"/>
+            <keyword name="placeholder" ref="html/PointAndClick.htm#placeholder"/>
+            <keyword name="combo boxes" ref="html/StructEdAdvant.htm"/>
+            <keyword name="code refactoring" ref="html/Refactoring.htm"/>
+            <keyword name="declarations, nesting of" ref="html/LavaReadability.htm#declnesting"/>
+            <keyword name="nesting of declarations" ref="html/LavaReadability.htm#declnesting"/>
+            <keyword name="multiple inheritance versus code generation wizards" ref="html/LavaReadability.htm#codeGeneration"/>
+            <keyword name="pattern language" ref="html/OOanalysis.htm#patternLanguage"/>
+            <keyword name="Many Irreducible Mini-Methods (MIMM)" ref="html/OOPS-MIMM.htm"/>
+            <keyword name="OOPS:MIMM" ref="html/OOPS-MIMM.htm"/>
+            <keyword name="DBC" ref="html/DBC.htm"/>
+            <keyword name="design by contract(TM)" ref="html/DBC.htm"/>
+            <keyword name="attached assertions" ref="html/DBC.htm"/>
+            <keyword name="Ada" ref="html/SepItfImpl.htm"/>
+            <keyword name="class notion" ref="html/SepItfImpl.htm#classNotion"/>
+            <keyword name="COM" ref="html/SepItfImpl.htm"/>
+            <keyword name="CORBA" ref="html/SepItfImpl.htm"/>
+            <keyword name="creation of objects" ref="html/SepItfImpl.htm#objectCreation"/>
+            <keyword name="object creation" ref="html/SepItfImpl.htm#objectCreation"/>
+            <keyword name="information hiding principle" ref="html/SepItfImpl.htm#infoHiding"/>
+            <keyword name="inheritance" ref="html/SepItfImpl.htm"/>
+            <keyword name="virtual base classes" ref="html/SepItfImpl.htm#virtualBaseClasses"/>
+            <keyword name="multiple inheritance with shared base classes" ref="html/SepItfImpl.htm#virtualBaseClasses"/>
+            <keyword name="multiple inheritance in Java" ref="html/SepItfImpl.htm#multipleInheritance"/>
+            <keyword name="inheritance of implementations" ref="html/SepItfImpl.htm#implInheritance"/>
+            <keyword name="multiple inheritance in Lava" ref="html/SepItfImpl.htm"/>
+            <keyword name="Modula-2" ref="html/SepItfImpl.htm"/>
+            <keyword name="mixins" ref="html/SepItfImpl.htm#mixins"/>
+            <keyword name="members, private/public" ref="html/SepItfImpl.htm"/>
+            <keyword name="Java interfaces" ref="html/SepItfImpl.htm#JavaInterfaces"/>
+            <keyword name="interface" ref="html/SepItfImpl.htm"/>
+            <keyword name="member functions and variables" ref="html/SepItfImpl.htm"/>
+            <keyword name="methods" ref="html/SepItfImpl.htm"/>
+            <keyword name="categories of objects" ref="html/TwoObjectCategories.htm"/>
+            <keyword name="component objects" ref="html/TwoObjectCategories.htm#component"/>
+            <keyword name="objects, two categories" ref="html/TwoObjectCategories.htm"/>
+            <keyword name="two categories of objects" ref="html/TwoObjectCategories.htm"/>
+            <keyword name="objects, database" ref="html/TwoObjectCategories.htm#database"/>
+            <keyword name="Eiffel" ref="html/TwoObjectCategories.htm#declaration"/>
+            <keyword name="value object (structure)" ref="html/TwoObjectCategories.htm"/>
+            <keyword name="state object (service)" ref="html/TwoObjectCategories.htm"/>
+            <keyword name="persistent data" ref="html/TwoObjectCategories.htm#database"/>
+            <keyword name="categories: state, value" ref="html/TwoObjectCategories.htm"/>
+            <keyword name="attribute" ref="html/TwoObjectCategories.htm#valueObject"/>
+            <keyword name="property" ref="html/TwoObjectCategories.htm"/>
+            <keyword name="component objects" ref="html/Components.htm"/>
+            <keyword name="design patterns" ref="html/PatternsFrameworks.htm"/>
+            <keyword name="patterns/frameworks" ref="html/PatternsFrameworks.htm"/>
+            <keyword name="Eiffel" ref="html/PatternsFrameworks.htm"/>
+            <keyword name="virtual types" ref="html/PatternsFrameworks.htm"/>
+            <keyword name="VTs" ref="html/PatternsFrameworks.htm"/>
+            <keyword name="specialization, collective" ref="html/PatternsFrameworks.htm"/>
+            <keyword name="pattern parameters" ref="html/PatternsFrameworks.htm"/>
+            <keyword name="frameworks" ref="html/PatternsFrameworks.htm"/>
+            <keyword name="Eiffel" ref="html/TypeSafety.htm#Eiffel"/>
+            <keyword name="type-safety of Lava" ref="html/TypeSafety.htm"/>
+            <keyword name="substitutable types" ref="html/TypeSafety.htm#substitutableType"/>
+            <keyword name="Eiffel" ref="html/TypeCasts.htm"/>
+            <keyword name="type casts" ref="html/TypeCasts.htm"/>
+            <keyword name="assignment, single" ref="html/SingleAssigLogSem.htm"/>
+            <keyword name="single assignment" ref="html/SingleAssigLogSem.htm"/>
+            <keyword name="read-only clauses/functions/invariants" ref="html/ReadOnly.htm"/>
+            <keyword name="constructor" ref="html/ObjectLifeCycle.htm#initializer"/>
+            <keyword name="initialization; initializer" ref="html/ObjectLifeCycle.htm#creation"/>
+            <keyword name="object" ref="html/ObjectLifeCycle.htm#creation"/>
+            <keyword name="new" ref="html/ObjectLifeCycle.htm#creation"/>
+            <keyword name="life-time" ref="html/ObjectLifeCycle.htm"/>
+            <keyword name="initialization checks" ref="html/IniChecks.htm"/>
+            <keyword name="mandatory variable" ref="html/IniChecks.htm"/>
+            <keyword name="optional variable" ref="html/IniChecks.htm"/>
+            <keyword name="unfinished objects" ref="html/UnfinishedObjects.htm"/>
+            <keyword name="closed objects" ref="html/UnfinishedObjects.htm"/>
+            <keyword name="quarantined objects" ref="html/UnfinishedObjects.htm"/>
+            <keyword name="initialize clause of declare" ref="html/MultiPhaseRecIni.htm"/>
+            <keyword name="application-level pointers" ref="html/PointersRefCounts.htm"/>
+            <keyword name="destructor" ref="html/PointersRefCounts.htm#finalize"/>
+            <keyword name="storage managent" ref="html/PointersRefCounts.htm"/>
+            <keyword name="reference counts" ref="html/PointersRefCounts.htm"/>
+            <keyword name="pointers" ref="html/PointersRefCounts.htm"/>
+            <keyword name="constituents" ref="html/PointersRefCounts.htm"/>
+            <keyword name="acquaintances" ref="html/PointersRefCounts.htm"/>
+            <keyword name="memory management" ref="html/PointersRefCounts.htm"/>
+            <keyword name="garbage collection" ref="html/PointersRefCounts.htm"/>
+            <keyword name="finalizer, finalization" ref="html/PointersRefCounts.htm#finalize"/>
+            <keyword name="database" ref="html/DatabaseIntegration.htm"/>
+            <keyword name="transactions" ref="html/DatabaseIntegration.htm"/>
+            <keyword name="select expression" ref="html/DatabaseIntegration.htm"/>
+            <keyword name="SQL" ref="html/DatabaseIntegration.htm"/>
+            <keyword name="quantifiers" ref="html/DatabaseIntegration.htm"/>
+            <keyword name="persistent data" ref="html/DatabaseIntegration.htm"/>
+            <keyword name="logical conjunctions" ref="html/DatabaseIntegration.htm"/>
+            <keyword name="abort transaction" ref="html/Transactions.htm#exception"/>
+            <keyword name="transaction" ref="html/Transactions.htm"/>
+            <keyword name="transaction abort" ref="html/Transactions.htm#exception"/>
+            <keyword name="try block" ref="html/Transactions.htm#exception"/>
+            <keyword name="synchronization" ref="html/Transactions.htm"/>
+            <keyword name="threads" ref="html/Transactions.htm"/>
+            <keyword name="multi-threading" ref="html/Transactions.htm"/>
+            <keyword name="mutual exclusion" ref="html/Transactions.htm#mutualExclusion"/>
+            <keyword name="consumer/producer" ref="html/Transactions.htm#producerConsumer"/>
+            <keyword name="producer/consumer" ref="html/Transactions.htm#producerConsumer"/>
+            <keyword name="callbacks" ref="html/Callbacks.htm"/>
+            <keyword name="event handling" ref="html/Callbacks.htm"/>
+            <keyword name="signals/handlers" ref="html/Callbacks.htm"/>
+            <keyword name="connect" ref="html/Callbacks.htm"/>
+            <keyword name="disconnect" ref="html/Callbacks.htm"/>
+            <keyword name="software signals" ref="html/Callbacks.htm"/>
+            <keyword name="handler" ref="html/Callbacks.htm"/>
+            <keyword name="packages" ref="html/Packages.htm#packages"/>
+            <keyword name="include files" ref="html/Packages.htm#include"/>
+            <keyword name="initiator" ref="html/Packages.htm#initiator"/>
+            <keyword name="static function calls" ref="html/ProtectedFriend.htm#staticCalls"/>
+            <keyword name="protected features" ref="html/ProtectedFriend.htm"/>
+            <keyword name="opaque packages" ref="html/ProtectedFriend.htm"/>
+            <keyword name="Execution modes/environments of Lava programs" ref="html/ExecEnvironment.htm"/>
+            <keyword name="learning lava by samples" ref="html/LavaBySamples.htm"/>
+            <keyword name="assignment" ref="html/ObjectLifeCycle.htm"/>
+            <keyword name="object creation" ref="html/ObjectLifeCycle.htm#creation"/>
+            <keyword name="creation of objects" ref="html/ObjectLifeCycle.htm"/>
+            <keyword name="declarations" ref="html/ObjectLifeCycle.htm"/>
+            <keyword name="initializer" ref="html/ObjectLifeCycle.htm#initializer"/>
+            <keyword name="single assignment" ref="html/SingleAssigSample.htm"/>
+            <keyword name="input/output" ref="html/LavaStreamIO.htm"/>
+            <keyword name="file input/output" ref="html/LavaStreamIO.htm"/>
+            <keyword name="stream input/output" ref="html/LavaStreamIO.htm"/>
+            <keyword name="Eiffel" ref="html/PatternSamples.htm"/>
+            <keyword name="pattern samples" ref="html/PatternSamples.htm"/>
+            <keyword name="virtual base classes" ref="html/PatternSamples.htm"/>
+            <keyword name="virtual base classes" ref="html/VirtualBaseSamples.htm"/>
+            <keyword name="substitutable types" ref="html/SubstitutableSamples.htm"/>
+            <keyword name="multiple inheritance and virtual types" ref="html/CounterSamples.htm#StringList"/>
+            <keyword name="exception handling" ref="html/ExceptionSamples.htm"/>
+            <keyword name="callbacks" ref="html/CallbackSample.htm"/>
+            <keyword name="event handling" ref="html/CallbackSample.htm"/>
+            <keyword name="editing Lava programs" ref="html/BasicEditing.htm"/>
+            <keyword name="views of LavaPE" ref="html/BasicEditing.htm"/>
+            <keyword name="combo boxes" ref="html/EditTree.htm"/>
+            <keyword name="declarations" ref="html/EditTree.htm"/>
+            <keyword name="override view" ref="html/OverrideView.htm"/>
+            <keyword name="exec" ref="html/EditExec.htm#constraint"/>
+            <keyword name="placeholder" ref="html/EditExec.htm"/>
+            <keyword name="invariant" ref="html/EditExec.htm#constraint"/>
+            <keyword name="arithmetic expressions" ref="html/EditExec.htm#arithExpr"/>
+            <keyword name="nested arithmetic expressions" ref="html/EditExec.htm#arithExpr"/>
+            <keyword name="parentheses in arithmetic expressions" ref="html/EditExec.htm#arithExpr"/>
+            <keyword name="forms, semi-automatic generation" ref="html/EditForm.htm"/>
+            <keyword name="GUI, semi-automatic generation" ref="html/EditForm.htm"/>
+            <keyword name="debugger" ref="html/Debugger.htm"/>
+            <keyword name="functions" ref="html/dialogs/FunctionBox.htm"/>
+            <keyword name="static functions" ref="html/dialogs/FunctionBox.htm#static"/>
+            <keyword name="read-only functions" ref="html/dialogs/FunctionBox.htm#readOnly"/>
+            <keyword name="execution of Lava programs" ref="html/commands/CheckAndRun.htm"/>
+            <keyword name="starting a Lava program" ref="html/commands/CheckAndRun.htm"/>
+            <keyword name="launching a Lava program" ref="html/commands/CheckAndRun.htm"/>
+            <keyword name="file menu commands" ref="html/commands/FileMenuCommands.htm"/>
+            <keyword name="documentation generator" ref="html/commands/GenHtmlCommand.htm"/>
+            <keyword name="printing Lava source programs" ref="html/commands/GenHtmlCommand.htm"/>
+            <keyword name="HTML repr. of Lava programs" ref="html/commands/GenHtmlCommand.htm"/>
+            <keyword name="importing external copmponents" ref="html/commands/ImportCommand.htm"/>
         </keywords>
         <files>
-            <file>cntimage.gif</file>
-            <file>cntimage.png</file>
-            <file>Copyright.htm</file>
-            <file>index.htm</file>
-            <file>Lava.xpm</file>
-            <file>LavaOnlineDoc.htm</file>
-            <file>TitlePage.htm</file>
             <file>html/AdvantJava.htm</file>
             <file>html/AdvantVB.htm</file>
             <file>html/Aesthetics.htm</file>
@@ -421,12 +414,10 @@
             <file>html/KorfsJoke.htm</file>
             <file>html/KorfSpectacles.htm</file>
             <file>html/LavaBySamples.htm</file>
-            <file>html/LavaOnlineDoc.htm</file>
             <file>html/LavaOverview.htm</file>
             <file>html/LavaReadability.htm</file>
             <file>html/LavaStreamIO.htm</file>
             <file>html/LavaStyles.css</file>
-            <file>html/LavaStylesWeb.css</file>
             <file>html/MultiPhaseRecIni.htm</file>
             <file>html/ObjectLifeCycle.htm</file>
             <file>html/OOanalysis.htm</file>
@@ -544,6 +535,48 @@
             <file>html/dialogs/PackageBox.htm</file>
             <file>html/dialogs/SetBox.htm</file>
             <file>html/dialogs/VirtualTypeBox.htm</file>
+            <file>html/whatNext/Expr_wn.htm</file>
+            <file>html/whatNext/Expression_wn.htm</file>
+            <file>html/whatNext/GlobalWhatNext.htm</file>
+            <file>html/whatNext/ObjPH_wn.htm</file>
+            <file>html/whatNext/Statement_wn.htm</file>
+            <file>html/whatNext/Stm_wn.htm</file>
+            <file>html/whatNext/Type_wn.htm</file>
+            <file>html/whatNext/Var_wn.htm</file>
+            <file>html/whatNext/VarName_wn.htm</file>
+            <file>html/whatNext/VarPH_wn.htm</file>
+            <file>html/whatsThis/Assert.htm</file>
+            <file>html/whatsThis/Assign.htm</file>
+            <file>html/whatsThis/Attach.htm</file>
+            <file>html/whatsThis/Callback.htm</file>
+            <file>html/whatsThis/Clone.htm</file>
+            <file>html/whatsThis/Copy.htm</file>
+            <file>html/whatsThis/Declare.htm</file>
+            <file>html/whatsThis/Enumeration.htm</file>
+            <file>html/whatsThis/EnumItem.htm</file>
+            <file>html/whatsThis/Exists.htm</file>
+            <file>html/whatsThis/Expr_wn.htm</file>
+            <file>html/whatsThis/Expression_wn.htm</file>
+            <file>html/whatsThis/FailSucceed.htm</file>
+            <file>html/whatsThis/Foreach.htm</file>
+            <file>html/whatsThis/GlobalWhatNext.htm</file>
+            <file>html/whatsThis/IfdefElse.htm</file>
+            <file>html/whatsThis/IfExpr.htm</file>
+            <file>html/whatsThis/IfStm.htm</file>
+            <file>html/whatsThis/InSet.htm</file>
+            <file>html/whatsThis/LogOps.htm</file>
+            <file>html/whatsThis/MemberFunctions.htm</file>
+            <file>html/whatsThis/New.htm</file>
+            <file>html/whatsThis/Old.htm</file>
+            <file>html/whatsThis/QryItf.htm</file>
+            <file>html/whatsThis/Run.htm</file>
+            <file>html/whatsThis/Scale.htm</file>
+            <file>html/whatsThis/Select.htm</file>
+            <file>html/whatsThis/SetChain.htm</file>
+            <file>html/whatsThis/Statement_wn.htm</file>
+            <file>html/whatsThis/Switch.htm</file>
+            <file>html/whatsThis/Try.htm</file>
+            <file>html/whatsThis/TypeSwitch.htm</file>
             <file>images/4.png</file>
             <file>images/AppExit.png</file>
             <file>images/assign.png</file>

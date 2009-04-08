@@ -3,7 +3,7 @@
     <assistant>
         <title>Lava Online Documentation</title>
         <applicationIcon>Lava.xpm</applicationIcon>
-        <startPage>qthelp://lavape.com/doc/LavaOnlineDoc.htm</startPage>
+        <startPage>qthelp://lavape.com/lavadoc/LavaOnlineDoc.htm</startPage>
         <aboutMenuText>
             <text>About LavaPE</text>
         </aboutMenuText>
