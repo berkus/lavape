@@ -1902,6 +1902,10 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath="..\..\doc\LavaPE.qhp"
+			>
+		</File>
+		<File
 			RelativePath="LavaPE.reg"
 			>
 		</File>

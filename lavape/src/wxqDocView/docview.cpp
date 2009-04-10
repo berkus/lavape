@@ -2115,7 +2115,7 @@ Assistant::Assistant()
          return;
 
      QByteArray ba("setSource ");
-     ba.append("qthelp://com.lavape/lavadoc/");
+     ba.append("qthelp://lavape.com/lavadoc/");
 
      proc->write(ba + page.toLocal8Bit() + '\0');
  }
