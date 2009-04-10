@@ -32,6 +32,7 @@
 #include <QSignalMapper>
 #include <QAbstractEventDispatcher>
 #include <QTimer>
+#include <QProcess>
 
 #if wxUSE_PRINTING_ARCHITECTURE
     #include "print.h"
@@ -62,6 +63,18 @@ enum
 class WXDLLEXPORT wxDocManager;
 class WXDLLEXPORT wxMainFrame;
 class WXDLLEXPORT wxChildFrame;
+
+class WXDLLEXPORT Assistant
+{
+public:
+    Assistant();
+    ~Assistant();
+    void ShowPage(const QString &file);
+
+private:
+    bool startAssistant();
+    QProcess *proc;
+};
 
 class WXDLLEXPORT wxApp : public QApplication
 {
@@ -119,6 +132,7 @@ public:
 //    QSettings *settings;
     QString lastFileOpen; //last file open from history or file dialog
     //QTimer *m_timer;
+    Assistant *assistant;
 
 public slots:
     void about();

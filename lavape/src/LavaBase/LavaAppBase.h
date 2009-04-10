@@ -573,18 +573,6 @@ public:
   QPoint pos, globalPos;
 };
 
-class LAVABASE_DLL Assistant
-{
-public:
-    Assistant();
-    ~Assistant();
-    void ShowPage(const QString &file);
-
-private:
-    bool startAssistant();
-    QProcess *proc;
-};
-
 
 extern LAVABASE_DLL int critical(QWidget *parent, const QString &caption,
 			 const QString& text,
@@ -600,6 +588,6 @@ extern LAVABASE_DLL int question(QWidget *parent, const QString &caption,
 
 extern LAVABASE_DLL QAssistantClient *qacl;
 
-extern LAVABASE_DLL void ShowPage(const QString &file);
+//extern LAVABASE_DLL void ShowPage(const QString &file);
 
 #endif

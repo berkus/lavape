@@ -711,46 +711,18 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 
 void CLavaPEApp::HtmlHelp()
 {
-  QString path(QASSISTANT);
-= QStringList args;
-
-  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-  if (!qacl) {
-    qacl = new QAssistantClient(path,m_appWindow);
-    qacl->setArguments(args);
-  }
-
-  qacl->showPage(ExeDir + "/../doc/html/FAQ.htm");
+  QString page("/../doc/html/FAQ.htm");
+  assistant->ShowPage(page);
 }
 
 void CLavaPEApp::EditingLavaProgs()
 {
-  QString path(QASSISTANT);
-  QStringList args;
-
-  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-
-  if (!qacl) {
-    qacl = new QAssistantClient(path,m_appWindow);
-    qacl->setArguments(args);
-  }
-
-  qacl->showPage(ExeDir + "/../doc/html/BasicEditing.htm");
+  wxTheApp->assistant->ShowPage("/../doc/html/BasicEditing.htm");
 }
 
 void CLavaPEApp::LearningLava()
 {
-  QString path(QASSISTANT);
-  QStringList args;
-
-  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-
-  if (!qacl) {
-    qacl = new QAssistantClient(path,m_appWindow);
-    qacl->setArguments(args);
-  }
-
-  qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
+  wxTheApp->assistant->ShowPage("/../doc/html/LavaBySamples.htm");
 }
 
 void CLavaPEApp::OnSaveAll()

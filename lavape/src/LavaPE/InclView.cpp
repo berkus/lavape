@@ -185,7 +185,7 @@ void CInclView::OnNewInclude()
   QFileInfo finfo;
   int ii;
   unsigned long firstLast = 1;
-  QStringList fileNames = wxTheApp->wxGetOpenFileNames(this, GetDocument()->IDTable.DocDir.c, 
+  QStringList fileNames = wxTheApp->wxGetOpenFileNames(this, GetDocument()->IDTable.DocDir.c,
 				                                      "Select additional include files", "Lava.File (*.lava)");
 
   if (fileNames.isEmpty())
@@ -248,7 +248,7 @@ void CInclView::OnDblclk( QTreeWidgetItem * item, int col )
 {
   //CTreeItem* item = (CTreeItem*)Tree->itemAtIndex(index);
 
-  
+
   if (item) {
     CHESimpleSyntax* che = (CHESimpleSyntax*)((CTreeItem*)item)->getItemData();
     SelINCL = che->data.nINCL;
@@ -439,7 +439,7 @@ void CInclView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
 {
   if (!selItem)
     return;
-  if (!selItem->isSelected()) 
+  if (!selItem->isSelected())
     return;
   CHESimpleSyntax* che = (CHESimpleSyntax*)((CTreeItem*)selItem)->getItemData();
   SelINCL = che->data.nINCL;
@@ -470,7 +470,7 @@ bool CInclView::event(QEvent *ev) {
   if (ev->type() == QEvent::WhatsThisClicked) {
     wtcEv = (QWhatsThisClickedEvent*)ev;
     href = wtcEv->href();
-    ShowPage(QString("whatsThis/")+href);
+    wxTheApp->assistant->ShowPage(QString("whatsThis/")+href);
     return true;
   }
   else

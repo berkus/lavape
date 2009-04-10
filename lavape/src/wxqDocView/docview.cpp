@@ -145,6 +145,7 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
   //connect(this,SIGNAL(focusChanged(QWidget *,QWidget *)),this,SLOT(onFocusChanged(QWidget *,QWidget *)));
   appExit = false;
   cmdLineEvaluated = false;
+  assistant = 0;
 }
 
 
@@ -185,7 +186,7 @@ void wxApp::customEvent(QEvent *e)
     wxTabChangeData* data = (wxTabChangeData*)((CustomEvent*)e)->data();
     if (!data->source)
       m_docManager->OnFileClose();
-    else 
+    else
       if (data->action)
         data->source->postTabChange(data->sIndex, data->action);
       else
@@ -201,7 +202,7 @@ void wxApp::onUpdateUI()
 
   if (appExit /*deletingMainFrame*/)
     return;
-  
+
   UpdateUI();
   if (m_appWindow)
     m_appWindow->UpdateUI();
@@ -250,7 +251,7 @@ QString wxApp::wxGetOpenFileName(QWidget *parent, const QString& startFileName, 
   QFileInfo qfresolved(ResolveLinks(qf));
   currentFilter = qfresolved.suffix();
   initialDir = qf.path();
-  if (initialDir == QString(".")) { 
+  if (initialDir == QString(".")) {
     QString cleanD = QFileInfo(lastFileOpen).absolutePath();
     cleanD = QDir::cleanPath(cleanD);
     qf = QFileInfo(QDir(cleanD), startFileName);
@@ -262,7 +263,7 @@ QString wxApp::wxGetOpenFileName(QWidget *parent, const QString& startFileName, 
   fd->setDirectory(qf.path());
 	filters << filter;
   if (filter2 != QString::null)
-    filters << filter2; 
+    filters << filter2;
 	fd->setFilters(filters);
   fd->setWindowTitle(caption);
   if (currentFilter.isEmpty())
@@ -333,7 +334,7 @@ QStringList wxApp::wxGetOpenFileNames(QWidget *parent, const QString& startFileN
   else
     fileName = qf.fileName();
   initialDir = qf.path();
-  if (initialDir == QString(".")) { 
+  if (initialDir == QString(".")) {
     QString cleanD = QFileInfo(lastFileOpen).absolutePath();
     cleanD = QDir::cleanPath(cleanD);
     qf = QFileInfo(QDir(cleanD), startFileName);
@@ -344,7 +345,7 @@ QStringList wxApp::wxGetOpenFileNames(QWidget *parent, const QString& startFileN
   fd->setWindowTitle(caption);
 	filters << filter;
   if (filter2 != QString::null)
-    filters << filter2; 
+    filters << filter2;
   currentFilter = qfresolved.suffix();
 	fd->setFilters(filters);
   if (currentFilter.isEmpty())
@@ -2094,82 +2095,58 @@ QString ResolveLinks(QFileInfo &qf)
 #endif
 }
 
-// ----------------------------------------------------------------------------
-// Permits compatibility with existing file formats and functions that
-// manipulate files directly
-// ----------------------------------------------------------------------------
-/*
-#if wxUSE_STD_IOSTREAM
-bool wxTransferFileToStream(const QString& filename, ostream& stream)
-{
-    FILE *fd1;
-    int ch;
+Assistant::Assistant()
+     : proc(0)
+ {
+ }
 
-    if ((fd1 = wxFopen (filename.fn_str(), _T("rb"))) == NULL)
-        return false;
+ Assistant::~Assistant()
+ {
+     if (proc && proc->state() == QProcess::Running) {
+         proc->terminate();
+         proc->waitForFinished(3000);
+     }
+     delete proc;
+ }
 
-    while ((ch = getc (fd1)) != EOF)
-        stream << (unsigned char)ch;
+ void Assistant::ShowPage(const QString &page)
+ {
+     if (!startAssistant())
+         return;
 
-    fclose (fd1);
-    return true;
-}
+     QByteArray ba("setSource ");
+     ba.append("qthelp://com.lavape.doc/");
 
-bool wxTransferStreamToFile(istream& stream, const QString& filename)
-{
-    FILE *fd1;
-    int ch;
+     proc->write(ba + page.toLocal8Bit() + '\0');
+ }
 
-    if ((fd1 = wxFopen (filename.fn_str(), _T("wb"))) == NULL)
-    {
-        return false;
-    }
+ bool Assistant::startAssistant()
+ {
+     if (!proc)
+         proc = new QProcess();
 
-    while (!stream.eof())
-    {
-        ch = stream.get();
-        if (!stream.eof())
-            putc (ch, fd1);
-    }
-    fclose (fd1);
-    return true;
-}
-#else
-bool wxTransferFileToStream(const QString& filename, wxOutputStream& stream)
-{
-    FILE *fd1;
-    int ch;
+     if (proc->state() != QProcess::Running) {
+       //QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
+       QString app = QString(".") + QDir::separator();
+ #if !defined(Q_OS_MAC)
+         app += QLatin1String("assistant");
+ #else
+         app += QLatin1String("Assistant.app/Contents/MacOS/Assistant");
+ #endif
 
-    if ((fd1 = wxFopen (filename, QString("rb"))) == NULL)
-        return false;
+         QStringList args;
+         args << QLatin1String("-collectionFile")
+             << QLatin1String("../doc/LavaPE.qch")
+             << QLatin1String("-enableRemoteControl");
 
-    while ((ch = getc (fd1)) != EOF)
-        stream.PutC((char) ch);
+         proc->start(app, args);
 
-    fclose (fd1);
-    return true;
-}
-
-bool wxTransferStreamToFile(wxInputStream& stream, const QString& filename)
-{
-    FILE *fd1;
-    char ch;
-
-    if ((fd1 = wxFopen (filename, QString("wb"))) == NULL)
-    {
-        return false;
-    }
-
-    int len = stream.StreamSize();
-    // TODO: is this the correct test for EOF?
-    while (stream.TellI() < (len - 1))
-    {
-        ch = stream.GetC();
-        putc (ch, fd1);
-    }
-    fclose (fd1);
-    return true;
-}
-#endif
-*/
+         if (!proc->waitForStarted()) {
+             QMessageBox::critical(0, QObject::tr("LavaPE: "),
+                 QObject::tr("Unable to launch Qt Assistant (%1)").arg(app));
+             return false;
+         }
+     }
+     return true;
+ }
 

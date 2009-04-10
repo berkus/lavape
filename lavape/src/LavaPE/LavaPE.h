@@ -49,9 +49,9 @@ class CLavaPEApp : public wxApp
 public:
   CLavaPEApp(int &argc, char ** argv);
   ~CLavaPEApp();
-  
+
   void OnAppCreate();
-  
+
   wxDocTemplate *pLavaTemplate, *pFormTemplate, *pExecTemplate, *pLComTemplate;
   CLavaPEBrowse Browser;
   CExecUpdate ExecUpdate;
@@ -67,7 +67,6 @@ public:
   QIcon* LavaIcons[50];
   QPixmap* LavaPixmaps[50];
 
-  public:
   virtual bool event(QEvent *e);
   virtual int OnAppExit();
   virtual void OpenDocumentFile(const QString& lpszFileName);
@@ -97,6 +96,7 @@ public:
   QString InitWebBrowser ();
   void OnCloseLastExecView();
 
+private:
   Q_OBJECT;
 };
 

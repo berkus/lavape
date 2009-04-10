@@ -1292,7 +1292,7 @@ bool CLavaPEView::event(QEvent *ev)
   else if (ev->type() == QEvent::WhatsThisClicked) {
     wtcEv = (QWhatsThisClickedEvent*)ev;
     href = wtcEv->href();
-    ShowPage(QString("whatsThis/")+href);
+    wxTheApp->assistant->ShowPage(QString("whatsThis/")+href);
     return true;
   }
   else
@@ -2956,7 +2956,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
 
   ppar= (CTreeItem*)par->parent();
   ppdata = (CMainItemData*)ppar->getItemData();
-  
+
   if (iDECL  && decl->SecondTFlags.Contains(funcImpl) /*&& !dragParent*/) {
     // a function implementation or it's IO-members cannot be inserted in this way
     decl->SecondTFlags.EXCL(funcImpl);
@@ -3478,27 +3478,27 @@ void CLavaPEView::StoreSelection()
     case TIType_DECL:
       decl->WorkFlags.INCL(selAfter);
       break;
-    case TIType_CHEEnumSel:   
+    case TIType_CHEEnumSel:
       decl->WorkFlags.INCL(selAfter);
       decl->WorkFlags.INCL(selEnum);
       break;
-    case TIType_EnumItems:    
+    case TIType_EnumItems:
       decl->WorkFlags.INCL(selAfter);
       decl->WorkFlags.INCL(selEnum);
       break;
-    case TIType_VTypes:       
+    case TIType_VTypes:
       decl->WorkFlags.INCL(selAfter);
       decl->WorkFlags.INCL(selPara);
       break;
-    case TIType_Input:         
+    case TIType_Input:
       decl->WorkFlags.INCL(selAfter);
       decl->WorkFlags.INCL(selIn);
       break;
-    case TIType_Output:              
+    case TIType_Output:
       decl->WorkFlags.INCL(selAfter);
       decl->WorkFlags.INCL(selOut);
       break;
-    case TIType_Defs: 
+    case TIType_Defs:
       decl->WorkFlags.INCL(selAfter);
       decl->WorkFlags.INCL(selDefs);
       break;
