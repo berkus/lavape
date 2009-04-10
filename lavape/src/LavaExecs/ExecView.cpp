@@ -546,7 +546,7 @@ bool ExecContents::event(QEvent *ev) {
   else if (ev->type() == QEvent::WhatsThisClicked) {
     wtcEv = (QWhatsThisClickedEvent*)ev;
     href = wtcEv->href();
-    wxTheApp->assistant->ShowPage(QString("whatsThis/")+href);
+    wxTheApp->assistant->ShowPage(QString("html/whatsThis/")+href);
     return true;
   }
   else if (ev->type() == QEvent::FocusIn) {

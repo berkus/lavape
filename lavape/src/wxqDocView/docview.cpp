@@ -145,7 +145,7 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
   //connect(this,SIGNAL(focusChanged(QWidget *,QWidget *)),this,SLOT(onFocusChanged(QWidget *,QWidget *)));
   appExit = false;
   cmdLineEvaluated = false;
-  assistant = 0;
+  assistant = new Assistant;
 }
 
 
@@ -2115,7 +2115,7 @@ Assistant::Assistant()
          return;
 
      QByteArray ba("setSource ");
-     ba.append("qthelp://com.lavape.doc/");
+     ba.append("qthelp://com.lavape/lavadoc/");
 
      proc->write(ba + page.toLocal8Bit() + '\0');
  }
@@ -2136,7 +2136,7 @@ Assistant::Assistant()
 
          QStringList args;
          args << QLatin1String("-collectionFile")
-             << QLatin1String("../doc/LavaPE.qch")
+             << QLatin1String("../doc/LavaPE.qhc")
              << QLatin1String("-enableRemoteControl");
 
          proc->start(app, args);

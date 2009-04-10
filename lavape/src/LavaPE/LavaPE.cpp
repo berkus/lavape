@@ -711,18 +711,18 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 
 void CLavaPEApp::HtmlHelp()
 {
-  QString page("/../doc/html/FAQ.htm");
+  QString page("html/FAQ.htm");
   assistant->ShowPage(page);
 }
 
 void CLavaPEApp::EditingLavaProgs()
 {
-  wxTheApp->assistant->ShowPage("/../doc/html/BasicEditing.htm");
+  wxTheApp->assistant->ShowPage("html/BasicEditing.htm");
 }
 
 void CLavaPEApp::LearningLava()
 {
-  wxTheApp->assistant->ShowPage("/../doc/html/LavaBySamples.htm");
+  wxTheApp->assistant->ShowPage("html/LavaBySamples.htm");
 }
 
 void CLavaPEApp::OnSaveAll()

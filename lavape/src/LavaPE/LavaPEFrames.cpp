@@ -1547,7 +1547,7 @@ bool CLavaMainFrame::eventFilter(QObject *obj,QEvent *ev) {
 
   if (ev->type() == QEvent::WhatsThisClicked) {
     wtcEv = (QWhatsThisClickedEvent*)ev;
-    wxTheApp->assistant->ShowPage(QString("whatsThis/")+wtcEv->href());
+    wxTheApp->assistant->ShowPage(QString("html/whatsThis/")+wtcEv->href());
     return true;
   }
   else

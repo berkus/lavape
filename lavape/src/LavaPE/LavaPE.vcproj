@@ -13,6 +13,9 @@
 		/>
 	</Platforms>
 	<ToolFiles>
+		<ToolFile
+			RelativePath="..\..\doc\qhcp-regel.rules"
+		/>
 	</ToolFiles>
 	<Configurations>
 		<Configuration
@@ -29,6 +32,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="qhcp-regel"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -127,6 +133,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="qhcp-regel"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -1874,6 +1883,24 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath="..\..\doc\LavaPE.qhcp"
+			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="qhcp-regel"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="qhcp-regel"
+				/>
+			</FileConfiguration>
+		</File>
 		<File
 			RelativePath="LavaPE.reg"
 			>
