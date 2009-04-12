@@ -528,16 +528,6 @@ extern LAVABASE_DLL QStringList L_GetOpenFileNames(const QString& startFileName,
 				                                      const QString& filter,
 				                                      const QString& filter2=QString::null
                                               );
-#ifdef WIN32
-extern unsigned int CALLBACK myOFNHookProc(HWND hdlg, unsigned int uiMsg,
-                                           WPARAM wParam, LPARAM lParam);
-#endif
-
-/*
-extern LAVABASE_DLL HRESULT ResolveShortCut (HWND hwnd, LPCSTR pszLink, LPSTR szGotPath);
-extern LAVABASE_DLL int FindStringCaseExact(QComboBox* box, const DString& str, int start);
-*/
-
 
 class LAVABASE_DLL CMsgBoxParams {
 public:

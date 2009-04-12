@@ -1168,15 +1168,3 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
     return QStringList();
   }
 }
-
-
-#ifdef WIN32
-
-unsigned int CALLBACK myOFNHookProc(HWND hdlg, unsigned int uiMsg,
-                                    WPARAM wParam, LPARAM lParam)
-{
-  //this hook procedure enables the "small" file box
-  return 0;
-}
-
-#endif
