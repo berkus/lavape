@@ -125,11 +125,11 @@ bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; cd bin/Components; $(LN) ../../samples/LavaStream.lava
 
 ifeq ($(OPSYS),Darwin)
-bin/$(QASSLINK):
-	cp $(QASS)/Contents/MacOS/Assistant_adp bin/Assistant_adp
+bin/$(MYQASS):
+	cp $(QASS)/Contents/MacOS/Assistant bin/assistant
 else
-bin/$(QASSLINK):
-	$(LN) $(QASS) $@
+bin/$(MYQASS):
+	cp $(QASS) $@
 endif
 
 lib/libQtCore.so.4: $(QLIB)/libQtCore.so.4

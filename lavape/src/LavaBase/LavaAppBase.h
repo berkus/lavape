@@ -29,7 +29,6 @@
 #ifdef WIN32
 #include "qt_windows.h"
 #include "commdlg.h"
-//#define QASSISTANT "assistant_adp.exe"
 #endif
 
 
@@ -588,6 +587,5 @@ extern LAVABASE_DLL int question(QWidget *parent, const QString &caption,
 
 extern LAVABASE_DLL QAssistantClient *qacl;
 
-//extern LAVABASE_DLL void ShowPage(const QString &file);
 
 #endif
