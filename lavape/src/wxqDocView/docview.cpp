@@ -2127,20 +2127,14 @@ Assistant::Assistant()
 
      if (proc->state() != QProcess::Running) {
        //QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
-       QString app = QString(".") + QDir::separator();
+       QString app;
        QStringList args;
- #if !defined(Q_OS_MAC)
-         app += QLatin1String("assistant");
-         args << QLatin1String("-collectionFile")
-             << QLatin1String("../doc/LavaPE.qhc")
-             << QLatin1String("-enableRemoteControl");
-#else
-         //app += QLatin1String("Assistant.app/Contents/MacOS/Assistant");
-         app += QLatin1String("assistant");
-         args << QLatin1String("-collectionFile")
-             << QLatin1String("../doc/LavaPE.qhc")
-             << QLatin1String("-enableRemoteControl");
-#endif
+
+       app = QLatin1String("./assistant");
+       args << QLatin1String("-collectionFile")
+            << QLatin1String("../doc/LavaPE.qhc")
+            << QLatin1String("-enableRemoteControl");
+
          proc->start(app, args);
 
          if (!proc->waitForStarted()) {

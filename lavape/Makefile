@@ -97,8 +97,7 @@ ITPF = src/Interpreter/Constructs.ph \
  	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava
 
-links: $(ITPF)
-#bin/$(QASSLINK)
+links: $(ITPF) bin/assistant
 
 src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
 	cd src/Interpreter; $(LN) ../LavaExecs/Constructs.ph .
@@ -125,10 +124,10 @@ bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; cd bin/Components; $(LN) ../../samples/LavaStream.lava
 
 ifeq ($(OPSYS),Darwin)
-bin/$(MYQASS):
+bin/assistant:
 	cp $(QASS)/Contents/MacOS/Assistant bin/assistant
 else
-bin/$(MYQASS):
+bin/assistant:
 	cp $(QASS) $@
 endif
 

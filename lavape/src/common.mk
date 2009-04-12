@@ -165,13 +165,13 @@ this: ../../bin/$(EXEC2)
 endif
 
 .cpp.o:
-	$(CC) -c -fPIC $(DBG) -pipe -MMD $(PCH_WARN) -D$(OSCAT) -DQASSISTANT=\"$(QBIN)\" $(OSCPPFLAGS) $(CPP_FLAGS) -DQT_THREAD_SUPPORT $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
+	$(CC) -c -fPIC $(DBG) -pipe -MMD $(PCH_WARN) -D$(OSCAT) $(OSCPPFLAGS) $(CPP_FLAGS) -DQT_THREAD_SUPPORT $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
 
 .c.o:
 	$(CC) -c -fPIC $(DBG) -pipe -MMD $(PCH_WARN) -D$(OSCAT) $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h $(h_ui_files) $(h_ph_files)
-	if [ ! -d PCH ] ; then mkdir PCH; fi; $(CC) -c -fPIC $(DBG) -pipe -MMD -Winvalid-pch -D$(OSCAT) -DQASSISTANT=\"$(QBIN)\" $(OSCPPFLAGS) $(CPP_FLAGS) -DQT_THREAD_SUPPORT $(ALL_CPP_INCLUDES) -o $@ $(PRJ)_all.h
+	if [ ! -d PCH ] ; then mkdir PCH; fi; $(CC) -c -fPIC $(DBG) -pipe -MMD -Winvalid-pch -D$(OSCAT) $(OSCPPFLAGS) $(CPP_FLAGS) -DQT_THREAD_SUPPORT $(ALL_CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
