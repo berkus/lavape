@@ -16,7 +16,7 @@ o_ph_files=$(cpp_ph_files:.cpp=.o)
 ui_files=$(wildcard *.ui)
 h_ui_files1=$(ui_files:.ui=.h)
 h_ui_files=$(addprefix Generated/,$(h_ui_files1))
-#cpp_ui_files1=$(ui_files:.ui=.cpp)
+#cpp_ui_files1=$(ui_files:.ui=.cpp)http://www.kde.org/
 #cpp_ui_files=$(addprefix Generated/,$(cpp_ui_files1))
 #o_ui_files=$(cpp_ui_files:.cpp=.o)
 

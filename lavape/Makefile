@@ -171,6 +171,7 @@ bindist:
 	mkdir samples; cp $(LAVADIR)/samples/*.l* samples; chmod -R a+rw samples; \
 	cd bin; mkdir LavaIcons; mkdir std; \
 	cd $(LAVADIR)/bin; cp LavaPE Lava $(HOME)/lavadistro/lavadir/bin;
+
 ifeq ($(OPSYS),Darwin)
 	cp -R $(QBIN)/assistant.app $(HOME)/lavadistro/lavadir/bin;
 #	cp bin-install-mac $(HOME)/lavadistro/install.bash
@@ -208,7 +209,7 @@ distclean: cleanall binclean docclean libclean
 
 ifeq ($(OPSYS),Darwin)
 binclean:
-	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX); rm -rf $(QASSLINK)
+	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX); rm -rf ass*
 else
 binclean:
 	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX) $(QASSLINK)
