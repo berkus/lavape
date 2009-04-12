@@ -145,16 +145,7 @@ void CAttachHandler::on_ID_OK_clicked()
 }
 
 void CAttachHandler::on_ID_HELP_clicked() {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/EditForm.htm");
+	wxTheApp->assistant->ShowPage("html/EditForm.htm");
 }
 
 
@@ -4515,184 +4506,67 @@ void CVTypeBox::on_ID_OK_clicked()
 
 void CAttrBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/MemVarBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/MemVarBox.htm");
 }
 
 void CCompSpecBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/COSpecBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/COSpecBox.htm");
 }
 
 void CEnumBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/EnumBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/EnumBox.htm");
 }
 
 void CEnumItem::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/EnumItemBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/EnumItemBox.htm");
 }
 
 void CFuncBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/FunctionBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/FunctionBox.htm");
 }
 
 void CImplBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/ImplementationBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/ImplementationBox.htm");
 }
 
 void CIncludeBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/IncludeBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/IncludeBox.htm");
 }
 
 void CInitBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/InitiatorBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/InitiatorBox.htm");
 }
 
 void CInterfaceBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/InterfaceBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/InterfaceBox.htm");
 }
 
 void CIOBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/FuncParmBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/FuncParmBox.htm");
 }
 
 void CPackageBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/PackageBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/PackageBox.htm");
 }
 
 void CSetBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/SetBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/SetBox.htm");
 }
 
 void CVTypeBox::on_ID_HELP_clicked()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/dialogs/VirtualTypeBox.htm");
+	wxTheApp->assistant->ShowPage("html/dialogs/VirtualTypeBox.htm");
 }
 
 

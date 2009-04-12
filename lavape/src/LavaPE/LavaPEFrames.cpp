@@ -1700,21 +1700,12 @@ void CLavaMainFrame::on_viewTB7Action_triggered()
 void CLavaMainFrame::on_whatNextAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  QString fileName=ExeDir+"/../doc/html/whatNext/GlobalWhatNext.htm";
-  QString path(QASSISTANT);
-  QStringList args;
+  QString fileName="html/whatNext/GlobalWhatNext.htm";
 
   if (view)
     view->on_whatNextAction_triggered();
   else {
-	  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-
-	  if (!qacl) {
-		  qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		  qacl->setArguments(args);
-	  }
-
-	  qacl->showPage(fileName);
+	  wxTheApp->assistant->ShowPage(fileName);
   }
 }
 /*

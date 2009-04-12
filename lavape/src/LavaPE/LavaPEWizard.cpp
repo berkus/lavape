@@ -235,16 +235,7 @@ void CWizardView::Apply()
 
 void CWizardView::Help()
 {
-	QString path(QASSISTANT);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-
-	if (!qacl) {
-		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
-		qacl->setArguments(args);
-	}
-
-	qacl->showPage(ExeDir + "/../doc/html/EditForm.htm");
+	wxTheApp->assistant->ShowPage("html/EditForm.htm");
 }
 
 void CWizardView::Reset()
