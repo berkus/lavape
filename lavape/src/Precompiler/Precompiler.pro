@@ -1,0 +1,15 @@
+QMAKE_OBJCXXFLAGS_PRECOMPILE =
+SOURCES = $$system(ls *.cpp)
+SOURCES -= Precompiler_all.cpp
+HEADERS = $$system(ls *.h)
+HEADERS -= Precompiler_all.h
+QT += network
+INCLUDEPATH = ../disco
+DESTDIR = ../../bin
+macx:QMAKE_LFLAGS += -F../../lib
+else:QMAKE_LFLAGS += -L../../lib
+macx:LIBS += -framework disco
+else:LIBS += -ldisco
+CONFIG += warn_off qt precompile_header
+TARGET = LPC
+PRECOMPILED_HEADER = Precompiler_all.h

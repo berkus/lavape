@@ -2,7 +2,7 @@
 #define __CAboutBox_H
 
 #include "LavaBase_all.h"
-#include "idd_aboutbox.h"
+#include "ui_idd_aboutbox.h"
 #include "SynIDTable.h"
 #include "LavaAppBase.h"
 #include "qlineedit.h"

@@ -17,6 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
+#include "LavaBaseDoc.h"
 #include "Syntax.h"
 #pragma hdrstop
 
@@ -155,7 +156,7 @@ int LavaDECL::GetAppendPos(TDeclType declType)
   case Impl:
   case Initiator:
   case Package:
-  case Component:
+  case LavaComponent:
   case CompObjSpec:
   case CompObj:
     for (che = (CHE*)NestedDecls.first;
@@ -163,7 +164,7 @@ int LavaDECL::GetAppendPos(TDeclType declType)
              && (((LavaDECL*)che->data)->DeclType != Impl)
              && (((LavaDECL*)che->data)->DeclType != Initiator)
              && (((LavaDECL*)che->data)->DeclType != Package)
-             && (((LavaDECL*)che->data)->DeclType != Component)
+             && (((LavaDECL*)che->data)->DeclType != LavaComponent)
              && (((LavaDECL*)che->data)->DeclType != CompObjSpec)
              && (((LavaDECL*)che->data)->DeclType != CompObj);
          che = (CHE*)che->successor);
@@ -172,7 +173,7 @@ int LavaDECL::GetAppendPos(TDeclType declType)
                  || (((LavaDECL*)che->data)->DeclType == Impl)
                  || (((LavaDECL*)che->data)->DeclType == Initiator)
                  || (((LavaDECL*)che->data)->DeclType == Package)
-                 || (((LavaDECL*)che->data)->DeclType == Component)
+                 || (((LavaDECL*)che->data)->DeclType == LavaComponent)
                  || (((LavaDECL*)che->data)->DeclType == CompObjSpec)
                  || (((LavaDECL*)che->data)->DeclType == CompObj));
          che = (CHE*)che->successor)

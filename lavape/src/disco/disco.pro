@@ -1,0 +1,13 @@
+TEMPLATE = lib
+QMAKE_OBJCXXFLAGS_PRECOMPILE =
+CONFIG += warn_off qt precompile_header
+SOURCES = $$system(ls *.cpp)
+SOURCES -= disco_all.cpp
+HEADERS = $$system(ls *.h)
+HEADERS -= disco_all.h
+macx:DEFINES += __Darwin
+DEFINES += __UNIX__ NEEDS_INT_DEFINED QT_THREAD_SUPPORT
+QT += network
+DESTDIR = ../../lib
+macx:QMAKE_LFLAGS += -Wl,-install_name,@executable_path/../../../../lib/disco.framework/Versions/1/disco
+PRECOMPILED_HEADER = disco_all.h

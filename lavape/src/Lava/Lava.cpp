@@ -82,11 +82,13 @@ int main( int argc, char ** argv ) {
 //  QString ldpath=QString("LD_LIBRARY_PATH=")+ExeDir+"/../lib";
   setenv("LD_LIBRARY_PATH","../lib",1);
 #endif
+#ifdef __Darwin
+  ExeDir = ExeDir + "../../../..";
+#endif
+  QFileInfo qf = QFileInfo(ExeDir);
+  ExeDir = ResolveLinks(qf);
   QDir::setCurrent(ExeDir);
-  
   StdLavaLog = ExeDir + "/std.lava";
-  QFileInfo qf = QFileInfo(StdLavaLog);
-  StdLava = ResolveLinks(qf);
 
   QString componentPath;
   QByteArray myPath;

@@ -2,7 +2,7 @@
 #define _LavaPE_PCH
 
 #include "disco_all.h"
-#include "cmainframe.h"
+#include "ui_cmainframe.h"
 #include "LavaPE_UI_all.h"
 #include "wxqDocView_all.h"
 #include "LavaBase_all.h"
@@ -26,8 +26,7 @@
 #include "qfontinfo.h"
 #include "qglobal.h"
 #include <QActionGroup>
-#include "qassistantclient.h"
-#include "qtest.h"
+//#include "qtest.h"
 
 #include "Bars.h"
 #include "Boxes.h"

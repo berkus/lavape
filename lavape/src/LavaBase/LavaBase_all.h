@@ -5,7 +5,7 @@
 #include "disco_all.h"
 #include "wxqDocView_all.h"
 
-#include "idd_aboutbox.h"
+#include "ui_idd_aboutbox.h"
 
 #include "AboutBox.h"
 #include "BAdapter.h"

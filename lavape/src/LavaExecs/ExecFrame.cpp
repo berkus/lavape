@@ -19,7 +19,7 @@
 
 #include "PEBaseDoc.h"
 #include "ExecFrame.h"
-#include "cmainframe.h"
+#include "ui_cmainframe.h"
 #include "ComboBar.h"
 #include "LavaAppBase.h"
 #include "qlayout.h"

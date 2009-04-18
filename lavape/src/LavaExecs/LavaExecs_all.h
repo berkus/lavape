@@ -18,12 +18,10 @@
 #include "LavaExecsStringInit.h"
 #include "Scanner.h"
 #include "Tokens.h"
-#include "ComboBarDlg.h"
-#include "Comment.h"
+#include "ui_ComboBarDlg.h"
+#include "ui_Comment.h"
 
-#include "qassistantclient.h"
-
-#include "cmainframe.h"
+#include "ui_cmainframe.h"
 #include "BASEMACROS.h"
 
 #include "MACROS.h"

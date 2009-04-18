@@ -601,7 +601,7 @@ $TYPE +CDP {
     Initiator,
     Function,
     Package,
-    Component,
+    LavaComponent,
     CompObjSpec,
     CompObj,
     FormDef,

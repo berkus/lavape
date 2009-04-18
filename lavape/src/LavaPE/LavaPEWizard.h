@@ -19,16 +19,16 @@
 #include "qtabwidget.h"
 #include "LavaGUIView.h"
 
-#include "idd_generalpage.h"
-#include "idd_supportpage.h"
-#include "idd_menupage.h"
-#include "idd_fontcolorpage.h"
-#include "idd_iopage.h"
-#include "idd_literalspage.h"
-#include "idd_chainformpage.h"
-#include "idd_literalitem.h"
-#include "idd_menuitem.h"
-#include "idd_ftextpage.h"
+#include "ui_idd_generalpage.h"
+#include "ui_idd_supportpage.h"
+#include "ui_idd_menupage.h"
+#include "ui_idd_fontcolorpage.h"
+#include "ui_idd_iopage.h"
+#include "ui_idd_literalspage.h"
+#include "ui_idd_chainformpage.h"
+#include "ui_idd_literalitem.h"
+#include "ui_idd_menuitem.h"
+#include "ui_idd_ftextpage.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CLavaPEWizard

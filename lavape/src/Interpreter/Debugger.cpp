@@ -138,6 +138,8 @@ void CLavaDebugger::start() {
   else { //PMDump
 #ifdef WIN32
     lavapePath = ExeDir + "/LavaPE.exe";
+#elif __Darwin
+    lavapePath = ExeDir + "/LavaPE.app/Contents/MacOS/LavaPE";
 #else
     lavapePath = ExeDir + "/LavaPE";
 #endif

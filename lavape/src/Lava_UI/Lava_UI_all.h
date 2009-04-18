@@ -6,6 +6,6 @@
 #include "LavaBase_all.h"
 
 #include "LavaMainFrameBase.h"
-#include "cmainframe.h"
+#include "ui_cmainframe.h"
 
 #endif

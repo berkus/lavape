@@ -1,7 +1,7 @@
 #ifndef _LavaMainFrameBase
 #define _LavaMainFrameBase
 
-#include "cmainframe.h"
+#include "ui_cmainframe.h"
 #include "mdiframes.h"
 
 #ifdef WIN32

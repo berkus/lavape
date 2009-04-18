@@ -26,7 +26,7 @@
 #include "LavaAppBase.h"
 #include "PEBaseDoc.h"
 #include "ComboBar.h"
-#include "Comment.h"
+#include "ui_Comment.h"
 #include "Check.h"
 #include "Resource.h"
 

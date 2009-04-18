@@ -35,7 +35,7 @@
 #include "docview.h"
 #include "mdiframes.h"
 
-#include "cmainframe.h"
+#include "ui_cmainframe.h"
 
 #include "qpixmap.h"
 #include "qpushbutton.h"

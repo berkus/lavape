@@ -36,7 +36,7 @@
 #include <QMouseEvent>
 #include "Constructs.h"
 #include "Check.h"
-#include "Comment.h"
+#include "ui_Comment.h"
 #include "ExecUpdate.h"
 #include "LavaAppBase.h"
 #include "PEBaseDoc.h"
@@ -46,7 +46,6 @@
 #include "PEBaseDoc.h"
 #include "ExecFrame.h"
 #include "qtextedit.h"
-#include "qassistantclient.h"
 #include "LavaBaseStringInit.h"
 //#include "Resource.h"
 #include "LavaExecsStringInit.h"

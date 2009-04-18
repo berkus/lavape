@@ -224,7 +224,7 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
     lab1[0] -= 'a'-'A';
     lab = lab + DString(" := ") +lab1;
     break;
-  case Component:
+  case LavaComponent:
     lab += DString(" := Component");
     break;
   default: ;

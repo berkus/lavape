@@ -636,7 +636,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
   switch (pnode->DeclType) {
 
   case Package:
-  case Component:
+  case LavaComponent:
     myCategory = IsDef;
     PutCategory(myCategory,parentCategory,fstChild);
     code("<a id=\"T");

@@ -9,9 +9,9 @@
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "idd_gotodeclsel.h"
-#include "idd_findbynamebox.h"
-#include "idd_findrefsbox.h"
+#include "ui_idd_gotodeclsel.h"
+#include "ui_idd_findbynamebox.h"
+#include "ui_idd_findrefsbox.h"
 
 
 

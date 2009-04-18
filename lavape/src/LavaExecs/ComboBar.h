@@ -14,7 +14,7 @@
 #include "SylTraversal.h"
 #include "PEBaseDoc.h"
 #include "Constructs.h"
-#include "ComboBarDlg.h"
+#include "ui_ComboBarDlg.h"
 #include "CHAINANY.h"
 
 

@@ -27,7 +27,7 @@
 #include "ExecView.h"
 #include "ExecTree.h"
 #include "DString.h"
-#include "Comment.h"
+#include "ui_Comment.h"
 #include "SynIO.h"
 #include "Syntax.h"
 #include "LavaPEWizard.h"
@@ -49,7 +49,7 @@
 #include <QDragEnterEvent>
 #include <QDrag>
 #include <QHeaderView>
-#include "cmainframe.h"
+#include "ui_cmainframe.h"
 #include "qpixmapcache.h"
 #include "qclipboard.h"
 //#include "q3dragobject.h"
@@ -78,13 +78,13 @@ static int ContainTab [FormDef+1] [DragIO+1] = {
   /*Initiator*/  {  1,  1,  1,  1,  0,  0,  0,   1,   0,   1,  1,  1,  0,  0,  1,  0,  1,  0,  1,  0,  0,  1,  1,  1,  1, 1 }, //Initiator
   /*Function*/   {  0,  0,  0,  0,  0,  0,  0,   0,   0,   0,  0,  0,  0,  0,  1,  1,  1,  0,  0,  1,  1,  0,  0,  1,  0, 1 }, //Function
   /*Package*/    {  1,  1,  1,  1,  0,  1,  0,   1,   0,   1,  1,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  1,  0,  0, 0 }, //Package
-  /*Component*/  {  1,  1,  1,  1,  0,  1,  0,   1,   1,   1,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  1,  0,  0, 0 }, //Component
+  /*Component*/  {  1,  1,  1,  1,  0,  1,  0,   1,   1,   1,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  1,  0,  0, 0 }, //LavaComponent
   /*CompObjSpec*/{  0,  0,  0,  0,  0,  0,  0,   0,   0,   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0 }, //CompObjSpec
   /*CompObj*/    {  1,  1,  1,  1,  0,  1,  0,   1,   0,   1,  1,  1,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  1,  0,  0, 0 }, //CompObj
   /*FormDef*/    {  0,  0,  0,  0,  0,  0,  0,   0,   0,   0,  0,  1,  0,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0, 0 }, //FormDef
 };
 /*
-   Note: Interfaces with Component flag and/or notification flag have no input, output and invariant.
+   Note: Interfaces with LavaComponent flag and/or notification flag have no input, output and invariant.
          Functions have no fields (DeclType = Attr) and no invariant.
 */
 
@@ -352,7 +352,7 @@ bool CLavaPEView::AddToDragChain(CTreeItem* itemDrag, bool vkControl, bool sameC
       }
       else if (El->DeclType == Package)
         CollectDECL->TreeFlags.INCL(dragPack);
-      else if (El->DeclType == Component)
+      else if (El->DeclType == LavaComponent)
         CollectDECL->TreeFlags.INCL(dragCompo);
       else if (El->DeclType == CompObjSpec)
         CollectDECL->TreeFlags.INCL(dragCOS);
@@ -562,7 +562,7 @@ TIType CLavaPEView::CanPaste (TDeclType defType, SynFlags treeFlags, SynFlags se
           return TIType_NoType;
         if (treeFlags.Contains(dragPack) && !ContainTab[ppdecl->DeclType] [Package])
           return TIType_NoType;
-        if (treeFlags.Contains(dragCompo) && !ContainTab[ppdecl->DeclType] [Component])
+        if (treeFlags.Contains(dragCompo) && !ContainTab[ppdecl->DeclType] [LavaComponent])
           return TIType_NoType;
         if (treeFlags.Contains(dragCOS) && !ContainTab[ppdecl->DeclType] [CompObjSpec])
           return TIType_NoType;
@@ -1473,7 +1473,7 @@ int CLavaPEView::GetPixmap(bool isParent, bool isAttr, TDeclType deftype, const 
   case Function:
     return 15;//((CLavaPEApp*)wxTheApp)->LavaIcons[15];
   case Package:
-  case Component:
+  case LavaComponent:
     pm = 22;//((CLavaPEApp*)wxTheApp)->LavaIcons[22];
     return pm;
   case Attr:

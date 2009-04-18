@@ -1,7 +1,7 @@
 #ifndef _LavaPEMainFrameBase
 #define _LavaPEMainFrameBase
 
-#include "cmainframe.h"
+#include "ui_cmainframe.h"
 #include "mdiframes.h"
 
 #ifdef WIN32

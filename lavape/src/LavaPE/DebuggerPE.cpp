@@ -49,6 +49,8 @@ void CLavaPEDebugger::start() {
 
 #ifdef WIN32
     interpreterPath = ExeDir + "/Lava.exe";
+#elif __Darwin
+    interpreterPath = ExeDir + "/Lava.app/Contents/MacOS/Lava";
 #else
     interpreterPath = ExeDir + "/Lava";
 #endif

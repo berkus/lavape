@@ -56,8 +56,7 @@
 #include <QEvent>
 
 #include "AboutBox.h"
-#include "qassistantclient.h"
-#include "qtest.h"
+//#include "qtest.h"
 
 #pragma hdrstop
 
@@ -97,12 +96,15 @@ int main(int argc, char ** argv ) {
   ExeDir.replace(0,1,driveLetter);
 #else
 //  QString ldpath=QString("LD_LIBRARY_PATH=")+ExeDir+"/../lib";
-  setenv("LD_LIBRARY_PATH","../lib",1);
+//  setenv("LD_LIBRARY_PATH","../lib",1);
 #endif
+#ifdef __Darwin
+  ExeDir = ExeDir + "../../../..";
+#endif
+  QFileInfo qf = QFileInfo(ExeDir);
+  ExeDir = ResolveLinks(qf);
   QDir::setCurrent(ExeDir);
   StdLavaLog = ExeDir + "/std.lava";
-  QFileInfo qf = QFileInfo(StdLavaLog);
-  StdLava = ResolveLinks(qf);
 
   app.m_appWindow = new CLavaMainFrame();
 #ifdef _DEBUG

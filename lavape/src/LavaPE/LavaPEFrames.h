@@ -8,7 +8,7 @@
 #include "LavaGUIView.h"
 #include "docview.h"
 #include "mdiframes.h"
-#include "cmainframe.h"
+#include "ui_cmainframe.h"
 #include "qapplication.h"
 #include "qframe.h"
 #include "qtoolbar.h"

@@ -3314,7 +3314,7 @@ bool CLavaPEDoc::OnEmptyDoc (const QString& Name)
 	LavaDECL *TopDECL = NewLavaDECL();
 	if (((CLavaPEApp*) wxTheApp)->pLComTemplate == GetDocumentTemplate())
 	{
-		TopDECL->DeclType = Component;
+    TopDECL->DeclType = LavaComponent;
 		isObject = true;
 	}
 	else
@@ -3434,6 +3434,8 @@ void CLavaPEDoc::OnRunLava()
 	*/
 #ifdef WIN32
 	interpreterPath = ExeDir + "/Lava.exe";
+#elif __Darwin
+  interpreterPath = ExeDir + "/Lava.app/Contents/MacOS/Lava";
 #else
 	interpreterPath = ExeDir + "/Lava";
 #endif

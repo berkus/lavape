@@ -1,0 +1,15 @@
+lpc.commands = ../../bin/LPC.app/Contents/MacOS/LPC -I. -I../LavaBase \
+    ${QMAKE_FILE_IN}
+
+lpc.output = ${QMAKE_FILE_BASE}.h
+lpc.input = PH_FILES
+
+lpc.name = ../../bin/LPC \
+    ${QMAKE_FILE_IN}
+lpc.CONFIG += no_link target_predeps
+silent:lpc.commands = @echo \
+    LPC \
+    ${QMAKE_FILE_IN} \
+    && \
+    $$lpc.commands
+QMAKE_EXTRA_COMPILERS += lpc

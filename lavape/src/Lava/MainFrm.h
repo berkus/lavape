@@ -1,7 +1,7 @@
 #ifndef __MainFrame
 #define __MainFrame
 
-#include "cmainframe.h"
+#include "ui_cmainframe.h"
 #include "mdiframes.h"
 #include "LavaDoc.h"
 
