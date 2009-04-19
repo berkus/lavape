@@ -1,5 +1,5 @@
-lpc.commands = ../../bin/LPC.app/Contents/MacOS/LPC -I. -I../LavaBase \
-    ${QMAKE_FILE_IN}
+macx:lpc.commands = ../../bin/LPC.app/Contents/MacOS/LPC -I. -I../LavaBase ${QMAKE_FILE_IN}
+else:lpc.commands = ../../bin/LPC -I. -I../LavaBase ${QMAKE_FILE_IN}
 
 lpc.output = ${QMAKE_FILE_BASE}.h
 lpc.input = PH_FILES
