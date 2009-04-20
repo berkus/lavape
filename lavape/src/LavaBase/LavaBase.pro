@@ -4,6 +4,7 @@ PH_FILES = $$system(ls *.ph)
 CONFIG += warn_off \
     qt \
     debug \
+    lib_bundle \
     precompile_header \
     lpc
 SOURCES = $$system(ls *.cpp)

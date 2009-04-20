@@ -1,8 +1,12 @@
 TEMPLATE = lib
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 PH_FILES = $$system(ls *.ph)
-CONFIG += warn_off qt debug precompile_header lpc
-SOURCES = $$system(ls *.cpp)
+CONFIG += warn_off \
+    qt \
+    debug \
+    lib_bundle \
+    precompile_header \
+    lpcSOURCES = $$system(ls *.cpp)
 SOURCES -= Interpreter_all.cpp
 HEADERS = $$system(ls *.h)
 HEADERS -= Interpreter_all.h

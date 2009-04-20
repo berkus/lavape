@@ -1,7 +1,11 @@
 TEMPLATE = lib
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
-CONFIG += warn_off qt precompile_header
-SOURCES = $$system(ls *.cpp)
+CONFIG += warn_off \
+    qt \
+    debug \
+    lib_bundle \
+    precompile_header \
+    lpcSOURCES = $$system(ls *.cpp)
 SOURCES -= LavaStream_all.cpp
 HEADERS = $$system(ls *.h)
 HEADERS -= LavaStream_all.h

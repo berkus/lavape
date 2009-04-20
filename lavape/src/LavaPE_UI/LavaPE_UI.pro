@@ -1,7 +1,11 @@
 TEMPLATE = lib
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
-CONFIG += warn_off qt precompile_header lpc
-SOURCES = $$system(ls *.cpp)
+CONFIG += warn_off \
+    qt \
+    debug \
+    lib_bundle \
+    precompile_header \
+    lpcSOURCES = $$system(ls *.cpp)
 SOURCES -= LavaPE_UI_all.cpp
 HEADERS = $$system(ls *.h)
 HEADERS -= LavaPE_UI_all.h
