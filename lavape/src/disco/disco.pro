@@ -24,8 +24,8 @@ PRE_TARGETDEPS += ../../doc/LavaPE.qhc
 
 qtass.target = ../../bin/assistant
 macx:qtass.depends = $$[QT_INSTALL_BINS]/Assistant.app/Contents/MacOS/Assistant
-else:qtass.depends = $$[QT_INSTALL_BINS]/Assistant
+else:qtass.depends = $$[QT_INSTALL_BINS]/assistant
 macx:qtass.commands = cp -pf $$[QT_INSTALL_BINS]/Assistant.app/Contents/MacOS/Assistant $$qtass.target
-else:qtass.commands = cp -pf $$[QT_INSTALL_BINS]/Assistant $$qtass.target
+else:qtass.commands = cp -pf $$[QT_INSTALL_BINS]/assistant $$qtass.target
 QMAKE_EXTRA_TARGETS += qtass
 PRE_TARGETDEPS += ../../bin/assistant

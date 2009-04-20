@@ -64,6 +64,10 @@ QMAKE_EXTRA_TARGETS += phlinks9
 PRE_TARGETDEPS += VisitorTraversal.cpp
 
 PRO_EXPORT = LAVAEXECS
+SOURCES *= $$system(ls *.cpp)
+SOURCES -= Interpreter_all.cpp
+HEADERS *= $$system(ls *.h)
+HEADERS -= Interpreter_all.h
 CONFIG += warn_off \
     lpc \
     qt \
@@ -71,11 +75,7 @@ CONFIG += warn_off \
     lib_bundle \
     precompile_header
 PH_FILES = $$system(ls *.ph)
-SOURCES *= $$system(ls *.cpp)
-SOURCES -= Interpreter_all.cpp
-HEADERS *= $$system(ls *.h)
-HEADERS -= Interpreter_all.h
-#XXX = $$SOURCES
+XXX = $$SOURCES
 INCLUDEPATH = . ../disco ../wxqDocView ../LavaBase ../LavaGUI ../Lava_UI ../LavaExecs/res/TOOLBUTTONS
 mac:DEFINES += __Darwin
 DEFINES += __UNIX__ NEEDS_INT_DEFINED QT_THREAD_SUPPORT INTERPRETER LAVAEXECS_EXPORT

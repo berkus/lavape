@@ -1,6 +1,10 @@
 TEMPLATE = lib
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 PRO_EXPORT = LAVAEXECS
+SOURCES *= $$system(ls *.cpp)
+SOURCES -= LavaExecs_all.cpp
+HEADERS *= $$system(ls *.h)
+HEADERS -= LavaExecs_all.h
 CONFIG += warn_off \
     lpc \
     qt \
@@ -8,11 +12,8 @@ CONFIG += warn_off \
     lib_bundle \
     precompile_header
 PH_FILES = $$system(ls *.ph)
-SOURCES *= $$system(ls *.cpp)
-SOURCES -= LavaExecs_all.cpp
-HEADERS *= $$system(ls *.h)
-HEADERS -= LavaExecs_all.h
-#XXX = $$SOURCES
+XXX = $$SOURCES
+
 FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase res/TOOLBUTTONS ../LavaPE ../LavaPE_UI ../LavaPE/res ../LavaPE/res/TOOLBUTTONS ../LavaPE/res/TreeIcons
 macx:DEFINES += __Darwin
