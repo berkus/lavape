@@ -7,11 +7,11 @@ SOURCES -= LavaBase_all.cpp
 HEADERS *= $$system(ls *.h)
 HEADERS -= LavaBase_all.h
 CONFIG += warn_off \
+    lpc \
     qt \
     debug \
     lib_bundle \
-    precompile_header \
-    lpc
+    precompile_header
 #message($$SOURCES:$$HEADERS)
 FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView

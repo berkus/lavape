@@ -67,11 +67,11 @@ PH_FILES = $$system(ls *.ph)
 
 PRO_EXPORT = LAVAEXECS
 CONFIG += warn_off \
+    lpc \
     qt \
     debug \
     lib_bundle \
-    precompile_header \
-    lpc
+    precompile_header
 SOURCES *= $$system(ls *.cpp)
 SOURCES -= Interpreter_all.cpp
 HEADERS *= $$system(ls *.h)
