@@ -1,6 +1,7 @@
 TEMPLATE = lib
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 PH_FILES = $$system(ls *.ph)
+PRO_EXPORT = LAVABASE
 CONFIG += warn_off \
     qt \
     debug \
