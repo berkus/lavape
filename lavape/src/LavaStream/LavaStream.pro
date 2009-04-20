@@ -4,8 +4,7 @@ CONFIG += warn_off \
     qt \
     debug \
     lib_bundle \
-    precompile_header \
-    lpc
+    precompile_header
 SOURCES *= $$system(ls *.cpp)
 SOURCES -= LavaStream_all.cpp
 HEADERS *= $$system(ls *.h)
