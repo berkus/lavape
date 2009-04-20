@@ -7,7 +7,21 @@ HEADERS = $$system(ls *.h)
 HEADERS -= disco_all.h
 macx:DEFINES += __Darwin
 DEFINES += __UNIX__ NEEDS_INT_DEFINED QT_THREAD_SUPPORT
-QT += core test network
+QT += network
 DESTDIR = ../../lib
 macx:QMAKE_LFLAGS += -Wl,-install_name,@executable_path/../../../../lib/disco.framework/Versions/1/disco
 PRECOMPILED_HEADER = disco_all.h
+
+helpcoll.target = ../../doc/LavaPE.qhc
+helpcoll.depends = ../../doc/LavaPE.qhcp
+helpcoll.commands = $$[QT_INSTALL_BINS]/qcollectiongenerator ../../doc/LavaPE.qhcp -o ../../doc/LavaPE.qhc
+QMAKE_EXTRA_TARGETS += helpcoll
+PRE_TARGETDEPS += ../../doc/LavaPE.qhc
+
+qtass.target = ../../bin/assistant
+macx:qtass.depends = $$[QT_INSTALL_BINS]/Assistant.app/Contents/MacOS/Assistant
+else:qtass.depends = $$[QT_INSTALL_BINS]/Assistant
+macx:qtass.commands = cp -pf $$[QT_INSTALL_BINS]/Assistant.app/Contents/MacOS/Assistant $$qtass.target
+else:qtass.commands = cp -pf $$[QT_INSTALL_BINS]/Assistant $$qtass.target
+QMAKE_EXTRA_TARGETS += qtass
+PRE_TARGETDEPS += ../../bin/assistant

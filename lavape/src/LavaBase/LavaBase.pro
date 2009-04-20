@@ -21,9 +21,3 @@ else:QMAKE_LFLAGS += -L../../lib
 macx:LIBS += -framework disco -framework wxqDocView
 else:LIBS += -ldisco -lwxqDocView
 PRECOMPILED_HEADER = LavaBase_all.h
-
-helpcoll.target = ../../doc/LavaPE.qhc
-helpcoll.depends = ../../doc/LavaPE.qhcp
-helpcoll.commands = $$[QT_INSTALL_BINS]/qcollectiongenerator ../../doc/LavaPE.qhcp -o ../../doc/LavaPE.qhc
-QMAKE_EXTRA_TARGETS += helpcoll
-PRE_TARGETDEPS += ../../doc/LavaPE.qhc
