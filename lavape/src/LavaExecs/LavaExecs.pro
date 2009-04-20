@@ -6,7 +6,8 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header \
-    lpcSOURCES = $$system(ls *.cpp)
+    lpc
+SOURCES = $$system(ls *.cpp)
 SOURCES -= LavaExecs_all.cpp
 HEADERS = $$system(ls *.h)
 HEADERS -= LavaExecs_all.h

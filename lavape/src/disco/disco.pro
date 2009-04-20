@@ -5,7 +5,8 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header \
-    lpcSOURCES = $$system(ls *.cpp)
+    lpc
+SOURCES = $$system(ls *.cpp)
 SOURCES -= disco_all.cpp
 HEADERS = $$system(ls *.h)
 HEADERS -= disco_all.h
