@@ -1,7 +1,7 @@
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
-SOURCES = $$system(ls *.cpp)
+SOURCES *= $$system(ls *.cpp)
 SOURCES -= LavaPE_all.cpp
-HEADERS = $$system(ls *.h)
+HEADERS *= $$system(ls *.h)
 HEADERS -= LavaPE_all.h
 QT += network gui
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase ../LavaExecs ../LavaGUI ../LavaPE_UI ../LavaPE_UI/res/TOOLBUTTONS res res/TOOLBUTTONS res/TreeIcons

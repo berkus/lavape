@@ -6,9 +6,9 @@ CONFIG += warn_off \
     lib_bundle \
     precompile_header \
     lpc
-SOURCES = $$system(ls *.cpp)
+SOURCES *= $$system(ls *.cpp)
 SOURCES -= wxqDocView_all.cpp
-HEADERS = $$system(ls *.h)
+HEADERS *= $$system(ls *.h)
 HEADERS -= wxqDocView_all.h
 INCLUDEPATH = ../disco
 QT += network

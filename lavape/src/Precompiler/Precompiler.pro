@@ -1,7 +1,7 @@
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
-SOURCES = $$system(ls *.cpp)
+SOURCES *= $$system(ls *.cpp)
 SOURCES -= Precompiler_all.cpp
-HEADERS = $$system(ls *.h)
+HEADERS *= $$system(ls *.h)
 HEADERS -= Precompiler_all.h
 QT += core network
 INCLUDEPATH = ../disco

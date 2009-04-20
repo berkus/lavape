@@ -6,9 +6,9 @@ CONFIG += warn_off \
     lib_bundle \
     precompile_header \
     lpc
-SOURCES = $$system(ls *.cpp)
+SOURCES *= $$system(ls *.cpp)
 SOURCES -= LavaPE_UI_all.cpp
-HEADERS = $$system(ls *.h)
+HEADERS *= $$system(ls *.h)
 HEADERS -= LavaPE_UI_all.h
 FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase

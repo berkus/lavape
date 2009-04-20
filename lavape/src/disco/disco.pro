@@ -5,9 +5,9 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header
-SOURCES = $$system(ls *.cpp)
+SOURCES *= $$system(ls *.cpp)
 SOURCES -= disco_all.cpp
-HEADERS = $$system(ls *.h)
+HEADERS *= $$system(ls *.h)
 HEADERS -= disco_all.h
 macx:DEFINES += __Darwin
 DEFINES += __UNIX__ NEEDS_INT_DEFINED QT_THREAD_SUPPORT

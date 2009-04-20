@@ -2,9 +2,9 @@ TEMPLATE = lib
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 PH_FILES = $$system(ls *.ph)
 PRO_EXPORT = LAVABASE
-SOURCES = $$system(ls *.cpp)
+SOURCES *= $$system(ls *.cpp)
 SOURCES -= LavaBase_all.cpp
-HEADERS = $$system(ls *.h)
+HEADERS *= $$system(ls *.h)
 HEADERS -= LavaBase_all.h
 CONFIG += warn_off \
     qt \

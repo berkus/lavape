@@ -66,16 +66,17 @@ PRE_TARGETDEPS += VisitorTraversal.cpp
 PH_FILES = $$system(ls *.ph)
 
 PRO_EXPORT = LAVAEXECS
-SOURCES = $$system(ls *.cpp)
-SOURCES -= Interpreter_all.cpp
-HEADERS = $$system(ls *.h)
-HEADERS -= Interpreter_all.h
 CONFIG += warn_off \
     qt \
     debug \
     lib_bundle \
     precompile_header \
     lpc
+SOURCES *= $$system(ls *.cpp)
+SOURCES -= Interpreter_all.cpp
+HEADERS *= $$system(ls *.h)
+HEADERS -= Interpreter_all.h
+#message($$SOURCES:$$HEADERS)
 INCLUDEPATH = . ../disco ../wxqDocView ../LavaBase ../LavaGUI ../Lava_UI ../LavaExecs/res/TOOLBUTTONS
 mac:DEFINES += __Darwin
 DEFINES += __UNIX__ NEEDS_INT_DEFINED QT_THREAD_SUPPORT INTERPRETER LAVAEXECS
@@ -89,4 +90,3 @@ macx:LIBS += -framework disco -framework wxqDocView -framework LavaBase -framewo
 else:LIBS += -ldisco -lwxqDocView -lLavaBase -lLavaGUI
 
 PRECOMPILED_HEADER = Interpreter_all.h
-message($$SOURCES:$$HEADERS)
