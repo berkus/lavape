@@ -1,6 +1,5 @@
 TEMPLATE = lib
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
-PH_FILES = $$system(ls *.ph)
 PRO_EXPORT = LAVABASE
 SOURCES *= $$system(ls *.cpp)
 SOURCES -= LavaBase_all.cpp
@@ -12,7 +11,8 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header
-#message($$SOURCES:$$HEADERS)
+PH_FILES = $$system(ls *.ph)
+#XXX = $$SOURCES
 FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView
 macx:DEFINES += __Darwin
