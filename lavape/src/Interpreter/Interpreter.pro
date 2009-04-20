@@ -76,6 +76,8 @@ CONFIG += warn_off \
     precompile_header
 PH_FILES = $$system(ls *.ph)
 XXX = $$SOURCES
+YYY = $$PH_FILES
+message($$SOURCES:$$PH_FILES)
 INCLUDEPATH = . ../disco ../wxqDocView ../LavaBase ../LavaGUI ../Lava_UI ../LavaExecs/res/TOOLBUTTONS
 mac:DEFINES += __Darwin
 DEFINES += __UNIX__ NEEDS_INT_DEFINED QT_THREAD_SUPPORT INTERPRETER LAVAEXECS_EXPORT

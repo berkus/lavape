@@ -12,4 +12,4 @@ SUBDIRS = src/disco \
     src/Interpreter \
     src/Lava
 
-CONFIG += ordered
+CONFIG += ordered debug

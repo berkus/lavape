@@ -13,6 +13,7 @@ CONFIG += warn_off \
     precompile_header
 PH_FILES = $$system(ls *.ph)
 XXX = $$SOURCES
+YYY = $$PH_FILES
 FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView
 macx:DEFINES += __Darwin
