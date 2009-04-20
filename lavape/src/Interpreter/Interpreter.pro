@@ -15,6 +15,14 @@ phlinks2.variable_out = HEADERS
 QMAKE_EXTRA_TARGETS += phlinks2
 PRE_TARGETDEPS += Tokens.ph
 
+CONFIG += warn_off \
+    lpc \
+    qt \
+    debug \
+    lib_bundle \
+    precompile_header
+
+
 phlinks3.target = Check.h
 phlinks3.depends = ../LavaExecs/Check.h
 phlinks3.commands = ln -s ../LavaExecs/Check.h .
@@ -68,12 +76,6 @@ SOURCES *= $$system(ls *.cpp)
 SOURCES -= Interpreter_all.cpp
 HEADERS *= $$system(ls *.h)
 HEADERS -= Interpreter_all.h
-CONFIG += warn_off \
-    lpc \
-    qt \
-    debug \
-    lib_bundle \
-    precompile_header
 PH_FILES = $$system(ls *.ph)
 message($$SOURCES:$$PH_FILES)
 INCLUDEPATH = . ../disco ../wxqDocView ../LavaBase ../LavaGUI ../Lava_UI ../LavaExecs/res/TOOLBUTTONS
