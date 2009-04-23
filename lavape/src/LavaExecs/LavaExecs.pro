@@ -10,7 +10,7 @@ HEADERS -= LavaExecs_all.h
 include(../../lpc.prf)
 CONFIG += warn_off \
     qt \
-    debug \
+    debug-and-release \
     lib_bundle \
     precompile_header
 win32:PH_FILES = $$system(dir /b *.ph)

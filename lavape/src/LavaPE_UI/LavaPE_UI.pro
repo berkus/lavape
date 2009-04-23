@@ -2,7 +2,7 @@ TEMPLATE = lib
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 CONFIG += warn_off \
     qt \
-    debug \
+    debug-and-release \
     lib_bundle \
     precompile_header
 win32:SOURCES *= $$system(dir /b *.cpp)
