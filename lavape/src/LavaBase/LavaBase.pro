@@ -7,8 +7,8 @@ SOURCES -= LavaBase_all.cpp
 win32:HEADERS *= $$system(dir /b *.h)
 else:HEADERS *= $$system(ls *.h)
 HEADERS -= LavaBase_all.h
+include(../../lpc.prf)
 CONFIG += warn_off \
-    lpc \
     qt \
     debug \
     lib_bundle \
@@ -20,8 +20,10 @@ SOURCES *= SyntaxG.cpp
 win32:FORMS = $$system(ls *.ui)
 else:FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView
-macx:DEFINES += __Darwin
-DEFINES += __UNIX__ NEEDS_INT_DEFINED QT_THREAD_SUPPORT LAVABASE_EXPORT
+macx:DEFINES += __Darwin __UNIX__
+else:win32:DEFINES += WIN32
+else:DEFINES += __UNIX__
+DEFINES += NEEDS_INT_DEFINED QT_THREAD_SUPPORT WXQDOCVIEW_EXPORT
 QT += network
 DESTDIR = ../../lib
 macx:QMAKE_LFLAGS += -F../../lib -Wl,-install_name,@executable_path/../../../../lib/LavaBase.framework/Versions/1/LavaBase

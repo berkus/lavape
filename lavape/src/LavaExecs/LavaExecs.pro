@@ -7,8 +7,8 @@ SOURCES -= LavaExecs_all.cpp
 win32:HEADERS *= $$system(dir /b *.h)
 else:HEADERS *= $$system(ls *.h)
 HEADERS -= LavaExecs_all.h
+include(../../lpc.prf)
 CONFIG += warn_off \
-    lpc \
     qt \
     debug \
     lib_bundle \
@@ -21,8 +21,10 @@ SOURCES *= ConstructsG.cpp TokensG.cpp
 win32:FORMS = $$system(ls *.ui)
 else:FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase res/TOOLBUTTONS ../LavaPE ../LavaPE_UI ../LavaPE/res ../LavaPE/res/TOOLBUTTONS ../LavaPE/res/TreeIcons
-macx:DEFINES += __Darwin
-DEFINES += __UNIX__ NEEDS_INT_DEFINED QT_THREAD_SUPPORT EXECVIEW LAVAEXECS_EXPORT
+macx:DEFINES += __Darwin __UNIX__
+else:win32:DEFINES += WIN32
+else:DEFINES += __UNIX__
+DEFINES += NEEDS_INT_DEFINED QT_THREAD_SUPPORT WXQDOCVIEW_EXPORT EXECVIEW
 QT += network
 DESTDIR = ../../lib
 macx:QMAKE_LFLAGS += -F../../lib -Wl,-install_name,@executable_path/../../../../lib/LavaExecs.framework/Versions/1/LavaExecs

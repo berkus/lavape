@@ -19,8 +19,10 @@ HEADERS *= ../LavaExecs/Check.h ../LavaExecs/Tokens.h ../LavaExecs/Constructs.h
 SOURCES *= ../LavaExecs/ConstructsG.cpp ../LavaExecs/TokensG.cpp ../LavaExecs/ClosedLevelVisitor.cpp ../LavaExecs/TableVisitor.cpp ../LavaExecs/VisitorTraversal.cpp ../LavaExecs/Check.cpp ../LavaExecs/Tokens.cpp ../LavaExecs/Constructs.cpp
 #message($$SOURCES:$$PH_FILES)
 INCLUDEPATH = . ../disco ../wxqDocView ../LavaBase ../LavaGUI ../Lava_UI ../LavaExecs ../LavaExecs/res/TOOLBUTTONS
-mac:DEFINES += __Darwin
-DEFINES += __UNIX__ NEEDS_INT_DEFINED QT_THREAD_SUPPORT INTERPRETER LAVAEXECS_EXPORT
+macx:DEFINES += __Darwin __UNIX__
+else:win32:DEFINES += WIN32
+else:DEFINES += __UNIX__
+DEFINES += NEEDS_INT_DEFINED QT_THREAD_SUPPORT WXQDOCVIEW_EXPORT INTERPRETER
 QT += network
 DESTDIR = ../../lib
 
