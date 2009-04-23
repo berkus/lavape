@@ -5,9 +5,11 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header
-SOURCES *= $$system(ls *.cpp)
+win32:SOURCES *= $$system(dir /b *.cpp)
+else:SOURCES *= $$system(ls *.cpp)
 SOURCES -= LavaGUI_all.cpp
-HEADERS *= $$system(ls *.h)
+win32:HEADERS *= $$system(dir /b *.h)
+else:HEADERS *= $$system(ls *.h)
 HEADERS -= LavaGUI_all.h
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase res/TOOLBUTTONS ../LavaPE ../LavaPE_UI ../LavaPE/res ../LavaPE/res/TOOLBUTTONS ../LavaPE/res/TreeIcons
 macx:DEFINES += __Darwin

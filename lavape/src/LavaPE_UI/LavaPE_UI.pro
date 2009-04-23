@@ -5,11 +5,14 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header
-SOURCES *= $$system(ls *.cpp)
+win32:SOURCES *= $$system(dir /b *.cpp)
+else:SOURCES *= $$system(ls *.cpp)
 SOURCES -= LavaPE_UI_all.cpp
-HEADERS *= $$system(ls *.h)
+win32:HEADERS *= $$system(dir /b *.h)
+else:HEADERS *= $$system(ls *.h)
 HEADERS -= LavaPE_UI_all.h
-FORMS = $$system(ls *.ui)
+win32:FORMS = $$system(ls *.ui)
+else:FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase
 macx:DEFINES += __Darwin
 DEFINES += __UNIX__ NEEDS_INT_DEFINED QT_THREAD_SUPPORT EXECVIEW LAVAPEUI_EXPORT

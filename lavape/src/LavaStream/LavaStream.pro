@@ -5,9 +5,11 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header
-SOURCES *= $$system(ls *.cpp)
+win32:SOURCES *= $$system(dir /b *.cpp)
+else:SOURCES *= $$system(ls *.cpp)
 SOURCES -= LavaStream_all.cpp
-HEADERS *= $$system(ls *.h)
+win32:HEADERS *= $$system(dir /b *.h)
+else:HEADERS *= $$system(ls *.h)
 HEADERS -= LavaStream_all.h
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase
 QT += network gui

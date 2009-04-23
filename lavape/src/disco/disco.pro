@@ -5,9 +5,11 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header
-SOURCES *= $$system(ls *.cpp)
+win32:SOURCES *= $$system(dir /b *.cpp)
+else:SOURCES *= $$system(ls *.cpp)
 SOURCES -= disco_all.cpp
-HEADERS *= $$system(ls *.h)
+win32:HEADERS *= $$system(dir /b *.h)
+else:HEADERS *= $$system(ls *.h)
 HEADERS -= disco_all.h
 macx:DEFINES += __Darwin
 DEFINES += __UNIX__ NEEDS_INT_DEFINED QT_THREAD_SUPPORT DISCO_EXPORT
@@ -18,14 +20,21 @@ PRECOMPILED_HEADER = disco_all.h
 
 helpcoll.target = ../../doc/LavaPE.qhc
 helpcoll.depends = ../../doc/LavaPE.qhcp
-helpcoll.commands = $$[QT_INSTALL_BINS]/qcollectiongenerator ../../doc/LavaPE.qhcp -o ../../doc/LavaPE.qhc
+win32:helpcoll.commands = $$[QT_INSTALL_BINS]\qcollectiongenerator ../../doc/LavaPE.qhcp -o ../../doc/LavaPE.qhc
+else:helpcoll.commands = $$[QT_INSTALL_BINS]/qcollectiongenerator ../../doc/LavaPE.qhcp -o ../../doc/LavaPE.qhc
 QMAKE_EXTRA_TARGETS += helpcoll
 PRE_TARGETDEPS += ../../doc/LavaPE.qhc
 
-qtass.target = ../../bin/assistant
+#message($$[QT_INSTALL_BINS])
+
+win32:qtass.target = ..\..\bin\assistant.exe
+else:qtass.target = ../../bin/assistant
 macx:qtass.depends = $$[QT_INSTALL_BINS]/Assistant.app/Contents/MacOS/Assistant
+win32:qtass.depends = $$[QT_INSTALL_BINS]\assistant.exe
 else:qtass.depends = $$[QT_INSTALL_BINS]/assistant
 macx:qtass.commands = cp -pf $$[QT_INSTALL_BINS]/Assistant.app/Contents/MacOS/Assistant $$qtass.target
+win32:qtass.commands = copy  $$[QT_INSTALL_BINS]\assistant.exe $$qtass.target
 else:qtass.commands = cp -pf $$[QT_INSTALL_BINS]/assistant $$qtass.target
 QMAKE_EXTRA_TARGETS += qtass
-PRE_TARGETDEPS += ../../bin/assistant
+win32:PRE_TARGETDEPS += ..\..\bin\assistant.exe
+else:PRE_TARGETDEPS += ../../bin/assistant

@@ -1890,14 +1890,22 @@
 				Name="Debug|Win32"
 				>
 				<Tool
-					Name="qhcp-regel"
+					Name="VCCustomBuildTool"
+					Description="qcollectiongenerator wird auf $(InputPath) angewandt"
+					CommandLine="$(QTDIR)\bin\qcollectiongenerator -helpCollection $(InputPath)"
+					AdditionalDependencies=""
+					Outputs="..\..\doc\$(InputName).qhc;..\..\doc\$(InputName).qch"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
 				Name="Release|Win32"
 				>
 				<Tool
-					Name="qhcp-regel"
+					Name="VCCustomBuildTool"
+					Description="qcollectiongenerator wird auf $(InputPath) angewandt"
+					CommandLine="$(QTDIR)\bin\qcollectiongenerator -helpCollection $(InputPath)"
+					AdditionalDependencies="..\..\doc\LavaPE.qhcp;..\..\doc\LavaPE.qhp"
+					Outputs="..\..\doc\$(InputName).qhc;..\..\doc\$(InputName).qch"
 				/>
 			</FileConfiguration>
 		</File>
@@ -1918,8 +1926,8 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
-					Outputs="Generated/$(InputName).cpp"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated\$(InputName).cpp $(InputPath)"
+					Outputs="Generated\$(InputName).cpp"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -1928,8 +1936,8 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
-					Outputs="Generated/$(InputName).cpp"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated\$(InputName).cpp $(InputPath)"
+					Outputs="Generated\$(InputName).cpp"
 				/>
 			</FileConfiguration>
 		</File>

@@ -8,9 +8,11 @@ CONFIG += warn_off \
     precompile_header
 
 PRO_EXPORT = LAVAEXECS
-SOURCES *= $$system(ls *.cpp)
+win32:SOURCES *= $$system(dir /b *.cpp)
+else:SOURCES *= $$system(ls *.cpp)
 SOURCES -= Interpreter_all.cpp
-HEADERS *= $$system(ls *.h)
+win32:HEADERS *= $$system(dir /b *.h)
+else:HEADERS *= $$system(ls *.h)
 HEADERS -= Interpreter_all.h
 HEADERS *= ../LavaExecs/Check.h ../LavaExecs/Tokens.h ../LavaExecs/Constructs.h
 #PH_FILES = $$system(ls ../LavaExecs/*.ph)

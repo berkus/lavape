@@ -974,8 +974,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
-						Outputs="Generated\$(InputName).h"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)"
+						Outputs="Generated\ui_$(InputName).h"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -984,8 +984,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
-						Outputs="Generated\$(InputName).h"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)"
+						Outputs="Generated\ui_$(InputName).h"
 					/>
 				</FileConfiguration>
 			</File>
