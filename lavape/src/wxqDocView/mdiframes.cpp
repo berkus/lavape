@@ -65,8 +65,6 @@ wxMainFrame::wxMainFrame() : QMainWindow()
 
   docMan->m_fileHistory = new wxHistory(this);
   connect(docMan->m_fileHistory->m_signalMapper,SIGNAL(mapped(int)),wxTheApp->m_appWindow,SLOT(histFile(int)));
-  //m_childFrameHistory = new wxHistory(this);
-  //connect(m_childFrameHistory->m_signalMapper,SIGNAL(mapped(int)),wxTheApp->m_appWindow,SLOT(histWindow(int)));
 }
 
 bool wxMainFrame::OnCreate()
