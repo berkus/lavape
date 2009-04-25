@@ -13,4 +13,3 @@ SUBDIRS = src/disco \
     src/Lava
 
 CONFIG += ordered debug-and-release
-

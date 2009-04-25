@@ -2,7 +2,7 @@ TEMPLATE = lib
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 CONFIG += warn_off \
     qt \
-    debug-and-release \
+    debug \
     lib_bundle \
     precompile_header
 win32:SOURCES *= $$system(dir /b *.cpp)
@@ -11,8 +11,9 @@ SOURCES -= LavaPE_UI_all.cpp
 win32:HEADERS *= $$system(dir /b *.h)
 else:HEADERS *= $$system(ls *.h)
 HEADERS -= LavaPE_UI_all.h
-win32:FORMS = $$system(ls *.ui)
+win32:FORMS = $$system(dir /b *.ui)
 else:FORMS = $$system(ls *.ui)
+#message($$FORMS)
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase
 macx:DEFINES += __Darwin __UNIX__
 else:win32:DEFINES += WIN32
