@@ -21,6 +21,7 @@
 
 #include "LavaBaseStringInit.h"
 #include "LavaPEStringInit.h"
+#include "LavaPE_all.h"
 #include "LavaPEView.h"
 #include "VTView.h"
 #include "LavaPEFrames.h"

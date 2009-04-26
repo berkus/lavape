@@ -1,4 +1,6 @@
 TEMPLATE = lib
+include(../../lpc.prf)
+
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 CONFIG += warn_off \
     qt \
@@ -15,10 +17,11 @@ win32:FORMS = $$system(dir /b *.ui)
 else:FORMS = $$system(ls *.ui)
 #message($$FORMS)
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase
-macx:DEFINES += __Darwin __UNIX__
-else:win32:DEFINES += WIN32
+
+win32:DEFINES += WIN32
 else:DEFINES += __UNIX__
-DEFINES += NEEDS_INT_DEFINED QT_THREAD_SUPPORT WXQDOCVIEW_EXPORT
+DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT LAVAPEUI_EXPORT
+
 QT += network
 DESTDIR = ../../lib
 macx:QMAKE_LFLAGS += -F../../lib -Wl,-install_name,@executable_path/../../../../lib/LavaPE_UI.framework/Versions/1/LavaPE_UI

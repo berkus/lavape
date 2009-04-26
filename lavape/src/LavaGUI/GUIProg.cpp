@@ -17,6 +17,8 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
+#include "LavaGUI_all.h"
+
 #include "GUIProg.h"
 #include "LavaGUIPopup.h"
 #include "LavaAppBase.h"

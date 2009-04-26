@@ -19,6 +19,7 @@
 
 //#include "prelude.h"
 //#include "sflsock.h"
+#include "Lava_all.h"
 #include "Lava.h"
 #include "SYSTEM.h"
 #include "CDPpp.h"

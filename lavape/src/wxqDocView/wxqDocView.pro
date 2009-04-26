@@ -1,4 +1,6 @@
 TEMPLATE = lib
+include(../../lpc.prf)
+
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 CONFIG += warn_off \
     qt \
@@ -13,10 +15,11 @@ else:HEADERS *= $$system(ls *.h)
 HEADERS -= wxqDocView_all.h
 INCLUDEPATH = ../disco
 QT += network
-macx:DEFINES += __Darwin __UNIX__
-else:win32:DEFINES += WIN32
+
+win32:DEFINES += WIN32
 else:DEFINES += __UNIX__
-DEFINES += NEEDS_INT_DEFINED QT_THREAD_SUPPORT WXQDOCVIEW_EXPORT
+DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT WXQDOCVIEW_EXPORT
+
 DESTDIR = ../../lib
 macx:QMAKE_LFLAGS += -F../../lib -Wl,-install_name,@executable_path/../../../../lib/wxqDocView.framework/Versions/1/wxqDocView
 else:QMAKE_LFLAGS += -L../../lib

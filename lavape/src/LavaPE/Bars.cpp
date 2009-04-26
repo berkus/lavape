@@ -21,6 +21,7 @@
 #include "LavaPE.h"
 #include "TreeView.h"
 #include "ExecView.h"
+#include "LavaPE_all.h"
 #include "Bars.h"
 //#include "ExecView.h"
 #include "LavaPEDoc.h"

@@ -36,6 +36,8 @@
 #ifndef INTERPRETER
 #include "ExecUpdate.h"
 #include "ExecView.h"
+#else
+#include "ConstructsX.h"
 #endif
 
 

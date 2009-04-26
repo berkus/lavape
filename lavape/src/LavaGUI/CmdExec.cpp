@@ -19,6 +19,9 @@
 
 #include "DIO.h"
 
+#include "LavaGUI_all.h"
+
+#include "GUIres.h"
 #include "GUIProg.h"
 #include "CmdExec.h"
 #include "MakeGUI.h"
@@ -26,6 +29,7 @@
 #include "LavaBaseDoc.h"
 #include "qmessagebox.h"
 #include "LavaBaseStringInit.h"
+#include "TEdit.h"
 #include "TButton.h"
 #include "mdiframes.h"
 

@@ -37,6 +37,7 @@
 #include <QKeyEvent>
 #include <QDropEvent>
 #include <QHeaderView>
+#include "LavaPE_all.h"
 #include "TreeView.h"
 #include "Resource.h"
 #include "qpixmap.h"

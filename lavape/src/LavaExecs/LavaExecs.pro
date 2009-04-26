@@ -1,4 +1,6 @@
 TEMPLATE = lib
+include(../../lpc.prf)
+
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 PRO_EXPORT = LAVAEXECS
 win32:SOURCES *= $$system(dir /b *.cpp)
@@ -21,10 +23,11 @@ SOURCES *= ConstructsG.cpp TokensG.cpp
 win32:FORMS = $$system(ls *.ui)
 else:FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase res/TOOLBUTTONS ../LavaPE ../LavaPE_UI ../LavaPE/res ../LavaPE/res/TOOLBUTTONS ../LavaPE/res/TreeIcons
-macx:DEFINES += __Darwin __UNIX__
-else:win32:DEFINES += WIN32
+
+win32:DEFINES += WIN32
 else:DEFINES += __UNIX__
-DEFINES += NEEDS_INT_DEFINED QT_THREAD_SUPPORT WXQDOCVIEW_EXPORT EXECVIEW
+DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT LAVAEXECS_EXPORT EXECVIEW
+
 QT += network
 DESTDIR = ../../lib
 macx:QMAKE_LFLAGS += -F../../lib -Wl,-install_name,@executable_path/../../../../lib/LavaExecs.framework/Versions/1/LavaExecs

@@ -1,4 +1,6 @@
 TEMPLATE = lib
+include(../../lpc.prf)
+
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 PRO_EXPORT = LAVABASE
 win32:SOURCES *= $$system(dir /b *.cpp)
@@ -20,10 +22,11 @@ SOURCES *= SyntaxG.cpp
 win32:FORMS = $$system(ls *.ui)
 else:FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView
-macx:DEFINES += __Darwin __UNIX__
-else:win32:DEFINES += WIN32
+
+win32:DEFINES += WIN32
 else:DEFINES += __UNIX__
-DEFINES += NEEDS_INT_DEFINED QT_THREAD_SUPPORT WXQDOCVIEW_EXPORT
+DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT LAVABASE_EXPORT
+
 QT += network
 DESTDIR = ../../lib
 macx:QMAKE_LFLAGS += -F../../lib -Wl,-install_name,@executable_path/../../../../lib/LavaBase.framework/Versions/1/LavaBase

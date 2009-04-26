@@ -1,4 +1,6 @@
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
+include(../../lpc.prf)
+
 win32:SOURCES *= $$system(dir /b *.cpp)
 else:SOURCES *= $$system(ls *.cpp)
 SOURCES -= Lava_all.cpp
@@ -7,10 +9,11 @@ else:HEADERS *= $$system(ls *.h)
 HEADERS -= Lava_all.h
 QT += network gui
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase ../LavaExecs ../LavaGUI ../Lava_UI res/TOOLBUTTONS res ../Interpreter
-macx:DEFINES += __Darwin __UNIX__
-else:win32:DEFINES += WIN32
+
+win32:DEFINES += WIN32
 else:DEFINES += __UNIX__
-DEFINES += NEEDS_INT_DEFINED QT_THREAD_SUPPORT WXQDOCVIEW_EXPORT
+DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT
+
 DESTDIR = ../../bin
 macx:QMAKE_LFLAGS += -F../../lib
 else:QMAKE_LFLAGS += -L../../lib -Wl,-rpath,../lib

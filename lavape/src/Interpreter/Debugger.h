@@ -1,6 +1,7 @@
 #ifndef __DEBUGGER
 #define __DEBUGGER
 
+#include "ASN1File.h"
 #include "Constructs.h"
 #include "LavaAppBase.h"       // Hauptsymbole
 #include "LavaBaseDoc.h"       // Hauptsymbole

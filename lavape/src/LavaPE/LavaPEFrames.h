@@ -4,6 +4,7 @@
 
 #include "LavaGUIFrame.h"
 #include "PEBaseDoc.h"
+#include "LavaPE_all.h"
 #include "Bars.h"
 #include "LavaGUIView.h"
 #include "docview.h"

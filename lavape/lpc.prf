@@ -14,3 +14,5 @@ silent:lpc.commands = @echo \
     $$lpc.commands
 variable_out = SOURCES
 QMAKE_EXTRA_COMPILERS += lpc
+
+OPSYS = $$system(uname)

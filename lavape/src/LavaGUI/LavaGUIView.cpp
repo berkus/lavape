@@ -22,6 +22,7 @@
 #include "LavaGUIFrame.h"
 #include "SylTraversal.h"
 #include "LavaAppBase.h"
+#include "LavaGUI_all.h"
 #include "FormWid.h"
 #include "TEdit.h"
 #include "qpainter.h"

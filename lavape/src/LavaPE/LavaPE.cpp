@@ -26,6 +26,7 @@
 //#include <prelude.h>
 #include <QTcpSocket>
 #include "LavaBaseStringInit.h"
+#include "LavaPE_all.h"
 #include "LavaPEFrames.h"
 #include "LavaPEDoc.h"
 #include "LavaPEView.h"

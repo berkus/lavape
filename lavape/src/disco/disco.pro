@@ -1,4 +1,5 @@
 TEMPLATE = lib
+include(../../lpc.prf)
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 CONFIG += warn_off \
     qt \
@@ -11,10 +12,11 @@ SOURCES -= disco_all.cpp
 win32:HEADERS *= $$system(dir /b *.h)
 else:HEADERS *= $$system(ls *.h)
 HEADERS -= disco_all.h
-macx:DEFINES += __Darwin __UNIX__
-else:win32:DEFINES += WIN32
+
+win32:DEFINES += WIN32
 else:DEFINES += __UNIX__
-DEFINES += NEEDS_INT_DEFINED QT_THREAD_SUPPORT WXQDOCVIEW_EXPORT
+DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT DISCO_EXPORT
+
 QT += network
 DESTDIR = ../../lib
 macx:QMAKE_LFLAGS += -Wl,-install_name,@executable_path/../../../../lib/disco.framework/Versions/1/disco

@@ -22,6 +22,7 @@
 #include "LavaPE.h"
 #include "LavaPEStringInit.h"
 #include "Constructs.h"
+#include "LavaPE_all.h"
 #include "LavaPEView.h"
 #include "LavaPEFrames.h"
 //#include "PropView.h"

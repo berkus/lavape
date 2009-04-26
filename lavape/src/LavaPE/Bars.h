@@ -19,6 +19,7 @@
 #include "qsplitter.h"
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+#include <QTextEdit>
 
 
 enum UtilityTabs { /*tabBuild,*/ tabComment, tabError, tabFind, tabHandler, tabDebug };

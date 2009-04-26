@@ -20,6 +20,7 @@
 #include "DIO.h"
 
 #include "MACROS.h"
+#include "LavaGUI_all.h"
 #include "GUIwid.h"
 #include "FormWid.h"
 #include "GUIProg.h"
