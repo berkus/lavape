@@ -3914,7 +3914,8 @@ bool Assignment::Check (CheckData &ckd)
         ok = false;
       }
       if (catTarget != anyCat
-      && catSource != catTarget) {
+      && catSource != catTarget
+      && ((SynObject*)exprValue.ptr)->primaryToken != clone_T) {
         ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
         ok = false;
       }
