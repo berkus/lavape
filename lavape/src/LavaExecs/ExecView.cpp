@@ -144,6 +144,8 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 
 CExecView::~CExecView()
 {
+  if (!wxTheApp->deletingMainFrame)
+    DisableActions();
   setFocusProxy(0);
   if (redCtl->debugStopToken)
     lastDebugStopExec = 0;
@@ -1323,8 +1325,8 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
       doubleClick = true;
     }
     Select(); //Select before Activate/updateButtonsMenus!
-    if (!doubleClick)
-      Activate(false);
+    //if (!doubleClick)
+    //  Activate(false);
   }
   doubleClick = false;
   clicked = false;
@@ -1407,10 +1409,12 @@ void CExecView::Select (SynObject *selObj)
   inParameter = ocUpd.inParameter;
   inForeach = ocUpd.inForeach;
 
-  if (active) {
-    redCtl->setFocus();
-    //wxTheApp->selChanged = true;
-  }
+  if (!doubleClick)
+    Activate(false);
+  //if (active) {
+  //  redCtl->setFocus();
+  //  //wxTheApp->selChanged = true;
+  //}
 
   SetHelpText();
 

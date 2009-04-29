@@ -388,7 +388,7 @@ CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
 CLavaGUIView::~CLavaGUIView()
 {
   if (!wxTheApp->deletingMainFrame) {
-    DisableActions();
+    //DisableActions();
     if (!LBaseData->inRuntime && LBaseData->Browser->LastBrowseContext)
       LBaseData->Browser->LastBrowseContext->RemoveView(this);
   }

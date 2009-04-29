@@ -269,6 +269,7 @@ public:
     wxChildFrame *m_viewFrame;
 
     virtual void UpdateUI() {}
+    virtual void DisableActions() {}
     wxDocument *GetDocument() const { return m_viewDocument; }
     void SetDocument(wxDocument *doc);
 

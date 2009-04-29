@@ -177,7 +177,6 @@ void wxApp::updateButtonsMenus()
     return;
 
   onUpdateUI();
-
 }
 
 void wxApp::customEvent(QEvent *e)
@@ -1717,6 +1716,10 @@ void wxDocManager::RemoveDocument(wxDocument *doc)
 // when a view is going in or out of focus
 void wxDocManager::RememberActiveView(wxView *view)
 {
+  if (view == m_activeView)
+    return;
+  if (m_activeView && !m_activeView->deleting && !wxTheApp->deletingMainFrame)
+    m_activeView->DisableActions();
   m_activeView = view;
 }
 
