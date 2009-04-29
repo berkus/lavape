@@ -51,7 +51,6 @@ public:
   virtual bool OnCreate();//LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
   //virtual bool PreCreateWindow(CREATESTRUCT& cs);
-  virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
   void setSelPost(QTreeWidgetItem* selItem);
   CLavaPEView* myMainView;
   LavaDECL * myDECL; //=the decl from which it was initiated

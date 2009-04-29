@@ -1965,36 +1965,6 @@ CMainItemData* CLavaPEView::Navigate(bool all, CTreeItem*& item, int& level)
   }
 }//Navigate
 
-
-void CLavaPEView::OnActivateView()
-{
-  CTreeItem* sel;
-
-  if (GetDocument()->mySynDef && !((CLavaPEApp*)wxTheApp)->inTotalCheck) {
-    //if (bActivate) {
-      active = true;
-      sel = (CTreeItem*)Tree->currentItem();
-      SetErrAndCom(sel);
-      if (!Tree->hasFocus())
-        Tree->setFocus();
-      clipboard_lava_notEmpty = wxTheApp->clipboard()->mimeData(QClipboard::Clipboard)->hasFormat(m_nIDClipFormat);
-      if (clipboard_lava_notEmpty) {
-        QByteArray ar = ((LavaSource*)wxTheApp->clipboard()->mimeData(QClipboard::Clipboard))->data(m_nIDClipFormat);
-        SynFlags treeflags, secondtflags;
-        CMainItemData clipData;
-        defTypeSpicked = clipData.Spick(ar, treeflagsSpicked, secondtflagsSpicked);
-      }
-    //}
-    //else {
-    //  active = false;
-    //  DisableActions();
-    //  SetErrAndCom(0);
-
-    //}
-  }
-  //wxView::OnActivateView(bActivate,deactiveView);
-}
-
 void CLavaPEView::OnDblclk(  QTreeWidgetItem * itemHit, int col )
 {
   if (itemHit) {

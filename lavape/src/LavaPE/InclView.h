@@ -22,7 +22,6 @@ public:
   int SelINCL;
   virtual void OnInitialUpdate();
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
-  virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
   virtual ~CInclView();
   virtual void UpdateUI();
   void DisableActions();

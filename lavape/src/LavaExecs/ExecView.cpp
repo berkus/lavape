@@ -6457,22 +6457,6 @@ void CExecView::OnUpdateStaticCall(QAction* action)
         )));
 }
 
-void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
-{
-  // TODO: Speziellen Code hier einfgen und/oder Basisklasse aufrufen
-  QString empty;
-
-  if (GetDocument()->mySynDef && !destroying && bActivate) {
-    if (Base)
-      SetHelpText();
-    redCtl->setFocus();
-  }
-  else if (!bActivate) {
-    DisableActions();
-  }
-  //wxView::OnActivateView(bActivate,deactiveView);
-}
-
 void CExecView::OnUpdateInterval(QAction* action)
 {
   if (Taboo()) {

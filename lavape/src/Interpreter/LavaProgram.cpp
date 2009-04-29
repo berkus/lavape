@@ -2346,12 +2346,10 @@ unsigned CLavaExecThread::ExecuteLava()
   LavaDECL* topDECL;
   CVFuncDesc *fDesc;
 
-
 #ifdef WIN32
   unsigned frameSizeBytes;
-
-  //CoInitialize(0);
 #endif
+
   if (myDoc->debugOn)
     ((CLavaDebugger*)LBaseData->debugger)->m_execThread = this;
   ckd.document = (CLavaProgram*)myDoc;
@@ -2567,8 +2565,10 @@ unsigned CLavaExecThread::ExecuteLava()
   }
   CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
   QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
-  if (myDoc->debugOn)
+  if (myDoc->debugOn) {
+    ((CLavaDebugger*)LBaseData->debugger)->myDoc = 0;
     ((CLavaDebugger*)LBaseData->debugger)->m_execThread = 0;
+  }
   return 1;
 }
 

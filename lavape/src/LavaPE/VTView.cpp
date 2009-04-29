@@ -889,22 +889,6 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
     wxTheApp->updateButtonsMenus();
 }
 
-void CVTView::OnActivateView(bool bActivate, wxView *deactiveView)
-{
-  CTreeItem* sel;
-  if (GetDocument()->mySynDef) {
-    //if (bActivate) {
-      sel = (CTreeItem*)Tree->currentItem();
-      SetVTError(sel);
-      if (!Tree->hasFocus())
-        Tree->setFocus();
-  }
-    //else {
-    //  DisableActions();
-    //}
-  //wxView::OnActivateView(bActivate,deactiveView);
-}
-
 void CVTView::OnCollapseAll()
 {
   CTreeItem* tri = (CTreeItem*)Tree->currentItem();

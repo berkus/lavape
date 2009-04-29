@@ -102,7 +102,6 @@ public:
 //  void AddButtons();
   virtual void OnInitialUpdate();
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
-  virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
   void MsgToStatusbar();
 
   GUIScrollView* scrollView() {return myScrv;}

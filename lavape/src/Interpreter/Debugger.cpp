@@ -331,7 +331,7 @@ void CLavaDebugger::stop(DbgExitReason reason) {
     return;
   }
   else
-    if (((CLavaProgram*)myDoc)->corruptSyntax) {
+    if (myDoc && ((CLavaProgram*)myDoc)->corruptSyntax) {
       ((CLavaProgram*)myDoc)->corruptSyntax = false;
       delete myDoc;
       //((CLavaProgram*)myDoc)->CreateFailed();

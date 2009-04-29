@@ -885,30 +885,6 @@ void CLavaGUIView::MsgToStatusbar()
   }
 }
 
-void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView)
-{
-  if (myGUIProg) {
-    if (bActivate) {
-      if (LBaseData->inRuntime) {
-        MsgToStatusbar();
-      }
-      else
-        GetDocument()->ResetError();
-      if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.widget)
-        if (!myGUIProg->focNode->data.FIP.widget->hasFocus() && (LBaseData->inRuntime || (myGUIProg->focNode == myGUIProg->ActNode)))
-          myGUIProg->focNode->data.FIP.widget->setFocus();
-      clipboard_text_notEmpty = !QApplication::clipboard()->text().isEmpty();
-    }
-    else {
-      QString msg("");
-      wxTheApp->m_appWindow->statusBar()->showMessage(msg);
-      DisableActions();
-    }
-  }
-  //wxView::OnActivateView(bActivate,deactiveView);
-}
-
-
 void CLavaGUIView::OnChoosefont()
 {
   if (myGUIProg) {

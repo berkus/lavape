@@ -407,35 +407,6 @@ void CInclView::OnUpdateEditSel(QAction* action)
   action->setEnabled(enable);
 }
 
-/*
-void CInclView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-  if (nChar == VK_DELETE)
-    OnDelete();
-  else
-    CTreeView::OnKeyDown(nChar, nRepCnt, nFlags);
-}
-*/
-
-void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
-{
-  DString str0;
-  if (GetDocument()->mySynDef) {
-    CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
-    if (bActivate) {
-      frame->newIncludeAction->setEnabled(!GetDocument()->changeNothing);
-      frame->m_UtilityView->SetComment(str0, true);
-      frame->m_UtilityView->ResetError();
-      if (!Tree->hasFocus())
-        Tree->setFocus();
-    }
-    else {
-      DisableActions();
-    }
-  }
-  //wxView::OnActivateView(bActivate,deactiveView);
-}
-
 void CInclView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
 {
   if (!selItem)

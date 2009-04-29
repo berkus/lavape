@@ -86,7 +86,6 @@ public:
   virtual void OnInitialUpdate();
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
 
-  virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
   void DisableActions();
   static void DisableKwdButtons();
   bool EditOK();

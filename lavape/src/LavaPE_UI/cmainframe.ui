@@ -1671,13 +1671,13 @@
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Toggle category, depressed = variable state object</string>
+    <string>Toggle category</string>
    </property>
    <property name="iconText" >
-    <string>Toggle category, depressed = variable state object</string>
+    <string>Toggle category</string>
    </property>
    <property name="toolTip" >
-    <string>Toggle category, depressed = variable state object</string>
+    <string>Toggle category</string>
    </property>
    <property name="whatsThis" >
     <string>Toggle category: default: "immutable value object", "~" means "variable state object"</string>

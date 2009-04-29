@@ -413,8 +413,7 @@
     <string>Toggle category</string>
    </property>
    <property name="toolTip" >
-    <string>Toggle object category,&#xd;
-depressed=state object</string>
+    <string>Toggle object category,\ndepressed=state object</string>
    </property>
    <property name="statusTip" >
     <string>Toggle object category (depressed=state object)</string>

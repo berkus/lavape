@@ -721,45 +721,45 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
           }
         //}
       }
-      else
-        if (!ii && !(*resultVarPtr)) {
-          //call default initializer if the result object has been allocated here
-          fDesc = &(*resultObjPtr)[0].funcDesc[0];
-          if (fDesc && fDesc->stackFrameSize) {
-            if (fDesc->isNative) {
-              fsize = fDesc->stackFrameSize;
-#ifndef __GNUC__
-              fsizeBytes = fsize<<2;
-              __asm {
-                sub esp, fsizeBytes
-                mov newStackFrame, esp
-              }
-#else
-							newStackFrame = new LavaObjectPtr[fsize];
-#endif
-              newStackFrame[0] = 0;
-              newStackFrame[1] = 0;
-              newStackFrame[2] = 0;
-              newStackFrame[SFH] = resultObjPtr;
-              //TRY_FUNCCALL(ckd, (*fDesc->funcPtr), newStackFrame, (fsize), ok)
-              ok = (*fDesc->funcPtr)(ckd, newStackFrame);
-#ifndef __GNUC__
-              __asm {
-                add esp, fsizeBytes
-                mov newStackFrame, esp
-              }
-#else
-							delete [] newStackFrame;
-#endif
-            }
-            else 
-              ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, &resultObjPtr);
-            if (!ok && !ckd.exceptionThrown) {
-              ckd.document->LavaError(ckd, true, secClassDECL, &ERR_RunTimeException,0);
-              return 0;
-            }
-          }
-        }
+//      else
+//        if (!ii && !(*resultVarPtr)) {
+//          //call default initializer if the result object has been allocated here
+//          fDesc = &(*resultObjPtr)[0].funcDesc[0];
+//          if (fDesc && fDesc->stackFrameSize) {
+//            if (fDesc->isNative) {
+//              fsize = fDesc->stackFrameSize;
+//#ifndef __GNUC__
+//              fsizeBytes = fsize<<2;
+//              __asm {
+//                sub esp, fsizeBytes
+//                mov newStackFrame, esp
+//              }
+//#else
+//							newStackFrame = new LavaObjectPtr[fsize];
+//#endif
+//              newStackFrame[0] = 0;
+//              newStackFrame[1] = 0;
+//              newStackFrame[2] = 0;
+//              newStackFrame[SFH] = resultObjPtr;
+//              //TRY_FUNCCALL(ckd, (*fDesc->funcPtr), newStackFrame, (fsize), ok)
+//              ok = (*fDesc->funcPtr)(ckd, newStackFrame);
+//#ifndef __GNUC__
+//              __asm {
+//                add esp, fsizeBytes
+//                mov newStackFrame, esp
+//              }
+//#else
+//							delete [] newStackFrame;
+//#endif
+//            }
+//            else 
+//              ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, &resultObjPtr);
+//            if (!ok && !ckd.exceptionThrown) {
+//              ckd.document->LavaError(ckd, true, secClassDECL, &ERR_RunTimeException,0);
+//              return 0;
+//            }
+//          }
+//        }
     }
   }
   if (copyStart)
