@@ -33,7 +33,12 @@
   <p><b>Note</b> that <i class="c2">Lava</i> provides a distinction between <b>constituent</b> and <b>acquaintance</b> members of an object. Only the constituents are copied by 
       <span class="style1">copy</span> (&quot;deep copy&quot;). Acquaintances are considered to be separate, independent objects. <b>Copy</b> copies only the <b>pointers</b> to acquaintances.</p>
 
-  <p><b>Note</b> that <b>copy</b> doesn&#39;t make much sense in cases where source and target object don&#39;t have common base classes. <b>Copy</b> is used primarily to copy a &quot;less derived&quot; onto a &quot;more derived&quot; object or to create a &quot;snapshot&quot; of the current state of a <a href="../TwoObjectCategories.htm">state object</a>. (The snapshot may be an immutable value object or again a state object.)</p>
+  <p><b>Note</b> that <b>copy</b> doesn&#39;t make much sense in cases where source and target object don&#39;t have common base classes. <b>Copy</b> is used primarily to copy a &quot;less derived&quot; onto a &quot;more derived&quot; object or to create a &quot;snapshot&quot; of the current state of a <a href="../TwoObjectCategories.htm">state object</a>.</p>
+    <p>The snapshot may be an immutable value object or again a state object<span 
+            lang="de">, or, more generally:</span></p>
+    <p><span lang="de">Since the object copy is completely independent from the source 
+        object, the category of the receiving variable (variable state or immutable 
+        value object) doesn&#39;t, in turn, dependent on the source object&#39;s category.</span></p>
 
   <p class="c3">See also:</p>
 
