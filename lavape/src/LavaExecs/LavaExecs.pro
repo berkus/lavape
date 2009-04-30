@@ -12,7 +12,7 @@ HEADERS *= Check.h ComboBar.h ConstructsV.h ExecFrame.h ExecUpdate.h ExecView.h 
 HEADERS *= Constructs.h Tokens.h
 CONFIG += warn_off \
     qt \
-    debug \
+    debug-and-release \
     lib_bundle \
     precompile_header
 #message($$SOURCES:$$PH_FILES)
