@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <title>Clone expression</title>
-  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
   <style type="text/css" xml:space="preserve">
 /*<![CDATA[*/
@@ -27,25 +27,36 @@
 </head>
 
 <body>
-  <h2 class="c1">&quot;Clone&quot; expression</h2>
+<h2 class="c1">"Clone" expression</h2>
 
-  <p>Use the <b>clone</b> expression to produce a complete copy of an existing <i class="c2">Lava</i> object.</p>
+<p>Use the <b>clone</b> expression to produce a complete copy of an existing <i
+class="c2">Lava</i> object.</p>
 
-  <p><b>Note</b> that <i class="c2">Lava</i> provides a distinction between <b>constituent</b> and <b>acquaintance</b> members of an object. Only the constituents are copied by 
-      <span class="style1">clone</span> (&quot;deep copy&quot;). Acquaintances are considered to be separate, independent objects. <b>Clone</b> copies only the <b>pointers</b> to acquaintances.</p>
+<p><b>Note</b> that <i class="c2">Lava</i> provides a distinction between
+<b>constituent</b> and <b>acquaintance</b> members of an object. Only the
+constituents are copied by <span class="style1">clone</span> ("deep copy").
+Acquaintances are considered to be separate, independent objects. <b>Clone</b>
+copies only the <b>pointers</b> to acquaintances.</p>
 
-  <p>Like the <span class="style1">new</span> expression, <span class="style1">clone</span> provides a 
-      <span class="style2">but</span> clause where you can modify the cloned object before its creation state is switched to &quot;finished&quot;. (Note that &quot;finished&quot; <a href="../TwoObjectCategories.htm">value objects</a> are &quot;frozen&quot;, i.e., they become constant and thus their direct or recursive constituents cannot be modified any more.)</p>
-    <p><span lang="de"><b>Note: </b>Since the clone is completely independent from the 
-        source object, the result of the clone expression may be assigned to a variable 
-        of any category.</span></p>
+<p>Like the <span class="style1">new</span> expression, <span
+class="style1">clone</span> provides a <span class="style2">but</span> clause
+where you can modify the cloned object before its creation state is switched to
+"finished". (Note that "finished" <a href="../TwoObjectCategories.htm">value
+objects</a> are "frozen", i.e., they become constant and thus their direct or
+recursive constituents cannot be modified any more.)</p>
 
-  <p class="c3">See also:</p>
+<p><span xml:lang="de" lang="de"><b>Note: </b>Since the clone is completely
+independent of the source object, the result of the clone expression may be
+assigned to a variable of any category.</span></p>
 
-  <p class="c3"><a href="Copy.htm">Copy</a></p>
+<p class="c3">See also:</p>
 
-  <p class="c3"><a href="../Unsolved.htm#pointers">Application-level pointer notion</a></p>
+<p class="c3"><a href="Copy.htm">Copy</a></p>
 
-  <p class="c3"><a href="../PointersRefCounts.htm#refTypes">Pointers and reference counts</a></p>
+<p class="c3"><a href="../Unsolved.htm#pointers">Application-level pointer
+notion</a></p>
+
+<p class="c3"><a href="../PointersRefCounts.htm#refTypes">Pointers and
+reference counts</a></p>
 </body>
 </html>

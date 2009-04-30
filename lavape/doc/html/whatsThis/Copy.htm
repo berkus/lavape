@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <title>Copy statement</title>
-  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
   <style type="text/css" xml:space="preserve">
 /*<![CDATA[*/
@@ -22,30 +22,52 @@
 </head>
 
 <body>
-  <h2 class="c1">&quot;Copy&quot; statement</h2>
+<h2 class="c1">"Copy" statement</h2>
 
-  <p>Use the <b>copy</b> statement to copy an existing <i class="c2">Lava</i> object onto another object.</p>
+<p>Use the <b>copy</b> statement to copy an existing <i class="c2">Lava</i>
+object onto another object.</p>
 
-  <p>If the target object does not yet exist (i.e, is = <b>0</b>) then <b>copy</b> allocates a new target object whose type is the (&quot;static&quot;) type of the target variable on the left side of <b>copy</b>. (<b>Copy</b> uses the default initializer of that class to initialize the new target object.) Subsequently it copies those parts of the source object onto the new target object that correspond to common base classes of source and target object. (Here we count the whole object class also as a base class.)</p>
+<p>If the target object does not yet exist (i.e, is = <b>0</b>) then
+<b>copy</b> allocates a new target object whose type is the ("static") type of
+the target variable on the left side of <b>copy</b>. (<b>Copy</b> uses the
+default initializer of that class to initialize the new target object.)
+Subsequently it copies those parts of the source object onto the new target
+object that correspond to common base classes of source and target object.
+(Here we count the whole object class also as a base class.)</p>
 
-  <p>If the target object exists (i.e, is &#8800; <b>0</b>) then it is &quot;overwritten&quot; by a copy of the source object. Again those parts of the source object are copied onto the (existing) target object that correspond to common base classes of source and target object.</p>
+<p>If the target object exists (i.e, is &ne; <b>0</b>) then it is "overwritten"
+by a copy of the source object. Again those parts of the source object are
+copied onto the (existing) target object that correspond to common base classes
+of source and target object.</p>
 
-  <p><b>Note</b> that <i class="c2">Lava</i> provides a distinction between <b>constituent</b> and <b>acquaintance</b> members of an object. Only the constituents are copied by 
-      <span class="style1">copy</span> (&quot;deep copy&quot;). Acquaintances are considered to be separate, independent objects. <b>Copy</b> copies only the <b>pointers</b> to acquaintances.</p>
+<p><b>Note</b> that <i class="c2">Lava</i> provides a distinction between
+<b>constituent</b> and <b>acquaintance</b> members of an object. Only the
+constituents are copied by <span class="style1">copy</span> ("deep copy").
+Acquaintances are considered to be separate, independent objects. <b>Copy</b>
+copies only the <b>pointers</b> to acquaintances.</p>
 
-  <p><b>Note</b> that <b>copy</b> doesn&#39;t make much sense in cases where source and target object don&#39;t have common base classes. <b>Copy</b> is used primarily to copy a &quot;less derived&quot; onto a &quot;more derived&quot; object or to create a &quot;snapshot&quot; of the current state of a <a href="../TwoObjectCategories.htm">state object</a>.</p>
-    <p>The snapshot may be an immutable value object or again a state object<span 
-            lang="de">, or, more generally:</span></p>
-    <p><span lang="de">Since the object copy is completely independent from the source 
-        object, the category of the receiving variable (variable state or immutable 
-        value object) doesn&#39;t, in turn, dependent on the source object&#39;s category.</span></p>
+<p><b>Note</b> that <b>copy</b> doesn't make much sense in cases where source
+and target object don't have common base classes. <b>Copy</b> is used primarily
+to copy a "less derived" onto a "more derived" object or to create a "snapshot"
+of the current state of a <a href="../TwoObjectCategories.htm">state
+object</a>.</p>
 
-  <p class="c3">See also:</p>
+<p>The snapshot may be an immutable value object or again a state object<span
+xml:lang="de" lang="de">, or, more generally:</span></p>
 
-  <p class="c3"><a href="Clone.htm">Clone</a></p>
+<p><span xml:lang="de" lang="de">Since the object copy is completely
+independent of the source object, the category of the receiving variable
+(variable state or immutable value object) doesn't, in turn, dependent on the
+source object's category.</span></p>
 
-  <p class="c3"><a href="../Unsolved.htm#pointers">Application-level pointer notion</a></p>
+<p class="c3">See also:</p>
 
-  <p class="c3"><a href="../PointersRefCounts.htm#refTypes">Pointers and reference counts</a></p>
+<p class="c3"><a href="Clone.htm">Clone</a></p>
+
+<p class="c3"><a href="../Unsolved.htm#pointers">Application-level pointer
+notion</a></p>
+
+<p class="c3"><a href="../PointersRefCounts.htm#refTypes">Pointers and
+reference counts</a></p>
 </body>
 </html>
