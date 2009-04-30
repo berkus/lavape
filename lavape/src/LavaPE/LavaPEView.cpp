@@ -5503,7 +5503,7 @@ QString CLavaPEView::text(const QPoint &point) {
       else if (itemDECL->SecondTFlags.Contains(isEnum))
         return QString(QObject::tr("<p>This is an <a href=\"Enumeration.htm\">enumeration type</a></p>"));
       else
-        return QString(QObject::tr("<p>This is an <a href=\"../SepItfImpl.htm\">class interface</a>"
+        return QString(QObject::tr("<p>This is a <a href=\"../SepItfImpl.htm\">class interface</a>"
         " (= the public part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>"));
     case FormDef:
       return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> implementation "
