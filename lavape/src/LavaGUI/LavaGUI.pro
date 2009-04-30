@@ -7,12 +7,14 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header
-win32:SOURCES *= $$system(dir /b *.cpp)
-else:SOURCES *= $$system(ls *.cpp)
-SOURCES -= LavaGUI_all.cpp
-win32:HEADERS *= $$system(dir /b *.h)
-else:HEADERS *= $$system(ls *.h)
-HEADERS -= LavaGUI_all.h
+
+SOURCES *= CmdExec.cpp Conv.cpp FormWid.cpp GUIProg.cpp GUIProgBase.cpp GUIWid.cpp LavaForm.cpp \
+    LavaGUIFrame.cpp LavaGUIPopup.cpp LavaGUIView.cpp LavaMenu.cpp MakeGUI.cpp \
+    TButton.cpp TComboBox.cpp TEdit.cpp TreeSrch.cpp TStatic.cpp
+HEADERS *= CmdExec.h Conv.h FormWid.h GUIProg.h GUIProgBase.h GUIres.h GUIWid.h LavaForm.h \
+    LavaGUIFrame.h LavaGUIPopup.h LavaGUIView.h LavaMenu.h MakeGUI.h \
+    TButton.h TComboBox.h TEdit.h TreeSrch.h TStatic.h
+
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase res/TOOLBUTTONS ../LavaPE ../LavaPE_UI ../LavaPE/res ../LavaPE/res/TOOLBUTTONS ../LavaPE/res/TreeIcons
 
 win32:DEFINES += WIN32

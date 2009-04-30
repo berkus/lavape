@@ -7,12 +7,10 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header
-win32:SOURCES *= $$system(dir /b *.cpp)
-else:SOURCES *= $$system(ls *.cpp)
-SOURCES -= Lava_UI_all.cpp
-win32:HEADERS *= $$system(dir /b *.h)
-else:HEADERS *= $$system(ls *.h)
-HEADERS -= Lava_UI_all.h
+
+SOURCES *= LavaMainFrameBase.cpp
+HEADERS *= LavaMainFrameBase.h
+
 win32:FORMS = $$system(ls *.ui)
 else:FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase

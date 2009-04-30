@@ -1,12 +1,14 @@
 include(../../lpc.prf)
 
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
-win32:SOURCES *= $$system(dir /b *.cpp)
-else:SOURCES *= $$system(ls *.cpp)
-SOURCES -= LavaPE_all.cpp
-win32:HEADERS *= $$system(dir /b *.h)
-else:HEADERS *= $$system(ls *.h)
-HEADERS -= LavaPE_all.h
+
+SOURCES *= Bars.cpp Boxes.cpp DebuggerPE.cpp ExecTree.cpp FindRefsBox.cpp GenHTML.cpp InclView.cpp \
+    LavaPE.cpp LavaPEDoc.cpp LavaPEFrames.cpp LavaPEStringInit.cpp LavaPEView.cpp LavaPEWizard.cpp \
+    TreeView.cpp VTView.cpp
+HEADERS *= Bars.h Boxes.h DebuggerPE.h ExecTree.h FindRefsBox.h InclView.h \
+    LavaPE.h LavaPEDoc.h LavaPEFrames.h LavaPEStringInit.h LavaPEView.h LavaPEWizard.h \
+    Resource.h TreeView.h VTView.h
+
 QT += network gui
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase ../LavaExecs ../LavaGUI ../LavaPE_UI ../LavaPE_UI/res/TOOLBUTTONS res res/TOOLBUTTONS res/TreeIcons
 

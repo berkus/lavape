@@ -7,12 +7,10 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header
-win32:SOURCES *= $$system(dir /b *.cpp)
-else:SOURCES *= $$system(ls *.cpp)
-SOURCES -= LavaPE_UI_all.cpp
-win32:HEADERS *= $$system(dir /b *.h)
-else:HEADERS *= $$system(ls *.h)
-HEADERS -= LavaPE_UI_all.h
+
+SOURCES *= LavaPEMainFrameBase.cpp
+HEADERS *= LavaPE_UI_export.h LavaPEMainFrameBase.h redefines.h
+
 win32:FORMS = $$system(dir /b *.ui)
 else:FORMS = $$system(ls *.ui)
 #message($$FORMS)

@@ -1,12 +1,9 @@
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 include(../../lpc.prf)
 
-win32:SOURCES *= $$system(dir /b *.cpp)
-else:SOURCES *= $$system(ls *.cpp)
-SOURCES -= Lava_all.cpp
-win32:HEADERS *= $$system(dir /b *.h)
-else:HEADERS *= $$system(ls *.h)
-HEADERS -= Lava_all.h
+SOURCES *= Lava.cpp LavaDoc.cpp MainFrm.cpp
+HEADERS *= Lava.h LavaDoc.h MainFrm.h
+
 QT += network gui
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase ../LavaExecs ../LavaGUI ../Lava_UI res/TOOLBUTTONS res ../Interpreter
 

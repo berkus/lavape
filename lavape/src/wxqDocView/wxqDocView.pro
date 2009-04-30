@@ -7,12 +7,10 @@ CONFIG += warn_off \
     debug \
     lib_bundle \
     precompile_header
-win32:SOURCES *= $$system(dir /b *.cpp)
-else:SOURCES *= $$system(ls *.cpp)
-SOURCES -= wxqDocView_all.cpp
-win32:HEADERS *= $$system(dir /b *.h)
-else:HEADERS *= $$system(ls *.h)
-HEADERS -= wxqDocView_all.h
+
+SOURCES *= docview.cpp mdiframes.cpp
+HEADERS *= defs.h docview.h mdiframes.h setup.h wxExport.h
+
 INCLUDEPATH = ../disco
 QT += network
 

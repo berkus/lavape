@@ -1,23 +1,20 @@
 TEMPLATE = lib
+PRO_EXPORT = LAVAEXECS
+win32:PH_FILES = $$system(dir /b *.ph)
+else:PH_FILES = $$system(ls *.ph)
 include(../../lpc.prf)
 
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
-PRO_EXPORT = LAVAEXECS
-win32:SOURCES *= $$system(dir /b *.cpp)
-else:SOURCES *= $$system(ls *.cpp)
-SOURCES -= LavaExecs_all.cpp
-win32:HEADERS *= $$system(dir /b *.h)
-else:HEADERS *= $$system(ls *.h)
-HEADERS -= LavaExecs_all.h
-include(../../lpc.prf)
+SOURCES *= Check.cpp ClosedLevelVisitor.cpp ComboBar.cpp Constructs.cpp ConstructsV.cpp EditConst.cpp ExecFrame.cpp ExecUpdate.cpp ExecView.cpp \
+    LavaExecsStringInit.cpp ProgText.cpp Scanner.cpp TableVisitor.cpp Tokens.cpp VisitorTraversal.cpp
+SOURCES *= ConstructsG.cpp TokensG.cpp
+HEADERS *= Check.h ComboBar.h ConstructsV.h ExecFrame.h ExecUpdate.h ExecView.h Scanner.h
+HEADERS *= Constructs.h Tokens.h
 CONFIG += warn_off \
     qt \
     debug \
     lib_bundle \
     precompile_header
-win32:PH_FILES = $$system(dir /b *.ph)
-else:PH_FILES = $$system(ls *.ph)
-SOURCES *= ConstructsG.cpp TokensG.cpp
 #message($$SOURCES:$$PH_FILES)
 
 win32:FORMS = $$system(ls *.ui)

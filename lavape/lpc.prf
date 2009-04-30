@@ -16,3 +16,4 @@ variable_out = SOURCES
 QMAKE_EXTRA_COMPILERS += lpc
 
 OPSYS = $$system(uname)
+#message(lpc:$$PH_FILES:$$variable_out:$${QMAKE_FILE_IN})
