@@ -590,10 +590,10 @@ void CLavaMainFrame::on_findByNameAction_triggered()
   ((CLavaPEApp*)wxTheApp)->OnFindByName();
 }
 
-void CLavaMainFrame::on_runAction_triggered()
-{
-  ((CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->OnRunLava();
-}
+//void CLavaMainFrame::on_runAction_triggered()
+//{
+//  ((CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->OnRunLava();
+//}
 
 void CLavaMainFrame::on_checkAction_triggered()
 {

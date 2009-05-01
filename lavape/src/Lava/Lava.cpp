@@ -54,6 +54,7 @@
 
 #pragma hdrstop
 
+#include <QtTest>
 
 static QString szCheckPreconditions = "CheckPreconditions";
 static QString szCheckPostconditions = "CheckPostconditions";
@@ -74,7 +75,9 @@ static const char slash='/';
 
 int main( int argc, char ** argv ) {
   CLavaApp app(argc,argv);
-  
+
+  //QTest::qSleep(20000);
+
   ExeDir = app.applicationDirPath();
 #ifdef WIN32
   QString driveLetter = QString(ExeDir[0].toUpper());
@@ -90,9 +93,8 @@ int main( int argc, char ** argv ) {
   ExeDir = ResolveLinks(qf);
   QDir::setCurrent(ExeDir);
   StdLavaLog = ExeDir + "/std.lava";
-
-  QString componentPath;
-  QByteArray myPath;
+  qf = QFileInfo(StdLavaLog);
+  StdLava = ResolveLinks(qf);
 
 #ifdef _DEBUG
   //_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );

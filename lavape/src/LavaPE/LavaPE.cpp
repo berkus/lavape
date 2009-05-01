@@ -106,6 +106,8 @@ int main(int argc, char ** argv ) {
   ExeDir = ResolveLinks(qf);
   QDir::setCurrent(ExeDir);
   StdLavaLog = ExeDir + "/std.lava";
+  qf = QFileInfo(StdLavaLog);
+  StdLava = ResolveLinks(qf);
 
   app.m_appWindow = new CLavaMainFrame();
 #ifdef _DEBUG

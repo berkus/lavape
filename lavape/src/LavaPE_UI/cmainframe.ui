@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>CMainFrame</class>
- <widget class="QMainWindow" name="CMainFrame" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="CMainFrame">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,2846 +10,2847 @@
     <height>685</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Lava Programming Environment</string>
   </property>
-  <property name="iconSize" >
+  <property name="iconSize">
    <size>
     <width>16</width>
     <height>15</height>
    </size>
   </property>
-  <widget class="QWidget" name="widget" />
-  <widget class="QToolBar" name="Toolbar_1" >
-   <property name="windowTitle" >
+  <widget class="QWidget" name="widget"/>
+  <widget class="QToolBar" name="Toolbar_1">
+   <property name="windowTitle">
     <string>General toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>General toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>General file, edit and view operations</string>
    </property>
-   <property name="orientation" >
+   <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="fileNewAction" />
-   <addaction name="newCompoAction" />
-   <addaction name="fileOpenAction" />
-   <addaction name="fileSaveAction" />
-   <addaction name="fileSaveAllAction" />
-   <addaction name="separator" />
-   <addaction name="editCutAction" />
-   <addaction name="editCopyAction" />
-   <addaction name="editPasteAction" />
-   <addaction name="editUndoAction" />
-   <addaction name="editRedoAction" />
-   <addaction name="separator" />
-   <addaction name="splitHorizAction" />
-   <addaction name="splitVerticAction" />
+   <addaction name="fileNewAction"/>
+   <addaction name="newCompoAction"/>
+   <addaction name="fileOpenAction"/>
+   <addaction name="fileSaveAction"/>
+   <addaction name="fileSaveAllAction"/>
+   <addaction name="separator"/>
+   <addaction name="editCutAction"/>
+   <addaction name="editCopyAction"/>
+   <addaction name="editPasteAction"/>
+   <addaction name="editUndoAction"/>
+   <addaction name="editRedoAction"/>
+   <addaction name="separator"/>
+   <addaction name="splitHorizAction"/>
+   <addaction name="splitVerticAction"/>
   </widget>
-  <widget class="QToolBar" name="Toolbar_2" >
-   <property name="windowTitle" >
+  <widget class="QToolBar" name="Toolbar_2">
+   <property name="windowTitle">
     <string>Tree op. tooolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Tree op. tooolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Tree transformation, check and run operations</string>
    </property>
-   <property name="orientation" >
+   <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="expandAction" />
-   <addaction name="collapseAction" />
-   <addaction name="showOptsAction" />
-   <addaction name="showAllOptsAction" />
-   <addaction name="hideEmptyOptsAction" />
-   <addaction name="separator" />
-   <addaction name="showUtilWindowAction" />
-   <addaction name="nextCommentAction" />
-   <addaction name="prevCommentAction" />
-   <addaction name="nextErrorAction" />
-   <addaction name="prevErrorAction" />
-   <addaction name="checkAction" />
-   <addaction name="checkAllAction" />
-   <addaction name="runAction" />
+   <addaction name="expandAction"/>
+   <addaction name="collapseAction"/>
+   <addaction name="showOptsAction"/>
+   <addaction name="showAllOptsAction"/>
+   <addaction name="hideEmptyOptsAction"/>
+   <addaction name="separator"/>
+   <addaction name="showUtilWindowAction"/>
+   <addaction name="nextCommentAction"/>
+   <addaction name="prevCommentAction"/>
+   <addaction name="nextErrorAction"/>
+   <addaction name="prevErrorAction"/>
+   <addaction name="checkAction"/>
+   <addaction name="checkAllAction"/>
   </widget>
-  <widget class="QToolBar" name="HelpToolbar" >
-   <property name="windowTitle" >
+  <widget class="QToolBar" name="HelpToolbar">
+   <property name="windowTitle">
     <string>Help toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Help toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Help toolbar</string>
    </property>
-   <property name="orientation" >
+   <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="whatNextAction" />
+   <addaction name="whatNextAction"/>
   </widget>
-  <widget class="QToolBar" name="Toolbar_3" >
-   <property name="windowTitle" >
+  <widget class="QToolBar" name="Toolbar_3">
+   <property name="windowTitle">
     <string>Declaration toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Declaration toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Create new nodes in the declaration tree</string>
    </property>
-   <property name="orientation" >
+   <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="newIncludeAction" />
-   <addaction name="separator" />
-   <addaction name="newPackageAction" />
-   <addaction name="newInitiatorAction" />
-   <addaction name="separator" />
-   <addaction name="newInterfaceAction" />
-   <addaction name="newImplAction" />
-   <addaction name="newCOspecAction" />
-   <addaction name="newCOimplAction" />
-   <addaction name="separator" />
-   <addaction name="newSetAction" />
-   <addaction name="newEnumAction" />
-   <addaction name="separator" />
-   <addaction name="newVTAction" />
-   <addaction name="newFuncAction" />
-   <addaction name="newMemVarAction" />
-   <addaction name="separator" />
-   <addaction name="newEnumItemAction" />
-   <addaction name="makeGUIAction" />
+   <addaction name="newIncludeAction"/>
+   <addaction name="separator"/>
+   <addaction name="newPackageAction"/>
+   <addaction name="newInitiatorAction"/>
+   <addaction name="separator"/>
+   <addaction name="newInterfaceAction"/>
+   <addaction name="newImplAction"/>
+   <addaction name="newCOspecAction"/>
+   <addaction name="newCOimplAction"/>
+   <addaction name="separator"/>
+   <addaction name="newSetAction"/>
+   <addaction name="newEnumAction"/>
+   <addaction name="separator"/>
+   <addaction name="newVTAction"/>
+   <addaction name="newFuncAction"/>
+   <addaction name="newMemVarAction"/>
+   <addaction name="separator"/>
+   <addaction name="newEnumItemAction"/>
+   <addaction name="makeGUIAction"/>
   </widget>
-  <widget class="QToolBar" name="Toolbar_4" >
-   <property name="windowTitle" >
+  <widget class="QToolBar" name="Toolbar_4">
+   <property name="windowTitle">
     <string>Details toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Details toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Edit the details of declarations and forms</string>
    </property>
-   <property name="orientation" >
+   <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="editSelItemAction" />
-   <addaction name="editCommentAction" />
-   <addaction name="gotoDeclAction" />
-   <addaction name="gotoImplAction" />
-   <addaction name="returnToRefAction" />
-   <addaction name="findRefsAction" />
-   <addaction name="findByNameAction" />
-   <addaction name="separator" />
-   <addaction name="showOverridablesAction" />
-   <addaction name="overrideAction" />
-   <addaction name="separator" />
-   <addaction name="openFormViewAction" />
-   <addaction name="insertTextAction" />
-   <addaction name="separator" />
-   <addaction name="insAction" />
-   <addaction name="delAction" />
+   <addaction name="editSelItemAction"/>
+   <addaction name="editCommentAction"/>
+   <addaction name="gotoDeclAction"/>
+   <addaction name="gotoImplAction"/>
+   <addaction name="returnToRefAction"/>
+   <addaction name="findRefsAction"/>
+   <addaction name="findByNameAction"/>
+   <addaction name="separator"/>
+   <addaction name="showOverridablesAction"/>
+   <addaction name="overrideAction"/>
+   <addaction name="separator"/>
+   <addaction name="openFormViewAction"/>
+   <addaction name="insertTextAction"/>
+   <addaction name="separator"/>
+   <addaction name="insAction"/>
+   <addaction name="delAction"/>
   </widget>
-  <widget class="QToolBar" name="ToolbarDbg" >
-   <property name="maximumSize" >
+  <widget class="QToolBar" name="ToolbarDbg">
+   <property name="maximumSize">
     <size>
      <width>16777215</width>
      <height>30</height>
     </size>
    </property>
-   <property name="windowTitle" >
+   <property name="windowTitle">
     <string>Debugging toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Debugging toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Debugging toolbar: Set/delete breakoints\nand step through Lava programs</string>
    </property>
-   <property name="orientation" >
+   <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
-   <property name="iconSize" >
+   <property name="iconSize">
     <size>
      <width>16</width>
      <height>16</height>
     </size>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="DbgAction" />
-   <addaction name="DbgStepNextAct" />
-   <addaction name="DbgStepNextFunctionAct" />
-   <addaction name="DbgStepintoAct" />
-   <addaction name="DbgStepoutAct" />
-   <addaction name="DbgRunToSelAct" />
-   <addaction name="DbgBreakpointAct" />
-   <addaction name="DbgClearBreakpointsAct" />
-   <addaction name="DbgStopAction" />
+   <addaction name="DbgAction"/>
+   <addaction name="DbgStepNextAct"/>
+   <addaction name="DbgStepNextFunctionAct"/>
+   <addaction name="DbgStepintoAct"/>
+   <addaction name="DbgStepoutAct"/>
+   <addaction name="DbgRunToSelAct"/>
+   <addaction name="DbgBreakpointAct"/>
+   <addaction name="DbgClearBreakpointsAct"/>
+   <addaction name="DbgStopAction"/>
   </widget>
-  <widget class="QToolBar" name="Toolbar_5" >
-   <property name="windowTitle" >
+  <widget class="QToolBar" name="Toolbar_5">
+   <property name="windowTitle">
     <string>Exec switches toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Exec switches toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Exec switches toolbar</string>
    </property>
-   <property name="orientation" >
+   <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="toggleCategoryAction" />
-   <addaction name="toggleSubstTypeAction" />
-   <addaction name="toggleClosedAction" />
-   <addaction name="optLocalVarAction" />
-   <addaction name="insertBeforeAction" />
-   <addaction name="execInsAction" />
-   <addaction name="toggleArrowsAction" />
-   <addaction name="toggleInputArrowsAction" />
-   <addaction name="parmNameAction" />
-   <addaction name="conflictingAssigAction" />
-   <addaction name="newLineAction" />
-   <addaction name="commentOutAction" />
-   <addaction name="toggleCommentsAction" />
+   <addaction name="toggleCategoryAction"/>
+   <addaction name="toggleSubstTypeAction"/>
+   <addaction name="toggleClosedAction"/>
+   <addaction name="optLocalVarAction"/>
+   <addaction name="insertBeforeAction"/>
+   <addaction name="execInsAction"/>
+   <addaction name="toggleArrowsAction"/>
+   <addaction name="toggleInputArrowsAction"/>
+   <addaction name="parmNameAction"/>
+   <addaction name="conflictingAssigAction"/>
+   <addaction name="newLineAction"/>
+   <addaction name="commentOutAction"/>
+   <addaction name="toggleCommentsAction"/>
   </widget>
-  <widget class="QToolBar" name="Toolbar_6" >
-   <property name="windowTitle" >
+  <widget class="QToolBar" name="Toolbar_6">
+   <property name="windowTitle">
     <string>Exec operations toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Exec operations toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Insert predefined constants, operations,\nand statements into executable code</string>
    </property>
-   <property name="orientation" >
+   <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="lessThanAction" />
-   <addaction name="lessEqualAction" />
-   <addaction name="equalAction" />
-   <addaction name="notEqualAction" />
-   <addaction name="greaterEqualAction" />
-   <addaction name="greaterThanAction" />
-   <addaction name="separator" />
-   <addaction name="functionCallAction" />
-   <addaction name="staticCallAction" />
-   <addaction name="trueAction" />
-   <addaction name="falseAction" />
-   <addaction name="evaluateAction" />
-   <addaction name="separator" />
-   <addaction name="nullAction" />
-   <addaction name="intervalAction" />
-   <addaction name="toggleSignAction" />
-   <addaction name="additionAction" />
-   <addaction name="multiplicationAction" />
-   <addaction name="divideAction" />
-   <addaction name="modulusAction" />
-   <addaction name="leftShiftAction" />
-   <addaction name="rightShiftAction" />
-   <addaction name="bitAndAction" />
-   <addaction name="bitOrAction" />
-   <addaction name="bitXorAction" />
-   <addaction name="invertAction" />
-   <addaction name="handleAction" />
-   <addaction name="ordAction" />
+   <addaction name="lessThanAction"/>
+   <addaction name="lessEqualAction"/>
+   <addaction name="equalAction"/>
+   <addaction name="notEqualAction"/>
+   <addaction name="greaterEqualAction"/>
+   <addaction name="greaterThanAction"/>
+   <addaction name="separator"/>
+   <addaction name="functionCallAction"/>
+   <addaction name="staticCallAction"/>
+   <addaction name="trueAction"/>
+   <addaction name="falseAction"/>
+   <addaction name="evaluateAction"/>
+   <addaction name="separator"/>
+   <addaction name="nullAction"/>
+   <addaction name="intervalAction"/>
+   <addaction name="toggleSignAction"/>
+   <addaction name="additionAction"/>
+   <addaction name="multiplicationAction"/>
+   <addaction name="divideAction"/>
+   <addaction name="modulusAction"/>
+   <addaction name="leftShiftAction"/>
+   <addaction name="rightShiftAction"/>
+   <addaction name="bitAndAction"/>
+   <addaction name="bitOrAction"/>
+   <addaction name="bitXorAction"/>
+   <addaction name="invertAction"/>
+   <addaction name="handleAction"/>
+   <addaction name="ordAction"/>
   </widget>
-  <widget class="QToolBar" name="Toolbar_7" >
-   <property name="windowTitle" >
+  <widget class="QToolBar" name="Toolbar_7">
+   <property name="windowTitle">
     <string>Keyword toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Keyword toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Insert keyword expressions and statements into executable code</string>
    </property>
-   <property name="orientation" >
+   <property name="orientation">
     <enum>Qt::Vertical</enum>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>LeftToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
   </widget>
-  <widget class="QMenuBar" name="menubar" >
-   <property name="geometry" >
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>1182</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="helpMenu" >
-    <property name="title" >
+   <widget class="QMenu" name="helpMenu">
+    <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="helpContentsAction" />
-    <addaction name="editingLavaProgsAction" />
-    <addaction name="learningLavaAction" />
-    <addaction name="separator" />
-    <addaction name="helpAboutAction" />
+    <addaction name="helpContentsAction"/>
+    <addaction name="editingLavaProgsAction"/>
+    <addaction name="learningLavaAction"/>
+    <addaction name="separator"/>
+    <addaction name="helpAboutAction"/>
    </widget>
-   <widget class="QMenu" name="fileMenu" >
-    <property name="title" >
+   <widget class="QMenu" name="fileMenu">
+    <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="fileNewAction" />
-    <addaction name="newCompoAction" />
-    <addaction name="importComponentAction" />
-    <addaction name="fileOpenAction" />
-    <addaction name="fileCloseAction" />
-    <addaction name="fileSaveAction" />
-    <addaction name="fileSaveAsAction" />
-    <addaction name="fileSaveAllAction" />
-    <addaction name="separator" />
-    <addaction name="newIncludeAction" />
-    <addaction name="genLinkedHtmlAction" />
-    <addaction name="genSingleHtmlAction" />
-    <addaction name="separator" />
-    <addaction name="fileExitAction" />
+    <addaction name="fileNewAction"/>
+    <addaction name="newCompoAction"/>
+    <addaction name="importComponentAction"/>
+    <addaction name="fileOpenAction"/>
+    <addaction name="fileCloseAction"/>
+    <addaction name="fileSaveAction"/>
+    <addaction name="fileSaveAsAction"/>
+    <addaction name="fileSaveAllAction"/>
+    <addaction name="separator"/>
+    <addaction name="newIncludeAction"/>
+    <addaction name="genLinkedHtmlAction"/>
+    <addaction name="genSingleHtmlAction"/>
+    <addaction name="separator"/>
+    <addaction name="fileExitAction"/>
    </widget>
-   <widget class="QMenu" name="editMenu" >
-    <property name="title" >
+   <widget class="QMenu" name="editMenu">
+    <property name="title">
      <string>&amp;Edit</string>
     </property>
-    <addaction name="editSelItemAction" />
-    <addaction name="editCutAction" />
-    <addaction name="editCopyAction" />
-    <addaction name="editPasteAction" />
-    <addaction name="deleteAction" />
-    <addaction name="separator" />
-    <addaction name="editUndoAction" />
-    <addaction name="editRedoAction" />
+    <addaction name="editSelItemAction"/>
+    <addaction name="editCutAction"/>
+    <addaction name="editCopyAction"/>
+    <addaction name="editPasteAction"/>
+    <addaction name="deleteAction"/>
+    <addaction name="separator"/>
+    <addaction name="editUndoAction"/>
+    <addaction name="editRedoAction"/>
    </widget>
-   <widget class="QMenu" name="findMenu" >
-    <property name="title" >
+   <widget class="QMenu" name="findMenu">
+    <property name="title">
      <string>Find</string>
     </property>
-    <addaction name="findRefsAction" />
-    <addaction name="findByNameAction" />
-    <addaction name="gotoDeclAction" />
-    <addaction name="gotoImplAction" />
-    <addaction name="returnToRefAction" />
-    <addaction name="separator" />
-    <addaction name="nextCommentAction" />
-    <addaction name="prevCommentAction" />
-    <addaction name="nextErrorAction" />
-    <addaction name="prevErrorAction" />
+    <addaction name="findRefsAction"/>
+    <addaction name="findByNameAction"/>
+    <addaction name="gotoDeclAction"/>
+    <addaction name="gotoImplAction"/>
+    <addaction name="returnToRefAction"/>
+    <addaction name="separator"/>
+    <addaction name="nextCommentAction"/>
+    <addaction name="prevCommentAction"/>
+    <addaction name="nextErrorAction"/>
+    <addaction name="prevErrorAction"/>
    </widget>
-   <widget class="QMenu" name="insertMenu" >
-    <property name="title" >
+   <widget class="QMenu" name="insertMenu">
+    <property name="title">
      <string>Insert</string>
     </property>
-    <addaction name="newIncludeAction" />
-    <addaction name="separator" />
-    <addaction name="newPackageAction" />
-    <addaction name="newInitiatorAction" />
-    <addaction name="separator" />
-    <addaction name="newInterfaceAction" />
-    <addaction name="newImplAction" />
-    <addaction name="newCOspecAction" />
-    <addaction name="newCOimplAction" />
-    <addaction name="separator" />
-    <addaction name="newSetAction" />
-    <addaction name="newEnumAction" />
-    <addaction name="separator" />
-    <addaction name="newVTAction" />
-    <addaction name="newFuncAction" />
-    <addaction name="newMemVarAction" />
-    <addaction name="separator" />
-    <addaction name="newEnumItemAction" />
+    <addaction name="newIncludeAction"/>
+    <addaction name="separator"/>
+    <addaction name="newPackageAction"/>
+    <addaction name="newInitiatorAction"/>
+    <addaction name="separator"/>
+    <addaction name="newInterfaceAction"/>
+    <addaction name="newImplAction"/>
+    <addaction name="newCOspecAction"/>
+    <addaction name="newCOimplAction"/>
+    <addaction name="separator"/>
+    <addaction name="newSetAction"/>
+    <addaction name="newEnumAction"/>
+    <addaction name="separator"/>
+    <addaction name="newVTAction"/>
+    <addaction name="newFuncAction"/>
+    <addaction name="newMemVarAction"/>
+    <addaction name="separator"/>
+    <addaction name="newEnumItemAction"/>
    </widget>
-   <widget class="QMenu" name="viewMenu" >
-    <property name="title" >
+   <widget class="QMenu" name="viewMenu">
+    <property name="title">
      <string>&amp;View</string>
     </property>
-    <addaction name="viewTB1Action" />
-    <addaction name="viewTB2Action" />
-    <addaction name="viewHelpTBAction" />
-    <addaction name="viewTB3Action" />
-    <addaction name="viewTB4Action" />
-    <addaction name="viewDebugTBAction" />
-    <addaction name="viewTB5Action" />
-    <addaction name="viewTB6Action" />
-    <addaction name="viewTB7Action" />
-    <addaction name="separator" />
-    <addaction name="openFormViewAction" />
+    <addaction name="viewTB1Action"/>
+    <addaction name="viewTB2Action"/>
+    <addaction name="viewHelpTBAction"/>
+    <addaction name="viewTB3Action"/>
+    <addaction name="viewTB4Action"/>
+    <addaction name="viewDebugTBAction"/>
+    <addaction name="viewTB5Action"/>
+    <addaction name="viewTB6Action"/>
+    <addaction name="viewTB7Action"/>
+    <addaction name="separator"/>
+    <addaction name="openFormViewAction"/>
    </widget>
-   <widget class="QMenu" name="optionMenu" >
-    <property name="title" >
+   <widget class="QMenu" name="optionMenu">
+    <property name="title">
      <string>Options</string>
     </property>
-    <widget class="QMenu" name="menuSet_form_font" >
-     <property name="title" >
+    <widget class="QMenu" name="menuSet_form_font">
+     <property name="title">
       <string>Set form font</string>
      </property>
-     <addaction name="setFormTextFontAction" />
-     <addaction name="setFormLabelFontAction" />
+     <addaction name="setFormTextFontAction"/>
+     <addaction name="setFormLabelFontAction"/>
     </widget>
-    <addaction name="saveEveryChangeAction" />
-    <addaction name="setTreeFontAction" />
-    <addaction name="setExecFontAction" />
-    <addaction name="setGlobalFontAction" />
-    <addaction name="menuSet_form_font" />
+    <addaction name="saveEveryChangeAction"/>
+    <addaction name="setTreeFontAction"/>
+    <addaction name="setExecFontAction"/>
+    <addaction name="setGlobalFontAction"/>
+    <addaction name="menuSet_form_font"/>
    </widget>
-   <addaction name="fileMenu" />
-   <addaction name="editMenu" />
-   <addaction name="findMenu" />
-   <addaction name="insertMenu" />
-   <addaction name="optionMenu" />
-   <addaction name="viewMenu" />
-   <addaction name="helpMenu" />
+   <addaction name="fileMenu"/>
+   <addaction name="editMenu"/>
+   <addaction name="findMenu"/>
+   <addaction name="insertMenu"/>
+   <addaction name="optionMenu"/>
+   <addaction name="viewMenu"/>
+   <addaction name="helpMenu"/>
   </widget>
-  <action name="fileNewAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="fileNewAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>&amp;New Lava file</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>New Lava file</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Create a new Lava file</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+N</string>
    </property>
   </action>
-  <action name="fileOpenAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="fileOpenAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_FileOpen.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_FileOpen.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>&amp;Open...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Open</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Open an existing Lava file</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="fileSaveAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="fileSaveAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Save.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Save.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>&amp;Save</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Save</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Save the current Lava file</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="fileSaveAsAction" >
-   <property name="text" >
+  <action name="fileSaveAsAction">
+   <property name="text">
     <string>Save &amp;As...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Save As</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Save the current Lava file and assign a new name to it</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string/>
    </property>
   </action>
-  <action name="fileExitAction" >
-   <property name="text" >
+  <action name="fileExitAction">
+   <property name="text">
     <string>E&amp;xit</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Exit</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Terminate LavaPE</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string/>
    </property>
   </action>
-  <action name="editUndoAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="editUndoAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Undo.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Undo.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>&amp;Undo</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Undo</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Undo last edit operation</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+Z</string>
    </property>
   </action>
-  <action name="editRedoAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="editRedoAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Redo.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Redo.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>&amp;Redo</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Redo</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Redo last edit operation</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+Y</string>
    </property>
   </action>
-  <action name="editCutAction" >
-   <property name="enabled" >
+  <action name="editCutAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Cut.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Cut.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>&amp;Cut</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Cut</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Cut the selected entity and put it on the clipboard</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+X</string>
    </property>
   </action>
-  <action name="editCopyAction" >
-   <property name="enabled" >
+  <action name="editCopyAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Copy.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Copy.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>C&amp;opy</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Copy</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Copy the selected entity to the clipboard</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+C</string>
    </property>
   </action>
-  <action name="editPasteAction" >
-   <property name="enabled" >
+  <action name="editPasteAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Paste.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Paste.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>&amp;Paste</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Paste</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Paste from the clipboard</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="findRefsAction" >
-   <property name="enabled" >
+  <action name="findRefsAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_FindRefs.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_FindRefs.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>&amp;Find references...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Find references</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Find references</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Find all references to a given Lava entity</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+F</string>
    </property>
   </action>
-  <action name="helpContentsAction" >
-   <property name="text" >
+  <action name="helpContentsAction">
+   <property name="text">
     <string>&amp;Help topics</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Help topics</string>
    </property>
-   <property name="statusTip" >
+   <property name="statusTip">
     <string>Help topics</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Help topics</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string/>
    </property>
   </action>
-  <action name="helpIndexAction" >
-   <property name="text" >
+  <action name="helpIndexAction">
+   <property name="text">
     <string>Help index</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Help index</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Help index</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string/>
    </property>
   </action>
-  <action name="helpAboutAction" >
-   <property name="text" >
+  <action name="helpAboutAction">
+   <property name="text">
     <string>&amp;About LavaPE...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>About LavaPE</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>About LavaPE...</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>About LavaPE...</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string/>
    </property>
   </action>
-  <action name="splitVerticAction" >
-   <property name="checkable" >
+  <action name="splitVerticAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_TileHori.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_TileHori.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Split vertically</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Split vertically</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Vertical splitter orientation</string>
    </property>
-   <property name="statusTip" >
+   <property name="statusTip">
     <string>Vertical splitter orientation</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Vertical splitter orientation</string>
    </property>
   </action>
-  <action name="splitHorizAction" >
-   <property name="checkable" >
+  <action name="splitHorizAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_TileVert.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_TileVert.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Split horizontally</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Split horizontally</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Horizontal splitter orientation</string>
    </property>
-   <property name="statusTip" >
+   <property name="statusTip">
     <string>Horizontal splitter orientation</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Horizontal splitter orientation</string>
    </property>
   </action>
-  <action name="cascadeAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="cascadeAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Cascade.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Cascade.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Cascade</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Cascade</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Cascade windows</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Cascade windows</string>
    </property>
   </action>
-  <action name="newCompoAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="newCompoAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_CompoNew.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_CompoNew.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New component...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>New component...</string>
    </property>
   </action>
-  <action name="fileSaveAllAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="fileSaveAllAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_SaveAll.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_SaveAll.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Save all</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Save all</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Save all open Lava files</string>
    </property>
   </action>
-  <action name="fileCloseAction" >
-   <property name="text" >
+  <action name="fileCloseAction">
+   <property name="text">
     <string>Close</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Close</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Close current Lava file</string>
    </property>
   </action>
-  <action name="viewTB1Action" >
-   <property name="checkable" >
+  <action name="viewTB1Action">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show file toolbar</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>File toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Show file toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show file toolbar</string>
    </property>
   </action>
-  <action name="viewTB3Action" >
-   <property name="checkable" >
+  <action name="viewTB3Action">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show declaration toolbar</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Declaration toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Show declaration toolbar</string>
    </property>
-   <property name="statusTip" >
+   <property name="statusTip">
     <string>Show declaration toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show declaration toolbar</string>
    </property>
   </action>
-  <action name="viewTB4Action" >
-   <property name="checkable" >
+  <action name="viewTB4Action">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show details toolbar</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Details toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Show details toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show details toolbar</string>
    </property>
   </action>
-  <action name="expandAction" >
-   <property name="enabled" >
+  <action name="expandAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Expand.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Expand.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Expand subtree</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Expand subtree</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Expand subtree</string>
    </property>
   </action>
-  <action name="collapseAction" >
-   <property name="enabled" >
+  <action name="collapseAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Collaps.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Collaps.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Collapse subtree</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Collapse subtree</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Collapse the whole subtree starting at the selection</string>
    </property>
   </action>
-  <action name="showOptsAction" >
-   <property name="checkable" >
+  <action name="showOptsAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="enabled" >
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_ShowOpts.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_ShowOpts.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show/hide optionals</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Show/hide optionals</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Show/hide optional parts of selected entity</string>
    </property>
-   <property name="statusTip" >
+   <property name="statusTip">
     <string>Show/hide optional parts of selected entity</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show/hide all empty optional parts of the selected entity</string>
    </property>
   </action>
-  <action name="showAllOptsAction" >
-   <property name="enabled" >
+  <action name="showAllOptsAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_ShowAllOpts.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_ShowAllOpts.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show all optionals</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Show all optionals</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Show all optional parts in whole sub-tree</string>
    </property>
-   <property name="statusTip" >
+   <property name="statusTip">
     <string>Show all optional parts in whole sub-tree</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show all optional parts in whole sub-tree</string>
    </property>
   </action>
-  <action name="hideEmptyOptsAction" >
-   <property name="enabled" >
+  <action name="hideEmptyOptsAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_HideEmptyOpts.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_HideEmptyOpts.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Hide empty optionals</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Hide empty optionals</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Hide empty optional parts in whole sub-tree</string>
    </property>
-   <property name="statusTip" >
+   <property name="statusTip">
     <string>Hide empty optional parts in whole sub-tree</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Hide empty optional parts in whole sub-tree</string>
    </property>
   </action>
-  <action name="nextCommentAction" >
-   <property name="enabled" >
+  <action name="nextCommentAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_NextComment.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_NextComment.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Next comment</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Next comment</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Go to next comment</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Go to next comment</string>
    </property>
   </action>
-  <action name="prevCommentAction" >
-   <property name="enabled" >
+  <action name="prevCommentAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_PrevComment.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_PrevComment.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Preceding comment</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Preceding comment</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Preceding comment</string>
    </property>
   </action>
-  <action name="nextErrorAction" >
-   <property name="enabled" >
+  <action name="nextErrorAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_NextError.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_NextError.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Next error</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Next error</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Go to next error</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Go to next error</string>
    </property>
   </action>
-  <action name="prevErrorAction" >
-   <property name="enabled" >
+  <action name="prevErrorAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_PrevError.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_PrevError.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Preceding error</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Preceding error</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Preceding error</string>
    </property>
   </action>
-  <action name="checkAction" >
-   <property name="enabled" >
+  <action name="checkAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Check.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Check.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Check</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Check</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Check</string>
    </property>
-   <property name="statusTip" >
+   <property name="statusTip">
     <string>Check the entire Lava file, including all contained execs.</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Check the entire Lava file, including all contained execs.</string>
    </property>
   </action>
-  <action name="checkAllAction" >
-   <property name="enabled" >
+  <action name="checkAllAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_CheckAll.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_CheckAll.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Check also included files</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Check also included files</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Check also included files</string>
    </property>
   </action>
-  <action name="runAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="runAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Run.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Run.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Check and run Lava program</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Run</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Check and run Lava program</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Check and run Lava program</string>
    </property>
   </action>
-  <action name="newIncludeAction" >
-   <property name="enabled" >
+  <action name="newIncludeAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_Include.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_Include.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Include...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>include</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Include..</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>&lt;a href="../Packages.htm#include">Include&lt;/a> another &lt;font color="red">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> file&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;&lt;a href=&quot;../Packages.htm#include&quot;&gt;Include&lt;/a&gt; another &lt;font color=&quot;red&quot;&gt;&lt;b&gt;&lt;i&gt;Lava&lt;/i&gt;&lt;/b&gt;&lt;/font&gt; file&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newPackageAction" >
-   <property name="enabled" >
+  <action name="newPackageAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewPackage.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewPackage.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New package...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>package</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New package...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Create a new &lt;a href="../Packages.htm#packages">package&lt;/a> (= group of declarations/implementations that belong closely together)&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Create a new &lt;a href=&quot;../Packages.htm#packages&quot;&gt;package&lt;/a&gt; (= group of declarations/implementations that belong closely together)&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newInitiatorAction" >
-   <property name="enabled" >
+  <action name="newInitiatorAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewInitiator.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewInitiator.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New main program...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>initiator</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New main program...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Create a new &lt;a href="../Packages.htm#initiator">main program&lt;/a> (= &lt;font color="red">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> main program)&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Create a new &lt;a href=&quot;../Packages.htm#initiator&quot;&gt;main program&lt;/a&gt; (= &lt;font color=&quot;red&quot;&gt;&lt;b&gt;&lt;i&gt;Lava&lt;/i&gt;&lt;/b&gt;&lt;/font&gt; main program)&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newInterfaceAction" >
-   <property name="enabled" >
+  <action name="newInterfaceAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewInterface.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewInterface.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New class...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>class</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New class...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Create a new &lt;a href="../SepItfImpl.htm">class&lt;/a> (= the public part of a &lt;font color="red">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> class)&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Create a new &lt;a href=&quot;../SepItfImpl.htm&quot;&gt;class&lt;/a&gt; (= the public part of a &lt;font color=&quot;red&quot;&gt;&lt;b&gt;&lt;i&gt;Lava&lt;/i&gt;&lt;/b&gt;&lt;/font&gt; class)&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newImplAction" >
-   <property name="enabled" >
+  <action name="newImplAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewImpl.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewImpl.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New implementation...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>implementation</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New implementation...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Create a new &lt;a href="../SepItfImpl.htm">implementation&lt;/a>&lt;/p> (= the private part of a &lt;font color="red">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> class)&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Create a new &lt;a href=&quot;../SepItfImpl.htm&quot;&gt;implementation&lt;/a&gt;&lt;/p&gt; (= the private part of a &lt;font color=&quot;red&quot;&gt;&lt;b&gt;&lt;i&gt;Lava&lt;/i&gt;&lt;/b&gt;&lt;/font&gt; class)&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newCOspecAction" >
-   <property name="enabled" >
+  <action name="newCOspecAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewCompoSpec.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewCompoSpec.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New component object spec. ...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>COS</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New component object spec. ...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Create a new &lt;a href="../Components.htm">component object&lt;/a> specification&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Create a new &lt;a href=&quot;../Components.htm&quot;&gt;component object&lt;/a&gt; specification&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newCOimplAction" >
-   <property name="enabled" >
+  <action name="newCOimplAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewCompo.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewCompo.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New component object impl. ...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>COI</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New component object impl. ...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Create a new &lt;a href="../Components.htm">component object&lt;/a> implementation&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Create a new &lt;a href=&quot;../Components.htm&quot;&gt;component object&lt;/a&gt; implementation&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newSetAction" >
-   <property name="enabled" >
+  <action name="newSetAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewSet.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewSet.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New set</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>set</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New set...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Create a new finite &lt;a href="SetChain.htm">set&lt;/a> of &lt;font color="red">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> objects&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Create a new finite &lt;a href=&quot;SetChain.htm&quot;&gt;set&lt;/a&gt; of &lt;font color=&quot;red&quot;&gt;&lt;b&gt;&lt;i&gt;Lava&lt;/i&gt;&lt;/b&gt;&lt;/font&gt; objects&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newEnumAction" >
-   <property name="enabled" >
+  <action name="newEnumAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewEnum.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewEnum.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New enumeration...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>enumeration</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New enumeration...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Create a new &lt;a href="Enumeration.htm">enumeration type&lt;/a>&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Create a new &lt;a href=&quot;Enumeration.htm&quot;&gt;enumeration type&lt;/a&gt;&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newVTAction" >
-   <property name="enabled" >
+  <action name="newVTAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewVT.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewVT.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New virtual type</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>VT</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New virtual type...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Add a new &lt;a href="../PatternsFrameworks.htm">virtual type&lt;/a> to a class or package&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Add a new &lt;a href=&quot;../PatternsFrameworks.htm&quot;&gt;virtual type&lt;/a&gt; to a class or package&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newFuncAction" >
-   <property name="enabled" >
+  <action name="newFuncAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewFunc.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewFunc.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New member function...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>function</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New member function...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Add a new virtual or static &lt;a href="../dialogs/FunctionBox.htm">member function&lt;/a> to the current class or implementation&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Add a new virtual or static &lt;a href=&quot;../dialogs/FunctionBox.htm&quot;&gt;member function&lt;/a&gt; to the current class or implementation&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newMemVarAction" >
-   <property name="enabled" >
+  <action name="newMemVarAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewMember.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewMember.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New member variable...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>memberVariable</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New member variable or function parameter...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Add a new &lt;a href="../dialogs/MemVarBox.htm">member variable&lt;/a> or &lt;a href="../dialogs/FuncParmBox.htm">function parameter&lt;/a> to the current class or implementation&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Add a new &lt;a href=&quot;../dialogs/MemVarBox.htm&quot;&gt;member variable&lt;/a&gt; or &lt;a href=&quot;../dialogs/FuncParmBox.htm&quot;&gt;function parameter&lt;/a&gt; to the current class or implementation&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="newEnumItemAction" >
-   <property name="enabled" >
+  <action name="newEnumItemAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewEnumItem.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q3_NewEnumItem.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New enumerated item...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>enumItem</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New enumerated item...</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Add a new &lt;a href="Enumeration.htm">enumerated item&lt;/a> to the current enumeration&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Add a new &lt;a href=&quot;Enumeration.htm&quot;&gt;enumerated item&lt;/a&gt; to the current enumeration&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="editSelItemAction" >
-   <property name="enabled" >
+  <action name="editSelItemAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_EditSel.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_EditSel.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Edit selected item</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Edit selected item</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Edit selected item</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+E</string>
    </property>
   </action>
-  <action name="editCommentAction" >
-   <property name="enabled" >
+  <action name="editCommentAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_Comment.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_Comment.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Add/edit comment</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Add/edit comment</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Add/edit a comment to/at the selected entity</string>
    </property>
   </action>
-  <action name="gotoDeclAction" >
-   <property name="enabled" >
+  <action name="gotoDeclAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_GotoDecl.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_GotoDecl.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Go to declaration</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Go to declaration</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Go to the declaration of the selected Lava entity</string>
    </property>
   </action>
-  <action name="gotoImplAction" >
-   <property name="enabled" >
+  <action name="gotoImplAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_GotoImpl.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_GotoImpl.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Go to implementation</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Go to implementation</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Go to the implementation of the current Lava entity</string>
    </property>
   </action>
-  <action name="returnToRefAction" >
-   <property name="enabled" >
+  <action name="returnToRefAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_Return.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_Return.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Return to reference</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Return to reference</string>
    </property>
-   <property name="whatsThis" >
-    <string>Return to reference (after a "Go to declaration)"</string>
+   <property name="whatsThis">
+    <string>Return to reference (after a &quot;Go to declaration)&quot;</string>
    </property>
   </action>
-  <action name="findByNameAction" >
-   <property name="enabled" >
+  <action name="findByNameAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_FindByName.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_FindByName.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Find decl. by name...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Find decl. by name</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Find decl. by name...</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Find a declaratin by name...</string>
    </property>
   </action>
-  <action name="showOverridablesAction" >
-   <property name="enabled" >
+  <action name="showOverridablesAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_ShowOvers.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_ShowOvers.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show overridables</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Show overridables</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show overridables</string>
    </property>
   </action>
-  <action name="overrideAction" >
-   <property name="enabled" >
+  <action name="overrideAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_Override.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_Override.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Override</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Override</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Override the feature (member variable or function) selected in the override view</string>
    </property>
   </action>
-  <action name="openFormViewAction" >
-   <property name="enabled" >
+  <action name="openFormViewAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_ShowForm.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_ShowForm.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Open form view</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Open form view</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Open form view</string>
    </property>
   </action>
-  <action name="insertTextAction" >
-   <property name="enabled" >
+  <action name="insertTextAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_MakeLitStr.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_MakeLitStr.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Insert a comment between fields of a form</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Insert text</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Insert a comment between fields of a form</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Insert a comment between fields of a form</string>
    </property>
   </action>
-  <action name="importComponentAction" >
-   <property name="text" >
+  <action name="importComponentAction">
+   <property name="text">
     <string>Import component</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Import component</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Import component</string>
    </property>
   </action>
-  <action name="genLinkedHtmlAction" >
-   <property name="text" >
+  <action name="genLinkedHtmlAction">
+   <property name="text">
     <string>Generate linked HTML files</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Generate linked HTML files</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Generate linked HTML files from the current Lava file</string>
    </property>
   </action>
-  <action name="genSingleHtmlAction" >
-   <property name="text" >
+  <action name="genSingleHtmlAction">
+   <property name="text">
     <string>Generate single HTML file</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Generate single HTML file</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Generate single HTML file from the current Lava file</string>
    </property>
   </action>
-  <action name="deleteAction" >
-   <property name="enabled" >
+  <action name="deleteAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Delete.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q_Delete.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Delete</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Delete</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Delete the selected entity without putting it on the clipboard</string>
    </property>
   </action>
-  <action name="faqAction" >
-   <property name="text" >
+  <action name="faqAction">
+   <property name="text">
     <string>Frequently asked questions</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Frequently asked questions</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Frequently asked questions</string>
    </property>
   </action>
-  <action name="editingLavaProgsAction" >
-   <property name="text" >
+  <action name="editingLavaProgsAction">
+   <property name="text">
     <string>Editing Lava Programs</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Editing Lava Progs</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Editing Lava Programs</string>
    </property>
-   <property name="whatsThis" >
-    <string>Provide online help on "Editing Lava Programs"</string>
+   <property name="whatsThis">
+    <string>Provide online help on &quot;Editing Lava Programs&quot;</string>
    </property>
   </action>
-  <action name="toggleCategoryAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="toggleCategoryAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Toggle category</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Toggle category</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Toggle category</string>
    </property>
-   <property name="whatsThis" >
-    <string>Toggle category: default: "immutable value object", "~" means "variable state object"</string>
+   <property name="whatsThis">
+    <string>Toggle category: default: &quot;immutable value object&quot;, &quot;~&quot; means &quot;variable state object&quot;</string>
    </property>
   </action>
-  <action name="optLocalVarAction" >
-   <property name="checkable" >
+  <action name="optLocalVarAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_optLocalVar.xpm</iconset>
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
+     <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_optLocalVar.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_optLocalVar.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Optional local variable</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Optional local variable</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Toggle optional local variable</string>
    </property>
-   <property name="whatsThis" >
-    <string>Optional local variable: may assume the value "null"</string>
+   <property name="whatsThis">
+    <string>Optional local variable: may assume the value &quot;null&quot;</string>
    </property>
   </action>
-  <action name="toggleSubstTypeAction" >
-   <property name="checkable" >
+  <action name="toggleSubstTypeAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_toggleSubstType.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_toggleSubstType.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Toggle substitutable type</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Toggle substitutable type</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Toggle substitutable type</string>
    </property>
   </action>
-  <action name="insertBeforeAction" >
-   <property name="checkable" >
+  <action name="insertBeforeAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_insertBefore.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_insertBefore.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Insert before</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Insert before</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Toggle insert before</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>If depressed, insert new items before the selected item, else after the selected item</string>
    </property>
   </action>
-  <action name="execInsAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="execInsAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_insert.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_insert.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Insert</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Insert</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Insert an empty construct (with placeholders) of the same type as the selected construct</string>
    </property>
   </action>
-  <action name="toggleArrowsAction" >
-   <property name="checkable" >
+  <action name="toggleArrowsAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_toggleArrows.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_toggleArrows.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Toggle arrow direction</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Toggle arrow direction</string>
    </property>
   </action>
-  <action name="toggleInputArrowsAction" >
-   <property name="checkable" >
+  <action name="toggleInputArrowsAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_inputArrow.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_inputArrow.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Toggle input arrows</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Toggle input arrows</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Toggle input arrows</string>
    </property>
   </action>
-  <action name="conflictingAssigAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="conflictingAssigAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_conflict.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_conflict.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show conflicting assignment</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Show conflicting assignment</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show conflicting previous assignment</string>
    </property>
   </action>
-  <action name="newLineAction" >
-   <property name="checkable" >
+  <action name="newLineAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_newLine.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_newLine.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Put on a new line</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Put on a new line</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Put the selected sub-construct on a new line</string>
    </property>
   </action>
-  <action name="commentOutAction" >
-   <property name="checkable" >
+  <action name="commentOutAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_ignore.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_ignore.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Skip/comment out</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Skip</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Skip/comment out</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Skip/comment out (the selected construct)</string>
    </property>
   </action>
-  <action name="toggleCommentsAction" >
-   <property name="checkable" >
+  <action name="toggleCommentsAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_showComments.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_showComments.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show/hide comments</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Show/hide comments</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show/hide comments</string>
    </property>
   </action>
-  <action name="lessThanAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="lessThanAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_lessThan.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_lessThan.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Less than</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Less than</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Less than</string>
    </property>
   </action>
-  <action name="viewTB5Action" >
-   <property name="checkable" >
+  <action name="viewTB5Action">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show exec switches toolbar</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Exec switches toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Show exec switches toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show exec switches toolbar</string>
    </property>
   </action>
-  <action name="lessEqualAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="lessEqualAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_lessEqual.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_lessEqual.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Less than or equal</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Less than or equal</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Less than or equal</string>
    </property>
   </action>
-  <action name="equalAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="equalAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_equal.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_equal.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Equal</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Equal</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Compare two objects</string>
    </property>
   </action>
-  <action name="notEqualAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="notEqualAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_notEqual.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_notEqual.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Not equal</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Not equal</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Not equal</string>
    </property>
   </action>
-  <action name="greaterEqualAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="greaterEqualAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_gtEqual.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_gtEqual.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Greater or equal</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Greater or equal</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Greater or equal</string>
    </property>
   </action>
-  <action name="greaterThanAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="greaterThanAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_greater.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_greater.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Greater than</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Greater than</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Greater than</string>
    </property>
   </action>
-  <action name="functionCallAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="functionCallAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_vFuncCall.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_vFuncCall.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Call a virtual function</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Call a virtual function</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Call a virtual function</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Call a virtual function</string>
    </property>
   </action>
-  <action name="staticCallAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="staticCallAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_staticCall.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_staticCall.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Call a static function</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Call a static function</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Call a static function</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Call a static function</string>
    </property>
   </action>
-  <action name="trueAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="trueAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_true.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_true.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>True</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>True</string>
    </property>
-   <property name="toolTip" >
-    <string>Insert Boolean "true" constant</string>
+   <property name="toolTip">
+    <string>Insert Boolean &quot;true&quot; constant</string>
    </property>
-   <property name="whatsThis" >
-    <string>Insert Boolean "true" constant</string>
+   <property name="whatsThis">
+    <string>Insert Boolean &quot;true&quot; constant</string>
    </property>
   </action>
-  <action name="falseAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="falseAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_false.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_false.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>False</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>False</string>
    </property>
-   <property name="toolTip" >
-    <string>Insert Boolean "false" constant</string>
+   <property name="toolTip">
+    <string>Insert Boolean &quot;false&quot; constant</string>
    </property>
-   <property name="whatsThis" >
-    <string>Insert Boolean "false" constant</string>
+   <property name="whatsThis">
+    <string>Insert Boolean &quot;false&quot; constant</string>
    </property>
   </action>
-  <action name="evaluateAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="evaluateAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_evaluate.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_evaluate.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Evaluate stm/expr</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Evaluate stm/expr</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Evaluate stm/expr: stm? is an expression, expr? is a statement</string>
    </property>
   </action>
-  <action name="nullAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="nullAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_null.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_null.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Null/undefined, or * (wildcard)</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Null/undefined object, or * (wildcard)</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Null/undefined object, or * (wildcard, = any object)</string>
    </property>
-   <property name="statusTip" >
-    <string>Null/undefined object, or * (wildcard, = "any object": in connect/disconnect statements)</string>
+   <property name="statusTip">
+    <string>Null/undefined object, or * (wildcard, = &quot;any object&quot;: in connect/disconnect statements)</string>
    </property>
-   <property name="whatsThis" >
-    <string>Null/undefined, or * (wildcard, = "any object": in connect/disconnect statements)</string>
+   <property name="whatsThis">
+    <string>Null/undefined, or * (wildcard, = &quot;any object&quot;: in connect/disconnect statements)</string>
    </property>
   </action>
-  <action name="intervalAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="intervalAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_interval.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_interval.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Interval / array element</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Interval / array element</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Denotes intervals or array elements</string>
    </property>
   </action>
-  <action name="toggleSignAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="toggleSignAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_plusMinus.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_plusMinus.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Toggle sign</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Toggle sign</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Toggle sign</string>
    </property>
   </action>
-  <action name="additionAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="additionAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_plus.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_plus.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Addition</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Addition</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Integer and floating point addition</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Integer and floating point addition</string>
    </property>
   </action>
-  <action name="multiplicationAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="multiplicationAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_mult.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_mult.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Multiplication</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Multiplication</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Integer and floating point multiplication</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Integer and floating point multiplication</string>
    </property>
   </action>
-  <action name="divideAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="divideAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_divide.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_divide.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Divide</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Divide</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Integer and floating point division</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Integer and floating point division</string>
    </property>
   </action>
-  <action name="modulusAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="modulusAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_modulus.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_modulus.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Modulus</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Modulus</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Modulus</string>
    </property>
   </action>
-  <action name="leftShiftAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="leftShiftAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_lshift.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_lshift.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Left shift</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Left shift</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Left shift</string>
    </property>
   </action>
-  <action name="rightShiftAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="rightShiftAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_rshift.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_rshift.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Right shift</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Right shift</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Right shift</string>
    </property>
   </action>
-  <action name="bitAndAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="bitAndAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_bitAnd.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_bitAnd.xpm</iconset>
    </property>
-   <property name="text" >
-    <string>Bitwise "and"</string>
+   <property name="text">
+    <string>Bitwise &quot;and&quot;</string>
    </property>
-   <property name="iconText" >
-    <string>Bitwise "and"</string>
+   <property name="iconText">
+    <string>Bitwise &quot;and&quot;</string>
    </property>
-   <property name="toolTip" >
-    <string>Bitwise "and" operation</string>
+   <property name="toolTip">
+    <string>Bitwise &quot;and&quot; operation</string>
    </property>
-   <property name="whatsThis" >
-    <string>Bitwise "and" operation</string>
+   <property name="whatsThis">
+    <string>Bitwise &quot;and&quot; operation</string>
    </property>
   </action>
-  <action name="bitOrAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="bitOrAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_bitOr.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_bitOr.xpm</iconset>
    </property>
-   <property name="text" >
-    <string>Bitwise "or"</string>
+   <property name="text">
+    <string>Bitwise &quot;or&quot;</string>
    </property>
-   <property name="iconText" >
-    <string>Bitwise "or"</string>
+   <property name="iconText">
+    <string>Bitwise &quot;or&quot;</string>
    </property>
-   <property name="toolTip" >
-    <string>Bitwise "or" operation</string>
+   <property name="toolTip">
+    <string>Bitwise &quot;or&quot; operation</string>
    </property>
-   <property name="whatsThis" >
-    <string>Bitwise "or" operation</string>
+   <property name="whatsThis">
+    <string>Bitwise &quot;or&quot; operation</string>
    </property>
   </action>
-  <action name="bitXorAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="bitXorAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_bitXor.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_bitXor.xpm</iconset>
    </property>
-   <property name="text" >
-    <string>Bitwise "exclusive or"</string>
+   <property name="text">
+    <string>Bitwise &quot;exclusive or&quot;</string>
    </property>
-   <property name="iconText" >
-    <string>Bitwise "exclusive or"</string>
+   <property name="iconText">
+    <string>Bitwise &quot;exclusive or&quot;</string>
    </property>
-   <property name="whatsThis" >
-    <string>Bitwise "exclusive or"</string>
+   <property name="whatsThis">
+    <string>Bitwise &quot;exclusive or&quot;</string>
    </property>
   </action>
-  <action name="invertAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="invertAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_invert.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_invert.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Invert bits</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Invert bits</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Invert bits</string>
    </property>
   </action>
-  <action name="handleAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="handleAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_handle.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_handle.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Handle of a set element</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Handle of a set element</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Handle of a set element</string>
    </property>
   </action>
-  <action name="ordAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="ordAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_ord.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_ord.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Ordinal of enum. item</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Ordinal of enum. item</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Ordinal of an enumeration item</string>
    </property>
   </action>
-  <action name="viewTB6Action" >
-   <property name="checkable" >
+  <action name="viewTB6Action">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show exec oper. toolbar</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Exec oper. toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Show exec oper. toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show exec oper. toolbar</string>
    </property>
   </action>
-  <action name="viewTB7Action" >
-   <property name="checkable" >
+  <action name="viewTB7Action">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show keyword toolbar</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Keyword toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Show keyword toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show keyword toolbar</string>
    </property>
   </action>
-  <action name="setTreeFontAction" >
-   <property name="text" >
+  <action name="setTreeFontAction">
+   <property name="text">
     <string>Set tree font...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Set tree font</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Set tree font...</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Set tree font...</string>
    </property>
   </action>
-  <action name="setExecFontAction" >
-   <property name="text" >
+  <action name="setExecFontAction">
+   <property name="text">
     <string>Set exec font...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Set exec font</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Set exec font...</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Set exec font...</string>
    </property>
   </action>
-  <action name="showUtilWindowAction" >
-   <property name="checkable" >
+  <action name="showUtilWindowAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_ShowBar.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_ShowBar.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show utility window</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Show utility window</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show utility window</string>
    </property>
   </action>
-  <action name="learningLavaAction" >
-   <property name="text" >
+  <action name="learningLavaAction">
+   <property name="text">
     <string>Learning Lava by samples</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Learning Lava by samples</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Learning Lava by samples</string>
    </property>
   </action>
-  <action name="insAction" >
-   <property name="enabled" >
+  <action name="insAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaGUI/res/TOOLBUTTONS/Q_Insert.xpm</normaloff>:/LavaGUI/res/TOOLBUTTONS/Q_Insert.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Insert optional item</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Insert optional item</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Insert optional item</string>
    </property>
   </action>
-  <action name="delAction" >
-   <property name="enabled" >
+  <action name="delAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaGUI/res/TOOLBUTTONS/Q_Delete.xpm</normaloff>:/LavaGUI/res/TOOLBUTTONS/Q_Delete.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Delete optional item</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Delete optional item</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Delete optional item</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Delete optional item</string>
    </property>
   </action>
-  <action name="setGlobalFontAction" >
-   <property name="text" >
+  <action name="setGlobalFontAction">
+   <property name="text">
     <string>Set global font...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Set global font</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Set global font...</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Set global font...</string>
    </property>
   </action>
-  <action name="SetFormFontsAction" >
-   <property name="text" >
+  <action name="SetFormFontsAction">
+   <property name="text">
     <string>Set form font</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Set form font</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Set form font...</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Set form font...</string>
    </property>
   </action>
-  <action name="setFormTextFontAction" >
-   <property name="text" >
+  <action name="setFormTextFontAction">
+   <property name="text">
     <string>Set form text font...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Form text font</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Set form text font...</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Set form text font...</string>
    </property>
   </action>
-  <action name="setFormLabelFontAction" >
-   <property name="text" >
+  <action name="setFormLabelFontAction">
+   <property name="text">
     <string>Set form label font...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Set form label font</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Set form label font...</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Set form label font...</string>
    </property>
   </action>
-  <action name="setFormButtonFontAction" >
-   <property name="text" >
+  <action name="setFormButtonFontAction">
+   <property name="text">
     <string>Form button font...</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Form button font</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Form button font...</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Form button font...</string>
    </property>
   </action>
-  <action name="viewHelpTBAction" >
-   <property name="checkable" >
+  <action name="viewHelpTBAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show help toolbar</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Help toolbar</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Show help toolbar</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show help toolbar</string>
    </property>
   </action>
-  <action name="howToAction" >
-   <property name="text" >
+  <action name="howToAction">
+   <property name="text">
     <string>OO analysis/design/implementation in Lava</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>How to</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>OO analysis/design/implementation in Lava</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>OO analysis/design/implementation in Lava</string>
    </property>
   </action>
-  <action name="saveEveryChangeAction" >
-   <property name="checkable" >
+  <action name="saveEveryChangeAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Save every change</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Save every change</string>
    </property>
-   <property name="statusTip" >
+   <property name="statusTip">
     <string>Save every change immediately, provided the file has already been saved once</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Save every change immediately, provided the file has already been saved once</string>
    </property>
   </action>
-  <action name="makeGUIAction" >
-   <property name="enabled" >
+  <action name="makeGUIAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_MakeGUI.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q2_MakeGUI.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Make GUI-service for selected class</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>makeGUI</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Make GUI-service for selected class</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>Generate a &lt;a href="../EditForm.htm#GUI">GUI service class&lt;/a> from the selected class&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;Generate a &lt;a href=&quot;../EditForm.htm#GUI&quot;&gt;GUI service class&lt;/a&gt; from the selected class&lt;/p&gt;</string>
    </property>
   </action>
-  <action name="DbgAction" >
-   <property name="enabled" >
+  <action name="DbgAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
-     <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Debug.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Debug.xpm</iconset>
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
+     <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Run.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_Run.xpm</iconset>
    </property>
-   <property name="text" >
-    <string>Start/continue debugging</string>
+   <property name="text">
+    <string>Run, or continue debugging</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Debug</string>
    </property>
-   <property name="toolTip" >
-    <string>Start/continue debugging</string>
+   <property name="toolTip">
+    <string>Run, or continue debugging</string>
    </property>
-   <property name="whatsThis" >
-    <string>Start/continue debugging</string>
+   <property name="whatsThis">
+    <string>Run, or continue debugging</string>
    </property>
   </action>
-  <action name="DbgBreakpointAct" >
-   <property name="enabled" >
+  <action name="DbgBreakpointAct">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_BreakPoint.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_BreakPoint.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Set/reset breakpoint</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>breakpoint</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Set/reset breakpoint</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Set/reset breakpoint</string>
    </property>
   </action>
-  <action name="DbgClearBreakpointsAct" >
-   <property name="enabled" >
+  <action name="DbgClearBreakpointsAct">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_ClearBreakpoints.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_ClearBreakpoints.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Clear all breakpoints</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Clear all breakpoints</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Clear all breakpoints</string>
    </property>
   </action>
-  <action name="DbgStepNextAct" >
-   <property name="enabled" >
+  <action name="DbgStepNextAct">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_Stepnext.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_Stepnext.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Stop at next statement</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>StopAtNextStm</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Stop at next statement</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Stop at next statement</string>
    </property>
   </action>
-  <action name="DbgStepintoAct" >
-   <property name="enabled" >
+  <action name="DbgStepintoAct">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_Stepdown.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_Stepdown.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Step into next function</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>StepInto</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Step into next function</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Step into next function</string>
    </property>
   </action>
-  <action name="DbgStepoutAct" >
-   <property name="enabled" >
+  <action name="DbgStepoutAct">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_Stepout.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_Stepout.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Step out of innermost function</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>StepOut</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Step out of innermost function</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Step out of innermost function</string>
    </property>
   </action>
-  <action name="DbgRunToSelAct" >
-   <property name="enabled" >
+  <action name="DbgRunToSelAct">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_RuntoSelection.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_RuntoSelection.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Stop at selection</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>StopAtSelection</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Stop at selection</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Stop at selection</string>
    </property>
   </action>
-  <action name="DbgStopAction" >
-   <property name="enabled" >
+  <action name="DbgStopAction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_DebugStop.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q4_DebugStop.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Stop debugging</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>DbgStop</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Stop debugging</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Stop debugging</string>
    </property>
   </action>
-  <action name="DbgStepNextFunctionAct" >
-   <property name="enabled" >
+  <action name="DbgStepNextFunctionAct">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_StepNextFunc.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/Q5_StepNextFunc.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Stop at next function/operator</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>StopAtNextFunc</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Stop at next function/operator</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Stop at next function/operator</string>
    </property>
   </action>
-  <action name="whatNextAction" >
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+  <action name="whatNextAction">
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaPE/res/TOOLBUTTONS/WhatNext.xpm</normaloff>:/LavaPE/res/TOOLBUTTONS/WhatNext.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>WhatNext</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>What next?</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>What can I do next at the current selection?</string>
    </property>
   </action>
-  <action name="viewDebugTBAction" >
-   <property name="checkable" >
+  <action name="viewDebugTBAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show debug toolbar</string>
    </property>
   </action>
-  <action name="viewTB2Action" >
-   <property name="checkable" >
+  <action name="viewTB2Action">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show tree oper. toolbar</string>
    </property>
   </action>
-  <action name="toggleClosedAction" >
-   <property name="checkable" >
+  <action name="toggleClosedAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_opaque.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q6_opaque.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Toggle closed variable</string>
    </property>
-   <property name="iconText" >
+   <property name="iconText">
     <string>Toggle closed variable</string>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>Toggle closed variable</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>The value of this variable is a potentially unfinished, not yet fully initialized object; access to data members is still disabled therefore</string>
    </property>
   </action>
-  <action name="parmNameAction" >
-   <property name="checkable" >
+  <action name="parmNameAction">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
      <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_formParmNames.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_formParmNames.xpm</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show formal parameter names in function calls</string>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>Show formal parameter names in function calls</string>
    </property>
   </action>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../LavaPE_res.qrc" />
+  <include location="../LavaPE_res.qrc"/>
+  <include location="../LavaPE_res.qrc"/>
  </resources>
  <connections/>
 </ui>

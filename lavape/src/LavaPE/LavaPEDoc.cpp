@@ -3416,10 +3416,10 @@ bool CLavaPEDoc::OnOpenDocument (const QString& filename)
 	return true;
 }//OnOpenDocument
 
+/*
 void CLavaPEDoc::OnRunLava()
 {
   OnDebugLava();
-/*
   QString interpreterPath, lavaFile, buf;
   QProcess interpreter;
   QStringList args;
@@ -3446,9 +3446,9 @@ void CLavaPEDoc::OnRunLava()
 		QMessageBox::critical (wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaStartFailed.arg (errno),QMessageBox::Ok,0,0);
 		return;
 	}
-*/
-}
 
+}
+*/
 
 void CLavaPEDoc::OnDebugLava()
 {

@@ -127,7 +127,7 @@ public slots:
     virtual void on_prevErrorAction_triggered();
     virtual void on_checkAction_triggered();
     virtual void on_checkAllAction_triggered();
-    virtual void on_runAction_triggered();
+    //virtual void on_runAction_triggered();
     virtual void on_newIncludeAction_triggered();
     virtual void on_newPackageAction_triggered();
     virtual void on_newInitiatorAction_triggered();

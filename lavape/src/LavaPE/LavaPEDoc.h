@@ -66,7 +66,7 @@ public:
   bool OnCloseDocument();
   virtual bool OnNewDocument();
   virtual bool OnOpenDocument(const QString& filename);
-  void OnRunLava();
+  //void OnRunLava();
   void OnDebugLava();
   void OnTotalCheck();
   void OnUpdateRunLava(QAction* action);
