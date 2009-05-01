@@ -3418,6 +3418,8 @@ bool CLavaPEDoc::OnOpenDocument (const QString& filename)
 
 void CLavaPEDoc::OnRunLava()
 {
+  OnDebugLava();
+/*
   QString interpreterPath, lavaFile, buf;
   QProcess interpreter;
   QStringList args;
@@ -3427,12 +3429,6 @@ void CLavaPEDoc::OnRunLava()
 	&& (QMessageBox::Cancel == QMessageBox::question (wxTheApp->m_appWindow,qApp->applicationName(),ERR_SaveFailed,QMessageBox::Ok,QMessageBox::Cancel,0)))
 		return;
 	lavaFile = GetFilename();
-	/*
-	if (lavaFile.isEmpty()) {
-	  QMessageBox::question(wxTheApp->m_appWindow,qApp->applicationName(),IDP_SaveFirst,QMessageBox::Ok,0,0);
-	  return;
-	}
-	*/
 #ifdef WIN32
 	interpreterPath = ExeDir + "/Lava.exe";
 #elif __Darwin
@@ -3450,6 +3446,7 @@ void CLavaPEDoc::OnRunLava()
 		QMessageBox::critical (wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaStartFailed.arg (errno),QMessageBox::Ok,0,0);
 		return;
 	}
+*/
 }
 
 
