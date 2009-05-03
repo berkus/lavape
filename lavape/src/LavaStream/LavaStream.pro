@@ -24,3 +24,16 @@ else:QMAKE_LFLAGS += -L../../lib
 macx:LIBS += -framework disco -framework wxqDocView -framework LavaBase
 else:LIBS += -ldisco -lwxqDocView -lLavaBase
 PRECOMPILED_HEADER = LavaStream_all.h
+
+links1.target = ../../bin/Components/libLavaStream.so
+links1.depends = ../../lib/libLavaStream.so
+links1.commands = ln -s -f ../../lib/libLavaStream.so ../../bin/Components/libLavaStream.so
+QMAKE_EXTRA_TARGETS += links1
+PRE_TARGETDEPS += ../../bin/Components/libLavaStream.so
+
+links2.target = ../../bin/Components/LavaStream.lava
+links2.depends = ../../samples/LavaStream.lava
+links2.commands = ln -s -f ../../samples/LavaStream.lava ../../bin/Components/LavaStream.lava
+QMAKE_EXTRA_TARGETS += links2
+PRE_TARGETDEPS += ../../bin/Components/LavaStream.lava
+

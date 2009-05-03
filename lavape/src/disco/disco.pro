@@ -31,6 +31,12 @@ else:helpcoll.commands = $$[QT_INSTALL_BINS]/qcollectiongenerator ../../doc/Lava
 QMAKE_EXTRA_TARGETS += helpcoll
 PRE_TARGETDEPS += ../../doc/LavaPE.qhc
 
+links1.target = ../../bin/LCompoImp.lcom.lnk
+links1.depends = ../../samples/LCompoImpl.lcom
+links1.commands = ln -s -f ../../samples/LCompoImp.lcom ../../bin/LCompoImp.lcom.lnk
+QMAKE_EXTRA_TARGETS += links1
+PRE_TARGETDEPS += ../../bin/LCompoImp.lcom.lnk
+
 #message($$[QT_INSTALL_BINS])
 
 win32:qtass.target = ..\..\bin\assistant.exe
