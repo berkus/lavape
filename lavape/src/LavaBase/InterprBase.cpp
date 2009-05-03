@@ -560,12 +560,12 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
   LavaVariablePtr resultAttr, newStackFrame;
   CSectionDesc* sourceSecTab;
   TAdapterFunc *funcAdapter;
-  CVFuncDesc *fDesc;
+  //CVFuncDesc *fDesc;
   CRuntimeException *ex;
   CContext context;
-  int ii, sii, ll, lmem, llast, fsize;
-  unsigned fsizeBytes;
-  bool constit, secCopy=false, fullCopy, stateO, ok, copyStart = false, isNew = false;
+  int ii, sii, ll, lmem, llast;
+  //unsigned fsizeBytes;
+  bool constit, secCopy=false, fullCopy, stateO, copyStart = false, isNew = false;
 
   sourceObjPtr = *sourceVarPtr;
   resultObjPtr = *resultVarPtr;
