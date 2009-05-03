@@ -102,7 +102,7 @@ public:
   bool InSection(CHE* el);
   virtual void IncludeHint(const QString& fullfn, CHESimpleSyntax* cheSyn);
   virtual void OnDebugLava() {}
-  virtual void OnUpdateRunLava(QAction *action) {}
+  virtual void OnUpdateDbgStart(QAction *action) {}
 private:
     Q_OBJECT
 

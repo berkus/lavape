@@ -3555,7 +3555,7 @@ void CLavaPEDoc::OnTotalCheck()
 	//mana->RememberActiveView (actView);
 }
 
-void CLavaPEDoc::OnUpdateRunLava (QAction* action)
+void CLavaPEDoc::OnUpdateDbgStart (QAction* action)
 {
 	if (!mySynDef)
 		return;

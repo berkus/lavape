@@ -5854,7 +5854,7 @@ void CExecView::UpdateUI()
   OnUpdatePlus(LBaseData->additionActionPtr);
   OnUpdateOrd(LBaseData->ordActionPtr);
 
-  OnUpdateDbgStart(LBaseData->DbgActionPtr);
+//  OnUpdateDbgStart(LBaseData->DbgActionPtr);
   OnUpdateDbgStepNext(LBaseData->DbgStepNextActPtr);
   OnUpdateDbgStepNextFunction(LBaseData->DbgStepNextFunctionActPtr);
   OnUpdateDbgStepinto(LBaseData->DbgStepintoActPtr);
@@ -7296,11 +7296,11 @@ void CExecView::on_DbgRunToSelAct_triggered() {
 }
 
 
-void CExecView::OnUpdateDbgStart(QAction* action) {
-  if (!myDoc->mySynDef)
-    return;
-  action->setEnabled(LBaseData->debugger->sendPending);
-}
+//void CExecView::OnUpdateDbgStart(QAction* action) {
+//  if (!myDoc->mySynDef)
+//    return;
+//  action->setEnabled(LBaseData->debugger->sendPending);
+//}
 
 void CExecView::OnUpdateDbgStepNext(QAction* action) {
   action->setEnabled(LBaseData->debugger->isConnected && LBaseData->debugger->sendPending);

@@ -301,7 +301,7 @@ public:
   void OnUpdateRshift(QAction* action);
   void OnUpdateTrue(QAction* action);
 
-  void OnUpdateDbgStart(QAction* action);
+//  void OnUpdateDbgStart(QAction* action);
   void OnUpdateDbgStepNext(QAction* action);
   void OnUpdateDbgStepNextFunction(QAction* action);
   void OnUpdateDbgStepinto(QAction* action);

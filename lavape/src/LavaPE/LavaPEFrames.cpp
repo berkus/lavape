@@ -344,9 +344,9 @@ void CLavaMainFrame::UpdateUI()
   checkAction->setEnabled(enable);
   checkAllAction->setEnabled(enable);
   if (doc)
-    doc->OnUpdateRunLava(runAction);
+    doc->OnUpdateDbgStart(DbgAction);
   else
-    runAction->setEnabled(false);
+    DbgAction->setEnabled(false);
 }
 
 void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QToolButton *&pb,const char *text,const char *slotParm,QString tooltip,QString whatsThis)

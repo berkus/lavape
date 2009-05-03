@@ -69,7 +69,7 @@ public:
   //void OnRunLava();
   void OnDebugLava();
   void OnTotalCheck();
-  void OnUpdateRunLava(QAction* action);
+  void OnUpdateDbgStart(QAction* action);
   bool OpenGUIView(LavaDECL** pdecl);
   bool OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate);
   virtual bool OpenExecView(LavaDECL* execDecl);
