@@ -435,25 +435,30 @@ bool wxDocument::DeleteAllChildFrames()
   wxChildFrame* child;
   wxTabWidget* tabWid;
   wxChildFrame *oldAF = docMan->GetOldActiveFrame(), *actFrame=docMan->GetActiveFrame();
+  bool removed=false;
 
   while (m_docChildFrames.size()) {
     child = m_docChildFrames.takeAt(0);
     tabWid = child->m_tabWidget;
-    tabWid->removeTab(tabWid->indexOf(child));
-    if (child == oldAF)
-      docMan->ResetOldActiveFrame();
-    if (child == actFrame)
-      docMan->RememberActiveFrame(0);
-    tabWid->removeTab(tabWid->indexOf(child));
-    delete child;
-    if (tabWid->count() == 0) {
-      if (((QSplitter*)tabWid->parentWidget())->count() > 1)
-        tabWid->deleteLater();
-      tabWid = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
-      docMan->SetCurrentTabWidget(tabWid);
+    if (tabWid) {
+      removed = true;
+      tabWid->removeTab(tabWid->indexOf(child));
+      if (child == oldAF)
+        docMan->ResetOldActiveFrame();
+      if (child == actFrame)
+        docMan->RememberActiveFrame(0);
+      tabWid->removeTab(tabWid->indexOf(child));
+      delete child;
+      if (tabWid->count() == 0) {
+        if (((QSplitter*)tabWid->parentWidget())->count() > 1)
+          tabWid->deleteLater();
+        tabWid = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
+        docMan->SetCurrentTabWidget(tabWid);
+      }
     }
   }
-  docMan->SetNewCurrentFrame();
+  if (removed)
+    docMan->SetNewCurrentFrame();
   return true;
 }
 
