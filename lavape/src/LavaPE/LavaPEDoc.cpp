@@ -3557,8 +3557,10 @@ void CLavaPEDoc::OnTotalCheck()
 
 void CLavaPEDoc::OnUpdateDbgStart (QAction* action)
 {
-	if (!mySynDef)
+  if (!mySynDef || (LBaseData->debugger->isConnected && LBaseData->debugger->myDoc != this)) {
+    action->setEnabled(false);
 		return;
+  }
 	LavaDECL* topDECL = (LavaDECL*) ((CHESimpleSyntax*) mySynDef->SynDefTree.first)->data.TopDef.ptr;
 	CHE* che;
 	for (che = (CHE*) topDECL->NestedDecls.first;
