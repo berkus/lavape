@@ -7303,31 +7303,42 @@ void CExecView::on_DbgRunToSelAct_triggered() {
 //}
 
 void CExecView::OnUpdateDbgStepNext(QAction* action) {
-  action->setEnabled(LBaseData->debugger->isConnected && LBaseData->debugger->sendPending);
+  action->setEnabled(LBaseData->debugger->isConnected
+    && LBaseData->debugger->sendPending
+    && myDoc == LBaseData->debugger->myDoc);
 }
 
 void CExecView::OnUpdateDbgStepNextFunction(QAction* action) {
-  action->setEnabled(LBaseData->debugger->isConnected && LBaseData->debugger->sendPending);
+  action->setEnabled(LBaseData->debugger->isConnected
+    && LBaseData->debugger->sendPending
+    && myDoc == LBaseData->debugger->myDoc);
 }
 
 void CExecView::OnUpdateDbgStepinto(QAction* action) {
-  action->setEnabled(LBaseData->debugger->isConnected && LBaseData->debugger->sendPending);
+  action->setEnabled(LBaseData->debugger->isConnected
+    && LBaseData->debugger->sendPending
+    && myDoc == LBaseData->debugger->myDoc);
 }
 
 void CExecView::OnUpdateDbgStepout(QAction* action) {
-  action->setEnabled(LBaseData->debugger->isConnected && LBaseData->debugger->sendPending);
+  action->setEnabled(LBaseData->debugger->isConnected
+    && LBaseData->debugger->sendPending
+    && myDoc == LBaseData->debugger->myDoc);
 }
 
 void CExecView::OnUpdateDbgRunToSel(QAction* action)
 {
   action->setEnabled(!Taboo(true)
+    && myDoc == LBaseData->debugger->myDoc
     && text->currentSynObj->IsExecutable()
-    && LBaseData->debugger->isConnected && LBaseData->debugger->sendPending);
+    && LBaseData->debugger->isConnected 
+    && LBaseData->debugger->sendPending);
 }
 
 void CExecView::OnUpdateDbgBreakpoint(QAction* action)
 {
   action->setEnabled(!Taboo(true)
+    && (!LBaseData->debugger->isConnected || myDoc == LBaseData->debugger->myDoc)
     && text->currentSynObj->IsExecutable()
     && !text->currentSynObj->IsPlaceHolder()
     && !text->currentSynObj->IsConstant()
@@ -7336,11 +7347,12 @@ void CExecView::OnUpdateDbgBreakpoint(QAction* action)
 }
 
 void CExecView::OnUpdateDbgClearBreakpoints(QAction* action) {
-  action->setEnabled(true);
+  action->setEnabled(!LBaseData->debugger->isConnected || myDoc == LBaseData->debugger->myDoc);
 }
 
 void CExecView::OnUpdateDbgStop(QAction* action) {
-  action->setEnabled(LBaseData->debugger->isConnected);
+  action->setEnabled(LBaseData->debugger->isConnected
+    && myDoc == LBaseData->debugger->myDoc);
 }
 
 void CComment::on_okButton_clicked()
