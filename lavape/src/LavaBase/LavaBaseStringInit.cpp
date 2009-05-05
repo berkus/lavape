@@ -474,7 +474,7 @@ void LavaBaseStringInit() {
   ERR_CorruptForm2  = QObject::tr("Declaration of GUI service and declaration of corresponding interface do not match");
   ERR_NotBaseIF  = QObject::tr("is not base interface");
   ERR_NoOverridden  = QObject::tr("Overridden feature or virtual type not found in base interface ");
-  ERR_NoClassImpl  = QObject::tr("Implementation of this interface not found");
+  ERR_NoClassImpl  = QObject::tr("Implementation of this class not found");
   ERR_IOParams  = QObject::tr("Inconsistency of function parameter (interface versus implementation)");
   ERR_SetGetError  = QObject::tr("Set or get function of attribute not found");
   ERR_funcImpl  = QObject::tr("Inconsistent function properties (implementation versus interface)");
