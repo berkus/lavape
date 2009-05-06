@@ -51,6 +51,8 @@ CInclView::CInclView(QWidget* parent, wxDocument *doc)
 //  new InclWhatsThis(Tree);
   Tree->setSelectionMode(QAbstractItemView::SingleSelection);
   Tree->viewport()->installEventFilter(this);
+  SelINCL = 0;
+  Expanded = true;
 }
 
 CInclView::~CInclView()
