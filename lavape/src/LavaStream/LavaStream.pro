@@ -1,8 +1,6 @@
 TEMPLATE = lib
 include(../../lpc.prf)
 
-TARGET = ../../lib/libLavaStream.so
-
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 CONFIG += warn_off \
     qt \
