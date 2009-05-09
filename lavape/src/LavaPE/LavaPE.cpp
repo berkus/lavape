@@ -361,7 +361,7 @@ bool CLavaPEApp::event(QEvent *e)
   case UEV_LavaPE_CloseDoc:
     doc = (CLavaPEDoc*)((CustomEvent*)e)->data();
     doc->OnCloseDocument();
-//    delete doc;
+    delete doc;
     return true;
   case UEV_LavaGUIEvent:
     actView = wxDocManager::GetDocumentManager()->GetActiveView();
