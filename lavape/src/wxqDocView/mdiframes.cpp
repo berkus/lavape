@@ -377,8 +377,8 @@ wxChildFrame::~wxChildFrame()
 
   deleting = true;
  
-  if (m_document->deleting)
-    return;
+//  if (m_document->deleting)
+//    return;
 
   while (m_viewList.size()) {
     m_document->RemoveView(m_viewList.at(0));

@@ -277,7 +277,7 @@ void CInclView::customEvent(QEvent *ev0)
 #endif
     CLavaPEDoc* doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(fn);
     delete usersFn;
-    if (doc) {
+    if (doc && doc->MainView) {
       doc->MainView->Activate(false);
     }
   }
