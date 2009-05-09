@@ -419,7 +419,7 @@ public:
 
     // Views or windows should inform the document manager
     // when a view is going in or out of focus
-    virtual void RememberActiveView(wxView *view);
+    virtual void RememberActiveView(wxView *view, bool forget=false);
     virtual wxView *GetActiveView();// const;
     virtual wxChildFrame *GetActiveFrame() { return m_activeFrame; }
     virtual wxChildFrame *GetOldActiveFrame() { return m_oldActiveFrame; }

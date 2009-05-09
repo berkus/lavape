@@ -3552,6 +3552,7 @@ void CLavaPEDoc::OnTotalCheck()
 		}
 	}
 	((CLavaPEApp*) wxTheApp)->inTotalCheck = false;
+  actView->Activate(false);
 	//mana->RememberActiveView (actView);
 }
 

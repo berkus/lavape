@@ -175,13 +175,13 @@ public:
   wxView* GetLastActive() {return lastActive;}
   virtual void Activate(bool topDown);
   wxTabWidget *m_tabWidget;
+  wxDocument *m_document;
 
 //  FRAMEFACTORY(wxChildFrame)
 	//Qt::WindowState oldWindowState;
 
 
 protected:
-  wxDocument *m_document;
   void resizeEvent(QResizeEvent *ev);
   bool event (QEvent * e);
   QList<wxView*> m_viewList;

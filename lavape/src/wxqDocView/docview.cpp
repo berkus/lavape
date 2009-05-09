@@ -829,7 +829,7 @@ wxChildFrame *wxView::CalcParentFrame()
 wxView::~wxView()
 {
   deleting = true;
-  //wxDocManager::GetDocumentManager()->RememberActiveView(this, false);
+  wxDocManager::GetDocumentManager()->RememberActiveView(this, true);
 }
 
 
@@ -1365,9 +1365,8 @@ wxDocument *wxDocManager::GetActiveDocument()
 {
   if (m_docs.isEmpty())
     return 0;
-  wxView *view = GetActiveView();
-  if (view)
-    return view->GetDocument();
+  if (m_activeFrame)
+    return m_activeFrame->m_document;
   else
     return 0;
 }
@@ -1718,10 +1717,16 @@ void wxDocManager::RemoveDocument(wxDocument *doc)
 
 // Views should inform the document manager
 // when a view is going in or out of focus
-void wxDocManager::RememberActiveView(wxView *view)
+void wxDocManager::RememberActiveView(wxView *view, bool forget)
 {
-  if (view == m_activeView)
+  if (forget) {
+    if (view == m_activeView)
+      m_activeView = 0;
     return;
+  }
+  else if (view == m_activeView)
+    return;
+
   if (m_activeView && !m_activeView->deleting && !wxTheApp->deletingMainFrame)
     m_activeView->DisableActions();
   m_activeView = view;
