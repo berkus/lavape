@@ -1904,7 +1904,7 @@ void SelfVar::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
   else if (execDECL->ParentDECL->TypeFlags.Contains(isAnyCatY))
     cat = anyCat;
   else
-    cat = stateObjectCat;
+    cat = valueObjectCat;
   //if (decl->DeclType == VirtualType
   //&& decl->TypeFlags.Contains(definesObjCat)
   //&& decl->TypeFlags.Contains(definiteCat))
