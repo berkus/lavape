@@ -1436,19 +1436,6 @@ QString *wxDocManager::GetHistoryFile(int i) const
 
     return histFile;
 }
-/*
-void wxDocManager::FileHistoryUseMenu(QPopupMenu *menu)
-{
-    if (m_fileHistory)
-        m_fileHistory->UseMenu(menu);
-}
-
-void wxDocManager::FileHistoryRemoveMenu(QPopupMenu *menu)
-{
-    if (m_fileHistory)
-        m_fileHistory->RemoveMenu(menu);
-}
-*/
 #if wxUSE_CONFIG
 void wxDocManager::FileHistoryLoad(QSettings& config)
 {
@@ -1855,7 +1842,7 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
   for (i = m_historyN-1; i > 0; i--)
     m_history[i] = m_history[i-1];
 
-  m_history[0] = item;
+  m_history[0] = new DString(*item);
 
   for (i = m_historyN-1; i >= 0; i--) {
     QString buf;
