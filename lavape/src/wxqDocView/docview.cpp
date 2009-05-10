@@ -1253,7 +1253,7 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
 
   QString fn, path2;
   QFileInfo qfi;
-  if (path != QString("")) {
+  if (!path.isEmpty()) {
     path2 = path;
 #ifdef WIN32
     QString driveLetter = QString(path2[0].toUpper());
@@ -1842,7 +1842,7 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
       delete m_history[m_maxHistItems-1];
       m_history[m_maxHistItems-1] = 0;
   }
-  else {
+  if (m_historyN < m_maxHistItems) {
     if (m_historyN == 0)
         m_menu->addSeparator();
     m_actions[m_historyN] = m_menu->addAction("xxx");
