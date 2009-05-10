@@ -6186,6 +6186,7 @@ bool Quantifier::Check(CheckData &ckd)
         refIDs.Append(newChe);
         objRef = new ObjReference(refIDs,opd->varName.c);
         ((TDOD*)((CHE*)objRef->refIDs.first)->data)->parentObject = objRef;
+        objRef->parentObject = opd->parentObject;
         if  (rc = ((RefTable*)ckd.refTable)->AssignCheck(ckd,objRef)) {
           SetError(ckd,rc);
           ok = false;
