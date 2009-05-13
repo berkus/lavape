@@ -1829,7 +1829,8 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     if (myDECL->SecondTFlags.Contains(overrides)) {
       baseDECL = myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data);
-      SelfCategory->setEnabled(baseDECL->TypeFlags.Contains(isStateObjectY)); 
+      //SelfCategory->setEnabled(baseDECL->TypeFlags.Contains(isStateObjectY));
+      SelfCategory->setEnabled(false);
       Protected->setEnabled(baseDECL->TypeFlags.Contains(isProtected));
       StaticFunc->setEnabled(false);
       RMOverrides->setEnabled(true);
