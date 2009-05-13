@@ -4316,7 +4316,7 @@ bool FuncExpression::Check (CheckData &ckd)
     && callExpr->primaryToken == ObjRef_T) {
       callObj = (ObjReference*)callExpr;
       callObj->flags.INCL(isIniCallOrHandle);
-      if  (rc = ((RefTable*)ckd.refTable)->AssignCheck(ckd,callObj)) {
+      if  (!callObj->flags.Contains(isTempVar) && (rc = ((RefTable*)ckd.refTable)->AssignCheck(ckd,callObj))) {
         callObj->SetError(ckd,rc);
         return false;
       }
