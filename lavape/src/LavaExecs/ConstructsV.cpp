@@ -418,15 +418,10 @@ void ReferenceV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored)
   if (!refName.l)
     UpdateReference(t.ckd);
   if (flags.Contains(isStateObjectX))
-    t.Insert(Tilde_T);
+    flags.EXCL(isStateObjectX);
+    //t.Insert(Tilde_T);
   if (flags.Contains(isSubstitutable))
     t.Insert(Lbrace_T);
-  //if (flags.Contains(isStateObjectX))
-  //  t.Insert(Tilde_T);
-  //else if (flags.Contains(isSameAsSelf))
-  //  t.Insert(Equal_T);
-  //else if (flags.Contains(isAnyCatX))
-  //  t.Insert(Mult_T);
   t.Insert(primaryToken,true);
   if (flags.Contains(isSubstitutable))
     t.Insert(Rbrace_T);
