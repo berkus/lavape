@@ -472,6 +472,9 @@ QString *RefTable::AssignCheck (CheckData &ckd, ObjReference *objRef) {
   bool isAssigned;
   CWriteAccess *wacc=0;
 
+  if (objRef->flags.Contains(isTempVar))
+    return 0;
+
   ckd.iniCheck = false;
   findObjRef(ckd,objRefTable,0,newEntry,(CHE*)objRef->refIDs.first);
   chp = refTableEntries.last?(CHE*)refTableEntries.last->predecessor:0;
@@ -3158,6 +3161,9 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
   bool ok=true;
   ROContext roContext=ReadOnlyContext();
   CWriteAccess *wacc=0;
+
+  if (flags.Contains(isTempVar))
+    return true;
 
   if (flags.Contains(isLocalVar)
   && flags.Contains(isInForeach)) {

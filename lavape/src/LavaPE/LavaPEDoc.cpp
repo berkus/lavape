@@ -816,7 +816,7 @@ bool CLavaPEDoc::CheckImpl (LavaDECL* implDECL, int checkLevel)
 {
 	CHE *cheImplEl, *cheIOEl, *cheI=0, *che, *afterElem = 0;
 	TID fID, supID, dataID;
-	bool toImpl, changed = false, fchanged, found, hasForm = false;
+	bool toImpl, changed = false, fchanged = false, found, hasForm = false;
 	LavaDECL *implElDECL, *classElDECL, *classDECL, *formDECL;
 
 	CHETID* cheIDI = (CHETID*) implDECL->Supports.first;

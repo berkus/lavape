@@ -53,8 +53,8 @@ void CExecFrame::closeEvent(QCloseEvent *e)
 void CExecFrame::InitialUpdate()
 {
   wxChildFrame::InitialUpdate();
-  lastActive = m_viewList.first();
-  wxDocManager::GetDocumentManager()->RememberActiveView(lastActive);
+  //lastActive = m_viewList.first();
+  //wxDocManager::GetDocumentManager()->RememberActiveView(lastActive);
 }
 
 bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
