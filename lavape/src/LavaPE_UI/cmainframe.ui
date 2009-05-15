@@ -1085,10 +1085,10 @@
     <string>Check</string>
    </property>
    <property name="statusTip">
-    <string>Check the entire Lava file, including all contained execs.</string>
+    <string>Check this Lava file</string>
    </property>
    <property name="whatsThis">
-    <string>Check the entire Lava file, including all contained execs.</string>
+    <string>Check this Lava file</string>
    </property>
   </action>
   <action name="checkAllAction">
@@ -1105,8 +1105,11 @@
    <property name="iconText">
     <string>Check also included files</string>
    </property>
+   <property name="statusTip">
+    <string>Check this Lava file and all included files</string>
+   </property>
    <property name="whatsThis">
-    <string>Check also included files</string>
+    <string>Check this Lava file and all included files</string>
    </property>
   </action>
   <action name="runAction">

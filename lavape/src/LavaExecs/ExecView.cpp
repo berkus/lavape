@@ -2143,9 +2143,9 @@ void CExecView::RedrawExec(SynObject *selectAt)
     sData.synObjectID = text->currentSynObjID;
     sData.execView = this;
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSelect, 0,0, (address)&sData);
-    redCtl->update();
   }
   Select();
+  redCtl->update();
 }
 
 

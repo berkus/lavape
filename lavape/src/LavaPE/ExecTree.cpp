@@ -1746,8 +1746,10 @@ void CExecChecks::ExecExec(LavaDECL ** pelDef, int level)
     sData.doc = Doc;
     sData.execDECL = *pelDef;
     UpdateParameters(ckd);
+    ckd.updateParms = false;
     ((SynObject*)(*pelDef)->Exec.ptr)->MakeTable((address)&Doc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
     selfVar->Check(ckd);
+    ckd.updateParms = true;
     Doc->nErrors += ckd.nErrors;
     Doc->nPlaceholders += ckd.nPlaceholders;
   }

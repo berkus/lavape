@@ -1737,6 +1737,9 @@ void VarAction::CheckLocalScope (CheckData &ckd, SynObject *synObj)
 //#ifndef INTERPRETER
 
 void UpdateParameters (CheckData &ckd) {
+  if (!ckd.updateParms)
+    return;
+
   SelfVar *selfVar=(SelfVar*)ckd.myDECL->Exec.ptr;
   selfVar->inINCL = ckd.inINCL;
 #ifdef INTERPRETER
