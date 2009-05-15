@@ -1407,9 +1407,9 @@ wxDocTemplate *wxDocManager::MatchTemplate(const QString& WXUNUSED(path))
 void wxDocManager::AddFileToHistory(QString& file)
 {
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
-
+  DString dFile(qPrintable(file));
   if (m_fileHistory) {
-    m_fileHistory->AddToHistory(new DString(qPrintable(file)),wxTheApp);
+    m_fileHistory->AddToHistory(&dFile,wxTheApp);
     m_fileHistory->Save(settings);
   }
 }
