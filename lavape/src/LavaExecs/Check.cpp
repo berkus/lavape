@@ -215,7 +215,7 @@ void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
       synObj = (SynObject*)((FuncExpression*)synObj)->function.ptr;
   }
   else if (synObj->primaryToken == qua_T)
-    synObj = (SynObject*)((ExtendExpression*)synObj)->extendType.ptr;
+    synObj = (SynObject*)((ExtendExpression*)synObj)->extendObj.ptr;
   else if (synObj->primaryToken == ifx_T)
     synObj = (SynObject*)((CHE*)((IfExpression*)synObj)->ifThens.first)->data;
 
@@ -6750,6 +6750,12 @@ bool EnumItem::Check (CheckData &ckd)
 
 void ExtendExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
   ((SynObject*)extendType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
+  if (((SynObject*)extendObj.ptr)->flags.Contains(isStateObjectX))
+    cat = stateObjectCat;
+  else if (((SynObject*)extendObj.ptr)->flags.Contains(isAnyCatX))
+    cat = anyCat;
+  else
+    cat = valueObjectCat;
 #ifdef INTERPRETER
   finalType = ckd.document->GetType(decl);
 #endif

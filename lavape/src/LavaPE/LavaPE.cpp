@@ -543,14 +543,6 @@ void CLavaPEApp::OnChooseExecFont()
     LBaseData.m_lfDefExecFont = lf.toString();
 
     dm = wxDocManager::GetDocumentManager();
-    /*
-    posD = dm->GetFirstDocPos();
-    while (posD) {
-      doc = (CLavaPEDoc*)dm->GetNextDoc(posD);
-      posV = doc->GetFirstViewPos();
-      while (posV) {
-        view = doc->GetNextView(posV);
-    */
     for (posD = 0; posD < dm->m_docs.size(); posD++) {
       doc = (CLavaPEDoc*)dm->m_docs[posD];
       for (posV = 0; posV < doc->m_documentViews.size(); posV++) {

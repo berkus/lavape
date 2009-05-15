@@ -2,6 +2,7 @@ TEMPLATE = lib
 include(../../lpc.prf)
 
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
+
 CONFIG += warn_off \
     qt \
     debug-and-release \

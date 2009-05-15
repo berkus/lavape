@@ -1,4 +1,5 @@
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
+
 include(../../lpc.prf)
 
 SOURCES *= Lava.cpp LavaDoc.cpp MainFrm.cpp

@@ -5,6 +5,7 @@ else:PH_FILES = $$system(ls *.ph)
 include(../../lpc.prf)
 
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
+
 SOURCES *= Check.cpp ClosedLevelVisitor.cpp ComboBar.cpp Constructs.cpp ConstructsV.cpp EditConst.cpp ExecFrame.cpp ExecUpdate.cpp ExecView.cpp \
     LavaExecsStringInit.cpp ProgText.cpp Scanner.cpp TableVisitor.cpp Tokens.cpp VisitorTraversal.cpp
 SOURCES *= ConstructsG.cpp TokensG.cpp

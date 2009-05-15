@@ -6,6 +6,7 @@ else:PH_FILES = $$system(ls *.ph)
 #message($$SOURCES:$$PH_FILES)
 
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
+
 SOURCES *= AboutBox.cpp BAdapter.cpp DumpView.cpp InterprBase.cpp LavaAppBase.cpp LavaBaseDoc.cpp LavaBaseStringInit.cpp LavaThread.cpp PEBaseDoc.cpp SylTraversal.cpp SynIDTable.cpp SynIO.cpp Syntax.cpp
 SOURCES *= SyntaxG.cpp
 HEADERS *= AboutBox.h BAdapter.h BASEMACROS.h DumpView.h LavaAppBase.h LavaBaseDoc.h LavaBaseStringInit.h LavaThread.h PEBaseDoc.h SafeInt.h SylTraversal.h SynIDTable.h SynIO.h Syntax.h
