@@ -585,6 +585,7 @@ public:
   CHAINX/*FormParm*/ inputs, outputs;
 
   virtual bool Check (CheckData &ckd);
+//  bool ParamsUnchanged (CheckData &ckd):
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 }--;
 

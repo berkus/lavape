@@ -1746,6 +1746,9 @@ void UpdateParameters (CheckData &ckd) {
   FormParms *fp, *old_fp=0;
   LavaDECL *decl=ckd.myDECL->ParentDECL;
 
+  //if (((FormParms*)selfVar->formParms.ptr)->ParamsUnchanged(ckd))
+  //  return;
+
   if (ckd.myDECL->DeclType == Require
   || ckd.myDECL->DeclType == Ensure
   || decl->DeclType == Interface)
@@ -1775,6 +1778,7 @@ void UpdateParameters (CheckData &ckd) {
   old_fp = (FormParms*)selfVar->formParms.ptr;
   selfVar->formParms.ptr = fp;
   ((FormParms*)selfVar->formParms.ptr)->Check(ckd);
+
   if (old_fp)
     delete old_fp;
   if (!((FormParms*)selfVar->formParms.ptr)->inputs.first
@@ -1787,7 +1791,29 @@ void UpdateParameters (CheckData &ckd) {
     ((CExecView*)selfVar->execView)->redCtl->update();
 #endif
 }
+/*
+bool FormParms::ParamsUnchanged (CheckData &ckd) {
+  SelfVar *selfVar=(SelfVar*)parentObject;
+  CHE *chpParmRef, *chpParmDef;
+  TID rID=((Reference*)selfVar->execName.ptr)->refID;
 
+  ADJUST4(rID);
+  chpParmDef = GetFirstInput(&ckd.document->IDTable,rID);
+  while (chpParmDef && ((LavaDECL*)chpParmDef->data)->DeclType == IAttr) {
+    if (paramChanged(ckd,inputs,chpParmDef,chpParmRef,isInputVar))
+      return false;
+    chpParmDef = (CHE*)chpParmDef->successor;
+  }
+
+  chpParmDef = GetFirstOutput(&ckd.document->IDTable,rID);
+  while (chpParmDef && ((LavaDECL*)chpParmDef->data)->DeclType == OAttr) {
+    // locate old parm. and reposition it if necessary:
+    paramChanged(ckd,outputs,chpParmDef,chpParmRef,isOutputVar))
+      return false;
+    chpParmDef = (CHE*)chpParmDef->successor;
+  }
+}
+*/
 static void harmonize (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRef, ExecFlags ioFlag) {
   LavaDECL *decl=(LavaDECL*)parmDef->data;
   TID parmDefTid(decl->OwnID,0);
@@ -1835,8 +1861,56 @@ static void harmonize (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRe
   parmRef = new CHE(newParmRef);
   chain.Append(parmRef);
 }
-//#endif
+/*
+static bool paramChanged (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRef, ExecFlags ioFlag) {
+  LavaDECL *decl=(LavaDECL*)parmDef->data;
+  TID parmDefTid(decl->OwnID,0);
+  FormParm *newParmRef;
+  TDOD *tdod;
+  TDODC tdodc;
+  ObjReference *objRef;
 
+//  ADJUST(parmDefTid,decl);
+
+#ifdef INTERPRETER
+//  if (chain.first)
+//    return; // parms already generated in preceding UpdateParams call
+  newParmRef = new FormParm(true);
+  newParmRef->parmType.ptr = new Reference(TypePH_T,decl->RefID,"");
+#else
+  newParmRef = new FormParmV(true);
+  newParmRef->parmType.ptr = new ReferenceV(TypePH_T,decl->RefID,"");
+#endif
+
+  if (decl->TypeFlags.Contains(substitutable)
+    && !((SynObject*)parmRef->parmType.ptr)->flags.Contains(isSubstitutable)
+  || !decl->TypeFlags.Contains(substitutable)
+    && ((SynObject*)parmRef->parmType.ptr)->flags.Contains(isSubstitutable))
+    return true;
+  if (decl->TypeFlags.Contains(isStateObjectY)
+    && !parmRef->flags.Contains(isStateObjectX)
+  || !decl->TypeFlags.Contains(isStateObjectY)
+    && parmRef->flags.Contains(isStateObjectX))
+    return true;
+  else if (decl->TypeFlags.Contains(isAnyCatY)
+    && !parmRef->flags.Contains(isAnyCatX)
+  || !decl->TypeFlags.Contains(isAnyCatY)
+    && parmRef->flags.Contains(isAnyCatX))
+    return true;
+
+  if (decl->SecondTFlags.Contains(closed)
+    && !((SynObject*)parmRef->formParm.ptr)->flags.Contains(isClosed)
+  || !decl->SecondTFlags.Contains(closed)
+    && ((SynObject*)parmRef->formParm.ptr)->flags.Contains(isClosed))
+    return true;
+
+  if (parmRef->formParmID != parmDefTid)
+    return true;
+  if (parmRef- != parmDefTid)
+    return true;
+}
+//#endif
+*/
 bool FormParms::Check (CheckData &ckd)
 {
   SelfVar *selfVar=(SelfVar*)parentObject;
