@@ -586,7 +586,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
     return;
 
-  setUpdatesEnabled(false);
+  //setUpdatesEnabled(false);
 
   if (reallyUpdated)
     execView->RedrawExec();
