@@ -24,22 +24,6 @@
 #include <QCloseEvent>
 #include <QTreeWidget>
 
-/*
-typedef QMap<QString,QString> HelpTextMap;
-
-class ToolbarWhatsThis : public WhatsThis
-{
-public:
-  ToolbarWhatsThis(QToolBar *tb):WhatsThis(0,tb) { toolbar = tb; }
-
-//  bool clicked(const QString &whatsThisHref);
-  QString text(const QPoint&);
-  HelpTextMap helpTextMap;
-
-private:
-  QToolBar *toolbar;
-};
-*/
 
 class CLavaMainFrame : public CMainFrame
 {
@@ -50,10 +34,8 @@ public:
   bool OnCreate();
 	virtual void UpdateUI();
   CUtilityView  *m_UtilityView;
-  //QSplitter *m_ClientArea;
   bool UtilitiesHidden;
   int LastUtilitiesState; //-1:hidden, else: ActTab of m_UtilityView
-//  void ShowUtilitiesTab(UtilityTabs tab);
   void helpContents() { on_helpContentsAction_triggered(); }
   void fillKwdToolbar(QToolBar *tb);
   void fillHelpToolbar(QToolBar *tb);
@@ -62,23 +44,11 @@ public:
   void installToolButtonEvtFilters(QToolBar *tb);
 	void customEvent(QEvent *ev);
   bool eventFilter(QObject *obj,QEvent *ev);
-/*
-  void fillHelpMap1(ToolbarWhatsThis *tbw);
-  void fillHelpMap2(ToolbarWhatsThis *tbw);
-  void fillHelpMap3(ToolbarWhatsThis *tbw);
-  void fillHelpMap4(ToolbarWhatsThis *tbw);
-  void fillHelpMap5(ToolbarWhatsThis *tbw);
-  void fillHelpMap6(ToolbarWhatsThis *tbw);
-*/
+
 private:
 	bool splitHoriz;
 
   void OnUpdateshowUtil(QAction* action);
-//  void OnUpdateViewToolbar1(QAction* action);
-//  void OnUpdateViewToolbar2(QAction* action);
-//  void OnUpdateViewToolbar4(QAction* action);
-//  void OnUpdateViewToolbar3(QAction* action);
-//	bool event(QEvent *ev);
 
 public slots:
     void makeStyle(const QString &style);

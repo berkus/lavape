@@ -3591,6 +3591,8 @@ bool CLavaPEDoc::OpenExecView (LavaDECL* eDECL)
 		((CLavaPEApp*) wxTheApp)->LBaseData.actHint = new CLavaPEHint (CPECommand_OpenExecView, this, (const unsigned long) 3,  eDECL, MainView, wxTheApp->m_appWindow->statusBar(), ((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView, 0); //  pdecl);
 		execChild = ((CLavaPEApp*) wxTheApp)->pExecTemplate->CreateChildFrame (this);
 		active = (execChild !=0);
+    if (eDECL->Exec.ptr)
+      ((SelfVar*)eDECL->Exec.ptr)->execView = ((CExecFrame*)execChild)->m_ExecView;
 		execChild->InitialUpdate();
 		((CLavaMainFrame*) wxTheApp->m_appWindow)->Toolbar_5->show();
 		((CLavaMainFrame*) wxTheApp->m_appWindow)->Toolbar_6->show();

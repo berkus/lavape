@@ -1737,16 +1737,13 @@ void VarAction::CheckLocalScope (CheckData &ckd, SynObject *synObj)
 //#ifndef INTERPRETER
 
 void UpdateParameters (CheckData &ckd) {
-  if (!ckd.updateParms)
-    return;
-
   SelfVar *selfVar=(SelfVar*)ckd.myDECL->Exec.ptr;
   selfVar->inINCL = ckd.inINCL;
 #ifdef INTERPRETER
   if (selfVar->formParms.ptr)
     return;
 #endif
-  FormParms *fp;
+  FormParms *fp, *old_fp=0;
   LavaDECL *decl=ckd.myDECL->ParentDECL;
 
   if (ckd.myDECL->DeclType == Require
@@ -1775,14 +1772,20 @@ void UpdateParameters (CheckData &ckd) {
 #else
   fp = new FormParmsV(selfVar);
 #endif
-  if (selfVar->formParms.ptr)
-    delete selfVar->formParms.ptr;
+  old_fp = (FormParms*)selfVar->formParms.ptr;
   selfVar->formParms.ptr = fp;
   ((FormParms*)selfVar->formParms.ptr)->Check(ckd);
-  if (!fp->inputs.first && !fp->outputs.first) {
-    delete fp;
+  if (old_fp)
+    delete old_fp;
+  if (!((FormParms*)selfVar->formParms.ptr)->inputs.first
+  && !((FormParms*)selfVar->formParms.ptr)->outputs.first) {
+    delete selfVar->formParms.ptr;
     selfVar->formParms.ptr = 0;
   }
+#ifndef INTERPRETER
+  if (selfVar->execView)
+    ((CExecView*)selfVar->execView)->redCtl->update();
+#endif
 }
 
 static void harmonize (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRef, ExecFlags ioFlag) {

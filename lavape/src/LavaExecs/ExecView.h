@@ -70,7 +70,7 @@ public:
   MiniEdit *editCtl;
         CComboBar *m_ComboBar;
 
-  bool editCtlVisible, insertBefore, on_editCutAction_triggered, doubleClick,
+  bool notYetPainted, editCtlVisible, insertBefore, on_editCutAction_triggered, doubleClick,
        clicked, escapePressed, forcePrimTokenSelect, deletePending,
        inIgnore, inExecHeader, inFormParms, inBaseInits,
        inParameter, inForeach, externalHint, nextError,
@@ -94,7 +94,7 @@ public:
   void SetSelectAt (SynObject *obj);
   void Check ();
   void Redraw (SynObject *newObject);
-  void RedrawExec (SynObject *selectAt=0);
+  void RedrawExec ();
   virtual void on_whatNextAction_triggered();
 
   void OnInsertEnum (QString &refName, TID &refTID);
@@ -374,12 +374,16 @@ public:
   int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent,
   widthOfBlank, contentsWidth, contentsHeight, miniEditRightEdge;
   QPixmap *debugStop, *debugStopGreen, *breakPoint;
-  bool inDebugStop, inBreakPoint, innermostStop, repaintAppWindow;
+  bool inDebugStop, inBreakPoint, innermostStop, reallyUpdated;
   CHETokenNode *debugStopToken;
   CHETokenNode *callerStopToken;
   StopReason stopReason;
 
   bool event(QEvent *ev);
+  void update() {
+    reallyUpdated = true;
+    QWidget::update();
+  }
   void keyPressEvent (QKeyEvent *e);
   //void focusInEvent (QFocusEvent *e) { execView->wxView::focusInEvent(e); }
   QString text(const QPoint &point);

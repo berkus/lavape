@@ -120,6 +120,7 @@ static void CopyUntil(ObjReference *oldRef,CHE *chpStop,ObjReference *newRef) {
 CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,"ExecView")
 {
   initialUpdateDone = false; // indicates whether OnInitialUpdate has already been executed
+  notYetPainted = true;
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
   layout->addWidget(sv);
@@ -575,7 +576,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
 {
   fmt.fontFamily = fmt.font.family();
   QPainter p(this);
-
   CHETokenNode *currentToken;
   bool inSelection=false, debugStopOccurred=false;
   QPen myPen(Qt::NoPen);
@@ -585,8 +585,13 @@ void ExecContents::paintEvent (QPaintEvent *ev)
 
   if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
     return;
-  p.setBackgroundMode(Qt::OpaqueMode);
 
+  setUpdatesEnabled(false);
+
+  if (reallyUpdated)
+    execView->RedrawExec();
+
+  p.setBackgroundMode(Qt::OpaqueMode);
   contentsWidth = 0;
   contentsHeight = 0;
   fmt.font = font();
@@ -708,6 +713,8 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     execView->autoScroll = false;
   }
   delete fm;
+  reallyUpdated = false;
+  setUpdatesEnabled(true);
 }
 
 void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
@@ -880,7 +887,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     sData.nextFreeID = 0;
     sData.execDECL = myDECL;
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSetSynOID, 0,0, (address)&sData);
-    RedrawExec(text->selectAt);
+    //RedrawExec(text->selectAt);
     //selfVar->oldFormParms = (FormParms*)selfVar->formParms.ptr;
 
     toBeDrawn = 0;
@@ -888,6 +895,8 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     externalHint = false;
     if (hint && hint->com == CPECommand_OpenExecView)
       delete hint;
+    //Select();
+    redCtl->update();
   }
 }
 
@@ -1290,7 +1299,7 @@ ExecContents::ExecContents (MyScrollView *sv) {
   debugStopToken = 0;
   callerStopToken = 0;
   miniEditRightEdge = 0;
-  repaintAppWindow = true;
+  reallyUpdated = false;
 #ifdef WIN32
   fmt.symbolFamily = "Wingdings";
 #else
@@ -2115,7 +2124,7 @@ void CExecView::Check () {
 }
 
 
-void CExecView::RedrawExec(SynObject *selectAt)
+void CExecView::RedrawExec()
 {
   // TODO: Add your command handler code here
   CSearchData sData;
@@ -2134,7 +2143,8 @@ void CExecView::RedrawExec(SynObject *selectAt)
     text->parmNames = false;
   text->showComments = myDECL->TreeFlags.Contains(ShowExecComments);
 
-  text->selectAt = selectAt?selectAt:selfVar;
+  if (!text->selectAt)
+    text->selectAt = selfVar;
   text->selectAfter = text->selectAt;
 
   Redraw(selfVar);
@@ -2145,6 +2155,7 @@ void CExecView::RedrawExec(SynObject *selectAt)
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSelect, 0,0, (address)&sData);
   }
   Select();
+  notYetPainted = false;
   redCtl->update();
 }
 
@@ -3752,7 +3763,8 @@ void CExecView::OnShowComments()
   else
     myDECL->TreeFlags.EXCL(ShowExecComments);
 
-  RedrawExec(text->selectAt);
+  //RedrawExec(text->selectAt);
+  redCtl->update();
 }
 
 void CExecView::OnNot()
@@ -4666,7 +4678,8 @@ void CExecView::OnToggleArrows()
   else
     myDECL->TreeFlags.EXCL(leftArrows);
 
-  RedrawExec(text->selectAt);
+  //RedrawExec(text->selectAt);
+  redCtl->update();
 }
 
 void CExecView::OnNewLine()
@@ -5575,8 +5588,8 @@ void CExecView::OnToggleParmNames()
   else
     myDECL->TreeFlags.EXCL(parmNames);
 
-  RedrawExec(text->selectAt);
-
+  //RedrawExec(text->selectAt);
+  redCtl->update();
 }
 
 void CExecView::OnCopy()
@@ -5792,7 +5805,7 @@ void CExecView::OnInsertEnum (QString &itemName, TID &typeID)
 
 void CExecView::UpdateUI()
 {
-  if (editCtlVisible || !initialUpdateDone)
+  if (!initialUpdateDone || notYetPainted || editCtlVisible)
     return;
   OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
   OnUpdateHandle(LBaseData->handleActionPtr);
