@@ -586,11 +586,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
     return;
 
-  //setUpdatesEnabled(false);
-
-  if (reallyUpdated)
-    execView->RedrawExec();
-
   p.setBackgroundMode(Qt::OpaqueMode);
   contentsWidth = 0;
   contentsHeight = 0;
@@ -713,8 +708,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     execView->autoScroll = false;
   }
   delete fm;
-  reallyUpdated = false;
-  setUpdatesEnabled(true);
 }
 
 void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
@@ -887,7 +880,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     sData.nextFreeID = 0;
     sData.execDECL = myDECL;
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSetSynOID, 0,0, (address)&sData);
-    //RedrawExec(text->selectAt);
+    RedrawExec();
     //selfVar->oldFormParms = (FormParms*)selfVar->formParms.ptr;
 
     toBeDrawn = 0;
@@ -896,7 +889,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     if (hint && hint->com == CPECommand_OpenExecView)
       delete hint;
     //Select();
-    redCtl->update();
+    //redCtl->update();
   }
 }
 
@@ -1299,7 +1292,6 @@ ExecContents::ExecContents (MyScrollView *sv) {
   debugStopToken = 0;
   callerStopToken = 0;
   miniEditRightEdge = 0;
-  reallyUpdated = false;
 #ifdef WIN32
   fmt.symbolFamily = "Wingdings";
 #else
@@ -3763,8 +3755,8 @@ void CExecView::OnShowComments()
   else
     myDECL->TreeFlags.EXCL(ShowExecComments);
 
-  //RedrawExec(text->selectAt);
-  redCtl->update();
+  RedrawExec();
+  //redCtl->update();
 }
 
 void CExecView::OnNot()
@@ -4678,8 +4670,8 @@ void CExecView::OnToggleArrows()
   else
     myDECL->TreeFlags.EXCL(leftArrows);
 
-  //RedrawExec(text->selectAt);
-  redCtl->update();
+  RedrawExec();
+  //redCtl->update();
 }
 
 void CExecView::OnNewLine()
@@ -5588,8 +5580,8 @@ void CExecView::OnToggleParmNames()
   else
     myDECL->TreeFlags.EXCL(parmNames);
 
-  //RedrawExec(text->selectAt);
-  redCtl->update();
+  RedrawExec();
+  //redCtl->update();
 }
 
 void CExecView::OnCopy()

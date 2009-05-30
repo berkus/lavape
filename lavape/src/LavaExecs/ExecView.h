@@ -374,16 +374,12 @@ public:
   int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent,
   widthOfBlank, contentsWidth, contentsHeight, miniEditRightEdge;
   QPixmap *debugStop, *debugStopGreen, *breakPoint;
-  bool inDebugStop, inBreakPoint, innermostStop, reallyUpdated;
+  bool inDebugStop, inBreakPoint, innermostStop;
   CHETokenNode *debugStopToken;
   CHETokenNode *callerStopToken;
   StopReason stopReason;
 
   bool event(QEvent *ev);
-  void update() {
-    reallyUpdated = true;
-    QWidget::update();
-  }
   void keyPressEvent (QKeyEvent *e);
   //void focusInEvent (QFocusEvent *e) { execView->wxView::focusInEvent(e); }
   QString text(const QPoint &point);
