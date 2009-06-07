@@ -1015,6 +1015,7 @@ wxDocManager::wxDocManager(long flags)
   sm_docManager = this;
   m_activeFrame = 0;
   m_oldActiveFrame = 0;
+  m_totalCheckFrame = 0;
   m_currentTabWidget = 0;
 }
 

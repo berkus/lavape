@@ -407,8 +407,10 @@ public:
 
     wxDocument *GetActiveDocument();// const;
 
-    void SetMaxDocsOpen(int n) { m_maxDocsOpen = n; }
-    int GetMaxDocsOpen() const { return m_maxDocsOpen; }
+    void SetMaxDocsOpen(int n) {
+      m_maxDocsOpen = n; }
+    int GetMaxDocsOpen() const {
+      return m_maxDocsOpen; }
 
     // Add and remove a document from the manager's list
     void AddDocument(wxDocument *doc);
@@ -421,16 +423,26 @@ public:
     // when a view is going in or out of focus
     virtual void RememberActiveView(wxView *view, bool forget=false);
     virtual wxView *GetActiveView();// const;
-    virtual wxChildFrame *GetActiveFrame() { return m_activeFrame; }
-    virtual wxChildFrame *GetOldActiveFrame() { return m_oldActiveFrame; }
+    virtual wxChildFrame *GetActiveFrame() {
+      return m_activeFrame; }
+    virtual wxChildFrame *GetOldActiveFrame() {
+      return m_oldActiveFrame; }
     virtual void RememberActiveFrame(wxChildFrame *af);
-    virtual void ResetOldActiveFrame() { m_oldActiveFrame = 0; };
+    virtual void ResetOldActiveFrame() {
+      m_oldActiveFrame = 0; };
+    virtual void RememberTotalCheckFrame() {
+      m_totalCheckFrame = m_activeFrame; }
+    virtual wxChildFrame *GetTotalCheckFrame() {
+      return m_totalCheckFrame; }
     void SetNewCurrentFrame();
 
-    wxTabWidget *GetCurrentTabWidget() const { return m_currentTabWidget; }
-    void SetCurrentTabWidget(wxTabWidget *tw) { m_currentTabWidget = tw; }
+    wxTabWidget *GetCurrentTabWidget() const {
+      return m_currentTabWidget; }
+    void SetCurrentTabWidget(wxTabWidget *tw) {
+      m_currentTabWidget = tw; }
 
-    virtual QList<wxDocument*>& GetDocuments() const { return (QList<wxDocument*>&) m_docs; }
+    virtual QList<wxDocument*>& GetDocuments() const {
+      return (QList<wxDocument*>&) m_docs; }
 
     //POSITION GetFirstDocPos();
     //wxDocument* GetNextDoc(POSITION& pos);
@@ -494,7 +506,7 @@ public slots:
 
 private:
     wxTabWidget *m_currentTabWidget;
-    wxChildFrame      *m_activeFrame, *m_oldActiveFrame;
+    wxChildFrame      *m_activeFrame, *m_oldActiveFrame, *m_totalCheckFrame;
     wxView            *m_activeView;
     Q_OBJECT
 };

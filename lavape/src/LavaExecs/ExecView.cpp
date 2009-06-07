@@ -1410,12 +1410,8 @@ void CExecView::Select (SynObject *selObj)
   inParameter = ocUpd.inParameter;
   inForeach = ocUpd.inForeach;
 
-  if (!doubleClick)
+  if (!doubleClick && !wxDocManager::GetDocumentManager()->GetTotalCheckFrame())
     Activate(false);
-  //if (active) {
-  //  redCtl->setFocus();
-  //  //wxTheApp->selChanged = true;
-  //}
 
   SetHelpText();
 

@@ -3476,6 +3476,7 @@ void CLavaPEDoc::OnTotalCheck()
 	int pos;
 	bool isNewDoc;
 
+  mana->RememberTotalCheckFrame();
 	((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView->singleError = true;
   CExecChecks* ch = new CExecChecks (this);
 	delete ch;
