@@ -1826,8 +1826,8 @@ void CTreeFrame::Activate(bool topDown)
 {
   if (!((CLavaPEApp*)wxTheApp)->inTotalCheck)
     wxChildFrame::Activate(topDown);
-  else
-    hide();
+  //else
+  //  hide();
 }
 
 void CTreeFrame::CalcSplitters(bool showVT, bool showINCL)

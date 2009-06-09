@@ -432,6 +432,9 @@ public:
       m_oldActiveFrame = 0; };
     virtual void RememberTotalCheckFrame() {
       m_totalCheckFrame = m_activeFrame; }
+    virtual void ResetTotalCheckFrame() {
+      SetNewCurrentFrame();
+      m_totalCheckFrame = 0; }
     virtual wxChildFrame *GetTotalCheckFrame() {
       return m_totalCheckFrame; }
     void SetNewCurrentFrame();

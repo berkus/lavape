@@ -497,7 +497,7 @@ void wxTabBar::dropEvent(QDropEvent *evt)
 void wxDocManager::SetNewCurrentFrame() {
   if (m_totalCheckFrame) {
     m_totalCheckFrame->Activate(true);
-    m_totalCheckFrame = 0;
+    m_oldActiveFrame = m_totalCheckFrame;
     return;
   }
   if (m_oldActiveFrame) {

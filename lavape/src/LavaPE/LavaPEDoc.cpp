@@ -3552,9 +3552,9 @@ void CLavaPEDoc::OnTotalCheck()
 			QApplication::postEvent (wxTheApp, new CustomEvent (UEV_LavaPE_CloseDoc, (void*) doc));
 		}
 	}
+  //actView->Activate(false);
+  mana->ResetTotalCheckFrame();
 	((CLavaPEApp*) wxTheApp)->inTotalCheck = false;
-  actView->Activate(false);
-	//mana->RememberActiveView (actView);
 }
 
 void CLavaPEDoc::OnUpdateDbgStart (QAction* action)
