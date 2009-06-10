@@ -1746,6 +1746,10 @@ void UpdateParameters (CheckData &ckd) {
   FormParms *fp, *old_fp=0;
   LavaDECL *decl=ckd.myDECL->ParentDECL;
 
+  if (selfVar->updateNo == ((CPEBaseDoc*)ckd.document)->UpdateNo)
+    return;
+  selfVar->updateNo = ((CPEBaseDoc*)ckd.document)->UpdateNo;
+
   //if (((FormParms*)selfVar->formParms.ptr)->ParamsUnchanged(ckd))
   //  return;
 

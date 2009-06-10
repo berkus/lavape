@@ -609,7 +609,7 @@ public:
   NESTEDANY<Expression> body;
   CHETokenNode-- *oldParmsStartToken, *oldParmsEndToken;
   LavaDECL-- *execDECL, *funcDECL, *itfDECL, *selfType;
-  unsigned-- nParams, nInputs, nOutputs, stackFrameSize, firstOldExprExec, inINCL;
+  unsigned-- nParams, nInputs, nOutputs, stackFrameSize, firstOldExprExec, inINCL, updateNo;
   bool-- concernExecs, checked, isFuncBody, isInvariant;
   CContext-- selfCtx;
 
@@ -617,6 +617,7 @@ public:
     checked = false;
     concernExecs = false;
     execView = 0;
+    updateNo = 0;
     isFuncBody = false;
     isInvariant = false;
   }
