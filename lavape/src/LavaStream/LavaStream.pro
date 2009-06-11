@@ -34,7 +34,6 @@ macx:POST_TARGETDEPS += ../../bin/Components/lib$${TARGET}.dylib
 else:POST_TARGETDEPS += ../../bin/Components/lib$${TARGET}.so
 
 links2.target = ../../bin/Components/LavaStream.lava
-#links2.depends = ../../samples/LavaStream.lava
 links2.commands = ln -s -f ../../samples/LavaStream.lava ../../bin/Components/LavaStream.lava
 QMAKE_EXTRA_TARGETS += links2
 POST_TARGETDEPS += ../../bin/Components/LavaStream.lava

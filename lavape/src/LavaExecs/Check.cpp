@@ -1750,9 +1750,6 @@ void UpdateParameters (CheckData &ckd) {
     return;
   selfVar->updateNo = ((CPEBaseDoc*)ckd.document)->UpdateNo;
 
-  //if (((FormParms*)selfVar->formParms.ptr)->ParamsUnchanged(ckd))
-  //  return;
-
   if (ckd.myDECL->DeclType == Require
   || ckd.myDECL->DeclType == Ensure
   || decl->DeclType == Interface)
@@ -1795,29 +1792,7 @@ void UpdateParameters (CheckData &ckd) {
     ((CExecView*)selfVar->execView)->redCtl->update();
 #endif
 }
-/*
-bool FormParms::ParamsUnchanged (CheckData &ckd) {
-  SelfVar *selfVar=(SelfVar*)parentObject;
-  CHE *chpParmRef, *chpParmDef;
-  TID rID=((Reference*)selfVar->execName.ptr)->refID;
 
-  ADJUST4(rID);
-  chpParmDef = GetFirstInput(&ckd.document->IDTable,rID);
-  while (chpParmDef && ((LavaDECL*)chpParmDef->data)->DeclType == IAttr) {
-    if (paramChanged(ckd,inputs,chpParmDef,chpParmRef,isInputVar))
-      return false;
-    chpParmDef = (CHE*)chpParmDef->successor;
-  }
-
-  chpParmDef = GetFirstOutput(&ckd.document->IDTable,rID);
-  while (chpParmDef && ((LavaDECL*)chpParmDef->data)->DeclType == OAttr) {
-    // locate old parm. and reposition it if necessary:
-    paramChanged(ckd,outputs,chpParmDef,chpParmRef,isOutputVar))
-      return false;
-    chpParmDef = (CHE*)chpParmDef->successor;
-  }
-}
-*/
 static void harmonize (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRef, ExecFlags ioFlag) {
   LavaDECL *decl=(LavaDECL*)parmDef->data;
   TID parmDefTid(decl->OwnID,0);
