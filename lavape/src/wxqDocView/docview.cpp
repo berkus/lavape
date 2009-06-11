@@ -1721,6 +1721,8 @@ void wxDocManager::RememberActiveView(wxView *view, bool forget)
 
 void wxDocManager::RememberActiveFrame(wxChildFrame *af) {
   if (!af) {
+    if (m_oldActiveFrame == m_activeFrame)
+      m_oldActiveFrame = 0;
     m_activeFrame = 0;
     return;
   }

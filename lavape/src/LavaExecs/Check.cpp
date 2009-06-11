@@ -673,18 +673,20 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
     ok &= false;
   }
 
-  closedLevel = actSynObj->ClosedLevel(ckd);
-  if (closedLevel && !formDecl->SecondTFlags.Contains(closed))
-    if (ckd.inIniClause) {
-      if (closedLevel >= (int)((VarName*)ckd.iniVar)->varIndex) {
+  if (NoPH(parm)) {
+    closedLevel = actSynObj->ClosedLevel(ckd);
+    if (closedLevel && !formDecl->SecondTFlags.Contains(closed))
+      if (ckd.inIniClause) {
+        if (closedLevel >= (int)((VarName*)ckd.iniVar)->varIndex) {
+          actSynObj->SetError(ckd,&ERR_Closed);
+          ok &= false;
+        }
+      }
+      else {
         actSynObj->SetError(ckd,&ERR_Closed);
         ok &= false;
       }
-    }
-    else {
-      actSynObj->SetError(ckd,&ERR_Closed);
-      ok &= false;
-    }
+  }
 
   //if (parm->flags.Contains(isSelfVar)) {
   //  if (parm->parentObject->parentObject->primaryToken != initializing_T
@@ -1746,7 +1748,8 @@ void UpdateParameters (CheckData &ckd) {
   FormParms *fp, *old_fp=0;
   LavaDECL *decl=ckd.myDECL->ParentDECL;
 
-  if (selfVar->updateNo == ((CPEBaseDoc*)ckd.document)->UpdateNo)
+  if ((ckd.myDECL->ParentDECL->nInput || ckd.myDECL->ParentDECL->nOutput) && selfVar->formParms.ptr
+  && selfVar->updateNo == ((CPEBaseDoc*)ckd.document)->UpdateNo)
     return;
   selfVar->updateNo = ((CPEBaseDoc*)ckd.document)->UpdateNo;
 

@@ -1833,6 +1833,15 @@ exp: // Const_T
         if (ctxFlags.bits)
           text->ckd.tempCtx.ContextFlags = ctxFlags;
         decl = myDoc->GetFinalMVType(tid,0,text->ckd.tempCtx,cat,0);
+        if (cat == unknownCat) {
+          LavaDECL *formParmDecl = myDoc->IDTable.GetDECL(tid,0);
+          if (formParmDecl->TypeFlags.Contains(isStateObjectY))
+            cat = stateObjectCat;
+          else if (formParmDecl->TypeFlags.Contains(isAnyCatY))
+            cat = anyCat;
+          else
+            cat = valueObjectCat;
+        }
         if (decl) {
           if (((LavaDECL*)chpFormIn->data)->TypeFlags.Contains(substitutable))
             text->ckd.tempCtx.ContextFlags = SET(multiContext,-1);
