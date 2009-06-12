@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #echo $1, $2, $3
 if test .$3 == .std ; then
   exit
@@ -15,6 +16,3 @@ ln -s $1/std .
 ln -s $1/std_m.htm .
 ln -s $1/std.htm .
 ln -s $1/std_1.htm .
-
-
-
