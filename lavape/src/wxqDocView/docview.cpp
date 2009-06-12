@@ -441,7 +441,7 @@ bool wxDocument::DeleteAllChildFrames()
     child = m_docChildFrames.takeAt(0);
     tabWid = child->m_tabWidget;
     if (tabWid) {
-      tabWid->removeTab(tabWid->indexOf(child));
+//      tabWid->removeTab(tabWid->indexOf(child));
       if (child == oldAF)
         docMan->ResetOldActiveFrame();
       if (child == actFrame)
