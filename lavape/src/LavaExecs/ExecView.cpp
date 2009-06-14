@@ -1704,6 +1704,14 @@ obj:
         else
           text->ckd.tempCtx = text->ckd.lpc;
         finalDecl = myDoc->GetFinalMVType(decl->RefID,decl->inINCL,text->ckd.tempCtx,cat,0);
+        if (cat == unknownCat) {
+          if (decl->TypeFlags.Contains(isStateObjectY))
+            cat = stateObjectCat;
+          else if (decl->TypeFlags.Contains(isAnyCatY))
+            cat = anyCat;
+          else
+            cat = valueObjectCat;
+        }
         if (finalDecl) {
           if (decl->TypeFlags.Contains(substitutable))
             text->ckd.tempCtx.ContextFlags = SET(multiContext,-1);
@@ -1753,6 +1761,14 @@ exp: // Const_T
       else
         text->ckd.tempCtx = text->ckd.lpc;
       finalDecl = myDoc->GetFinalMVType(decl->RefID,decl->inINCL,text->ckd.tempCtx,cat,0);
+      if (cat == unknownCat) {
+        if (decl->TypeFlags.Contains(isStateObjectY))
+          cat = stateObjectCat;
+        else if (decl->TypeFlags.Contains(isAnyCatY))
+          cat = anyCat;
+        else
+          cat = valueObjectCat;
+      }
       if (finalDecl) {
         if (decl->TypeFlags.Contains(substitutable))
           text->ckd.tempCtx.ContextFlags = SET(multiContext,-1);
@@ -2151,8 +2167,8 @@ void CExecView::RedrawExec()
     sData.execView = this;
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSelect, 0,0, (address)&sData);
   }
-  Select();
   notYetPainted = false;
+  Select();
   redCtl->update();
 }
 
