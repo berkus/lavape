@@ -912,7 +912,7 @@ void CExecView::OnChar(QKeyEvent *e)
   ctrlPressed = (state & Qt::ControlModifier);
   SynObject *currentSynObj, *parent;
 
-  if (LBaseData->debugger->isConnected)
+  if (myDoc->changeNothing /*LBaseData->debugger->isConnected*/)
     switch (key) {
     case Qt::Key_Tab:
       if (state & Qt::ShiftModifier) // Shift key down ==> BACKTAB
