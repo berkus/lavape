@@ -910,7 +910,7 @@ void CExecView::OnChar(QKeyEvent *e)
   int key=e->key();
   Qt::KeyboardModifiers state=e->modifiers();
   ctrlPressed = (state & Qt::ControlModifier);
-  SynObject *currentSynObj, *parent/*, *ocl*/;
+  SynObject *currentSynObj, *parent;
 
   if (LBaseData->debugger->isConnected)
     switch (key) {
@@ -929,37 +929,46 @@ void CExecView::OnChar(QKeyEvent *e)
         currentSynObj = parent;
         parent = currentSynObj->parentObject;
       }
+      if (parent
+      && parent->primaryToken == parameter_T) {
+        currentSynObj = parent;
+        parent = currentSynObj->parentObject;
+      }
+      Select(parent);
+      break;
     case Qt::Key_Down:
       if (text->currentSynObj->primaryToken == parameter_T)
         currentSynObj = (SynObject*)((Parameter*)text->currentSynObj)->parameter.ptr;
       else
         currentSynObj = text->currentSynObj;
 
-      if (currentSynObj->type == VarPH_T
-      || currentSynObj->primaryToken == Exp_T
-      || currentSynObj->IsConstant()) {
-        text->currentSynObj = currentSynObj;
-        if (text->currentSynObj->primaryToken != enumConst_T
-        && text->currentSynObj->primaryToken != Boolean_T
-        && !text->currentSynObj->BoolAdmissibleOnly(text->ckd)
-        && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
-          doubleClick = true;
-        Select(text->currentSynObj);
-        doubleClick = false;
-      }
-      else if (text->currentSelection->data.token == Comment_T) {
-        doubleClick = true;
-        clicked = true;
-        Select();
-      }
-      else if (!IsPH(currentSynObj)
-      && currentSynObj->primaryToken != TDOD_T
-      && currentSynObj->primaryToken != FuncRef_T
-      && currentSynObj->primaryToken != TypeRef_T
-      && currentSynObj->primaryToken != CrtblRef_T) {
+      //if (!myDoc->changeNothing
+      //&& (currentSynObj->type == VarPH_T
+      //|| currentSynObj->primaryToken == Exp_T
+      //|| currentSynObj->IsConstant())) {
+      //  text->currentSynObj = currentSynObj;
+      //  if (text->currentSynObj->primaryToken != enumConst_T
+      //  && text->currentSynObj->primaryToken != Boolean_T
+      //  && !text->currentSynObj->BoolAdmissibleOnly(text->ckd)
+      //  && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
+      //    doubleClick = true;
+      //  Select(text->currentSynObj);
+      //  doubleClick = false;
+      //}
+      //else if (!myDoc->changeNothing
+      //&& text->currentSelection->data.token == Comment_T) {
+      //  doubleClick = true;
+      //  clicked = true;
+      //  Select();
+      //} else
+      //if (!myDoc->changeNothing
+      //&& currentSynObj->primaryToken != TDOD_T
+      //&& currentSynObj->primaryToken != FuncRef_T
+      //&& currentSynObj->primaryToken != TypeRef_T
+      //&& currentSynObj->primaryToken != CrtblRef_T) {
         text->currentSynObj = currentSynObj;
         Select(FirstChild());
-      }
+      //}
       break;
     case Qt::Key_Left:
       Select(LeftSibling());
@@ -967,21 +976,21 @@ void CExecView::OnChar(QKeyEvent *e)
     case Qt::Key_Right:
       Select(RightSibling());
       break;
-    case Qt::Key_Return:
-      if (GetDocument()->changeNothing)
-        return;
-      if (EnableInsert()) {
-        OnInsert();
-        if (text->currentSelection->data.token == VarPH_T
-        || text->currentSelection->data.token == Exp_T) {
-          doubleClick = true;
-          Select();
-          doubleClick = false;
-        }
-      }
-      else if (text->currentSynObj->IsStatement())
-        OnAnd();
-      break;
+    //case Qt::Key_Return:
+    //  if (GetDocument()->changeNothing)
+    //    return;
+    //  if (EnableInsert()) {
+    //    OnInsert();
+    //    if (text->currentSelection->data.token == VarPH_T
+    //    || text->currentSelection->data.token == Exp_T) {
+    //      doubleClick = true;
+    //      Select();
+    //      doubleClick = false;
+    //    }
+    //  }
+    //  else if (text->currentSynObj->IsStatement())
+    //    OnAnd();
+    //  break;
     case Qt::Key_F1:
       ((wxMainFrame*)wxTheApp->m_appWindow)->helpContents();
       break;
@@ -1162,7 +1171,7 @@ void CExecView::OnChar(QKeyEvent *e)
     case Qt::Key_Delete: // 0x2e DEL key
     case Qt::Key_Backspace: // 0x08 BACKSPACE key
 
-      if (GetDocument()->changeNothing)
+      if (myDoc->changeNothing)
         return;
       if (text->currentSynObj->primaryToken == parameter_T)
         return;
@@ -1222,7 +1231,7 @@ void CExecView::OnChar(QKeyEvent *e)
         doubleClick = false;
       }
       else if (text->currentSelection->data.token == Comment_T) {
-        if (GetDocument()->changeNothing)
+        if (myDoc->changeNothing)
           return;
         doubleClick = true;
         clicked = true;
@@ -1312,7 +1321,7 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
   clicked = true;
   if (EditOK()) {
     text->NewSel(&pos);
-    if (!LBaseData->debugger->isConnected
+    if (!myDoc->changeNothing
     && text->newSelection == text->currentSelection
     && (text->currentSelection->data.synObject->primaryToken == VarPH_T
         || (text->currentSelection->data.synObject->primaryToken == Exp_T
@@ -4527,14 +4536,20 @@ SynObject *CExecView::FirstChild ()
 {
   SynObject *currentSynObj=text->currentSynObj;
   ObjReference *objRef;
-  CHETokenNode *nextTokenNode=currentSynObj->startToken;
+  CHETokenNode *nextTokenNode;
+
+  if (currentSynObj->startToken == currentSynObj->endToken)
+    return currentSynObj;
 
   if (currentSynObj->primaryToken  == parameter_T)
     currentSynObj = (SynObject*)((Parameter*)currentSynObj)->parameter.ptr;
-  else if (currentSynObj->primaryToken == ObjRef_T
-  && ((ObjReference*)currentSynObj)->refIDs.first
-        == ((ObjReference*)currentSynObj)->refIDs.last)
-    return currentSynObj;
+
+  nextTokenNode=currentSynObj->startToken;
+
+  //if (currentSynObj->primaryToken == ObjRef_T
+  //&& ((ObjReference*)currentSynObj)->refIDs.first
+  //      == ((ObjReference*)currentSynObj)->refIDs.last)
+  //  return currentSynObj;
 
   for ( ; nextTokenNode; nextTokenNode = (CHETokenNode*)nextTokenNode->successor) {
     if (nextTokenNode->data.synObject != currentSynObj) {
@@ -6086,15 +6101,15 @@ void CExecView::OnUpdateEditSel(QAction* action)
   // TODO: Add your message handler code here and/or call default
 
 
-  action->setEnabled(
-    (text->currentSynObj->primaryToken == Exp_T
+  action->setEnabled(!myDoc->changeNothing &&
+    ((text->currentSynObj->primaryToken == Exp_T
         && !text->currentSynObj->BoolAdmissibleOnly(text->ckd)
         && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
     || (text->currentSynObj->IsConstant()
         && text->currentSynObj->primaryToken != enumConst_T
         && text->currentSynObj->primaryToken != Boolean_T)
     || text->currentSynObj->type == VarPH_T
-    || text->currentSelection->data.token == Comment_T);
+    || text->currentSelection->data.token == Comment_T));
 }
 
 bool CExecView::EnableCut()
