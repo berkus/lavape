@@ -831,7 +831,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\ui_$(InputName).h"
 					/>
 				</FileConfiguration>
@@ -841,7 +841,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\ui_$(InputName).h"
 					/>
 				</FileConfiguration>
@@ -855,7 +855,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\ui_$(InputName).h"
 					/>
 				</FileConfiguration>
@@ -865,7 +865,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\ui_$(InputName).h"
 					/>
 				</FileConfiguration>
@@ -933,6 +933,14 @@
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="..\ExecFrame.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
