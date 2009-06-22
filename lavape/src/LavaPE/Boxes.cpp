@@ -4027,8 +4027,10 @@ void CVTypeBox::UpdateData(bool getData)
       valkindOfLink = 0;
     else if (DownInd->isChecked())
       valkindOfLink = 1;
-    else
+    else if (Back->isChecked())
       valkindOfLink = 2;
+    else
+      valkindOfLink = -1;
  }
   else {
     NewName->setText(valNewName);
@@ -4040,8 +4042,13 @@ void CVTypeBox::UpdateData(bool getData)
     case 1:
       DownInd->setChecked(true);
       break;
-    default:
+    case 2:
       Back->setChecked(true);
+      break;
+   default:
+      DownC->setChecked(false);
+      DownInd->setChecked(false);
+      Back->setChecked(false);
     }
   }
 }
@@ -4065,15 +4072,15 @@ ValOnInit CVTypeBox::OnInitDialog()
     ResetComboItems(BasicTypes);
   }
   
+  valkindOfLink = -1;
   if (onNew) {
     myDoc->MakeBasicBox(BasicTypes, NoDef, true);
     execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, VirtualType, typeflag);
     if ((myDECL->ParentDECL->DeclType == Interface)
     && !myDECL->ParentDECL->TypeFlags.Contains(isAbstract)) {
       VTAbstract->setEnabled(false);
-      valkindOfLink = 0;
     }
-  }
+ }
   else {
     valNewName = myDECL->LocalName.c;
     dstr = myDoc->GetTypeLabel(myDECL, false);
@@ -4264,7 +4271,8 @@ void CVTypeBox::on_NamedTypes_activated(int pos)
   UpdateData(true);
   BasicTypes->setCurrentIndex(0);
   if (SelEndOKToStr(NamedTypes, &valNewTypeType, &myDECL->RefID) > 0) {
-    if (myDECL->TypeFlags.Contains(isAbstract)) {
+    if (myDECL->TypeFlags.Contains(isAbstract)
+    && (myDECL->SecondTFlags.Contains(isSet) || myDECL->SecondTFlags.Contains(isArray))) {
       myDECL->TypeFlags.EXCL(isAbstract);
       valkindOfLink = 0;
       DownC->setEnabled(true);
@@ -4288,7 +4296,8 @@ void CVTypeBox::on_BasicTypes_activated(int pos)
   NamedTypes->setCurrentIndex(0);
   int num = SelEndOKToStr(BasicTypes, &valNewTypeType, &myDECL->RefID);
   if (num > 0) {
-    if (myDECL->TypeFlags.Contains(isAbstract)) {
+    if (myDECL->TypeFlags.Contains(isAbstract)
+    && (myDECL->SecondTFlags.Contains(isSet) || myDECL->SecondTFlags.Contains(isArray))) {
       myDECL->TypeFlags.EXCL(isAbstract);
       DownC->setEnabled(true);
       DownInd->setEnabled(true);
@@ -4495,7 +4504,7 @@ void CVTypeBox::on_ID_OK_clicked()
     if (valkindOfLink == 0) 
       myDECL->TypeFlags.INCL(constituent);
     else if (valkindOfLink == 1) 
-        myDECL->TypeFlags.INCL(acquaintance);
+      myDECL->TypeFlags.INCL(acquaintance);
   }
   ResetComboItems(NamedTypes);
   ResetComboItems(BasicTypes);
