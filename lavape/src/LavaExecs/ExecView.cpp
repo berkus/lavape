@@ -5597,12 +5597,12 @@ void CExecView::OnToggleClosed()
   if (!EditOK()) return;
 
   if (((SynObject*)text->currentSynObj)->flags.Contains(isClosed)) {
-    PutDelFlagHint(SET(isClosed,-1));
     ((Expression*)text->currentSynObj)->closedLevel = INT_MAX;
+    PutDelFlagHint(SET(isClosed,-1));
   }
   else {
-    PutInsFlagHint(SET(isClosed,-1));
     ((Expression*)text->currentSynObj)->closedLevel = 0;
+    PutInsFlagHint(SET(isClosed,-1));
   }
 }
 
