@@ -3,6 +3,7 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "LavaPE"
 !define PRODUCT_VERSION "0.9.1"
+!define QTREL "Qt451"
 !define PRODUCT_PUBLISHER "The lavape project "
 !define PRODUCT_WEB_SITE "http://lavape.sourceforge.net/index.htm"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\LavaPE.exe"
@@ -120,28 +121,33 @@ Section "LavaPE (required)" SEC01
 
   SetOutPath $INSTDIR\bin
   File "bin\*.exe"
-;  File src\LavaPE\Release\*.manifest
-;  File src\Lava\Release\*.manifest
-;  File src\Precompiler\Release\*.manifest
   File "bin\*.dll"
   File "bin\*.lava"
   SetFileAttributes $OUTDIR\std.lava READONLY|ARCHIVE
   File "bin\*.htm"
   File "bin\*.bat"
-  File "C:\Qt\Qt443\bin\assistant_adp.exe"
-  File "C:\Qt\Qt443\bin\QtAssistantClient4.dll"
-  File "C:\Qt\Qt443\bin\QtCore4.dll"
-  File "C:\Qt\Qt443\bin\QtGui4.dll"
-  File "C:\Qt\Qt443\bin\QtNetwork4.dll"
-  File "C:\Qt\Qt443\bin\QtXml4.dll"
-  File "C:\Qt\Qt443\plugins\imageformats\qgif4.dll"
-;  File "C:\Qt\Qt432msvc\bin\QtSvg4.dll"
+  File C:\Qt\${QTREL}\bin\assistant.exe
+  File "C:\Qt\${QTREL}\bin\QtCore4.dll"
+  File "C:\Qt\${QTREL}\bin\QtGui4.dll"
+  File "C:\Qt\${QTREL}\bin\QtNetwork4.dll"
+  File "C:\Qt\${QTREL}\bin\QtXml4.dll"
+  File "C:\Qt\${QTREL}\bin\QtSvg4.dll"
+  File "C:\Qt\${QTREL}\bin\QtHelp4.dll"
+  File "C:\Qt\${QTREL}\bin\QtCLucene4.dll"
+  File "C:\Qt\${QTREL}\bin\QtSql4.dll"
+  File "C:\Qt\${QTREL}\bin\phonon4.dll"
+  File "C:\Qt\${QTREL}\bin\QtWebKit4.dll"
+  
+  SetOutPath $INSTDIR\bin\plugins\sqldrivers
+  File "C:\Qt\${QTREL}\plugins\sqldrivers\qsqlite4.dll"
 
-;  File "C:\Qt\Qt432msvc\plugins\imageformats\qgif4.dll"
-;  File "C:\Qt\Qt432msvc\plugins\imageformats\qtiff4.dll"
-;  File "C:\Qt\Qt432msvc\plugins\imageformats\qjpeg4.dll"
-;  File "C:\Qt\Qt432msvc\plugins\imageformats\qmng4.dll"
-;  File "C:\Qt\Qt432msvc\plugins\imageformats\qsvg4.dll"
+  SetOutPath $INSTDIR\bin\plugins\imageformats
+  File "C:\Qt\${QTREL}\plugins\imageformats\qgif4.dll";
+;  File "C:\Qt\${QTREL}\plugins\imageformats\qtiff4.dll"
+;  File "C:\Qt\${QTREL}\plugins\imageformats\qico4.dll"
+  File "C:\Qt\${QTREL}\plugins\imageformats\qjpeg4.dll"
+;  File "C:\Qt\${QTREL}\plugins\imageformats\qmng4.dll"
+;  File "C:\Qt\${QTREL}\plugins\imageformats\qsvg4.dll"
 
   SetOutPath $INSTDIR\bin\std
   File /r "bin\std\*.*"
@@ -153,7 +159,7 @@ Section "LavaPE (required)" SEC01
   File "C:\Program Files\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT\*"
   
   SetOutPath $INSTDIR\doc
-  File /r /x .svn /x _* ".\doc\*.*"
+  File /r /x .svn /x _* ".\doc\LavaPE.qhc" ".\doc\LavaPE.qch"
 
   SetOutPath $INSTDIR\samples
   File /r /x .svn ".\samples\*.*"

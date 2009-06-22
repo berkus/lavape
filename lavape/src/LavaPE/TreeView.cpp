@@ -334,6 +334,7 @@ void MyListView::mousePressEvent(QMouseEvent *ev)
 //    ensureItemVisible(currentItem());
 //    currentItem()->repaint();
   }
+  lavaView->Activate(false);
 }
 
 void MyListView::startDrag(Qt::DropActions supportedActions)

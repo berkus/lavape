@@ -276,7 +276,11 @@ public:
     QString GetViewName() const { return m_viewTypeName; }
     void SetViewName(const QString& name) { m_viewTypeName = name; };
 
-    wxChildFrame *GetParentFrame() const { return m_viewFrame ; }
+    wxChildFrame *GetParentFrame() const {
+      return m_viewFrame ; }
+    void focusInEvent (QFocusEvent *e) {
+      Activate(false); }
+
     virtual void Activate(bool topDown);
     virtual void OnUpdate(wxView *sender, unsigned param, QObject *hint = (QObject *) NULL);
     virtual void OnChangeFilename();
