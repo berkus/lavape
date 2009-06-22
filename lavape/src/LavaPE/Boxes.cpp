@@ -4494,8 +4494,7 @@ void CVTypeBox::on_ID_OK_clicked()
     myDECL->TypeFlags.EXCL(acquaintance);
     if (valkindOfLink == 0) 
       myDECL->TypeFlags.INCL(constituent);
-    else 
-      if (valkindOfLink == 1) 
+    else if (valkindOfLink == 1) 
         myDECL->TypeFlags.INCL(acquaintance);
   }
   ResetComboItems(NamedTypes);
