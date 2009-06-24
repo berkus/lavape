@@ -311,6 +311,8 @@ void RefTable::findObjRef (CheckData &ckd,
       newWA->objRef = objRef;
       newWA->varDesc = newVarDesc = &cheTbl->data;
       newCHEWA = new CHE(newWA);
+      if (!newVarDesc->writeAccess)
+        newVarDesc->writeAccess = newWA;
       ((RefTable*)ckd.refTable)->refTableEntries.Append(newCHEWA);
     }
     else
@@ -332,6 +334,8 @@ void RefTable::findObjRef (CheckData &ckd,
         newWA->objRef = objRef;
         newWA->varDesc = newVarDesc = &cheTbl->data;
         newCHEWA = new CHE(newWA);
+        if (!newVarDesc->writeAccess)
+          newVarDesc->writeAccess = newWA;
         ((RefTable*)ckd.refTable)->refTableEntries.Append(newCHEWA);
       }
       ort->Append(cheTbl);
@@ -465,7 +469,7 @@ QString *RefTable::findMatchingAccess (
     return 0;
 }
 
-QString *RefTable::AssignCheck (CheckData &ckd, ObjReference *objRef) {
+QString *RefTable::SingleAssignCheck (CheckData &ckd, ObjReference *objRef) {
   QString *errorCode=0;
   CVarDesc *newEntry;
   CHE *chp;
@@ -480,7 +484,6 @@ QString *RefTable::AssignCheck (CheckData &ckd, ObjReference *objRef) {
   chp = refTableEntries.last?(CHE*)refTableEntries.last->predecessor:0;
   if (chp)
     errorCode = findMatchingAccess(ckd,chp,newEntry,false,isAssigned,objRef,wacc);
-  //newEntry->writeAccess = true;
   return errorCode;
 }
 
@@ -2099,6 +2102,8 @@ bool SelfVar::InitCheck (CheckData &ckd, bool inSelfCheck) {
   tdod2 = new TDOD();
   tdodc.Append(new CHE(tdod2));
   ObjReference selfMember(tdodc,"self");
+  ((TDOD*)((CHE*)selfMember.refIDs.first)->data)->parentObject = &selfMember;
+  ((TDOD*)((CHE*)selfMember.refIDs.last)->data)->parentObject = &selfMember;
   selfMember.flags.INCL(isSelfVar);
 
   for (chp = (CHE*)itfDECL->NestedDecls.first; chp; chp = (CHE*)chp->successor)
@@ -3322,19 +3327,11 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
         else
           ((CHE*)refIDs.first)->successor = secondChe;
       }
-      //if (!ckd.myDECL->ParentDECL->TypeFlags.Contains(isStateObjectY)
-      //&& !ckd.myDECL->ParentDECL->TypeFlags.Contains(isAnyCatY) // => self of function is immutable
-      //&& (refIDs.first->successor != refIDs.last
-      //    || (!(flags.Contains(isTempVar))
-      //        && !(InInitializer(ckd) && flags.Contains(isSelfVar))))) {
-      //  ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_RdOnlyFunc);
-      //  return false;
-      //}
     }
   }
 
   // finally prevent single-assignment violations
-  if  (rc = ((RefTable*)ckd.refTable)->AssignCheck(ckd,this)) {
+  if  (rc = ((RefTable*)ckd.refTable)->SingleAssignCheck(ckd,this)) {
     SetError(ckd,rc);
     return false;
   }
@@ -3357,7 +3354,7 @@ bool ObjReference::CopyCheck (CheckData &ckd) {
     return true;
 
   // finally prevent single-assignment violations
-  if  (rc = ((RefTable*)ckd.refTable)->AssignCheck(ckd,this)) {
+  if  (rc = ((RefTable*)ckd.refTable)->SingleAssignCheck(ckd,this)) {
     SetError(ckd,rc);
     return false;
   }
@@ -4384,7 +4381,7 @@ bool FuncExpression::Check (CheckData &ckd)
     && callExpr->primaryToken == ObjRef_T) {
       callObj = (ObjReference*)callExpr;
       callObj->flags.INCL(isIniCallOrHandle);
-      if  (!callObj->flags.Contains(isTempVar) && (rc = ((RefTable*)ckd.refTable)->AssignCheck(ckd,callObj))) {
+      if  (!callObj->flags.Contains(isTempVar) && (rc = ((RefTable*)ckd.refTable)->SingleAssignCheck(ckd,callObj))) {
         callObj->SetError(ckd,rc);
         return false;
       }
@@ -6255,7 +6252,7 @@ bool Quantifier::Check(CheckData &ckd)
         objRef = new ObjReference(refIDs,opd->varName.c);
         ((TDOD*)((CHE*)objRef->refIDs.first)->data)->parentObject = objRef;
         objRef->parentObject = opd->parentObject;
-        if  (rc = ((RefTable*)ckd.refTable)->AssignCheck(ckd,objRef)) {
+        if  (rc = ((RefTable*)ckd.refTable)->SingleAssignCheck(ckd,objRef)) {
           SetError(ckd,rc);
           ok = false;
         }
