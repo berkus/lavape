@@ -893,13 +893,6 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
   }
 }
 
-void MyScrollView::focusInEvent(QFocusEvent *ev) {
-  if (execView->initialUpdateDone
-  && !execView->myDoc->deleting)
-    execView->SetHelpText();
-  //execView->wxView::focusInEvent(ev);
-}
-
 void ExecContents::keyPressEvent (QKeyEvent *e) {
   execView->OnChar(e);
 }
@@ -1421,8 +1414,6 @@ void CExecView::Select (SynObject *selObj)
 
   if (!doubleClick && !wxDocManager::GetDocumentManager()->GetTotalCheckFrame())
     Activate(false);
-
-  SetHelpText();
 
   if (text->currentSelection->data.token == Comment_T) {
     if (!EditOK() || !clicked) return;
@@ -5835,6 +5826,8 @@ void CExecView::UpdateUI()
 {
   if (!initialUpdateDone || notYetPainted || editCtlVisible)
     return;
+  SetHelpText();
+
   OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
   OnUpdateHandle(LBaseData->handleActionPtr);
   OnUpdateInputArrow(LBaseData->toggleInputArrowsActionPtr);

@@ -3378,8 +3378,8 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
           inSync = false;
         ItemSel = 0;
       }
-      if (this == (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView())
-        SetErrAndCom(item);
+      //if (this == (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView())
+      //  SetErrAndCom(item);
     }
     else
       ItemSel = 0;
@@ -4432,6 +4432,7 @@ void CLavaPEView::UpdateUI()
 {
   if (!myDECL)
     return;
+  SetErrAndCom((CTreeItem*)Tree->currentItem());
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
   frame->expandAction->setEnabled(true);
   frame->collapseAction->setEnabled(true);

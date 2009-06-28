@@ -76,6 +76,7 @@ void CVTView::UpdateUI()
 {
   if (!myDECL)
     return;
+  SetVTError((CTreeItem*)Tree->currentItem());
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
   frame->expandAction->setEnabled(true);
   frame->collapseAction->setEnabled(true);
@@ -819,8 +820,8 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
   CTreeItem *itemOver = lastCurrent;// *selItem = (CTreeItem*)Tree->currentItem();
   if (!selItem)
     return;
-  if (this == (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView())
-    SetVTError((CTreeItem*)selItem);
+  //if (this == (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView())
+  //  SetVTError((CTreeItem*)selItem);
   if (itemOver && (Tree->withControl && !Tree->withShift || Tree->withShift && !Tree->withControl)) {
     if (!CollectDECL) {
       CollectDECL = NewLavaDECL();

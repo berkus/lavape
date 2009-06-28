@@ -397,7 +397,6 @@ public:
   CExecView *execView;
   ExecContents *execCont;
 
-  void focusInEvent(QFocusEvent *ev);
   void mousePressEvent (QMouseEvent *e);
   void mouseDoubleClickEvent (QMouseEvent *e);
 };
