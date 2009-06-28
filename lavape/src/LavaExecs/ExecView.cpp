@@ -7224,9 +7224,9 @@ void CExecView::UpdateErrMsg (QString &helpMsg) {
   else if (nextError)
     myDoc->SetPEError(plhChain,true);
   else {
-    myDoc->SetPEError(emptyChain,false);
+    myDoc->SetPEError(emptyChain,true);
     nextError = false;
-        }
+  }
 
   if (text->currentSynObj->comment.ptr)
     statusBar->showMessage(text->currentSynObj->comment.ptr->str.c);
