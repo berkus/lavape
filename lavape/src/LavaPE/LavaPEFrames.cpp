@@ -1585,6 +1585,11 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
   }
 }
 
+void CLavaMainFrame::ClearMainFrame() {
+  if (!UtilitiesHidden)
+    on_showUtilWindowAction_triggered();
+}
+
 void CLavaMainFrame::OnUpdateshowUtil(QAction* action)
 {
   action->setChecked(!UtilitiesHidden);

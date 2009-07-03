@@ -92,6 +92,7 @@ public:
   void MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index);
   void DropPage(wxTabWidget* s_wt, int s_index, wxTabWidget* d_wt, int d_index);
   void equalize();
+  virtual void ClearMainFrame(){}
   QSplitter *m_ClientArea;
   
 protected:

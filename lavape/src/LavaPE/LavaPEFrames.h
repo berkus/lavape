@@ -44,6 +44,7 @@ public:
   void installToolButtonEvtFilters(QToolBar *tb);
 	void customEvent(QEvent *ev);
   bool eventFilter(QObject *obj,QEvent *ev);
+  void ClearMainFrame();
 
 private:
 	bool splitHoriz;
