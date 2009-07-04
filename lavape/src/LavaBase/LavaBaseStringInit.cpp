@@ -53,6 +53,7 @@ QString ERR_IsntSet;
 QString ERR_MissingParms;
 QString ERR_RedundantParms;
 QString ERR_IncompatibleType;
+QString ERR_IncompatibleTypeTargetIsVT;
 QString ERR_NotSingleOutput;
 QString ERR_ExInLogNot;
 QString ERR_NoOutputsAllowed;
@@ -369,6 +370,7 @@ void LavaBaseStringInit() {
   ERR_MissingInitialization  = QObject::tr(": a value must be assigned in all preceding program branches (check also for missing \"else\" branches!)");
   ERR_AssigToRdOnly  = QObject::tr("Forbidden assignment to read-only member variable");
   ERR_IncompatibleType  = QObject::tr("Incompatible type");
+  ERR_IncompatibleTypeTargetIsVT  = QObject::tr("In derived classes the source type could be incompatible to the virtual(!) target type");
   ERR_NotSingleOutput  = QObject::tr("Function must have exactly one output parameter");
   ERR_NoOutputsAllowed  = QObject::tr("No output parameters allowed here");
   ERR_UndefRef  = QObject::tr("Dangling (=undefined) reference");
@@ -383,7 +385,7 @@ void LavaBaseStringInit() {
   ERR_TempUnfinished  = QObject::tr("""temp"" must not be passed as a parameter (unless to initializers) since it counts as ""still unfinished""");
   ERR_One_must_remain  = QObject::tr("At least one such item must remain!");
   ERR_No_input  = QObject::tr("An empty input is not allowed here");
-  ERR_ForceOver  = QObject::tr("Function of a base class has the force overwrite on derivation flag and must therefore be overwridden in the derivation class");
+  ERR_ForceOver  = QObject::tr("Function of a base class has the force override on derivation flag and must therefore be overridden in the derivation class");
   ERR_IsntEnum  = QObject::tr("Must be an enumeration type");
   ERR_AssigToMultiArray  = QObject::tr("Multi-dimensional (""nested"") arrays must be constructed layer by layer");
   ERR_FaultyArrayObj  = QObject::tr("Only variables and array refs allowed");
@@ -497,7 +499,7 @@ void LavaBaseStringInit() {
   ERR_OverriddenIOType  = QObject::tr("Overridden input/output has inconsistent type");
   ERR_MissingExceptionDef  = QObject::tr("The exception type is missing");
   ERR_NoException  = QObject::tr("One of the throw types isn't derived from ""Exception""");
-  ERR_OverThrow  = QObject::tr("Only exceptions already thrown by the overwridden function should be thrown");
+  ERR_OverThrow  = QObject::tr("Only exceptions already thrown by the overridden function should be thrown");
   ERR_SuccFailNotNot  = QObject::tr("Succeed/throw must not be negated");
   ERR_FailNoException  = QObject::tr("Type isn't derived from Exception");
   ERR_InadmissibleCategory  = QObject::tr("Inadmissible category: should be value object");

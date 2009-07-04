@@ -4111,7 +4111,7 @@ bool ArrayAtIndex::Check (CheckData &ckd)
 {
   Expression *opd2;
   TID opFuncID;
-  LavaDECL  *objTypeDecl, *indexTypeDecl, *declOp2, *formDecl;
+  LavaDECL  *objTypeDecl=0, *indexTypeDecl, *declOp2, *formDecl;
   CHE *chpFormIO;
   Category actCat, formCat, callObjCat;
   CContext xCtx1, xCtx2;

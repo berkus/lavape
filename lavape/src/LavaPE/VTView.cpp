@@ -887,7 +887,7 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
     }
   }
   //if (active)
-    wxTheApp->updateButtonsMenus();
+  //  wxTheApp->updateButtonsMenus();
 }
 
 void CVTView::OnCollapseAll()

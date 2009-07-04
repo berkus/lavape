@@ -27,6 +27,7 @@ extern LAVABASE_DLL QString ERR_IsntSet;
 extern LAVABASE_DLL QString ERR_MissingParms;
 extern LAVABASE_DLL QString ERR_RedundantParms;
 extern LAVABASE_DLL QString ERR_IncompatibleType;
+extern LAVABASE_DLL QString ERR_IncompatibleTypeTargetIsVT;
 extern LAVABASE_DLL QString ERR_NotSingleOutput;
 extern LAVABASE_DLL QString ERR_ExInLogNot;
 extern LAVABASE_DLL QString ERR_NoOutputsAllowed;

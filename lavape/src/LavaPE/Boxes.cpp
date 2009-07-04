@@ -1733,6 +1733,7 @@ ValOnInit CFuncBox::OnInitDialog()
       SelfCategory->setCurrentIndex(1);
       Protected->setEnabled(false);
       Initializer->setChecked(true);
+      EnforceOver->setEnabled(false);
       DefaultIni->setEnabled(!hasParams
                                 && (!myDECL->ParentDECL->WorkFlags.Contains(hasDefaultIni)
                                     || myDECL->TypeFlags.Contains(defaultInitializer)));
@@ -2131,11 +2132,14 @@ void CFuncBox::on_Initializer_clicked()
     myDECL->TypeFlags.EXCL(isAbstract);
     Abstract->setChecked(false);
     Abstract->setEnabled(false);
+    EnforceOver->setEnabled(false);
+    EnforceOver->setChecked(false);
     //Closed->setEnabled(false);
     Signal->setEnabled(false);
     Signal->setChecked(false);
   }
   else {
+    EnforceOver->setEnabled(true);
     DefaultIni->setChecked(false);
     StaticFunc->setEnabled(true);
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
