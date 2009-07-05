@@ -27,7 +27,7 @@ CLavaError::CLavaError(CHAINX* errors, QString* ids, DString *text, bool autoC)
   CHE* che = 0;
   if (errors->first) {
     for (che = (CHE*)errors->first; che &&
-      (((CLavaError*)che->data)->IDS != ids || ((CLavaError*)che->data)->textParam != *text);
+      (((CLavaError*)che->data)->IDS != ids || (text && ((CLavaError*)che->data)->textParam != *text));
       che = (CHE*)che->successor);
     if (che)
       errors->Remove(che->predecessor);

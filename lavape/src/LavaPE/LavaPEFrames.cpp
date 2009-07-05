@@ -1799,7 +1799,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     //if  ((oldWindowState == Qt::WindowMaximized) && showIt)
     if  (wxTheApp->isChMaximized && showIt)
       showMaximized();
-    viewM->Activate(false);
+    //viewM->Activate(false);
 		return true;
   }
   else {
@@ -1814,7 +1814,7 @@ void CTreeFrame::InitialUpdate()
 {
   if (showIt) {
     wxChildFrame::InitialUpdate();
-    //wxDocManager::GetDocumentManager()->RememberActiveView(viewM, true);
+    viewM->Activate(false);
   }
 }
 

@@ -638,6 +638,7 @@ bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, 
         }
         decl1 = ckd.document->IDTable.GetDECL(decl1->RefID,decl1->inINCL);
       }
+      ckd.errorCode = &ERR_IncompatibleType;
       if ((decl1 != decl2)  && !ckd.document->IsCDerivation(decl1,decl2,&ckd))
         return false;
       if (ctxFlags2.Contains(multiContext)
