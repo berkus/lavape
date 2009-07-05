@@ -1720,8 +1720,10 @@ void wxDocManager::RememberActiveView(wxView *view, bool forget)
   else if (view == m_activeView)
     return;
 
-  if (m_activeView && !m_activeView->deleting && !wxTheApp->deletingMainFrame)
+  if (m_activeView && !m_activeView->deleting && !wxTheApp->deletingMainFrame) {
     m_activeView->DisableActions();
+    m_activeView->active = false;
+  }
   m_activeView = view;
 }
 

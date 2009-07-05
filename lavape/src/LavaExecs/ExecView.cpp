@@ -1328,8 +1328,10 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
       doubleClick = true;
     }
     Select(); //Select before Activate/updateButtonsMenus!
-    //if (!doubleClick)
-    //  Activate(false);
+    if (!active)
+      Activate(false);
+    else
+      wxTheApp->updateButtonsMenus();
   }
   doubleClick = false;
   clicked = false;
@@ -1412,8 +1414,8 @@ void CExecView::Select (SynObject *selObj)
   inParameter = ocUpd.inParameter;
   inForeach = ocUpd.inForeach;
 
-  if (!doubleClick && !wxDocManager::GetDocumentManager()->GetTotalCheckFrame())
-    Activate(false);
+  //if (!doubleClick && !wxDocManager::GetDocumentManager()->GetTotalCheckFrame())
+  //  Activate(false);
 
   if (text->currentSelection->data.token == Comment_T) {
     if (!EditOK() || !clicked) return;
