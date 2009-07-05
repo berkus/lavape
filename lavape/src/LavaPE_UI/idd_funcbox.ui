@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>478</width>
+    <width>521</width>
     <height>618</height>
    </rect>
   </property>
@@ -630,7 +630,7 @@
      <enum>Qt::StrongFocus</enum>
     </property>
     <property name="text">
-     <string>Callable only from this VT context</string>
+     <string>Force override on class derivation</string>
     </property>
    </widget>
   </widget>
