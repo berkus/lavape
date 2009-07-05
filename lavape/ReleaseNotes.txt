@@ -18,7 +18,7 @@ The latter may be arranged horizontally or vertically.
 B) The state/value object distinction has been revised
 ======================================================
 
-Before this revision only the to level attributes of a constant
+Before this revision only the top level attributes of a constant
 value object had been protected against replacement. Now also
 the nested constituents of an object are protected against
 replacement. We believe this to be a more consistant usage of
@@ -28,20 +28,22 @@ of Lava variables, and LavaPE makes sure that this property
 is used consistantly. For instance, you cannot assign a state variable
 to a value variable and vice versa.
 
+However, you can take an immutable "snapshot" of the current state
+of a state object by using the "copy" statement or the "clone" expression
+to copy the state object to a variable of category "value object":
+The target of copy/clone may be of any category.
+
+Using copy/clone you can in particular produce an object of a known,
+specific category from a variable having the indefinite category
+"Any category".
+
 
 C) LavaPE has been ported to Mac OS
 ===================================
 
 The Lava programming environment can now also be built and run
 on the Mac OS 10.5 platform. A binary package for Mac OS 10.5
-is available now, too.
-
-D) LavaPE has been ported to OpenSolaris
-========================================
-
-The Lava programming environment can now also be built and run
-on the Solaris platform. A binary package for Solaris is
-available as well.
+(Intel) is available now, too.
 
 
 II) Installation of Lava/LavaPE
@@ -90,24 +92,6 @@ Environment or the Lava Interpreter, respectively.
 A number of sample programs can be found in the "samples"
 subdirectory of "lavadistro/lavadir".
 
-How to install the Solaris binary release of LavaPE
-===================================================
-
-Download the lavape-<rel>-solaris.tar.bz2 archive, move it to
-the directory where the "lavadistro" installation directory is to
-reside as a subdirectory, and unpack it:
-
-   tar xjf lavape-<rel>-solaris.tar.bz2
-
-A "lavadistro" subdirectoy will be created, containing
-two shell procedures "lavape" and "lava" for launching
-the Lava Programming Environment or the Lava Interpreter,
-respectively.
-
-A number of sample programs can be found in the "samples"
-subdirectory of "lavadistro/lavadir".
-
-
 
 How to install LavaPE from the source distribution on UNIX
 ==========================================================
@@ -141,6 +125,7 @@ in the lavape top-level directory).
 Then build the LavaPE executables as follows:
 
    cd lavape
+   qmake lavape.pro
    make
 
 This will take quite a while. You will find the executables

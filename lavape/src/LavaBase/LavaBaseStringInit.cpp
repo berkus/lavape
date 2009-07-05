@@ -325,7 +325,7 @@ void LavaBaseStringInit() {
   ERR_SecondImpl  = QObject::tr("Interface with more than one implementation");
   ERR_inStd  = QObject::tr("std.lava corrupted");
   ERR_SecondDefaultIni  = QObject::tr("Second default initializer");
-  ERR_IncompWithTargetVT  = QObject::tr("Incompatible with virtual type of assignment target or set elements (""force override"" missing?)");
+  ERR_IncompWithTargetVT  = QObject::tr("Incompatible with virtual type of assignment target or set elements (""force override"" at function or ""final"" at VT missing?)");
   ERR_SlotHasOutput  = QObject::tr("Callback functions must not have output parameters");
   ERR_SlotTooManyArgs  = QObject::tr("Callback function has more parameters than signal function");
   ERR_SlotTooFewArgs  = QObject::tr("Callback function has fewer parameters than signal function");

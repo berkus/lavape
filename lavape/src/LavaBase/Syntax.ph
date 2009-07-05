@@ -273,7 +273,7 @@ $TYPE +CDP {
     //16/, X0001 0000 initializer function
     isPersistent,
     //17/, X0002 0000 persistent component
-    FREE_TYPEFLAG1, //isGUIEdit,
+    isFinalVT, //cannot be overridden,
     //18/, X0004 0000 the edit show function
     FREE_TYPEFLAG2, //oldIsGUI,
     //19, X0008 0000/ now free flag

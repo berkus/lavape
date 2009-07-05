@@ -1,19 +1,20 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>IDD_FuncBox</class>
- <widget class="QDialog" name="IDD_FuncBox" >
-  <property name="geometry" >
+ <widget class="QDialog" name="IDD_FuncBox">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>481</width>
-    <height>621</height>
+    <width>478</width>
+    <height>618</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Function</string>
   </property>
-  <widget class="QGroupBox" name="GroupBox_IDC_STATIC22" >
-   <property name="geometry" >
+  <widget class="QGroupBox" name="GroupBox_IDC_STATIC22">
+   <property name="geometry">
     <rect>
      <x>10</x>
      <y>101</y>
@@ -21,100 +22,100 @@
      <height>351</height>
     </rect>
    </property>
-   <property name="sizePolicy" >
-    <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="minimumSize" >
+   <property name="minimumSize">
     <size>
      <width>1</width>
      <height>0</height>
     </size>
    </property>
-   <property name="focusPolicy" >
+   <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
    </property>
-   <property name="title" >
+   <property name="title">
     <string>Kind of function</string>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" >
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QCheckBox" name="Protected" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <widget class="QCheckBox" name="Protected">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="focusPolicy" >
+      <property name="focusPolicy">
        <enum>Qt::StrongFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Protected</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QCheckBox" name="StaticFunc" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <widget class="QCheckBox" name="StaticFunc">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="focusPolicy" >
+      <property name="focusPolicy">
        <enum>Qt::StrongFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Static</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QWidget" native="1" name="widget" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Maximum" hsizetype="Preferred" >
+     <widget class="QWidget" name="widget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout" >
-       <property name="leftMargin" >
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="leftMargin">
         <number>0</number>
        </property>
-       <property name="topMargin" >
+       <property name="topMargin">
         <number>0</number>
        </property>
-       <property name="bottomMargin" >
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
-        <widget class="QCheckBox" name="Initializer" >
-         <property name="focusPolicy" >
+        <widget class="QCheckBox" name="Initializer">
+         <property name="focusPolicy">
           <enum>Qt::StrongFocus</enum>
          </property>
-         <property name="text" >
+         <property name="text">
           <string>Initializer</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="DefaultIni" >
-         <property name="enabled" >
+        <widget class="QCheckBox" name="DefaultIni">
+         <property name="enabled">
           <bool>false</bool>
          </property>
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="focusPolicy" >
+         <property name="focusPolicy">
           <enum>Qt::StrongFocus</enum>
          </property>
-         <property name="text" >
+         <property name="text">
           <string>Default initializer</string>
          </property>
         </widget>
@@ -123,89 +124,89 @@
      </widget>
     </item>
     <item>
-     <widget class="QCheckBox" name="Abstract" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <widget class="QCheckBox" name="Abstract">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="focusPolicy" >
+      <property name="focusPolicy">
        <enum>Qt::StrongFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Abstract</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QCheckBox" name="Native" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <widget class="QCheckBox" name="Native">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="focusPolicy" >
+      <property name="focusPolicy">
        <enum>Qt::StrongFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Native</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QCheckBox" name="Signal" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <widget class="QCheckBox" name="Signal">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="focusPolicy" >
+      <property name="focusPolicy">
        <enum>Qt::StrongFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Signal</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QCheckBox" name="Closed" >
-      <property name="whatsThis" >
-       <string>The "self" object of this function may be unfinished, i.e., not yet fully initialized and therefore "closed": its members cannot yet be used</string>
+     <widget class="QCheckBox" name="Closed">
+      <property name="whatsThis">
+       <string>The &quot;self&quot; object of this function may be unfinished, i.e., not yet fully initialized and therefore &quot;closed&quot;: its members cannot yet be used</string>
       </property>
-      <property name="text" >
-       <string>"Self" is closed</string>
+      <property name="text">
+       <string>&quot;Self&quot; is closed</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="SelfCategory" >
-      <property name="currentIndex" >
+     <widget class="QComboBox" name="SelfCategory">
+      <property name="currentIndex">
        <number>0</number>
       </property>
       <item>
-       <property name="text" >
-        <string>"Self" is immutable</string>
+       <property name="text">
+        <string>&quot;Self&quot; is immutable</string>
        </property>
       </item>
       <item>
-       <property name="text" >
-        <string>"Self" is variable</string>
+       <property name="text">
+        <string>&quot;Self&quot; is variable</string>
        </property>
       </item>
       <item>
-       <property name="text" >
-        <string>"Self" is of any category</string>
+       <property name="text">
+        <string>&quot;Self&quot; is of any category</string>
        </property>
       </item>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QGroupBox" name="GroupBox_IDC_STATIC24" >
-   <property name="geometry" >
+  <widget class="QGroupBox" name="GroupBox_IDC_STATIC24">
+   <property name="geometry">
     <rect>
      <x>230</x>
      <y>270</y>
@@ -213,29 +214,29 @@
      <height>181</height>
     </rect>
    </property>
-   <property name="sizePolicy" >
-    <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="minimumSize" >
+   <property name="minimumSize">
     <size>
      <width>1</width>
      <height>0</height>
     </size>
    </property>
-   <property name="focusPolicy" >
+   <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
    </property>
-   <property name="title" >
+   <property name="title">
     <string>Throwable exceptions</string>
    </property>
-   <property name="alignment" >
+   <property name="alignment">
     <set>Qt::AlignTop</set>
    </property>
-   <widget class="QPushButton" name="DelInherits" >
-    <property name="geometry" >
+   <widget class="QPushButton" name="DelInherits">
+    <property name="geometry">
      <rect>
       <x>10</x>
       <y>110</y>
@@ -243,15 +244,15 @@
       <height>26</height>
      </rect>
     </property>
-    <property name="focusPolicy" >
+    <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
     </property>
-    <property name="text" >
+    <property name="text">
      <string>Remove from list</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="NamedTypes" >
-    <property name="geometry" >
+   <widget class="QComboBox" name="NamedTypes">
+    <property name="geometry">
      <rect>
       <x>10</x>
       <y>150</y>
@@ -260,33 +261,33 @@
      </rect>
     </property>
     <item>
-     <property name="text" >
+     <property name="text">
       <string>(Exception types)</string>
      </property>
     </item>
    </widget>
-   <widget class="QListWidget" name="Inherits" >
-    <property name="enabled" >
+   <widget class="QListWidget" name="Inherits">
+    <property name="enabled">
      <bool>true</bool>
     </property>
-    <property name="geometry" >
+    <property name="geometry">
      <rect>
-      <x>11</x>
-      <y>25</y>
-      <width>211</width>
+      <x>20</x>
+      <y>30</y>
+      <width>201</width>
       <height>71</height>
      </rect>
     </property>
-    <property name="sizePolicy" >
-     <sizepolicy vsizetype="MinimumExpanding" hsizetype="Fixed" >
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
       <horstretch>0</horstretch>
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="groupBox" >
-   <property name="geometry" >
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
     <rect>
      <x>230</x>
      <y>100</y>
@@ -294,17 +295,17 @@
      <height>161</height>
     </rect>
    </property>
-   <property name="sizePolicy" >
-    <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="title" >
+   <property name="title">
     <string>Form fields having this handler</string>
    </property>
-   <widget class="QPushButton" name="FieldRemove" >
-    <property name="geometry" >
+   <widget class="QPushButton" name="FieldRemove">
+    <property name="geometry">
      <rect>
       <x>19</x>
       <y>124</y>
@@ -312,12 +313,12 @@
       <height>26</height>
      </rect>
     </property>
-    <property name="text" >
+    <property name="text">
      <string>Remove from list</string>
     </property>
    </widget>
-   <widget class="QListWidget" name="FieldList" >
-    <property name="geometry" >
+   <widget class="QListWidget" name="FieldList">
+    <property name="geometry">
      <rect>
       <x>19</x>
       <y>25</y>
@@ -325,16 +326,16 @@
       <height>93</height>
      </rect>
     </property>
-    <property name="sizePolicy" >
-     <sizepolicy vsizetype="Expanding" hsizetype="Fixed" >
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
       <horstretch>0</horstretch>
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="GroupBox_IDC_STATIC21" >
-   <property name="geometry" >
+  <widget class="QGroupBox" name="GroupBox_IDC_STATIC21">
+   <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
@@ -342,92 +343,92 @@
      <height>87</height>
     </rect>
    </property>
-   <property name="sizePolicy" >
-    <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="focusPolicy" >
+   <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
    </property>
-   <property name="title" >
+   <property name="title">
     <string>Enter name or select operator</string>
    </property>
-   <layout class="QGridLayout" >
-    <property name="margin" >
+   <layout class="QGridLayout">
+    <property name="margin">
      <number>9</number>
     </property>
-    <property name="spacing" >
+    <property name="spacing">
      <number>6</number>
     </property>
-    <item row="0" column="2" >
-     <widget class="QCheckBox" name="CHECKOp" >
-      <property name="enabled" >
+    <item row="0" column="2">
+     <widget class="QCheckBox" name="CHECKOp">
+      <property name="enabled">
        <bool>false</bool>
       </property>
-      <property name="focusPolicy" >
+      <property name="focusPolicy">
        <enum>Qt::StrongFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Operator</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="3" >
-     <widget class="QComboBox" name="CMBOperator" >
-      <property name="enabled" >
+    <item row="0" column="3">
+     <widget class="QComboBox" name="CMBOperator">
+      <property name="enabled">
        <bool>false</bool>
       </property>
       <item>
-       <property name="text" >
+       <property name="text">
         <string>(Operations)</string>
        </property>
       </item>
      </widget>
     </item>
-    <item row="0" column="0" >
-     <layout class="QHBoxLayout" >
-      <property name="spacing" >
+    <item row="0" column="0">
+     <layout class="QHBoxLayout">
+      <property name="spacing">
        <number>6</number>
       </property>
-      <property name="margin" >
+      <property name="margin">
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="Label_IDC_STATIC46" >
-        <property name="focusPolicy" >
+       <widget class="QLabel" name="Label_IDC_STATIC46">
+        <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
-        <property name="text" >
+        <property name="text">
          <string>Name</string>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="EnableName" >
-        <property name="enabled" >
+       <widget class="QCheckBox" name="EnableName">
+        <property name="enabled">
          <bool>false</bool>
         </property>
-        <property name="focusPolicy" >
+        <property name="focusPolicy">
          <enum>Qt::StrongFocus</enum>
         </property>
-        <property name="text" >
+        <property name="text">
          <string>enable renaming</string>
         </property>
        </widget>
       </item>
      </layout>
     </item>
-    <item row="0" column="1" >
+    <item row="0" column="1">
      <spacer>
-      <property name="orientation" >
+      <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <property name="sizeHint" stdset="0" >
+      <property name="sizeHint" stdset="0">
        <size>
         <width>61</width>
         <height>16</height>
@@ -435,45 +436,45 @@
       </property>
      </spacer>
     </item>
-    <item row="1" column="0" colspan="4" >
-     <layout class="QHBoxLayout" >
-      <property name="spacing" >
+    <item row="1" column="0" colspan="4">
+     <layout class="QHBoxLayout">
+      <property name="spacing">
        <number>6</number>
       </property>
-      <property name="margin" >
+      <property name="margin">
        <number>0</number>
       </property>
       <item>
-       <widget class="QLineEdit" name="NewName" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+       <widget class="QLineEdit" name="NewName">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize" >
+        <property name="minimumSize">
          <size>
           <width>150</width>
           <height>0</height>
          </size>
         </property>
-        <property name="focusPolicy" >
+        <property name="focusPolicy">
          <enum>Qt::StrongFocus</enum>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignLeading</set>
         </property>
        </widget>
       </item>
       <item>
        <spacer>
-        <property name="orientation" >
+        <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
-        <property name="sizeType" >
+        <property name="sizeType">
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="sizeHint" stdset="0" >
+        <property name="sizeHint" stdset="0">
          <size>
           <width>61</width>
           <height>16</height>
@@ -482,16 +483,16 @@
        </spacer>
       </item>
       <item>
-       <widget class="QCheckBox" name="CHECKHandler" >
-        <property name="text" >
+       <widget class="QCheckBox" name="CHECKHandler">
+        <property name="text">
          <string>Handler</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="EventType" >
+       <widget class="QComboBox" name="EventType">
         <item>
-         <property name="text" >
+         <property name="text">
           <string> (Event type)</string>
          </property>
         </item>
@@ -501,8 +502,8 @@
     </item>
    </layout>
   </widget>
-  <widget class="QGroupBox" name="BGroup_ExecMode" >
-   <property name="geometry" >
+  <widget class="QGroupBox" name="BGroup_ExecMode">
+   <property name="geometry">
     <rect>
      <x>11</x>
      <y>461</y>
@@ -510,62 +511,62 @@
      <height>109</height>
     </rect>
    </property>
-   <property name="sizePolicy" >
-    <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="minimumSize" >
+   <property name="minimumSize">
     <size>
      <width>1</width>
      <height>0</height>
     </size>
    </property>
-   <property name="title" >
+   <property name="title">
     <string>Execution mode</string>
    </property>
-   <layout class="QVBoxLayout" >
-    <property name="spacing" >
+   <layout class="QVBoxLayout">
+    <property name="spacing">
      <number>6</number>
     </property>
-    <property name="margin" >
+    <property name="margin">
      <number>11</number>
     </property>
     <item>
-     <widget class="QRadioButton" name="Synch" >
-      <property name="focusPolicy" >
+     <widget class="QRadioButton" name="Synch">
+      <property name="focusPolicy">
        <enum>Qt::StrongFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Synchronous</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="Concurrent" >
-      <property name="focusPolicy" >
+     <widget class="QRadioButton" name="Concurrent">
+      <property name="focusPolicy">
        <enum>Qt::StrongFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Concurrent</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="Independent" >
-      <property name="focusPolicy" >
+     <widget class="QRadioButton" name="Independent">
+      <property name="focusPolicy">
        <enum>Qt::StrongFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Autonomous</string>
       </property>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QGroupBox" name="GroupBox_IDC_STATIC25" >
-   <property name="geometry" >
+  <widget class="QGroupBox" name="GroupBox_IDC_STATIC25">
+   <property name="geometry">
     <rect>
      <x>229</x>
      <y>461</y>
@@ -573,32 +574,32 @@
      <height>109</height>
     </rect>
    </property>
-   <property name="sizePolicy" >
-    <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="minimumSize" >
+   <property name="minimumSize">
     <size>
      <width>1</width>
      <height>0</height>
     </size>
    </property>
-   <property name="focusPolicy" >
+   <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
    </property>
-   <property name="title" >
+   <property name="title">
     <string>Overrides</string>
    </property>
-   <property name="alignment" >
+   <property name="alignment">
     <set>Qt::AlignVCenter</set>
    </property>
-   <widget class="QCheckBox" name="RMOverrides" >
-    <property name="enabled" >
+   <widget class="QCheckBox" name="RMOverrides">
+    <property name="enabled">
      <bool>false</bool>
     </property>
-    <property name="geometry" >
+    <property name="geometry">
      <rect>
       <x>13</x>
       <y>35</y>
@@ -606,35 +607,35 @@
       <height>19</height>
      </rect>
     </property>
-    <property name="focusPolicy" >
+    <property name="focusPolicy">
      <enum>Qt::StrongFocus</enum>
     </property>
-    <property name="text" >
+    <property name="text">
      <string>Remove overrides</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="EnforceOver" >
-    <property name="enabled" >
+   <widget class="QCheckBox" name="EnforceOver">
+    <property name="enabled">
      <bool>false</bool>
     </property>
-    <property name="geometry" >
+    <property name="geometry">
      <rect>
       <x>13</x>
       <y>68</y>
-      <width>199</width>
+      <width>211</width>
       <height>19</height>
      </rect>
     </property>
-    <property name="focusPolicy" >
+    <property name="focusPolicy">
      <enum>Qt::StrongFocus</enum>
     </property>
-    <property name="text" >
+    <property name="text">
      <string>Callable only from this VT context</string>
     </property>
    </widget>
   </widget>
-  <widget class="QWidget" name="layoutWidget" >
-   <property name="geometry" >
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
     <rect>
      <x>11</x>
      <y>580</y>
@@ -642,16 +643,16 @@
      <height>27</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2" >
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
      <spacer>
-      <property name="orientation" >
+      <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <property name="sizeType" >
+      <property name="sizeType">
        <enum>QSizePolicy::Expanding</enum>
       </property>
-      <property name="sizeHint" stdset="0" >
+      <property name="sizeHint" stdset="0">
        <size>
         <width>138</width>
         <height>23</height>
@@ -660,70 +661,70 @@
      </spacer>
     </item>
     <item>
-     <widget class="QPushButton" name="ID_OK" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <widget class="QPushButton" name="ID_OK">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="minimumSize" >
+      <property name="minimumSize">
        <size>
         <width>1</width>
         <height>0</height>
        </size>
       </property>
-      <property name="focusPolicy" >
+      <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>OK</string>
       </property>
-      <property name="default" >
+      <property name="default">
        <bool>true</bool>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="ID_CANCEL" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <widget class="QPushButton" name="ID_CANCEL">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="minimumSize" >
+      <property name="minimumSize">
        <size>
         <width>1</width>
         <height>0</height>
        </size>
       </property>
-      <property name="focusPolicy" >
+      <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Cancel</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="ID_HELP" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <widget class="QPushButton" name="ID_HELP">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="minimumSize" >
+      <property name="minimumSize">
        <size>
         <width>1</width>
         <height>0</height>
        </size>
       </property>
-      <property name="focusPolicy" >
+      <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Help</string>
       </property>
      </widget>
@@ -731,7 +732,7 @@
    </layout>
   </widget>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>NewName</tabstop>
   <tabstop>EnableName</tabstop>

@@ -624,6 +624,7 @@ public slots:
     virtual void on_EnableName_clicked();
     virtual void on_VTAbstract_clicked();
     virtual void on_DefCat_clicked();
+    virtual void on_Final_clicked();
     virtual void on_Substitutable_clicked();
 
 

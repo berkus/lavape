@@ -4111,6 +4111,14 @@ ValOnInit CVTypeBox::OnInitDialog()
     } 
     decl = 0;
     che = (CHETID*)myDECL->Supports.first;
+
+    if (myDECL->TypeFlags.Contains(isAbstract))
+      Final->setEnabled(false);
+    if (myDECL->TypeFlags.Contains(isFinalVT))
+      Final->setChecked(true);
+    else
+      Final->setChecked(false);
+
     if (myDECL->TypeFlags.Contains(substitutable)) {
       Substitutable->setChecked(true);
       if (myDECL->SecondTFlags.Contains(overrides) && !baseAbstract) {
@@ -4119,7 +4127,8 @@ ValOnInit CVTypeBox::OnInitDialog()
       }
     }
     else
-      Substitutable->setChecked(false); 
+      Substitutable->setChecked(false);
+
     if (che && (che == (CHETID*)myDECL->Supports.last)) 
       decl = myDoc->IDTable.GetDECL(che->data);
     if ((myDECL->SecondTFlags.Contains(isSet) || myDECL->SecondTFlags.Contains(isArray))
@@ -4329,6 +4338,7 @@ void CVTypeBox::on_VTAbstract_clicked()
   if (!abs) {
     myDECL->TypeFlags.EXCL(isAbstract);
     Substitutable->setEnabled(!myDECL->SecondTFlags.Contains(overrides) || baseAbstract);
+    Final->setEnabled(true);
     valkindOfLink = 0;
   }
   else {
@@ -4336,6 +4346,8 @@ void CVTypeBox::on_VTAbstract_clicked()
     myDECL->TypeFlags.EXCL(substitutable);
     Substitutable->setChecked(false);
     Substitutable->setEnabled(false);
+    Final->setChecked(false);
+    Final->setEnabled(false);
   }
   NamedTypes->setEnabled(!abs);
   BasicTypes->setEnabled(!abs);
@@ -4366,6 +4378,26 @@ void CVTypeBox::on_DefCat_clicked()
     myDECL->TypeFlags.EXCL(definesObjCat);
   }
   UpdateData(false);  
+}
+
+void CVTypeBox::on_Final_clicked() 
+{
+  UpdateData(true);
+  bool fin = Final->isChecked();
+  if (fin) {
+    myDECL->TypeFlags.INCL(isFinalVT);
+    VTAbstract->setEnabled(false);
+  }
+  else
+    myDECL->TypeFlags.EXCL(isFinalVT);
+  //ResetComboItems(BasicTypes);
+  //myDoc->MakeBasicBox(BasicTypes, NoDef, true);
+  //ResetComboItems(NamedTypes);
+  //CExecAllDefs* execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, VirtualType, myDECL->TypeFlags);
+  //delete execAllPatt;
+  //if (!SetSelections(BasicTypes, NamedTypes, valNewTypeType))
+  //  valNewTypeType = QString("");
+  UpdateData(false);
 }
 
 void CVTypeBox::on_Substitutable_clicked() 
@@ -4447,10 +4479,17 @@ void CVTypeBox::on_ID_OK_clicked()
     myDECL->TypeFlags.EXCL(definesObjCat);
     myDECL->TypeFlags.EXCL(definiteCat);
   }
+
+  if (Final->isChecked()) 
+    myDECL->TypeFlags.INCL(isFinalVT);
+  else
+    myDECL->TypeFlags.EXCL(isFinalVT);
+
   if (Substitutable->isChecked()) 
     myDECL->TypeFlags.INCL(substitutable);
   else
     myDECL->TypeFlags.EXCL(substitutable);
+
   if (VTAbstract->isChecked()) {
     myDECL->TypeFlags.INCL(isAbstract);
     myDECL->TypeFlags.EXCL(definiteCat);
