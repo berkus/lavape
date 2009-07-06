@@ -1443,8 +1443,8 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
             return false;
           }
           if ((ElDECL->DeclType == VirtualType) && (ElDECL->RefID.nID >= 0)
-            && !IDTable.CheckValOfVirtual(ElDECL, false)) {
-            LavaError(*pckd, true, classDECL, &ERR_InvalidValOfVT);
+            && (errID = IDTable.CheckValOfVirtual(ElDECL, false))) {
+            LavaError(*pckd, true, ElDECL, errID);
             return false;
           }
           if (baseDECL && (ElDECL->DeclType == Attr)) {

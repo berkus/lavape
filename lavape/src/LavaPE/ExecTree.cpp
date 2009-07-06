@@ -298,6 +298,7 @@ void CExecTree::ExecVT(LavaDECL *elDef, DString* lab)
   DString lab1;
   bool hasErr;
   SynFlags typeFlags;
+  CHETID *che;
 
   if (elDef->ParentDECL->DeclType != FormDef) {
     elDef->WorkFlags.INCL(isPartOfPattern);
@@ -351,6 +352,11 @@ void CExecTree::ExecVT(LavaDECL *elDef, DString* lab)
       *lab += DString("}");
   }
   if (elDef->Supports.first && elDef->SecondTFlags.Contains(overrides)) {
+    for (che = (CHETID*)elDef->Supports.first; che; che = (CHETID*)che->successor) {
+      decl = Doc->IDTable.GetDECL(che->data, elDef->inINCL);
+      if (decl && decl->TypeFlags.Contains(isFinalVT))
+        new CLavaError(&elDef->DECLError1, &ERR_FinalVTisOverridden);
+    }
     decl = Doc->IDTable.GetDECL(((CHETID*)elDef->Supports.first)->data, elDef->inINCL);
     for ( ;decl && decl->Supports.first && (decl->DeclType == VirtualType);
       decl = Doc->IDTable.GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL));

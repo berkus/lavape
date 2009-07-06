@@ -135,7 +135,7 @@ public:
   bool isValOfVirtual(LavaDECL *decl, LavaDECL* baseDECL=0);
   bool isValOfOtherVirtual(LavaDECL *decl, LavaDECL* vdecl);
   bool otherOContext(LavaDECL* decl1, LavaDECL *decl2);
-  bool CheckValOfVirtual(LavaDECL* VTDecl, bool cor=true);
+  QString* CheckValOfVirtual(LavaDECL* VTDecl, bool cor=true);
   //int GetnINCLinDoc(int inIncl, int nINCL);
   void SetAsName(int incl, const DString& newAsName, const DString& oldAsName, LavaDECL* topDECL );
   QString* SetImplDECLs(LavaDECL*& errDECL);

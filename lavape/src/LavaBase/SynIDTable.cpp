@@ -1715,24 +1715,31 @@ bool TIDTable::lowerOContext(LavaDECL* highDECL, LavaDECL *lowDECL, bool& sameCo
     return IsAn(hCon.oContext,TID(lCon.oContext->OwnID, lCon.oContext->inINCL),0);
 }
 
-bool TIDTable::CheckValOfVirtual(LavaDECL* VTDecl, bool cor)
+QString* TIDTable::CheckValOfVirtual(LavaDECL* VTDecl, bool cor)
 {
   LavaDECL *decl, *valDECL;
   bool ok = true;
+  CHETID *che, *cheOver;
+
   if (!VTDecl)
-    return true;
+    return 0;
   valDECL = GetDECL(VTDecl->RefID, VTDecl->inINCL);
   if (!valDECL)
-    return false;
+    return &ERR_InvalidValOfVT;
   if (valDECL->DeclType == VirtualType)
-    return true;
+    return 0;
+  for (che = (CHETID*)VTDecl->Supports.first;
+       che;
+       che = (CHETID*)che->successor) {
+    decl = GetDECL(che->data, VTDecl->inINCL);
+    if (decl && decl->TypeFlags.Contains(isFinalVT)) 
+      return &ERR_FinalVTisOverridden;
+  }
   decl = valDECL;
   for (; decl && (decl != VTDecl->ParentDECL);
          decl = decl->ParentDECL);
   if (!decl)
-    return true;
-  CHETID* cheOver;
-  CHETID* che;
+    return 0;
   for (che = (CHETID*)VTDecl->Supports.first;
        che && ok;
        che = (CHETID*)che->successor) {
@@ -1753,7 +1760,10 @@ bool TIDTable::CheckValOfVirtual(LavaDECL* VTDecl, bool cor)
     else
       ok = false;
   }
-  return ok;
+  if (ok)
+    return 0;
+  else
+    return &ERR_InvalidValOfVT;
 }
 
 bool TIDTable::otherOContext(LavaDECL* decl1, LavaDECL *decl2)

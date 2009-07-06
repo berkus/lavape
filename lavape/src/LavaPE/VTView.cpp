@@ -545,6 +545,8 @@ bool CVTView::EnableOverride(CTreeItem* item)
         if (myID != TIDDef) {
           if (ElDECL->DeclType != VirtualType)
             return true;
+          if (ElDECL->TypeFlags.Contains(isFinalVT))
+            return false;
           GetDocument()->IDTable.GetPattern(ElDECL, con);
           if (con.oContext && (ElDECL->ParentDECL != con.oContext))
              return GetDocument()->IDTable.lowerOContext(myDECL, ElDECL, sameContext) && !sameContext;
