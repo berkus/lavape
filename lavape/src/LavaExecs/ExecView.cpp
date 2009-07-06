@@ -881,15 +881,16 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     sData.execDECL = myDECL;
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSetSynOID, 0,0, (address)&sData);
     RedrawExec();
-    //selfVar->oldFormParms = (FormParms*)selfVar->formParms.ptr;
 
     toBeDrawn = 0;
     multipleUpdates = false;
     externalHint = false;
     if (hint && hint->com == CPECommand_OpenExecView)
       delete hint;
-    //Select();
-    //redCtl->update();
+    if (active) {
+      redCtl->setFocus();
+      wxTheApp->updateButtonsMenus();
+    }
   }
 }
 
