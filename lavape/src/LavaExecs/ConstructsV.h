@@ -51,7 +51,11 @@ enum InsertMode {
 
 class CProgText : public CProgTextBase {
 public:
-  CProgText () { INIT(); }
+  CProgText () {
+    INIT();
+    selectAt = 0;
+    selectAfter = 0;
+  }
 
 	bool insBlank;
 

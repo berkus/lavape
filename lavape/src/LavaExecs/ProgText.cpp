@@ -645,6 +645,6 @@ void CProgTextBase::INIT () {
   leftArrows = true;
   showComments = true;
   plhSearch = false;
-  selectAt = 0;
-  selectAfter = 0;
+  //selectAt = 0;
+  //selectAfter = 0;
 }

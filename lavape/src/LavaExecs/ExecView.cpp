@@ -913,6 +913,7 @@ void CExecView::OnChar(QKeyEvent *e)
       else // TAB
         text->newSelection = text->FindNextPlaceholder();
       Select();
+      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Up:
       currentSynObj = text->currentSynObj;
@@ -928,6 +929,7 @@ void CExecView::OnChar(QKeyEvent *e)
         parent = currentSynObj->parentObject;
       }
       Select(parent);
+      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Down:
       if (text->currentSynObj->primaryToken == parameter_T)
@@ -961,13 +963,16 @@ void CExecView::OnChar(QKeyEvent *e)
       //&& currentSynObj->primaryToken != CrtblRef_T) {
         text->currentSynObj = currentSynObj;
         Select(FirstChild());
+        wxTheApp->updateButtonsMenus();
       //}
       break;
     case Qt::Key_Left:
       Select(LeftSibling());
+      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Right:
       Select(RightSibling());
+      wxTheApp->updateButtonsMenus();
       break;
     //case Qt::Key_Return:
     //  if (GetDocument()->changeNothing)
@@ -1185,6 +1190,7 @@ void CExecView::OnChar(QKeyEvent *e)
       else // TAB
         text->newSelection = text->FindNextPlaceholder();
       Select();
+      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Up:
       currentSynObj = text->currentSynObj;
@@ -1202,6 +1208,7 @@ void CExecView::OnChar(QKeyEvent *e)
         parent = currentSynObj->parentObject;
       }
       Select(parent);
+      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Down:
       if (text->currentSynObj->primaryToken == parameter_T)
@@ -1221,6 +1228,7 @@ void CExecView::OnChar(QKeyEvent *e)
         && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
           doubleClick = true;
         Select(text->currentSynObj);
+        wxTheApp->updateButtonsMenus();
         doubleClick = false;
       }
       else if (text->currentSelection->data.token == Comment_T) {
@@ -1229,6 +1237,7 @@ void CExecView::OnChar(QKeyEvent *e)
         doubleClick = true;
         clicked = true;
         Select();
+        wxTheApp->updateButtonsMenus();
       }
       else if (!IsPH(currentSynObj)
       && currentSynObj->primaryToken != TDOD_T
@@ -1237,13 +1246,16 @@ void CExecView::OnChar(QKeyEvent *e)
       && currentSynObj->primaryToken != CrtblRef_T) {
         text->currentSynObj = currentSynObj;
         Select(FirstChild());
+        wxTheApp->updateButtonsMenus();
       }
       break;
     case Qt::Key_Left:
       Select(LeftSibling());
+      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Right:
       Select(RightSibling());
+      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Return:
       if (GetDocument()->changeNothing)
@@ -1273,7 +1285,7 @@ void MyScrollView::mousePressEvent (QMouseEvent *e) {
 void MyScrollView::mouseDoubleClickEvent (QMouseEvent *e) {
   if (e->button() != Qt::LeftButton)
     return;
-  //execView->OnLButtonDblClk(e);
+  execView->OnLButtonDblClk(e);
 }
 
 MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
@@ -1460,13 +1472,12 @@ void CExecView::Select (SynObject *selObj)
 
   switch (text->currentSynObj->primaryToken) {
   case FuncRef_T:
-    if (doubleClick && EnableGotoDecl()) {
-      //doubleClick = false;
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-      OnGotoDecl();
-      redCtl->update();
-      return;
-    }
+    //if (doubleClick && EnableGotoDecl()) {
+    //  ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+    //  OnGotoDecl();
+    //  redCtl->update();
+    //  return;
+    //}
 
   case FuncPH_T:
     if (text->currentSynObj->parentObject->parentObject
@@ -1891,12 +1902,12 @@ exp: // Const_T
     return;
 
   case TDOD_T:
-    if (doubleClick && EnableGotoDecl()) {
-      //doubleClick = false;
-      OnGotoDecl();
-      redCtl->update();
-      return;
-    }
+    //if (doubleClick && EnableGotoDecl()) {
+    //  //doubleClick = false;
+    //  OnGotoDecl();
+    //  redCtl->update();
+    //  return;
+    //}
     objRef = (ObjReference*)text->currentSynObj->parentObject;
     if (objRef->flags.Contains(isDisabled)
     || objRef->flags.Contains(inExecHdr)
@@ -1932,12 +1943,11 @@ exp: // Const_T
 
   case TypePH_T:
   case TypeRef_T:
-    if (doubleClick && EnableGotoDecl()) {
-      //doubleClick = false;
-      OnGotoDecl();
-      redCtl->update();
-      return;
-    }
+    //if (doubleClick && EnableGotoDecl()) {
+    //  OnGotoDecl();
+    //  redCtl->update();
+    //  return;
+    //}
     if (text->currentSelection->data.token == TypeRef_T
     && Ignorable())
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
@@ -1974,12 +1984,11 @@ exp: // Const_T
   case Callee_T:
   case CompObj_T:
   case CrtblRef_T:
-    if (doubleClick && EnableGotoDecl()) {
-      //doubleClick = false;
-      OnGotoDecl();
-      redCtl->update();
-      return;
-    }
+    //if (doubleClick && EnableGotoDecl()) {
+    //  OnGotoDecl();
+    //  redCtl->update();
+    //  return;
+    //}
     if (text->currentSynObj->parentObject->primaryToken == attach_T)
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(attachCombo);
     else if (text->currentSynObj->parentObject->primaryToken == new_T)
@@ -2018,15 +2027,12 @@ exp: // Const_T
 
   case enumConst_T:
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
-    if (doubleClick && EnableGotoDecl()) {
-      OnGotoDecl();
-      //doubleClick = false;
-      break;
-    }
-    else {
-      //doubleClick = false;
+    //if (doubleClick && EnableGotoDecl()) {
+    //  OnGotoDecl();
+    //  break;
+    //}
+    //else
       goto exp;
-    }
 
   case parameter_T:
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
@@ -2045,8 +2051,6 @@ exp: // Const_T
     redCtl->update();
     return;
   }
-
-  //doubleClick = false;
 
   if (text->currentSelection->data.token == Exp_T
   || text->currentSelection->data.token == ExpOpt_T
@@ -2158,11 +2162,11 @@ void CExecView::RedrawExec()
     text->parmNames = false;
   text->showComments = myDECL->TreeFlags.Contains(ShowExecComments);
 
+  Redraw(selfVar);
+
   if (!text->selectAt)
     text->selectAt = selfVar;
   text->selectAfter = text->selectAt;
-
-  Redraw(selfVar);
 
   if (externalHint && text->currentSynObjID) {
     sData.synObjectID = text->currentSynObjID;
