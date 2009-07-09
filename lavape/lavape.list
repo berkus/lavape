@@ -22,8 +22,6 @@ $prefix=/usr/local
 
 d 755 root sys $prefix/lavape -
 f 644 root sys $prefix/lavape *.txt
-#f 755 root sys $prefix/bin/lavape lavape.ulo
-#f 755 root sys $prefix/bin/lava lava.ulo
 
 d 777 root sys $prefix/lavape/samples -
 f 666 root sys $prefix/lavape/samples samples/*.lava
@@ -32,15 +30,15 @@ f 666 root sys $prefix/lavape/samples samples/*.xpm
 f 666 root sys $prefix/lavape/samples/LCompoImpl.lcom samples/LCompoImpl.lcom
 
 d 755 root sys $prefix/lavape/lib -
-f 755 root sys $prefix/lavape/lib/libdisco.so lib/libdisco.so
-f 755 root sys $prefix/lavape/lib/libInterpreter.so lib/libInterpreter.so
-f 755 root sys $prefix/lavape/lib/libLavaBase.so lib/libLavaBase.so
-f 755 root sys $prefix/lavape/lib/libLavaExecs.so lib/libLavaExecs.so
-f 755 root sys $prefix/lavape/lib/libLavaGUI.so lib/libLavaGUI.so
-f 755 root sys $prefix/lavape/lib/libLavaPE_UI.so lib/libLavaPE_UI.so
-f 755 root sys $prefix/lavape/lib/libLavaStream.so lib/libLavaStream.so
-f 755 root sys $prefix/lavape/lib/libLava_UI.so lib/libLava_UI.so
-f 755 root sys $prefix/lavape/lib/libwxqDocView.so lib/libwxqDocView.so
+f 755 root sys $prefix/lavape/lib/libdisco.so.1 lib/libdisco.so.1.0.0
+f 755 root sys $prefix/lavape/lib/libInterpreter.so.1 lib/libInterpreter.so.1.0.0
+f 755 root sys $prefix/lavape/lib/libLavaBase.so.1 lib/libLavaBase.so.1.0.0
+f 755 root sys $prefix/lavape/lib/libLavaExecs.so.1 lib/libLavaExecs.so.1.0.0
+f 755 root sys $prefix/lavape/lib/libLavaGUI.so.1 lib/libLavaGUI.so.1.0.0
+f 755 root sys $prefix/lavape/lib/libLavaPE_UI.so.1 lib/libLavaPE_UI.so.1.0.0
+f 755 root sys $prefix/lavape/lib/libLavaStream.so.1 lib/libLavaStream.so.1.0.0
+f 755 root sys $prefix/lavape/lib/libLava_UI.so.1 lib/libLava_UI.so.1.0.0
+f 755 root sys $prefix/lavape/lib/libwxqDocView.so.1 lib/libwxqDocView.so.1.0.0
 
 %ifdef suse
 l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
