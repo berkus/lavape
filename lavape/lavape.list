@@ -1,5 +1,5 @@
 %product The Lava Programming Environment
-%copyright 1999-2008 by Klaus D. Günther
+%copyright 1999-2009 by Klaus D. Günther
 %vendor Klaus D. Günther
 %license GPL.txt
 %readme ReleaseNotes.txt
@@ -21,10 +21,9 @@
 $prefix=/usr/local
 
 d 755 root sys $prefix/lavape -
-#f 755 root sys $prefix/lavape/bin-install bin-install
 f 644 root sys $prefix/lavape *.txt
-f 755 root sys $prefix/bin/lavape lavape.ulo
-f 755 root sys $prefix/bin/lava lava.ulo
+#f 755 root sys $prefix/bin/lavape lavape.ulo
+#f 755 root sys $prefix/bin/lava lava.ulo
 
 d 777 root sys $prefix/lavape/samples -
 f 666 root sys $prefix/lavape/samples samples/*.lava
@@ -71,30 +70,6 @@ f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.png
 f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.css
 
 d 755 root sys $prefix/lavape/doc -
-f 644 root sys $prefix/lavape/doc doc/*.htm
-f 644 root sys $prefix/lavape/doc doc/*.js
-f 644 root sys $prefix/lavape/doc doc/*.txt
-f 644 root sys $prefix/lavape/doc doc/*.xpm
-f 644 root sys $prefix/lavape/doc/LavaPE.adp doc/LavaPE.adp
+f 644 root sys $prefix/lavape/doc doc/LavaPE.qhc
+f 644 root sys $prefix/lavape/doc doc/LavaPE.qch
 
-d 755 root sys $prefix/lavape/doc/images -
-f 644 root sys $prefix/lavape/doc/images doc/images/*.png
-f 644 root sys $prefix/lavape/doc/images doc/images/*.gif
-f 644 root sys $prefix/lavape/doc/images doc/images/*.jpg
-
-d 755 root sys $prefix/lavape/doc/html -
-f 644 root sys $prefix/lavape/doc/html doc/html/*.htm
-f 644 root sys $prefix/lavape/doc/html doc/html/*.css
-f 644 root sys $prefix/lavape/doc/html doc/html/*.jpg
-
-d 755 root sys $prefix/lavape/doc/html/dialogs -
-f 644 root sys $prefix/lavape/doc/html/dialogs doc/html/dialogs/*.htm
-
-d 755 root sys $prefix/lavape/doc/html/whatNext -
-f 644 root sys $prefix/lavape/doc/html/whatNext doc/html/whatNext/*.htm
-
-d 755 root sys $prefix/lavape/doc/html/commands -
-f 644 root sys $prefix/lavape/doc/html/commands doc/html/commands/*.htm
-
-d 755 root sys $prefix/lavape/doc/html/whatsThis -
-f 644 root sys $prefix/lavape/doc/html/whatsThis doc/html/whatsThis/*.htm
