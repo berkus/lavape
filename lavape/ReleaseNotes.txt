@@ -38,12 +38,44 @@ specific category from a variable having the indefinite category
 "Any category".
 
 
-C) LavaPE has been ported to Mac OS
+C) A virtual type (= type parameter) may be declared "final" now
+================================================================
+
+This means that it cannot be derived/specialized any further in a
+derived class or package. Two new little sample programs
+(FinalVirtualType.lava and ForceOverride.lava) explain the
+motivation behind this and the related "force override" attribute
+of member functions.
+
+
+D) LavaPE has been ported to Mac OS
 ===================================
 
 The Lava programming environment can now also be built and run
 on the Mac OS 10.5 platform. A binary package for Mac OS 10.5
-(Intel) is available now, too.
+(Intel) is available in particular.
+
+
+E) LavaPE has been ported from custom makefiles to qmake
+========================================================
+
+This makes it much easier to produce *.app bundles and
+*.framework library bundles on Mac OS.
+
+
+F) HTML documentation files now conform to XHTML 1.0
+====================================================
+
+Our online and web help files have been revised so as to
+conform to the current "XHTML 1.0 transitional" standard.
+
+G) Online help uses the newer Qt Assistant now
+==============================================
+
+We have changed the LavaPE/Lava online help interface so as to
+use the newer Qt Assistant rather than the old Assistant_adp help
+display program. Qt Assistant supports a much more comprehensive
+set of (X)HTML and CSS tags.
 
 
 II) Installation of Lava/LavaPE
@@ -79,18 +111,25 @@ directory.
 How to install the Mac OS 10.5 binary release of LavaPE
 =======================================================
 
-Download the lavape-<rel>-macos.tar.bz2 archive, move it to
-the directory where the "lavadistro" installation directory is to
-reside as a subdirectory, and double-click it in the
-Mac OS Finder.
+Download Qt-4.5.2 from the following link:
 
-A "lavadistro" subdirectoy will be created, containing
-two shell procedures "lavape" and "lava". You can
-double-click them in the Finder to launch the Lava Programming
-Environment or the Lava Interpreter, respectively.
+  http://get.qtsoftware.com/qt/source/qt-mac-opensource-4.5.2.dmg
+  
+and install it in the default location.
 
-A number of sample programs can be found in the "samples"
-subdirectory of "lavadistro/lavadir".
+Download the lavape-<rel>-macos.dmg disk image file and mount it
+by double-clicking.
+
+In its "bin" directory you find the Lava Programming Environment
+(LavaPE.app) and the Lava interpreter (Lava.app). A double-click
+will launch them.
+
+For a more permanent installation, copy and paste the mounted image
+to your "Applications" folder or any other folder. Drag LavaPE.app/
+Lava.app to your dock, if you like.
+
+A number of sample programs can be opened in LavaPE.app or Lava.app
+from the "samples" subdirectory of the installation directory "lavape".
 
 
 How to install LavaPE from the source distribution on UNIX
@@ -103,19 +142,25 @@ directory of the envisaged lavape installation directory.
 Uncompress it using the command
 
    tar xjvf lavape-<release>-src.tar.bz2
+   
+Or download the most recent developer version of lavape
+from our SVN repository at SourceForge, using the
+following command in a shell window:
+
+  svn co https://lavape.svn.sourceforge.net/svnroot/lavape/trunk/lavape
 
 You need to have GNU gcc/make and the developer version
 of TrollTech/Qt4.
 
 Either you may download (the OpenSource version of) Qt4 from
-http://trolltech.com/developer/downloads/qt/x11 and
+ftp://ftp.qtsoftware.com/qt/source/ and
 build it yourself. In this case you must set the
 environment variable QTDIR to point to the Qt-<release>
 directory that is created by the build process,
 before you build Lava/LavaPE from the sources.
 
 Or, on a Linux box, the software package manager of your
-Linux distribution offers you the possibility to download 
+Linux distribution usually offers the possibility to download 
 and install the Qt4 developer package(s). The Lava
 build process will then try to locate the Qt4 include files,
 libraries and utility programs automatically (using the
@@ -125,7 +170,7 @@ in the lavape top-level directory).
 Then build the LavaPE executables as follows:
 
    cd lavape
-   qmake lavape.pro
+   qmake lavape.pro   // "qmake -spec macx-g++ lavape.pro" on Mac OS X
    make
 
 This will take quite a while. You will find the executables
