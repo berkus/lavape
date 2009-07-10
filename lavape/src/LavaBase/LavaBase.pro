@@ -12,7 +12,6 @@ SOURCES *= SyntaxG.cpp
 HEADERS *= AboutBox.h BAdapter.h BASEMACROS.h DumpView.h LavaAppBase.h LavaBaseDoc.h LavaBaseStringInit.h LavaThread.h PEBaseDoc.h SafeInt.h SylTraversal.h SynIDTable.h SynIO.h Syntax.h
 CONFIG += warn_off \
     qt \
-    debug-and-release \
     lib_bundle \
     precompile_header
 win32:FORMS = $$system(ls *.ui)

@@ -4,7 +4,6 @@ include(../../lpc.prf)
 QMAKE_OBJCXXFLAGS_PRECOMPILE =
 CONFIG += warn_off \
     qt \
-    debug-and-release \
     lib_bundle \
     precompile_header
 

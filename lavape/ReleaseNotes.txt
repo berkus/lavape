@@ -89,25 +89,6 @@ Simply launch the downloaded lavape-<rel>-win32-bin.exe file and
 follow the instructions of the installer.
 
 
-B) How to install the Linux binary releases of LavaPE
-=====================================================
-
-Download the pertinent *.rpm / *.deb packages and install them
-in the usual way using "rpm -i <package>.rpm"
-or "dpkg -i <package>.deb".
-
-A "lavape" installation directory will be installed in
-/usr/local, and two shell procedures "lavape" and "lava"
-will be installed in /usr/local/bin.
-
-"lavape" starts the Lava Programming Environment,
-"lava" starts the Lava interpreter.
-
-A number of sample programs can be found in the "samples"
-subdirectory of the "/usr/local/lavape" installation
-directory.
-
-
 How to install the Mac OS 10.5 binary release of LavaPE
 =======================================================
 
@@ -120,9 +101,8 @@ and install it in the default location.
 Download the lavape-<rel>-macos.dmg disk image file and mount it
 by double-clicking.
 
-In its "bin" directory you find the Lava Programming Environment
-(LavaPE.app) and the Lava interpreter (Lava.app). A double-click
-will launch them.
+A double-click on LavaPE.app or Lava.app will launch the Lava Programming
+Environment or the Lava Interpreter, respectively.
 
 For a more permanent installation, copy and paste the mounted image
 to your "Applications" folder or any other folder. Drag LavaPE.app/
@@ -150,7 +130,7 @@ following command in a shell window:
   svn co https://lavape.svn.sourceforge.net/svnroot/lavape/trunk/lavape
 
 You need to have GNU gcc/make and the developer version
-of TrollTech/Qt4.
+of Nokia (formerly TrollTech)/Qt4.
 
 Either you may download (the OpenSource version of) Qt4 from
 ftp://ftp.qtsoftware.com/qt/source/ and
@@ -161,7 +141,7 @@ before you build Lava/LavaPE from the sources.
 
 Or, on a Linux box, the software package manager of your
 Linux distribution usually offers the possibility to download 
-and install the Qt4 developer package(s). The Lava
+and install the Qt4 development package(s). The Lava
 build process will then try to locate the Qt4 include files,
 libraries and utility programs automatically (using the
 qbin.sh, qincl.sh, qlib.sh, and qsuff.sh shell procedures
@@ -173,7 +153,11 @@ Then build the LavaPE executables as follows:
    qmake lavape.pro   // "qmake -spec macx-g++ lavape.pro" on Mac OS X
    make
 
-This will take quite a while. You will find the executables
+On some platforms the Qt4 version of qmake has a different name,
+like "qmake-qt4". The command "qmake -v" will display the Qt
+version used by qmake.
+
+The build process will take quite a while. You will find the executables
 of the Lava Programming Environment in lavape/bin thereafter:
 "LavaPE", "Lava", and "LPC". (The Lava Precompiler "LPC" is needed
 only during the build process.)
@@ -193,8 +177,9 @@ You can run the Lava interpreter "Lava"
    main program or a declaration tree view that contains a
    main program declaration.
 
+
 We'd appreciate very much if you would inform
-us (e-mail: guenthk@users.sourceforge.net)
+us (e-mail: Klaus.D.Guenther@gmail.com)
 about any problems that you have encounterd
 during the installation or while using
 Lava/LavaPE.
