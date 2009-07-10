@@ -63,6 +63,7 @@ void CLavaGUIFrame::InitialUpdate()
 {
   for (int i=0; i<m_viewList.size(); i++)
     m_viewList.at(i)->OnInitialUpdate();
+  Activate(true);
 }
 
 void CLavaGUIFrame::closeEvent(QCloseEvent *e)
