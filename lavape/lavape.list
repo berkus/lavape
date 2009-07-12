@@ -68,6 +68,6 @@ f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.png
 f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.css
 
 d 755 root sys $prefix/lavape/doc -
-f 644 root sys $prefix/lavape/doc doc/LavaPE.qhc
-f 644 root sys $prefix/lavape/doc doc/LavaPE.qch
+f 644 root sys $prefix/lavape/doc/LavaPE.qhc doc/LavaPE.qhc
+f 644 root sys $prefix/lavape/doc/LavaPE.qch doc/LavaPE.qch
 
