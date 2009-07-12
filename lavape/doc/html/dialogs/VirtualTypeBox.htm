@@ -11,6 +11,12 @@
 /*<![CDATA[*/
   h2.c1 {text-align: center}
   /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+          font-weight: bold;
+      }
   </style>
 </head>
 
@@ -28,17 +34,46 @@
   <h3>Select value type of VT</h3>
 
   <p>If a virtual type is not abstract then you must specify an existing type as its value. This may be a concrete type or may again be virtual and may be selected from the combo-boxes &quot;Basic classes&quot; and &quot;Other classes&quot;. &quot;Basic classes&quot; lists all interfaces whose declaration is contained in the basic include file <i>std.lava</i>.</p>
-  <hr />
 
   <h3>Remove overrides</h3>
 
   <p>Transforms an <a href="../OverrideView.htm">overridden</a> virtual type into a non-overridden virtual type, as if it had been newly declared in the containing pattern.</p>
 
-  <h3>Abstract</h3>
+  <h3>Abstract VT</h3>
 
   <p>A virtual type (pattern parameter) of a package or of a <a href="InterfaceBox.htm#creatable">non-creatable</a> class may be abstract. I.e., the specification of a value type for this pattern parameter is deferred to a derived pattern.</p>
 
-  <h3>Kind of element reference</h3>
+  <h3>Defines object category</h3>
+    <p>The <a href="../TwoObjectCategories.htm">category</a> (state or value object) of 
+        an object of this type may be specified either already by this VT or else by a 
+        variable declaration that uses this VT.</p>
+
+  <h3>Object category</h3>
+    <p>If the VT determines the object <a href="../TwoObjectCategories.htm">category</a> 
+        then you may specify it here.</p>
+    <h3>Final</h3>
+
+  <p>A &quot;final&quot; VT cannot be overridden in a derived class or package. If you want to 
+      assign a constant or an object of a non-virtual type to a VT v then you may&nbsp; 
+      be forced to declare v to be &quot;final&quot;, since otherwise <span class="style1">
+      LavaPE</span> would refute the assignment as being unsafe: The <b>fixed</b> type 
+      of the assignment source could become incompatible to the <b>virtual</b> type of 
+      the assignment target if the latter would be associated with a more derived type 
+      in a derived class or package.<br />
+      <br />
+      In some cases it will be more appropriate to declare the function in whose body 
+      the assignment occurs as &quot;callable only from this VT context&quot; (= &quot;force override 
+      on derivation&quot;) to achieve the same effect without the necessity to declare the 
+      respective VT to be &quot;final&quot;.<br />
+      <br />
+      See the <b>FinalVirtualType.lava</b> and <b>ForceFunctionOverride.lava</b> 
+      sample programs.</p>
+
+  <h3>Substitutable</h3>
+    <p>Indicates whether this VT shall be <a href="../TypeSafety.htm#substitutableType">substitutable</a>, i.e., whether the type of a corresponding 
+        assignment source may even be <a href="../TypeSafety.htm#p-derived">p-derived</a> (rather than <a href="../TypeSafety.htm#c-derived">c-derived</a>) from this 
+        virtual type. (Cf. the <i><a href="../PatternSamples.htm">ModelManyViews</a></i> and <i><a href="../PatternSamples.htm">CarMeeting</a></i> samples.)</p>
+    <h3>Kind of element reference</h3>
 
   <p>If this VT defines the type of the elements of a set, chain, or array then you may specify whether the elements are treated as <a href="../PointersRefCounts.htm#refTypes">constituents, acquaintances or reverse links</a>.</p>
 </body>

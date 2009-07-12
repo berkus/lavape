@@ -27,13 +27,13 @@
 
   <p>Das gleiche Beispiel auf Deutsch (the same sample in German):</p>
 
-  <p>Please open <b>Gesangverein.lava</b> in <b class="c2">LavaPE</b>.</p>
-
   <p>Please open <b>ModelView.lava</b> in <b class="c2">LavaPE</b>.</p>
 
   <p>Please open <b>QueueOfPoint.lava</b> in <b class="c2">LavaPE</b>.</p>
 
   <p>Please open <b>Visitor.lava</b> in <b class="c2">LavaPE</b>.</p>
+    <p>Please open <b>FinalVirtualType.lava</b> in <b class="c2">LavaPE</b>.</p>
+    <p>Please open <b>ForceFunctionOverride.lava</b> in <b class="c2">LavaPE</b>.</p>
 
   <h3>Topic</h3>
 
@@ -45,11 +45,7 @@
 
   <p>The ChoralSociety sample provides a package <em>S</em> (&quot;Society&quot;) with two virtual types <em>society</em> and <em>member</em>. In <em>S</em> the value of <em>society</em> is the type <em>Society</em>, the value of <em>member</em> is <em>Member</em>. A second package <em>CS</em> (&quot;ChoralSociety&quot;) is derived from <em>S</em> by specializing <em>society</em> to become <em>ChoralSociety</em> (in turn derived fro <em>Society</em>) and <em>member</em> to become <em>Singer</em> (derived from <em>Member).</em> As a consequence, the <em>MemberList</em> becomes a list of <em>Singer</em>s in <em>CS</em> automatically, and the chairman is also a <em>Singer</em> in <em>CS</em> rather than just a <em>Member</em>.</p>
 
-  <p><strong>Gesangverein:</strong></p>
-
-  <p>Das Gesangvereins-Beispiel enth&#228;lt ein Package <em>V</em> (&quot;Verein&quot;) mit zwei virtuellen Typen <em>verein</em> und <em>mitglied</em>. In <em>V</em> ist der Wert von <em>verein</em> der Typ <em>Verein</em>, der Wert von <em>mitglied</em> ist <em>Mitglied.</em> Aus <em>V</em> wird ein weiteres Package <em>GV</em> (&quot;Gesangverein&quot;) abgeleitet, und zwar dadurch, dass <em>verein</em> zu <em>Gesangverein</em> (aus <em>Verein</em> abgeleitet) und <em>mitglied</em> zu <em>Saenger</em> (aus <em>Mitglied</em> abgeleitet) spezialisiert werden. Infolgedessen wird automatisch aus der <em>Mitgliederliste</em> des <em>Verein</em>s eine Liste von <em>Saenger</em>n im <em>Gesangverein</em>, und der Vorsitzende des Gesangvereins ist ebenfalls ein <em>Saenger</em> und nicht nur ein <em>Mitglied</em>.</p>
-
-  <p><strong>ModelView:</strong></p>
+    <p><strong>ModelView:</strong></p>
 
   <p>The ModelView sample (based on the well-known subject/observer pattern) reconstructs the corresponding sample from <a href="TypeSafety.htm#TT">[16]</a>. It provides a package <em>ModelViewFW</em> (&quot;model/view framework&quot;) with two type parameters &quot;model&quot; and &quot;view&quot;. &quot;ModelViewFW&quot; contains two mutually recursive types &quot;Model&quot; and &quot;View&quot;. &quot;Model&quot; contains a member vList which is a <i>homogeneous</i> &quot;ViewList&quot; all of whose elements have the same virtual type setElem=~&lt;view&gt;. (The tilde &quot;~&quot; marks variable <a href="TwoObjectCategories.htm">state objects</a> in <b class="c2">Lava</b>.)</p>
 
@@ -64,6 +60,12 @@
   <p class="c3">Visitor:</p>
 
   <p>The Visitor sample illustrates a special case of the well-known &quot;Visitor&quot; pattern of <a href="TypeSafety.htm#GOF">[8]</a> and also a special case of <a href="RepetComputSamples.htm">indirect tree recursion</a>.</p>
+    <p><b>FinalVirtualType and ForceFunctionOverride:</b></p>
+    <p>Since release 0.9.1 a virtual type (= type parameter) may be declared &quot;final&quot;. 
+        This means that it cannot be derived/specialized any further in a derived class 
+        or package. Two new little sample programs (FinalVirtualType.lava and 
+        ForceOverride.lava) explain the motivation behind this and the related &quot;force 
+        override&quot; attribute of member functions. </p>
 
   <h3>Where to look and what to do</h3>
 
@@ -89,7 +91,7 @@
 
   <p>The reason for the validity of the second rule is simple: The value of a VT (= type parameter) is determined by the respective <a href="PatternsFrameworks.htm#patternContext">pattern context</a>. So if you are outside a pattern P and outside of any pattern that is derived from P, the values of P&#39;s VTs at the actual place of reference are just undefined.</p>
 
-  <p><b><a id="visitor"></a>VirtualVisitor:<br /></b><br />
+  <p><b><a id="visitor"></a>Visitor:<br /></b><br />
   The <i>Visitor</i> pattern defines an abstract virtual type <i>R</i> for the result of the visitor&#39;s tree evaluation function <i>evaluate</i>. The way how the visitor walks through the tree is described by this <i>evaluate</i> method and doesn&#39;t depend on <i>R</i>, while the treatment of the individual tree nodes depends on <i>R</i> and is implemented by the overridden methods <i>evalLeaf</i> and <i>evalNode</i> of <i>StringVisitor</i> and <i>IntVisitor</i>. The initiator <i>VisitorDemo</i> shows how a sample tree is constructed and how this same tree is evaluated twice: once by the <i>StringVisitor</i> and once by the <i>IntVisitor</i>.</p>
 
   <p>Please notice the comments in the VisitorDemo initiator.</p>

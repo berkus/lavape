@@ -43,7 +43,7 @@
 
   <h3>Enable renaming</h3>
 
-  <p>YYou may change the names of functions, member variables and virtual types when you override them in a derived class or pattern (for instance in order to resolve name collisions in cases of multiple inheritance). They inherit the names of the base versions by default (and their name is changed accordingly if the inherited base name is changed). Check this check-box if you would like to assign a different name (which will not be changed then if the base name is changed).</p>
+  <p>You may change the names of functions, member variables and virtual types when you override them in a derived class or pattern (for instance in order to resolve name collisions in cases of multiple inheritance). They inherit the names of the base versions by default (and their name is changed accordingly if the inherited base name is changed). Check this check-box if you would like to assign a different name (which will not be changed then if the base name is changed).</p>
 
   <h3>Substitutable type</h3>
 
@@ -63,7 +63,13 @@
 
   <h3>Category</h3>
 
-  <p>Check this if the member shall be treated as a variable <a href="../TwoObjectCategories.htm">state object</a> ; otherwise it will be treated as an immutable <a href="../TwoObjectCategories.htm">value object</a>, i.e., its direct and nested <a href="../PointersRefCounts.htm#refTypes">constituents</a> cannot be modified after the object has been completely <a href="../ObjectLifeCycle.htm#creation">created/initialized</a>.</p>
+  <p>Here you can determine whether this member shall be treated as a variable <a href="../TwoObjectCategories.htm">state object</a> 
+      or as an immutable <a href="../TwoObjectCategories.htm">value object</a>. In the 
+      latter case its direct and nested <a href="../PointersRefCounts.htm#refTypes">constituents</a> cannot be modified after the object has been completely <a href="../ObjectLifeCycle.htm#creation">created/initialized</a>. 
+      If you would like to admit both categories then select &quot;Any category&quot; here. (You 
+      may use the <span class="style1">copy</span> statement or the
+      <span class="style1">clone</span> expression to produce an object of a fixed, 
+      known category from such an &quot;Any category&quot; variable.</p>
 
   <h3>Protected</h3>
 

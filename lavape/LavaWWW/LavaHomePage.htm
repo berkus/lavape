@@ -15,7 +15,10 @@
 
   <style type="text/css" xml:space="preserve">
   img.top { vertical-align: top; }
-  .center { text-align: center }
+  .center {
+          border: 1;
+          text-align: center;
+      }
   .small { font-size:small }
   p.bold { font-weight:bold }
       .plname
@@ -35,18 +38,14 @@
           font-style: italic;
           color: #FF0000;
       }
-      .style5
-      {
-          color: #0000FF;
-      }
-  img#Grafik18 { float: right; border: 0pt }
+      img#Grafik18 { float: right; border: 0pt }
   .noborder { border: 0pt }
       .style6
       {
           color: #FF0000;
           font-style: italic;
       }
-  </style>
+      </style>
 </head>
 
 <body lang="en-US" xml:lang="en-US">
@@ -61,9 +60,12 @@
   <p class="bold">
       <br/>
       an experimental object-oriented rapid application development (RAD) language<br/>
-  with parameterized ("virtual") types, refactoring, and extensive static checks.<br/>
+  with parameterized (&quot;virtual&quot;) types, refactoring, and extensive static checks,<br />
+      that prevent inadvertent access to 
+      <a href="doc/html/IniChecks.htm">uninitialized variables
+      and null objects</a> already at programming time.<br/>
   <br/>
-  The <span class="plname">Lava</span> programming environment <span class="plname">LavaPE</span> replaces text editors<br/>
+  The<span class="style6"> Lava</span> programming environment <span class="plname">LavaPE</span> replaces text editors<br/>
   completely by structure editors.<br />
       <br />
       (See also the <a href="http://en.wikipedia.org/wiki/Lava_(programming_language)" 
@@ -97,41 +99,29 @@
   <br/><br/>
 
   </div>
-  <div style="text-align: center">
-    <table style="background-color:#ffffaa" border="1" cellpadding="0" cellspacing="0">
-      <tr>
-        <td>
-          <p><b>
+          <p style="text-align: center; background-color: #ffffaa;"><b>
               <br/>
-              Release 0.9.0 of </b> <span class="plname">Lava</span>/<span class="plname">LavaPE</span><b>  is ready for download.<br/>
-
-              It turns
-              <span class="plname">Lava</span>
-              into a language (the first one?) that completely prevents inadvertent access to uninitialized variables and null objects
-              already at programming time
-              by complete
-              <i>static</i>
-              <a href="doc/html/IniChecks.htm">initialization checks</a>.<br/><br/>
-
-              The new optional <a href="doc/html/MultiPhaseRecIni.htm#initialize">initialize clause</a> of the
-              <span class="style5">declare</span>
-              construct reconciles these new static initialization checks with the peculiarities of the creation/initialization of collections of
-              <span class="plname">Lava</span> objects which may contain mutual/circular/forward references.<br/><br/>
-              The semi-automatic
-              <span class="plname">Lava</span>
-              GUI generator allows you now to <a href="doc/html/EditForm.htm#handlers">assign event handlers</a> to certain basic GUI events.<br/>
+              Release 0.9.1 of </b> <span class="plname">Lava</span>/<span class="plname">LavaPE</span><b>  is ready for download.<br />
               <br/>
+
+              In release 0.9.1 the old-fashioned MDI-based user interface of
+              <span class="style6">LavaPE</span>/<span class="style6">Lava<br />
+              </span>has been changed to use tab and splitter widgets instead.<br />
+              <br />
+&nbsp; The notion of <a href="doc/html/TwoObjectCategories.htm">variable state and immutable 
+              value objects</a> has been slightly revised once more.&nbsp;&nbsp;&nbsp;
+              <br />
+              <br />
+              <a href="doc/html/PatternsFrameworks.htm">Virtual types</a> may be declared 
+              &quot;final&quot; now to prevent further derivation.<br />
+              (See the FinalVirtualType.lava and ForceFunctionOverride.lava sample programs.)<br />
+              <br />
+              For further details see the Release Notes.<br />
+              <br />
               </b></p>
-        </td>
-      </tr>
-    </table>
-  </div>
-
-
   <br/><br/>
   <p>The demand for new software grows continuously. Existing software has to be changed and adapted to new requirements in ever shorter intervals. On the other hand, the possibilities to recruit foreign programmers or to increase the number of qualified domestic programmers are limited. Rather, we shall be able to cope with this challenge only</p>
-
-  <p><img src="doc/images/BD14580_.png" width="12" height="12" alt="img" id="Grafik4"/>     if the productivity (or simply: the speed) of the programming process</p>
+    <p><img src="doc/images/BD14580_.png" width="12" height="12" alt="img" id="Grafik4"/>     if the productivity (or simply: the speed) of the programming process</p>
 
   <p><img src="doc/images/BD14580_.png" width="12" height="12" alt="img" id="Grafik5"/>     and if program quality, comprehensibility, and, as a consequence, program maintainability</p>
 
