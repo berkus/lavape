@@ -18,7 +18,11 @@
 
 #%preinstall echo Please enter the installation directory for lavape:;read dirname;echo Your install dir is $dirname
 
+%ifdef !prefix
 $prefix=/opt
+%endif
+
+$libdir=/usr/local/lib
 
 d 755 root sys $prefix/lavape -
 f 644 root sys $prefix/lavape *.txt
@@ -29,16 +33,15 @@ f 666 root sys $prefix/lavape/samples samples/*.ldoc
 f 666 root sys $prefix/lavape/samples samples/*.xpm
 f 666 root sys $prefix/lavape/samples/LCompoImpl.lcom samples/LCompoImpl.lcom
 
-d 755 root sys $prefix/lavape/lib -
-f 755 root sys $prefix/lavape/lib/libdisco.so.1 lib/libdisco.so.1.0.0
-f 755 root sys $prefix/lavape/lib/libInterpreter.so.1 lib/libInterpreter.so.1.0.0
-f 755 root sys $prefix/lavape/lib/libLavaBase.so.1 lib/libLavaBase.so.1.0.0
-f 755 root sys $prefix/lavape/lib/libLavaExecs.so.1 lib/libLavaExecs.so.1.0.0
-f 755 root sys $prefix/lavape/lib/libLavaGUI.so.1 lib/libLavaGUI.so.1.0.0
-f 755 root sys $prefix/lavape/lib/libLavaPE_UI.so.1 lib/libLavaPE_UI.so.1.0.0
-f 755 root sys $prefix/lavape/lib/libLavaStream.so.1 lib/libLavaStream.so.1.0.0
-f 755 root sys $prefix/lavape/lib/libLava_UI.so.1 lib/libLava_UI.so.1.0.0
-f 755 root sys $prefix/lavape/lib/libwxqDocView.so.1 lib/libwxqDocView.so.1.0.0
+f 755 root sys $libdir/libdisco.so.1 lib/libdisco.so.1.0.0
+f 755 root sys $libdir/libInterpreter.so.1 lib/libInterpreter.so.1.0.0
+f 755 root sys $libdir/libLavaBase.so.1 lib/libLavaBase.so.1.0.0
+f 755 root sys $libdir/libLavaExecs.so.1 lib/libLavaExecs.so.1.0.0
+f 755 root sys $libdir/libLavaGUI.so.1 lib/libLavaGUI.so.1.0.0
+f 755 root sys $libdir/libLavaPE_UI.so.1 lib/libLavaPE_UI.so.1.0.0
+f 755 root sys $libdir/libLavaStream.so.1 lib/libLavaStream.so.1.0.0
+f 755 root sys $libdir/libLava_UI.so.1 lib/libLava_UI.so.1.0.0
+f 755 root sys $libdir/libwxqDocView.so.1 lib/libwxqDocView.so.1.0.0
 
 %ifdef suse
 l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
@@ -64,3 +67,6 @@ f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.js
 f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.png
 f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.css
 
+d 755 root sys $prefix/lavape/doc -
+f 644 root sys $prefix/lavape/doc/LavaPE.qhc doc/LavaPE.qhc
+f 644 root sys $prefix/lavape/doc/LavaPE.qch doc/LavaPE.qch
