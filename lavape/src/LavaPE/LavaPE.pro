@@ -18,7 +18,7 @@ DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT EXECVIEW
 
 DESTDIR = ../../bin
 macx:QMAKE_LFLAGS += -F../../lib
-else:QMAKE_LFLAGS += -L../../lib -Wl,-rpath,/usr/local/lib
+else:QMAKE_LFLAGS += -L../../lib -Wl,-rpath,../lib -Wl,-rpath,/usr/local/lib
 macx:LIBS += -framework disco -framework wxqDocView -framework LavaBase -framework LavaGUI -framework LavaPE_UI -framework LavaExecs
 else:LIBS += -ldisco -lwxqDocView -lLavaBase -lLavaGUI -lLavaPE_UI -lLavaExecs
 CONFIG += warn_off qt qtestlib precompile_header

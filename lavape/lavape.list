@@ -14,9 +14,9 @@
 %elseifdef debian
 %requires qt4-doc
 %requires qt4-dev-tools
-%requires libqt4-core
-%requires libqt4-gui
-%requires libqt4-network
+#%requires libqt4-core
+#%requires libqt4-gui
+#%requires libqt4-network
 
 %elseifdef ubuntu
 %requires libqt4-core
@@ -51,10 +51,9 @@ f 755 root sys $libdir/libLavaStream.so.1 lib/libLavaStream.so.1.0.0
 f 755 root sys $libdir/libLava_UI.so.1 lib/libLava_UI.so.1.0.0
 f 755 root sys $libdir/libwxqDocView.so.1 lib/libwxqDocView.so.1.0.0
 
-%ifdef suse
+#%ifdef suse
 l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
-%endif
-%ifdef debian
+%elseifdef debian
 l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
 %endif
 
