@@ -14,7 +14,7 @@ DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT
 
 DESTDIR = ../../bin
 macx:QMAKE_LFLAGS += -F../../lib
-else:QMAKE_LFLAGS += -L../../lib -Wl,-rpath,../lib
+else:QMAKE_LFLAGS += -L../../lib  -Wl,-rpath,/usr/local/lib
 macx:LIBS += -framework disco -framework wxqDocView -framework LavaBase -framework LavaGUI -framework Lava_UI -framework Interpreter -framework LavaStream
 else:LIBS += -ldisco -lwxqDocView -lLavaBase -lLavaGUI -lLava_UI -lInterpreter -lLavaStream
 CONFIG += warn_off qt qtestlib precompile_header
