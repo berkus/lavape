@@ -18,7 +18,7 @@
 
 #%preinstall echo Please enter the installation directory for lavape:;read dirname;echo Your install dir is $dirname
 
-$prefix=/usr/local
+$prefix=/opt
 
 d 755 root sys $prefix/lavape -
 f 644 root sys $prefix/lavape *.txt
@@ -42,7 +42,6 @@ f 755 root sys $prefix/lavape/lib/libwxqDocView.so.1 lib/libwxqDocView.so.1.0.0
 
 %ifdef suse
 l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
-#l 777 root sys $prefix/lavape/lib /usr/lib/libQt*.so
 %endif
 
 d 755 root sys $prefix/lavape/bin -
@@ -54,8 +53,6 @@ f 755 root sys $prefix/lavape/bin/cp_icons_std bin/cp_icons_std
 d 755 root sys $prefix/lavape/bin/std -
 f 644 root sys $prefix/lavape/bin/std bin/std/*.htm
 
-#l 777 root sys $prefix/bin/lavape ../lavape/lavape
-#l 777 root sys $prefix/bin/lava ../lavape/lava
 
 d 755 root sys $prefix/lavape/bin/Components -
 l 777 root sys $prefix/lavape/bin/Components/LavaStream.lava ../../samples/LavaStream.lava
@@ -66,8 +63,4 @@ d 755 root sys $prefix/lavape/bin/LavaIcons -
 f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.js
 f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.png
 f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.css
-
-d 755 root sys $prefix/lavape/doc -
-f 644 root sys $prefix/lavape/doc/LavaPE.qhc doc/LavaPE.qhc
-f 644 root sys $prefix/lavape/doc/LavaPE.qch doc/LavaPE.qch
 
