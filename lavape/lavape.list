@@ -18,7 +18,7 @@
 #%requires libqt4-gui
 #%requires libqt4-network
 
-%elseifdef ubuntu
+%elseifdef fedora
 %requires libqt4-core
 %requires libqt4-dev
 %requires libqt4-gui
