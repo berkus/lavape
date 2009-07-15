@@ -68,6 +68,8 @@ F) HTML documentation files now conform to XHTML 1.0
 
 Our online and web help files have been revised so as to
 conform to the current "XHTML 1.0 transitional" standard.
+The HTML representation generated from *.lava files conforms
+to "XHTML 1.0 transitional" now, too.
 
 G) Online help uses the newer Qt Assistant now
 ==============================================
@@ -89,8 +91,30 @@ Simply launch the downloaded lavape-<rel>-win32-bin.exe file and
 follow the instructions of the installer.
 
 
-How to install the Mac OS 10.5 binary release of LavaPE
-=======================================================
+B) How to install the Linux binary releases of LavaPE
+=====================================================
+
+Download the pertinent *.rpm / *.deb packages and install them
+in the usual way using "rpm -i <package>.rpm"
+or "dpkg -i <package>.deb".
+
+(These commands will report the absence of required Qt4
+packages. In this case you must install these first before
+repeating the lavape installation.)
+
+A "lavape" installation directory will be installed in
+/opt. The shared libraries will be installed in /usr/local/lib.
+The LavaPE/Lava executables can be started from /opt/lavape/bin
+or any other working directory or by double-clicking in the
+nautilus or konqueror file manager.
+
+A number of sample programs can be found in the "samples"
+subdirectory of the "/opt/lavape" installation
+directory.
+
+
+C) How to install the Mac OS 10.5 binary release of LavaPE
+==========================================================
 
 Download Qt-4.5.2 from the following link:
 
@@ -112,8 +136,8 @@ A number of sample programs can be opened in LavaPE.app or Lava.app
 from the "samples" subdirectory of the installation directory "lavape".
 
 
-How to install LavaPE from the source distribution on UNIX
-==========================================================
+D) How to install LavaPE from the source distribution on UNIX
+=============================================================
 
 Download the compressed tar file lavape-<release>-src.tar.bz2
 of the LavaPE source distribution and store it in the parent
