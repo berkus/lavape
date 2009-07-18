@@ -22,6 +22,13 @@
 %requires libqt4-core
 %requires libqt4-dev
 %requires libqt4-gui
+
+%elseifdef mandriva
+%requires libqtcore4
+%requires libqtgui4
+%requires libqtnetwork4
+%requires qt4-assistant
+
 %endif
 
 #%preinstall echo Please enter the installation directory for lavape:;read dirname;echo Your install dir is $dirname
