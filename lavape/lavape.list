@@ -58,10 +58,14 @@ f 755 root sys $libdir/libLavaStream.so.1 lib/libLavaStream.so.1.0.0
 f 755 root sys $libdir/libLava_UI.so.1 lib/libLava_UI.so.1.0.0
 f 755 root sys $libdir/libwxqDocView.so.1 lib/libwxqDocView.so.1.0.0
 
-#%ifdef suse
+%ifdef suse
 l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
 %elseifdef debian
 l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
+%elseifdef fedora
+l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
+%elseifdef mandriva
+l 777 root sys $prefix/lavape/bin/assistant /usr/lib/qt4/bin/assistant
 %endif
 
 d 755 root sys $prefix/lavape/bin -
