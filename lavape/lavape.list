@@ -19,9 +19,8 @@
 #%requires libqt4-network
 
 %elseifdef fedora
-%requires libqt4-core
-%requires libqt4-dev
-%requires libqt4-gui
+%requires qt
+%requires qt-doc
 
 %elseifdef mandriva
 %requires libqtcore4
@@ -63,7 +62,7 @@ l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
 %elseifdef debian
 l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
 %elseifdef fedora
-l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
+l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant-qt4
 %elseifdef mandriva
 l 777 root sys $prefix/lavape/bin/assistant /usr/lib/qt4/bin/assistant
 %endif
