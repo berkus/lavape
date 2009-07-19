@@ -33,19 +33,19 @@
 #%preinstall echo Please enter the installation directory for lavape:;read dirname;echo Your install dir is $dirname
 
 %ifdef !prefix
-$prefix=/opt
+$prefix=/opt/lavape
 %endif
 
 $libdir=/usr/local/lib
 
-d 755 root sys $prefix/lavape -
-f 644 root sys $prefix/lavape *.txt
+d 755 root sys $prefix -
+f 644 root sys $prefix *.txt
 
-d 777 root sys $prefix/lavape/samples -
-f 666 root sys $prefix/lavape/samples samples/*.lava
-f 666 root sys $prefix/lavape/samples samples/*.ldoc
-f 666 root sys $prefix/lavape/samples samples/*.xpm
-f 666 root sys $prefix/lavape/samples/LCompoImpl.lcom samples/LCompoImpl.lcom
+d 777 root sys $prefix/samples -
+f 666 root sys $prefix/samples samples/*.lava
+f 666 root sys $prefix/samples samples/*.ldoc
+f 666 root sys $prefix/samples samples/*.xpm
+f 666 root sys $prefix/samples/LCompoImpl.lcom samples/LCompoImpl.lcom
 
 f 755 root sys $libdir/libdisco.so.1 lib/libdisco.so.1.0.0
 f 755 root sys $libdir/libInterpreter.so.1 lib/libInterpreter.so.1.0.0
@@ -58,35 +58,36 @@ f 755 root sys $libdir/libLava_UI.so.1 lib/libLava_UI.so.1.0.0
 f 755 root sys $libdir/libwxqDocView.so.1 lib/libwxqDocView.so.1.0.0
 
 %ifdef suse
-l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
+l 777 root sys $prefix/bin/assistant /usr/bin/assistant
 %elseifdef debian
-l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant
+l 777 root sys $prefix/bin/assistant /usr/bin/assistant
 %elseifdef fedora
-l 777 root sys $prefix/lavape/bin/assistant /usr/bin/assistant-qt4
+l 777 root sys $prefix/bin/assistant /usr/bin/assistant-qt4
 %elseifdef mandriva
-l 777 root sys $prefix/lavape/bin/assistant /usr/lib/qt4/bin/assistant
+l 777 root sys $prefix/bin/assistant /usr/lib/qt4/bin/assistant
 %endif
 
-d 755 root sys $prefix/lavape/bin -
-f 644 root sys $prefix/lavape/bin bin/*.htm
-f 644 root sys $prefix/lavape/bin bin/*.lava
-f 755 root sys $prefix/lavape/bin/LavaPE bin/LavaPE
-f 755 root sys $prefix/lavape/bin/Lava bin/Lava
-f 755 root sys $prefix/lavape/bin/cp_icons_std bin/cp_icons_std
-d 755 root sys $prefix/lavape/bin/std -
-f 644 root sys $prefix/lavape/bin/std bin/std/*.htm
+d 755 root sys $prefix/bin -
+f 644 root sys $prefix/bin bin/*.htm
+f 644 root sys $prefix/bin bin/*.lava
+f 755 root sys $prefix/bin/LavaPE bin/LavaPE
+f 755 root sys $prefix/bin/Lava bin/Lava
+f 755 root sys $prefix/bin/cp_icons_std bin/cp_icons_std
+d 755 root sys $prefix/bin/std -
+f 644 root sys $prefix/bin/std bin/std/*.htm
 
+d 755 root sys $prefix/bin/Components -
+l 777 root sys $prefix/bin/Components/LavaStream.lava $prefix/samples/LavaStream.lava
+l 777 root sys $prefix/bin/Components/libLavaStream.so $libdir/libLavaStream.so.1
+l 777 root sys $prefix/bin/Components/LCompoImpl.lcom.lnk $prefix/samples/LCompoImpl.lcom
 
-d 755 root sys $prefix/lavape/bin/Components -
-l 777 root sys $prefix/lavape/bin/Components/LavaStream.lava ../../samples/LavaStream.lava
-l 777 root sys $prefix/lavape/bin/Components/libLavaStream.so ../../lib/libLavaStream.so
-l 777 root sys $prefix/lavape/bin/Components/LCompoImpl.lcom.lnk ../../samples/LCompoImpl.lcom
+d 666 root sys $prefix/data -
 
-d 755 root sys $prefix/lavape/bin/LavaIcons -
-f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.js
-f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.png
-f 644 root sys $prefix/lavape/bin/LavaIcons bin/LavaIcons/*.css
+d 755 root sys $prefix/bin/LavaIcons -
+f 644 root sys $prefix/bin/LavaIcons bin/LavaIcons/*.js
+f 644 root sys $prefix/bin/LavaIcons bin/LavaIcons/*.png
+f 644 root sys $prefix/bin/LavaIcons bin/LavaIcons/*.css
 
-d 755 root sys $prefix/lavape/doc -
-f 644 root sys $prefix/lavape/doc/LavaPE.qhc doc/LavaPE.qhc
-f 644 root sys $prefix/lavape/doc/LavaPE.qch doc/LavaPE.qch
+d 755 root sys $prefix/doc -
+f 644 root sys $prefix/doc/LavaPE.qhc doc/LavaPE.qhc
+f 644 root sys $prefix/doc/LavaPE.qch doc/LavaPE.qch

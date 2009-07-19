@@ -28,7 +28,8 @@
 #include "qobject.h"
 #include "qstring.h"
 #include "qlibrary.h"
-//Added by qt3to4:
+
+#include <QtDebug>
 
 #pragma hdrstop
 
@@ -295,6 +296,7 @@ TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL, LavaDECL* spe
 #endif
     lib = ExeDir + "/Components/" + lib;
     TS adapt = (TS)QLibrary::resolve(lib, classDECL->LitStr.c);
+    qDebug() << "lib=" << lib << "LitStr=" << classDECL->LitStr.c << "adapt=" << adapt;
     ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab =  adapt();
     return ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab;
   }
@@ -479,7 +481,7 @@ LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* s
   int secn;
   LavaObjectPtr object;
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
-	COpenObjectParms oop(&ckd,urlObj,currentThread);
+  COpenObjectParms oop(&ckd,urlObj,currentThread);
 
   switch ((TCompoProt)specDECL->nOutput) {
   case PROT_LAVA:
