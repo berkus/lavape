@@ -81,7 +81,7 @@ l 777 root sys $prefix/bin/Components/LavaStream.lava $prefix/samples/LavaStream
 l 777 root sys $prefix/bin/Components/libLavaStream.so $libdir/libLavaStream.so.1
 l 777 root sys $prefix/bin/Components/LCompoImpl.lcom.lnk $prefix/samples/LCompoImpl.lcom
 
-d 666 root sys $prefix/data -
+d 777 root sys $prefix/data -
 
 d 755 root sys $prefix/bin/LavaIcons -
 f 644 root sys $prefix/bin/LavaIcons bin/LavaIcons/*.js
