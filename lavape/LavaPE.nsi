@@ -138,6 +138,10 @@ Section "LavaPE (required)" SEC01
   File "C:\Qt\${QTREL}\bin\phonon4.dll"
   File "C:\Qt\${QTREL}\bin\QtWebKit4.dll"
   
+  CreateDirectory $INSTDIR\data
+  AccessControl::GrantOnFile \
+    "$INSTDIR\data" "(BU)" "GenericRead + GenericWrite"
+
   SetOutPath $INSTDIR\bin\plugins\sqldrivers
   File "C:\Qt\${QTREL}\plugins\sqldrivers\qsqlite4.dll"
 
