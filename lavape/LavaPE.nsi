@@ -154,7 +154,7 @@ Section "LavaPE (required)" SEC01
 ;  File "C:\Qt\${QTREL}\plugins\imageformats\qsvg4.dll"
 
   SetOutPath $INSTDIR\bin\std
-  File /r "bin\std\*.*"
+  File /r "bin\std\*.htm"
 
   SetOutPath $INSTDIR\bin\LavaIcons
   File "bin\LavaIcons\*.*"
