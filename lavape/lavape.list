@@ -30,11 +30,12 @@
 
 %endif
 
-#%preinstall echo Please enter the installation directory for lavape:;read dirname;echo Your install dir is $dirname
-
 %ifdef !prefix
 $prefix=/opt/lavape
 %endif
+
+#%preinstall echo Please enter the installation directory for lavape:;read dirname;echo Your install dir is $dirname
+%postremove rm -rf $prefix
 
 $libdir=/usr/local/lib
 
