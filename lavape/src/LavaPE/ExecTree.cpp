@@ -1748,6 +1748,7 @@ void CExecChecks::ExecExec(LavaDECL ** pelDef, int level)
     ckd.document = Doc;
     ckd.myDECL = *pelDef;
     ckd.inINCL = ckd.myDECL->inINCL;
+    ckd.selfVar = selfVar;
     selfVar->execDECL = *pelDef;
     sData.doc = Doc;
     sData.execDECL = *pelDef;

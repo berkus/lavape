@@ -409,7 +409,7 @@ int CLavaPEDoc::AutoCorrBox (QString* errID)
 	          || (errID == &ERR_NoImplForAbstract))
 		cstr += "Change to private function?  ";
 	else if (errID == &ERR_NoAbstract)
-		cstr += "Make the function non abstract?  ";
+		cstr += "Make the function non-abstract?  ";
 	else if (errID == &ERR_OverriddenStatic)
 		cstr += "Remove this erroneous reference?  ";
 	else if (errID == &ERR_CleanSupports)

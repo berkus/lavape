@@ -1295,7 +1295,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
         showEnums = true;
       }
     }
-	  else if (enumDecl->fromBType == Enumeration) //SecondTFlags.Contains(isEnum)))
+	  else if (enumDecl && enumDecl->fromBType == Enumeration) //SecondTFlags.Contains(isEnum)))
 		  showEnumCombo = true;
   }
   if (showObjs || showEnums || showEnumCombo) {

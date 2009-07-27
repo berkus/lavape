@@ -1768,6 +1768,7 @@ ValOnInit CFuncBox::OnInitDialog()
     CalcOpBox();
     if (myDECL->op != OP_noOp) {
       CHECKOp->setChecked(true);
+      //CMBOperator->setEnabled(true);
       NewName->setEnabled(false);
     }
     cheS = (CHETID*)myDECL->Inherits.first;
