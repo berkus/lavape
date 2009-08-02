@@ -125,24 +125,27 @@ WXDLLEXPORT_DATA(wxApp*) wxTheApp;
 
 wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
 {
+  QAbstractEventDispatcher *ed;
+
   wxTheApp = this;
   this->argc = argc;
   this->argv = argv;
   appDir = QCoreApplication::applicationDirPath();
   m_appName = argv[0];
-  //m_activeView = 0;
-  //m_oldActFrame = 0;
-  //selChanged = false;
   mainThread = QThread::currentThread();
 
   //// Create a document manager
   m_docManager = new wxDocManager;
   deletingMainFrame = false;
   isChMaximized = true;
+  updatingButtonsMenus = false;
 
   SetClassName(argv[0]);
 
-  //connect(this,SIGNAL(focusChanged(QWidget *,QWidget *)),this,SLOT(onFocusChanged(QWidget *,QWidget *)));
+  ed = QAbstractEventDispatcher::instance();
+  connect(ed,SIGNAL(aboutToBlock()),this,SLOT(updateButtonsMenus()));
+  connect(ed,SIGNAL(awake()),this,SLOT(onAwake()));
+
   appExit = false;
   cmdLineEvaluated = false;
   assistant = new Assistant;
@@ -172,8 +175,11 @@ void wxApp::SetAppName(const QString& name) {
 
 void wxApp::updateButtonsMenus()
 {
-  if (!wxDocManager::GetDocumentManager()->GetCurrentTabWidget())
+  if (updatingButtonsMenus || !wxDocManager::GetDocumentManager()->GetCurrentTabWidget())
     return;
+  else
+    updatingButtonsMenus = true;
+
   if (wxDocManager::GetDocumentManager()->GetActiveDocument() && wxDocManager::GetDocumentManager()->GetActiveDocument()->deleting)
     return;
 
@@ -874,7 +880,6 @@ void wxView::Activate(bool topDown)
   if (!topDown)
     GetParentFrame()->Activate(topDown);
   setFocus();
-  wxTheApp->updateButtonsMenus();
 }
 
 bool wxView::on_cancelButton_clicked()

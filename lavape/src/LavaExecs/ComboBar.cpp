@@ -357,7 +357,6 @@ void CComboBar::OnSelendokComboEnums(int pos)
     EnumsEnable = false;
     m_EnumsCtrl->setCurrentIndex(0);
   }
-  //wxTheApp->updateButtonsMenus();
 }
 
 void CComboBar::TrackEnum()

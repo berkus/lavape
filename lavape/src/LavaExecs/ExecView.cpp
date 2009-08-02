@@ -889,7 +889,6 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
       delete hint;
     if (active) {
       redCtl->setFocus();
-      wxTheApp->updateButtonsMenus();
     }
   }
 }
@@ -914,7 +913,6 @@ void CExecView::OnChar(QKeyEvent *e)
       else // TAB
         text->newSelection = text->FindNextPlaceholder();
       Select();
-      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Up:
       currentSynObj = text->currentSynObj;
@@ -930,7 +928,6 @@ void CExecView::OnChar(QKeyEvent *e)
         parent = currentSynObj->parentObject;
       }
       Select(parent);
-      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Down:
       if (text->currentSynObj->primaryToken == parameter_T)
@@ -938,58 +935,15 @@ void CExecView::OnChar(QKeyEvent *e)
       else
         currentSynObj = text->currentSynObj;
 
-      //if (!myDoc->changeNothing
-      //&& (currentSynObj->type == VarPH_T
-      //|| currentSynObj->primaryToken == Exp_T
-      //|| currentSynObj->IsConstant())) {
-      //  text->currentSynObj = currentSynObj;
-      //  if (text->currentSynObj->primaryToken != enumConst_T
-      //  && text->currentSynObj->primaryToken != Boolean_T
-      //  && !text->currentSynObj->BoolAdmissibleOnly(text->ckd)
-      //  && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
-      //    doubleClick = true;
-      //  Select(text->currentSynObj);
-      //  doubleClick = false;
-      //}
-      //else if (!myDoc->changeNothing
-      //&& text->currentSelection->data.token == Comment_T) {
-      //  doubleClick = true;
-      //  clicked = true;
-      //  Select();
-      //} else
-      //if (!myDoc->changeNothing
-      //&& currentSynObj->primaryToken != TDOD_T
-      //&& currentSynObj->primaryToken != FuncRef_T
-      //&& currentSynObj->primaryToken != TypeRef_T
-      //&& currentSynObj->primaryToken != CrtblRef_T) {
-        text->currentSynObj = currentSynObj;
-        Select(FirstChild());
-        wxTheApp->updateButtonsMenus();
-      //}
+      text->currentSynObj = currentSynObj;
+      Select(FirstChild());
       break;
     case Qt::Key_Left:
       Select(LeftSibling());
-      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Right:
       Select(RightSibling());
-      wxTheApp->updateButtonsMenus();
       break;
-    //case Qt::Key_Return:
-    //  if (GetDocument()->changeNothing)
-    //    return;
-    //  if (EnableInsert()) {
-    //    OnInsert();
-    //    if (text->currentSelection->data.token == VarPH_T
-    //    || text->currentSelection->data.token == Exp_T) {
-    //      doubleClick = true;
-    //      Select();
-    //      doubleClick = false;
-    //    }
-    //  }
-    //  else if (text->currentSynObj->IsStatement())
-    //    OnAnd();
-    //  break;
     case Qt::Key_F1:
       ((wxMainFrame*)wxTheApp->m_appWindow)->helpContents();
       break;
@@ -1191,7 +1145,6 @@ void CExecView::OnChar(QKeyEvent *e)
       else // TAB
         text->newSelection = text->FindNextPlaceholder();
       Select();
-      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Up:
       currentSynObj = text->currentSynObj;
@@ -1209,7 +1162,6 @@ void CExecView::OnChar(QKeyEvent *e)
         parent = currentSynObj->parentObject;
       }
       Select(parent);
-      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Down:
       if (text->currentSynObj->primaryToken == parameter_T)
@@ -1229,7 +1181,6 @@ void CExecView::OnChar(QKeyEvent *e)
         && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
           doubleClick = true;
         Select(text->currentSynObj);
-        wxTheApp->updateButtonsMenus();
         doubleClick = false;
       }
       else if (text->currentSelection->data.token == Comment_T) {
@@ -1238,7 +1189,6 @@ void CExecView::OnChar(QKeyEvent *e)
         doubleClick = true;
         clicked = true;
         Select();
-        wxTheApp->updateButtonsMenus();
       }
       else if (!IsPH(currentSynObj)
       && currentSynObj->primaryToken != TDOD_T
@@ -1247,16 +1197,13 @@ void CExecView::OnChar(QKeyEvent *e)
       && currentSynObj->primaryToken != CrtblRef_T) {
         text->currentSynObj = currentSynObj;
         Select(FirstChild());
-        wxTheApp->updateButtonsMenus();
       }
       break;
     case Qt::Key_Left:
       Select(LeftSibling());
-      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Right:
       Select(RightSibling());
-      wxTheApp->updateButtonsMenus();
       break;
     case Qt::Key_Return:
       if (GetDocument()->changeNothing)
@@ -1340,11 +1287,9 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
             && !text->currentSelection->data.synObject->EnumAdmissibleOnly(text->ckd)))) {
       doubleClick = true;
     }
-    Select(); //Select before Activate/updateButtonsMenus!
+    Select();
     if (!active)
       Activate(false);
-    else
-      wxTheApp->updateButtonsMenus();
   }
   doubleClick = false;
   clicked = false;
@@ -3128,7 +3073,6 @@ void CExecView::OnEditCopy()
   else
     clipBoardObject = (SynObject*)text->currentSynObj->Clone();
   clipBoardDoc = myDoc;
-  //wxTheApp->updateButtonsMenus();
 }
 
 void CExecView::OnEditCut()
@@ -3340,7 +3284,6 @@ void CExecView::OnInsertBefore()
   // TODO: Add your command handler code here
 
   insertBefore = !insertBefore;
-  //wxTheApp->updateButtonsMenus();
 }
 
 void CExecView::InsertAfter()

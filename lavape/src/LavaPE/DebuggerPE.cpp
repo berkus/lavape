@@ -90,7 +90,6 @@ void CLavaPEDebugger::connectToClient() {
 
 void CLavaPEDebugger::connected() {
   isConnected = true;
-  //wxTheApp->updateButtonsMenus();
 
   put_cid = new ASN1OutSock (workSocket);
   if (!put_cid->Done) {
@@ -122,7 +121,6 @@ void CLavaPEDebugger::connected() {
       ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = 0;
       ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = 0;
       sendPending = false;
-      //wxTheApp->updateButtonsMenus();
 
     }
     else {
@@ -142,7 +140,6 @@ void CLavaPEDebugger::receive() {
   if (!get_cid->bytesAvailable())
     return;
   sendPending = true;
-  //wxTheApp->updateButtonsMenus();
   ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->DebugPage->setEnabled(true);
   if (dbgReceived.lastReceived)
     delete dbgReceived.lastReceived;
@@ -163,7 +160,6 @@ void CLavaPEDebugger::send() {
   if (dbgRequest->Command == Dbg_Continue)
     checkBrkPnts1();
   sendPending = false;
-  //wxTheApp->updateButtonsMenus();
   ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->DebugPage->setEnabled(false);
   CDPDbgMessage(PUT, put_cid, dbgRequest,false);
   put_cid->flush();
@@ -191,7 +187,6 @@ void CLavaPEDebugger::stop(DbgExitReason reason) {
     return;
   isConnected = false;
   sendPending = true;
-  //wxTheApp->updateButtonsMenus();
 
   if (dbgReceived.newReceived) {
     delete dbgReceived.newReceived;

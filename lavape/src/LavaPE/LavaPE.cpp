@@ -342,7 +342,6 @@ bool CLavaPEApp::event(QEvent *e)
     ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((CustomEvent*)e)->data(), debugger.myDoc);
     m_appWindow->activateWindow();
     m_appWindow->raise();
-    updateButtonsMenus();
     return true;
   case UEV_LavaDebugRq:
     if (!debugger.isConnected)

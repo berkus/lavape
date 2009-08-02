@@ -3387,11 +3387,6 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
   else
     ItemSel = 0;
   lastCurrent = (CTreeItem*)selItem;
-
-  //if (!active)
-   // Activate(false);
-  //else
-  //  wxTheApp->updateButtonsMenus();
 }
 
 void CLavaPEView::OnShowSpecialView(TDeclType exprType)

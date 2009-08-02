@@ -1578,7 +1578,6 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
     }
     m_UtilityView->hide();
     LastUtilitiesState = (int)m_UtilityView->ActTab;
-    //wxTheApp->updateButtonsMenus();
     wxTheApp->m_appWindow->hide();
     wxTheApp->m_appWindow->show();
     UtilitiesHidden = true;

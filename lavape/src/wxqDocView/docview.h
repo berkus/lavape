@@ -88,6 +88,7 @@ public:
     bool isChMaximized;
     bool appExit;
     bool cmdLineEvaluated;
+    bool updatingButtonsMenus;
 
     int argc;
     char **argv;
@@ -95,7 +96,6 @@ public:
 
     virtual void saveSettings() {}
     virtual void UpdateUI() {}
-    void updateButtonsMenus();
     virtual void onUpdateUI();
     virtual void customEvent(QEvent *e);
     // set/get the application name
@@ -136,7 +136,10 @@ public:
 
 public slots:
     void about();
-    //void onFocusChanged(QWidget *old, QWidget *now);
+    void updateButtonsMenus();
+    void onAwake() {
+      updatingButtonsMenus = false;
+    }
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
