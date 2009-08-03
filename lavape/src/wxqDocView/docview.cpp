@@ -175,8 +175,10 @@ void wxApp::SetAppName(const QString& name) {
 
 void wxApp::updateButtonsMenus()
 {
-  if (updatingButtonsMenus || !wxDocManager::GetDocumentManager()->GetCurrentTabWidget())
+  if (updatingButtonsMenus || !wxDocManager::GetDocumentManager()->GetCurrentTabWidget()) {
+    //qDebug("updatingButtonsMenus = true");
     return;
+  }
   else
     updatingButtonsMenus = true;
 

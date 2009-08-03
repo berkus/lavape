@@ -496,7 +496,7 @@ void LavaBaseStringInit() {
   ERR_NoBaseFormIF  = QObject::tr("The associated interface of a base GUI service is missing");
   ERR_ClassCircle  = QObject::tr("Circular reference of interfaces as type of nested members: ");
   ERR_Unused  = QObject::tr("Missing initialization");
-  ERR_DoubleVal  = QObject::tr("A second virtual type with the same value (or a base type as value) was found");
+  ERR_DoubleVal  = QObject::tr("Second virtual type with the same value (or a base class as value) found");
   ERR_OverriddenIOType  = QObject::tr("Overridden input/output has inconsistent type");
   ERR_MissingExceptionDef  = QObject::tr("The exception type is missing");
   ERR_NoException  = QObject::tr("One of the throw types isn't derived from ""Exception""");
