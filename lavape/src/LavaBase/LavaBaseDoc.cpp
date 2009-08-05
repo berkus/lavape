@@ -414,7 +414,7 @@ bool CLavaBaseDoc::CheckCompObj(LavaDECL* compoDECL)
       cheID = (CHETID*)specDecl->Supports.first;
       ok1 = true;
       while (cheID && ok1) {
-        ok1 = IDTable.IsAn(TID(elDecl->OwnID, elDecl->inINCL),0, cheID->data, specDecl->inINCL);
+        ok1 = IDTable.IsA(TID(elDecl->OwnID, elDecl->inINCL),0, cheID->data, specDecl->inINCL);
         cheID = (CHETID*)cheID->successor;
       }
       if (ok1 && elDecl->TypeFlags.Contains(isComponent)) {
@@ -464,13 +464,13 @@ TID CLavaBaseDoc::GetMappedVType(TID paramID, CContext &context, CheckData* pckd
     }
   }
   IDTable.GetPattern(decl, con);
-  if (!con.oContext || IDTable.IsAn(context.oContext, TID(con.oContext->OwnID,con.oContext->inINCL), 0))
+  if (!con.oContext || IDTable.IsA(context.oContext, TID(con.oContext->OwnID,con.oContext->inINCL), 0))
     con.oContext = context.oContext;
   if (con.iContext) {
     if (!MakeVElems(con.iContext, pckd))
       return TID(-1, 0);
     for (El = (CHETVElem*)con.iContext->VElems.VElems.first; El; El = (CHETVElem*)El->successor) {
-      if (IDTable.IsAn(El->data.VTEl, 0, paramID, 0)) {
+      if (IDTable.IsA(El->data.VTEl, 0, paramID, 0)) {
         NextContext(con.iContext, context);
         return El->data.VTEl;
       }
@@ -480,7 +480,7 @@ TID CLavaBaseDoc::GetMappedVType(TID paramID, CContext &context, CheckData* pckd
     if (!MakeVElems(con.oContext, pckd))
       return TID(-1, 0);
     for (El = (CHETVElem*)con.oContext->VElems.VElems.first; El; El = (CHETVElem*)El->successor) {
-      if (IDTable.IsAn(El->data.VTEl, 0, paramID, 0)) {
+      if (IDTable.IsA(El->data.VTEl, 0, paramID, 0)) {
         NextContext(con.oContext, context);
         return El->data.VTEl;
       }
@@ -580,16 +580,16 @@ void CLavaBaseDoc::NextContext(LavaDECL *decl, CContext &context)
       return;
     }
     if (con.oContext && !con.iContext && context.iContext
-        && IDTable.IsAn(context.iContext, TID(con.oContext->OwnID, con.oContext->inINCL), 0))
+        && IDTable.IsA(context.iContext, TID(con.oContext->OwnID, con.oContext->inINCL), 0))
       return;
     else {
       if (!con.iContext || !context.iContext
-          || !IDTable.IsAn(context.iContext, TID(con.iContext->OwnID, con.iContext->inINCL), 0)) {
+          || !IDTable.IsA(context.iContext, TID(con.iContext->OwnID, con.iContext->inINCL), 0)) {
         context.iContext = con.iContext;
         context.ContextFlags.EXCL(selfiContext);
       }
       if (!con.oContext || !context.oContext
-        || !IDTable.IsAn(context.oContext, TID(con.oContext->OwnID, con.oContext->inINCL), 0)) {
+        || !IDTable.IsA(context.oContext, TID(con.oContext->OwnID, con.oContext->inINCL), 0)) {
         context.oContext = con.oContext;
         context.ContextFlags.INCL(staticContext);
         context.ContextFlags.EXCL(selfoContext);
@@ -844,19 +844,19 @@ bool CLavaBaseDoc::OverriddenMatch(LavaDECL *decl, bool setName, CheckData* pckd
           if ((decl->DeclType != VirtualType) && (cvalDECL->DeclType != VirtualType))
             return ivalDECL == cvalDECL;
 
-          ok = IDTable.IsAn(cDecl->RefID, cDecl->inINCL, iDecl->RefID, iDecl->inINCL);
+          ok = IDTable.IsA(cDecl->RefID, cDecl->inINCL, iDecl->RefID, iDecl->inINCL);
           //C-derivation or part of a pattern and its pattern derivation
           if (ok) {
             IDTable.GetPattern(iDecl, icon);
             if (!IsCDerivation(cvalDECL, ivalDECL, pckd) && (!pckd || !pckd->exceptionThrown))
               if (icon.oContext && ivalDECL->isInSubTree(icon.oContext) && cvalDECL->isInSubTree(con.oContext)) {
                 if (!icon.iContext && con.iContext)
-                  ok = IDTable.IsAn(con.iContext, TID(icon.oContext->OwnID, icon.oContext->inINCL), 0); 
+                  ok = IDTable.IsA(con.iContext, TID(icon.oContext->OwnID, icon.oContext->inINCL), 0); 
                 else
                   if (icon.iContext)
-                    ok = con.iContext && IDTable.IsAn(con.iContext, TID(icon.iContext->OwnID, icon.iContext->inINCL),0);
+                    ok = con.iContext && IDTable.IsA(con.iContext, TID(icon.iContext->OwnID, icon.iContext->inINCL),0);
                   else
-                    ok = con.oContext && IDTable.IsAn(con.oContext, TID(icon.oContext->OwnID, icon.oContext->inINCL),0);
+                    ok = con.oContext && IDTable.IsA(con.oContext, TID(icon.oContext->OwnID, icon.oContext->inINCL),0);
               }
               else
                 return false;
@@ -1026,7 +1026,7 @@ bool CLavaBaseDoc::IsCDerivation(LavaDECL *decl, LavaDECL *baseDecl, CheckData* 
        El && (El->data.VTClss != baseID);
        El = (CHETVElem*)El->successor);
   if (!El) //if the baseDecl has no virtual type, no member and no function
-    return IDTable.IsAn(decl, TID(baseDecl->OwnID, baseDecl->inINCL), 0);
+    return IDTable.IsA(decl, TID(baseDecl->OwnID, baseDecl->inINCL), 0);
   for (ElBase = (CHETVElem*)baseDecl->VElems.VElems.first; ElBase; ElBase = (CHETVElem*)ElBase->successor) {
     elDECL = IDTable.GetDECL(ElBase->data.VTEl);
     if (elDECL && (elDECL->DeclType == VirtualType)) {
@@ -1311,7 +1311,7 @@ LavaDECL* CLavaBaseDoc::FindInSupports(const DString& name, LavaDECL *self, Lava
             || down && (((LavaDECL*)che->data)->DeclType != VirtualType)
                     && (((LavaDECL*)che->data)->DeclType != Function)
                     && (((LavaDECL*)che->data)->DeclType != Attr)
-            || IDTable.IsAn(selfID, 0, elID, 0))) {
+            || IDTable.IsA(selfID, 0, elID, 0))) {
     che = (CHE*)che->successor;
     if (che) {
       elID = TID(((LavaDECL*)che->data)->OwnID, ((LavaDECL*)che->data)->inINCL);
@@ -1562,7 +1562,7 @@ bool CLavaBaseDoc::AllowThrowType(LavaDECL* decl, TID throwID, int inINCL)
     if (baseDECL) {
       cheI = (CHETID*)baseDECL->Inherits.first;
       while (cheI && !ok) {
-        ok = IDTable.IsAn(throwID, inINCL, cheI->data, baseDECL->inINCL);
+        ok = IDTable.IsA(throwID, inINCL, cheI->data, baseDECL->inINCL);
         cheI = (CHETID*)cheI->successor;
       }
       cheS = (CHETID*)cheS->successor;

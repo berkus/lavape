@@ -553,7 +553,7 @@ bool CVTView::EnableOverride(CTreeItem* item)
           else {
             cheID = (CHETID*)myDECL->Supports.first;
             while (cheID) { //!
-              if (GetDocument()->IDTable.IsAn(cheID->data, myDECL->inINCL, TIDDef, 0)) {
+              if (GetDocument()->IDTable.IsA(cheID->data, myDECL->inINCL, TIDDef, 0)) {
                 baseDECL = GetDocument()->IDTable.GetFinalDef(cheID->data, myDECL->inINCL);
                 GetDocument()->IDTable.GetPattern(baseDECL, con);
                 if (con.oContext && (baseDECL != con.oContext)

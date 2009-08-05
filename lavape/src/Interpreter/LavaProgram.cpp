@@ -997,7 +997,7 @@ bool CLavaProgram::AddVElems(CheckData& ckd, LavaDECL *classDECL, LavaDECL* base
       for (lastEl = El; lastEl && (lastEl->data.VTClss == addElem->data.VTClss);
            lastEl = (CHETVElem*)lastEl->successor);
       //is it or is an extension allready in the table?
-      while (El && !IDTable.IsAn(El->data.VTEl, 0, addElem->data.VTEl, 0))
+      while (El && !IDTable.IsA(El->data.VTEl, 0, addElem->data.VTEl, 0))
         if (El == lastEl)
           El = 0;
         else

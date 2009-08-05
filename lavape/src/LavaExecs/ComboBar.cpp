@@ -1809,12 +1809,12 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
   CComboBoxItem *item;
   bool sameName, allowProtected=true;
 
-//  allowProtected = myDoc->IDTable.IsAn(SelfTypeDECL, TID(decl->OwnID,decl->inINCL), 0);
+//  allowProtected = myDoc->IDTable.IsA(SelfTypeDECL, TID(decl->OwnID,decl->inINCL), 0);
 /*  if (ckd.selfTypeDECL->DeclType == Initiator)
     allowProtected = false;
   else {
     implItfDecl = ckd.document->IDTable.GetDECL(((CHETID*)ckd.selfTypeDECL->Supports.first)->data,ckd.inINCL);
-    if (!ckd.document->IDTable.IsAn(OWNID(decl),0,OWNID(implItfDecl),0))
+    if (!ckd.document->IDTable.IsA(OWNID(decl),0,OWNID(implItfDecl),0))
       allowProtected = false;
     else
       allowProtected = true;
@@ -2257,12 +2257,12 @@ void CExecFields::OnType(LavaDECL *decl, DString accuName, TDODC accuIDs,
               ( ((LavaDECL*)inCheEl->data)->DeclType == OAttr)  ))
           OnField((LavaDECL**)&inCheEl->data, accuName, accuIDs, typeIDs, context);
     }
-//    bool inOwn = Bar->myDoc->IDTable.IsAn(Bar->SelfTypeDECL, TID(decl->OwnID,decl->inINCL), 0);
+//    bool inOwn = Bar->myDoc->IDTable.IsA(Bar->SelfTypeDECL, TID(decl->OwnID,decl->inINCL), 0);
 /*    if (Bar->SelfTypeDECL->DeclType == Initiator)
       inOwn = false;
     else {
       implItfDecl = Bar->myDoc->IDTable.GetDECL(((CHETID*)Bar->SelfTypeDECL->Supports.first)->data,ckd.inINCL);
-      if (!Bar->myDoc->IDTable.IsAn(OWNID(decl),0,OWNID(implItfDecl),0))
+      if (!Bar->myDoc->IDTable.IsA(OWNID(decl),0,OWNID(implItfDecl),0))
         inOwn = false;
       else
         inOwn = true;

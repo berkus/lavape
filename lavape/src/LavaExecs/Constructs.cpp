@@ -205,7 +205,7 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
     targetDecl = ckd.document->GetFinalMVType(targetDecl->RefID,targetDecl->inINCL,ckd.tempCtx,cat, &ckd);
     if (!targetDecl)
       return false;
-    if (!ckd.document->IDTable.IsAn(targetDecl,tidBool,0))
+    if (!ckd.document->IDTable.IsA(targetDecl,tidBool,0))
       return false;
   }
   else if (parentObject->IsMultOp()) {
@@ -223,7 +223,7 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
       targetDecl = ckd.document->GetFinalMTypeAndContext(targetTid,0,ckd.tempCtx, &ckd);
       if (!targetDecl)
         return false;
-      if (!ckd.document->IDTable.IsAn(targetDecl,tidBool,0))
+      if (!ckd.document->IDTable.IsA(targetDecl,tidBool,0))
         return false;
     }
   }
@@ -233,7 +233,7 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
     targetDecl = ckd.document->GetType(targetDecl);
     if (!targetDecl)
       return false;
-    if (!ckd.document->IDTable.IsAn(targetDecl,tidBool,0))
+    if (!ckd.document->IDTable.IsA(targetDecl,tidBool,0))
       return false;
 
   }
@@ -297,7 +297,7 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
     targetDecl = ckd.document->GetFinalMVType(targetDecl->RefID,targetDecl->inINCL,ckd.tempCtx,cat, &ckd);
     if (!targetDecl)
       return false;
-    if (!ckd.document->IDTable.IsAn(targetDecl,tidEnum,0))
+    if (!ckd.document->IDTable.IsA(targetDecl,tidEnum,0))
       return false;
   }
   else if (parentObject->IsMultOp()) {
@@ -315,7 +315,7 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
       targetDecl = ckd.document->GetFinalMTypeAndContext(targetTid,0,ckd.tempCtx, &ckd);
       if (!targetDecl)
         return false;
-      if (!ckd.document->IDTable.IsAn(targetDecl,tidEnum,0))
+      if (!ckd.document->IDTable.IsA(targetDecl,tidEnum,0))
         return false;
     }
   }
@@ -325,7 +325,7 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
     targetDecl = ckd.document->GetType(targetDecl);
     if (!targetDecl)
       return false;
-    if (!ckd.document->IDTable.IsAn(targetDecl,tidEnum,0))
+    if (!ckd.document->IDTable.IsA(targetDecl,tidEnum,0))
       return false;
 
   }

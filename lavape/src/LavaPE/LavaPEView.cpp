@@ -4080,7 +4080,7 @@ bool CLavaPEView::RefacMove(CTreeItem* dropItem)
   dragParent = highDoc->IDTable.GetDECL(0, ((LavaDECL*)((CHE*)((LavaDECL*)Clipdata->synEl)->NestedDecls.first)->data)->OwnID, DragINCL);
   dragParent = dragParent->ParentDECL;
   RefacCase = noRefac;
-  if (highDoc->IDTable.IsAn(TID(dropParent->OwnID, hDropINCL), 0,TID(dragParent->OwnID, DragINCL), 0)) {
+  if (highDoc->IDTable.IsA(TID(dropParent->OwnID, hDropINCL), 0,TID(dragParent->OwnID, DragINCL), 0)) {
     //move from base to ex: publicToPriv or baseToEx
     if (dropParent->DeclType == Impl) {
       if (((CHETID*)dropParent->Supports.first)->data == TID(dragParent->OwnID, DragINCL))
@@ -4103,7 +4103,7 @@ bool CLavaPEView::RefacMove(CTreeItem* dropItem)
     }
   }
   else {
-    if (highDoc->IDTable.IsAn(TID(dragParent->OwnID, DragINCL), 0,TID(dropParent->OwnID, hDropINCL), 0))
+    if (highDoc->IDTable.IsA(TID(dragParent->OwnID, DragINCL), 0,TID(dropParent->OwnID, hDropINCL), 0))
       //move from ex to base: privToPublic or exToBase
       if (dragParent->DeclType == Impl) {
         if (highDoc->IDTable.EQEQ(((CHETID*)dragParent->Supports.first)->data, DragINCL, TID(dropParent->OwnID, hDropINCL),0))

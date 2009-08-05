@@ -363,7 +363,7 @@ void CExecTree::ExecVT(LavaDECL *elDef, DString* lab)
     if (decl) {
       TID id1 = TID(elDef->ParentDECL->OwnID, elDef->inINCL);
       TID id2 = TID(decl->ParentDECL->OwnID, decl->inINCL);
-      if (!Doc->IDTable.IsAn(id1,0,id2,0))
+      if (!Doc->IDTable.IsA(id1,0,id2,0))
         new CLavaError(&elDef->DECLError1, &ERR_NoOverridden);
     }
   }
@@ -397,7 +397,7 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
     if (decl != elDef) {
       TID id1 = TID(elDef->ParentDECL->OwnID, 0);
       TID id2 = TID(decl->ParentDECL->OwnID, decl->inINCL);
-      if (Doc->IDTable.IsAn(id1,0,id2,0)) {
+      if (Doc->IDTable.IsA(id1,0,id2,0)) {
         if (elDef->TypeFlags.Contains(isPropGet) || elDef->TypeFlags.Contains(isPropSet)) {
           if (elDef->TypeFlags.Contains(isPropGet))
             elDef->LocalName = DString("Get_") + decl->LocalName;
@@ -906,7 +906,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
       if (decl) {
         TID id1 = TID(elDef->ParentDECL->OwnID, elDef->inINCL);
         TID id2 = TID(decl->ParentDECL->OwnID, decl->inINCL);
-        if (!Doc->IDTable.IsAn(id1,0,id2,0))
+        if (!Doc->IDTable.IsA(id1,0,id2,0))
           new CLavaError(&elDef->DECLError1, &ERR_NoOverridden);
       }
       else

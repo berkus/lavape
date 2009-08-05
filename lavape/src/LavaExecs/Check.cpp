@@ -563,7 +563,7 @@ bool compatibleContext(CheckData &ckd, LavaDECL* decl2, const CContext &context1
          && (context1.ContextFlags.Contains(staticContext) != context2.ContextFlags.Contains(staticContext)))
     return false;
   if (context2.iContext
-      && ckd.document->IDTable.IsAn(context2.iContext,
+      && ckd.document->IDTable.IsA(context2.iContext,
                                     TID(con.oContext->OwnID, con.oContext->inINCL),0)) {
     if ((context1.iContext != context2.iContext)
        || (context1.ContextFlags.Contains(selfiContext) != context2.ContextFlags.Contains(selfiContext))
@@ -596,7 +596,7 @@ bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, 
   if ((decl1->DeclType != VirtualType) && (decl2->DeclType != VirtualType)) {
 //    ckd.errorCode = &ERR_IncompatibleType;
     if (ctxFlags2.Contains(multiContext)
-      && ckd.document->IDTable.IsAn(TID(decl1->OwnID, decl1->inINCL),0,TID(decl2->OwnID, decl2->inINCL),0))
+      && ckd.document->IDTable.IsA(TID(decl1->OwnID, decl1->inINCL),0,TID(decl2->OwnID, decl2->inINCL),0))
       return true;
     if ((decl1 != decl2) && !ckd.document->IsCDerivation(decl1,decl2,&ckd))
       return false;
@@ -642,7 +642,7 @@ bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, 
       if ((decl1 != decl2)  && !ckd.document->IsCDerivation(decl1,decl2,&ckd))
         return false;
       if (ctxFlags2.Contains(multiContext)
-        && ckd.document->IDTable.IsAn(TID(decl1->OwnID, decl1->inINCL),0,TID(decl2->OwnID, decl2->inINCL),0))
+        && ckd.document->IDTable.IsA(TID(decl1->OwnID, decl1->inINCL),0,TID(decl2->OwnID, decl2->inINCL),0))
         return true;
       else
         return !decl2 || compatibleContext(ckd, decl2, context1, context2);
@@ -3050,7 +3050,7 @@ bool EvalStatement::Check (CheckData &ckd)
     ERROREXIT
   boolDecl = ckd.document->IDTable.GetDECL(ckd.document->isStd?0:1,ckd.document->IDTable.BasicTypesID[B_Bool]);
   declOpd = ckd.document->GetType(declOpd);
-  if (!ckd.document->IDTable.IsAn(TID(declOpd->OwnID, declOpd->inINCL),0,TID(boolDecl->OwnID, boolDecl->inINCL),0)) {
+  if (!ckd.document->IDTable.IsA(TID(declOpd->OwnID, declOpd->inINCL),0,TID(boolDecl->OwnID, boolDecl->inINCL),0)) {
     ((SynObject*)operand.ptr)->SetError(ckd,ckd.errorCode);
     ok = false;
   }
@@ -4476,7 +4476,7 @@ bool FuncExpression::Check (CheckData &ckd)
         funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
       }
       funcItfTid = OWNID(funcItf);
-      if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
+      if (!ckd.document->IDTable.IsA(objTypeTid,0,funcItfTid,0)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
         ok &= false;
       }
@@ -4487,7 +4487,7 @@ bool FuncExpression::Check (CheckData &ckd)
         }
         else {
           implItfDecl = ckd.document->IDTable.GetDECL(((CHETID*)ckd.selfTypeDECL->Supports.first)->data,ckd.inINCL);
-          if (!ckd.document->IDTable.IsAn(OWNID(objTypeDecl),0,OWNID(implItfDecl),0)) {
+          if (!ckd.document->IDTable.IsA(OWNID(objTypeDecl),0,OWNID(implItfDecl),0)) {
             ((SynObject*)function.ptr)->SetError(ckd,&ERR_Protected);
             ok &= false;
           }
@@ -4957,7 +4957,7 @@ bool Connect::Check (CheckData &ckd)
         funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
       funcItfTid = OWNID(funcItf);
       senderClassTid = OWNID(senderClass);
-      if (!ckd.document->IDTable.IsAn(senderClassTid,0,funcItfTid,0)) {
+      if (!ckd.document->IDTable.IsA(senderClassTid,0,funcItfTid,0)) {
         ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
 #ifndef INTERPRETER
         if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder()) {
@@ -4973,7 +4973,7 @@ bool Connect::Check (CheckData &ckd)
       if (funcItf->DeclType == Impl)
         funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
       funcItfTid = OWNID(funcItf);
-      if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
+      if (!ckd.document->IDTable.IsA(objTypeTid,0,funcItfTid,0)) {
         ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
 #ifndef INTERPRETER
         if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder()) {
@@ -5122,7 +5122,7 @@ bool Disconnect::Check (CheckData &ckd)
         funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
       }
       funcItfTid = OWNID(funcItf);
-      if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
+      if (!ckd.document->IDTable.IsA(objTypeTid,0,funcItfTid,0)) {
         ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
         if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
           ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
@@ -5202,7 +5202,7 @@ bool Disconnect::Check (CheckData &ckd)
         funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
       }
       funcItfTid = OWNID(funcItf);
-      if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
+      if (!ckd.document->IDTable.IsA(objTypeTid,0,funcItfTid,0)) {
         ((SynObject*)callbackFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
         ok = false;
       }
@@ -7010,7 +7010,7 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
             }
             else {
               implItfDecl = ckd.document->IDTable.GetDECL(((CHETID*)ckd.selfTypeDECL->Supports.first)->data,ckd.inINCL);
-              if (!ckd.document->IDTable.IsAn(OWNID(parentTypeDecl),0,OWNID(implItfDecl),0)) {
+              if (!ckd.document->IDTable.IsA(OWNID(parentTypeDecl),0,OWNID(implItfDecl),0)) {
                 dod->SetError(ckd,&ERR_Protected);
                 ok = false;
               }

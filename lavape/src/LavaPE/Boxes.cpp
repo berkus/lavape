@@ -5217,14 +5217,14 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
                || myDoc->IDTable.lowerOContext(ParentDECL, elDef, sameContext) && sameContext);
 //             || (DeclType == CompObjSpec) && (elType == Interface) && elDef->TypeFlags.Contains(isComponent)
 //             || (DeclType == Package) && (elType == Package);
-    putIt = putIt && (!CallingDECL || !myDoc->IDTable.IsAn(elDef, TID(CallingDECL->OwnID, CallingDECL->inINCL), 0)
-                  && !myDoc->IDTable.IsAn(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0));
+    putIt = putIt && (!CallingDECL || !myDoc->IDTable.IsA(elDef, TID(CallingDECL->OwnID, CallingDECL->inINCL), 0)
+                  && !myDoc->IDTable.IsA(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0));
   }
   else if ((DeclType == Interface) && (elType == VirtualType)) 
     if (CallingDECL) {
       putIt = myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext)
               && sameContext && (myDoc->CheckGetFinalMType(CallingDECL, elDef) == elDef);
-      putIt = putIt && !myDoc->IDTable.IsAn(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0);
+      putIt = putIt && !myDoc->IDTable.IsA(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0);
     }
     else
       putIt = myDoc->IDTable.lowerOContext(ParentDECL, elDef, sameContext)

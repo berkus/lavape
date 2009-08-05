@@ -163,7 +163,7 @@ bool CLavaPEDoc::AddVElems (LavaDECL *decl, LavaDECL* baseDECL)
 			        lastEl && (lastEl->data.VTClss == addElem->data.VTClss);
 			        lastEl = (CHETVElem*) lastEl->successor);
 			//is it or is an extension allready in the table?
-			while (El && !IDTable.IsAn (El->data.VTEl, 0, addElem->data.VTEl, 0))
+			while (El && !IDTable.IsA (El->data.VTEl, 0, addElem->data.VTEl, 0))
 				if (El == lastEl)
 					El = 0;
 				else
@@ -497,7 +497,7 @@ bool CLavaPEDoc::CheckForm (LavaDECL* formDECL, int checkLevel)
 	      found = formElDECL
 	              && (formElDECL->DeclType == FormDef)
 	              && IDTable.EQEQ(formElDECL->RefID, formElDECL->inINCL, cheIDclass->data, classDECL->inINCL)
-	              && IDTable.IsAn(fID, 0, ((CHETID*)formElDECL->ParentDECL->Supports.first)->data, formElDECL->inINCL);
+	              && IDTable.IsA(fID, 0, ((CHETID*)formElDECL->ParentDECL->Supports.first)->data, formElDECL->inINCL);
 	    }
 	    if (found) {
 	      changed = changed || (idChain.first != cheIDform);
@@ -2205,7 +2205,7 @@ bool CLavaPEDoc::IsSpecialOf (LavaDECL* decl, const TIDs& basicIDs, bool cDeriv)
 	ok = true;
 	while (che && ok)
 	{
-		ok = IDTable.IsAn (id, 0, che->data, 0);
+		ok = IDTable.IsA (id, 0, che->data, 0);
 		if (ok && cDeriv)
 		{
 			baseDECL = IDTable.GetDECL (che->data);
@@ -2232,7 +2232,7 @@ bool CLavaPEDoc::IsSpecialOf (LavaDECL* decl, const TIDs& basicIDs, bool cDeriv)
 			ok = true;
 			while (che && ok)
 			{
-				ok = IDTable.IsAn (id, 0, che->data, 0);
+				ok = IDTable.IsA (id, 0, che->data, 0);
 				if (ok && cDeriv)
 				{
 					baseDECL = IDTable.GetDECL (che->data);

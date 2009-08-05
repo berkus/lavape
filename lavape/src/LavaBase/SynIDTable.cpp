@@ -1434,7 +1434,7 @@ bool TIDTable::Overrides(const TID& upId, int upinINCL, const TID& id, int inINC
 
 }
 
-bool TIDTable::IsAn(LavaDECL *decl, const TID& id, int inINCL )
+bool TIDTable::IsA(LavaDECL *decl, const TID& id, int inINCL )
 {
   if (decl == GetDECL(id, inINCL))
     return true;
@@ -1442,7 +1442,7 @@ bool TIDTable::IsAn(LavaDECL *decl, const TID& id, int inINCL )
     return IsAnc(decl, id, inINCL);
 }
 
-bool TIDTable::IsAn(const TID& upId, int upinINCL, const TID& id, int inINCL )
+bool TIDTable::IsA(const TID& upId, int upinINCL, const TID& id, int inINCL )
 {
   if (EQEQ(upId, upinINCL, id, inINCL))
     return true;
@@ -1539,7 +1539,7 @@ bool TIDTable::HasVBase(LavaDECL *decl, const TID& vid, int inINCL)
        cheID = (CHETID*)cheID->successor) {
     baseDecl = GetDECL(cheID->data, decl->inINCL);
     if (baseDecl && (baseDecl->DeclType == VirtualType)
-         && (IsAn(baseDecl, vid, inINCL) || IsAn(vid, inINCL, cheID->data, decl->inINCL)))
+         && (IsA(baseDecl, vid, inINCL) || IsA(vid, inINCL, cheID->data, decl->inINCL)))
       return true;
     if (HasVBase(baseDecl, vid, inINCL))
       return true;
@@ -1573,7 +1573,7 @@ LavaDECL* TIDTable::GetFinalBasicType(const TID& id, int inINCL, LavaDECL* conDE
   if (con.iContext) {
     for (che = (CHE*)con.iContext->NestedDecls.first;
          che && (((LavaDECL*)che->data)->DeclType == VirtualType)
-             && !IsAn(id, inINCL, TID(((LavaDECL*)che->data)->OwnID, ((LavaDECL*)che->data)->inINCL), 0);
+             && !IsA(id, inINCL, TID(((LavaDECL*)che->data)->OwnID, ((LavaDECL*)che->data)->inINCL), 0);
          che = (CHE*)che->successor);
     if (che && (((LavaDECL*)che->data)->DeclType == VirtualType))
       return GetDECL(((LavaDECL*)che->data)->RefID, ((LavaDECL*)che->data)->inINCL);
@@ -1581,7 +1581,7 @@ LavaDECL* TIDTable::GetFinalBasicType(const TID& id, int inINCL, LavaDECL* conDE
   if (con.oContext) {
     for (che = (CHE*)con.oContext->NestedDecls.first;
          che && (((LavaDECL*)che->data)->DeclType == VirtualType)
-             && !IsAn((LavaDECL*)che->data, id, inINCL);
+             && !IsA((LavaDECL*)che->data, id, inINCL);
          che = (CHE*)che->successor);
     if (che && (((LavaDECL*)che->data)->DeclType == VirtualType))
       return GetDECL(((LavaDECL*)che->data)->RefID, ((LavaDECL*)che->data)->inINCL);
@@ -1712,7 +1712,7 @@ bool TIDTable::lowerOContext(LavaDECL* highDECL, LavaDECL *lowDECL, bool& sameCo
     return true;
   }
   else
-    return IsAn(hCon.oContext,TID(lCon.oContext->OwnID, lCon.oContext->inINCL),0);
+    return IsA(hCon.oContext,TID(lCon.oContext->OwnID, lCon.oContext->inINCL),0);
 }
 
 QString* TIDTable::CheckValOfVirtual(LavaDECL* VTDecl, bool cor)
@@ -1748,7 +1748,7 @@ QString* TIDTable::CheckValOfVirtual(LavaDECL* VTDecl, bool cor)
       if (decl->TypeFlags.Contains(isAbstract))
         ok = true;
       else {
-        ok = IsAn(VTDecl->RefID, VTDecl->inINCL, decl->RefID, decl->inINCL);
+        ok = IsA(VTDecl->RefID, VTDecl->inINCL, decl->RefID, decl->inINCL);
         if (!ok && cor) {
           cheOver = new CHETID;
           cheOver->data = decl->RefID; //they have the same inINCL
@@ -1776,16 +1776,16 @@ bool TIDTable::otherOContext(LavaDECL* decl1, LavaDECL *decl2)
   if (!con1.oContext || !con2.oContext)
     return true;
   if (con1.iContext && !con2.iContext) {
-    if (IsAn(con1.iContext,TID(con2.oContext->OwnID, con2.oContext->inINCL),0))
+    if (IsA(con1.iContext,TID(con2.oContext->OwnID, con2.oContext->inINCL),0))
       return false;
   }
   else
     if (!con1.iContext && con2.iContext)
-      if (IsAn(con1.oContext,TID(con2.iContext->OwnID, con2.iContext->inINCL),0))
+      if (IsA(con1.oContext,TID(con2.iContext->OwnID, con2.iContext->inINCL),0))
         return false;
 
-  return !IsAn(con1.oContext,TID(con2.oContext->OwnID, con2.oContext->inINCL),0)
-         && !IsAn(con2.oContext,TID(con1.oContext->OwnID, con1.oContext->inINCL),0);
+  return !IsA(con1.oContext,TID(con2.oContext->OwnID, con2.oContext->inINCL),0)
+         && !IsA(con2.oContext,TID(con1.oContext->OwnID, con1.oContext->inINCL),0);
 }
 
 bool TIDTable::virtualSelf(LavaDECL *decl, LavaDECL*& paramDECL)
@@ -1845,7 +1845,7 @@ bool TIDTable::FindParamOfVal(LavaDECL *decl, LavaDECL *pat, LavaDECL*& paramDEC
           && valDECL
           && (valDECL->DeclType == Interface)
           && valDECL->isInSubTree(pat)
-          && IsAn(decl,paramDECL->RefID,paramDECL->inINCL))
+          && IsA(decl,paramDECL->RefID,paramDECL->inINCL))
         return true;
       che = (CHE*)che->successor;
     }
@@ -1987,7 +1987,7 @@ bool TIDTable::isValOfVirtual(LavaDECL *decl, LavaDECL* baseDECL)
       if (bcon.oContext)
         if (!FindParamOfVal(baseDECL, bcon.oContext, bparam))
           return false;
-    if (IsAn(param,TID(bparam->OwnID, bparam->inINCL),0))
+    if (IsA(param,TID(bparam->OwnID, bparam->inINCL),0))
       return true;
     else
       return false;
