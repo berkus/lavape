@@ -1478,7 +1478,7 @@ bool TIDTable::IsAc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL
     isI = decl->DeclType == Interface;
     if (isI) {
       conDECL = decl;
-      baseDecl0 = GetFinalBasicType(id, inINCL, conDECL);
+      baseDecl0 = GetFinalBaseType(id, inINCL, conDECL);
     }
     else
       baseDecl0 = GetDECL(id, inINCL);
@@ -1491,7 +1491,7 @@ bool TIDTable::IsAc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL
     return false;
 
   for (cheID = (CHETID*)decl->Supports.first;
-       cheID && (isI && (GetFinalBasicType(cheID->data, decl->inINCL, conDECL) != baseDecl0)
+       cheID && (isI && (GetFinalBaseType(cheID->data, decl->inINCL, conDECL) != baseDecl0)
                 || !isI && (GetDECL(cheID->data, decl->inINCL) != baseDecl0));
        cheID = (CHETID*)cheID->successor);
   if (cheID)
@@ -1500,7 +1500,7 @@ bool TIDTable::IsAc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL
        cheID ;
        cheID = (CHETID*)cheID->successor) {
     if (isI) {
-      baseDecl = GetFinalBasicType(cheID->data, decl->inINCL, conDECL);
+      baseDecl = GetFinalBaseType(cheID->data, decl->inINCL, conDECL);
       for (che = (CHE*)isAcChain.first; che && (che->data != baseDecl); che = (CHE*)che->successor);
       if (che) {
         //cheID->data.nID = -cheID->data.nID;
@@ -1562,7 +1562,7 @@ LavaDECL* TIDTable::GetFinalDef(const TID& id, int inINCL)
 }
 
 
-LavaDECL* TIDTable::GetFinalBasicType(const TID& id, int inINCL, LavaDECL* conDECL)
+LavaDECL* TIDTable::GetFinalBaseType(const TID& id, int inINCL, LavaDECL* conDECL)
 {
   LavaDECL *decl = GetDECL(id, inINCL);
   CHE *che;
@@ -1897,7 +1897,7 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
     return 0;
   TID newbaseID = TID(newbasedecl->OwnID, newbasedecl->inINCL);
   if (newbasedecl->DeclType == VirtualType)
-    finalnewBasedecl = GetFinalBasicType(newbaseID, decl->inINCL, contDECL);
+    finalnewBasedecl = GetFinalBaseType(newbaseID, decl->inINCL, contDECL);
   else
     finalnewBasedecl = newbasedecl;
   if (!finalnewBasedecl)
@@ -1912,7 +1912,7 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
       if (bdecl == newbasedecl)
         return 0;
       if (bdecl->DeclType == VirtualType) {
-        findecl = GetFinalBasicType(che->data, decl->inINCL, contDECL);
+        findecl = GetFinalBaseType(che->data, decl->inINCL, contDECL);
         if (finalnewBasedecl == findecl)
           return 0;
         if (newbasedecl->DeclType != VirtualType)

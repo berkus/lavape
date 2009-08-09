@@ -77,7 +77,7 @@ bool CLavaPEDoc::AddVBase (LavaDECL* classDECL, LavaDECL* conDECL)
 		{
 			if (IFace->DeclType == VirtualType)
 			{
-				IFace = IDTable.GetFinalBasicType (cheID->data, classDECL->inINCL, conDECL);
+				IFace = IDTable.GetFinalBaseType (cheID->data, classDECL->inINCL, conDECL);
 				if (!IFace)
 					return false;
 				if (IFace->VElems.UpdateNo <= UpdateNo)
@@ -3054,13 +3054,13 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 		return true;
 	classDECL->VElems.UpdateNo = UpdateNo+1;
 	ResetVElems (classDECL);
+	classDECL->DECLError2.Destroy();
 	while (cheID) {  
 		IFace = IDTable.GetDECL (cheID->data, classDECL->inINCL);
 		if (IFace)	{
 			if (IFace->DeclType == VirtualType)
-				IFace = IDTable.GetFinalBasicType (cheID->data, classDECL->inINCL, classDECL);
+				IFace = IDTable.GetFinalBaseType (cheID->data, classDECL->inINCL, classDECL);
 			if (IFace)	{
-	      classDECL->DECLError2.Destroy();
 				if (IFace->VElems.UpdateNo <= UpdateNo)	{
 					ResetVElems (IFace);
 					elOk = MakeVElems (IFace);

@@ -1847,7 +1847,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
     inDECL = myDoc->IDTable.GetDECL(cheS->data, decl->inINCL);
     if (inDECL && (inDECL->DeclType == VirtualType)) {
       vDECL = inDECL;
-      inDECL = myDoc->IDTable.GetFinalBasicType(cheS->data, decl->inINCL, conDECL);
+      inDECL = myDoc->IDTable.GetFinalBaseType(cheS->data, decl->inINCL, conDECL);
     }
     if (inDECL)  {
       che = (CHE*)inDECL->NestedDecls.first;

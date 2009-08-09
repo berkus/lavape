@@ -118,7 +118,7 @@ public:
   bool IsAc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL=0, bool isI = false, bool cheStart=true);
   bool HasVBase(LavaDECL *decl, const TID& vid, int inINCL);
   LavaDECL* GetFinalDef(const TID& id, int inINCL = 0);
-  LavaDECL* GetFinalBasicType(const TID& id, int inINCL, LavaDECL* conDECL);
+  LavaDECL* GetFinalBaseType(const TID& id, int inINCL, LavaDECL* conDECL);
   bool Overrides(const TID& upId, int upinINCL, const TID& id, int inINCL);
   bool Overrides(LavaDECL* decl1, LavaDECL* decl2);
   QString*  CleanSupports(LavaDECL *decl, LavaDECL* contDECL);

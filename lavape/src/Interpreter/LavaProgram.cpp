@@ -1340,7 +1340,7 @@ bool CLavaProgram::AddVBase(CheckData& ckd, LavaDECL* decl, LavaDECL* conDECL )
   while (cheID) {
     IFace = IDTable.GetDECL(cheID->data, decl->inINCL);
     if (IFace && (IFace->DeclType == VirtualType)) {
-      IFace = IDTable.GetFinalBasicType(cheID->data, decl->inINCL, conDECL);
+      IFace = IDTable.GetFinalBaseType(cheID->data, decl->inINCL, conDECL);
       if (!MakeVElems(IFace, &ckd))
         return false;
       if (!AddVElems(ckd, conDECL, IFace))
@@ -1394,7 +1394,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
   TID declID = TID(-1,0);
   classDECL->VElems.UpdateNo = -1;
   for (cheID = (CHETID*)classDECL->Supports.first; cheID; cheID = (CHETID*)cheID->successor) {//!
-    baseDECL = IDTable.GetFinalBasicType(cheID->data, classDECL->inINCL, classDECL);
+    baseDECL = IDTable.GetFinalBaseType(cheID->data, classDECL->inINCL, classDECL);
     if (!baseDECL) {
       LavaError(*pckd, true, classDECL, &ERR_Broken_ref);
       return false;
@@ -1764,7 +1764,7 @@ bool CLavaProgram::nVirtualBase(CheckData& ckd, LavaDECL *classDECL, LavaDECL* c
 
   for (cheID = (CHETID*)classDECL->Supports.first; cheID; cheID = (CHETID*)cheID->successor) {
     baseDECL = IDTable.GetFinalDef(cheID->data, classDECL->inINCL);
-    baseDECLMap = IDTable.GetFinalBasicType(cheID->data, classDECL->inINCL, conDECL);
+    baseDECLMap = IDTable.GetFinalBaseType(cheID->data, classDECL->inINCL, conDECL);
     if (baseDECL != baseDECLMap) {
       if (!baseDECLMap) {
         LavaError(ckd, true, classDECL, &ERR_Broken_ref);
@@ -1796,7 +1796,7 @@ bool CLavaProgram::AddVirtualBase(CheckData& ckd, LavaDECL *classDECL, LavaDECL*
     vbaseDECL = IDTable.GetDECL(cheID->data, classDECL->inINCL);
     if (vbaseDECL && (vbaseDECL->DeclType == VirtualType)) {
       baseDECL = IDTable.GetFinalDef(cheID->data, classDECL->inINCL);
-      baseDECLMap = IDTable.GetFinalBasicType(cheID->data, classDECL->inINCL, conDECL);
+      baseDECLMap = IDTable.GetFinalBaseType(cheID->data, classDECL->inINCL, conDECL);
       if (baseDECL != baseDECLMap) {
         baseDECL = baseDECLMap;
         if (!AddVirtualBase(ckd, baseDECL, conDECL, posSect))
