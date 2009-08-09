@@ -157,7 +157,7 @@ TIDTable::TIDTable()
 
 TIDTable::~TIDTable()
 {
-  isAncChain.DestroyKeepElems();
+  isAcChain.DestroyKeepElems();
   DestroyTable();
   //if (IDTab)
   //  delete [] IDTab;
@@ -1430,7 +1430,7 @@ bool TIDTable::Overrides(const TID& upId, int upinINCL, const TID& id, int inINC
     return false;
   if (funcDECL1 == funcDECL2)
     return true;
-  return IsAnc(funcDECL1->ParentDECL, TID(funcDECL2->ParentDECL->OwnID, funcDECL2->inINCL), 0, conDECL, true);
+  return IsAc(funcDECL1->ParentDECL, TID(funcDECL2->ParentDECL->OwnID, funcDECL2->inINCL), 0, conDECL, true);
 
 }
 
@@ -1439,7 +1439,7 @@ bool TIDTable::IsA(LavaDECL *decl, const TID& id, int inINCL )
   if (decl == GetDECL(id, inINCL))
     return true;
   else
-    return IsAnc(decl, id, inINCL);
+    return IsAc(decl, id, inINCL);
 }
 
 bool TIDTable::IsA(const TID& upId, int upinINCL, const TID& id, int inINCL )
@@ -1447,15 +1447,15 @@ bool TIDTable::IsA(const TID& upId, int upinINCL, const TID& id, int inINCL )
   if (EQEQ(upId, upinINCL, id, inINCL))
     return true;
   else
-    return IsAnc(GetDECL(upId, upinINCL), id, inINCL);
+    return IsAc(GetDECL(upId, upinINCL), id, inINCL);
 }
 
-bool TIDTable::IsAnc(const TID& upId, int upinINCL, const TID& id, int inINCL, LavaDECL* conDECL, bool isI )
+bool TIDTable::IsAc(const TID& upId, int upinINCL, const TID& id, int inINCL, LavaDECL* conDECL, bool isI )
 {
-  return IsAnc(GetDECL(upId, upinINCL), id, inINCL, conDECL, isI );
+  return IsAc(GetDECL(upId, upinINCL), id, inINCL, conDECL, isI );
 }
 
-bool TIDTable::IsAnc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL, bool isI, bool cheStart)
+bool TIDTable::IsAc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL, bool isI, bool cheStart)
 {
   CHETID* cheID;
   LavaDECL *baseDecl, *baseDecl0;
@@ -1464,16 +1464,16 @@ bool TIDTable::IsAnc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDEC
   if (!decl)
     return false;
   if (cheStart) {
-    isAncChain.DestroyKeepElems();
+    isAcChain.DestroyKeepElems();
     cheStart = false;
   }
   else {
-    for (che = (CHE*)isAncChain.first; che && (che->data != decl); che = (CHE*)che->successor);
+    for (che = (CHE*)isAcChain.first; che && (che->data != decl); che = (CHE*)che->successor);
     if (che)
       return false;
   }
   che = NewCHE(decl);
-  isAncChain.Append(che);
+  isAcChain.Append(che);
   if (!conDECL) {
     isI = decl->DeclType == Interface;
     if (isI) {
@@ -1501,24 +1501,24 @@ bool TIDTable::IsAnc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDEC
        cheID = (CHETID*)cheID->successor) {
     if (isI) {
       baseDecl = GetFinalBasicType(cheID->data, decl->inINCL, conDECL);
-      for (che = (CHE*)isAncChain.first; che && (che->data != baseDecl); che = (CHE*)che->successor);
+      for (che = (CHE*)isAcChain.first; che && (che->data != baseDecl); che = (CHE*)che->successor);
       if (che) {
         //cheID->data.nID = -cheID->data.nID;
         //return false;
         return true;
       }
-      if (baseDecl && IsAnc(baseDecl, TID(baseDecl0->OwnID, baseDecl0->inINCL), 0, conDECL, isI, cheStart))
+      if (baseDecl && IsAc(baseDecl, TID(baseDecl0->OwnID, baseDecl0->inINCL), 0, conDECL, isI, cheStart))
         return true;
     }
     else {
       baseDecl = GetDECL(cheID->data, decl->inINCL);
-      for (che = (CHE*)isAncChain.first; che && (che->data != baseDecl); che = (CHE*)che->successor);
+      for (che = (CHE*)isAcChain.first; che && (che->data != baseDecl); che = (CHE*)che->successor);
       if (che) {
         //cheID->data.nID = -cheID->data.nID;
         //return false;
         return true;
       }
-      if (IsAnc(baseDecl, id, inINCL, conDECL, isI, cheStart))
+      if (IsAc(baseDecl, id, inINCL, conDECL, isI, cheStart))
         return true;
     }
   }
@@ -1597,7 +1597,7 @@ bool TIDTable::Overrides(const TID& upId, int upinINCL, const TID& id, int inINC
   for (decl = GetDECL(id, inINCL);
        decl && decl->Supports.first;
        decl = GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL));
-  if (decl && IsAnc(upId, upinINCL, TID(decl->OwnID, decl->inINCL), 0))
+  if (decl && IsAc(upId, upinINCL, TID(decl->OwnID, decl->inINCL), 0))
     return true;
   return false;
 }
@@ -1613,7 +1613,7 @@ bool TIDTable::Overrides(LavaDECL* decl1, LavaDECL* decl2)
   for (decl = decl2;
        decl && decl->Supports.first;
        decl = GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL));
-  if (decl && IsAnc(decl1, TID(decl->OwnID, decl->inINCL), 0))
+  if (decl && IsAc(decl1, TID(decl->OwnID, decl->inINCL), 0))
     return true;
   return false;
 }
@@ -1893,7 +1893,7 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
     return 0;
   if ((contDECL->OwnID == decl->OwnID)
       && ((contDECL == newbasedecl)
-        || IsAnc(newbasedecl, TID(contDECL->OwnID, contDECL->inINCL),0,contDECL,true)))
+        || IsAc(newbasedecl, TID(contDECL->OwnID, contDECL->inINCL),0,contDECL,true)))
     return 0;
   TID newbaseID = TID(newbasedecl->OwnID, newbasedecl->inINCL);
   if (newbasedecl->DeclType == VirtualType)
@@ -1916,7 +1916,7 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
         if (finalnewBasedecl == findecl)
           return 0;
         if (newbasedecl->DeclType != VirtualType)
-          if (IsAnc(findecl, finalBaseID, decl->inINCL, contDECL, true))
+          if (IsAc(findecl, finalBaseID, decl->inINCL, contDECL, true))
             return 0;
           else
             if (HasVBase(finalnewBasedecl, che->data, 0)) {
@@ -1932,11 +1932,11 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
             return 0;
         }
         else {
-          if (IsAnc(bdecl, finalBaseID, 0, contDECL, true))
+          if (IsAc(bdecl, finalBaseID, 0, contDECL, true))
             return 0;
         }
         if ((finalnewBasedecl == bdecl)
-            || IsAnc(finalnewBasedecl, che->data, decl->inINCL, contDECL, true)) {
+            || IsAc(finalnewBasedecl, che->data, decl->inINCL, contDECL, true)) {
           if (putBase) {
             che->data = newbaseID;
             multiContainer = false;

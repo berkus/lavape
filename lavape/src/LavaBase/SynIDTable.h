@@ -87,7 +87,7 @@ public:
   bool inDropExToBase;
 
   bool inExToBase;
-  CHAINX isAncChain;
+  CHAINX isAcChain;
 
   TIDTable();
   ~TIDTable();
@@ -114,8 +114,8 @@ public:
   bool Overrides(const TID& upId, int upinINCL, const TID& id, int inINCL, LavaDECL* conDECL);
   bool IsA(LavaDECL *decl, const TID& id, int inINCL);
   bool IsA(const TID& upId, int upinINCL, const TID& id, int inINCL); //with equals
-  bool IsAnc(const TID& upId, int upinINCL, const TID& id, int inINCL, LavaDECL* conDECL=0, bool isI = false);//true :  id is an ancestor of upId, without equals
-  bool IsAnc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL=0, bool isI = false, bool cheStart=true);
+  bool IsAc(const TID& upId, int upinINCL, const TID& id, int inINCL, LavaDECL* conDECL=0, bool isI = false);//true :  id is an ancestor of upId, without equals
+  bool IsAc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL=0, bool isI = false, bool cheStart=true);
   bool HasVBase(LavaDECL *decl, const TID& vid, int inINCL);
   LavaDECL* GetFinalDef(const TID& id, int inINCL = 0);
   LavaDECL* GetFinalBasicType(const TID& id, int inINCL, LavaDECL* conDECL);

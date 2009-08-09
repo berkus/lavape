@@ -3063,7 +3063,7 @@ CSupportPage::CSupportPage(CLavaPEWizard* wizard)
       while (cheS) {//!!
         basefDECL = IDTab->GetFinalDef(cheS->data, fclassDECL->inINCL);
         if (basefDECL && basefDECL->SecondTFlags.Contains(isGUI) && (basefDECL->fromBType == NonBasic)) {
-          if (IDTab->IsAnc(myWizard->FormDECL->RefID, 0, basefDECL->RefID, basefDECL->inINCL)) {
+          if (IDTab->IsAc(myWizard->FormDECL->RefID, 0, basefDECL->RefID, basefDECL->inINCL)) {
             item = new CListItem(basefDECL->LocalName, TID(basefDECL->OwnID, basefDECL->inINCL));
             Supports->addItem(item);
           }

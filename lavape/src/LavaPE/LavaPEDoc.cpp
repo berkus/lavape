@@ -173,7 +173,7 @@ bool CLavaPEDoc::AddVElems (LavaDECL *decl, LavaDECL* baseDECL)
 				El = ElC;
 				El = ElC;
 				//is it an extension of an element in the table?
-				while (El && !IDTable.IsAnc (addElem->data.VTEl, 0, El->data.VTEl, 0))
+				while (El && !IDTable.IsAc (addElem->data.VTEl, 0, El->data.VTEl, 0))
 					if (El == lastEl)
 						El = 0;
 					else
@@ -466,7 +466,7 @@ bool CLavaPEDoc::CheckForm (LavaDECL* formDECL, int checkLevel)
 				return false;
 			}
 
-			if (IDTable.IsAnc (formDECL->RefID, 0, basefDECL->RefID, basefDECL->inINCL))
+			if (IDTable.IsAc (formDECL->RefID, 0, basefDECL->RefID, basefDECL->inINCL))
 			{
 				cheF = new CHETID;
 				cheF->data.nID = basefDECL->OwnID;
@@ -3117,7 +3117,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 				cheID = (CHETID*) elDecl->Supports.first;
 				if (!IDTable.EQEQ (El->data.VTEl, 0, cheID->data, elDecl->inINCL) || El->data.Ambgs.first)
 				{
-					if (IDTable.IsAnc (El->data.VTEl,0,TID (elDecl->OwnID, elDecl->inINCL),0))
+					if (IDTable.IsAc (El->data.VTEl,0,TID (elDecl->OwnID, elDecl->inINCL),0))
 					{
 						for (elBase = IDTable.GetDECL (El->data.VTEl);
 						        elBase->Supports.first &&
