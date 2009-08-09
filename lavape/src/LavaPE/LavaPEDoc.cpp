@@ -3048,38 +3048,32 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 
 	if (!classDECL || (classDECL->DeclType == VirtualType))
 		return false;
-	classDECL->DECLError2.Destroy();
 	cheID = (CHETID*) classDECL->Supports.first;
 
 	if (classDECL->VElems.UpdateNo > UpdateNo)
 		return true;
 	classDECL->VElems.UpdateNo = UpdateNo+1;
 	ResetVElems (classDECL);
-	while (cheID) //!!
-	{
+	while (cheID) {  
 		IFace = IDTable.GetDECL (cheID->data, classDECL->inINCL);
-		if (IFace)
-		{
+		if (IFace)	{
 			if (IFace->DeclType == VirtualType)
 				IFace = IDTable.GetFinalBasicType (cheID->data, classDECL->inINCL, classDECL);
-			if (IFace)
-			{
-				if (IFace->VElems.UpdateNo <= UpdateNo)
-				{
+			if (IFace)	{
+	      classDECL->DECLError2.Destroy();
+				if (IFace->VElems.UpdateNo <= UpdateNo)	{
 					ResetVElems (IFace);
 					elOk = MakeVElems (IFace);
 					allOk = allOk && elOk;
 				}
 				elOk = AddVElems (classDECL, IFace);
 				allOk = allOk && elOk;
-				if (!allOk) // there is an error in a base class
-				{
+				if (!allOk) { // there is an error in a base class	
 					new CLavaError (&classDECL->DECLError1, &ERR_InVTofBaseIF);
 					classDECL->WorkFlags.INCL (recalcVT);
 				}
 			}
-			else
-			{
+			else	{
 				allOk = false;
 				new CLavaError (&classDECL->DECLError1, &ERR_NoBaseIF);
 			}
