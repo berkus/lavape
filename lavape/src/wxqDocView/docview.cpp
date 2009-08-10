@@ -875,6 +875,7 @@ bool wxView::Close()
 
 void wxView::Activate(bool topDown)
 {
+  wxTheApp->selectionChanged = true;
   active = true;
   GetParentFrame()->RememberLastActive(this);
   wxDocManager::GetDocumentManager()->RememberActiveView(this);
