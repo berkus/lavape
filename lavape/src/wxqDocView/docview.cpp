@@ -173,10 +173,15 @@ void wxApp::SetAppName(const QString& name) {
   m_settingsPath += "/" + name;
 }
 
+//void wxApp::onAwake() {
+//  updatingButtonsMenus = false;
+//}
+
 void wxApp::updateButtonsMenus()
 {
   if (updatingButtonsMenus || !wxDocManager::GetDocumentManager()->GetCurrentTabWidget()) {
     //qDebug("updatingButtonsMenus = true");
+    updatingButtonsMenus = false;
     return;
   }
   else
