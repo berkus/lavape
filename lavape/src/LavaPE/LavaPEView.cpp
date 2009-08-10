@@ -3271,6 +3271,8 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
   if (!selItem)
     return;
 
+  wxTheApp->selectionChanged = true;
+
   if (lastCurrent && (Tree->withControl && !Tree->withShift || Tree->withShift && !Tree->withControl)) {
     if (!CollectDECL) {
       CanDelete = true;

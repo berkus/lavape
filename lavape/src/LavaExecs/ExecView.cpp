@@ -1334,7 +1334,9 @@ void CExecView::Select (SynObject *selObj)
   SynFlags ctxFlags;
   bool isSigFunc;
 
- if (selObj) {
+  wxTheApp->selectionChanged = true;
+
+  if (selObj) {
     if (selObj->InHiddenIniClause(text->ckd,typeRef))
       text->Select(typeRef);
     else if (selObj->primaryToken == parameter_T)

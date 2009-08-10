@@ -415,6 +415,9 @@ void CInclView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
     return;
   if (!selItem->isSelected())
     return;
+
+  wxTheApp->selectionChanged = true;
+
   CHESimpleSyntax* che = (CHESimpleSyntax*)((CTreeItem*)selItem)->getItemData();
   SelINCL = che->data.nINCL;
 }

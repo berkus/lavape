@@ -138,13 +138,13 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
   m_docManager = new wxDocManager;
   deletingMainFrame = false;
   isChMaximized = true;
-  updatingButtonsMenus = false;
+  selectionChanged = true;
 
   SetClassName(argv[0]);
 
   ed = QAbstractEventDispatcher::instance();
   connect(ed,SIGNAL(aboutToBlock()),this,SLOT(updateButtonsMenus()));
-  connect(ed,SIGNAL(awake()),this,SLOT(onAwake()));
+  connect(this,SIGNAL(focusChanged(QWidget*,QWidget*)),this,SLOT(onFocusChanged(QWidget*,QWidget*)));
 
   appExit = false;
   cmdLineEvaluated = false;
@@ -173,19 +173,13 @@ void wxApp::SetAppName(const QString& name) {
   m_settingsPath += "/" + name;
 }
 
-//void wxApp::onAwake() {
-//  updatingButtonsMenus = false;
-//}
-
 void wxApp::updateButtonsMenus()
 {
-  if (updatingButtonsMenus || !wxDocManager::GetDocumentManager()->GetCurrentTabWidget()) {
-    //qDebug("updatingButtonsMenus = true");
-    updatingButtonsMenus = false;
+  if (!selectionChanged || !wxDocManager::GetDocumentManager()->GetCurrentTabWidget()) {
     return;
   }
   else
-    updatingButtonsMenus = true;
+    selectionChanged = false;
 
   if (wxDocManager::GetDocumentManager()->GetActiveDocument() && wxDocManager::GetDocumentManager()->GetActiveDocument()->deleting)
     return;

@@ -822,6 +822,9 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
   CTreeItem *itemOver = lastCurrent;// *selItem = (CTreeItem*)Tree->currentItem();
   if (!selItem)
     return;
+
+  wxTheApp->selectionChanged = true;
+
   //if (this == (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView())
   //  SetVTError((CTreeItem*)selItem);
   if (itemOver && (Tree->withControl && !Tree->withShift || Tree->withShift && !Tree->withControl)) {

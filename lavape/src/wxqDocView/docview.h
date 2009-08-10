@@ -88,7 +88,7 @@ public:
     bool isChMaximized;
     bool appExit;
     bool cmdLineEvaluated;
-    bool updatingButtonsMenus;
+    bool selectionChanged;
 
     int argc;
     char **argv;
@@ -137,7 +137,6 @@ public:
 public slots:
     void about();
     void updateButtonsMenus();
-    //void onAwake();
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
