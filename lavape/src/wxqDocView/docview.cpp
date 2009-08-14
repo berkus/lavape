@@ -144,7 +144,6 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
 
   ed = QAbstractEventDispatcher::instance();
   connect(ed,SIGNAL(aboutToBlock()),this,SLOT(updateButtonsMenus()));
-  connect(this,SIGNAL(focusChanged(QWidget*,QWidget*)),this,SLOT(onFocusChanged(QWidget*,QWidget*)));
 
   appExit = false;
   cmdLineEvaluated = false;
