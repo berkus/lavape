@@ -517,8 +517,13 @@ void CProgText::Select (SynObject *selObj) {
   if (newSelection)
     select = newSelection;
   else if (selectAt) {
-    while (!selAt->primaryTokenNode) selAt = selAt->parentObject;
+    while (selAt->parentObject && !selAt->primaryTokenNode) selAt = selAt->parentObject;
     select = selAt->primaryTokenNode;
+    if (!select)
+      if (currentSelection)
+        select = currentSelection;
+      else
+        select = (CHETokenNode*)tokenChain.first;
 	}
   else if (currentSelection)
     select = currentSelection;
