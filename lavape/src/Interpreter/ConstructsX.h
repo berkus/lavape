@@ -20,17 +20,7 @@
 #ifndef __ConstructsX
 #define __ConstructsX
 
-
 #include "Constructs.h"
-
-
-#undef IMPLEMENT_DYNAMIC_CLASS
-// Single inheritance with one base class
-#define IMPLEMENT_DYNAMIC_CLASS(name, basename) \
-wxObject *wxConstructorFor##name(void) \
-   { return new name##X; }\
- wxClassInfo name::class##name(#name, #basename, NULL, sizeof(name), wxConstructorFor##name);
-//#endif
 
 extern TToken OperandType (TToken primaryToken);
 extern TToken PlaceHolderType (TToken primaryToken);

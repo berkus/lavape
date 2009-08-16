@@ -47,6 +47,18 @@ $INCLUDE "Syntax.ph"
 #define LAVAEXECS_DLL
 #endif
 
+#undef IMPLEMENT_DYNAMIC_CLASS
+#ifdef INTERPRETER
+#define IMPLEMENT_DYNAMIC_CLASS(name, basename) \
+wxObject *wxConstructorFor##name(void) \
+   { return new name##X; }\
+ wxClassInfo name::class##name(#name, #basename, NULL, sizeof(name), wxConstructorFor##name);
+#else
+#define IMPLEMENT_DYNAMIC_CLASS(name, basename) \
+wxObject *wxConstructorFor##name(void) \
+   { return new name##V; }\
+ wxClassInfo name::class##name(#name, #basename, NULL, sizeof(name), wxConstructorFor##name);
+#endif
 
 #define LEFTMARGIN 17
 #define INDENT 3

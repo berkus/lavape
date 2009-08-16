@@ -20,15 +20,7 @@
 #ifndef __ConstructsV
 #define __ConstructsV
 
-
 #include "Constructs.h"
-#undef IMPLEMENT_DYNAMIC_CLASS
-// Single inheritance with one base class
-#define IMPLEMENT_DYNAMIC_CLASS(name, basename) \
-wxObject *wxConstructorFor##name(void) \
-   { return new name##V; }\
- wxClassInfo name::class##name(#name, #basename, NULL, sizeof(name), wxConstructorFor##name);
-
 
 /////////////////////////////////////////////////////////////////
 
