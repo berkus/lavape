@@ -10,7 +10,7 @@ INCLUDEPATH = ../disco ../wxqDocView ../LavaBase ../LavaExecs ../LavaGUI ../Lava
 
 win32:DEFINES += WIN32
 else:DEFINES += __UNIX__
-DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT
+DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT INTERPRETER
 
 DESTDIR = ../../bin
 macx:QMAKE_LFLAGS += -F../../lib

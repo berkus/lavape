@@ -16,6 +16,7 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
+#include "Constructs.h"
 #include "docview.h"
 #include "qstring.h"
 #include "qstatusbar.h"
@@ -34,7 +35,6 @@
 #include <QKeyEvent>
 //#include <Q3ValueList>
 #include <QMouseEvent>
-#include "Constructs.h"
 #include "Check.h"
 #include "ui_Comment.h"
 #include "ExecUpdate.h"

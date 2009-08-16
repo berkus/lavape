@@ -22,10 +22,11 @@
 
 #pragma hdrstop
 
+#include "Constructs.h"
 #ifndef INTERPRETER
 #include "ExecView.h"
 #endif
-#include "Constructs.h"
+
 
 
 void TableVisitor::Eval (SynObject *obj,SynObject *parent,address where,CHAINX *chxp) {

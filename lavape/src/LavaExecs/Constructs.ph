@@ -1472,4 +1472,11 @@ public:
   virtual void VisitSelectExpression (SelectExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
+
+#ifdef INTERPRETER
+#include "ConstructsX.h"
+#else
+#include "ConstructsV.h"
+#endif
+
 #endif

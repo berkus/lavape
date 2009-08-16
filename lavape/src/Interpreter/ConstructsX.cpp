@@ -17,7 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#include "ConstructsX.h"
+#include "Constructs.h"
 #include "LavaMainFrameBase.h"
 #include "Check.h"
 #include "Debugger.h"

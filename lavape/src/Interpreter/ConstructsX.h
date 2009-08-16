@@ -20,7 +20,7 @@
 #ifndef __ConstructsX
 #define __ConstructsX
 
-#include "Constructs.h"
+//#include "Constructs.h"
 
 extern TToken OperandType (TToken primaryToken);
 extern TToken PlaceHolderType (TToken primaryToken);

@@ -17,6 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
+#include "Constructs.h"
 #include "ExecView.h"
 #include "Scanner.h"
 #include "LavaBaseStringInit.h"
