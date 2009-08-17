@@ -35,9 +35,10 @@ $prefix=/opt/lavape
 %endif
 
 #%preinstall echo Please enter the installation directory for lavape:;read dirname;echo Your install dir is $dirname
-%postremove rm -rf $prefix
+#%postremove rm -rf $prefix
 
 $libdir=/usr/local/lib
+$qtrel=4.5.2
 
 d 755 root sys $prefix -
 f 644 root sys $prefix *.txt
@@ -67,11 +68,18 @@ l 777 root sys $prefix/bin/assistant /usr/bin/assistant-qt4
 %elseifdef mandriva
 l 777 root sys $prefix/bin/assistant /usr/lib/qt4/bin/assistant
 %elseifdef solaris
-f 777 root sys $prefix/bin/assistant $QTDIR/bin/assistant
-f 755 root sys $libdir/libQtCore.so.4 $QTDIR/lib/libQtCore.so.4.5.2
-f 755 root sys $libdir/libQtGui.so.4 $QTDIR/lib/libQtGui.so.4.5.2
-f 755 root sys $libdir/libQtNetwork.so.4 $QTDIR/lib/libQtNetwork.so.4.5.2
-f 755 root sys $libdir/libQtTest.so.4 $QTDIR/lib/libQtTest.so.4.5.2
+f 755 root sys $QTDIR/lib/libQtCore.so.4 $QTDIR/lib/libQtCore.so.$qtrel
+f 755 root sys $QTDIR/lib/libQtGui.so.4 $QTDIR/lib/libQtGui.so.$qtrel
+f 755 root sys $QTDIR/lib/libQtNetwork.so.4 $QTDIR/lib/libQtNetwork.so.$qtrel
+f 755 root sys $QTDIR/lib/libQtTest.so.4 $QTDIR/lib/libQtTest.so.$qtrel
+f 755 root sys $QTDIR/lib/libQtHelp.so.4 $QTDIR/lib/libQtHelp.so.$qtrel
+f 755 root sys $QTDIR/lib/libQtXml.so.4 $QTDIR/lib/libQtXml.so.$qtrel
+f 755 root sys $QTDIR/lib/libQtSql.so.4 $QTDIR/lib/libQtSql.so.$qtrel
+f 755 root sys $QTDIR/lib/libQtWebKit.so.4 $QTDIR/lib/libQtWebKit.so.$qtrel
+f 755 root sys $QTDIR/lib/libQtCLucene.so.4 $QTDIR/lib/libQtCLucene.so.$qtrel
+f 755 root sys $QTDIR/plugins/sqldrivers/libqsqlite.so $QTDIR/plugins/sqldrivers/libqsqlite.so
+f 777 root sys $QTDIR/bin/assistant $QTDIR/bin/assistant
+l 777 root sys $prefix/bin/assistant $QTDIR/bin/assistant
 %endif
 
 d 755 root sys $prefix/bin -

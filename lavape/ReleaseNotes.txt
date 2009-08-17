@@ -102,8 +102,9 @@ or "dpkg -i <package>.deb".
 packages. In this case you must install these first before
 repeating the lavape installation.)
 
-A "lavape" installation directory will be installed in
+A "lavape" installation directory will be created in
 /opt. The shared libraries will be installed in /usr/local/lib.
+
 The LavaPE/Lava executables can be started from /opt/lavape/bin
 or any other working directory or by double-clicking in the
 nautilus or konqueror file manager.
@@ -135,6 +136,31 @@ Lava.app to your dock, if you like.
 A number of sample programs can be opened in LavaPE.app or Lava.app
 from the "samples" subdirectory of the installation directory "lavape".
 
+
+C) How to install the OpenSolaris binary release of LavaPE
+==========================================================
+
+Download lavape-<rel>-solaris-11-intel.pkg.gz, use 
+
+   gunzip lavape-<rel>-solaris-11-intel.pkg.gz
+
+to uncompress it, and execute
+
+   pkgadd -d lavape-<rel>-solaris-11-intel.pkg
+
+as superuser to install the package.
+
+A "lavape" installation directory will be created in
+/opt. The shared libraries will be installed in /usr/local/lib
+and /usr/local/Trolltech/Qt-<qt-release>
+
+The LavaPE/Lava executables can be started from the command line
+in /opt/lavape/bin or any other working directory,
+or by double-clicking in the file manager.
+
+A number of sample programs can be found in the "samples"
+subdirectory of the "/opt/lavape" installation
+directory.
 
 D) How to install LavaPE from the source distribution on UNIX
 =============================================================
