@@ -66,6 +66,12 @@ l 777 root sys $prefix/bin/assistant /usr/bin/assistant
 l 777 root sys $prefix/bin/assistant /usr/bin/assistant-qt4
 %elseifdef mandriva
 l 777 root sys $prefix/bin/assistant /usr/lib/qt4/bin/assistant
+%elseifdef solaris
+f 777 root sys $prefix/bin/assistant $QTDIR/bin/assistant
+f 755 root sys $libdir/libQtCore.so.4 $QTDIR/lib/libQtCore.so.4.5.2
+f 755 root sys $libdir/libQtGui.so.4 $QTDIR/lib/libQtGui.so.4.5.2
+f 755 root sys $libdir/libQtNetwork.so.4 $QTDIR/lib/libQtNetwork.so.4.5.2
+f 755 root sys $libdir/libQtTest.so.4 $QTDIR/lib/libQtTest.so.4.5.2
 %endif
 
 d 755 root sys $prefix/bin -

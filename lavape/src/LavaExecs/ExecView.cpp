@@ -586,6 +586,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
     return;
 
+  p.setRenderHint(QPainter::Antialiasing,true);
   p.setBackgroundMode(Qt::OpaqueMode);
   contentsWidth = 0;
   contentsHeight = 0;
