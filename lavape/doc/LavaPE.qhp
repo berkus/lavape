@@ -35,7 +35,7 @@
                     <section title="Strict separation of interfaces and implementations" ref="html/SepItfImpl.htm"/>
                     <section title="Two object categories: state and value objects" ref="html/TwoObjectCategories.htm"/>
                     <section title="Lava as a component integration language" ref="html/Components.htm"/>
-                    <section title="Lava supports design patterns/frameworks" ref="html/PatternsFrameworks.htm"/>
+                    <section title="Genericity, design patterns, frameworks" ref="html/PatternsFrameworks.htm"/>
                     <section title="Lava is statically type-safe" ref="html/TypeSafety.htm"/>
                     <section title="Lava renders &quot;type casts&quot; superfluous" ref="html/TypeCasts.htm"/>
                     <section title="Single-assignment; imperative vs. logical semantics" ref="html/SingleAssigLogSem.htm"/>
