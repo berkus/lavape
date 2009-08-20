@@ -83,9 +83,10 @@ declarations:</p>
     VTs are called <b>"patterns"</b> since they are used to provide concrete
     implementations of design patterns in <i class="c3">Lava</i>.</li>
   <li>The value of a VT may designate a <b class="c4">Lava</b> class or another
-    VT defined on this same level. A VT of a class may in particular designate
-    its containing class and serve as a <b class="c4">Lava</b> substitute for
-    the ThisType or MyType of other VT proposals.</li>
+    VT that is visible at this place (see 8. below). A VT of a class may in
+    particular designate its containing class and serve as a <b
+    class="c4">Lava</b> substitute for the ThisType or MyType of other VT
+    proposals.</li>
   <li><a id="derivedPattern"></a>A virtual type may also be <b>"abstract"</b>.
     Then its value is "void"; a non-void value may be assigned when overriding
     the abstract VT in a <b>derived pattern</b>.</li>
@@ -106,7 +107,8 @@ declarations:</p>
   <li>Classes from more derived patterns cannot be used in base patterns.</li>
   <li>VTs may be used to declare the types of local and member variables as
     well as of function arguments : Their actual, concrete types depend on the
-    respective <b>"pattern context"</b> then (see also 10. below<b>)</b>.</li>
+    respective <b>"pattern context"</b> (see also 10. below<b>)</b>. In the
+    literature this is called <strong>"covariant specialization"</strong>.</li>
   <li><a id="VTvisibility"></a>The <b>"visibility" of VT</b>s is restricted in
     the following way: They are visible in the containing package or class
     where they are introduced. If they are visible in a class <i>A</i> then

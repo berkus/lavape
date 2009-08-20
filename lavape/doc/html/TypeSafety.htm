@@ -179,8 +179,9 @@ class="c2">Lava</b> code is defined as follows:</p>
   <li>If expr is a formal parameter of a member function or <a
     href="Packages.htm#initiator">initiator</a> then ST(expr) is the declared
     type of this formal parameter.</li>
-  <li>If expr is a member variable (like a.b.c) then ST(expr) is the declared
-    type of the respective member (the type of c in this case).</li>
+  <li>If expr is a local variable (like "lvar") or a member variable (like
+    "a.b.c") then ST(expr) is the declared type of "lvar" or of the respective
+    member (the type of c in this case), repectively.</li>
   <li>If expr is the "self" variable (corresponding to "this" in Java/C++) then
     ST(expr) is the class to which self refers statically.</li>
 </ul>
@@ -208,14 +209,14 @@ context LPC:</p>
 <p>The special pattern context NULLPC is used to express that we are outside
 any pattern.</p>
 
-<p>The LPC of a class ITF or of an initiator INI is the pattern that contains
-the declaration of ITF or INI (and possibly comprises ITF), or it is the
-"empty" context NULLPC if ITF or INI is not contained in any pattern).</p>
+<p>The LPC of a class interface ITF or of an initiator INI is the pattern that
+contains the declaration of ITF or INI (and possibly comprises ITF), or it is
+the "empty" context NULLPC if ITF or INI is not contained in any pattern).</p>
 
 <p>The LPC of any piece of executable code that is contained in a member
-function or invariant of a class ITF is the pattern that contains (and possibly
-comprises) the declaration of ITF (or the "empty" context NULLPC if ITF is not
-contained in any pattern).</p>
+function or invariant of a class interface ITF is the pattern that contains
+(and possibly comprises) the declaration of ITF (or the "empty" context NULLPC
+if ITF is not contained in any pattern).</p>
 
 <p>For an initiator INI the LPC is the pattern containing the initiators
 declaration (or the "empty" context NULLPC if INI is not contained in any
@@ -278,7 +279,7 @@ local variable var:</p>
 
 <blockquote>
   <p><b>(F1)</b> var is a formal parameter of a <i>member function</i> of some
-  class ITF<br />
+  class interface ITF<br />
   or of a <i>local function</i> of the implementation of ITF<br />
   and its declared type ST(var) is contained in LPC(ITF).</p>
 
@@ -434,14 +435,9 @@ be another virtual type, which again has a value, etc.. In the following the
 term "indirect value" designates any value that one encounters when
 backtracking this sequence of values.</p>
 
-<p>Note that parameter passing to a function or from a function must also be
-considered as a special kind of assignments: An actual input parameter is
-assigned to the corresponding formal input parameter, a formal output parameter
-is assigned to a receiving variable.</p>
-
 <h3>4.1 Type-Checking in the Absence of Subtype-Substitutability</h3>
 
-<p class="c7">An expression expr may be assigned to a variable var if</p>
+<p class="c7">An expression "expr" may be assigned to a variable "var" if</p>
 <ol>
   <li>Both ST(var) and ST(expr) are non-virtual<br />
     <br />
@@ -468,7 +464,7 @@ is assigned to a receiving variable.</p>
 <p><a id="compAtCheckTime"></a>In the third case ET(expr) and ET(var) are
 statically computable (at "check time") since the EPCs of both sides are static
 then, and thus we can check statically whether ET(expr) is c-derived from
-ET(var). Considering this, we may state that all of the foregoing three
+ET(var). Taking this into account, we may state that all of the foregoing three
 conditions can be evaluated statically.</p>
 
 <p>The third case covers in particular situations where a virtual type with
@@ -561,7 +557,7 @@ run time system and will never cause type violations.</p>
 that performs a "bad" assignment A. If the right-hand side of A is ok, i.e.,
 the object delivered by the right-hand side expression conforms to the type of
 that expression, then we stay with A. Otherwise we can prove that there yet
-must exist "bad" assignment whose right-hand side is ok:</p>
+must exist a "bad" assignment whose right-hand side is ok:</p>
 
 <p>We backtrack the data flow, beginning with A, by walking from the left-hand
 side (lhs) to the right-hand side (rhs) of A and of all predecessor assignments
