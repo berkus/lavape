@@ -1,0 +1,426 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+      "http://www.w3.org/TR/html4/loose.dtd">
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+  <title>Neu</title>
+  <meta name="generator" content="Amaya, see http://www.w3.org/Amaya/">
+</head>
+
+<body>
+<h1 style="text-align:center;">Release notes for release 0.9.1</h1>
+
+<p></p>
+
+<h2 style="text-align:center;"><span style="color:#ff0000">I) Change Log for
+Release 0.9.1</span></h2>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="text-align:center;"><span
+style="font-family: Arial,Helvetica,sans-serif">A) The <span
+style="color:#ff0000"><em>LavaPE/Lava</em></span> user interface is now based
+on tabbed and splitter widgets</span></h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif;text-align:justify;">The user
+interface of the <em style="color:#ff0000"><strong>Lava</strong></em>
+Programming Environment <em style="color:#ff0000"><strong>LavaPE</strong></em>
+and of the <em style="color:#ff0000"><strong>Lava</strong></em> interpreter is
+no longer based on the MDI (Multiple Document Interface) concept but on tabbed
+and splitter widgets, which provide more neatly arranged, non-overlapping
+windows.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif;text-align:justify;"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif;text-align:justify;">The
+individual tabs can be rearranged by drag-and-drop within a tabbed widget as
+well as between different tabbed widgets. The latter may be arranged
+horizontally or vertically.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">B) The
+state/value object distinction has been revised</h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Before this revision only
+the top level attributes of a constant value object had been protected against
+replacement. Now also the nested constituents of an object are protected
+against replacement. We believe this to be a more consistant usage of the term
+"constant object". But note that "constant object" actually isn't a property of
+a <em><strong><span style="color:#ff0000">Lava</span></strong></em> object any
+longer, but a property of <em style="color:#ff0000"><strong>Lava</strong></em>
+variables, and <strong style="color:#ff0000"><em>LavaPE</em></strong> makes
+sure that this property is used consistantly. For instance, you cannot assign a
+state variable to a value variable and vice versa.</p>
+
+<p></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">However, you can take an
+immutable "snapshot" of the current state of a state object by using the "copy"
+statement or the "clone" expression to copy the state object to a variable of
+category "value object": The target of copy/clone may be of any category.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Using copy/clone you can in
+particular produce an object of a known, specific category from a variable
+having the indefinite category "Any category".</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">C) A
+virtual type (= type parameter) may be declared "final" now</h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif">This means that it cannot be
+derived/specialized any further in a derived class or package. Two new little
+sample programs (FinalVirtualType.lava and ForceOverride.lava) explain the
+motivation behind this and the related "force override" attribute of member
+functions.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">D) <em
+style="color:#ff0000">LavaPE</em> has been ported to Mac OS</h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif">The <em
+style="color:#ff0000"><strong>Lava</strong></em> programming environment can
+now also be built and run on the Mac OS 10.5 platform. A binary package for Mac
+OS 10.5 (Intel) is available in particular.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">E) <em
+style="color:#ff0000">LavaPE</em> has been ported from custom makefiles to
+qmake</h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif">This makes it, among other
+advantages, much easier to produce *.app bundles and *.framework library
+bundles on Mac OS.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">F) HTML
+documentation files now conform to XHTML 1.</h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Our online and web help
+files have been revised so as to conform to the current "XHTML 1.0
+transitional" standard. The HTML representation generated from *.lava files
+conforms to "XHTML 1.0 transitional" now, too.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">G)
+Online help uses the newer Qt Assistant now</h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif">We have changed the <em
+style="color:#ff0000"><strong>LavaPE/Lava</strong></em> online help interface
+so as to use the newer Qt Assistant rather than the old Assistant_adp help
+display program. Qt Assistant supports a much more comprehensive set of (X)HTML
+and CSS tags.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h2
+style="font-family: Arial,Helvetica,sans-serif;text-align:center;color:#ff0000">II)
+Installation of Lava/LavaPE</h2>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">A) How
+to install the Windows binary release of <em
+style="color:#ff0000">LavaPE</em></h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Simply launch the downloaded
+lavape-&lt;rel&gt;-win32-bin.exe file and follow the instructions of the
+installer.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">B) How
+to install the Linux binary releases of <em
+style="color:#ff0000">LavaPE</em></h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Download the pertinent *.rpm
+/ *.deb packages and install them in the usual way using "rpm -i
+&lt;package&gt;.rpm" or "dpkg -i &lt;package&gt;.deb".</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">(These commands will report
+the absence of required Qt4 packages. In this case you must install these first
+before repeating the lavape installation.)</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">A "lavape" installation
+directory will be created in /opt. The shared libraries will be installed in
+/usr/local/lib.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">The <em
+style="color:#ff0000"><strong>LavaPE/Lava</strong></em> executables can be
+started from /opt/lavape/bin or any other working directory or by
+double-clicking in the nautilus or konqueror file manager.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">A number of sample programs
+can be found in the "samples" subdirectory of the "/opt/lavape" installation
+directory.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">C) How
+to install the Mac OS 10.5 binary release of <em
+style="color:#ff0000">LavaPE</em></h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Download Qt-4.5.2 from the
+following link:</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p
+style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">http://get.qtsoftware.com/qt/source/qt-mac-opensource-4.5.2.dmg</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">and install it in the
+default location.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Download the
+lavape-&lt;rel&gt;-macos.dmg disk image file and mount it by
+double-clicking.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">A double-click on LavaPE.app
+or Lava.app will launch the <em
+style="color:#ff0000"><strong>Lava</strong></em> Programming Environment or the
+<em style="color:#ff0000"><strong>Lava</strong></em> Interpreter,
+respectively.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">For a more permanent
+installation, copy and paste the mounted image to your "Applications" folder or
+any other folder. Drag LavaPE.app/Lava.app to your dock, if you like.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">A number of sample programs
+can be opened in LavaPE.app or Lava.app from the "samples" subdirectory of the
+installation directory "lavape".</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">C) How
+to install the OpenSolaris binary release of <em
+style="color:#ff0000">LavaPE</em></h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Download
+lavape-&lt;rel&gt;-solaris-11-intel.pkg.gz, use</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">gunzip
+lavape-&lt;rel&gt;-solaris-11-intel.pkg.gz</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">to uncompress it, and
+execute</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">pkgadd -d
+lavape-&lt;rel&gt;-solaris-11-intel.pkg</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">as superuser to install the
+package.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">A "lavape" installation
+directory will be created in /opt. The shared libraries will be installed in
+/usr/local/lib and /usr/local/Trolltech/Qt-&lt;qt-release&gt;</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">The <em
+style="color:#ff0000"><strong>LavaPE/Lava</strong></em> executables can be
+started from the command line in /opt/lavape/bin or any other working
+directory, or by double-clicking in the file manager.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">A number of sample programs
+can be found in the "samples" subdirectory of the "/opt/lavape" installation
+directory.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">D) How
+to install <em style="color:#ff0000">LavaPE</em> from the source distribution
+on UNIX platforms</h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Download the compressed tar
+file lavape-&lt;release&gt;-src.tar.bz2 of the <em
+style="color:#ff0000"><strong>LavaPE</strong></em> source distribution and
+store it in the parent directory of the envisaged lavape installation
+directory.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Uncompress it using the
+command</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">tar xjvf
+lavape-&lt;release&gt;-src.tar.bz2</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Or download the most recent
+developer version of lavape from our SVN repository at SourceForge, using the
+following command in a shell window:</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">svn co
+https://lavape.svn.sourceforge.net/svnroot/lavape/trunk/lavape</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">You need to have GNU
+gcc/make and the developer version of Nokia (formerly TrollTech)/Qt4.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Either you may download (the
+OpenSource version of) Qt4 from ftp://ftp.qtsoftware.com/qt/source/ and build
+it yourself. In this case you must set the environment variable QTDIR to point
+to the Qt-&lt;release&gt; directory that is created by the build process,
+before you build <em style="color:#ff0000"><strong>Lava/LavaPE</strong></em>
+from the sources.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Or, on a Linux box, the
+software package manager of your Linux distribution usually offers the
+possibility to download and install the Qt4 development package(s).</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Then build the <em
+style="color:#ff0000"><strong>LavaPE</strong></em> executables as follows:</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">cd
+lavape</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">qmake
+lavape.pro // "qmake -spec macx-g++ lavape.pro" on Mac OS X</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">make</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">On some platforms the Qt4
+version of qmake has a different name, like "qmake-qt4". </p>
+
+<p></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">The command "qmake -v" will
+display the Qt version used by qmake.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">The build process will take
+quite a while. You will find the executables of the <em
+style="color:#ff0000"><strong>Lava</strong></em> Programming Environment in
+lavape/bin thereafter: "<em
+style="color:#ff0000"><strong>LavaPE</strong></em>", "<em
+style="color:#ff0000"><strong>Lava</strong></em>", and "LPC". (The <em
+style="color:#ff0000"><strong>Lava</strong></em> Precompiler "LPC" is needed
+only during the build process.)</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Go to the lavape/bin
+directory, launch "./LavaPE", consult the Online Help, open some sample
+programs from the lavape/samples directory and enjoy the unique structure
+editing features of <em style="color:#ff0000"><strong>LavaPE</strong></em>.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">You can run the <em
+style="color:#ff0000"><strong>Lava</strong></em> interpreter "Lava"</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">1. either by executing
+"./Lava" in the lavape/bin directory and by</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">opening a *.lava or *.ldoc
+file from the file menu or from the</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">file open button, or</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">2. from <em
+style="color:#ff0000"><strong>LavaPE</strong></em> by clicking the "running
+man" toolbutton, after you have activated a view containing the executable code
+of a main program or a declaration tree view that contains a main program
+declaration.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"></p>
+
+<p style="font-family: Arial,Helvetica,sans-serif">We'd appreciate very much if
+you would inform us (e-mail: Klaus.D.Guenther(at)gmail.com) about any problems
+that you have encounterd during the installation or while using</p>
+
+<p><span style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
+style="color:#ff0000">Lava/LavaPE</span></strong></em>.</span></p>
+
+<p></p>
+
+<p></p>
+</body>
+</html>

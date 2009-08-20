@@ -152,7 +152,7 @@
 			<section ref="html/Components.htm" title="Lava as a component integration language">
 				<keyword ref="html/Components.htm">component objects</keyword>
 			</section>
-			<section ref="html/PatternsFrameworks.htm" title="Lava supports design patterns/frameworks">
+			<section ref="html/PatternsFrameworks.htm" title="Genericity, design patterns, frameworks">
 				<keyword ref="html/PatternsFrameworks.htm">design patterns</keyword>
 				<keyword ref="html/PatternsFrameworks.htm">patterns/frameworks</keyword>
 				<keyword ref="html/PatternsFrameworks.htm">Eiffel</keyword>
