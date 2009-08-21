@@ -1463,6 +1463,7 @@ bool TIDTable::IsAc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL
 
   if (!decl || (decl->fromBType == B_Object))
     return false;
+
   if (cheStart) {
     isAcChain.DestroyKeepElems();
     cheStart = false;
