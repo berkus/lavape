@@ -527,7 +527,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
       bool cop = false;
       if (((*pNewDecl)->SecondTFlags.Contains(funcImpl) || (*pNewDecl)->SecondTFlags.Contains(overrides))
           && FindInSupports((*pNewDecl)->LocalName, *pNewDecl, *(LavaDECL**)newHint->CommandData4))
-        new CLavaError(&(*pNewDecl)->DECLError2, &ERR_NameCollision);
+        new CLavaError(&(*pNewDecl)->DECLError2, &ERR_NameInUse);
       else
         if (!undo && !redo && ((*pNewDecl)->DeclType != FormText)) {
           while (FindInSupports((*pNewDecl)->LocalName, *pNewDecl, *(LavaDECL**)newHint->CommandData4)) {

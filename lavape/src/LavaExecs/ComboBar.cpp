@@ -2125,12 +2125,12 @@ bool CExecFields::SameField(TDODC& IDs1, TDODC& IDs2, bool& replace)
   while (che1 && che2) {
     if ( ( ((TDOD*)che1->data)->ID.nID != ((TDOD*)che2->data)->ID.nID)
          || ( ((TDOD*)che1->data)->ID.nINCL != ((TDOD*)che2->data)->ID.nINCL))
-      if ( Bar->myDoc->IDTable.IsAc(((TDOD*)che1->data)->ID, 0, ((TDOD*)che2->data)->ID, 0)) {
+      if ( Bar->myDoc->IDTable.IneritsFrom(((TDOD*)che1->data)->ID, 0, ((TDOD*)che2->data)->ID, 0)) {
         replace = true;
         return false;
       }
       else
-        if (!Bar->myDoc->IDTable.IsAc(((TDOD*)che2->data)->ID, 0, ((TDOD*)che1->data)->ID, 0))
+        if (!Bar->myDoc->IDTable.IneritsFrom(((TDOD*)che2->data)->ID, 0, ((TDOD*)che1->data)->ID, 0))
           return false;
     che1 = (CHE*)che1->successor;
     che2 = (CHE*)che2->successor;

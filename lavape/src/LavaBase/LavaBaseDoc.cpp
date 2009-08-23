@@ -1001,9 +1001,9 @@ QString* CLavaBaseDoc::TestValOfVirtual(LavaDECL* vdecl, LavaDECL* valDECL)
     if (!con.oContext || (con.oContext == val))
       return 0;
     if (IDTable.lowerOContext(par, val, sameContext) )
-      if (IDTable.isValOfOtherVirtual(val, vdecl))
+      /*if (IDTable.isValOfOtherVirtual(val, vdecl))
         return &ERR_DoubleVal;
-      else
+      else*/
         return 0;
     else
       return &ERR_WrongContext;
