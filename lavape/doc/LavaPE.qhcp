@@ -10,7 +10,7 @@
         <aboutDialog>
             <file>about.txt</file>
         </aboutDialog>
-        <cacheDirectory>.LavaDoc</cacheDirectory>
+        <cacheDirectory>LavaDoc</cacheDirectory>
     </assistant>
     <docFiles>
         <generate>
