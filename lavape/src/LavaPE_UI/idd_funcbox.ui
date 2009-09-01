@@ -213,7 +213,7 @@
       </property>
       <item>
        <property name="text">
-        <string>(Class/virtual type of Self)</string>
+        <string>(Class/virtual type of &quot;Self&quot;)</string>
        </property>
       </item>
      </widget>
@@ -622,7 +622,7 @@
         <rect>
          <x>20</x>
          <y>130</y>
-         <width>191</width>
+         <width>201</width>
          <height>31</height>
         </rect>
        </property>
