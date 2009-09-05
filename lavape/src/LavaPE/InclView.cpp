@@ -78,6 +78,7 @@ CLavaPEDoc* CInclView::GetDocument() // non-debug version is inline
 
 void CInclView::UpdateUI()
 {
+  //DString str0;
   if (!InitComplete)
     return;
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
@@ -85,7 +86,14 @@ void CInclView::UpdateUI()
   frame->collapseAction->setEnabled(true);
   OnUpdateDelete(frame->deleteAction);
   OnUpdateEditSel(frame->editSelItemAction);
-  frame->newIncludeAction->setEnabled(true);
+  //frame->newIncludeAction->setEnabled(true);
+  if (GetDocument()->mySynDef) {
+    frame->newIncludeAction->setEnabled(!GetDocument()->changeNothing);
+    //frame->m_UtilityView->SetComment(str0, true);
+    //frame->m_UtilityView->ResetError();
+    //if (!Tree->hasFocus())
+    //  Tree->setFocus();
+  }
 }
 
 

@@ -33,6 +33,7 @@
 #include <QDialog>
 #include <QProcess>
 #include <QByteArray>
+#include <qnumeric.h>
 
 #include <float.h>
 #include <stdio.h>
