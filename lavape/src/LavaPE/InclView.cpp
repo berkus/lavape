@@ -85,6 +85,7 @@ void CInclView::UpdateUI()
   frame->collapseAction->setEnabled(true);
   OnUpdateDelete(frame->deleteAction);
   OnUpdateEditSel(frame->editSelItemAction);
+  frame->newIncludeAction->setEnabled(true);
 }
 
 

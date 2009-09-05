@@ -10,6 +10,7 @@ extern QString IDP_AlreadyIncluded;
 extern QString IDP_InclInherited;
 extern QString IDP_NoTypeSel;
 extern QString IDP_NoEvTypeSel;
+extern QString IDP_NoSelfTypeSel;
 extern QString IDP_NoElemSel;
 extern QString IDP_IsNoID;
 extern QString IDP_NoTableView;

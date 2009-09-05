@@ -300,6 +300,8 @@ public:
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
   void makeHandler();
+  void setHandlerData();
+  void fillSelfType(LavaDECL* selfDecl);
   LavaDECL* myDECL;
   LavaDECL* FieldTypeDECL;
   CLavaPEDoc *myDoc;

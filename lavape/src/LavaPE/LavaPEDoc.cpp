@@ -668,6 +668,7 @@ bool CLavaPEDoc::CheckFuncImpl (LavaDECL* funcDECL, int checkLevel, bool& change
 	CHETID *cheid, *cheID;
 	LavaDECL *IOEl, *oldIOEl, *classIOEl, *classFuncDECL =0;
 	CHAINX chain;
+  int incl;
 
 	cheID = (CHETID*) funcDECL->Supports.first; //implements
 	if (cheID)
@@ -678,32 +679,40 @@ bool CLavaPEDoc::CheckFuncImpl (LavaDECL* funcDECL, int checkLevel, bool& change
 	funcDECL->TypeFlags.EXCL (isNative);
 	SynFlags classTypeFlags = classFuncDECL->TypeFlags;
 	SynFlags typeFlags = funcDECL->TypeFlags;
-	if (typeFlags != classTypeFlags)
-	{
+	if (typeFlags != classTypeFlags)	{
 		changed = true;
 		funcDECL->TypeFlags = classTypeFlags;
 		funcDECL->SecondTFlags.INCL (funcImpl);
 	}
-	if (funcDECL->SecondTFlags.Contains (closed) != classFuncDECL->SecondTFlags.Contains (closed))
-	{
+	if (funcDECL->SecondTFlags.Contains (closed) != classFuncDECL->SecondTFlags.Contains (closed))	{
 		changed = true;
 		if (classFuncDECL->SecondTFlags.Contains (closed))
 			funcDECL->SecondTFlags.INCL (closed);
 		else
 			funcDECL->SecondTFlags.EXCL (closed);
 	}
-	if (checkLevel > CHLV_inUpdateLow)
-	{
+  if (classFuncDECL->RefID.nID != funcDECL->RefID.nID) {
+    funcDECL->RefID.nID = classFuncDECL->RefID.nID;
+    changed = true;
+  }
+  else {
+    if (funcDECL->RefID.nID != -1) {
+      incl = IDTable.IDTab[classFuncDECL->inINCL]->nINCLTrans[classFuncDECL->RefID.nINCL].nINCL;
+      if (classFuncDECL->RefID.nINCL != incl) {
+        classFuncDECL->RefID.nINCL = incl;
+        changed = true;
+      }
+    }
+  }
+	if (checkLevel > CHLV_inUpdateLow)	{
 		chain.first = funcDECL->NestedDecls.first;
 		chain.last = funcDECL->NestedDecls.last;
 		funcDECL->NestedDecls.first = 0;
 		funcDECL->NestedDecls.last = 0;
 		funcDECL->NestedDecls = classFuncDECL->NestedDecls;
 		cheIOEl = (CHE*) funcDECL->NestedDecls.first;
-		while (cheIOEl)
-		{
-			if (((LavaDECL*) cheIOEl->data)->DeclDescType == ExecDesc)
-			{
+		while (cheIOEl)	{
+			if (((LavaDECL*) cheIOEl->data)->DeclDescType == ExecDesc)	{
 				che = (CHE*) cheIOEl->successor;
 				funcDECL->NestedDecls.Delete (cheIOEl);
 				cheIOEl = che;
@@ -716,47 +725,40 @@ bool CLavaPEDoc::CheckFuncImpl (LavaDECL* funcDECL, int checkLevel, bool& change
 	checlassIOEl = (CHE*) classFuncDECL->NestedDecls.first;
 	while (cheIOEl && checlassIOEl
 	        && (((LavaDECL*) checlassIOEl->data)->DeclDescType != ExecDesc)
-	        && (((LavaDECL*) cheIOEl->data)->DeclDescType != ExecDesc))
-	{
+	        && (((LavaDECL*) cheIOEl->data)->DeclDescType != ExecDesc))	{
 		IOEl = (LavaDECL*) cheIOEl->data;
 		classIOEl = (LavaDECL*) checlassIOEl->data;
 		cheID = new CHETID;
 		cheID->data = TID (classIOEl->OwnID, classIOEl->inINCL);
 		IOEl->Supports.Destroy();
 		IOEl->Supports.Append (cheID);  //implements
-		IOEl->RefID.nINCL = IDTable.IDTab[IOEl->inINCL]->nINCLTrans[IOEl->RefID.nINCL].nINCL;
+		IOEl->RefID.nINCL = IDTable.IDTab[classIOEl->inINCL]->nINCLTrans[classIOEl->RefID.nINCL].nINCL;
 		IOEl->inINCL = 0;
 		IOEl->TypeFlags = classIOEl->TypeFlags;
 		IOEl->SecondTFlags.INCL (funcImpl);
 		IOEl->SecondTFlags.EXCL (overrides);
 		IOEl->WorkFlags.EXCL (selAfter);
-		if (checkLevel > CHLV_inUpdateLow)
-		{
+		if (checkLevel > CHLV_inUpdateLow)	{
 			IOEl->ParentDECL = funcDECL;
 			che = (CHE*) chain.first;
 			elFound = 0;
-			while (che && !elFound)
-			{
+			while (che && !elFound)	{
 				oldIOEl = (LavaDECL*) che->data;
-				if ((oldIOEl->DeclType == IAttr) || (oldIOEl->DeclType == OAttr))
-				{
+				if ((oldIOEl->DeclType == IAttr) || (oldIOEl->DeclType == OAttr))	{
 					cheid = (CHETID*) oldIOEl->Supports.first;
 					if (cheid && (IOEl->OwnID == cheid->data.nID))
 						elFound = che;
-					else
-					{
+					else	{
 						che = (CHE*) che->successor;
 						changed = true;
 					}
 				}
-				else
-				{
+				else	{
 					che = (CHE*) che->successor;
 					changed = true;
 				}
 			}
-			if (elFound)
-			{
+			if (elFound)	{
 				IOEl->OwnID = ((LavaDECL*) elFound->data)->OwnID;
 				* ((LavaDECL*) elFound->data) = *IOEl;
 				IOEl = (LavaDECL*) elFound->data;
@@ -783,8 +785,7 @@ bool CLavaPEDoc::CheckFuncImpl (LavaDECL* funcDECL, int checkLevel, bool& change
 				//che = (CHE*)chain.Uncouple(elFound);
 				//delete che;
 			}
-			else
-			{
+			else	{
 				changed = true;
 				IDTable.NewID ((LavaDECL**) &cheIOEl->data);
 				((LavaDECL*) cheIOEl->data)->WorkFlags.INCL (newTreeNode);
@@ -796,14 +797,12 @@ bool CLavaPEDoc::CheckFuncImpl (LavaDECL* funcDECL, int checkLevel, bool& change
 	}
 	che = (CHE*) chain.first;
 	while (che && ((((LavaDECL*) che->data)->DeclType == IAttr)
-	                 || (((LavaDECL*) che->data)->DeclType == OAttr)))
-	{
+	                 || (((LavaDECL*) che->data)->DeclType == OAttr)))	{
 		IDTable.DeleteID (((LavaDECL*) che->data)->OwnID);
 		changed = true;
 		che = (CHE*) che->successor;
 	}
-	while (che)
-	{
+	while (che)	{
 		cheIOEl = che;
 		che = (CHE*) che->successor;
 		cheIOEl = (CHE*) chain.Uncouple (cheIOEl);
@@ -1235,18 +1234,18 @@ bool CLavaPEDoc::CheckMenu (LavaDECL* formDECL, LavaDECL* classDECL)
 bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 {
 	SynFlags typeFlags;
-	CHE *cheOverIO, *cheIO, *chenext;
-	LavaDECL *IODECL, *OverFunc;
+	CHE *cheOverIO, *cheIO, *chenext, *cheVT;
+	LavaDECL *IODECL, *OverFunc, *valDECL, *paramDECL;
 	CHETID *cheID, *cheOverID;
 	CHAINX chain;
+  TID refID;
 	bool catErr, changed = false, found;
+  CContext con;
 
 	if (!funcDECL->SecondTFlags.Contains (overrides))
 		return false;
-	if (!funcDECL->Supports.first)
-	{
-		if (checkLevel == CHLV_fit)
-		{
+	if (!funcDECL->Supports.first)	{
+		if (checkLevel == CHLV_fit)	{
 			funcDECL->SecondTFlags.EXCL (overrides);
 			UpdateNo++;
 			return true;
@@ -1256,16 +1255,13 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 	}
 	cheID = (CHETID*) funcDECL->Supports.first;
 	OverFunc = IDTable.GetDECL (cheID->data, funcDECL->inINCL);
-	while (!OverFunc && cheID)
-	{
+	while (!OverFunc && cheID)	{
 		cheID = (CHETID*) cheID->successor;
 		if (cheID)
 			OverFunc = IDTable.GetDECL (cheID->data, funcDECL->inINCL);
 	}
-	if (!OverFunc)
-	{
-		if (checkLevel == CHLV_fit)
-		{
+	if (!OverFunc)	{
+		if (checkLevel == CHLV_fit)	{
 			funcDECL->Supports.Destroy();
 			funcDECL->SecondTFlags.EXCL (overrides);
 			UpdateNo++;
@@ -1277,43 +1273,89 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 
 	if (!funcDECL->ParentDECL->TypeFlags.Contains (isAbstract))
 		funcDECL->TypeFlags.EXCL (isAbstract);
-	if (funcDECL->DeclType == Attr)
-	{
-		if (!OverFunc->TypeFlags.Contains (isConst) && funcDECL->TypeFlags.Contains (isConst))
-		{
+	if (funcDECL->DeclType == Attr)	{
+		if (!OverFunc->TypeFlags.Contains (isConst) && funcDECL->TypeFlags.Contains (isConst))	{
 			funcDECL->TypeFlags.EXCL (isConst);
 			changed = true;
 		}
 	}
 	else
-		if (OverFunc->TypeFlags.Contains (isConst) && !funcDECL->TypeFlags.Contains (isConst))
-		{
+		if (OverFunc->TypeFlags.Contains (isConst) && !funcDECL->TypeFlags.Contains (isConst))	{
 			funcDECL->TypeFlags.INCL (isConst);
 			changed = true;
 		}
-	if (!OverFunc->TypeFlags.Contains (isProtected) && funcDECL->TypeFlags.Contains (isProtected))
-	{
+	if (!OverFunc->TypeFlags.Contains (isProtected) && funcDECL->TypeFlags.Contains (isProtected))	{
 		funcDECL->TypeFlags.EXCL (isProtected);
 		changed = true;
 	}
 	if (funcDECL->DeclType == Attr)
 		return changed;
 
+  if (IDTable.isValOfVirtual(funcDECL->ParentDECL)) {
+    if (IDTable.isValOfVirtual(OverFunc->ParentDECL)) {
+      refID.nID = OverFunc->RefID.nID;
+      if (OverFunc->RefID.nID != -1) {
+        refID.nINCL  = IDTable.IDTab[OverFunc->inINCL]->nINCLTrans[OverFunc->RefID.nINCL].nINCL;
+        if (refID == ((CHETID*)funcDECL->ParentDECL->Supports.first)->data) {
+          changed = funcDECL->RefID.nID != funcDECL->ParentDECL->OwnID;
+          funcDECL->RefID.nID = funcDECL->ParentDECL->OwnID;
+          funcDECL->RefID.nINCL = 0;
+        }
+        else {
+          IDTable.GetPattern(funcDECL->ParentDECL, con);
+          if (con.oContext) {
+            cheVT = (CHE*)con.oContext->NestedDecls.first;
+            while (cheVT) {
+              paramDECL = (LavaDECL*) cheVT->data;
+              if (paramDECL->DeclType == VirtualType) {
+                valDECL = IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
+                if ((valDECL == funcDECL->ParentDECL) && (((CHETID*)paramDECL->Supports.first)->data == refID)) {
+                  changed = funcDECL->RefID.nID != paramDECL->OwnID;
+                  funcDECL->RefID.nID = paramDECL->OwnID;
+                  funcDECL->RefID.nINCL = 0;
+                  cheVT = 0;
+                }
+                cheVT = (CHE*)cheVT->successor;
+              }
+              else
+                cheVT = 0;
+            }
+          }
+          if (con.iContext) {
+            cheVT = (CHE*)con.iContext->NestedDecls.first;
+            while (cheVT) {
+              paramDECL = (LavaDECL*) cheVT->data;
+              if (paramDECL->DeclType == VirtualType) {
+                valDECL = IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
+                if ((valDECL == funcDECL->ParentDECL) && (((CHETID*)paramDECL->Supports.first)->data == refID)) {
+                  changed = funcDECL->RefID.nID != paramDECL->OwnID;
+                  funcDECL->RefID.nID = paramDECL->OwnID;
+                  funcDECL->RefID.nINCL = 0;
+                  cheVT = 0;
+                }
+                cheVT = (CHE*)cheVT->successor;
+              }
+              else
+                cheVT = 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
 	cheOverIO = (CHE*) OverFunc->NestedDecls.first;
-	if (checkLevel > CHLV_noCheck)
-	{
+	if (checkLevel > CHLV_noCheck)	{
 		chain.first = funcDECL->NestedDecls.first;
 		chain.last = funcDECL->NestedDecls.last;
 		funcDECL->NestedDecls.first = 0;
 		funcDECL->NestedDecls.last = 0;
-		while (cheOverIO && (((LavaDECL*) cheOverIO->data)->DeclDescType != ExecDesc))
-		{
+		while (cheOverIO && (((LavaDECL*) cheOverIO->data)->DeclDescType != ExecDesc))	{
 			cheID = 0;
 			cheIO = 0;
 			found = false;
 			cheIO = (CHE*) chain.first;
-			while (cheIO && !found && (((LavaDECL*) cheIO->data)->DeclDescType != ExecDesc))
-			{
+			while (cheIO && !found && (((LavaDECL*) cheIO->data)->DeclDescType != ExecDesc))	{
 				for (cheID = (CHETID*) ((LavaDECL*) cheIO->data)->Supports.first;
 				        cheID && (cheID->data != TID (((LavaDECL*) cheOverIO->data)->OwnID, ((LavaDECL*) cheOverIO->data)->inINCL));
 				        cheID = (CHETID*) cheID->successor);
@@ -1323,8 +1365,7 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 			}
 			if (found)
 				cheIO = (CHE*) chain.Uncouple (cheIO);
-			else
-			{
+			else	{
 				UpdateNo++;
 				IODECL = NewLavaDECL();
 				*IODECL = * (LavaDECL*) cheOverIO->data;
@@ -1338,8 +1379,7 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 				IODECL->SecondTFlags.INCL (overrides);
 				IODECL->WorkFlags.EXCL (selAfter);
 				cheIO = NewCHE (IODECL);
-				if (checkLevel > CHLV_inUpdateLow)
-				{
+				if (checkLevel > CHLV_inUpdateLow) {
 					IDTable.NewID ((LavaDECL**) &cheIO->data);
 					IODECL->WorkFlags.INCL (newTreeNode);
 				}
@@ -1347,8 +1387,7 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 					modified = true;
 				changed = true;
 			}
-			if (checkLevel > CHLV_inUpdateLow)
-			{
+			if (checkLevel > CHLV_inUpdateLow)	{
 				typeFlags = ((LavaDECL*) cheIO->data)->TypeFlags;
 				GetCategoryFlags ((LavaDECL*) cheIO->data, catErr);
 				changed = changed || (typeFlags != ((LavaDECL*) cheIO->data)->TypeFlags);
@@ -1358,10 +1397,8 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 			cheOverIO = (CHE*) cheOverIO->successor;
 		}
 		cheIO = (CHE*) chain.first;
-		while (cheIO)
-		{
-			if (((LavaDECL*) cheIO->data)->DeclDescType == ExecDesc)
-			{
+		while (cheIO)	{
+			if (((LavaDECL*) cheIO->data)->DeclDescType == ExecDesc)	{
 				chenext = (CHE*) cheIO->successor;
 				cheIO = (CHE*) chain.Uncouple (cheIO);
 				funcDECL->NestedDecls.Append (cheIO);
@@ -1370,11 +1407,9 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 			else
 				cheIO = (CHE*) cheIO->successor;
 		}
-		if (checkLevel > CHLV_inUpdateLow)
-		{
+		if (checkLevel > CHLV_inUpdateLow)	{
 			cheIO = (CHE*) chain.first;
-			while (cheIO)
-			{
+			while (cheIO)	{
 				UpdateNo++;
 				IDTable.DeleteID (((LavaDECL*) cheIO->data)->OwnID);
 				changed = true;
@@ -1382,11 +1417,9 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 			}
 		}
 	}
-	else
-	{
+	else	{
 		cheIO = (CHE*) funcDECL->NestedDecls.first;
-		while (cheIO)
-		{
+		while (cheIO)	{
 			UpdateNo++;
 			changed = true;
 			((LavaDECL*) cheIO->data)->Supports.Destroy();
@@ -1394,20 +1427,16 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 		}
 	}
 	cheOverID = (CHETID*) funcDECL->Supports.first;
-	while (cheOverID)
-	{
+	while (cheOverID)	{
 		OverFunc = IDTable.GetDECL (cheOverID->data, funcDECL->inINCL);
-		if (OverFunc)
-		{
+		if (OverFunc)	{
 			cheOverIO = (CHE*) OverFunc->NestedDecls.first;
 			cheIO = (CHE*) funcDECL->NestedDecls.first;
-			while (cheIO && (((LavaDECL*) cheIO->data)->DeclDescType != ExecDesc))
-			{
+			while (cheIO && (((LavaDECL*) cheIO->data)->DeclDescType != ExecDesc))	{
 				for (cheID = (CHETID*) ((LavaDECL*) cheIO->data)->Supports.first;
 				        cheID && (cheID->data != TID (((LavaDECL*) cheOverIO->data)->OwnID, ((LavaDECL*) cheOverIO->data)->inINCL));
 				        cheID = (CHETID*) cheID->successor);
-				if (!cheID)
-				{
+				if (!cheID)	{
 					cheID = new CHETID;
 					cheID->data = TID (((LavaDECL*) cheOverIO->data)->OwnID, ((LavaDECL*) cheOverIO->data)->inINCL);
 					((LavaDECL*) cheIO->data)->Supports.Append (cheID);
@@ -1421,22 +1450,18 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 		cheOverID = (CHETID*) cheOverID->successor;
 	}
 	cheIO = (CHE*) funcDECL->NestedDecls.first;
-	while (cheIO && (((LavaDECL*) cheIO->data)->DeclDescType != ExecDesc))
-	{
+	while (cheIO && (((LavaDECL*) cheIO->data)->DeclDescType != ExecDesc))	{
 		cheID = (CHETID*) ((LavaDECL*) cheIO->data)->Supports.first;
-		while (cheID)
-		{
+		while (cheID)	{
 			IODECL = IDTable.GetDECL (cheID->data, funcDECL->inINCL);
-			if (IODECL)
-			{
+			if (IODECL)	{
 				for (cheOverID = (CHETID*) funcDECL->Supports.first;
 				        cheOverID && (cheOverID->data != TID (IODECL->ParentDECL->OwnID, IODECL->inINCL));
 				        cheOverID = (CHETID*) cheOverID->successor);
 			}
 			else
 				cheOverID = 0;
-			if (!cheOverID)
-			{
+			if (!cheOverID)	{
 				cheOverID = (CHETID*) cheID->successor;
 				((LavaDECL*) cheIO->data)->Supports.Remove (cheID->predecessor);
 				cheID = cheOverID;

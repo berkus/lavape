@@ -1524,11 +1524,12 @@ ValOnInit CFuncBox::OnInitDialog()
 { 
   CHE* cheIO;
   SynFlags typeflag;
-  LavaDECL *decl,  *baseDECL;
+  LavaDECL *decl,  *baseDECL, *selfDecl;
   CHETID *ncheS, *cheS;
   CListBoxItem *listItem;
-  CHETIDs *cheTIDs, *ncheTIDs = 0;
+  CHETIDs *ncheTIDs = 0;
   QString nameText, cstr;
+  DString str;
 
   if (myDoc->changeNothing) {
     ID_OK->setEnabled(false);
@@ -1556,79 +1557,30 @@ ValOnInit CFuncBox::OnInitDialog()
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
     Native->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isNative));
   }
-  if (myDECL->SecondTFlags.Contains(isHandler)) {
-    CHECKOp->setChecked(false);
-    CHECKOp->setEnabled(false);
-    Initializer->setChecked(false);
-    Initializer->setEnabled(false);
-    Synch->setChecked(true);
-    Concurrent->setChecked(false);
-    Independent->setChecked(false);
-    Synch->setEnabled(false);
-    Concurrent->setEnabled(false);
-    Independent->setEnabled(false);
-    CHECKHandler->setChecked(true);
-    cheTIDs = (CHETIDs*)myDECL->HandlerClients.first;
-    while (cheTIDs) {
-      cheS = (CHETID*)cheTIDs->data.first;
-      if (!cheS) {
-        nameText = " (Attached to the form) ";
-        nameText += QString(myDECL->ParentDECL->FullName.c);
-      }
+
+
+  selfDecl = myDECL->ParentDECL;
+  if (selfDecl->DeclType == Impl)
+    selfDecl = myDoc->IDTable.GetDECL(((CHETID*)selfDecl->Supports.first)->data, selfDecl->inINCL);
+  if (myDoc->IDTable.isValOfVirtual(selfDecl)) {
+    fillSelfType(selfDecl);
+    SelfType->setEnabled(true);
+    if (!onNew && (myDECL->RefID.nID != -1)) {
+      selfDecl = myDoc->IDTable.GetDECL(myDECL->RefID, selfDecl->inINCL);
+      if (selfDecl->DeclType == VirtualType)
+        str = lthen + selfDecl->LocalName + grthen;
       else
-        nameText.clear();
-        while (cheS) {
-          decl = myDoc->IDTable.GetDECL(cheS->data);
-          if (decl)
-            nameText += QString(decl->LocalName.c);
-          else { 
-            nameText += "???";
-            cstr = "Broken reference in handler client.\n"
-             "Click \"yes\" to remove this client.";
-            if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes,QMessageBox::Cancel,0) == QMessageBox::Cancel)
-              nameText += "???";
-            else {
-              ncheTIDs = (CHETIDs*)cheTIDs->successor;
-              myDECL->HandlerClients.Delete(cheTIDs);
-            }
-          }
-          if (ncheTIDs)
-            cheS = 0;
-          else
-            cheS = (CHETID*)cheS->successor;
-          if (cheS)
-            nameText += QString(".");
-        }
-      listItem = new CListBoxItem(nameText, cheTIDs->data);
-      FieldList->addItem(listItem);
-      if (ncheTIDs) {
-        cheTIDs = ncheTIDs;
-        ncheTIDs = 0;
-      }
-      else
-        cheTIDs = (CHETIDs*)cheTIDs->successor;
-    }
-    if (((CHETIDs*)myDECL->HandlerClients.first)->data.last) 
-      decl = myDoc->IDTable.GetDECL(((CHETID*)((CHETIDs*)myDECL->HandlerClients.first)->data.last)->data);
-    else 
-      decl = myDECL->ParentDECL;
-    FieldTypeDECL = myDoc->IDTable.GetDECL(decl->RefID, decl->inINCL);
-    if (FieldTypeDECL->SecondTFlags.Contains(isGUI) || FieldTypeDECL->DeclType == FormDef)
-      FieldTypeDECL = myDoc->IDTable.GetDECL(FieldTypeDECL->RefID, FieldTypeDECL->inINCL);
-		if (myDECL->GUISignaltype >= Ev_OptInsert) {
-			EventType->addItem(QString("Insert optional"));
-			EventType->addItem(QString("Delete optional"));
-		}
-		else if (FieldTypeDECL->SecondTFlags.Contains(isSet)) {
-			EventType->addItem(QString("Insert chain element"));
-			EventType->addItem(QString("Delete chain element"));
-			if (myDECL->GUISignaltype == 0)
-				myDECL->GUISignaltype = Ev_ChainInsert;
-		}
-    else {
-      EventType->addItem(QString("New value"));
+        str = selfDecl->LocalName;
+      SelfType->setCurrentIndex(SelfType->findText(str.c));
     }
   }
+  else {
+    SelfType->setEnabled(false);
+    myDECL->RefID.nID = -1;
+
+  }
+  if (myDECL->SecondTFlags.Contains(isHandler))
+    setHandlerData();
   if (onNew) {
     hasParams = 0;
     valSynch = 0;
@@ -1940,6 +1892,136 @@ ValOnInit CFuncBox::OnInitDialog()
   UpdateData(false); 
   NewName->setFocus();
   return BoxContinue;
+}
+
+void CFuncBox::setHandlerData()
+{
+  SynFlags typeflag;
+  LavaDECL *decl;
+  CHETID *cheS;
+  CListBoxItem *listItem;
+  CHETIDs *cheTIDs, *ncheTIDs;
+  QString nameText, cstr;
+
+  CHECKOp->setChecked(false);
+  CHECKOp->setEnabled(false);
+  Initializer->setChecked(false);
+  Initializer->setEnabled(false);
+  Synch->setChecked(true);
+  Concurrent->setChecked(false);
+  Independent->setChecked(false);
+  Synch->setEnabled(false);
+  Concurrent->setEnabled(false);
+  Independent->setEnabled(false);
+  CHECKHandler->setChecked(true);
+  cheTIDs = (CHETIDs*)myDECL->HandlerClients.first;
+  while (cheTIDs) {
+    cheS = (CHETID*)cheTIDs->data.first;
+    if (!cheS) {
+      nameText = " (Attached to the form) ";
+      nameText += QString(myDECL->ParentDECL->FullName.c);
+    }
+    else
+      nameText.clear();
+      while (cheS) {
+        decl = myDoc->IDTable.GetDECL(cheS->data);
+        if (decl)
+          nameText += QString(decl->LocalName.c);
+        else { 
+          nameText += "???";
+          cstr = "Broken reference in handler client.\n"
+           "Click \"yes\" to remove this client.";
+          if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes,QMessageBox::Cancel,0) == QMessageBox::Cancel)
+            nameText += "???";
+          else {
+            ncheTIDs = (CHETIDs*)cheTIDs->successor;
+            myDECL->HandlerClients.Delete(cheTIDs);
+          }
+        }
+        if (ncheTIDs)
+          cheS = 0;
+        else
+          cheS = (CHETID*)cheS->successor;
+        if (cheS)
+          nameText += QString(".");
+      }
+    listItem = new CListBoxItem(nameText, cheTIDs->data);
+    FieldList->addItem(listItem);
+    if (ncheTIDs) {
+      cheTIDs = ncheTIDs;
+      ncheTIDs = 0;
+    }
+    else
+      cheTIDs = (CHETIDs*)cheTIDs->successor;
+  }
+  if (((CHETIDs*)myDECL->HandlerClients.first)->data.last) 
+    decl = myDoc->IDTable.GetDECL(((CHETID*)((CHETIDs*)myDECL->HandlerClients.first)->data.last)->data);
+  else 
+    decl = myDECL->ParentDECL;
+  FieldTypeDECL = myDoc->IDTable.GetDECL(decl->RefID, decl->inINCL);
+  if (FieldTypeDECL->SecondTFlags.Contains(isGUI) || FieldTypeDECL->DeclType == FormDef)
+    FieldTypeDECL = myDoc->IDTable.GetDECL(FieldTypeDECL->RefID, FieldTypeDECL->inINCL);
+	if (myDECL->GUISignaltype >= Ev_OptInsert) {
+		EventType->addItem(QString("Insert optional"));
+		EventType->addItem(QString("Delete optional"));
+	}
+	else if (FieldTypeDECL->SecondTFlags.Contains(isSet)) {
+		EventType->addItem(QString("Insert chain element"));
+		EventType->addItem(QString("Delete chain element"));
+		if (myDECL->GUISignaltype == 0)
+			myDECL->GUISignaltype = Ev_ChainInsert;
+	}
+  else {
+    EventType->addItem(QString("New value"));
+  }
+}
+
+void CFuncBox::fillSelfType(LavaDECL* selfDecl)
+{
+  CComboBoxItem *comboItem;
+  CContext con;
+  CHE *che;
+  LavaDECL *valDECL, *paramDECL;
+  DString str;
+
+
+  comboItem = new CComboBoxItem(TID(selfDecl->OwnID, selfDecl->inINCL));
+  addItemAlpha(SelfType, QString(selfDecl->LocalName.c), QVariant::fromValue(comboItem));
+  myDoc->IDTable.GetPattern(selfDecl, con);
+  if (con.oContext) {
+    che = (CHE*)con.oContext->NestedDecls.first;
+    while (che) {
+      paramDECL = (LavaDECL*) che->data;
+      if (paramDECL->DeclType == VirtualType) {
+        valDECL = myDoc->IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
+        if (valDECL == selfDecl) {
+          comboItem = new CComboBoxItem(TID(paramDECL->OwnID, paramDECL->inINCL));
+          str = lthen + paramDECL->LocalName + grthen;
+          addItemAlpha(SelfType, QString(str.c), QVariant::fromValue(comboItem));
+        }
+        che = (CHE*)che->successor;
+      }
+      else
+        che = 0;
+    }
+  }
+  if (con.iContext) {
+    che = (CHE*)con.iContext->NestedDecls.first;
+    while (che) {
+      paramDECL = (LavaDECL*) che->data;
+      if (paramDECL->DeclType == VirtualType) {
+        valDECL = myDoc->IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
+        if (valDECL  == selfDecl) {
+          comboItem = new CComboBoxItem(TID(paramDECL->OwnID, paramDECL->inINCL));
+          str = lthen + paramDECL->LocalName + grthen;
+          addItemAlpha(SelfType, QString(str.c), QVariant::fromValue(comboItem));
+        }
+        che = (CHE*)che->successor;
+      }
+      else
+        che = 0;
+    }
+  }
 }
 
 void CFuncBox::CalcOpBox()
@@ -2447,6 +2529,7 @@ void CFuncBox::makeHandler()
 
 void CFuncBox::on_ID_OK_clicked() 
 {
+  QString s;
   if (myDECL->SecondTFlags.Contains(funcImpl))
     if ( myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data)) {
       QDialog::reject();
@@ -2494,6 +2577,12 @@ void CFuncBox::on_ID_OK_clicked()
     if (onNew)
       makeHandler();
   }
+  if (SelfType->isEnabled())
+    if (!SelEndOKToStr(SelfType, &s, &myDECL->RefID)) {
+      QMessageBox::critical(this, qApp->applicationName(), IDP_NoSelfTypeSel, QMessageBox::Ok,0,0);
+      SelfType->setFocus();
+      return;
+    }
 
   ListToChain(Inherits, &myDECL->Inherits);  //fires
   if (Native->isChecked())

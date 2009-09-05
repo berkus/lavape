@@ -33,6 +33,7 @@ QString IDP_AlreadyIncluded;
 QString IDP_InclInherited;
 QString IDP_NoTypeSel;
 QString IDP_NoEvTypeSel;
+QString IDP_NoSelfTypeSel;
 QString IDP_NoElemSel;
 QString IDP_IsNoID;
 QString IDP_NoTableView;
@@ -58,6 +59,7 @@ void LavaPEStringInit() {
   IDP_InclInherited = QObject::tr("You cannot remove this include file because it is inherited from ");
   IDP_NoTypeSel = QObject::tr("You must select a type for the new item");
   IDP_NoEvTypeSel = QObject::tr("You must select an event type for the new handler");
+  IDP_NoSelfTypeSel = QObject::tr("You must select a self type for the function, because its class is the value of a virtual type in the containing pattern");
   IDP_NoElemSel = QObject::tr("No selection");
   IDP_IsNoID = QObject::tr("This is not a valid identifier.");
   IDP_NoTableView = QObject::tr("No table view available for the selected item");

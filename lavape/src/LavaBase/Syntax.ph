@@ -761,7 +761,7 @@ $TYPE +CDP {
     SynFlags SecondTFlags;
     TID RefID;  // Forms (FormDef, GUI-Interface and GUI-Impl): ID of class
                 // Attributes: ID of the type or type parameter
-                // PatternParam: ID of type
+                // Virtual Type: ID of type
                 // BasicTypes: ID of interface in std.lava
                 // Set- Get function: id of property
     TDeclType DeclType;

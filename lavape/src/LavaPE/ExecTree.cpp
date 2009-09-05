@@ -463,6 +463,11 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
       bool changed = Doc->CheckOverInOut(elDef, checkLevel);
       Doc->changeInUpdate = Doc->changeInUpdate || changed;
     }
+    //check RefID
+
+
+
+
     if (elDef->SecondTFlags.Contains(isLavaSignal))
       lab1 += DString("signal ");
     else {
