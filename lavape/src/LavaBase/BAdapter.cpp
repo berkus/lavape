@@ -31,6 +31,7 @@
 #include "qstring.h"
 #include "qmessagebox.h"
 //Added by qt3to4:
+#include <qnumeric.h>
 #include <float.h>
 #include <stdio.h>
 #include <limits>
