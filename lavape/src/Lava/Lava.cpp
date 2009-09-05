@@ -46,7 +46,7 @@
 #include "qprocess.h"
 #include <stdlib.h>
 #include <QTextStream>
-#include <QtTest/QtTest>
+//#include <QtTest/QtTest>
 
 #ifndef WIN32
 #include <locale.h>
@@ -54,7 +54,6 @@
 
 #pragma hdrstop
 
-#include <QtTest>
 
 static QString szCheckPreconditions = "CheckPreconditions";
 static QString szCheckPostconditions = "CheckPostconditions";
