@@ -1012,7 +1012,7 @@ bool wxDocTemplate::FileMatchesTemplate(const QString& path)
 // wxDocManager
 // ----------------------------------------------------------------------------
 
-//wxDocManager* wxDocManager::sm_docManager;// = 0;
+wxDocManager* myDocManager;
 
 wxDocManager::wxDocManager(long flags)
 {
