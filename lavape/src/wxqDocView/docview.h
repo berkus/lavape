@@ -374,11 +374,7 @@ private:
 
 // One object of this class may be created in an application, to manage all
 // the templates and documents.
-
-class wxDocManager;
-extern WXDLLEXPORT wxDocManager *myDocManager;
-
-class WXDLLEXPORT wxDocManager : public QObject //wxEvtHandler
+class WXDLLEXPORT wxDocManager : public QObject
 {
 public:
     wxDocManager(long flags = wxDEFAULT_DOCMAN_FLAGS);
@@ -487,8 +483,8 @@ public:
     inline void SetLastDirectory(const QString& dir) { m_lastDirectory = dir; }
 
     // Get the current document manager
-    static wxDocManager* GetDocumentManager() { return myDocManager; }
-    static int GetOpenDocCount() { return myDocManager->m_docs.count(); };
+    static wxDocManager* GetDocumentManager();
+    static int GetOpenDocCount();
 
     wxHistory*        m_fileHistory;
 

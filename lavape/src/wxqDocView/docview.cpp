@@ -1066,6 +1066,14 @@ bool wxDocManager::Clear(bool force)
   return true;
 }
 
+wxDocManager* wxDocManager::GetDocumentManager() {
+  return myDocManager;
+}
+
+int GetOpenDocCount() {
+  return myDocManager->m_docs.count();
+}
+
 void wxDocManager::OnFileNew()
 {
     CreateDocument(QString(""), wxDOC_NEW);
