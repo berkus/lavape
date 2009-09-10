@@ -1070,7 +1070,7 @@ wxDocManager* wxDocManager::GetDocumentManager() {
   return myDocManager;
 }
 
-int GetOpenDocCount() {
+int wxDocManager::GetOpenDocCount() {
   return myDocManager->m_docs.count();
 }
 
