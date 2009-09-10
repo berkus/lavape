@@ -100,7 +100,7 @@
 
 // define wxStricmp for various compilers without Unicode possibilities
 #if !defined(wxStricmp) && !wxUSE_UNICODE
-#  if defined(__BORLANDC__) || defined(__WATCOMC__) || defined(__SALFORDC__) || defined(__VISAGECPP__) || defined(__EMX__)
+#  if defined(__MINGW32__) || defined(__BORLANDC__) || defined(__WATCOMC__) || defined(__SALFORDC__) || defined(__VISAGECPP__) || defined(__EMX__)
 #    define wxStricmp stricmp
 #    define wxStrnicmp strnicmp
 #  elif defined(__SC__) || defined(__VISUALC__) || (defined(__MWERKS__) && defined(__INTEL__))
@@ -429,7 +429,7 @@ class wxDocument;
 #if defined(WIN32) //__WXMSW__)
 
 // __declspec works in BC++ 5 and later, as well as VC++ and gcc
-#if defined(__VISUALC__) || defined(__BORLANDC__) || defined(__GNUC__)
+#if defined(__MINGW32__) || defined(__VISUALC__) || defined(__BORLANDC__) || defined(__GNUC__)
 #  ifdef WXMAKINGDLL
 #    define WXDLLEXPORT __declspec( dllexport )
 #    define WXDLLEXPORT_DATA(type) __declspec( dllexport ) type

@@ -375,6 +375,9 @@ private:
 // One object of this class may be created in an application, to manage all
 // the templates and documents.
 
+class wxDocManager;
+extern WXDLLEXPORT wxDocManager *myDocManager;
+
 class WXDLLEXPORT wxDocManager : public QObject //wxEvtHandler
 {
 public:
@@ -484,8 +487,8 @@ public:
     inline void SetLastDirectory(const QString& dir) { m_lastDirectory = dir; }
 
     // Get the current document manager
-    static wxDocManager* GetDocumentManager() { return sm_docManager; }
-    static int GetOpenDocCount() { return wxDocManager::sm_docManager->m_docs.count(); };
+    static wxDocManager* GetDocumentManager() { return myDocManager; }
+    static int GetOpenDocCount() { return myDocManager->m_docs.count(); };
 
     wxHistory*        m_fileHistory;
 
@@ -495,7 +498,7 @@ protected:
     int               m_maxDocsOpen;
     QList<wxDocTemplate*>  m_templates;
     QString           m_lastDirectory;
-    static wxDocManager* sm_docManager;
+//    static wxDocManager* sm_docManager;
 
 public slots:
     // Handlers for common user commands

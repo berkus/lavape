@@ -53,5 +53,5 @@ else:win32:qtass.commands = copy  $$[QT_INSTALL_BINS]\assistant.exe $$qtass.targ
 else:qtass.commands = ln -s -f $$[QT_INSTALL_BINS]/assistant $$qtass.target
 
 QMAKE_EXTRA_TARGETS += qtass
-win32:PRE_TARGETDEPS += ..\..\bin\assistant.exe
-else:PRE_TARGETDEPS += ../../bin/assistant
+;win32:PRE_TARGETDEPS += ..\..\bin\assistant.exe
+;else:PRE_TARGETDEPS += ../../bin/assistant

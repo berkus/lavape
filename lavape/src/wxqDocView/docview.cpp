@@ -1012,7 +1012,7 @@ bool wxDocTemplate::FileMatchesTemplate(const QString& path)
 // wxDocManager
 // ----------------------------------------------------------------------------
 
-wxDocManager* wxDocManager::sm_docManager = 0;
+//wxDocManager* wxDocManager::sm_docManager;// = 0;
 
 wxDocManager::wxDocManager(long flags)
 {
@@ -1022,7 +1022,7 @@ wxDocManager::wxDocManager(long flags)
   m_activeView = 0;
   m_maxDocsOpen = 10000;
   m_fileHistory = (wxHistory *) NULL;
-  sm_docManager = this;
+  myDocManager = this;
   m_activeFrame = 0;
   m_oldActiveFrame = 0;
   m_totalCheckFrame = 0;
@@ -1034,7 +1034,7 @@ wxDocManager::~wxDocManager()
     Clear();
     if (m_fileHistory)
         delete m_fileHistory;
-    sm_docManager = 0;
+    myDocManager = 0;
 }
 
 bool wxDocManager::Clear(bool force)
