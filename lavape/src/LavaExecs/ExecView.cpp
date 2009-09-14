@@ -126,9 +126,9 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   layout->addWidget(sv);
   layout->setMargin(0);
   redCtl = sv->execCont;
-  sv->setFocusProxy(redCtl);
-  sv->viewport()->setFocusProxy(redCtl);
-  setFocusProxy(redCtl);
+  //sv->setFocusProxy(redCtl);
+  //sv->viewport()->setFocusProxy(redCtl);
+  //setFocusProxy(redCtl);
   QPalette palette=redCtl->palette();
   palette.setColor(QPalette::Active,QPalette::Window,Qt::white);
   redCtl->setPalette(palette);
@@ -140,6 +140,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   myDoc = 0;
   editCtlVisible = false;
   sv->setFont(LBaseData->m_ExecFont);
+  setFocusPolicy(Qt::StrongFocus);
   setFocusProxy(redCtl);
 }
 
@@ -266,7 +267,7 @@ void CExecView::OnInitialUpdate()
   text->ckd.inInitialUpdate = true;
   initialUpdateDone = true;
   OnUpdate((wxView*)pHint->CommandData2, 0, pHint);
-  sv->setFocusProxy(redCtl);
+  //sv->setFocusProxy(redCtl);
   text->ckd.inInitialUpdate = false;
 }
 
@@ -1248,6 +1249,7 @@ ExecContents::ExecContents (MyScrollView *sv) {
   //setFocusPolicy(Qt::ClickFocus);
   this->sv = sv;
   execView = sv->execView;
+  setFocusPolicy(Qt::StrongFocus);
   setWhatsThis(tr("No specific help available here"));
   debugStop = new QPixmap((const char**)debugStop_xpm);
   debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
