@@ -1291,54 +1291,63 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 	if (funcDECL->DeclType == Attr)
 		return changed;
 
-  if (IDTable.isValOfVirtual(funcDECL->ParentDECL)) {
-    if (IDTable.isValOfVirtual(OverFunc->ParentDECL)) {
-      refID.nID = OverFunc->RefID.nID;
-      if (OverFunc->RefID.nID != -1) {
-        refID.nINCL  = IDTable.IDTab[OverFunc->inINCL]->nINCLTrans[OverFunc->RefID.nINCL].nINCL;
-        if (refID == ((CHETID*)funcDECL->ParentDECL->Supports.first)->data) {
-          changed = funcDECL->RefID.nID != funcDECL->ParentDECL->OwnID;
+  if ((OverFunc->RefID.nID != -1) && (funcDECL->RefID.nID != -1)) {
+    refID.nID = OverFunc->RefID.nID;
+    refID.nINCL  = IDTable.IDTab[OverFunc->inINCL]->nINCLTrans[OverFunc->RefID.nINCL].nINCL;
+    if (refID == TID(OverFunc->ParentDECL->OwnID, OverFunc->inINCL)) {
+      if (changed = (funcDECL->RefID.nID != funcDECL->ParentDECL->OwnID))
+        if (checkLevel == CHLV_fit)	{
           funcDECL->RefID.nID = funcDECL->ParentDECL->OwnID;
           funcDECL->RefID.nINCL = 0;
         }
-        else {
-          IDTable.GetPattern(funcDECL->ParentDECL, con);
-          if (con.oContext) {
-            cheVT = (CHE*)con.oContext->NestedDecls.first;
-            while (cheVT) {
-              paramDECL = (LavaDECL*) cheVT->data;
-              if (paramDECL->DeclType == VirtualType) {
-                valDECL = IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
-                if ((valDECL == funcDECL->ParentDECL) && (((CHETID*)paramDECL->Supports.first)->data == refID)) {
-                  changed = funcDECL->RefID.nID != paramDECL->OwnID;
+        else
+					new CLavaError (&funcDECL->DECLError1, &ERR_BadSelfType);
+    }
+    else {
+      IDTable.GetPattern(funcDECL->ParentDECL, con);
+      if (con.oContext) {
+        cheVT = (CHE*)con.oContext->NestedDecls.first;
+        while (cheVT) {
+          paramDECL = (LavaDECL*) cheVT->data;
+          if (paramDECL->DeclType == VirtualType) {
+            valDECL = IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
+            if ((valDECL == funcDECL->ParentDECL) && IDTable.Overrides(TID(paramDECL->OwnID,0), 0, refID, OverFunc->inINCL)) {
+              if (changed = (funcDECL->RefID.nID != paramDECL->OwnID))
+                if (checkLevel == CHLV_fit)	{
                   funcDECL->RefID.nID = paramDECL->OwnID;
                   funcDECL->RefID.nINCL = 0;
-                  cheVT = 0;
                 }
-                cheVT = (CHE*)cheVT->successor;
-              }
-              else
-                cheVT = 0;
+                else
+					        new CLavaError (&funcDECL->DECLError1, &ERR_BadSelfType);
+               cheVT = 0;
             }
+            if (cheVT)
+              cheVT = (CHE*)cheVT->successor;
           }
-          if (con.iContext) {
-            cheVT = (CHE*)con.iContext->NestedDecls.first;
-            while (cheVT) {
-              paramDECL = (LavaDECL*) cheVT->data;
-              if (paramDECL->DeclType == VirtualType) {
-                valDECL = IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
-                if ((valDECL == funcDECL->ParentDECL) && (((CHETID*)paramDECL->Supports.first)->data == refID)) {
-                  changed = funcDECL->RefID.nID != paramDECL->OwnID;
+          else
+            cheVT = 0;
+        }
+      }
+      if (con.iContext) {
+        cheVT = (CHE*)con.iContext->NestedDecls.first;
+        while (cheVT) {
+          paramDECL = (LavaDECL*) cheVT->data;
+          if (paramDECL->DeclType == VirtualType) {
+            valDECL = IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
+            if ((valDECL == funcDECL->ParentDECL) && IDTable.Overrides(TID(paramDECL->OwnID,0), 0, refID, OverFunc->inINCL)) {
+              if (changed = (funcDECL->RefID.nID != paramDECL->OwnID))
+                if (checkLevel == CHLV_fit)	{
                   funcDECL->RefID.nID = paramDECL->OwnID;
                   funcDECL->RefID.nINCL = 0;
-                  cheVT = 0;
                 }
-                cheVT = (CHE*)cheVT->successor;
-              }
-              else
-                cheVT = 0;
+                else
+					        new CLavaError (&funcDECL->DECLError1, &ERR_BadSelfType);
+              cheVT = 0;
             }
+            cheVT = (CHE*)cheVT->successor;
           }
+          else
+            cheVT = 0;
         }
       }
     }
@@ -1506,15 +1515,13 @@ bool CLavaPEDoc::CollectP (const TIDs& paramIDs, LavaDECL* collectDECL)
 	while (cheID)
 	{
 		ElDECL = IDTable.GetDECL (cheID->data);
-		if (ElDECL)
-		{
+		if (ElDECL)	{
 			ElDECL->WorkFlags.INCL (checkmark);
 			ElDECL->ParentDECL->WorkFlags.INCL (checkmark);
 			cheIDVal = new CHETID;
 			cheIDVal->data =  TID (ElDECL->RefID.nID, IDTable.IDTab[ElDECL->inINCL]->nINCLTrans[ElDECL->RefID.nINCL].nINCL);
 			refIDs.Append (cheIDVal);
-			if (ElDECL->Supports.first)
-			{
+			if (ElDECL->Supports.first)	{
 				cheIDbase = new CHETID;
 				cheIDbase->data = ((CHETID*) ElDECL->Supports.first)->data;
 				cheIDbase->data.nINCL = IDTable.IDTab[ElDECL->inINCL]->nINCLTrans[cheIDbase->data.nINCL].nINCL;
@@ -1526,14 +1533,12 @@ bool CLavaPEDoc::CollectP (const TIDs& paramIDs, LavaDECL* collectDECL)
 	if (baseParamIDs.first)
 		CollectP (baseParamIDs, 0);
 	collectPattern (ElDECL->ParentDECL, paramIDs, refIDs);
-	if (baseParamIDs.first)
-	{
+	if (baseParamIDs.first)	{
 		bDECL = IDTable.GetDECL (((CHETID*) baseParamIDs.first)->data);
 		if (bDECL)
 			bDECL->ParentDECL->ResetCheckmarks();
 	}
-	if (collectDECL)
-	{
+	if (collectDECL)	{
 //    RmDuplicates(collectDECL->ParentDECL);
 		*collectDECL = *ElDECL->ParentDECL;
 		collectDECL->DeclType = PatternDef;
@@ -1553,11 +1558,9 @@ bool CLavaPEDoc::CollectPattern (LavaDECL *paramDECL, LavaDECL* collectDECL)
 	CHE* cheEl;
 	LavaDECL* ElDECL;
 
-	if (paramDECL->DeclType == PatternDef)
-	{
+	if (paramDECL->DeclType == PatternDef)	{
 		cheEl = (CHE*) paramDECL->NestedDecls.first;
-		while (cheEl)
-		{
+		while (cheEl)	{
 			ElDECL = (LavaDECL*) cheEl->data;
 			cheID = new CHETID;
 			cheID->data = TID (ElDECL->OwnID, ElDECL->inINCL);
@@ -1565,8 +1568,7 @@ bool CLavaPEDoc::CollectPattern (LavaDECL *paramDECL, LavaDECL* collectDECL)
 			cheEl = (CHE*) cheEl->successor;
 		}
 	}
-	else
-	{
+	else	{
 		paramDECL->WorkFlags.INCL (checkmark);
 		paramDECL->ParentDECL->WorkFlags.INCL (checkmark);
 		cheID = new CHETID;
@@ -1585,12 +1587,10 @@ bool CLavaPEDoc::collectPattern (LavaDECL *decl, const TIDs& paramIDs, const TID
 	TID id;
 	bool inp, inPC = false;
 
-	while (che)
-	{
+	while (che)	{
 		elDECL = (LavaDECL*) che->data;
 		inp = false;
-		if (elDECL->DeclType == Interface)
-		{
+		if (elDECL->DeclType == Interface)	{
 			//is this interface value of a virtual type in the collection of virtual types to be ovverridden
 			id =  TID (elDECL->OwnID, elDECL->inINCL);
 			for (cheID = (CHETID*) refIDs.first; !inp && (cheID != 0); cheID = (CHETID*) cheID->successor)
@@ -1601,10 +1601,8 @@ bool CLavaPEDoc::collectPattern (LavaDECL *decl, const TIDs& paramIDs, const TID
 		}
 		else
 		{
-			if (elDECL->DeclType == Function)
-			{
-				if (elDECL->TypeFlags.Contains (forceOverride))
-				{
+			if (elDECL->DeclType == Function)	{
+				if (elDECL->TypeFlags.Contains (forceOverride))	{
 					elDECL->WorkFlags.INCL (checkmark);
 					elDECL->Inherits.Destroy();
 					inp = true;
@@ -1613,8 +1611,7 @@ bool CLavaPEDoc::collectPattern (LavaDECL *decl, const TIDs& paramIDs, const TID
 					inp = collectPattern (elDECL, paramIDs, refIDs);
 			}
 		}
-		if ((elDECL->DeclType == Interface) || (elDECL->DeclType == VirtualType))
-		{
+		if ((elDECL->DeclType == Interface) || (elDECL->DeclType == VirtualType))	{
 			/*
 			// wozu war das? -- probeweise wieder eingeklammert!!
 			  if (!inp && elDECL->Supports.first) { //!

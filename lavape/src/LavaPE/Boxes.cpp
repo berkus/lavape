@@ -1562,17 +1562,21 @@ ValOnInit CFuncBox::OnInitDialog()
   selfDecl = myDECL->ParentDECL;
   if (selfDecl->DeclType == Impl)
     selfDecl = myDoc->IDTable.GetDECL(((CHETID*)selfDecl->Supports.first)->data, selfDecl->inINCL);
-  if (myDoc->IDTable.isValOfVirtual(selfDecl)) {
+  inValOfVT = myDoc->IDTable.isValOfVirtual(selfDecl);
+  if (inValOfVT) {
     fillSelfType(selfDecl);
     SelfType->setEnabled(true);
-    if (!onNew && (myDECL->RefID.nID != -1)) {
-      selfDecl = myDoc->IDTable.GetDECL(myDECL->RefID, selfDecl->inINCL);
-      if (selfDecl->DeclType == VirtualType)
-        str = lthen + selfDecl->LocalName + grthen;
-      else
-        str = selfDecl->LocalName;
-      SelfType->setCurrentIndex(SelfType->findText(str.c));
-    }
+    if (myDECL->TypeFlags.Contains(isInitializer)) 
+      SelfType->setCurrentIndex(SelfType->count()-1);
+    else
+      if (!onNew && (myDECL->RefID.nID != -1)) {
+        selfDecl = myDoc->IDTable.GetDECL(myDECL->RefID, selfDecl->inINCL);
+        if (selfDecl->DeclType == VirtualType)
+          str = lthen + selfDecl->LocalName + grthen;
+        else
+          str = selfDecl->LocalName;
+        SelfType->setCurrentIndex(SelfType->findText(str.c));
+      }
   }
   else {
     SelfType->setEnabled(false);
@@ -1653,6 +1657,7 @@ ValOnInit CFuncBox::OnInitDialog()
       Abstract->setEnabled(false);
       EnforceOver->setEnabled(false);
       SelfCategory->setEnabled(false);
+      SelfType->setEnabled(false);
       Closed->setEnabled(false);
       Closed->setChecked(false);
     }
@@ -1685,6 +1690,7 @@ ValOnInit CFuncBox::OnInitDialog()
       SelfCategory->setCurrentIndex(1);
       Protected->setEnabled(false);
       Initializer->setChecked(true);
+      SelfType->setEnabled(false);
       EnforceOver->setEnabled(false);
       DefaultIni->setEnabled(!hasParams
                                 && (!myDECL->ParentDECL->WorkFlags.Contains(hasDefaultIni)
@@ -1836,6 +1842,7 @@ ValOnInit CFuncBox::OnInitDialog()
       DelInherits->setEnabled(false);
       NamedTypes->setEnabled(false);
       Inherits->setEnabled(false);
+      SelfType->setEnabled(false);
       Synch->setEnabled(false);
       Concurrent->setEnabled(false);
       Independent->setEnabled(false);
@@ -2186,6 +2193,8 @@ void CFuncBox::on_StaticFunc_clicked()
     //ConstFunc->setChecked(true);
     //ConstFunc->setEnabled(false);
     Closed->setEnabled(false);
+    SelfType->setCurrentIndex(0);
+    SelfType->setEnabled(false);
   }
   else {
     Protected->setEnabled(true);
@@ -2194,6 +2203,8 @@ void CFuncBox::on_StaticFunc_clicked()
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     //ConstFunc->setEnabled(true);
     Closed->setEnabled(true);
+    if (inValOfVT)
+      SelfType->setEnabled(true);
   }
   UpdateData(false);
 }
@@ -2220,8 +2231,14 @@ void CFuncBox::on_Initializer_clicked()
     //Closed->setEnabled(false);
     Signal->setEnabled(false);
     Signal->setChecked(false);
+    if (inValOfVT) {
+      SelfType->setCurrentIndex(SelfType->count()-1);
+      SelfType->setEnabled(false);
+    }
   }
   else {
+    if (inValOfVT) 
+      SelfType->setEnabled(true);
     EnforceOver->setEnabled(true);
     DefaultIni->setChecked(false);
     StaticFunc->setEnabled(true);

@@ -288,6 +288,8 @@ QString ERR_AbortQuestion;
 QString ERR_ExecutionAborted;
 QString ERR_NotSingleContainer;
 QString ERR_FinalVTisOverridden;
+QString ERR_NoSelfType;
+QString ERR_BadSelfType;
 
 void LavaBaseStringInit() {
   IDS_LAVACOM_FILE  = QObject::tr("Lava component file (*.lcom) defining the type of a lava component object");
@@ -539,4 +541,6 @@ void LavaBaseStringInit() {
   ERR_ExecutionAborted = QObject::tr("Lava program: Execution aborted");
   ERR_NotSingleContainer = QObject::tr("Interface extends more then one container classes (set, chain or array)");
   ERR_FinalVTisOverridden = QObject::tr("This VT illegally overrides a final (=non-overridable) VT");
+  ERR_NoSelfType = QObject::tr("Missing self type declaration");
+  ERR_BadSelfType = QObject::tr("Bad self type declaration");
 }
