@@ -6,13 +6,13 @@
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
   <title>LavaPE Release Notes</title>
   <meta name="generator" content="Amaya, see http://www.w3.org/Amaya/">
-    <style type="text/css">
+  <style type="text/css">
         .style1
         {
             color: #FF0000;
             font-style: italic;
         }
-    </style>
+  </style>
 </head>
 
 <body>
@@ -26,18 +26,20 @@ Release 0.9.2</span></h2>
 <p style="font-family: Arial,Helvetica,sans-serif"></p>
 
 <h3 style="text-align:center;"><span
-style="font-family: Arial,Helvetica,sans-serif">A) Certain restrictions concerning 
-    virtual types could be abandoned</span></h3>
+style="font-family: Arial,Helvetica,sans-serif">A) Certain restrictions
+concerning virtual types could be abandoned</span></h3>
 
-<p style="font-family: Arial,Helvetica,sans-serif;text-align:justify;">Concretely: 
-    We could abandon condition 9 in section 1 of
-    <a href="http://lavape.sf.net/doc/html/PatternsFrameworks.htm">
-    http://lavape.sf.net/doc/html/PatternsFrameworks.htm</a>. Before release 0.9.2 
-    this condition was used to </p>
+<p
+style="font-family: Arial,Helvetica,sans-serif;text-align:justify;">Concretely:
+We could abandon condition 9 in section 1 of <a
+href="http://lavape.sf.net/doc/html/PatternsFrameworks.htm">http://lavape.sf.net/doc/html/PatternsFrameworks.htm</a>.
+Before release 0.9.2 this condition was used to </p>
+
+<p></p>
 
 <h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">B) The
-    <span class="style1">Lava</span> source code repository has been migrated from 
-    SVN to GIT</h3>
+<span class="style1">Lava</span> source code repository has been migrated from
+SVN to GIT</h3>
 
 <p style="font-family: Arial,Helvetica,sans-serif"></p>
 
@@ -67,23 +69,27 @@ style="color:#ff0000">LavaPE</em></h3>
 / *.deb packages and install them in the usual way using "rpm -i
 &lt;package&gt;.rpm" or "dpkg -i &lt;package&gt;.deb".</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">(These commands will report
 the absence of required Qt4 packages. In this case you must install these first
 before repeating the lavape installation.)</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">A "lavape" installation
 directory will be created in /opt. The shared libraries will be installed in
-/usr/local/lib.</p>
+/usr/local/lib. The <em style="color:#ff0000"><strong>LavaPE/Lava</strong></em>
+executables can be started from /opt/lavape/bin or any other working directory
+or by double-clicking in the nautilus or konqueror file manager.</p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">The <em
-style="color:#ff0000"><strong>LavaPE/Lava</strong></em> executables can be
-started from /opt/lavape/bin or any other working directory or by
-double-clicking in the nautilus or konqueror file manager.</p>
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">A number of sample programs
 can be found in the "samples" subdirectory of the "/opt/lavape" installation
 directory.</p>
-    <p style="font-family: Arial,Helvetica,sans-serif">&nbsp;</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"> </p>
 
 <h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">C) How
 to install the Mac OS 10.5 binary release of <em
@@ -92,15 +98,23 @@ style="color:#ff0000">LavaPE</em></h3>
 <p style="font-family: Arial,Helvetica,sans-serif">Download Qt-4.5.2 from the
 following link:</p>
 
+<p></p>
+
 <p
 style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">http://get.qtsoftware.com/qt/source/qt-mac-opensource-4.5.2.dmg</p>
+
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">and install it in the
 default location.</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">Download the
 lavape-&lt;rel&gt;-macos.dmg disk image file and mount it by
 double-clicking.</p>
+
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">A double-click on LavaPE.app
 or Lava.app will launch the <em
@@ -108,9 +122,13 @@ style="color:#ff0000"><strong>Lava</strong></em> Programming Environment or the
 <em style="color:#ff0000"><strong>Lava</strong></em> Interpreter,
 respectively.</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">For a more permanent
 installation, copy and paste the mounted image to your "Applications" folder or
 any other folder. Drag LavaPE.app/Lava.app to your dock, if you like.</p>
+
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">A number of sample programs
 can be opened in LavaPE.app or Lava.app from the "samples" subdirectory of the
@@ -125,28 +143,42 @@ style="color:#ff0000">LavaPE</em></h3>
 <p style="font-family: Arial,Helvetica,sans-serif"></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">Download
-lavape-&lt;rel&gt;-solaris-11-intel.pkg.gz, use</p>
+lavape-&lt;rel&gt;-solaris-11-intel.pkg.gz. Use</p>
+
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">gunzip
 lavape-&lt;rel&gt;-solaris-11-intel.pkg.gz</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">to uncompress it, and
 execute</p>
+
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">pkgadd -d
 lavape-&lt;rel&gt;-solaris-11-intel.pkg</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">as superuser to install the
 package.</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">A "lavape" installation
 directory will be created in /opt. The shared libraries will be installed in
-/usr/local/lib and /usr/local/Trolltech/Qt-&lt;qt-release&gt;</p>
+/usr/local/lib and /usr/local/Trolltech/Qt-&lt;qt-release&gt;.</p>
+
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">The <em
 style="color:#ff0000"><strong>LavaPE/Lava</strong></em> executables can be
 started from the command line in /opt/lavape/bin or any other working
 directory, or by double-clicking in the file manager.</p>
+
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">A number of sample programs
 can be found in the "samples" subdirectory of the "/opt/lavape" installation
@@ -158,27 +190,36 @@ directory.</p>
 to install <em style="color:#ff0000">LavaPE</em> from the source distribution
 on UNIX platforms</h3>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">Download the compressed tar
 file lavape-&lt;release&gt;-src.tar.bz2 of the <em
 style="color:#ff0000"><strong>LavaPE</strong></em> source distribution and
 store it in the parent directory of the envisaged lavape installation
-directory.</p>
+directory. Uncompress it using the command</p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">Uncompress it using the
-command</p>
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">tar xjvf
 lavape-&lt;release&gt;-src.tar.bz2</p>
+
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">Or download the most recent
 developer version of lavape from our GIT repository at SourceForge, using the
 following command in a shell window:</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">git fetch
 git://lavape.git.sourceforge.net/gitroot/lavape/lavape</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">You need to have GNU
 gcc/make and the developer version of Nokia (formerly TrollTech)/Qt4.</p>
+
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">Either you may download (the
 OpenSource version of) Qt4 from ftp://ftp.qtsoftware.com/qt/source/ and build
@@ -187,12 +228,18 @@ to the Qt-&lt;release&gt; directory that is created by the build process,
 before you build <em style="color:#ff0000"><strong>Lava/LavaPE</strong></em>
 from the sources.</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">Or, on a Linux box, the
 software package manager of your Linux distribution usually offers the
 possibility to download and install the Qt4 development package(s).</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">Then build the <em
 style="color:#ff0000"><strong>LavaPE</strong></em> executables as follows:</p>
+
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">cd
 lavape</p>
@@ -202,11 +249,17 @@ lavape.pro // "qmake -spec macx-g++ lavape.pro" on Mac OS X</p>
 
 <p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">make</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">On some platforms the Qt4
 version of qmake has a different name, like "qmake-qt4". </p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">The command "qmake -v" will
 display the Qt version used by qmake.</p>
+
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">The build process will take
 quite a while. You will find the executables of the <em
@@ -224,16 +277,18 @@ directory, launch "./LavaPE", consult the Online Help, open some sample
 programs from the lavape/samples directory and enjoy the unique structure
 editing features of <em style="color:#ff0000"><strong>LavaPE</strong></em>.</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">You can run the <em
 style="color:#ff0000"><strong>Lava</strong></em> interpreter "Lava"</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">1. either by executing
-"./Lava" in the lavape/bin directory and by</p>
+"./Lava" in the lavape/bin directory and by opening a *.lava or *.ldoc file
+from the file menu or by clicking the file open button, or</p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">opening a *.lava or *.ldoc
-file from the file menu or from the</p>
-
-<p style="font-family: Arial,Helvetica,sans-serif">file open button, or</p>
+<p></p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">2. from <em
 style="color:#ff0000"><strong>LavaPE</strong></em> by clicking the "running
@@ -241,9 +296,12 @@ man" toolbutton, after you have activated a view containing the executable code
 of a main program or a declaration tree view that contains a main program
 declaration.</p>
 
+<p></p>
+
 <p style="font-family: Arial,Helvetica,sans-serif">We'd appreciate very much if
 you would inform us (e-mail: Klaus.D.Guenther(at)gmail.com) about any problems
-that you have encounterd during the installation or while using<span style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
-style="color:#ff0000"> Lava/LavaPE</span></strong></em>.</span></p>
+that you have encounterd during the installation or while using <span
+style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
+style="color:#ff0000">Lava/LavaPE</span></strong></em>.</span></p>
 </body>
 </html>
