@@ -23,29 +23,29 @@
 
 <body>
   <h2 class="c2">Single-assignment;<br />
-  imperative vs. logical semantics of <b class="c1">Lava</b> programs</h2>
+  imperative vs. logical semantics of <b class="c1">Lava</strong> programs</h2>
 
   <p>We have <a href="Unsolved.htm#singleAssign">defined</a> single-assignment in another section as follows:</p>
 
   <ul>
-    <li><b>At run time, a value may be assigned to a variable only once in every program branch within the scope of the variable.</b></li>
+    <li><strong>At run time, a value may be assigned to a variable only once in every program branch within the scope of the variable.</strong></li>
   </ul>
 
-  <p>Once a value (or a <i>new</i> value) has been assigned to a variable then after this assignment this variable stands for this value in this same program branch. This allows us (but does not force us) to view a <b class="c1">Lava</b> variable as a <i>logical variable</i> and an assignment as a <i>logical statement</i> which expresses the <i>requirement</i> that its left-hand side should be identical to its right-hand side.</p>
+  <p>Once a value (or a <em>new</em> value) has been assigned to a variable then after this assignment this variable stands for this value in this same program branch. This allows us (but does not force us) to view a <b class="c1">Lava</strong> variable as a <em>logical variable</em> and an assignment as a <em>logical statement</em> which expresses the <em>requirement</em> that its left-hand side should be identical to its right-hand side.</p>
 
-  <p>The <i>logical semantics</i> considers <b class="c1">Lava</b> statements as <i>logical statements</i> that are to be <i>verified</i>, or rendered <i>true</i>, in a certain order (from top to bottom). Particularly the &quot;;&quot; separator between statements is interpreted as &quot;logical and&quot; conjunction in this view. Formal parameters of functions are <i>free variables</i>, all other variables are <i>quantified</i> by the unbounded logical quantifier 
+  <p>The <em>logical semantics</em> considers <b class="c1">Lava</strong> statements as <em>logical statements</em> that are to be <em>verified</em>, or rendered <em>true</em>, in a certain order (from top to bottom). Particularly the &quot;;&quot; separator between statements is interpreted as &quot;logical and&quot; conjunction in this view. Formal parameters of functions are <em>free variables</em>, all other variables are <em>quantified</em> by the unbounded logical quantifier 
       <span class="style1">declare</span> or by the bounded quantifiers 
       <span class="style1">exists</span>, <span class="style1">foreach</span> or the by the set constructor 
       <span class="style1">select</span>. The logical semantics enables us to revise the <a href="Transactions.htm#transact">transaction notion</a> in a quite satisfactory way.</p>
 
-  <p>But you can also continue to apply the traditional imperative semantics and view a <b class="c1">Lava</b> variable as a <i>container</i> and an assignment as an <i>instruction</i> to put the value of its right-hand side into the container designated by its left-hand side.</p>
+  <p>But you can also continue to apply the traditional imperative semantics and view a <b class="c1">Lava</strong> variable as a <em>container</em> and an assignment as an <em>instruction</em> to put the value of its right-hand side into the container designated by its left-hand side.</p>
 
-  <p>From the <i>imperative</i> point of view <b class="c1">Lava</b> statements are <i>instructions</i> that are to be <i>executed</i> and &quot;;&quot; means <i>sequential execution</i>. The 
+  <p>From the <em>imperative</em> point of view <b class="c1">Lava</strong> statements are <em>instructions</em> that are to be <em>executed</em> and &quot;;&quot; means <em>sequential execution</em>. The 
       <span class="style1">declare</span> quantifier is viewed as a traditional declaration statement, the bounded quantifiers 
       <span class="style1">exists</span> and <span class="style1">foreach</span> are viewed as loop constructs, and 
-      <span class="style1">select</span> corresponds to the <b class="c1">SQL</b> select expression.</p>
+      <span class="style1">select</span> corresponds to the <b class="c1">SQL</strong> select expression.</p>
 
-  <p>Clearly a really precise formal definition of the <b class="c1">Lava</b> semantics would require much greater efforts. (For further study.)</p>
+  <p>Clearly a really precise formal definition of the <b class="c1">Lava</strong> semantics would require much greater efforts. (For further study.)</p>
 
   <p class="c3">See also:</p>
 

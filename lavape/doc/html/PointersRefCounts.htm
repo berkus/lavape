@@ -43,19 +43,19 @@
 
   <h3>Why reference counts rather than garbage collection?</h3>
 
-  <p>We felt that simple garbage collection by &quot;mark and sweep&quot; is a rather inelegant sledge-hammer method. It causes quite noticeable bursts of garbage collection (GC) activities that interrupt the normal computation process from time to time, possibly even in the midst of time-critical transactions. More sophisticated GC procedures, however, require much more implementation effort. Reference counts are easier to implement and promise to provide a more smooth storage management style by releasing storage occupied by objects <b>at the earliest possible moment</b>.</p>
+  <p>We felt that simple garbage collection by &quot;mark and sweep&quot; is a rather inelegant sledge-hammer method. It causes quite noticeable bursts of garbage collection (GC) activities that interrupt the normal computation process from time to time, possibly even in the midst of time-critical transactions. More sophisticated GC procedures, however, require much more implementation effort. Reference counts are easier to implement and promise to provide a more smooth storage management style by releasing storage occupied by objects <strong>at the earliest possible moment</strong>.</p>
 
-  <p>A second, less emotional argument in favor of reference counts: If you pass an object <i>by reference</i> across a component border then you would like to know anyhow when the receiving component does not need/reference the object any longer, and we expect that it is much easier to manage reference counts across component borders and to standardize an appropriate interface to this end than to standardize garbage collection procedures across the borders of components written in different languages and following different programming paradigms.</p>
+  <p>A second, less emotional argument in favor of reference counts: If you pass an object <em>by reference</em> across a component border then you would like to know anyhow when the receiving component does not need/reference the object any longer, and we expect that it is much easier to manage reference counts across component borders and to standardize an appropriate interface to this end than to standardize garbage collection procedures across the borders of components written in different languages and following different programming paradigms.</p>
 
-  <p>A third argument in favor of reference counts has been that <span class="c3">Lava</span> anyway distinguishes already <i>two</i> different kinds of pointers/links between objects: constituents and acquaintances (see below), and it is rather obvious to introduce a third kind then: reverse links. Constituent and acquaintance links are considered to point in forward/downward direction in <span class="c3">Lava</span>, while a reverse link from object <i>B</i> to object <i>A</i> should normally imply that <i>B</i> can be reached from <i>A</i> by a forward/downward path (i.e., via a chain of constituent/acquaintance links). Closed cycles of objects are avoided under these conditions, which may otherwise restrict the successful usage of reference counts for storage management.</p>
+  <p>A third argument in favor of reference counts has been that <span class="c3">Lava</span> anyway distinguishes already <em>two</em> different kinds of pointers/links between objects: constituents and acquaintances (see below), and it is rather obvious to introduce a third kind then: reverse links. Constituent and acquaintance links are considered to point in forward/downward direction in <span class="c3">Lava</span>, while a reverse link from object <em>B</em> to object <em>A</em> should normally imply that <em>B</em> can be reached from <em>A</em> by a forward/downward path (i.e., via a chain of constituent/acquaintance links). Closed cycles of objects are avoided under these conditions, which may otherwise restrict the successful usage of reference counts for storage management.</p>
 
   <h3><a id="refTypes"></a>The three application-level pointer types in <span class="c1">Lava</span></h3>
 
   <p>We have stated already in a <a href="Unsolved.htm#pointers">former section</a> that we need a proper application-level distinction between <a href="TwoObjectCategories.htm#constituents">constituents and acquaintances</a> of complex objects, and storage management by reference counts makes it desirable to introduce a third type of pointers/references/links between objects:</p>
 
-  <p>If our object system (which is linked together by b&gt;constituent and <b>acquaintance</b> pointers) contains closed cycles rather than being an acyclic graph structure then reference counts without any further precaution could cause isolated cycles of objects to arise that are no longer referenced from anywhere else. The objects belonging to such a cycle would just prevent each other&#39;s reference counts to reach 0 since each of these would be referenced by an adjacent object in the cycle, and therefore none of them would ever be destroyed.</p>
+  <p>If our object system (which is linked together by b&gt;constituent and <strong>acquaintance</strong> pointers) contains closed cycles rather than being an acyclic graph structure then reference counts without any further precaution could cause isolated cycles of objects to arise that are no longer referenced from anywhere else. The objects belonging to such a cycle would just prevent each other&#39;s reference counts to reach 0 since each of these would be referenced by an adjacent object in the cycle, and therefore none of them would ever be destroyed.</p>
 
-  <p><a id="reverse"></a>In order to avoid this, <span class="c3">Lava</span> provides a third kind of references between objects: <b>reverse links</b>.. <b>They should be used</b> particularly for backward references to &quot;parent&quot; or &quot;ancestor&quot; objects or anyhow</p>
+  <p><a id="reverse"></a>In order to avoid this, <span class="c3">Lava</span> provides a third kind of references between objects: <strong>reverse links</strong>.. <strong>They should be used</strong> particularly for backward references to &quot;parent&quot; or &quot;ancestor&quot; objects or anyhow</p>
 
   <ul>
     <li>
@@ -67,13 +67,13 @@
     </li>
   </ul>
 
-  <p><span class="c3">Lava</span> manages a separate reference count for reverse links. If the normal &quot;forward&quot; reference count of an object becomes 0 so that the object can at most, if at all, be reached via reverse links from now on, then it is automatically and irreversibly transformed into a <b>&quot;zombie&quot;</b> object. Any attempt to access this object will result in a specific exception.</p>
+  <p><span class="c3">Lava</span> manages a separate reference count for reverse links. If the normal &quot;forward&quot; reference count of an object becomes 0 so that the object can at most, if at all, be reached via reverse links from now on, then it is automatically and irreversibly transformed into a <strong>&quot;zombie&quot;</strong> object. Any attempt to access this object will result in a specific exception.</p>
 
   <p>If the &quot;zombified&quot; object has forward (constituent or aquaintance) links to other objects then the corresponding forward/reverse counts of these objects are decremented by 1.</p>
 
-  <p>In addition, <span class="c3">Lava</span> provides a basic method <b>finalize</b> of class <i>Object</i>, which marks the object as a zombie <i>immediately</i> and which again releases all directly linked objects.</p>
+  <p>In addition, <span class="c3">Lava</span> provides a basic method <strong>finalize</strong> of class <em>Object</em>, which marks the object as a zombie <em>immediately</em> and which again releases all directly linked objects.</p>
 
-  <p><i>Object::finalize</i> can be used</p>
+  <p><em>Object::finalize</em> can be used</p>
 
   <ol>
     <li>
@@ -85,26 +85,26 @@
     </li>
   </ol>
 
-  <p>AAs a further, still stronger aid for releasing whole collections of objects that are linked together by potentially circular forward (= constituent or acquaintance) links, class <i>Obj</i> provides a method <i>finalizeRec</i> with a boolean parameter <i>aquaintancesToo</i> which <b>recursively finalizes/zombifies</b> an object and all its constituents (and acquaintances, if <i>aquaintancesTooancesToo</i> is true), <b>irrespective</b> of their reference counts.</p>
+  <p>AAs a further, still stronger aid for releasing whole collections of objects that are linked together by potentially circular forward (= constituent or acquaintance) links, class <em>Obj</em> provides a method <em>finalizeRec</em> with a boolean parameter <em>aquaintancesToo</em> which <strong>recursively finalizes/zombifies</strong> an object and all its constituents (and acquaintances, if <em>aquaintancesTooancesToo</em> is true), <strong>irrespective</strong> of their reference counts.</p>
 
-  <p>Note, however, that <span class="c3">Lava</span> objects are not <i>destroyed</i> before both the normal <b>and</b> the reverse reference count are 0. This can be achieved only by proper usage of the three reference types and, in exceptional cases, the <i>Object::finalize</i> and <i>Object::finalizeRec</i> methods.</p>
+  <p>Note, however, that <span class="c3">Lava</span> objects are not <em>destroyed</em> before both the normal <strong>and</strong> the reverse reference count are 0. This can be achieved only by proper usage of the three reference types and, in exceptional cases, the <em>Object::finalize</em> and <em>Object::finalizeRec</em> methods.</p>
 
   <p>So <span class="c3">Lava</span> guarantees the absence of &quot;dangling pointers&quot; under all circumstances, and under normal circumstances (without circular or simply unreasonable linkage structures) objects that are not needed any longer will be destroyed automatically at the earliest possible time.</p>
 
-  <h3><a id="finalize"></a>Finalizers of classes other than <i>Object</i></h3>
+  <h3><a id="finalize"></a>Finalizers of classes other than <em>Object</em></h3>
 
-  <p><span class="c3">C++</span> provides the notion of a <b>destructor</b>, <span class="c3">Java</span> the (overridable) 
-      <b>finalize</b> method of class <i>Object</i>. These are invoked implicitly/automatically when objects are going to be destroyed (by the <span class="c3">Java</span> garbage collector or the <span class="c3">C++</span> delete operation or if local variables disappear from the run time stack. They give an opportunity to the object to perform special finalization operations before it is destroyed and its storage is freed. In <span class="c3">C++</span>, destructors are required particularly because members that are attached through pointers to other objects are not released automatically.</p>
+  <p><span class="c3">C++</span> provides the notion of a <strong>destructor</strong>, <span class="c3">Java</span> the (overridable) 
+      <strong>finalize</strong> method of class <em>Object</em>. These are invoked implicitly/automatically when objects are going to be destroyed (by the <span class="c3">Java</span> garbage collector or the <span class="c3">C++</span> delete operation or if local variables disappear from the run time stack. They give an opportunity to the object to perform special finalization operations before it is destroyed and its storage is freed. In <span class="c3">C++</span>, destructors are required particularly because members that are attached through pointers to other objects are not released automatically.</p>
 
   <p>This doesn&#39;t apply to <span class="c3">Java</span> and <span class="c3">Lava</span>. In these languages destructors/finalizers are only needed if an object should perform certain clean-up operations before it is released and destroyed, E.g., a file descriptor should close the respective file if the user of the file descriptor has forgotten to do this (or has been prevented from doing so by an exception that occurred before the close).</p>
 
-  <p>Like <span class="c3">Java</span>, <span class="c3">Lava</span> provides a <i class="c5">finalize</i> method of class <i>Object</i> to this end (see above), which may be overridden in derived classes. It is invoked automatically by the <span class="c3">Lava</span> run time system when an object is about to be destroyed since its reference counts are 0.</p>
+  <p>Like <span class="c3">Java</span>, <span class="c3">Lava</span> provides a <em class="c5">finalize</em> method of class <em>Object</em> to this end (see above), which may be overridden in derived classes. It is invoked automatically by the <span class="c3">Lava</span> run time system when an object is about to be destroyed since its reference counts are 0.</p>
 
-  <p>Note, however, that <i>finalize</i> may attach the respective object as a member to some other object and thus cause its reference count(s) to become non-zero again. In this case the object isn&#39;t destroyed, of course, after <i>finalize</i> returns.</p>
+  <p>Note, however, that <em>finalize</em> may attach the respective object as a member to some other object and thus cause its reference count(s) to become non-zero again. In this case the object isn&#39;t destroyed, of course, after <em>finalize</em> returns.</p>
 
-  <p>The finalize method of a derived class is a quite normal method and isn&#39;t restricted anyhow. It may in turn call <i>Object::finalize</i> (by a &quot;static call&quot;) if the respective object is to be zombified finally even if its reference counts are not yet = 0.</p>
+  <p>The finalize method of a derived class is a quite normal method and isn&#39;t restricted anyhow. It may in turn call <em>Object::finalize</em> (by a &quot;static call&quot;) if the respective object is to be zombified finally even if its reference counts are not yet = 0.</p>
 
-  <p>If <i>finalize</i> is invoked by a <a href="http://www.memorymanagement.org/glossary/t.html#tracing.garbage.collection" target="_blank">tracing garbage collector</a> as in <span class="c3">Java</span> the you can get into troubles since the time of invocation is more or less unpredictable in this case. Cf., e.g., the discussion of finalization in <a href="http://www.eclipse.org/articles/swt-design-2/swt-design-2.html" target="_blank">Eclipse/SWT</a> and <a href="http://www.memorymanagement.org/glossary/f.html#finalization" target="_blank">elsewhere</a>. In <span class="c3">Lava</span> it is perfectly predictable: It is just the <i>earliest possible time</i>, viz. the moment when the reference counts of the object go down to zero.</p>
+  <p>If <em>finalize</em> is invoked by a <a href="http://www.memorymanagement.org/glossary/t.html#tracing.garbage.collection" target="_blank">tracing garbage collector</a> as in <span class="c3">Java</span> the you can get into troubles since the time of invocation is more or less unpredictable in this case. Cf., e.g., the discussion of finalization in <a href="http://www.eclipse.org/articles/swt-design-2/swt-design-2.html" target="_blank">Eclipse/SWT</a> and <a href="http://www.memorymanagement.org/glossary/f.html#finalization" target="_blank">elsewhere</a>. In <span class="c3">Lava</span> it is perfectly predictable: It is just the <em>earliest possible time</em>, viz. the moment when the reference counts of the object go down to zero.</p>
 
   <h3 class="c6">See also</h3>
 

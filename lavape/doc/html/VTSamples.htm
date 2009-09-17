@@ -23,18 +23,18 @@
 
 <h3>Sample files</h3>
 
-<p>Please open <b>ChoralSociety.lava</b> in <b class="c2">LavaPE</b>.</p>
+<p>Please open <strong>ChoralSociety.lava</strong> in <b class="c2">LavaPE</strong>.</p>
 
-<p>Please open <b>ModelView.lava</b> in <b class="c2">LavaPE</b>.</p>
+<p>Please open <strong>ModelView.lava</strong> in <b class="c2">LavaPE</strong>.</p>
 
-<p>Please open <b>QueueOfPoint.lava</b> in <b class="c2">LavaPE</b>.</p>
+<p>Please open <strong>QueueOfPoint.lava</strong> in <b class="c2">LavaPE</strong>.</p>
 
-<p>Please open <b>Visitor.lava</b> in <b class="c2">LavaPE</b>.</p>
+<p>Please open <strong>Visitor.lava</strong> in <b class="c2">LavaPE</strong>.</p>
 
-<p>Please open <b>FinalVirtualType.lava</b> in <b class="c2">LavaPE</b>.</p>
+<p>Please open <strong>FinalVirtualType.lava</strong> in <b class="c2">LavaPE</strong>.</p>
 
-<p>Please open <b>ForceFunctionOverride.lava</b> in <b
-class="c2">LavaPE</b>.</p>
+<p>Please open <strong>ForceFunctionOverride.lava</strong> in <strong
+class="c2">LavaPE</strong>.</p>
 
 <h3>Topic</h3>
 
@@ -64,18 +64,18 @@ reconstructs the corresponding sample from <a
 href="TypeSafety.htm#TT">[16]</a>. It provides a package <em>ModelViewFW</em>
 ("model/view framework") with two type parameters "model" and "view".
 "ModelViewFW" contains two mutually recursive types "Model" and "View". "Model"
-contains a member vList which is a <i>homogeneous</i> "ViewList" all of whose
+contains a member vList which is a <em>homogeneous</em> "ViewList" all of whose
 elements have the same virtual type setElem=~&lt;view&gt;. (The tilde "~" marks
-variable <a href="TwoObjectCategories.htm">state objects</a> in <b
-class="c2">Lava</b>.)</p>
+variable <a href="TwoObjectCategories.htm">state objects</a> in <strong
+class="c2">Lava</strong>.)</p>
 
 <p>Package "DrawFW" shows how the (rudimentary) framework "ModelViewFW" could
 be specialized by overriding its virtual types (= type parameters) "model" and
 "view".</p>
 
 <p>See our <a href="SubstitutableSamples.htm">ModelManyViews</a> sample for
-another variant of Model/View that provides an <i>inhomogeneous</i> "ViewList"
-containing <i>different</i> types of views (on the basis of "<a
+another variant of Model/View that provides an <em>inhomogeneous</em> "ViewList"
+containing <em>different</em> types of views (on the basis of "<a
 href="TypeSafety.htm#substitutableType">substitutable types</a>").</p>
 
 <p class="c3">QueueOfPoint:</p>
@@ -84,9 +84,9 @@ href="TypeSafety.htm#substitutableType">substitutable types</a>").</p>
 href="TypeSafety.htm#TT">[16]</a>, too. Compared to <a
 href="TypeSafety.htm#TT">[16]</a>, it shows again the advantage of making
 virtual types non-substitutable by default: We need not view the virtual type
-"elemType" as a special, type-valued <i>member variable</i> of "Queue" objects
-but we can introduce virtual types in a more static way as <i>type</i>
-<i>parameters</i> of classes and packages.</p>
+"elemType" as a special, type-valued <em>member variable</em> of "Queue" objects
+but we can introduce virtual types in a more static way as <em>type</em>
+<em>parameters</em> of classes and packages.</p>
 
 <p class="c3">Visitor:</p>
 
@@ -94,7 +94,7 @@ but we can introduce virtual types in a more static way as <i>type</i>
 pattern of <a href="TypeSafety.htm#GOF">[8]</a> and also a special case of <a
 href="RepetComputSamples.htm">indirect tree recursion</a>.</p>
 
-<p><b>FinalVirtualType and ForceFunctionOverride:</b></p>
+<p><strong>FinalVirtualType and ForceFunctionOverride:</strong></p>
 
 <p>Since release 0.9.1 a virtual type (= type parameter) may be declared
 "final". This means that it cannot be derived/specialized any further in a
@@ -104,40 +104,40 @@ and ForceOverride.lava) explain the motivation behind this and the related
 
 <h3>Where to look and what to do</h3>
 
-<p><b>ModelView:<br />
-</b><br />
+<p><strong>ModelView:<br />
+</strong><br />
 Note in particular the "<a href="PatternsFrameworks.htm#covariant">covariant
-specialization</a>" of the only input parameter of function <i>registerView</i>
-of class <i>Model</i>.</p>
+specialization</a>" of the only input parameter of function <em>registerView</em>
+of class <em>Model</em>.</p>
 
-<p>Note how this is exploited in the exec of the initiator <i>ModelViewDemo</i>
-to pass a view object of the derived type <i>DrawFW::View</i> to this
+<p>Note how this is exploited in the exec of the initiator <em>ModelViewDemo</em>
+to pass a view object of the derived type <em>DrawFW::View</em> to this
 function.</p>
 
-<p>Note that <i>DrawFW::View</i> is <b>not</b> compatible in the traditional
+<p>Note that <em>DrawFW::View</em> is <strong>not</strong> compatible in the traditional
 sense (of <a href="TypeSafety.htm#c-derived">c-derivation</a>) to
-ModelViewFW::View, since it contains member variables (<i>myModel</i>) and
-function parameters (m of initializer <i>ini</i>) that are of a more derived
-type in pattern <i>DrawFW</i> than in <i>ModelViewFW</i> (as a consequence of
-covariant specialization of the VT <i>&lt;model&gt;</i>).</p>
+ModelViewFW::View, since it contains member variables (<em>myModel</em>) and
+function parameters (m of initializer <em>ini</em>) that are of a more derived
+type in pattern <em>DrawFW</em> than in <em>ModelViewFW</em> (as a consequence of
+covariant specialization of the VT <em>&lt;model&gt;</em>).</p>
 
-<p><b><a id="queueOfPoint"></a>QueueOfPoint:<br />
-</b><br />
-Note the two versions of class <i>X</i>: One belongs to pattern <i>Queue</i> (a
-class having a VT <i>elemType</i>), the other is declared outside <i>Queue</i>.
-Both have a member function <i>f</i> with almost identical implementations.
+<p><strong><a id="queueOfPoint"></a>QueueOfPoint:<br />
+</strong><br />
+Note the two versions of class <em>X</em>: One belongs to pattern <em>Queue</em> (a
+class having a VT <em>elemType</em>), the other is declared outside <em>Queue</em>.
+Both have a member function <em>f</em> with almost identical implementations.
 Look at these:</p>
 
-<p>The difference between the implementations of the two versions of <i>f</i>
-is that one of them belongs to pattern <i>Queue,</i> and one doesn't. The
-former <b>has to</b> use the virtual type <i>&lt;Queue::elemType&gt;</i> of
-<i>Queue</i> to declare the local variable <i>p</i>, the latter <b>cannot</b>
-use this but <b>must</b> use the concrete class <i>Point</i> to declare
-<i>p</i>. The reasons are:</p>
+<p>The difference between the implementations of the two versions of <em>f</em>
+is that one of them belongs to pattern <em>Queue,</em> and one doesn't. The
+former <strong>has to</strong> use the virtual type <em>&lt;Queue::elemType&gt;</em> of
+<em>Queue</em> to declare the local variable <em>p</em>, the latter <strong>cannot</strong>
+use this but <strong>must</strong> use the concrete class <em>Point</em> to declare
+<em>p</em>. The reasons are:</p>
 <ol>
-  <li>If a class <i>A</i> is the value of a virtual type <i>V</i> then <i>A</i>
-    cannot be referenced directly at any place where <i>V</i> is visible. It
-    can only be referenced indirectly by references to <i>V</i> in these
+  <li>If a class <em>A</em> is the value of a virtual type <em>V</em> then <em>A</em>
+    cannot be referenced directly at any place where <em>V</em> is visible. It
+    can only be referenced indirectly by references to <em>V</em> in these
     places. If A1 is derived from A within the same pattern, then A1 cannot be
     referenced directly, either.</li>
   <li>From outside a pattern the VTs of that pattern cannot be referenced (they
@@ -145,8 +145,8 @@ use this but <b>must</b> use the concrete class <i>Point</i> to declare
 </ol>
 
 <p>The first rule corresponds to <a
-href="PatternsFrameworks.htm#VTandNonVT">rule 9</a> in our <i
-class="c4">Lava</i> genericity section. Its motivation is explained in our <a
+href="PatternsFrameworks.htm#VTandNonVT">rule 9</a> in our <em
+class="c4">Lava</em> genericity section. Its motivation is explained in our <a
 href="IsSelfVirtualSample.htm">IsSelfVirtual sample</a>.</p>
 
 <p>The reason for the validity of the second rule is simple: The value of a VT
@@ -155,21 +155,21 @@ href="PatternsFrameworks.htm#patternContext">pattern context</a>. So if you are
 outside a pattern P and outside of any pattern that is derived from P, the
 values of P's VTs at the actual place of reference are just undefined.</p>
 
-<p><b><a id="visitor"></a>Visitor:<br />
-</b><br />
-The <i>Visitor</i> pattern defines an abstract virtual type <i>R</i> for the
-result of the visitor's tree evaluation function <i>evaluate</i>. The way how
-the visitor walks through the tree is described by this <i>evaluate</i> method
-and doesn't depend on <i>R</i>, while the treatment of the individual tree
-nodes depends on <i>R</i> and is implemented by the overridden methods
-<i>evalLeaf</i> and <i>evalNode</i> of <i>StringVisitor</i> and
-<i>IntVisitor</i>. The initiator <i>VisitorDemo</i> shows how a sample tree is
+<p><strong><a id="visitor"></a>Visitor:<br />
+</strong><br />
+The <em>Visitor</em> pattern defines an abstract virtual type <em>R</em> for the
+result of the visitor's tree evaluation function <em>evaluate</em>. The way how
+the visitor walks through the tree is described by this <em>evaluate</em> method
+and doesn't depend on <em>R</em>, while the treatment of the individual tree
+nodes depends on <em>R</em> and is implemented by the overridden methods
+<em>evalLeaf</em> and <em>evalNode</em> of <em>StringVisitor</em> and
+<em>IntVisitor</em>. The initiator <em>VisitorDemo</em> shows how a sample tree is
 constructed and how this same tree is evaluated twice: once by the
-<i>StringVisitor</i> and once by the <i>IntVisitor</i>.</p>
+<em>StringVisitor</em> and once by the <em>IntVisitor</em>.</p>
 
 <p>Please notice the comments in the VisitorDemo initiator.</p>
 
-<p><b>See also</b> our <a class="c5"
+<p><strong>See also</strong> our <a class="c5"
 href="CallbackSample.htm">CallbackSample</a></p>
 </body>
 </html>

@@ -3,9 +3,9 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <html>
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
   <title>LavaPE Release Notes</title>
-  <meta name="generator" content="Amaya, see http://www.w3.org/Amaya/">
+  <meta name="generator" content="Amaya, see http://www.w3.org/Amaya/"/>
   <style type="text/css">
         .style1
         {
@@ -33,7 +33,11 @@ concerning virtual types could be abandoned</span></h3>
 style="font-family: Arial,Helvetica,sans-serif;text-align:justify;">Concretely:
 We could abandon condition 9 in section 1 of <a
 href="http://lavape.sf.net/doc/html/PatternsFrameworks.htm">http://lavape.sf.net/doc/html/PatternsFrameworks.htm</a>.
-Before release 0.9.2 this condition was used to </p>
+Before release 0.9.2 this condition was required to make sure that the type of the 
+    &quot;self&quot; variable of a method is unambiguous also in cases where the class of the 
+    method occurs also as the value of a virtual type. In the latter case the type 
+    of &quot;self&quot; was this virtual type and there couldn&#39;t exist a further virtual type 
+    having this class as value.</p>
 
 <p></p>
 

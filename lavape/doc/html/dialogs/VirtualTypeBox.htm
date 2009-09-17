@@ -33,7 +33,7 @@
 
   <h3>Select value type of VT</h3>
 
-  <p>If a virtual type is not abstract then you must specify an existing type as its value. This may be a concrete type or may again be virtual and may be selected from the combo-boxes &quot;Basic classes&quot; and &quot;Other classes&quot;. &quot;Basic classes&quot; lists all interfaces whose declaration is contained in the basic include file <i>std.lava</i>.</p>
+  <p>If a virtual type is not abstract then you must specify an existing type as its value. This may be a concrete type or may again be virtual and may be selected from the combo-boxes &quot;Basic classes&quot; and &quot;Other classes&quot;. &quot;Basic classes&quot; lists all interfaces whose declaration is contained in the basic include file <em>std.lava</em>.</p>
 
   <h3>Remove overrides</h3>
 
@@ -56,8 +56,8 @@
   <p>A &quot;final&quot; VT cannot be overridden in a derived class or package. If you want to 
       assign a constant or an object of a non-virtual type to a VT v then you may&nbsp; 
       be forced to declare v to be &quot;final&quot;, since otherwise <span class="style1">
-      LavaPE</span> would refute the assignment as being unsafe: The <b>fixed</b> type 
-      of the assignment source could become incompatible to the <b>virtual</b> type of 
+      LavaPE</span> would refute the assignment as being unsafe: The <strong>fixed</strong> type 
+      of the assignment source could become incompatible to the <strong>virtual</strong> type of 
       the assignment target if the latter would be associated with a more derived type 
       in a derived class or package.<br />
       <br />
@@ -66,13 +66,13 @@
       on derivation&quot;) to achieve the same effect without the necessity to declare the 
       respective VT to be &quot;final&quot;.<br />
       <br />
-      See the <b>FinalVirtualType.lava</b> and <b>ForceFunctionOverride.lava</b> 
+      See the <strong>FinalVirtualType.lava</strong> and <strong>ForceFunctionOverride.lava</strong> 
       sample programs.</p>
 
   <h3>Substitutable</h3>
     <p>Indicates whether this VT shall be <a href="../TypeSafety.htm#substitutableType">substitutable</a>, i.e., whether the type of a corresponding 
         assignment source may even be <a href="../TypeSafety.htm#p-derived">p-derived</a> (rather than <a href="../TypeSafety.htm#c-derived">c-derived</a>) from this 
-        virtual type. (Cf. the <i><a href="../PatternSamples.htm">ModelManyViews</a></i> and <i><a href="../PatternSamples.htm">CarMeeting</a></i> samples.)</p>
+        virtual type. (Cf. the <em><a href="../PatternSamples.htm">ModelManyViews</a></em> and <em><a href="../PatternSamples.htm">CarMeeting</a></em> samples.)</p>
     <h3>Kind of element reference</h3>
 
   <p>If this VT defines the type of the elements of a set, chain, or array then you may specify whether the elements are treated as <a href="../PointersRefCounts.htm#refTypes">constituents, acquaintances or reverse links</a>.</p>

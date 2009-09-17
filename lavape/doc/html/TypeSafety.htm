@@ -38,11 +38,11 @@
 <h2 class="c1">Static type-safety of <span class="style1">Lava</span>, related work</h2>
 
 <p class="c3">Before we can proceed to the outline of a proof of the static
-type-safety of <b class="c2">Lava</b> we have to introduce a number of terms,
+type-safety of <b class="c2">Lava</strong> we have to introduce a number of terms,
 to clarify several pertinent notions, and to explain a number of general
 restrictions that we impose on the <a href="#compatibility">admissibility of
 assignments</a> in order to achieve <a href="#typeSafety">static
-type-safety</a> for <b class="c2">Lava</b>.</p>
+type-safety</a> for <b class="c2">Lava</strong>.</p>
 
 <h3 class="c4">1. Semantics of "type conformance"</h3>
 
@@ -53,25 +53,25 @@ to type Y" has to be reconsidered.</p>
 <p>For instance, if x has been conceived and created as a List[Car], is it then
 admissible to assign x to a variable vList whose type is List[Vehicle]?</p>
 
-<p>On the one hand, if you look only at the <i>structure</i> of x then x could
-clearly be <i>re-interpreted</i> as a List[Vehicle]. In this sense x conforms
+<p>On the one hand, if you look only at the <em>structure</em> of x then x could
+clearly be <em>re-interpreted</em> as a List[Vehicle]. In this sense x conforms
 to the type List[Vehicle].</p>
 
-<p>On the other hand we want to be able to <i>apply all methods</i> of a
+<p>On the other hand we want to be able to <em>apply all methods</em> of a
 List[Vehicle] to vList . E.g., we would like to append any Vehicle to a
 List[Vehicle]. But if we would append a Bicycle to vList (after assigning x to
 vList) then the value of vList would no longer be a List[Car]: an obvious
 violation of the originally intended type of the object x.</p>
 
-<p><b><a id="conformance"></a></b>So we may opt between two possibilities:</p>
+<p><strong><a id="conformance"></a></strong>So we may opt between two possibilities:</p>
 <ol>
   <li>Either we insist that assignment of an object x to a variable vList
     should imply that everything that we may do with a variable of vList's type
     (here List[Vehicle]) may also be applied to vList after the assignment of
   x,</li>
   <li>or we allow the assignment of a List[Car] or any other object of a type
-    derived from List[Vehicle] to vList but prevent every <i>potentially</i>
-    dangerous usage of vList by rigorous <i>static</i> type-checks.</li>
+    derived from List[Vehicle] to vList but prevent every <em>potentially</em>
+    dangerous usage of vList by rigorous <em>static</em> type-checks.</li>
 </ol>
 
 <p>In the first case we could not assign a List[Car] to vList, but the message
@@ -81,17 +81,17 @@ send "vList.add(aBicycle)" would pass the static type-check.</p>
 "vList.add(aBicycle)" would be rejected by the static check, but other
 interesting message sends would become possible and statically acceptable, for
 instance "vList.f(a1,...,an)", where "f" is any member function whose formal
-parameter types do <i>not</i> depend on any virtual types.</p>
+parameter types do <em>not</em> depend on any virtual types.</p>
 
-<p><i class="c6">Lava</i> does not make a one-sided decision in favor of one of
+<p><em class="c6">Lava</em> does not make a one-sided decision in favor of one of
 these two alternative views but leaves the choice to the programmer for every
 single variable and VT declaration. "Subtype-substitution forbidden" is the
-default in <i class="c6">Lava</i> (if the sub-type isn't derived in the
+default in <em class="c6">Lava</em> (if the sub-type isn't derived in the
 classical sense but by specialization of virtual types). It may be allowed
 explicitly for individual occurrences of a type T. The name of the type is
-enclosed in braces: {T}, and we speak of the "open" or <b><a
-id="substitutableType"></a>"substitutable type" {T}</b> corresponding to the
-"closed" type T. {T} stands in a sense for the <i>set</i> of types that can be
+enclosed in braces: {T}, and we speak of the "open" or <strong><a
+id="substitutableType"></a>"substitutable type" {T}</strong> corresponding to the
+"closed" type T. {T} stands in a sense for the <em>set</em> of types that can be
 c- or p-derived from T. Cf. our <a
 href="SubstitutableSamples.htm">substitutable type samples</a>.</p>
 
@@ -107,11 +107,11 @@ subtype-substitutability you typically have to make sure that the same
 "effective pattern context" (<a href="#EPC">EPC</a>, see below) applies to the
 source and target side of assignments involving virtual or other multiform
 types (cf. <a href="#compatibility">section 4.1</a>). So you have to
-<i>determine</i> and to <i>compare</i> the EPCs of the affected variables or
-expressions. In some cases you have to check whether an EPC is <i><a
-href="#staticEPC">"static"</a></i>. The following sections deal with these
+<em>determine</em> and to <em>compare</em> the EPCs of the affected variables or
+expressions. In some cases you have to check whether an EPC is <em><a
+href="#staticEPC">"static"</a></em>. The following sections deal with these
 problems and end up in a more detailed specification of assignment
-compatibility in <b class="c2">Lava</b>.</p>
+compatibility in <b class="c2">Lava</strong>.</p>
 
 <h3><a id="derivationType"></a>2. Classic vs. pattern-induced derivations</h3>
 
@@ -164,8 +164,8 @@ such cases. Let us define several auxiliary notions before:</p>
 
 <p class="c7"><a id="ST"></a>Static type ST:</p>
 
-<p>The static type ST(expr) of an expression occurring in executable <b
-class="c2">Lava</b> code is defined as follows:</p>
+<p>The static type ST(expr) of an expression occurring in executable <strong
+class="c2">Lava</strong> code is defined as follows:</p>
 <ul>
   <li>If expr is a constant then ST(expr) is the obvious standard built-in
     class:<br />
@@ -185,7 +185,7 @@ class="c2">Lava</b> code is defined as follows:</p>
     ST(expr) is the class to which self refers statically.</li>
 </ul>
 
-<p><b><a id="Note1"></a>Note 1:</b> In all cases the ST of an expression is
+<p><strong><a id="Note1"></a>Note 1:</strong> In all cases the ST of an expression is
 reduced to the ST of a variable, viz. the (only) formal output parameter of the
 top-level function or operator of the expression. Therefore it is sufficient to
 consider the static (and also the effective) type of variables in the
@@ -228,7 +228,7 @@ context of the "current call object", i.e., the (run time) self/this object of
 the respective member function to which SELFPC pertains. Although it can be
 effectively determined only at run time it plays an important role as a means
 to express that the types of two variables are interpreted using the
-<i>same</i> pattern context, viz. the SELFPC.</p>
+<em>same</em> pattern context, viz. the SELFPC.</p>
 
 <p class="c7"><a id="EPC"></a>Effective pattern context EPC:</p>
 
@@ -245,41 +245,41 @@ thus can be determined already at check time (rather than run time).</p>
 local variable var:</p>
 
 <blockquote>
-  <p><b>(L1)</b> ST(var) is <i>non-<a
+  <p><strong>(L1)</strong> ST(var) is <em>non-<a
   href="PatternsFrameworks.htm#multiform">multiform</a>.<br />
   <br />
-  <a id="staticEPC"></a></i>Then <a href="#EPC">EPC</a>(var) = <a
-  href="#NULLPC">NULLPC</a> ("<b>EPC is static</b>").</p>
+  <a id="staticEPC"></a></em>Then <a href="#EPC">EPC</a>(var) = <a
+  href="#NULLPC">NULLPC</a> ("<strong>EPC is static</strong>").</p>
 
-  <p><b>(L2)</b> ST(var) is <i>multiform</i> and contained in the LPC(var).<br
+  <p><strong>(L2)</strong> ST(var) is <em>multiform</em> and contained in the LPC(var).<br
   />
   <br />
   Then if var is referenced from within a local or member function or
   invariant<br />
   then EPC(var) = <a href="#SELFPC">SELFPC<br />
-  </a> else EPC(var) = LPC(var) ("<b>EPC is static</b>").<br />
+  </a> else EPC(var) = LPC(var) ("<strong>EPC is static</strong>").<br />
   <br />
   In particular: EPC(self) = SELFPC.</p>
 
   <p>Note: If var is a local variable of a member function having the <a
   href="dialogs/FunctionBox.htm#forceOverride">"callable only from this VT
-  context"</a> attribute then EPC(var) = SELFPC = LPC(var) ("<b>EPC is
-  static</b>").</p>
+  context"</a> attribute then EPC(var) = SELFPC = LPC(var) ("<strong>EPC is
+  static</strong>").</p>
 
-  <p><b>(L3)</b> ST(var) is <i>multiform</i> and its declaration is not
+  <p><strong>(L3)</strong> ST(var) is <em>multiform</em> and its declaration is not
   contained in the LPC(var).<br />
   <br />
-  Then EPC(var) = NULLPC ("<b>EPC is static</b>").</p>
+  Then EPC(var) = NULLPC ("<strong>EPC is static</strong>").</p>
 </blockquote>
 
-<p><b>(F)</b> <b>EPC of formal parameters:</b></p>
+<p><strong>(F)</strong> <strong>EPC of formal parameters:</strong></p>
 
 <p>We distinguish four cases as to the nature of the formal parameter var:</p>
 
 <blockquote>
-  <p><b>(F1)</b> var is a formal parameter of a <i>member function</i> of some
+  <p><strong>(F1)</strong> var is a formal parameter of a <em>member function</em> of some
   class interface ITF<br />
-  or of a <i>local function</i> of the implementation of ITF<br />
+  or of a <em>local function</em> of the implementation of ITF<br />
   and its declared type ST(var) is contained in LPC(ITF).</p>
 
   <p>Then EPC(var) = <a href="#SELFPC">SELFPC</a>.</p>
@@ -292,42 +292,42 @@ local variable var:</p>
   <p class="c5">Note 2: If var is a formal parameter of a member function
   having the "<a href="dialogs/FunctionBox.htm#forceOverride">callable only
   from this VT context</a>" attribute then SELFPC = EPC(var) = LPC(var)
-  ("<b>EPC is static</b>").</p>
+  ("<strong>EPC is static</strong>").</p>
 
-  <p><b>(F2)</b> ST(var) is <i>not</i> contained in LPC(ITF).<br />
+  <p><strong>(F2)</strong> ST(var) is <em>not</em> contained in LPC(ITF).<br />
   <br />
-  Then EPC(var) = NULLPC ("<b>EPC is static</b>").</p>
+  Then EPC(var) = NULLPC ("<strong>EPC is static</strong>").</p>
 
-  <p><b>(F3)</b> var is a formal parameter of an initiator INI<br />
-  and its declared type ST(var) <i>is contained</i> in LPC(INI).<br />
+  <p><strong>(F3)</strong> var is a formal parameter of an initiator INI<br />
+  and its declared type ST(var) <em>is contained</em> in LPC(INI).<br />
   <br />
-  Then EPC(var) = LPC(INI) ("<b>EPC is static</b>").</p>
+  Then EPC(var) = LPC(INI) ("<strong>EPC is static</strong>").</p>
 
-  <p><b>(F4)</b> ST(var) <i>is not contained</i> in LPC(INI)<br />
+  <p><strong>(F4)</strong> ST(var) <em>is not contained</em> in LPC(INI)<br />
   <br />
-  Then EPC(var) = NULLPC ("<b>EPC is static</b>").</p>
+  Then EPC(var) = NULLPC ("<strong>EPC is static</strong>").</p>
 </blockquote>
 
-<p><b>(M)</b> <b>EPC of member variables:</b></p>
+<p><strong>(M)</strong> <strong>EPC of member variables:</strong></p>
 
-<p>Assume that var is a member variable a<sub>1</sub><b>.</b>a<sub>2</sub><b>.
-... .</b>a<sub>n</sub> (with n&gt;1). Then a<sub>1</sub> is a local variable or
+<p>Assume that var is a member variable a<sub>1</sub><strong>.</strong>a<sub>2</sub><strong>.
+... .</strong>a<sub>n</sub> (with n&gt;1). Then a<sub>1</sub> is a local variable or
 a formal parameter. (Note that a member x of the "self/this" object is
-designated by "self<b>.</b>x" in <b class="c2">Lava</b>.) The EPC of such a
+designated by "self<strong>.</strong>x" in <b class="c2">Lava</strong>.) The EPC of such a
 variable is then defined recursively as follows:</p>
 
 <blockquote>
-  <p>If EPC(a<sub>1</sub><b>. ... .</b>a<sub>n-1</sub>) = NULLPC<br />
-  then EPC(a<sub>1</sub><b>. ... .</b>a<sub>n</sub>) = LPC(ST(a<sub>n-1</sub>))
-  ("<b>EPC is static</b>")<br />
-  else if ST(a<sub>n</sub>) is contained in EPC(a<sub>1</sub><b>. ...
-  .</b>a<sub>n-1</sub>)<br />
-  then EPC(a<sub>1</sub><b>. ... .</b>a<sub>n</sub>) = EPC(a<sub>1</sub><b>.
-  ... .</b>a<sub>n-1</sub>),<br />
-  and EPC(a<sub>1</sub><b>. ... .</b>a<sub>n</sub>) <b>is</b> <b>static</b> if
-  EPC(a<sub>1</sub><b>. ... .</b>a<sub>n-1</sub>) is static<br />
-  else EPC(a<sub>1</sub><b>. ... .</b>a<sub>n</sub>) = NULLPC ("<b>EPC is
-  static</b>").</p>
+  <p>If EPC(a<sub>1</sub><strong>. ... .</strong>a<sub>n-1</sub>) = NULLPC<br />
+  then EPC(a<sub>1</sub><strong>. ... .</strong>a<sub>n</sub>) = LPC(ST(a<sub>n-1</sub>))
+  ("<strong>EPC is static</strong>")<br />
+  else if ST(a<sub>n</sub>) is contained in EPC(a<sub>1</sub><strong>. ...
+  .</strong>a<sub>n-1</sub>)<br />
+  then EPC(a<sub>1</sub><strong>. ... .</strong>a<sub>n</sub>) = EPC(a<sub>1</sub><strong>.
+  ... .</strong>a<sub>n-1</sub>),<br />
+  and EPC(a<sub>1</sub><strong>. ... .</strong>a<sub>n</sub>) <strong>is</strong> <strong>static</strong> if
+  EPC(a<sub>1</sub><strong>. ... .</strong>a<sub>n-1</sub>) is static<br />
+  else EPC(a<sub>1</sub><strong>. ... .</strong>a<sub>n</sub>) = NULLPC ("<strong>EPC is
+  static</strong>").</p>
 </blockquote>
 
 <p class="c7"><a id="MVT"></a>Mapped virtual type MVT:</p>
@@ -345,8 +345,8 @@ dp<sub>1</sub> then MVT(pt,dp<sub>2</sub>) causes pt and the types of all its
 member variables to be interpreted in the context of pattern dp2: The effect on
 the type of a member variable is the same as if we had a variable a<sub>1</sub>
 of type pt in pattern context EPC(a1) = dp2 and would interpret the type of a
-member a<sub>1</sub><b>. ... .</b>a<sub>n</sub> in the context
-EPC(a<sub>1</sub><b>. ... .</b>a<sub>n-1</sub>). Note that MVT(pt,dp2) need not
+member a<sub>1</sub><strong>. ... .</strong>a<sub>n</sub> in the context
+EPC(a<sub>1</sub><strong>. ... .</strong>a<sub>n-1</sub>). Note that MVT(pt,dp2) need not
 be declared explicitly in dp2 (by overriding pt) but may be an unnamed,
 implicit type.</p>
 
@@ -356,7 +356,7 @@ MVT(npt,p) = npt.</p>
 
 <p>Note: If the value of a virtual type vt<sub>1</sub> is again a virtual type
 vt<sub>2</sub> and vt<sub>1</sub> has been overridden by vt<sub>1m</sub> in a
-derived pattern dp then the <b class="c2">Lava</b> override mechanism
+derived pattern dp then the <b class="c2">Lava</strong> override mechanism
 automatically guarantees that</p>
 <ul>
   <li>if vt<sub>2</sub> has also been overridden in dp (by vt<sub>2m</sub>,
@@ -401,17 +401,17 @@ non-virtual types.</p>
 <p>ET(self) is the effective type of the variable "callvar" with that the
 function containing the "self" reference has been called.</p>
 
-<p><b>Note 1:</b> It can be concluded from sections 2.3 and 3.2.2 that the
+<p><strong>Note 1:</strong> It can be concluded from sections 2.3 and 3.2.2 that the
 effective type ET(self) of "self" can in fact be computed from ST(self) in the
 same way as described above for all other kinds of variables. (The decisive
 argument is that if ST(self) is multiform then in pattern EPC(self) there is
 essentially no other type than MVT(ST(self),EPC(self)) that qualifies as the
 type of callvar).</p>
 
-<p><b>Note 2:</b> If EPC(var) = NULLPC then ET(var) = FV(ST(var)), i.e., the
+<p><strong>Note 2:</strong> If EPC(var) = NULLPC then ET(var) = FV(ST(var)), i.e., the
 declared values of the virtual types apply.</p>
 
-<p><b>Note 3:</b> If a concrete object obj is created using the "<b>new</b>
+<p><strong>Note 3:</strong> If a concrete object obj is created using the "<strong>new</strong>
 &lt;type&gt;" expression then ET(obj) = type. If obj is the value of a constant
 then ET(obj) is the type of the constant, for instance Integer for the constant
 123.</p>
@@ -442,7 +442,7 @@ backtracking this sequence of values.</p>
     <br />
     and ST(expr) is c-derived from ST(var)<br />
     and if both are multiform then EPC(var ) = EPC(expr),</li>
-  <li><b><a id="secondCase"></a>or</b> both are virtual types<br />
+  <li><strong><a id="secondCase"></a>or</strong> both are virtual types<br />
     <br />
     and <a href="#EPC">EPC</a>(var ) = EPC(expr)<br />
     and they are equal,<br />
@@ -450,7 +450,7 @@ backtracking this sequence of values.</p>
     or one is the immediate<br />
     or an indirect value of the other<br />
     or of an override of the other,</li>
-  <li><b>or</b> one of ST(var) and ST(expr) is virtual and the other is
+  <li><strong>or</strong> one of ST(var) and ST(expr) is virtual and the other is
     non-virtual<br />
     <br />
     and the EPC of the virtual side is "static" (see the definition of EPC
@@ -469,15 +469,15 @@ conditions can be evaluated statically.</p>
 <p>The third case covers in particular situations where a virtual type with
 "closed bound" (<a href="#TT">[16]</a> p. 189) would be definitely undesirable
 whereas the "<a href="dialogs/FunctionBox.htm#forceOverride">callable only from
-this VT context</a>" mechanism of <b class="c2">Lava</b> is still applicable
+this VT context</a>" mechanism of <b class="c2">Lava</strong> is still applicable
 and acceptable.</p>
 
 <p>For simplicity's sake we have omitted the trivial rule that every type is
 assignment compatible with the common base type "Object" of all types.</p>
 
-<p>The <b class="c2">Lava</b> programming environment <b class="c2">LavaPE</b>
+<p>The <b class="c2">Lava</strong> programming environment <b class="c2">LavaPE</strong>
 makes it very easy for the programmer to obey these rules since references to
-types are not keyed in as textual identifiers in <b class="c2">Lava</b> but
+types are not keyed in as textual identifiers in <b class="c2">Lava</strong> but
 selected from proper type-selection combo-boxes whose contents would depend on
 the current insertion point. These combo-boxes simply will not offer
 inadmissible types for selection in the foregoing situations.</p>
@@ -531,10 +531,10 @@ one of these is declared "substitutable" explicitly.</p>
 which is a variable, and a right-hand side, which may be a variable, a
 constant, or an operator or function expression.</p>
 
-<p>Now the static type-safety of <b class="c2">Lava</b> can be stated as
+<p>Now the static type-safety of <b class="c2">Lava</strong> can be stated as
 follows:</p>
 <ul>
-  <li>If at run time a <b class="c2">Lava</b> program assigns an object obj to
+  <li>If at run time a <b class="c2">Lava</strong> program assigns an object obj to
     a variable var then we can be sure that obj conforms to ET(var), i.e., the
     run time type RT(obj) is equal to or c-derived from ET(var),</li>
   <li>provided one of the alternative static <a
@@ -542,7 +542,7 @@ follows:</p>
     fulfilled.</li>
 </ul>
 
-<h3><a id="proof"></a>6. Proof outline: <b class="c2">Lava</b> is statically
+<h3><a id="proof"></a>6. Proof outline: <b class="c2">Lava</strong> is statically
 type-safe</h3>
 
 <p>The places where the run time system injects objects into the program must
@@ -552,7 +552,7 @@ interfaces. Likewise, all cases of missing initialization of variables or
 exceptional operations leading to undefined results have to be detected by the
 run time system and will never cause type violations.</p>
 
-<p>Now assume that we had a "bad", non-type-safe <b class="c2">Lava</b> program
+<p>Now assume that we had a "bad", non-type-safe <b class="c2">Lava</strong> program
 that performs a "bad" assignment A. If the right-hand side of A is ok, i.e.,
 the object delivered by the right-hand side expression conforms to the type of
 that expression, then we stay with A. Otherwise we can prove that there yet
@@ -582,11 +582,11 @@ conforms also to ET(var).</p>
 <p>Since A must nevertheless conform to the assignment compatibility rules of
 section 4.1 we can distinguish the following cases:</p>
 
-<p><b>Case 1:</b> Both ST(var) and ST(expr) are non-virtual<br />
+<p><strong>Case 1:</strong> Both ST(var) and ST(expr) are non-virtual<br />
 and ST(expr) is c-derived from ST(var)<br />
 and if both are multiform then EPC(var ) = EPC(expr).</p>
 
-<p><b>(A)</b> Assume that <i>not</i> both of ST(var) and ST(expr) are
+<p><strong>(A)</strong> Assume that <em>not</em> both of ST(var) and ST(expr) are
 multiform.</p>
 
 <p>If ST(var) were multiform then ST(expr) would be multiform, too, since
@@ -602,7 +602,7 @@ values of certain virtual types on which ST(expr) depends. Nevertheless the
 result ET(expr) of this mapping still "contains" ST(var) as a base type. Hence
 ET(expr) is c-derived from ST(var) = ET(var), what had to be proven.</p>
 
-<p><b>(B)</b> Assume both ST(var) and ST(expr) are multiform (but
+<p><strong>(B)</strong> Assume both ST(var) and ST(expr) are multiform (but
 non-virtual).</p>
 
 <p>Then EPC(var) = EPC(expr). ST(expr) is c-derived from ST(var) and therefore
@@ -612,18 +612,18 @@ depends. Transition from ST(expr) to ET(expr) applies the same replacements to
 the ST(var) base and retains the additional features of ST(expr). So ET(expr)
 is still c-derived from ET(var),.</p>
 
-<p><b>Case 2:</b> Both ST(var) and ST(expr) are virtual<br />
+<p><strong>Case 2:</strong> Both ST(var) and ST(expr) are virtual<br />
 and EPC(var ) = EPC(expr)<br />
 and they are equal, or one of them overrides the other (directly or
 indirectly), or one is the immediate or an indirect value of the other or of an
 override of the other.</p>
 
-<p><b>(A)</b> Assume ST(var) = ST(expr):</p>
+<p><strong>(A)</strong> Assume ST(var) = ST(expr):</p>
 
 <p>In this case EPC(var ) = EPC(expr) implies that ET(var) = ET(expr), and
 consequently ET(expr) is c-derived from ET(var).</p>
 
-<p><b>(B)</b> Assume that ST(var) overrides ST(expr) directly or indirectly:</p>
+<p><strong>(B)</strong> Assume that ST(var) overrides ST(expr) directly or indirectly:</p>
 
 <p>(An analogous argumentation applies to the opposite case.)</p>
 
@@ -632,7 +632,7 @@ MVT(ST(expr),EPC(expr)) is true, i.e., ST(var) and ST(expr) are mapped to the
 same virtual type in EPC(var). Consequently their effective types ET(var) and
 ET(expr) are equal, too.</p>
 
-<p><b>(C)</b> Assume that ST(var) is the immediate or an indirect value of
+<p><strong>(C)</strong> Assume that ST(var) is the immediate or an indirect value of
 ST(expr) or of an override of ST(expr):</p>
 
 <p>(An analogous argumentation applies to the opposite case.)</p>
@@ -641,7 +641,7 @@ ST(expr) or of an override of ST(expr):</p>
 MVT(FVV(ST(var)),EPC(var)) = MVT(FVV(ST(expr)),EPC(expr)), and hence ET(var) =
 ET(expr),.</p>
 
-<p><b>Case 3:</b> One of ST(var) and ST(expr) is virtual and the other is
+<p><strong>Case 3:</strong> One of ST(var) and ST(expr) is virtual and the other is
 non-virtual<br />
 and the EPC of the virtual side is "static" (see the <a href="#EPC">definition
 of EPC</a> above)<br />
@@ -655,7 +655,7 @@ computed at check time</a> under these conditions.</p>
 <h3><a id="relatedWork"></a>7. Related Work</h3>
 
 <p>Since a few years there is a broader discussion on "generic and virtual
-types" and particularly on desirable <i class="c6">Java</i> enhancements
+types" and particularly on desirable <em class="c6">Java</em> enhancements
 concerning genericity. A particular outcome of this discussion was a notion of
 "virtual type" that is based on the following idea: A virtual type is described
 by a special kind of member variables of classes. The value of such a virtual
@@ -666,10 +666,10 @@ that may involve this same or other virtual types.</p>
 <p>In order to reference such a virtual type in variable declarations you need
 an object of the respective class containing this virtual type field. (In most
 cases the "this" object is used, which may be omitted usually, or the examples
-make use of "inner classes" in the specific sense of <b class="c2">Java</b> and
+make use of "inner classes" in the specific sense of <b class="c2">Java</strong> and
 thus inherit the virtual type fields of the containing "outer" class.)</p>
 
-<p><i class="c6">Lava</i> takes a rather different approach, primarily for the
+<p><em class="c6">Lava</em> takes a rather different approach, primarily for the
 following reasons:</p>
 <ol>
   <li>We felt that the type of a variable should be declared in a more static
@@ -679,15 +679,15 @@ following reasons:</p>
     of your actual application.</li>
   <li>We preferred to maintain the strict traditional view on "type
     conformance" (type = class describing the mandatory attributes and methods
-    that may be applied to <i>every</i> object conforming to that type), while
+    that may be applied to <em>every</em> object conforming to that type), while
     other proposals, for instance <a href="#TT">[16]</a>, seem to allow
     assignments from List[Car] to List[Vehicle]; cf. <a
     href="#conformance">section 1</a>.</li>
-  <li>The special relation of inner classes to their container classes in <i
-    class="c6">Java</i> has been invented in the likewise special context of
-    the revised event handling / callback concept of <b class="c2">Java</b>
-    1.1. We have a different callback concept in <i class="c6">Lava</i> that
-    doesn't need inner classes in the sense of <i class="c6">Java</i>.<br />
+  <li>The special relation of inner classes to their container classes in <em
+    class="c6">Java</em> has been invented in the likewise special context of
+    the revised event handling / callback concept of <b class="c2">Java</strong>
+    1.1. We have a different callback concept in <em class="c6">Lava</em> that
+    doesn't need inner classes in the sense of <em class="c6">Java</em>.<br />
     <br />
     Packages with virtual type parameters appeared to be more appropriate for
     the representation of patterns consisting of several interrelated classes
@@ -703,7 +703,7 @@ following reasons:</p>
     specializations of the String parameter.</li>
 </ol>
 
-<p>The most recent developments w.r.t. <i class="c6">Java</i> genericity
+<p>The most recent developments w.r.t. <em class="c6">Java</em> genericity
 enhancements (cf. [3], [6]) seems to center exclusively around modernized
 versions of "parametric polymorphism" (a successor concept to C++ templates in
 a sense), which, unlike virtual types, is not particularly suited for coping
@@ -712,7 +712,7 @@ with collective specialization of families of interrelated classes.</p>
 <p>In our section on <a href="CounterSamples.htm">counter-counterexamples</a>
 we show that the examples in reference [4] below that are presented there in
 order to demonstrate inherent flaws of virtual types don't cause any problems
-in <b class="c2">Lava</b>. Therefore we are still convinced that virtual types
+in <b class="c2">Lava</strong>. Therefore we are still convinced that virtual types
 represent the more advantageous, promising and modern approach to genericity in
 object-oriented languages.</p>
 

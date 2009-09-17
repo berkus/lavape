@@ -48,8 +48,8 @@
 
   <h3 class="c2">Preliminary remark</h3>
 
-  <p>In <i class="c3">Lava</i>, conditional clauses, like <span class="style1">if</span>-conditions, are not <i>Boolean</i> or other <i>expressions</i> but quite normal <i>statements</i>, whose evaluation yields a truth value (<span 
-          class="style1">true</span> or <span class="style1">false</span>). This is a consequence of our general opinion that <i class="c3">Lava</i> programs are not sequences of instructions/operations but <i>logical statements</i>, and program execution means <i>verification</i> of those statements.</p>
+  <p>In <em class="c3">Lava</em>, conditional clauses, like <span class="style1">if</span>-conditions, are not <em>Boolean</em> or other <em>expressions</em> but quite normal <em>statements</em>, whose evaluation yields a truth value (<span 
+          class="style1">true</span> or <span class="style1">false</span>). This is a consequence of our general opinion that <em class="c3">Lava</em> programs are not sequences of instructions/operations but <em>logical statements</em>, and program execution means <em>verification</em> of those statements.</p>
 
   <p>In this context, assignment of values to variables (using the 
       <span class="style1">set</span> or <span class="style1">copy</span> statements or output parameters of functions) requires particular consideration:</p>
@@ -66,15 +66,15 @@
     <p>x <span class="style1">=</span> &lt;expression&gt;</p>
   </blockquote>
 
-  <p>for the further verification process. Furthermore, <i class="c3">Lava</i> statements have to be ordered in such a way as to enable a sequential verification process. In particular, a value must be assigned (using <b>set</b>/<b>copy</b> or through output parameters) to a variable before it can in turn be used as an input parameter or as part of an expression.</p>
+  <p>for the further verification process. Furthermore, <em class="c3">Lava</em> statements have to be ordered in such a way as to enable a sequential verification process. In particular, a value must be assigned (using <strong>set</strong>/<strong>copy</strong> or through output parameters) to a variable before it can in turn be used as an input parameter or as part of an expression.</p>
 
   <h3>Definition:</h3>
 
-  <p>An executable <b class="c4">Lava</b> construct has the <b>read-only</b> property (or is <b>free of side-effects</b>) if its execution doesn&#39;t change any pre-existing objects, i.e., objects that existed already before the execution of the construct started.</p>
+  <p>An executable <b class="c4">Lava</strong> construct has the <strong>read-only</strong> property (or is <strong>free of side-effects</strong>) if its execution doesn&#39;t change any pre-existing objects, i.e., objects that existed already before the execution of the construct started.</p>
 
   <h3>Read-only <span class="style2">Lava</span> functions</h3>
 
-  <p>If a function is declared &quot;read-only&quot; then <i class="c3">Lava</i> makes sure</p>
+  <p>If a function is declared &quot;read-only&quot; then <em class="c3">Lava</em> makes sure</p>
 
   <ol>
     <li>that its body assigns values (using <span class="style1">set</span>/<span 
@@ -91,39 +91,39 @@
   <p>A <span class="style4">Lava</span> construct has inherent read-only semantics if it is</p>
 
   <ol>
-    <li>an<span class="style5"> <b>if</b></span>, <span class="style1">elsif</span>, 
-        <span class="style1">ifx</span> <b>branching condition</b>, or</li>
+    <li>an<span class="style5"> <strong>if</strong></span>, <span class="style1">elsif</span>, 
+        <span class="style1">ifx</span> <strong>branching condition</strong>, or</li>
 
     <li>a statement that is evaluated by the &quot;<span class="style1">?</span>&quot; operator to yield a Boolean 
         <span class="style1">true</span>/<span class="style1">false</span> result,</li>
 
-    <li>a <b>selection condition</b>, i.e., as the <span class="style6">where</span> clause of the 
+    <li>a <strong>selection condition</strong>, i.e., as the <span class="style6">where</span> clause of the 
         <span class="style1">exists</span> or <span class="style1">foreach</span> quantifiers or of the 
         <span class="style1">select</span> expression,</li>
 
-    <li>an <b>invariant ( = continuation condition)</b> in a class or implementation declaration,</li>
+    <li>an <strong>invariant ( = continuation condition)</strong> in a class or implementation declaration,</li>
 
-    <li>the logical negation <b>not</b> or the exclusive &quot;or&quot; 
+    <li>the logical negation <strong>not</strong> or the exclusive &quot;or&quot; 
         <span class="style1">xor</span> , where &quot;A <span class="style1">xor</span> B&quot; is interpreted as &quot;((<span 
             class="style1">not</span> A) <span class="style1">and</span> B) or (A 
         <span class="style1">and</span> (<span class="style1">not</span> B))&quot;.</li>
   </ol>
 
   <p>In contrast to the body of a read-only function, these inherently read-only constructs must not contain 
-      <span class="style1">declare</span> or <i>any</i> form of assignment for simplicity.</p>
+      <span class="style1">declare</span> or <em>any</em> form of assignment for simplicity.</p>
 
-  <p>In the first four cases it would be <i>technically possible</i> to allow assignments within these constructs, but it would be <i>problematic</i> to allow them, since a branching/selection/continuation decision could be invalidated by the very evaluation of the controlling conditional, selection, or invariant clause if we would allow side-effects. I.e., the decisive condition for branching, selection, or continuation possibly wouldn&#39;t hold any longer immediately after the evaluation.</p>
+  <p>In the first four cases it would be <em>technically possible</em> to allow assignments within these constructs, but it would be <em>problematic</em> to allow them, since a branching/selection/continuation decision could be invalidated by the very evaluation of the controlling conditional, selection, or invariant clause if we would allow side-effects. I.e., the decisive condition for branching, selection, or continuation possibly wouldn&#39;t hold any longer immediately after the evaluation.</p>
 
-  <p>In case 5 it would have unpleasant <i>technical</i> consequences for the <i>implementation</i> if an assignment would occur in such a clause of the program that would force us to verify the <i>negation</i> of an assignment:</p>
+  <p>In case 5 it would have unpleasant <em>technical</em> consequences for the <em>implementation</em> if an assignment would occur in such a clause of the program that would force us to verify the <em>negation</em> of an assignment:</p>
 
   <blockquote>
     <p><span class="style1">not</span> (x <span class="style1">=</span> &lt;expression&gt;)</p>
   </blockquote>
 
-  <p>during the verification process, since x could then assume infinitely many possible values generally (viz. all values <i>not</i> equal to the value of &lt;expression&gt;). Therefore, since we do not like to test the truth value of the program statement for each of these infinitely many possible values of x, we prefer to exclude all constructs from the <i class="c3">Lava</i> language that could provoke such a situation.</p>
+  <p>during the verification process, since x could then assume infinitely many possible values generally (viz. all values <em>not</em> equal to the value of &lt;expression&gt;). Therefore, since we do not like to test the truth value of the program statement for each of these infinitely many possible values of x, we prefer to exclude all constructs from the <em class="c3">Lava</em> language that could provoke such a situation.</p>
 
   <h3>See also</h3>
 
-  <p class="c5"><a href="SingleAssigLogSem.htm">Logical semantics of <i>Lava</i></a></p>
+  <p class="c5"><a href="SingleAssigLogSem.htm">Logical semantics of <em>Lava</em></a></p>
 </body>
 </html>

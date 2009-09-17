@@ -17,25 +17,25 @@
 </head>
 
 <body>
-  <h2 class="c2">&quot;Private&quot; / &quot;protected&quot; / &quot;friend&quot; counterparts in <b class="c1">Lava</b></h2>
+  <h2 class="c2">&quot;Private&quot; / &quot;protected&quot; / &quot;friend&quot; counterparts in <b class="c1">Lava</strong></h2>
 
   <h3>Private / friend</h3>
 
-  <p>The <b class="c1">Lava</b> counterpart of <b>&quot;private&quot;</b> features of <b class="c1">C++</b> or <b class="c1">Java</b> classes are the features contained in <b class="c1">Lava</b> implementations. All <b class="c1">Lava</b> implementations are completely <b>opaque</b>. You cannot reference any <b class="c1">Lava</b> entity that is declared within a <b class="c1">Lava</b> implementation from outside that implementation.</p>
+  <p>The <b class="c1">Lava</strong> counterpart of <strong>&quot;private&quot;</strong> features of <b class="c1">C++</strong> or <b class="c1">Java</strong> classes are the features contained in <b class="c1">Lava</strong> implementations. All <b class="c1">Lava</strong> implementations are completely <strong>opaque</strong>. You cannot reference any <b class="c1">Lava</strong> entity that is declared within a <b class="c1">Lava</strong> implementation from outside that implementation.</p>
 
-  <p>The analogous effect can be achieved also for <a href="Packages.htm#packages">packages</a> by declaring them to be <b>opaque</b>. Within an implementation or opaque package <i>IP</i> you can derive classes from &quot;outer&quot; base classes or declare new classes and <b>share these within <i>IP</i> without making them visible to the outside world</b>.</p>
+  <p>The analogous effect can be achieved also for <a href="Packages.htm#packages">packages</a> by declaring them to be <strong>opaque</strong>. Within an implementation or opaque package <em>IP</em> you can derive classes from &quot;outer&quot; base classes or declare new classes and <strong>share these within <em>IP</em> without making them visible to the outside world</strong>.</p>
 
-  <p>Implementations of these new classes may be even located in separate <b class="c1">Lava</b> files but nevertheless have the same scope (visibility domain) as the classes they implement. The accessibility of <i>implementations</i> at run time is not restricted by these <i>&quot;opaque&quot;</i> specifiers. (Note that implementations need never be referenced expressly in <b class="c1">Lava</b>.)</p>
+  <p>Implementations of these new classes may be even located in separate <b class="c1">Lava</strong> files but nevertheless have the same scope (visibility domain) as the classes they implement. The accessibility of <em>implementations</em> at run time is not restricted by these <em>&quot;opaque&quot;</em> specifiers. (Note that implementations need never be referenced expressly in <b class="c1">Lava</strong>.)</p>
 
-  <p>We leave it to the reader to compare this opaqueness notion of <b class="c1">Lava</b> with the capabilities inherent in the <b class="c1">C++</b> <b>friend specification</b> or the <b>inner classes</b> of <b class="c1">Java</b>.</p>
+  <p>We leave it to the reader to compare this opaqueness notion of <b class="c1">Lava</strong> with the capabilities inherent in the <b class="c1">C++</strong> <strong>friend specification</strong> or the <strong>inner classes</strong> of <b class="c1">Java</strong>.</p>
 
   <h3><a id="protected"></a>Protected</h3>
 
-  <p>If a class <i>A</i> has a feature (= member variable or member function) <i>f</i> and interface <i>B</i> is derived from <i>A</i> then in some cases you would like to prevent users of <i>B</i> to directly access <i>f</i>. By analogy to the <b class="c1">C++</b> and <b class="c1">Java</b> &quot;protected&quot; specifier you can declare such a feature to be <b>protected</b> in the associated variable or function property sheet of <b class="c1">LavaPE</b> to make <i>f</i> invisible to the clients of <i>B</i> while remaining visible to <i>B</i> and its implementation.</p>
+  <p>If a class <em>A</em> has a feature (= member variable or member function) <em>f</em> and interface <em>B</em> is derived from <em>A</em> then in some cases you would like to prevent users of <em>B</em> to directly access <em>f</em>. By analogy to the <b class="c1">C++</strong> and <b class="c1">Java</strong> &quot;protected&quot; specifier you can declare such a feature to be <strong>protected</strong> in the associated variable or function property sheet of <b class="c1">LavaPE</strong> to make <em>f</em> invisible to the clients of <em>B</em> while remaining visible to <em>B</em> and its implementation.</p>
 
   <h3><a id="staticCalls"></a>Restrictions concerning static function calls</h3>
 
-  <p>To call a function statically means that you circumvent the usual virtual function call (&quot;late binding&quot;) mechanism but you specify precisely which version of the function from which interface shall be called. If <i>f</i> is a member <i>f</i>unction of A then <i>f</i> can be 
-      <b>called statically</b> only from derived classes in <b class="c1">Lava</b>, i.e., from functions that are declared in a derived interface <i>B</i> of <i>A</i> or in the implementation thereof. So if functions are declared in <i>A</i> and overridden in <i>B</i> then clients of <i>B</i> are forced to use the overridden version; they are not allowed to statically call the base version.</p>
+  <p>To call a function statically means that you circumvent the usual virtual function call (&quot;late binding&quot;) mechanism but you specify precisely which version of the function from which interface shall be called. If <em>f</em> is a member <em>f</em>unction of A then <em>f</em> can be 
+      <strong>called statically</strong> only from derived classes in <b class="c1">Lava</strong>, i.e., from functions that are declared in a derived interface <em>B</em> of <em>A</em> or in the implementation thereof. So if functions are declared in <em>A</em> and overridden in <em>B</em> then clients of <em>B</em> are forced to use the overridden version; they are not allowed to statically call the base version.</p>
 </body>
 </html>

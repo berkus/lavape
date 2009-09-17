@@ -47,7 +47,7 @@
 
   <h3>Substitutable type</h3>
 
-  <p>Indicates whether the type of this member variable shall be <a href="../TypeSafety.htm#substitutableType">substitutable</a>, i.e., whether the type of a corresponding actual parameter may also be <a href="../TypeSafety.htm#p-derived">p-derived</a> (rather than <a href="../TypeSafety.htm#c-derived">c-derived</a>) from this formal parameter type. (Cf. the <i><a href="../PatternSamples.htm">ModelManyViews</a></i> and <i><a href="../PatternSamples.htm">CarMeeting</a></i> samples.)</p>
+  <p>Indicates whether the type of this member variable shall be <a href="../TypeSafety.htm#substitutableType">substitutable</a>, i.e., whether the type of a corresponding actual parameter may also be <a href="../TypeSafety.htm#p-derived">p-derived</a> (rather than <a href="../TypeSafety.htm#c-derived">c-derived</a>) from this formal parameter type. (Cf. the <em><a href="../PatternSamples.htm">ModelManyViews</a></em> and <em><a href="../PatternSamples.htm">CarMeeting</a></em> samples.)</p>
 
   <h3>Remove overrides</h3>
 
@@ -55,11 +55,11 @@
 
   <h3>Select type of member variable</h3>
 
-  <p>The type of the member variable may be selected from the combo-boxes &quot;Basic types&quot; and &quot;Other types&quot;. &quot;Basic types&quot; lists all classes whose declaration is contained in the basic include file I&gt;std.lava. If you don&#39;t explicitly select a type for a new member variable then its type will be <i>String</i>.</p>
+  <p>The type of the member variable may be selected from the combo-boxes &quot;Basic types&quot; and &quot;Other types&quot;. &quot;Basic types&quot; lists all classes whose declaration is contained in the basic include file I&gt;std.lava. If you don&#39;t explicitly select a type for a new member variable then its type will be <em>String</em>.</p>
 
   <h3>Kind of reference</h3>
 
-  <p>This attribute enables us to distinguish <a href="../PointersRefCounts.htm#refTypes">three kinds of references</a> to other objects: <i>Constituents</i>, <i>acquaintances</i>, and <i>reverse</i> (back or up) links. Constituents <i>belong</i> to the current object, acquaintances are <i>pointers to independent objects</i>, and reverse links are <i>auxiliary</i> back or up pointers that are required to facilitate automatic storage management by reference counts.</p>
+  <p>This attribute enables us to distinguish <a href="../PointersRefCounts.htm#refTypes">three kinds of references</a> to other objects: <em>Constituents</em>, <em>acquaintances</em>, and <em>reverse</em> (back or up) links. Constituents <em>belong</em> to the current object, acquaintances are <em>pointers to independent objects</em>, and reverse links are <em>auxiliary</em> back or up pointers that are required to facilitate automatic storage management by reference counts.</p>
 
   <h3>Category</h3>
 
@@ -77,7 +77,7 @@
 
   <h3>Read-only</h3>
 
-  <p>A read-only member variable <i>xy</i> of some object can be assigned a value only &quot;from inside the object&quot; via the path <i>self.xy</i>,, i.e., from within functions belonging to the current class or its implementation. It is write-protected against access &quot;from outside&quot;.</p>
+  <p>A read-only member variable <em>xy</em> of some object can be assigned a value only &quot;from inside the object&quot; via the path <em>self.xy</em>,, i.e., from within functions belonging to the current class or its implementation. It is write-protected against access &quot;from outside&quot;.</p>
 
   <h3>Abstract</h3>
 
@@ -85,20 +85,20 @@
 
   <h3>Access via set/get functions</h3>
 
-  <p>If a member variable <i>xy</i> has this property then <a href="../Unsolved.htm#setGetFunctions">set/get functions</a> are generated for it in the implementation of the containing class. Every read or write access to the variable is redirected implicitly through these get/set functions. Only these set/get functions themselves may directly access the variable. In this way you can supervise every access attempt to the variable and, by properly modifying the default set/get functions, achieve additional side effects or perform access permission checks.</p>
+  <p>If a member variable <em>xy</em> has this property then <a href="../Unsolved.htm#setGetFunctions">set/get functions</a> are generated for it in the implementation of the containing class. Every read or write access to the variable is redirected implicitly through these get/set functions. Only these set/get functions themselves may directly access the variable. In this way you can supervise every access attempt to the variable and, by properly modifying the default set/get functions, achieve additional side effects or perform access permission checks.</p>
 
   <a id="consumable" /><h3>Consumable</h3>
 
-  <p><i>Consumable</i> member variables are used for <a href="../Transactions.htm#producerConsumer">producer/consumer synchronization</a> in <i class="c2">Lava</i> (not yet implemented).</p>
+  <p><em>Consumable</em> member variables are used for <a href="../Transactions.htm#producerConsumer">producer/consumer synchronization</a> in <em class="c2">Lava</em> (not yet implemented).</p>
 
   <h3>Mode</h3>
 
-  <p>The mode of a member variable may be <a id="mandatory" /><b>mandatory</b> (default), <b>optional</b>, or <b>placeholder</b>. If <i>optional</i>, the parameter may assume the special <i>null value</i> 
-      <span class="style1">&#216;</span> (&quot;undefined&quot;). <i>Placeholder</i> members cannot be accessed at all. They are used in <a href="../EditForm.htm">forms</a> to describe fields that are to be <i>filled in</i> only in a later step by some other person, although they are <i>visible</i> from the beginning.</p>
+  <p>The mode of a member variable may be <a id="mandatory" /><strong>mandatory</strong> (default), <strong>optional</strong>, or <strong>placeholder</strong>. If <em>optional</em>, the parameter may assume the special <em>null value</em> 
+      <span class="style1">&#216;</span> (&quot;undefined&quot;). <em>Placeholder</em> members cannot be accessed at all. They are used in <a href="../EditForm.htm">forms</a> to describe fields that are to be <em>filled in</em> only in a later step by some other person, although they are <em>visible</em> from the beginning.</p>
 
   <h3>See also</h3>
 
-  <p class="c5"><a href="../SepItfImpl.htm"><span class="style2">Lava</span><b> classes/interfaces/implementations</b></a></p>
+  <p class="c5"><a href="../SepItfImpl.htm"><span class="style2">Lava</span><strong> classes/interfaces/implementations</strong></a></p>
 
   <p class="c3"><a href="../ObjectLifeCycle.htm"><span class="style3">Lava</span> variables</a></p>
 </body>

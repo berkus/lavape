@@ -24,30 +24,30 @@
 <body>
 <h2 class="c1">"Copy" statement</h2>
 
-<p>Use the <b>copy</b> statement to copy an existing <i class="c2">Lava</i>
+<p>Use the <strong>copy</strong> statement to copy an existing <em class="c2">Lava</em>
 object onto another object.</p>
 
-<p>If the target object does not yet exist (i.e, is = <b>0</b>) then
-<b>copy</b> allocates a new target object whose type is the ("static") type of
-the target variable on the left side of <b>copy</b>. (<b>Copy</b> uses the
+<p>If the target object does not yet exist (i.e, is = <strong>0</strong>) then
+<strong>copy</strong> allocates a new target object whose type is the ("static") type of
+the target variable on the left side of <strong>copy</strong>. (<strong>Copy</strong> uses the
 default initializer of that class to initialize the new target object.)
 Subsequently it copies those parts of the source object onto the new target
 object that correspond to common base classes of source and target object.
 (Here we count the whole object class also as a base class.)</p>
 
-<p>If the target object exists (i.e, is &ne; <b>0</b>) then it is "overwritten"
+<p>If the target object exists (i.e, is &ne; <strong>0</strong>) then it is "overwritten"
 by a copy of the source object. Again those parts of the source object are
 copied onto the (existing) target object that correspond to common base classes
 of source and target object.</p>
 
-<p><b>Note</b> that <i class="c2">Lava</i> provides a distinction between
-<b>constituent</b> and <b>acquaintance</b> members of an object. Only the
+<p><strong>Note</strong> that <em class="c2">Lava</em> provides a distinction between
+<strong>constituent</strong> and <strong>acquaintance</strong> members of an object. Only the
 constituents are copied by <span class="style1">copy</span> ("deep copy").
-Acquaintances are considered to be separate, independent objects. <b>Copy</b>
-copies only the <b>pointers</b> to acquaintances.</p>
+Acquaintances are considered to be separate, independent objects. <strong>Copy</strong>
+copies only the <strong>pointers</strong> to acquaintances.</p>
 
-<p><b>Note</b> that <b>copy</b> doesn't make much sense in cases where source
-and target object don't have common base classes. <b>Copy</b> is used primarily
+<p><strong>Note</strong> that <strong>copy</strong> doesn't make much sense in cases where source
+and target object don't have common base classes. <strong>Copy</strong> is used primarily
 to copy a "less derived" onto a "more derived" object or to create a "snapshot"
 of the current state of a <a href="../TwoObjectCategories.htm">state
 object</a>.</p>

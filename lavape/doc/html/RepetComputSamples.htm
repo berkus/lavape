@@ -30,7 +30,7 @@
 <body>
   <h2 class="c1">Replacing loops by recursion</h2>
 
-  <p>It might appear as a provocation that <i class="c2">Lava</i> abandons sequential loops, and many people will say perhaps that <b class="c3">Lava</b> will not be accepted by the majority of programmers for this reason.</p>
+  <p>It might appear as a provocation that <em class="c2">Lava</em> abandons sequential loops, and many people will say perhaps that <b class="c3">Lava</strong> will not be accepted by the majority of programmers for this reason.</p>
 
   <p>On the other hand, mathematicians (like us) remember very well how surprised they were when they learned their first (procedural) programming language and had to write &quot;do-, for-, repeat- or while-loops&quot;, instead of recursion, and mathematically provocative statements like &quot;n = n+1&quot;.</p>
 
@@ -58,7 +58,7 @@ while (...)
   else
     while (...)
       if (...) {
-        x = g(<b>x</b>,...);
+        x = g(<strong>x</strong>,...);
     // where has this value of x been assigned???
         ...
       }
@@ -90,11 +90,11 @@ while (...)
 
   <p>In contrast to this, if we use recursive functions instead of loops and abandon multiple assignment, then the above &quot;jungle&quot; is decomposed into small functions and the data flow within each of the corresponding function bodies is directed strictly from top to bottom:</p>
 
-  <p class="c9">For every read access to a <i>Lava</i> variable you can easily find the origin of the current value of this variable by following the containing program branch in upward direction (unless the variable is an input variable and therefore a value is assigned to it already <i>outside</i> this function).</p>
+  <p class="c9">For every read access to a <em>Lava</em> variable you can easily find the origin of the current value of this variable by following the containing program branch in upward direction (unless the variable is an input variable and therefore a value is assigned to it already <em>outside</em> this function).</p>
 
-  <p class="c9"><a id="topToBottom"></a>Summary: In <i>Lava</i>, both control flow <em>and</em> data flow are directed strictly from top to bottom.</p>
+  <p class="c9"><a id="topToBottom"></a>Summary: In <em>Lava</em>, both control flow <em>and</em> data flow are directed strictly from top to bottom.</p>
 
-  <p>The most important advantage of this combination of single-assignment and recursion in <i class="c2">Lava</i>, however, is that it enables perfect initialization checks for</p>
+  <p>The most important advantage of this combination of single-assignment and recursion in <em class="c2">Lava</em>, however, is that it enables perfect initialization checks for</p>
 
   <ul>
     <li>all local variables,</li>
@@ -110,12 +110,12 @@ while (...)
 
   <p>In the following we present two categories of samples which are both related to iteration/recursion.</p>
 
-  <p>The <b>Recursion samples</b> illustrate how sequential loops can be replaced by tail recursion in a more or less mechanical way and how computationally inefficient forms of recursion, particularly tree recursion, can be transformed into tail recursion.</p>
+  <p>The <strong>Recursion samples</strong> illustrate how sequential loops can be replaced by tail recursion in a more or less mechanical way and how computationally inefficient forms of recursion, particularly tree recursion, can be transformed into tail recursion.</p>
 
-  <p>The <b>Iterator/cursor/visitor samples</b> show how certain aspects and details of aggregate/container objects can be hidden and separated from certain kinds of sequential algorithms that run through these data structures and process the contained items.</p>
+  <p>The <strong>Iterator/cursor/visitor samples</strong> show how certain aspects and details of aggregate/container objects can be hidden and separated from certain kinds of sequential algorithms that run through these data structures and process the contained items.</p>
 
-  <p>There is a kind of traditional loops that aren&#39;t inherently sequential since they don&#39;t forward information from one pass of the loop to the next. They could therefore be executed concurrently. They typically run through an index range or through the elements of a set and perform an <i>exhaustive</i> or a <i>&quot;stop when found&quot;</i> search. This kind of loops is expressed by <a href="DatabaseIntegration.htm">&quot;quantifiers&quot;</a> 
-      <span class="style1">exist</span> and <span class="style1">foreach</span> in <b class="c3">Lava</b>, as well as by the <b><a href="DatabaseIntegration.htm">select</a></b> expression which corresponds to the SQL select construct and is used to express set-oriented queries. The <b>Quantifier sample</b> presents a basic application of 
+  <p>There is a kind of traditional loops that aren&#39;t inherently sequential since they don&#39;t forward information from one pass of the loop to the next. They could therefore be executed concurrently. They typically run through an index range or through the elements of a set and perform an <em>exhaustive</em> or a <em>&quot;stop when found&quot;</em> search. This kind of loops is expressed by <a href="DatabaseIntegration.htm">&quot;quantifiers&quot;</a> 
+      <span class="style1">exist</span> and <span class="style1">foreach</span> in <b class="c3">Lava</strong>, as well as by the <strong><a href="DatabaseIntegration.htm">select</a></strong> expression which corresponds to the SQL select construct and is used to express set-oriented queries. The <strong>Quantifier sample</strong> presents a basic application of 
       <span class="style1">exist</span> and <span class="style1">foreach</span> quantifiers and of set element handles.</p>
 
   <h3><a href="RecursionSamples.htm">Recursion samples</a></h3>
