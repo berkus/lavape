@@ -55,8 +55,8 @@ class="c3">Lava</em>.</p>
 
 <p>The widespread programming languages, however, do not provide proper
 expressive means for implementing concrete incarnations of design patterns.
-Parameterized classes as the <strong>"templates"</strong> of <b class="c4">C++</strong> or the
-<strong>"generic classes"</strong> of <b class="c4">Eiffel</strong> do not meet the
+Parameterized classes as the <strong>"templates"</strong> of <strong class="c4">C++</strong> or the
+<strong>"generic classes"</strong> of <strong class="c4">Eiffel</strong> do not meet the
 requirements: They can be viewed as special macros or as type generation
 constructs having three serious drawbacks:</p>
 <ol>
@@ -71,18 +71,18 @@ constructs having three serious drawbacks:</p>
   compilation/linking.</li>
 </ol>
 
-<p>For the design of <b class="c4">Lava</strong> we have drawn the following
+<p>For the design of <strong class="c4">Lava</strong> we have drawn the following
 conclusions from this situation and from the fact that we have a <a
-href="Packages.htm#packages">package</a> notion in <b class="c4">Lava</strong>
+href="Packages.htm#packages">package</a> notion in <strong class="c4">Lava</strong>
 anyway that allows us to form groups of related classes or other
 declarations:</p>
 <ol>
-  <li><b class="c4">Lava</strong> introduces patterns as packages or classes with
+  <li><strong class="c4">Lava</strong> introduces patterns as packages or classes with
     named type parameters (<strong>"pattern parameters"</strong> or <strong><a
     id="VT"></a>"virtual types"</strong>, short: <strong>VT</strong>). Packages/classes with
     VTs are called <strong>"patterns"</strong> since they are used to provide concrete
     implementations of design patterns in <em class="c3">Lava</em>.</li>
-  <li>The value of a VT may designate a <b class="c4">Lava</strong> class or another
+  <li>The value of a VT may designate a <strong class="c4">Lava</strong> class or another
     VT that is visible at this place (see 8. below). A VT of a class may in
     particular designate its containing class and serve as a <strong
     class="c4">Lava</strong> substitute for the ThisType or MyType of other VT
@@ -124,7 +124,7 @@ declarations:</p>
     then A1 cannot be referenced directly, either. (A motivation of this rule
     is given in our <a href="IsSelfVirtualSample.htm">IsSelfVirtual
   sample</a>.)</li>
-  <li><a id="patternContext"></a><b class="c4">Lava</strong> restricts the ways in
+  <li><a id="patternContext"></a><strong class="c4">Lava</strong> restricts the ways in
     which pattern declarations may be nested: There may be only <strong>two nested
     layers</strong> of packages or classes containing virtual types. (The VT
     implementation costs would be considerably higher if nesting of VT layers
@@ -133,7 +133,7 @@ declarations:</p>
     the declarations belonging to or nested in the lower layer. Generally, the
     term "pattern context of a declaration" designates the <em>combination</em>
     of the inner and outer pattern context.</li>
-  <li><b class="c4">Lava</strong> supports <strong>multiple inheritance</strong> not only on
+  <li><strong class="c4">Lava</strong> supports <strong>multiple inheritance</strong> not only on
     the class level but also on the package level: A package may be derived
     from one or several other packages. Non-overridden virtual types from
     immediate or indirect base patterns are inherited and visible also in the
@@ -144,7 +144,7 @@ declarations:</p>
     still treated as an "external" rather than as a virtual type reference
     (although <em>T2</em> belongs to the context of the common derived pattern
     <em>P3</em> now).</li>
-  <li><b class="c4">Lava</strong> maintains the classical view of parameterized
+  <li><strong class="c4">Lava</strong> maintains the classical view of parameterized
     types (like C++ templates) insofar as it considers two instantiations of
     the same type in different pattern contexts to be incompatible.</li>
 </ol>
@@ -152,7 +152,7 @@ declarations:</p>
 <p>The currently valid value of a pattern parameter or <strong>"virtual type
 (VT)"</strong> is taken at run time from a <strong>"virtual type table (VTT)"</strong> similar
 to the usual <strong>"virtual function table (VFT)"</strong> of object-oriented
-programming systems. As usual, <b class="c4">Lava</strong> provides for every <strong
+programming systems. As usual, <strong class="c4">Lava</strong> provides for every <strong
 class="c4">Lava</strong> object a pointer to its associated VFT, but additionally
 also a pointer to an associated VTT. Like the VFT, the proper VTT is determined
 on object creation, roughly spoken as the "pattern context" of its
@@ -178,7 +178,7 @@ class declaration, having virtual types.</p>
 <h3>2. Representation and specialization of patterns in <strong
 class="c4">LavaPE</strong></h3>
 
-<p>In the <a href="EditTree.htm"><b class="c4">Lava</strong> declaration view</a> a
+<p>In the <a href="EditTree.htm"><strong class="c4">Lava</strong> declaration view</a> a
 pattern is just a quite normal <a href="Packages.htm">package</a> or <a
 href="SepItfImpl.htm">class</a> declaration, having virtual types (VT). <a
 id="VTvalue"></a> A virtual type vt has a name and a value VAL(vt). The value
@@ -204,7 +204,7 @@ is "empty"; a non-empty value may be assigned when overriding the abstract VT
 in a derived pattern.</p>
 
 <p>Generally, package and class declarations may be <a id="nesting"></a>
-<strong>nested to any depth</strong> in <b class="c4">Lava</strong> (but class declarations
+<strong>nested to any depth</strong> in <strong class="c4">Lava</strong> (but class declarations
 cannot contain nested package declarations). For packages and classes with
 virtual types the above-mentioned <a href="#patternContext">restrictions</a>
 apply, however.</p>

@@ -26,7 +26,7 @@
 
   <h3>Sample files</h3>
 
-  <p>Please open <strong>VirtualBase.lava</strong> in <b class="c2">LavaPE</strong>.</p>
+  <p>Please open <strong>VirtualBase.lava</strong> in <strong class="c2">LavaPE</strong>.</p>
 
   <h3>Topic</h3>
 
@@ -34,21 +34,21 @@
 
   <h3>Overview</h3>
 
-  <p>First remember that the term &quot;<a href="SepItfImpl.htm#virtualBaseClasses">virtual base class</a>&quot; has a different meaning in <b class="c2">Lava</strong> than in C++.</p>
+  <p>First remember that the term &quot;<a href="SepItfImpl.htm#virtualBaseClasses">virtual base class</a>&quot; has a different meaning in <strong class="c2">Lava</strong> than in C++.</p>
 
-  <p>While in other OO languages you can extend only concrete classes/interfaces, <b class="c2">Lava</strong> allows you to specify <em>virtual</em> types (= type parameters of containing patterns) as base interfaces of a new class.</p>
+  <p>While in other OO languages you can extend only concrete classes/interfaces, <strong class="c2">Lava</strong> allows you to specify <em>virtual</em> types (= type parameters of containing patterns) as base interfaces of a new class.</p>
 
-  <p>This unique feature of <b class="c2">Lava</strong> provides a much more natural and convenient realization of the well-known &quot;decorator&quot; pattern (cf. the frequently cited &quot;Design Patterns&quot; book <a href="TypeSafety.htm#GOF">[8]</a> of the &quot;Gang of Four&quot;).</p>
+  <p>This unique feature of <strong class="c2">Lava</strong> provides a much more natural and convenient realization of the well-known &quot;decorator&quot; pattern (cf. the frequently cited &quot;Design Patterns&quot; book <a href="TypeSafety.htm#GOF">[8]</a> of the &quot;Gang of Four&quot;).</p>
 
   <p>A typical application of the decorator pattern is, for instance, to &quot;decorate&quot; all kinds of windows of a graphical user interface by scrollbars or borders (or first scrollbars and then borders). More precisely:</p>
 
   <p>There is a common base class B of all types of windows. There are special window classes W<sub>1</sub>, W<sub>2</sub>, W<sub>3</sub>, ... that are all derived from B. In order to attach a border to any type of window you need to use only functions that are already declared in B, for instance a function <em>reqSize</em> that computes the &quot;required size&quot; of the respective window, which will, of course, depend on the respective content of that type of window. Therefore <em>reqSize</em> will be overridden by the special window types W<sub>1</sub>, W<sub>2</sub>, W<sub>3</sub>, ..., and the decorator extension DW<sub>n</sub> of any special window type W<sub>n</sub> (which adds the border to W<sub>n</sub>) will have to call this overridden W<sub>n</sub>-version of <em>reqSize</em> statically.</p>
 
-  <p>Actually we could declare and implement the border extension of special window classes without knowing anything about a concrete W<sub>n</sub> except that it is derived from B. All we need is a way to specify a type <em>parameter</em> (rather than a concrete type) as a base type of a new type and a way to express a static call of a member function of such a parameter type. Both features are supported by <b class="c2">Lava</strong>, as is demonstrated by our virtual base sample.</p>
+  <p>Actually we could declare and implement the border extension of special window classes without knowing anything about a concrete W<sub>n</sub> except that it is derived from B. All we need is a way to specify a type <em>parameter</em> (rather than a concrete type) as a base type of a new type and a way to express a static call of a member function of such a parameter type. Both features are supported by <strong class="c2">Lava</strong>, as is demonstrated by our virtual base sample.</p>
 
-  <p>A particular advantage of the <b class="c2">Lava</strong> solution to the decorator problem is that DW<sub>n</sub> is a true extension of W<sub>n</sub> and thus inherits all features of W<sub>n</sub> (including those of B). The solution of <a href="TypeSafety.htm#GOF">[8]</a> establishes the specialized windows W<sub>n</sub> as child windows (i.e., as member variables) of the decorated windows DW<sub>n</sub>. Thus DW<sub>n</sub> doesn&#39;t inherit the features of W<sub>n</sub> automatically, but you have to reconstruct them explicitly in DW<sub>n</sub> by &quot;delegating&quot; the respective function calls to the corresponding functions of the W<sub>n</sub> member object of DW<sub>n</sub>.</p>
+  <p>A particular advantage of the <strong class="c2">Lava</strong> solution to the decorator problem is that DW<sub>n</sub> is a true extension of W<sub>n</sub> and thus inherits all features of W<sub>n</sub> (including those of B). The solution of <a href="TypeSafety.htm#GOF">[8]</a> establishes the specialized windows W<sub>n</sub> as child windows (i.e., as member variables) of the decorated windows DW<sub>n</sub>. Thus DW<sub>n</sub> doesn&#39;t inherit the features of W<sub>n</sub> automatically, but you have to reconstruct them explicitly in DW<sub>n</sub> by &quot;delegating&quot; the respective function calls to the corresponding functions of the W<sub>n</sub> member object of DW<sub>n</sub>.</p>
 
-  <p><strong>Summary:</strong> The virtual base types of <b class="c2">Lava</strong> provide a new kind of abstraction that enables us to specify and implement extension interfaces (in a generic way, &quot;once for all&quot;) without knowing the precise concrete type(s) of the base class(es).</p>
+  <p><strong>Summary:</strong> The virtual base types of <strong class="c2">Lava</strong> provide a new kind of abstraction that enables us to specify and implement extension interfaces (in a generic way, &quot;once for all&quot;) without knowing the precise concrete type(s) of the base class(es).</p>
 
   <h3>Where to look and what to do</h3>
 

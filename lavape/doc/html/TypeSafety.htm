@@ -38,11 +38,11 @@
 <h2 class="c1">Static type-safety of <span class="style1">Lava</span>, related work</h2>
 
 <p class="c3">Before we can proceed to the outline of a proof of the static
-type-safety of <b class="c2">Lava</strong> we have to introduce a number of terms,
+type-safety of <strong class="c2">Lava</strong> we have to introduce a number of terms,
 to clarify several pertinent notions, and to explain a number of general
 restrictions that we impose on the <a href="#compatibility">admissibility of
 assignments</a> in order to achieve <a href="#typeSafety">static
-type-safety</a> for <b class="c2">Lava</strong>.</p>
+type-safety</a> for <strong class="c2">Lava</strong>.</p>
 
 <h3 class="c4">1. Semantics of "type conformance"</h3>
 
@@ -111,7 +111,7 @@ types (cf. <a href="#compatibility">section 4.1</a>). So you have to
 expressions. In some cases you have to check whether an EPC is <em><a
 href="#staticEPC">"static"</a></em>. The following sections deal with these
 problems and end up in a more detailed specification of assignment
-compatibility in <b class="c2">Lava</strong>.</p>
+compatibility in <strong class="c2">Lava</strong>.</p>
 
 <h3><a id="derivationType"></a>2. Classic vs. pattern-induced derivations</h3>
 
@@ -313,7 +313,7 @@ local variable var:</p>
 <p>Assume that var is a member variable a<sub>1</sub><strong>.</strong>a<sub>2</sub><strong>.
 ... .</strong>a<sub>n</sub> (with n&gt;1). Then a<sub>1</sub> is a local variable or
 a formal parameter. (Note that a member x of the "self/this" object is
-designated by "self<strong>.</strong>x" in <b class="c2">Lava</strong>.) The EPC of such a
+designated by "self<strong>.</strong>x" in <strong class="c2">Lava</strong>.) The EPC of such a
 variable is then defined recursively as follows:</p>
 
 <blockquote>
@@ -356,7 +356,7 @@ MVT(npt,p) = npt.</p>
 
 <p>Note: If the value of a virtual type vt<sub>1</sub> is again a virtual type
 vt<sub>2</sub> and vt<sub>1</sub> has been overridden by vt<sub>1m</sub> in a
-derived pattern dp then the <b class="c2">Lava</strong> override mechanism
+derived pattern dp then the <strong class="c2">Lava</strong> override mechanism
 automatically guarantees that</p>
 <ul>
   <li>if vt<sub>2</sub> has also been overridden in dp (by vt<sub>2m</sub>,
@@ -469,15 +469,15 @@ conditions can be evaluated statically.</p>
 <p>The third case covers in particular situations where a virtual type with
 "closed bound" (<a href="#TT">[16]</a> p. 189) would be definitely undesirable
 whereas the "<a href="dialogs/FunctionBox.htm#forceOverride">callable only from
-this VT context</a>" mechanism of <b class="c2">Lava</strong> is still applicable
+this VT context</a>" mechanism of <strong class="c2">Lava</strong> is still applicable
 and acceptable.</p>
 
 <p>For simplicity's sake we have omitted the trivial rule that every type is
 assignment compatible with the common base type "Object" of all types.</p>
 
-<p>The <b class="c2">Lava</strong> programming environment <b class="c2">LavaPE</strong>
+<p>The <strong class="c2">Lava</strong> programming environment <strong class="c2">LavaPE</strong>
 makes it very easy for the programmer to obey these rules since references to
-types are not keyed in as textual identifiers in <b class="c2">Lava</strong> but
+types are not keyed in as textual identifiers in <strong class="c2">Lava</strong> but
 selected from proper type-selection combo-boxes whose contents would depend on
 the current insertion point. These combo-boxes simply will not offer
 inadmissible types for selection in the foregoing situations.</p>
@@ -531,10 +531,10 @@ one of these is declared "substitutable" explicitly.</p>
 which is a variable, and a right-hand side, which may be a variable, a
 constant, or an operator or function expression.</p>
 
-<p>Now the static type-safety of <b class="c2">Lava</strong> can be stated as
+<p>Now the static type-safety of <strong class="c2">Lava</strong> can be stated as
 follows:</p>
 <ul>
-  <li>If at run time a <b class="c2">Lava</strong> program assigns an object obj to
+  <li>If at run time a <strong class="c2">Lava</strong> program assigns an object obj to
     a variable var then we can be sure that obj conforms to ET(var), i.e., the
     run time type RT(obj) is equal to or c-derived from ET(var),</li>
   <li>provided one of the alternative static <a
@@ -542,7 +542,7 @@ follows:</p>
     fulfilled.</li>
 </ul>
 
-<h3><a id="proof"></a>6. Proof outline: <b class="c2">Lava</strong> is statically
+<h3><a id="proof"></a>6. Proof outline: <strong class="c2">Lava</strong> is statically
 type-safe</h3>
 
 <p>The places where the run time system injects objects into the program must
@@ -552,7 +552,7 @@ interfaces. Likewise, all cases of missing initialization of variables or
 exceptional operations leading to undefined results have to be detected by the
 run time system and will never cause type violations.</p>
 
-<p>Now assume that we had a "bad", non-type-safe <b class="c2">Lava</strong> program
+<p>Now assume that we had a "bad", non-type-safe <strong class="c2">Lava</strong> program
 that performs a "bad" assignment A. If the right-hand side of A is ok, i.e.,
 the object delivered by the right-hand side expression conforms to the type of
 that expression, then we stay with A. Otherwise we can prove that there yet
@@ -666,7 +666,7 @@ that may involve this same or other virtual types.</p>
 <p>In order to reference such a virtual type in variable declarations you need
 an object of the respective class containing this virtual type field. (In most
 cases the "this" object is used, which may be omitted usually, or the examples
-make use of "inner classes" in the specific sense of <b class="c2">Java</strong> and
+make use of "inner classes" in the specific sense of <strong class="c2">Java</strong> and
 thus inherit the virtual type fields of the containing "outer" class.)</p>
 
 <p><em class="c6">Lava</em> takes a rather different approach, primarily for the
@@ -685,7 +685,7 @@ following reasons:</p>
     href="#conformance">section 1</a>.</li>
   <li>The special relation of inner classes to their container classes in <em
     class="c6">Java</em> has been invented in the likewise special context of
-    the revised event handling / callback concept of <b class="c2">Java</strong>
+    the revised event handling / callback concept of <strong class="c2">Java</strong>
     1.1. We have a different callback concept in <em class="c6">Lava</em> that
     doesn't need inner classes in the sense of <em class="c6">Java</em>.<br />
     <br />
@@ -712,7 +712,7 @@ with collective specialization of families of interrelated classes.</p>
 <p>In our section on <a href="CounterSamples.htm">counter-counterexamples</a>
 we show that the examples in reference [4] below that are presented there in
 order to demonstrate inherent flaws of virtual types don't cause any problems
-in <b class="c2">Lava</strong>. Therefore we are still convinced that virtual types
+in <strong class="c2">Lava</strong>. Therefore we are still convinced that virtual types
 represent the more advantageous, promising and modern approach to genericity in
 object-oriented languages.</p>
 

@@ -167,7 +167,7 @@
   <h3><a id="optional"></a>B) Preventing <span class="style1">&#216;</span>-to-mandatory assignments</h3>
 
   <p>In <em class="c2">Lava</em>, an expression that yields an <a href="dialogs/MemVarBox.htm#mandatory">optional</a> result (i.e., one that may assume the special value 
-      <span class="style1">&#216;</span>), cannot be unconditionally assigned to a <a href="dialogs/MemVarBox.htm#mandatory">mandatory</a> variable in <b class="c7">Lava</strong>, but you must either enclose the assignment in the 
+      <span class="style1">&#216;</span>), cannot be unconditionally assigned to a <a href="dialogs/MemVarBox.htm#mandatory">mandatory</a> variable in <strong class="c7">Lava</strong>, but you must either enclose the assignment in the 
       <span class="style1">then</span> clause of an <strong><a href="whatsThis/IfdefElse.htm">ifdef</a></strong> statement (which tests whether the optional variable in the 
       <span class="style1">ifdef</span>-condition has a non-null value), or you must use an <strong><a href="whatsThis/IfdefElse.htm#elseExpr">else</a></strong> expression or a chain of 
       <span class="style4">else</span> expressions which finally provides an alternative expression that yields a non-optional value.</p>
@@ -180,7 +180,7 @@
       <span class="style2">C++</span> / <span class="style2">Java</span> / 
       <span class="style2">C#</span></h3>
 
-  <p>The <strong>definite assignment checks</strong> of <b class="c7">Java</strong> and <em class="c2">C#</em>, like those of <b class="c7">Lava</strong> (see above), ensure merely that <strong>local variables</strong> are assigned before they are used. But the absence of the optional/mandatory distinction and of a clear distinction between input and output parameters makes it impossible to have a greater benefit from the analytical capabilities of the compiler. E.g., look at the following little <em class="c2">Java</em> program:</p>
+  <p>The <strong>definite assignment checks</strong> of <strong class="c7">Java</strong> and <em class="c2">C#</em>, like those of <strong class="c7">Lava</strong> (see above), ensure merely that <strong>local variables</strong> are assigned before they are used. But the absence of the optional/mandatory distinction and of a clear distinction between input and output parameters makes it impossible to have a greater benefit from the analytical capabilities of the compiler. E.g., look at the following little <em class="c2">Java</em> program:</p>
 
 <pre xml:space="preserve">
 public class Hello {<br /> public static void main(String[] args) {<br /> A a, a2;<br />    <br /> a = new A();<br /> a2 = a.func();<br /> System.out.println(a2.toString());<br /> }<br />}<br /><br />class A {<br /> public int x, y;<br /><br /> public A func() {<br /> return null;<br /> };<br />};<br />
@@ -190,7 +190,7 @@ public class Hello {<br /> public static void main(String[] args) {<br /> A a, a
 
   <p>In contrast to this, <em class="c2">LavaPE</em> will allow the assignment of <strong>&#216;</strong> (null) to an output parameter of a function only if the corresponding formal parameter is declared <strong>optional</strong>. As a consequence, the assignment &quot;a2 <strong>&lt;==</strong> a.func()&quot; in the main program would be rejected at programming time since the assignment target a2 is mandatory. If a2 were declared optional instead, then &quot;a2.toString()&quot; would now be rejected since the use of the optional variable a2 isn&#39;t secured by an <strong><a href="whatsThis/IfdefElse.htm">ifdef</a></strong> statement or <strong><a href="whatsThis/IfdefElse.htm">else</a></strong> expression here.</p>
 
-  <p>The <strong>constructor</strong> notions of <b class="c7">C++</strong> / <b class="c7">Java</strong> / <b class="c7">C#</strong> can only guarantee that an object is initialized <strong>anyhow</strong>: Its member variables are set to default values (numbers to 0 or 0.0, reference types to <em>null</em>, etc.) if a more meaningful value isn&#39;t assigned explicitly. In most cases this won&#39;t prevent the application from crashing, or, even worse, from silently delivering faulty results.</p>
+  <p>The <strong>constructor</strong> notions of <strong class="c7">C++</strong> / <strong class="c7">Java</strong> / <strong class="c7">C#</strong> can only guarantee that an object is initialized <strong>anyhow</strong>: Its member variables are set to default values (numbers to 0 or 0.0, reference types to <em>null</em>, etc.) if a more meaningful value isn&#39;t assigned explicitly. In most cases this won&#39;t prevent the application from crashing, or, even worse, from silently delivering faulty results.</p>
 
   <p>In contrast to this, <em class="c2">Lava</em> informs the programmer already at programming time if an initializer is missing or an existing initializer fails to initialize all mandatory member variables. The enforced distinction between optional and mandatory variables is of crucial importance in this context.</p>
 

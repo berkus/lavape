@@ -80,31 +80,31 @@
 <strong><span class="style4">function</span> </strong>f1
 <span class="style1">inputs:</span>
   Integer <span class="style6">i1</span>, i2; <span class="style5">the color of i1 means &quot;optional&quot;</span>
-<b style="color: #0000FF">outputs:</strong>
+<strong style="color: #0000FF">outputs:</strong>
   Integer o1;
 
-<b style="color: #0000FF">ifdef</strong>
+<strong style="color: #0000FF">ifdef</strong>
   i1
-<b style="color: #0000FF">then</strong>
-  <b style="color: #0000FF">set</strong> o1 <b style="color: #0000FF">&lt;==</strong> i1
-<b style="color: #0000FF">#ifdef
+<strong style="color: #0000FF">then</strong>
+  <strong style="color: #0000FF">set</strong> o1 <strong style="color: #0000FF">&lt;==</strong> i1
+<strong style="color: #0000FF">#ifdef
 ifdef
   </strong><strong>i1
-</strong><b style="color: #0000FF">else</strong>
-  <b style="color: #0000FF">set</strong> o1 <b style="color: #0000FF">&lt;==</strong> i2
-<b style="color: #0000FF">#ifdef
+</strong><strong style="color: #0000FF">else</strong>
+  <strong style="color: #0000FF">set</strong> o1 <strong style="color: #0000FF">&lt;==</strong> i2
+<strong style="color: #0000FF">#ifdef
 </strong><em style="color: #009933">Here LavaPE would blame that the mandatory output parameter o1
 isn&#39;t set in all branches of funktion f1...</em></pre>
 
 <pre xml:space="preserve">
-<span class="style5">... but this would be correct:</span><b style="color: #0000FF">
+<span class="style5">... but this would be correct:</span><strong style="color: #0000FF">
 ifdef</strong>
   i1
-<b style="color: #0000FF">then</strong>
-  <b style="color: #0000FF">set</strong> o1 <b style="color: #0000FF">&lt;==</strong> i1
-<b style="color: #0000FF">else</strong>
-  <b style="color: #0000FF">set</strong> o1 <b style="color: #0000FF">&lt;==</strong> i2
-<b style="color: #0000FF">#ifdef</strong>
+<strong style="color: #0000FF">then</strong>
+  <strong style="color: #0000FF">set</strong> o1 <strong style="color: #0000FF">&lt;==</strong> i1
+<strong style="color: #0000FF">else</strong>
+  <strong style="color: #0000FF">set</strong> o1 <strong style="color: #0000FF">&lt;==</strong> i2
+<strong style="color: #0000FF">#ifdef</strong>
 </pre>
 
   <a id="elseExpr" /><h3>Else expression</h3>

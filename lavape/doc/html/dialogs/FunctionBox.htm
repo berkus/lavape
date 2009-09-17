@@ -51,7 +51,7 @@
 
   <p>Every class (except for component object interfaces) must have at least one <a href="../ObjectLifeCycle.htm#creation">initializer</a> function. Initializers are used to bring newly created objects into a state where all their non-optional member variables have a non-null value. Member functions may be invoked for a new object only after this state has been reached. <em>Base initializers</em> are called automatically for every base class at the beginning of the body of any initializer in order to properly initialize the base parts of the current object.</p>
 
-  <p>In <b class="c2">Lava</strong> you must always specify an <em>initializer</em> (rather than a creatable class) when using a 
+  <p>In <strong class="c2">Lava</strong> you must always specify an <em>initializer</em> (rather than a creatable class) when using a 
       <span class="style1">new</span> expression to create a new object.</p>
 
   <h3>Default initializer</h3>
@@ -69,9 +69,9 @@
 
   <p><strong>Example:</strong> Mathematical functions that can be applied to Integers/Floats/Doubles but that are not contained in the Integer/Float/Double interfaces: You may declare then, for instance, a class &quot;Math&quot; containing static functions &quot;sin&quot;, &quot;cos&quot;, &quot;exp&quot;, &quot;log&quot;, etc. that accept &quot;Float x&quot; as input parameter and you can invoke these in the usual form &quot;sin(x)&quot;, rather than &quot;x.sin()&quot;, &quot;log(x)&quot;, rather than &quot;x.log()&quot;.</p>
 
-  <p><strong>Note:</strong> <em class="c3">Lava</em> doesn&#39;t make a distinction between virtual and non-virtual non-static member functions of classes, as for instance <b class="c2">C++</strong> does, but all non-static member functions are virtual automatically and thus may be overridden in derived classes.</p>
+  <p><strong>Note:</strong> <em class="c3">Lava</em> doesn&#39;t make a distinction between virtual and non-virtual non-static member functions of classes, as for instance <strong class="c2">C++</strong> does, but all non-static member functions are virtual automatically and thus may be overridden in derived classes.</p>
 
-  <p><strong>Note:</strong> To call a non-static function statically means that you circumvent the usual virtual function call (&quot;late binding&quot;) mechanism but you specify precisely which version of the function from which class shall be called. If <em>f</em> is a member <em>function</em> of <em>A</em> then <em>f</em> can be called statically <strong>only from derived classes</strong> in <b class="c2">Lava</strong>, i.e., from functions that are declared in a derived class <em>B</em> of <em>A</em> or in the implementation thereof. So if functions are declared in <em>A</em> and overridden in <em>B</em> then clients of <em>B</em> are forced to use the overridden version; they are not allowed to statically call the base version.</p>
+  <p><strong>Note:</strong> To call a non-static function statically means that you circumvent the usual virtual function call (&quot;late binding&quot;) mechanism but you specify precisely which version of the function from which class shall be called. If <em>f</em> is a member <em>function</em> of <em>A</em> then <em>f</em> can be called statically <strong>only from derived classes</strong> in <strong class="c2">Lava</strong>, i.e., from functions that are declared in a derived class <em>B</em> of <em>A</em> or in the implementation thereof. So if functions are declared in <em>A</em> and overridden in <em>B</em> then clients of <em>B</em> are forced to use the overridden version; they are not allowed to statically call the base version.</p>
 
   <h3>Abstract</h3>
 

@@ -35,8 +35,8 @@
 </head>
 
 <body>
-  <h2 class="c2"><b class="c1">Lava</strong> variables,<br />
-  stages in the life of a <b class="c1">Lava</strong> object</h2>
+  <h2 class="c2"><strong class="c1">Lava</strong> variables,<br />
+  stages in the life of a <strong class="c1">Lava</strong> object</h2>
 
   <h3><a id="dclCreation"></a>Declaration of variables</h3>
 
@@ -45,32 +45,32 @@
 pi  <span class="style1">&lt;==</span>  3.14
 </pre>
 
-  <p>In <b class="c1">Lava</strong> variables may be declared</p>
+  <p>In <strong class="c1">Lava</strong> variables may be declared</p>
 
   <ol>
-    <li>as member variables of classes or implementations using the <a href="EditTree.htm">declaration view</a> of <b class="c1">LavaPE</strong>,</li>
+    <li>as member variables of classes or implementations using the <a href="EditTree.htm">declaration view</a> of <strong class="c1">LavaPE</strong>,</li>
 
-    <li>as input or output parameters of functions or initiators using the <a href="EditTree.htm">declaration view</a> of <b class="c1">LavaPE</strong>,</li>
+    <li>as input or output parameters of functions or initiators using the <a href="EditTree.htm">declaration view</a> of <strong class="c1">LavaPE</strong>,</li>
 
     <li>as &quot;unbounded&quot; local variables in execs or invariants using the 
-        <span class="style1">declare</span> construct in the <a href="EditExec.htm">exec view</a> of <b class="c1">LavaPE</strong>,</li>
+        <span class="style1">declare</span> construct in the <a href="EditExec.htm">exec view</a> of <strong class="c1">LavaPE</strong>,</li>
 
     <li>as &quot;unbounded&quot; local variables in <span class="style1">type</span><span 
             class="style2"> ... <strong>case</strong></span> branching statements in execs or invariants,</li>
 
     <li>as &quot;bounded&quot; local variables ranging over some finite set of objects, using &quot;quantifiers&quot; 
         <span class="style1">foreach</span>, <span class="style1">exists</span>, 
-        <span class="style1">select</span> in the <a href="EditExec.htm">exec view</a> of <b class="c1">LavaPE</strong>,</li>
+        <span class="style1">select</span> in the <a href="EditExec.htm">exec view</a> of <strong class="c1">LavaPE</strong>,</li>
 
     <li>automatically as auxiliary variables &quot;<em>temp...</em>&quot; in the 
         <span class="style1">new</span> and <span class="style1">clone</span> object creation constructs.</li>
   </ol>
 
-  <p class="c3">In <b class="c1">Lava</strong> you have to declare the <strong>type</strong> (for instance &quot;Integer&quot;) and the <strong>object category</strong> (<a href="TwoObjectCategories.htm">state or value object</a>) of variables. The type must be either a concrete class or a <a href="PatternsFrameworks.htm">&quot;virtual type&quot;</a> which has been declared as a &quot;type parameter&quot; of a containing class or package. If the type of a variable is virtual then this virtual type (or one of its ancestors in the inheritance path) may be declared responsible for the determination of the object category.</p>
+  <p class="c3">In <strong class="c1">Lava</strong> you have to declare the <strong>type</strong> (for instance &quot;Integer&quot;) and the <strong>object category</strong> (<a href="TwoObjectCategories.htm">state or value object</a>) of variables. The type must be either a concrete class or a <a href="PatternsFrameworks.htm">&quot;virtual type&quot;</a> which has been declared as a &quot;type parameter&quot; of a containing class or package. If the type of a variable is virtual then this virtual type (or one of its ancestors in the inheritance path) may be declared responsible for the determination of the object category.</p>
 
   <p class="c3">A tilde &quot;~&quot; precedes the class name in the declaration of state objects and this way indicates that new values may be assigned to their immediate member variables again and again.</p>
 
-  <h3><a id="creation"></a>Creation, initialization, completion of <b class="c1">Lava</strong> objects</h3>
+  <h3><a id="creation"></a>Creation, initialization, completion of <strong class="c1">Lava</strong> objects</h3>
 
   <p>A concrete object may be created and assigned to <em>acc</em> using the <strong>new</strong> expression of <em><strong>Lava</strong></em>:</p>
   <pre xml:space="preserve">
@@ -86,20 +86,20 @@ acc <span class="style2"><strong>&lt;== </strong><strong>new</strong></span> ~Ac
 
   <p>Thereafter <em>acc</em> will point to a newly created state object of type &quot;Account&quot;.</p>
 
-  <p>Note that <span class="style1">new ... #new</span> is an expression in <b class="c1">Lava</strong> that may occur in any place where expressions are appropriate, not only on the right side of assignments. Therefore it provides an auxiliary variable <em>temp</em> as a reference to the newly created object in the <strong>initializer</strong> call and in the 
+  <p>Note that <span class="style1">new ... #new</span> is an expression in <strong class="c1">Lava</strong> that may occur in any place where expressions are appropriate, not only on the right side of assignments. Therefore it provides an auxiliary variable <em>temp</em> as a reference to the newly created object in the <strong>initializer</strong> call and in the 
       <span class="style3">but</span> customization clause.</p>
 
-  <p><b class="c1">Lava</strong> demands a more strict separation of the initialization, customization, and usage phases of objects than most other languages. We believe that it is at least worth an experiment to enforce more discipline and to prevent overly chaotic program structures concerning these aspects.</p>
+  <p><strong class="c1">Lava</strong> demands a more strict separation of the initialization, customization, and usage phases of objects than most other languages. We believe that it is at least worth an experiment to enforce more discipline and to prevent overly chaotic program structures concerning these aspects.</p>
 
   <p><strong>Initialization</strong> belongs to the duties of a <strong>class provider</strong>. Its purpose is to bring a new object into a state where all its non-optional member variables have admissible values such that the methods of the class may be safely applied to the new object.</p>
 
   <p><strong>Customization</strong> (in the <span class="style3">but</span> clauses of 
       <span class="style1">new</span> and <span class="style1">clone</span> expressions) gives the <strong>class client</strong> an opportunity to modify the initialized new object in a client-specific way in cases where the initilizers offered by the class provider do not completely meet the client&#39;s requirements.</p>
 
-  <p>Here a summary of the pertinent <b class="c1">Lava</strong> rules:</p>
+  <p>Here a summary of the pertinent <strong class="c1">Lava</strong> rules:</p>
 
   <ol>
-    <li><a id="initializer"></a>Every <b class="c1">Lava</strong> class must have at least one <strong>&quot;initializer&quot;</strong> function (roughly corresponding to a <strong>constructor</strong> in <b class="c1">C++</strong> or <b class="c1">Java</strong>). You must always specify an <em>initializer</em> (rather than a creatable class) for the 
+    <li><a id="initializer"></a>Every <strong class="c1">Lava</strong> class must have at least one <strong>&quot;initializer&quot;</strong> function (roughly corresponding to a <strong>constructor</strong> in <strong class="c1">C++</strong> or <strong class="c1">Java</strong>). You must always specify an <em>initializer</em> (rather than a creatable class) for the 
         <span class="style1">new</span> expression.</li>
 
     <li>A class may have a <strong>&quot;default initializer&quot;</strong> without parameters (which will then be omitted from the new expression).</li>
@@ -121,11 +121,11 @@ acc <span class="style2"><strong>&lt;== </strong><strong>new</strong></span> ~Ac
 
   <p><strong>See also</strong> <a class="c5" href="SepItfImpl.htm#objectCreation">object creation</a>.</p>
 
-  <h3>Lifetime of <b class="c1">Lava</strong> objects</h3>
+  <h3>Lifetime of <strong class="c1">Lava</strong> objects</h3>
 
-  <p>Roughly speaking, a <b class="c1">Lava</strong> object may be deleted and the storage allocated to it may be freed when the object is no longer referenced by any <b class="c1">Lava</strong> variable of any kind: Storage management for <b class="c1">Lava</strong> objects is based on <a href="PointersRefCounts.htm">reference counts</a>.</p>
+  <p>Roughly speaking, a <strong class="c1">Lava</strong> object may be deleted and the storage allocated to it may be freed when the object is no longer referenced by any <strong class="c1">Lava</strong> variable of any kind: Storage management for <strong class="c1">Lava</strong> objects is based on <a href="PointersRefCounts.htm">reference counts</a>.</p>
 
-  <p>Persistent objects are realized as <a href="Components.htm">persistent component objects</a> in <b class="c1">Lava</strong>.</p>
+  <p>Persistent objects are realized as <a href="Components.htm">persistent component objects</a> in <strong class="c1">Lava</strong>.</p>
 
   <h3>Assignment and parameter passing</h3>
 

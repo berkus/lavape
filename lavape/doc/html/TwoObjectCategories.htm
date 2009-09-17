@@ -98,9 +98,9 @@
 
   <h3><a id="declaration"></a>Declaration of state and value objects</h3>
 
-  <p><b class="c7">Lava</strong> objects can be referenced only indirectly as values of <b class="c7">Lava</strong> variables: <b class="c7">Lava</strong> variables <em>point</em> to <b class="c7">Lava</strong> objects, they are always of &quot;reference type&quot; as you would say in <b class="c7">Eiffel</strong> or <b class="c7">Java</strong>. Several variables may point to the same object. The <strong>data type</strong> of a <b class="c7">Lava</strong> variable v is described by a <b class="c7">Lava</strong> class, say A. The value of a <b class="c7">Lava</strong> variable may be any object of class A (or a class derived from A).</p>
+  <p><strong class="c7">Lava</strong> objects can be referenced only indirectly as values of <strong class="c7">Lava</strong> variables: <strong class="c7">Lava</strong> variables <em>point</em> to <strong class="c7">Lava</strong> objects, they are always of &quot;reference type&quot; as you would say in <strong class="c7">Eiffel</strong> or <strong class="c7">Java</strong>. Several variables may point to the same object. The <strong>data type</strong> of a <strong class="c7">Lava</strong> variable v is described by a <strong class="c7">Lava</strong> class, say A. The value of a <strong class="c7">Lava</strong> variable may be any object of class A (or a class derived from A).</p>
 
-  <p>The same <b class="c7">Lava</strong> class may be used to declare variables of either category : state or value. The <strong>category</strong> is specified as part of <b class="c7">Lava</strong> variable declarations. If a variable is declared to be of the &quot;state object&quot; category then a &quot;~&quot; (tilde) precedes the name of the variable in the <b class="c7">Lava</strong> declaration tree and in the quantifiers/declare constructs where they are declared in executable code.</p>
+  <p>The same <strong class="c7">Lava</strong> class may be used to declare variables of either category : state or value. The <strong>category</strong> is specified as part of <strong class="c7">Lava</strong> variable declarations. If a variable is declared to be of the &quot;state object&quot; category then a &quot;~&quot; (tilde) precedes the name of the variable in the <strong class="c7">Lava</strong> declaration tree and in the quantifiers/declare constructs where they are declared in executable code.</p>
 
   <p>A variable may be</p>
 
@@ -112,7 +112,7 @@
     <li>or a local variable that is declared within an <em>exec</em> (= executable body of a function or initiator) or <em>invariant</em> (which is executed on completion of a new object and after every method invocation on the object).</li>
   </ul>
 
-  <p class="c8">See also: <a href="ObjectLifeCycle.htm">Stages in the life of <b class="c7">Lava</strong> objects (sample)</a></p>
+  <p class="c8">See also: <a href="ObjectLifeCycle.htm">Stages in the life of <strong class="c7">Lava</strong> objects (sample)</a></p>
 
   <h3><a id="component"></a>Component objects</h3>
 
@@ -140,7 +140,7 @@
       <tr>
         <td align="center">... are <em><strong>frozen after completion</strong></em></td>
 
-        <td align="center">... can be <b class="c7">changed again and again even after completion</strong></td>
+        <td align="center">... can be <strong class="c7">changed again and again even after completion</strong></td>
       </tr>
 
       <tr>
@@ -162,15 +162,15 @@
       </tr>
 
       <tr>
-        <td align="center">... can be <b class="c7">persistent only as constituents</strong> of component objects</td>
+        <td align="center">... can be <strong class="c7">persistent only as constituents</strong> of component objects</td>
 
-        <td align="center">... can <b class="c7">be</strong> persistent component objects</td>
+        <td align="center">... can <strong class="c7">be</strong> persistent component objects</td>
       </tr>
 
       <tr>
-        <td align="center">Their member objects are usually accessed <b class="c7">directly</strong></td>
+        <td align="center">Their member objects are usually accessed <strong class="c7">directly</strong></td>
 
-        <td align="center">Their member objects are usually accessed <b class="c7">via set/get functions</strong>, those of component objects <strong>always</strong></td>
+        <td align="center">Their member objects are usually accessed <strong class="c7">via set/get functions</strong>, those of component objects <strong>always</strong></td>
       </tr>
     </table>
   </div>

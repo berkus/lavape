@@ -49,11 +49,11 @@
 
   <h3>Sample files</h3>
 
-  <p>Please open <strong>Exception.lava</strong> in <b class="c2">LavaPE</strong>.</p>
+  <p>Please open <strong>Exception.lava</strong> in <strong class="c2">LavaPE</strong>.</p>
 
-  <p>Please open <strong>ExceptionDemo.lava</strong> in <b class="c2">LavaPE</strong>.</p>
+  <p>Please open <strong>ExceptionDemo.lava</strong> in <strong class="c2">LavaPE</strong>.</p>
 
-  <p>Please open <strong>OutFuncFailDemo.lava</strong> in <b class="c2">LavaPE</strong>.</p>
+  <p>Please open <strong>OutFuncFailDemo.lava</strong> in <strong class="c2">LavaPE</strong>.</p>
 
   <h3>Topics</h3>
 
@@ -83,7 +83,7 @@
   <h4><a id="failStatement"></a>Using the <span class="style4">
       <span class="style5">throw</span> </span><span class="style3">&lt;expr&gt;</span> statement to raise/throw exceptions</h4>
 
-  <p>The <span class="style1">throw</span> statement of <b class="c2">Lava</strong> is a special variant of the 
+  <p>The <span class="style1">throw</span> statement of <strong class="c2">Lava</strong> is a special variant of the 
       <span class="style1">fail</span> statement and is inserted by clicking the 
       <span class="style1">fail</span> button of then keyword toolbar. If you delete the parameter after the inserted 
       <span class="style1">throw</span> keword then <span class="style1">throw</span> will be replaced by 
@@ -122,11 +122,11 @@
 
   <p>In <em class="c3">Lava</em>, all exception classes are <a href="TypeSafety.htm#p-derived">p-derived</a> from the same base class <em>Exception</em>. Class <em>Exception</em> is non-creatable and has two member variables <em>code</em> and <em>message</em>. The type <em>&lt;ERRORCODE&gt;</em> of <em>code</em> is <a href="PatternsFrameworks.htm#VT">virtual</a> with default value <em>Enumeration</em>. When a concrete exception type is <a href="TypeSafety.htm#p-derived">p-derived</a> from <em>Exception</em> the base value <em>Enumeration</em> of <em>&lt;ERRORCODE&gt;</em> will be specialized to become a concrete enumeration type whose enumerated items distinguish the various individual manifestations of the concrete exception type, for instance <em>ZeroDivideException</em> or <em>IntegerOverflow</em> for a <em>HardwareExeption</em>, see below.</p>
 
-  <p>An item of a <b class="c2">Lava</strong> enumeration type may be associated with an explanatory text/comment, which can also be accessed and displayed as a <em>String</em> object. In the exception context this comment is used as a default error text associated with the respective error code.</p>
+  <p>An item of a <strong class="c2">Lava</strong> enumeration type may be associated with an explanatory text/comment, which can also be accessed and displayed as a <em>String</em> object. In the exception context this comment is used as a default error text associated with the respective error code.</p>
 
   <p>Class <em>Exception</em> (declared in <em>std.lava</em>) has a static member function <em>callStack.</em> It delivers the call stack at the time when the exception occurred as a String to the caller.</p>
 
-  <p>Exceptions may be raised also implicitly by the hardware (<em>hardware exceptions</em>) or by the <b class="c2">Lava</strong> run time system (<em>run time exceptions</em>). &quot;Division by zero&quot;, &quot;integer overflow&quot;, &quot;access violation&quot; are typical hardware exceptions, &quot;assertion violation&quot;, &quot;array index out of range&quot;, &quot;out-of-memory exception&quot; are typical run time exceptions.</p>
+  <p>Exceptions may be raised also implicitly by the hardware (<em>hardware exceptions</em>) or by the <strong class="c2">Lava</strong> run time system (<em>run time exceptions</em>). &quot;Division by zero&quot;, &quot;integer overflow&quot;, &quot;access violation&quot; are typical hardware exceptions, &quot;assertion violation&quot;, &quot;array index out of range&quot;, &quot;out-of-memory exception&quot; are typical run time exceptions.</p>
 
   <p>The common base class <em>Exception</em> for all types of exceptions provides a default exception handler function <em>catch</em>, as well as a member function <em>show</em>, which simply displays the respective exception code and the associated message text. <em>Catch</em> simply calls <em>show</em>, but may be overridden in user-defined exception classes to exhibit a more specific behavior.</p>
 
@@ -134,7 +134,7 @@
 
   <h3>Where to look and what to do</h3>
 
-  <p>Please open <strong>Exception.lava</strong> in <b class="c2">LavaPE</strong>.</p>
+  <p>Please open <strong>Exception.lava</strong> in <strong class="c2">LavaPE</strong>.</p>
 
   <p>This sample demonstrates a user-defined exception type (<em>MyException</em>) which is raised by a 
       <span class="style1">throw</span> statement (in function <em>C1::f1</em>). It is caught in the <em>ExceptionDemo</em> initiator, first in more object-oriented style by the <em>MyException::catch</em> method (which overrides Exception::catch), and then in &quot;old-fashioned style&quot; by a 
@@ -142,11 +142,11 @@
 
   <p>Additionally you could provoke a run time exception by changing the invariant of class C1.</p>
 
-  <p>Please open <strong>ExceptionDemo.lava</strong> in <b class="c2">LavaPE</strong>.</p>
+  <p>Please open <strong>ExceptionDemo.lava</strong> in <strong class="c2">LavaPE</strong>.</p>
 
   <p>This sample demonstrates a hardware exception and two run time exceptions.</p>
 
-  <p><a id="lastSample"></a> Please open <strong>OutFuncFailDemo.lava</strong> in <b class="c2">LavaPE</strong>.</p>
+  <p><a id="lastSample"></a> Please open <strong>OutFuncFailDemo.lava</strong> in <strong class="c2">LavaPE</strong>.</p>
 
   <p>This sample shows that <em class="c3">Lava</em> throws an &quot;output function failed&quot; exception automatically if the body of a function evaluates to &quot;false&quot; and the function has output parameters and doesn&#39;t throw an exception explicitly.</p>
 
@@ -155,7 +155,7 @@
   <h3 class="c4">Summary</h3>
 
   <ol>
-    <li><b class="c2">Lava</strong> supports the traditional <span class="style1">try</span><span 
+    <li><strong class="c2">Lava</strong> supports the traditional <span class="style1">try</span><span 
             class="style5">...<strong>catch</strong></span> style of exception handling, but it makes essential use of <a href="PatternsFrameworks.htm#VT">virtual</a> and <a href="TypeSafety.htm#substitutableType">substitutable types</a>.</li>
 
     <li>A more object-oriented style of exception handling can also be achieved by providing only a single 

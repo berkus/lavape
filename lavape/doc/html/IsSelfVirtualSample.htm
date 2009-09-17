@@ -25,7 +25,7 @@
 
   <h3>Sample file</h3>
 
-  <p>Please open <strong>IsSelfVirtual.lava</strong> in <b class="c2">LavaPE</strong>.</p>
+  <p>Please open <strong>IsSelfVirtual.lava</strong> in <strong class="c2">LavaPE</strong>.</p>
 
   <h3>Topic</h3>
 
@@ -39,11 +39,11 @@
 
   <p>Roughly spoken, the reason for this rule is that a type cannot be used as a virtual and as a non-virtual type at the same time within the containing pattern, similarly as in <em class="c3">C++</em> a member function of a class cannot be virtual and non-virtual at the same time.</p>
 
-  <p>In the <b class="c2">C++</strong> case it would not be clear otherwise whether a concrete invocation of that function should be executed as a virtual or as a non-virtual call.</p>
+  <p>In the <strong class="c2">C++</strong> case it would not be clear otherwise whether a concrete invocation of that function should be executed as a virtual or as a non-virtual call.</p>
 
   <p>In <em class="c3">Lava</em>, without the above rule it would not be clear at check time (but only at run time) whether the type of the special variable <em>self</em> is virtual or non-virtual. As a consequence, a <em>static</em> type check would not be possible in important cases, viz. if <em>self</em> occurs on the right-hand side of assignments or as an input parameter of a function call. In more detail:</p>
 
-  <p>Assume that a member function <em>f</em> of a <b class="c2">Lava</strong> class <em>A</em> is called with a &quot;call variable&quot; <em>c</em>:</p>
+  <p>Assume that a member function <em>f</em> of a <strong class="c2">Lava</strong> class <em>A</em> is called with a &quot;call variable&quot; <em>c</em>:</p>
 
   <blockquote>
     <pre xml:space="preserve">
