@@ -370,6 +370,7 @@
             <keyword name="importing external copmponents" ref="html/commands/ImportCommand.htm"/>
         </keywords>
         <files>
+            <file>LavaOnlineDoc.htm</file>
             <file>html/AdvantJava.htm</file>
             <file>html/AdvantVB.htm</file>
             <file>html/Aesthetics.htm</file>
@@ -577,6 +578,7 @@
             <file>html/whatsThis/Switch.htm</file>
             <file>html/whatsThis/Try.htm</file>
             <file>html/whatsThis/TypeSwitch.htm</file>
+            <file>Copyright.htm</file>
             <file>images/4.png</file>
             <file>images/AppExit.png</file>
             <file>images/assign.png</file>
