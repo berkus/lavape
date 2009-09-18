@@ -1,16 +1,14 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=us-ascii" />
-
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
   <title>Callbacks</title>
-  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <meta http-equiv="Content-Style-Type" content="text/css" />
   <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
   <meta name="CREATED" content="0;0" />
-  <meta name="CHANGEDBY" content="Klaus D. G&#195;&#188;nther" />
+  <meta name="CHANGEDBY" content="Klaus D. Günther" />
   <meta name="CHANGED" content="20080718;12024800" />
   <meta name="ProgId" content="FrontPage.Editor.Document" />
   <meta http-equiv="Content-Language" content="en-us" />
@@ -25,83 +23,143 @@
   em.c3 {font-weight: bold}
   h2.c2 {text-align: center}
   span.c1 {color: #FF0000; font-style: italic; font-weight: bold}
-  /*]]>*/
   </style>
 </head>
 
-<body lang="en-US" dir="ltr" xml:lang="en-US">
-  <h2 class="c2">The <span class="c1">Lava</span> callback concept</h2>
+<body xml:lang="en-US" lang="en-US" dir="ltr">
+<h2 class="c2">The <span class="c1">Lava</span> callback concept</h2>
 
-  <p>Presently there does not exist a common understanding on how to support <strong>event/signal notification</strong> <strong>(callbacks)</strong> in modern object-oriented programming languages.</p>
+<p>Presently there does not exist a common understanding on how to support
+<strong>event/signal notification</strong> <strong>(callbacks)</strong> in
+modern object-oriented programming languages.</p>
 
-  <p>In the course of the <span class="c1">Java</span> development <span class="c1">Sun Microsystems</span> has replaced the original event handling concept by a new philosophy based on <strong>event listeners, adapter classes</strong>, and <span class="c1">Java</span> language extensions introducing <strong>anonymous and inner classes</strong>.</p>
+<p>In the course of the <span class="c1">Java</span> development <span
+class="c1">Sun Microsystems</span> has replaced the original event handling
+concept by a new philosophy based on <strong>event listeners, adapter
+classes</strong>, and <span class="c1">Java</span> language extensions
+introducing <strong>anonymous and inner classes</strong>.</p>
 
-  <p><span class="c1">Microsoft</span> has made (and withdrawn) a proposal for an own callback-specific <span class="c1">Java</span> language extension (&quot;delegates&quot;), and has then provided a more comprehensive <strong>delegate</strong> or <em class="c3">callable entity</em>notion in <span class="c1">C#</span>.</p>
+<p><span class="c1">Microsoft</span> has made (and withdrawn) a proposal for an
+own callback-specific <span class="c1">Java</span> language extension
+("delegates"), and has then provided a more comprehensive
+<strong>delegate</strong> or <em class="c3">callable entity</em> notion in
+<span class="c1">C#</span>.</p>
 
-  <p>The problem is primarily to find a truly object-oriented and type-safe way to associate arbitrary <strong>&quot;client data&quot;</strong>, provided by the envisaged callback receiver, with the event/signal sender object (&quot;server&quot;) without requiring the signal sender&#194; to &quot;know&quot; the type and structure of the client data.</p>
+<p>The problem is primarily to find a truly object-oriented and type-safe way
+to associate arbitrary <strong>"client data"</strong>, provided by the
+envisaged callback receiver, with the event/signal sender object ("server")
+without requiring the signal sender to "know" the type and structure of the
+client data.</p>
 
-  <p>We felt that the present <span class="c1">Java</span> and <span class="c1">C#</span> solutions are too complex and indirect and lack the desirable intuitive simplicity and clarity. In contrast to the former, <strong>the</strong> <span class="c1">Lava</span> <strong>solution doesn&#39;t require the introduction of additional types of entities</strong> (like <em>delegates</em> or <em>inner classes</em>) but is solely based on three specific executable statements: <span class="c4">connect</span>, <span class="c4">disconnect</span> and <span class="c4">signal</span>.</p>
+<p>We felt that the present <span class="c1">Java</span> and <span
+class="c1">C#</span> solutions are too complex and indirect and lack the
+desirable intuitive simplicity and clarity. In contrast to the former,
+<strong>the</strong> <span class="c1">Lava</span> <strong>solution doesn't
+require the introduction of additional types of entities</strong> (like
+<em>delegates</em> or <em>inner classes</em>) but is solely based on three
+specific executable statements: <span class="c4">connect</span>, <span
+class="c4">disconnect</span> and <span class="c4">signal</span>.</p>
 
-  <p>The principal idea has been taken over from the <a href="http://doc.trolltech.com/4.0/signalsandslots.html" target="_blank">signal/slot concept</a> in <em class="c3"><a href="http://www.qtsoftware.com/" target="_blank">TrollTech&#39;s</a> <a href="http://www.qtsoftware.com/products" target="_blank">Qt toolkit</a></em>, and has been modified and adapted to the conceptual setting of the <span class="c1">Lava</span> language:</p>
+<p>The principal idea has been taken over from the <a
+href="http://doc.trolltech.com/4.0/signalsandslots.html"
+target="_blank">signal/slot concept</a> in <em class="c3"><a
+href="http://www.qtsoftware.com/" target="_blank">Nokia's</a> <a
+href="http://www.qtsoftware.com/products" target="_blank">Qt toolkit</a></em>,
+and has been modified and adapted to the conceptual setting of the <span
+class="c1">Lava</span> language:</p>
 
-  <p>In the signal sender class a signal (that can be emitted by an object of this class) is declared as a member function without output parameters, having the special &quot;signal&quot; attribute. A <strong>signal function</strong> doesn&#39;t have an implementation. An object of a class having signals may explicitly emit a signal using the <span class="c4">signal</span> statement (instead of a normal function <span class="c4">call</span> statement), with actual parameters, say <em>parm1</em>, <em>parm2</em>, ... :</p>
+<p>In the signal sender class a signal (that can be emitted by an object of
+this class) is declared as a member function without output parameters, having
+the special "signal" attribute. A <strong>signal function</strong> doesn't have
+an implementation. An object of a class having signals may explicitly emit a
+signal using the <span class="c4">signal</span> statement (instead of a normal
+function <span class="c4">call</span> statement), with actual parameters, say
+<em>parm1</em>, <em>parm2</em>, ... :</p>
 
-  <p><a id="AutoNumber3"></a></p>
+<p><a id="AutoNumber3"></a></p>
 
-  <div class="c7">
-    <table align="center" class="c6" border="1" cellpadding="5" cellspacing="0">
-      <tbody>
-        <tr>
-          <td>
-            <p class="c5"><span class="c4">signal</span> self.<strong>sigFunc</strong> (parm1,parm2,...)</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div class="c7">
 
-  <p>Note that an object (<em>self</em> in the example) can only <em>itself</em> emit a signal; it cannot force <em>another</em> object to emit a signal, except, of course, if the class of the other object exports a method having this effect (like the <em>sendSignal</em> function in our <a href="CallbackSample.htm">callback sample</a>).</p>
+<table align="center" class="c6" border="1" cellpadding="5" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><p class="c5"><span class="c4">signal</span>
+        self.<strong>sigFunc</strong> (parm1,parm2,...)</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
-  <p>You can use the <span class="c4">connect</span> statement to specify to which handler objects and handler methods a signal is to be transmitted:</p>
+<p>Note that an object (<em>self</em> in the example) can only <em>itself</em>
+emit a signal; it cannot force <em>another</em> object to emit a signal,
+except, of course, if the class of the other object exports a method having
+this effect (like the <em>sendSignal</em> function in our <a
+href="CallbackSample.htm">callback sample</a>).</p>
 
-  <p><a id="AutoNumber31"></a></p>
+<p>You can use the <span class="c4">connect</span> statement to specify to
+which handler objects and handler methods a signal is to be transmitted:</p>
 
-  <div class="c7">
-    <table align="center" class="c6" border="1" cellpadding="5" cellspacing="0">
-      <tbody>
-        <tr>
-          <td>
-            <p class="c5"><span class="c4">connect</span> sigSender.<strong>sigFunc</strong> to handlerObj.<strong>hdlFunc</strong></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<p><a id="AutoNumber31"></a></p>
 
-  <p>You may connect the same signal sender / signal function to several handler objects / handler functions. When the sender emits this signal, then all handlers will be invoked in the order of the corresponding <span class="c4">connect</span>s</p>
+<div class="c7">
 
-  <p>Transmitting a signal to a handler object <em>handlerObj</em> having a handler method <em>hdlFunc</em> means that the handler function is invoked with that handler object as call object, and the actual parameters are taken from the signal statement, just as if the following function call would be performed in place of the signal function call:</p>
+<table align="center" class="c6" border="1" cellpadding="5" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><p class="c5"><span class="c4">connect</span>
+        sigSender.<strong>sigFunc</strong> to
+        handlerObj.<strong>hdlFunc</strong></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
-  <p><a id="AutoNumber2"></a></p>
+<p>You may connect the same signal sender / signal function to several handler
+objects / handler functions. When the sender emits this signal, then all
+handlers will be invoked in the order of the corresponding <span
+class="c4">connect</span>s</p>
 
-  <div class="c7">
-    <table align="center" class="c6" border="1" cellpadding="5" cellspacing="0">
-      <tbody>
-        <tr>
-          <td>
-            <p class="c5"><span class="c4">call</span> handlerObj.<strong>hdlFunc</strong>(parm1,parm2,...)</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<p>Transmitting a signal to a handler object <em>handlerObj</em> having a
+handler method <em>hdlFunc</em> means that the handler function is invoked with
+that handler object as call object, and the actual parameters are taken from
+the signal statement, just as if the following function call would be performed
+in place of the signal function call:</p>
 
-  <p>This requires that the handler function must have the same number of input (and no output) parameters, and the formal parameters of the signal function must be assignment compatible to the corresponding formal parameters of the handler function.</p>
+<p><a id="AutoNumber2"></a></p>
 
-  <p>Moreover, if the call objects or the formal parameters of the functions occurring in the <span class="c4">connect</span> statement depend on <a href="PatternsFrameworks.htm#VT">virtual types</a>, then <span class="c1">LavaPE</span> will reject the <span class="c4">connect</span> if <em>sigSender</em> and <em>handlerObj</em> don&#39;t belong to the same <a href="PatternsFrameworks.htm#patternContext">pattern context</a> and thus don&#39;t apply the same interpretation to the involved virtual types.</p>
+<div class="c7">
 
-  <p>The envisaged extension of the <span class="c1">Lava</span> GUI support requires that you can also specify a signal sender class only in the <span class="c4">connect</span> statement, rather than a concrete signal sender object (to be explained after the GUI support extension.)</p>
+<table align="center" class="c6" border="1" cellpadding="5" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><p class="c5"><span class="c4">call</span>
+        handlerObj.<strong>hdlFunc</strong>(parm1,parm2,...)</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
-  <p class="c8">See also our <a href="CallbackSample.htm">callback sample</a>.</p>
+<p>This requires that the handler function must have the same number of input
+(and no output) parameters, and the formal parameters of the signal function
+must be assignment compatible to the corresponding formal parameters of the
+handler function.</p>
+
+<p>Moreover, if the call objects or the formal parameters of the functions
+occurring in the <span class="c4">connect</span> statement depend on <a
+href="PatternsFrameworks.htm#VT">virtual types</a>, then <span
+class="c1">LavaPE</span> will reject the <span class="c4">connect</span> if
+<em>sigSender</em> and <em>handlerObj</em> don't belong to the same <a
+href="PatternsFrameworks.htm#patternContext">pattern context</a> and thus don't
+apply the same interpretation to the involved virtual types.</p>
+
+<p>The envisaged extension of the <span class="c1">Lava</span> GUI support
+requires that you can also specify a signal sender class only in the <span
+class="c4">connect</span> statement, rather than a concrete signal sender
+object (to be explained after the GUI support extension.)</p>
+
+<p class="c8">See also our <a href="CallbackSample.htm">callback sample</a>.</p>
 </body>
 </html>
