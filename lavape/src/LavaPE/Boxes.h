@@ -311,7 +311,6 @@ public:
   bool hasOutput;
   bool hasParams;
   bool second;
-  bool inValOfVT;
   void CalcOpBox();
 
   QString valNewName;

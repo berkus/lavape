@@ -115,7 +115,6 @@ public:
   QString* CheckScope(LavaDECL* elDef); //returns error code
   QString* CommonContext(LavaDECL* paramDECL);
   int CheckHandlerIO(LavaDECL* funcDECL, LavaDECL* ClientType);
-  QString* CheckSelfType(LavaDECL* funcDECL);
 
   virtual void DelSyntax(CHESimpleSyntax* delSyn) {}
   QString* ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, CheckData* pckd);

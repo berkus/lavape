@@ -1524,12 +1524,11 @@ ValOnInit CFuncBox::OnInitDialog()
 { 
   CHE* cheIO;
   SynFlags typeflag;
-  LavaDECL *decl,  *baseDECL, *selfDecl;
+  LavaDECL *decl,  *baseDECL;
   CHETID *ncheS, *cheS;
   CListBoxItem *listItem;
-  CHETIDs *ncheTIDs = 0;
+  CHETIDs *cheTIDs, *ncheTIDs = 0;
   QString nameText, cstr;
-  DString str;
 
   if (myDoc->changeNothing) {
     ID_OK->setEnabled(false);
@@ -1558,33 +1557,6 @@ ValOnInit CFuncBox::OnInitDialog()
     Native->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isNative));
   }
 
-
-  selfDecl = myDECL->ParentDECL;
-  if (selfDecl->DeclType == Impl)
-    selfDecl = myDoc->IDTable.GetDECL(((CHETID*)selfDecl->Supports.first)->data, selfDecl->inINCL);
-  inValOfVT = myDoc->IDTable.isValOfVirtual(selfDecl);
-  if (inValOfVT) {
-    fillSelfType(selfDecl);
-    SelfType->setEnabled(true);
-    if (myDECL->TypeFlags.Contains(isInitializer)) 
-      SelfType->setCurrentIndex(SelfType->count()-1);
-    else
-      if (!onNew && (myDECL->RefID.nID != -1)) {
-        selfDecl = myDoc->IDTable.GetDECL(myDECL->RefID, selfDecl->inINCL);
-        if (selfDecl->DeclType == VirtualType)
-          str = lthen + selfDecl->LocalName + grthen;
-        else
-          str = selfDecl->LocalName;
-        SelfType->setCurrentIndex(SelfType->findText(str.c));
-      }
-  }
-  else {
-    SelfType->setEnabled(false);
-    myDECL->RefID.nID = -1;
-
-  }
-  if (myDECL->SecondTFlags.Contains(isHandler))
-    setHandlerData();
   if (onNew) {
     hasParams = 0;
     valSynch = 0;
@@ -1657,7 +1629,6 @@ ValOnInit CFuncBox::OnInitDialog()
       Abstract->setEnabled(false);
       EnforceOver->setEnabled(false);
       SelfCategory->setEnabled(false);
-      SelfType->setEnabled(false);
       Closed->setEnabled(false);
       Closed->setChecked(false);
     }
@@ -1690,7 +1661,6 @@ ValOnInit CFuncBox::OnInitDialog()
       SelfCategory->setCurrentIndex(1);
       Protected->setEnabled(false);
       Initializer->setChecked(true);
-      SelfType->setEnabled(false);
       EnforceOver->setEnabled(false);
       DefaultIni->setEnabled(!hasParams
                                 && (!myDECL->ParentDECL->WorkFlags.Contains(hasDefaultIni)
@@ -1842,7 +1812,6 @@ ValOnInit CFuncBox::OnInitDialog()
       DelInherits->setEnabled(false);
       NamedTypes->setEnabled(false);
       Inherits->setEnabled(false);
-      SelfType->setEnabled(false);
       Synch->setEnabled(false);
       Concurrent->setEnabled(false);
       Independent->setEnabled(false);
@@ -1983,53 +1952,6 @@ void CFuncBox::setHandlerData()
   }
 }
 
-void CFuncBox::fillSelfType(LavaDECL* selfDecl)
-{
-  CComboBoxItem *comboItem;
-  CContext con;
-  CHE *che;
-  LavaDECL *valDECL, *paramDECL;
-  DString str;
-
-
-  comboItem = new CComboBoxItem(TID(selfDecl->OwnID, selfDecl->inINCL));
-  addItemAlpha(SelfType, QString(selfDecl->LocalName.c), QVariant::fromValue(comboItem));
-  myDoc->IDTable.GetPattern(selfDecl, con);
-  if (con.oContext) {
-    che = (CHE*)con.oContext->NestedDecls.first;
-    while (che) {
-      paramDECL = (LavaDECL*) che->data;
-      if (paramDECL->DeclType == VirtualType) {
-        valDECL = myDoc->IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
-        if (valDECL == selfDecl) {
-          comboItem = new CComboBoxItem(TID(paramDECL->OwnID, paramDECL->inINCL));
-          str = lthen + paramDECL->LocalName + grthen;
-          addItemAlpha(SelfType, QString(str.c), QVariant::fromValue(comboItem));
-        }
-        che = (CHE*)che->successor;
-      }
-      else
-        che = 0;
-    }
-  }
-  if (con.iContext) {
-    che = (CHE*)con.iContext->NestedDecls.first;
-    while (che) {
-      paramDECL = (LavaDECL*) che->data;
-      if (paramDECL->DeclType == VirtualType) {
-        valDECL = myDoc->IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
-        if (valDECL  == selfDecl) {
-          comboItem = new CComboBoxItem(TID(paramDECL->OwnID, paramDECL->inINCL));
-          str = lthen + paramDECL->LocalName + grthen;
-          addItemAlpha(SelfType, QString(str.c), QVariant::fromValue(comboItem));
-        }
-        che = (CHE*)che->successor;
-      }
-      else
-        che = 0;
-    }
-  }
-}
 
 void CFuncBox::CalcOpBox()
 {
@@ -2193,8 +2115,6 @@ void CFuncBox::on_StaticFunc_clicked()
     //ConstFunc->setChecked(true);
     //ConstFunc->setEnabled(false);
     Closed->setEnabled(false);
-    SelfType->setCurrentIndex(0);
-    SelfType->setEnabled(false);
   }
   else {
     Protected->setEnabled(true);
@@ -2203,8 +2123,6 @@ void CFuncBox::on_StaticFunc_clicked()
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     //ConstFunc->setEnabled(true);
     Closed->setEnabled(true);
-    if (inValOfVT)
-      SelfType->setEnabled(true);
   }
   UpdateData(false);
 }
@@ -2231,14 +2149,8 @@ void CFuncBox::on_Initializer_clicked()
     //Closed->setEnabled(false);
     Signal->setEnabled(false);
     Signal->setChecked(false);
-    if (inValOfVT) {
-      SelfType->setCurrentIndex(SelfType->count()-1);
-      SelfType->setEnabled(false);
-    }
   }
   else {
-    if (inValOfVT) 
-      SelfType->setEnabled(true);
     EnforceOver->setEnabled(true);
     DefaultIni->setChecked(false);
     StaticFunc->setEnabled(true);
@@ -2546,7 +2458,6 @@ void CFuncBox::makeHandler()
 
 void CFuncBox::on_ID_OK_clicked() 
 {
-  QString s;
   if (myDECL->SecondTFlags.Contains(funcImpl))
     if ( myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data)) {
       QDialog::reject();
@@ -2594,12 +2505,6 @@ void CFuncBox::on_ID_OK_clicked()
     if (onNew)
       makeHandler();
   }
-  if (SelfType->isEnabled())
-    if (!SelEndOKToStr(SelfType, &s, &myDECL->RefID)) {
-      QMessageBox::critical(this, qApp->applicationName(), IDP_NoSelfTypeSel, QMessageBox::Ok,0,0);
-      SelfType->setFocus();
-      return;
-    }
 
   ListToChain(Inherits, &myDECL->Inherits);  //fires
   if (Native->isChecked())

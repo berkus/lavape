@@ -782,12 +782,7 @@ bool CLavaProgram::CheckFuncInOut(CheckData& ckd, LavaDECL* funcDECL)
   SynFlags typeFlags;
   bool catErr;
   QString *errCode;
-  TID refID;
 
-  if (errCode = CheckSelfType(funcDECL)) {
-    LavaError(ckd, true, funcDECL, errCode);
-    return false;
-  }
   for (cheIO = (CHE*)funcDECL->NestedDecls.first; cheIO; cheIO = (CHE*)cheIO->successor) {
     IODECL = (LavaDECL*)cheIO->data;
     if (IODECL->DeclDescType != ExecDesc) {
@@ -812,19 +807,6 @@ bool CLavaProgram::CheckFuncInOut(CheckData& ckd, LavaDECL* funcDECL)
       LavaError(ckd, true, funcDECL, &ERR_OverriddenStatic);
       return false;
     }
-
-    if ((funcDECL->RefID.nID != -1) && (OverFunc->RefID.nID != -1)) {
-      refID = TID(OverFunc->RefID.nID, IDTable.IDTab[OverFunc->inINCL]->nINCLTrans[OverFunc->RefID.nINCL].nINCL);
-      if (refID == TID(OverFunc->ParentDECL->OwnID, OverFunc->inINCL)) {
-        if (funcDECL->RefID != TID(funcDECL->ParentDECL->OwnID, funcDECL->inINCL)) 
-          LavaError(ckd, true, funcDECL, &ERR_BadSelfType);
-      }
-      else
-        if (!IDTable.Overrides(funcDECL->RefID, funcDECL->inINCL, OverFunc->RefID, OverFunc->inINCL))
-          LavaError(ckd, true, funcDECL, &ERR_BadSelfType);
-    }
-
-
     if (OverFunc->TypeFlags.Contains(isStateObjectY))
       funcDECL->TypeFlags.INCL(isStateObjectY);
     else if (OverFunc->TypeFlags.Contains(isAnyCatY))

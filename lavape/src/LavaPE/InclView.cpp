@@ -78,7 +78,6 @@ CLavaPEDoc* CInclView::GetDocument() // non-debug version is inline
 
 void CInclView::UpdateUI()
 {
-  //DString str0;
   if (!InitComplete)
     return;
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;

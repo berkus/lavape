@@ -1619,39 +1619,6 @@ QString* CLavaBaseDoc::CheckFormEl(LavaDECL *formEl, LavaDECL *classEl)
   return 0;
 }
 
-QString* CLavaBaseDoc::CheckSelfType(LavaDECL* funcDECL)
-{
-  LavaDECL *classDECL, *vtDECL;
-
-  if (funcDECL->RefID.nID != -1) {
-    vtDECL = IDTable.GetDECL(funcDECL->RefID, funcDECL->inINCL);
-    if (!vtDECL)
-      return  &ERR_BadSelfType;
-  }
-  if (funcDECL->ParentDECL->DeclType == Impl)
-    classDECL = IDTable.GetDECL(((CHETID*)funcDECL->ParentDECL->Supports.first)->data, funcDECL->inINCL);
-  else
-    classDECL = funcDECL->ParentDECL;
-  if (funcDECL->TypeFlags.Contains(isInitializer) || funcDECL->TypeFlags.Contains(isStatic))
-    return 0;
-  if (IDTable.isValOfVirtual(classDECL)) {
-    if (funcDECL->RefID.nID == -1)
-      return &ERR_NoSelfType;
-    else
-      if (funcDECL->RefID == TID(classDECL->OwnID, classDECL->inINCL))
-        return 0;
-      else {
-        if ((vtDECL->DeclType != VirtualType) || !IDTable.EQEQ(TID(classDECL->OwnID, classDECL->inINCL),0, vtDECL->RefID, vtDECL->inINCL))
-          return &ERR_BadSelfType;
-        else
-          return 0;
-      }
-  }
-  else {
-    funcDECL->RefID = TID(-1, 0);
-    return 0;
-  }
-}
 
 CSectionDesc::CSectionDesc()
 {

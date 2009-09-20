@@ -459,9 +459,6 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
       new CLavaError(&elDef->DECLError1, &ERR_NoImplForAbstract, 0, useAutoBox);
   }
   else {
-    errCode = Doc->CheckSelfType(elDef);
-    if (errCode)
-      new CLavaError(&elDef->DECLError1, errCode);
     if (checkLevel != CHLV_noCheck) {
       bool changed = Doc->CheckOverInOut(elDef, checkLevel);
       Doc->changeInUpdate = Doc->changeInUpdate || changed;
