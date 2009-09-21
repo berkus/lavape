@@ -1234,13 +1234,11 @@ bool CLavaPEDoc::CheckMenu (LavaDECL* formDECL, LavaDECL* classDECL)
 bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 {
 	SynFlags typeFlags;
-	CHE *cheOverIO, *cheIO, *chenext, *cheVT;
-	LavaDECL *IODECL, *OverFunc, *valDECL, *paramDECL;
+	CHE *cheOverIO, *cheIO, *chenext;
+	LavaDECL *IODECL, *OverFunc;
 	CHETID *cheID, *cheOverID;
 	CHAINX chain;
-  TID refID;
 	bool catErr, changed = false, found;
-  CContext con;
 
 	if (!funcDECL->SecondTFlags.Contains (overrides))
 		return false;
@@ -1290,59 +1288,6 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 	}
 	if (funcDECL->DeclType == Attr)
 		return changed;
-
-  if (IDTable.isValOfVirtual(funcDECL->ParentDECL)) {
-    if (IDTable.isValOfVirtual(OverFunc->ParentDECL)) {
-      refID.nID = OverFunc->RefID.nID;
-      if (OverFunc->RefID.nID != -1) {
-        refID.nINCL  = IDTable.IDTab[OverFunc->inINCL]->nINCLTrans[OverFunc->RefID.nINCL].nINCL;
-        if (refID == ((CHETID*)funcDECL->ParentDECL->Supports.first)->data) {
-          changed = funcDECL->RefID.nID != funcDECL->ParentDECL->OwnID;
-          funcDECL->RefID.nID = funcDECL->ParentDECL->OwnID;
-          funcDECL->RefID.nINCL = 0;
-        }
-        else {
-          IDTable.GetPattern(funcDECL->ParentDECL, con);
-          if (con.oContext) {
-            cheVT = (CHE*)con.oContext->NestedDecls.first;
-            while (cheVT) {
-              paramDECL = (LavaDECL*) cheVT->data;
-              if (paramDECL->DeclType == VirtualType) {
-                valDECL = IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
-                if ((valDECL == funcDECL->ParentDECL) && (((CHETID*)paramDECL->Supports.first)->data == refID)) {
-                  changed = funcDECL->RefID.nID != paramDECL->OwnID;
-                  funcDECL->RefID.nID = paramDECL->OwnID;
-                  funcDECL->RefID.nINCL = 0;
-                  cheVT = 0;
-                }
-                cheVT = (CHE*)cheVT->successor;
-              }
-              else
-                cheVT = 0;
-            }
-          }
-          if (con.iContext) {
-            cheVT = (CHE*)con.iContext->NestedDecls.first;
-            while (cheVT) {
-              paramDECL = (LavaDECL*) cheVT->data;
-              if (paramDECL->DeclType == VirtualType) {
-                valDECL = IDTable.GetDECL(paramDECL->RefID,paramDECL->inINCL);
-                if ((valDECL == funcDECL->ParentDECL) && (((CHETID*)paramDECL->Supports.first)->data == refID)) {
-                  changed = funcDECL->RefID.nID != paramDECL->OwnID;
-                  funcDECL->RefID.nID = paramDECL->OwnID;
-                  funcDECL->RefID.nINCL = 0;
-                  cheVT = 0;
-                }
-                cheVT = (CHE*)cheVT->successor;
-              }
-              else
-                cheVT = 0;
-            }
-          }
-        }
-      }
-    }
-  }
 
 	cheOverIO = (CHE*) OverFunc->NestedDecls.first;
 	if (checkLevel > CHLV_noCheck)	{

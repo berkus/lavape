@@ -787,6 +787,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
       }
       else {
         GetParentFrame()->closeMyPage();
+        deletePending = true;
         return;
       }
       break;
