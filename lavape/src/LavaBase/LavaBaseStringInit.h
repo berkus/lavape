@@ -154,7 +154,7 @@ extern LAVABASE_DLL QString ERR_NoIFforForm;
 extern LAVABASE_DLL QString ERR_NoBaseFormIF;
 extern LAVABASE_DLL QString ERR_ClassCircle;
 extern LAVABASE_DLL QString ERR_Unused;
-//extern LAVABASE_DLL QString ERR_DoubleVal;
+extern LAVABASE_DLL QString ERR_DoubleVal;
 extern LAVABASE_DLL QString ERR_OverriddenIOType;
 extern LAVABASE_DLL QString ERR_SecondImpl;
 extern LAVABASE_DLL QString ERR_inStd;
@@ -263,8 +263,6 @@ extern LAVABASE_DLL QString ERR_AbortQuestion;
 extern LAVABASE_DLL QString ERR_ExecutionAborted;
 extern LAVABASE_DLL QString ERR_NotSingleContainer;
 extern LAVABASE_DLL QString ERR_FinalVTisOverridden;
-extern LAVABASE_DLL QString ERR_NoSelfType;
-extern LAVABASE_DLL QString ERR_BadSelfType;
 
 
 extern LAVABASE_DLL void LavaBaseStringInit();

@@ -812,6 +812,8 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
           return;
         }
       }
+      else if (deletePending)
+        return;
       break;
 
     default: ;

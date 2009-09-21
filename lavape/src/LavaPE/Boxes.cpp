@@ -1527,7 +1527,7 @@ ValOnInit CFuncBox::OnInitDialog()
   LavaDECL *decl,  *baseDECL;
   CHETID *ncheS, *cheS;
   CListBoxItem *listItem;
-  CHETIDs *cheTIDs, *ncheTIDs = 0;
+  CHETIDs *ncheTIDs = 0;
   QString nameText, cstr;
 
   if (myDoc->changeNothing) {
