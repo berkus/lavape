@@ -920,9 +920,9 @@ QString* CLavaBaseDoc::TypeForMem(LavaDECL* memdecl, LavaDECL* typeDECL, CheckDa
   if (!con.oContext)
     return 0;
   if (con.oContext == typeDECL)
-    /*if (IDTable.isValOfVirtual(typeDECL) && memdecl->isInSubTree(typeDECL))
+    if (IDTable.isValOfVirtual(typeDECL) && memdecl->isInSubTree(typeDECL))
       return &ERR_UseVT;
-    else*/
+    else
       return 0;
   if ((memdecl->DeclType == Attr)
     || (memdecl->DeclType == IAttr)
@@ -955,9 +955,9 @@ QString* CLavaBaseDoc::TypeForMem(LavaDECL* memdecl, LavaDECL* typeDECL, CheckDa
     if (memdecl->SecondTFlags.Contains(isGUI))
       return 0;
     if (IDTable.lowerOContext(par, typeDECL, sameContext))
-      /*if (IDTable.isValOfVirtual(typeDECL))
+      if (IDTable.isValOfVirtual(typeDECL))
         return &ERR_UseVT;
-      else*/
+      else
         return 0;
     else
       if (IDTable.otherOContext(par, typeDECL))
@@ -1001,9 +1001,9 @@ QString* CLavaBaseDoc::TestValOfVirtual(LavaDECL* vdecl, LavaDECL* valDECL)
     if (!con.oContext || (con.oContext == val))
       return 0;
     if (IDTable.lowerOContext(par, val, sameContext) )
-      /*if (IDTable.isValOfOtherVirtual(val, vdecl))
+      if (IDTable.isValOfOtherVirtual(val, vdecl))
         return &ERR_DoubleVal;
-      else*/
+      else
         return 0;
     else
       return &ERR_WrongContext;
