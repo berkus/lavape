@@ -3591,6 +3591,13 @@ bool ObjReference::CallCheck (CheckData &ckd) {
       return false;
     }
 
+  if (decl->ParentDECL->DeclType == Interface
+  && ckd.document->IDTable.isValOfVirtual(decl->ParentDECL)
+  && myFinalVType->DeclType != VirtualType) {
+    SetError(ckd,&ERR_ImmutableCallObj);
+    return false;
+  }
+
   return ok;
 }
 

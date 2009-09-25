@@ -410,9 +410,9 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
   bool firstLine=true;
   SynObject *ancestor=currentToken->data.synObject;
 
-  if (currentToken->data.flags.Contains(ignoreSynObj)
-  && !text->showComments)
-    return;
+  //if (currentToken->data.flags.Contains(ignoreSynObj)
+  //&& !text->showComments)
+  //  return;
 
   SetTokenFormat(currentToken);
 
@@ -7182,7 +7182,7 @@ void CExecView::UpdateErrMsg (QString &helpMsg) {
   else if (nextError)
     myDoc->SetPEError(plhChain,true);
   else {
-    myDoc->SetPEError(emptyChain,true);
+    myDoc->SetPEError(emptyChain,false);
     nextError = false;
   }
 

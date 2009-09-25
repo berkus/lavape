@@ -17,11 +17,18 @@
       {
           color: #0000FF;
       }
+      .style2
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
   </style>
 </head>
 
 <body>
-  <h2 class="c1">A type is either virtual or non-virtual</h2>
+  <h2 class="c1">If class <span class="style2">C</span> is the value of a virtual type
+      <span class="style2">V </span>then the <span class="style2">self</span> variables<br />
+      of all methods of <span class="style2">C</span> are considered to have type <span class="style2">V</span></h2>
 
   <h3>Sample file</h3>
 
@@ -32,16 +39,18 @@
   <p>Motivation of <a href="PatternsFrameworks.htm#VTandNonVT">rule 9</a> in our section on <em class="c3">Lava</em> support for <a href="PatternsFrameworks.htm">genericity, design patterns, and frameworks</a>, which reads:</p>
 
   <ul>
-    <li>If a class <em>A</em> is the value of a virtual type <em>V</em> then <em>A</em> cannot be referenced directly at any place where <em>V</em> is visible. It can only be referenced indirectly by references to <em>V</em> in these places. If A1 is derived from A within the same pattern, then A1 cannot be referenced directly, either.</li>
+    <li><a id="VTandNonVT"></a>If a class <em>A</em> is the value of a virtual type
+    <em>V</em> then <em>A</em> then A cannot also be the value of another virtual type. </li>
   </ul>
 
   <h3>Overview</h3>
 
-  <p>Roughly spoken, the reason for this rule is that a type cannot be used as a virtual and as a non-virtual type at the same time within the containing pattern, similarly as in <em class="c3">C++</em> a member function of a class cannot be virtual and non-virtual at the same time.</p>
-
-  <p>In the <strong class="c2">C++</strong> case it would not be clear otherwise whether a concrete invocation of that function should be executed as a virtual or as a non-virtual call.</p>
-
-  <p>In <em class="c3">Lava</em>, without the above rule it would not be clear at check time (but only at run time) whether the type of the special variable <em>self</em> is virtual or non-virtual. As a consequence, a <em>static</em> type check would not be possible in important cases, viz. if <em>self</em> occurs on the right-hand side of assignments or as an input parameter of a function call. In more detail:</p>
+  <p>In object-oriented programming languages the special <i>self</i> or <i>this</i> 
+      variable wouldn&#39;t be declared explicitly. The class <i>C</i> to which the respective 
+      member function <i>f</i> belongs is considered to be also the class of <i>self</i>. 
+      But how should we proceed if <i>C</i> occurs also as the value of some virtual 
+      type <i>VT</i>? Should we consider <i>self </i>as being of type C or of type <i>
+      VT</i>?</p>
 
   <p>Assume that a member function <em>f</em> of a <strong class="c2">Lava</strong> class <em>A</em> is called with a &quot;call variable&quot; <em>c</em>:</p>
 

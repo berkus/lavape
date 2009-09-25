@@ -371,7 +371,7 @@ void LavaBaseStringInit() {
   ERR_MissingInitialization  = QObject::tr(": a value must be assigned in all preceding program branches (check also for missing \"else\" branches!)");
   ERR_AssigToRdOnly  = QObject::tr("Forbidden assignment to read-only member variable");
   ERR_IncompatibleType  = QObject::tr("Incompatible type");
-  ERR_IncompatibleTypeTargetIsVT  = QObject::tr("Source type could become incompatible with a derivation of the (virtual!) target type");
+  ERR_IncompatibleTypeTargetIsVT  = QObject::tr("Source type/actual parameter could become incompatible with a derivation of the (virtual!) target type/formal parameter");
   ERR_NotSingleOutput  = QObject::tr("Function must have exactly one output parameter");
   ERR_NoOutputsAllowed  = QObject::tr("No output parameters allowed here");
   ERR_UndefRef  = QObject::tr("Dangling (=undefined) reference");

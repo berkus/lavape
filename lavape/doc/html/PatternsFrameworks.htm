@@ -117,6 +117,11 @@ declarations:</p>
     class/package derived from <em>P</em> unless they are overridden there.
     Classes declared in a pattern <em>P'</em> that is derived from <em>P</em>
     cannot be referenced in <em>P</em>.</li>
+  <li><a id="VTandNonVT"></a>If a class <em>A</em> is the value of a virtual type
+    <em>V</em> then <em>A</em> then A cannot also be the value of another virtual 
+      type. (A motivation of this rule
+    is given in our <a href="IsSelfVirtualSample.htm">IsSelfVirtual
+  sample</a>.)</li>
   <li><a id="patternContext"></a><strong class="c4">Lava</strong> restricts the ways in
     which pattern declarations may be nested: There may be only <strong>two nested
     layers</strong> of packages or classes containing virtual types. (The VT
