@@ -97,6 +97,7 @@ QString ERR_ClosedVar;
 QString ERR_CallObjClosed;
 QString ERR_SelfUnfinished;
 QString ERR_SelfNotClosed;
+QString ERR_SelfVirtual;
 QString ERR_TempUnfinished;
 QString ERR_ElseExprObsolete;
 QString ERR_SuperfluousMandatory;
@@ -352,6 +353,7 @@ void LavaBaseStringInit() {
   ERR_ClosedVar  = QObject::tr("\"Closed\" variable: access to member variables forbidden");
   ERR_SelfUnfinished  = QObject::tr("\"self\" may be still unfinished here: member access forbidden");
   ERR_SelfNotClosed  = QObject::tr("Call object still incomplete here, so the called function must have the \"self is closed\" attribute");
+  ERR_SelfVirtual  = QObject::tr("The class of the function is The value of a virtual type. Therefore the type of the call expression must be virtual, too");
   ERR_SelfUnfinishedCallObj  = QObject::tr("""self"" must be completely initialized before its methods may be called, or the method must have the \"self is closed\" attribute");
   ERR_SelfUnfinishedParm  = QObject::tr("\"self\" is not yet completely initialized here, so the receiving formal parameter must be \"closed\"");
   ERR_ElseExprObsolete  = QObject::tr("Else-expression superfluous: first operand is already mandatory");
@@ -467,8 +469,8 @@ void LavaBaseStringInit() {
   ERR_HandleOpParm  = QObject::tr("Parameter of handle operator # must be a quantified variable");
   ERR_UseVT  = QObject::tr("Error: This or a base type is virtual; => ref. to concrete class forbidden");
   ERR_WrongContext  = QObject::tr("Type cannot be referenced from the current pattern context");
-  ERR_ImmutableCallObj  = QObject::tr("This (immutable!) value object is used to call a non-read-only member function");
-  ERR_NonROCallInROClause = "Forbidden call of non-read-only function/main program in read-only clause or exec";
+  ERR_ImmutableCallObj  = QObject::tr("This (immutable!) value object is used to call a non-read-only member function (= whose \"self\" is variable)");
+  ERR_NonROCallInROClause = "Forbidden call of non-read-only function in read-only clause or exec";
   ERR_SuccFailNotLast  = QObject::tr("Succeed/throw returns control; therefore there must not follow any further statement");
   ERR_NoNativeImpl  = QObject::tr("Implementation of native function not found/no adapter table");
   ERR_NoFuncImpl  = QObject::tr("Implementation of this function not found");

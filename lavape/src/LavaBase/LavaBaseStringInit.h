@@ -70,6 +70,7 @@ extern LAVABASE_DLL QString ERR_ShouldBeClosed;
 extern LAVABASE_DLL QString ERR_ClosedVar;
 extern LAVABASE_DLL QString ERR_CallObjClosed;
 extern LAVABASE_DLL QString ERR_SelfNotClosed;
+extern LAVABASE_DLL QString ERR_SelfVirtual;
 extern LAVABASE_DLL QString ERR_SelfUnfinished;
 extern LAVABASE_DLL QString ERR_TempUnfinished;
 extern LAVABASE_DLL QString ERR_UnfinishedObject;

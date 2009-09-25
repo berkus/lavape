@@ -945,6 +945,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
   SynFlags ctxFlags;
   CHEEnumSelId* enumsel;
   unsigned iItem=0;
+  QString *err;
 
   switch (primaryToken) {
 
@@ -1149,8 +1150,8 @@ bool SynObject::UpdateReference (CheckData &ckd) {
     if (decl) {
       if ((primaryToken == TypeRef_T || primaryToken == CrtblRef_T)
       && parentObject->primaryToken != initializing_T) {
-        if (decl->DeclType != VirtualType && ckd.document->TypeForMem(ckd.myDECL->ParentDECL,decl,&ckd)) {
-          SetError(ckd,&ERR_UseVT);
+        if (decl->DeclType != VirtualType && (err = ckd.document->TypeForMem(ckd.myDECL->ParentDECL,decl,&ckd))) {
+          SetError(ckd,err/*&ERR_UseVT*/);
           ok = false;
         }
       }
@@ -3594,7 +3595,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   if (decl->ParentDECL->DeclType == Interface
   && ckd.document->IDTable.isValOfVirtual(decl->ParentDECL)
   && myFinalVType->DeclType != VirtualType) {
-    SetError(ckd,&ERR_ImmutableCallObj);
+    SetError(ckd,&ERR_SelfVirtual);
     return false;
   }
 
