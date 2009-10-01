@@ -3594,6 +3594,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
 
   if (decl->ParentDECL->DeclType == Interface
   && ckd.document->IDTable.isValOfVirtual(decl->ParentDECL)
+//  && !ckd.document->TestValOfVirtual(decl,decl->ParentDECL)
   && myFinalVType->DeclType != VirtualType) {
     SetError(ckd,&ERR_SelfVirtual);
     return false;
