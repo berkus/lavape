@@ -98,6 +98,7 @@ QString ERR_CallObjClosed;
 QString ERR_SelfUnfinished;
 QString ERR_SelfNotClosed;
 QString ERR_SelfVirtual;
+QString ERR_NotSelfVT;
 QString ERR_TempUnfinished;
 QString ERR_ElseExprObsolete;
 QString ERR_SuperfluousMandatory;
@@ -354,6 +355,7 @@ void LavaBaseStringInit() {
   ERR_SelfUnfinished  = QObject::tr("\"self\" may be still unfinished here: member access forbidden");
   ERR_SelfNotClosed  = QObject::tr("Call object still incomplete here, so the called function must have the \"self is closed\" attribute");
   ERR_SelfVirtual  = QObject::tr("The class of the called function is the value of a virtual type. Therefore the call expression must be of this same virtual type");
+  ERR_NotSelfVT  = QObject::tr("Virtual type of call expression and VT of \"self\" must be the same");
   ERR_SelfUnfinishedCallObj  = QObject::tr("""self"" must be completely initialized before its methods may be called, or the method must have the \"self is closed\" attribute");
   ERR_SelfUnfinishedParm  = QObject::tr("\"self\" is not yet completely initialized here, so the receiving formal parameter must be \"closed\"");
   ERR_ElseExprObsolete  = QObject::tr("Else-expression superfluous: first operand is already mandatory");

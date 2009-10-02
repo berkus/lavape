@@ -132,7 +132,7 @@ public:
   bool lowerOContext(LavaDECL* highDECL, LavaDECL *lowDECL, bool& sameContext);
   bool FindParamOfVal(LavaDECL *decl, LavaDECL *pat, LavaDECL*& paramDECL);
   bool virtualSelf(LavaDECL *decl, LavaDECL*& paramDECL);
-  bool isValOfVirtual(LavaDECL *decl, LavaDECL* baseDECL=0);
+  bool isValOfVirtual(LavaDECL *decl, LavaDECL* baseDECL=0, LavaDECL** vt=0);
   bool isValOfOtherVirtual(LavaDECL *decl, LavaDECL* vdecl);
   bool otherOContext(LavaDECL* decl1, LavaDECL *decl2);
   QString* CheckValOfVirtual(LavaDECL* VTDecl, bool cor=true);

@@ -1961,7 +1961,7 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
 }
 
 
-bool TIDTable::isValOfVirtual(LavaDECL *decl, LavaDECL* baseDECL)
+bool TIDTable::isValOfVirtual(LavaDECL *decl, LavaDECL* baseDECL, LavaDECL** vt)
 //decl is value of a virtual type in the outer or own context of decl
 //and if indicated, baseDECL is value of a base of this virtual type
 {
@@ -1990,13 +1990,19 @@ bool TIDTable::isValOfVirtual(LavaDECL *decl, LavaDECL* baseDECL)
       if (bcon.oContext)
         if (!FindParamOfVal(baseDECL, bcon.oContext, bparam))
           return false;
-    if (IsA(param,TID(bparam->OwnID, bparam->inINCL),0))
+    if (IsA(param,TID(bparam->OwnID, bparam->inINCL),0)) {
+      if (vt)
+        *vt = param;
       return true;
+    }
     else
       return false;
   }
-  else
+  else {
+    if (param && vt)
+      *vt = param;
     return param != 0;
+  }
 }
 
 bool TIDTable::isValOfOtherVirtual(LavaDECL *decl, LavaDECL* vdecl)

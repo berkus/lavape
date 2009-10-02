@@ -3549,6 +3549,8 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   TID tid;
   LavaDECL *decl;
   bool ok=true;
+  LavaDECL *vt=0;
+  CContext con;
 
   ok = ReadCheck(ckd);
 
@@ -3593,11 +3595,25 @@ bool ObjReference::CallCheck (CheckData &ckd) {
     }
 
   if (decl->ParentDECL->DeclType == Interface
-  && ckd.document->IDTable.isValOfVirtual(decl->ParentDECL)
-//  && !ckd.document->TestValOfVirtual(decl,decl->ParentDECL)
-  && myFinalVType->DeclType != VirtualType) {
-    SetError(ckd,&ERR_SelfVirtual);
-    return false;
+  && ckd.document->IDTable.isValOfVirtual(decl->ParentDECL,0,&vt)) { // self type is virtual
+    ckd.document->IDTable.GetPattern(vt, con);
+    if (con.oContext
+    && ckd.myDECL->isInSubTree(con.oContext)
+    && myFinalVType->DeclType != VirtualType) {
+      SetError(ckd,&ERR_SelfVirtual);
+      return false;
+    }
+    else if (con.iContext
+    && ckd.myDECL->isInSubTree(con.iContext)
+    && myFinalVType->DeclType != VirtualType) {
+      SetError(ckd,&ERR_SelfVirtual);
+      return false;
+    }
+    else if (myFinalVType->DeclType == VirtualType
+    && myFinalVType != vt) {
+      SetError(ckd,&ERR_NotSelfVT);
+      return false;
+    }
   }
 
   return ok;
