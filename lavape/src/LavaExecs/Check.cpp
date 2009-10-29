@@ -3615,7 +3615,6 @@ bool ObjReference::CallCheck (CheckData &ckd) {
       return false;
     }
   }
-
   return ok;
 }
 
