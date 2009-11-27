@@ -4489,11 +4489,11 @@ bool FuncExpression::Check (CheckData &ckd)
         ((SynObject*)handle.ptr)->SetError(ckd,&ERR_CallObjInStatic);
         ok &= false;
       }
-      if (funcDecl->TypeFlags.Contains(forceOverride)) {
+      //if (funcDecl->TypeFlags.Contains(forceOverride)) {
 
-        ((SynObject*)function.ptr)->SetError(ckd,&ERR_ForceOverCalled);
-        ok &= false;
-      }
+      //  ((SynObject*)function.ptr)->SetError(ckd,&ERR_ForceOverCalled);
+      //  ok &= false;
+      //}
       if (funcDecl->TypeFlags.Contains(isInitializer)
       && !flags.Contains(staticCall)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_ExplicitInitializerCall);
