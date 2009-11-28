@@ -68,7 +68,7 @@ class="c1">C#</span> solutions are too complex and indirect and lack the
 desirable intuitive simplicity and clarity. In contrast to the former,
 <strong>the</strong> <span class="c1">Lava</span> <strong>solution doesn't
 require the introduction of additional types of entities</strong> (like
-<em>delegates</em> or <em>inner classes</em>) but is solely based on three
+<em>delegates, closures,</em> or <em>inner classes</em>) but is solely based on three
 specific executable statements: <span class="c4">connect</span>, <span
 class="c4">disconnect</span> and <span class="c4">signal</span>.</p>
 
@@ -175,10 +175,23 @@ object (to be explained after the GUI support extension.)</p>
     <p><b>Alternative approaches:</b> </p>
     <p>The &quot;X Toolkit&quot; of the &quot;X Window System&quot; has provided an
         <a href="http://lesstif.sourceforge.net/doc/super-ux/g1ae03e/part1/chap8.html#Callbacks" 
-            target="_blank">early approach to callback programming</a>. Is <i>
+            target="_blank">early approach to callback programming</a>. Its <i>
         XtAddCallback</i> function can be viewed as an 
         ancestor of our <span class="style2">connect</span> construct used for 
         registering a new callback.</p>
+    <p>The traditional <span class="style1">Java</span> approach uses
+        <a href="http://blogs.sun.com/CoreJavaTechTips/entry/listeners_vs_adapters" 
+            target="_blank">event listener interfaces and associated adapter classes</a>.
+        <span class="style1">Lava</span>'s <span class="style2">signal</span>/<span 
+            class="style2">connect</span> approach doesn't need such 
+        additional auxiliary classes.</p>
+    <p>From a more abstract point of view, speaking in terms of
+        <a href="http://www.free-ebooks-download.org/free-ebook/dotnet/OOPS/Design_Patterns_Elements_of_Reusable_Object-Oriented_Software.php" 
+            target="_blank">design patterns</a> (cf. also the
+        <a href="PatternsFrameworks.htm">pattern support</a> in <span class="style1">
+        Lava</span>), callbacks can be viewed as examples of the
+        <a href="http://en.wikipedia.org/wiki/Observer_pattern%20" target="_blank">
+        observer pattern</a>.</p>
     <p>In recent years <a href="http://en.wikipedia.org/wiki/Closure_(computer_science)" 
             target="_blank">closures</a> have become more and more popular as a means to 
         cope with <a href="http://en.wikipedia.org/wiki/Callback_(computer_science)" 
@@ -187,27 +200,26 @@ object (to be explained after the GUI support extension.)</p>
         <a href="http://javac.info/" target="_blank">this</a> proposal for <span class="style1">Java</span> 
         closures, and
         <a href="http://www.javaworld.com/javaworld/jw-06-2008/jw-06-closures.html" 
-            target="_blank">this</a> article which compares three proposals for closures 
-        in <span class="style1">Java</span>.</p>
-    <p>We feel, however, that the closure notion is quite contrary to our
+            target="_blank">this</a> article, which compares three proposals for closures 
+        in <span class="style1">Java</span>.
+        <a href="http://blogs.sun.com/mr/entry/closures" target="_blank">Mark Reinhold&#39;s 
+        Blog</a> on the <span class="style1">Java</span> closure debate puts more 
+        emphasis on the relevance of closures for parallel programming and assesses the 
+        previous proposals as not &quot;entirely appropriate&quot;.</p>
+    <p>In contrast to the present closure enthusiasm, we feel that the closure notion is quite contrary to our
         <span class="style1">Lava</span> philosophy. In our opinion closures tend to 
         obscure the data flow as well as the control flow of programs by <i>implicitly</i> 
         passing data around and by involving one or another kind of <i>function pointers</i>. 
         In contrast to this, <span class="style1">Lava</span> prefers explicit data flow 
         and explicit control flow, both running strictly &quot;from top to bottom&quot; and being 
-        amenable to static analysis algorithms (&quot;at programming time&quot;).</p>
-    <p>From a more abstract point of view, speaking in terms of
-        <a href="http://www.free-ebooks-download.org/free-ebook/dotnet/OOPS/Design_Patterns_Elements_of_Reusable_Object-Oriented_Software.php" 
-            target="_blank">design patterns</a> (cf. also the
-        <a href="PatternsFrameworks.htm">pattern support</a> in <span class="style1">
-        Lava</span>), callbacks can be viewed as examples of the
-        <a href="http://en.wikipedia.org/wiki/Observer_pattern%20" target="_blank">
-        observer pattern</a>.</p>
-    <p>The traditional <span class="style1">Java</span> approach uses
-        <a href="http://blogs.sun.com/CoreJavaTechTips/entry/listeners_vs_adapters" 
-            target="_blank">event listener interfaces and associated adapter classes</a>.
-        <span class="style1">Lava</span>'s connect/signal approach doesn't need such 
-        additional auxiliary classes.</p>
+        amenable to static analysis algorithms (&quot;at programming time&quot;). 
+        Although the <i>implementation</i> of the <span class="style2">signal</span>/<span 
+            class="style2">connect</span> constructs of <span class="style1">Lava</span> 
+        involves some kind of <i>internal</i> function pointers, these aren&#39;t exposed to 
+        the programmer, however, and the data flow between the callback requester, 
+        signal emitter and signal handler objects is expressed quite explicitly by 
+        specifying these objects and by using the parameters of the signal/handler 
+        functions.</p>
     <p>&nbsp;</p>
     <p><b>See also</b> our <a href="CallbackSample.htm">callback sample program</a>.</p>
 </body>
