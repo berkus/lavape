@@ -694,15 +694,15 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
       }
   }
 
-  //if (parm->flags.Contains(isSelfVar)) {
-  //  if (parm->parentObject->parentObject->primaryToken != initializing_T
-  //  && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-  //  && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
-  //  && !formDecl->SecondTFlags.Contains(closed)) {
-  //    ((SynObject*)((CHE*)((ObjReference*)parm)->refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
-  //    ok &= false;
-  //  }
-  //}
+  if (parm->flags.Contains(isSelfVar)) {
+    if (parm->parentObject->parentObject->primaryToken != initializing_T
+    && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+    && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
+    && !formDecl->SecondTFlags.Contains(closed)) {
+      ((SynObject*)((CHE*)((ObjReference*)parm)->refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
+      ok &= false;
+    }
+  }
 
   ckd.document->MemberTypeContext(formDecl, callContext,&ckd);
   callContext = callCtx;
@@ -740,6 +740,100 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
     if (formCat != anyCat
     && actCat != formCat) {
       parm->SetError(ckd,&ERR_IncompatibleCategory);
+      ok = false;
+    }
+  }
+  return ok;
+}
+
+bool compatibleCallExpr(CheckData &ckd, Expression *actCallObj, CHE *formParm, const CContext &callCtx, Category callObjCat)
+{
+  LavaDECL *actTypeDecl, *actDecl, *formDecl, *formTypeDecl;
+  bool ok=true;
+  Category actCat, formCat;
+  CContext callContext=callCtx;
+  SynFlags ctxFlags;
+  int closedLevel;
+
+  actCallObj->ExprGetFVType(ckd,actTypeDecl,actCat,ctxFlags);
+  if (actTypeDecl == (LavaDECL*)-1)
+    if (actCallObj->NullAdmissible(ckd))
+      return true;
+    else { // "nothing" admissible?
+      actCallObj->SetError(ckd,&ERR_Optional);
+      return false;
+    }
+  actDecl = ckd.document->GetType(actTypeDecl);
+  formDecl = (LavaDECL*)formParm->data;
+
+  if (actCallObj->IsOptional(ckd)
+  && !formDecl->TypeFlags.Contains(isOptional)
+  && !actCallObj->IsDefChecked(ckd)) {
+    actCallObj->SetError(ckd,&ERR_Optional);
+    ok &= false;
+  }
+
+  if (NoPH(actCallObj)) {
+    closedLevel = actCallObj->ClosedLevel(ckd);
+    if (closedLevel && !formDecl->SecondTFlags.Contains(closed))
+      if (ckd.inIniClause) {
+        if (closedLevel >= (int)((VarName*)ckd.iniVar)->varIndex) {
+          actCallObj->SetError(ckd,&ERR_Closed);
+          ok &= false;
+        }
+      }
+      else {
+        actCallObj->SetError(ckd,&ERR_Closed);
+        ok &= false;
+      }
+  }
+
+  //if (actCallObj->flags.Contains(isSelfVar)) {
+  //  if (actCallObj->parentObject->parentObject->primaryToken != initializing_T
+  //  && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+  //  && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
+  //  && !formDecl->SecondTFlags.Contains(closed)) {
+  //    ((SynObject*)((CHE*)((ObjReference*)actCallObj)->refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
+  //    ok &= false;
+  //  }
+  //}
+
+  ckd.document->MemberTypeContext(formDecl, callContext,&ckd);
+  callContext = callCtx;
+  formTypeDecl = ckd.document->GetFinalMVType(formDecl->RefID,formDecl->inINCL,callContext,formCat,&ckd);
+  callContext = callCtx;
+  if (formCat == unknownCat)
+    if (formDecl->TypeFlags.Contains(isStateObjectY))
+      formCat = stateObjectCat;
+    else if (formDecl->TypeFlags.Contains(isAnyCatY))
+      formCat = anyCat;
+    else
+      formCat = valueObjectCat;
+  if (NoPH(actCallObj))
+    ((Expression*)actCallObj)->targetCat = formCat;
+  if (actDecl == 0 && !actCallObj->IsIfStmExpr())
+    return false; // but actTypeDecl == -1 ("nothing") is ok!
+
+  if (formDecl->TypeFlags.Contains(substitutable))
+    callContext.ContextFlags = SET(multiContext,-1);
+  if (ctxFlags.bits) // of actParm???
+    ckd.tempCtx.ContextFlags = ctxFlags;
+  if (actCallObj->IsIfStmExpr()) {
+    ((CondExpression*)actCallObj)->targetDecl = formTypeDecl;
+    ((CondExpression*)actCallObj)->targetCtx = ckd.tempCtx;
+    ((CondExpression*)actCallObj)->targetCat = formCat;
+    ((CondExpression*)actCallObj)->callObjCat = callObjCat;
+    ok &= actCallObj->Check(ckd);
+  }
+  else {
+    if (!compatibleTypes(ckd,actTypeDecl,ckd.tempCtx,formTypeDecl,callContext)) {
+      actCallObj->SetError(ckd,ckd.errorCode);
+      ok = false;
+    }
+
+    if (formCat != anyCat
+    && actCat != formCat) {
+      actCallObj->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
     }
   }
