@@ -355,8 +355,8 @@ ValOnInit CAttrBox::OnInitDialog()
     ConstProp->setEnabled(true);
     Protected->setChecked(myDECL->TypeFlags.Contains(isProtected));
     ConstProp->setChecked(myDECL->TypeFlags.Contains(isConst));
-    PassByValue->setChecked(myDECL->TypeFlags.Contains(copyOnAccess));
-    PassByValue->setEnabled(true);
+    //PassByValue->setChecked(myDECL->TypeFlags.Contains(copyOnAccess));
+    //PassByValue->setEnabled(true);
     Consumable->setChecked(myDECL->TypeFlags.Contains(consumable));
     SetGet->setChecked(myDECL->TypeFlags.Contains(hasSetGet));
     Consumable->setEnabled(true);
@@ -373,7 +373,7 @@ ValOnInit CAttrBox::OnInitDialog()
   }
   else {
     ConstProp->setEnabled(false);
-    PassByValue->setEnabled(false);
+    //PassByValue->setEnabled(false);
     Consumable->setEnabled(false);
     Abstract->setEnabled(false);
     Protected->setEnabled(false);
@@ -382,7 +382,7 @@ ValOnInit CAttrBox::OnInitDialog()
     Protected->setEnabled(baseDECL->TypeFlags.Contains(isProtected));
     StateObject->setEnabled(false);
     SetGet->setEnabled(false);
-    PassByValue->setEnabled(false);
+    //PassByValue->setEnabled(false);
     Consumable->setEnabled(false);
     ConstProp->setEnabled(baseDECL->TypeFlags.Contains(isConst));
     Substitutable->setEnabled(false);
@@ -433,7 +433,7 @@ void CAttrBox::on_RMOverrides_clicked()
   BasicTypes->setEnabled(true);
   StateObject->setEnabled(true);
   SetGet->setEnabled(true);
-  PassByValue->setEnabled(true);
+  //PassByValue->setEnabled(true);
   Consumable->setEnabled(true);
   ConstProp->setEnabled(true);
   Protected->setEnabled(true);
@@ -627,10 +627,10 @@ void CAttrBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(isConst);
   else
     myDECL->TypeFlags.EXCL(isConst);
-  if (PassByValue->isChecked())
-    myDECL->TypeFlags.INCL(copyOnAccess);
-  else
-    myDECL->TypeFlags.EXCL(copyOnAccess);
+  //if (PassByValue->isChecked())
+  //  myDECL->TypeFlags.INCL(copyOnAccess);
+  //else
+  //  myDECL->TypeFlags.EXCL(copyOnAccess);
   if (Protected->isChecked())
     myDECL->TypeFlags.INCL(isProtected);
   else

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>486</width>
-    <height>618</height>
+    <height>629</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -101,26 +101,26 @@
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QCheckBox" name="DefaultIni">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="text">
-          <string>Default initializer</string>
-         </property>
-        </widget>
-       </item>
       </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="DefaultIni">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
+      <property name="text">
+       <string>Default initializer</string>
+      </property>
      </widget>
     </item>
     <item>
