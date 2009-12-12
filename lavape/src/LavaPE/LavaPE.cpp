@@ -497,7 +497,7 @@ void CLavaPEApp::OnChooseTreeFont()
 
   lf = LBaseData.m_ExecFont;
 
-  lf = QFontDialog::getFont(&ok,LBaseData.m_TreeFont,m_appWindow);
+  lf = QFontDialog::getFont(&ok/*,LBaseData.m_TreeFont*/,m_appWindow);
   if (ok) {
     LBaseData.m_TreeFont = lf;
     LBaseData.m_lfDefTreeFont = lf.toString();
