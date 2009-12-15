@@ -5447,6 +5447,8 @@ bool CExecView::ConflictSelected()
 
 void CExecView::OnToggleCategory()
 {
+  SynObject *currentSynObjBAK = text->currentSynObj;
+
   if (!EditOK()) return;
 
   if (text->currentSynObj->primaryToken == VarName_T) {
@@ -5460,10 +5462,25 @@ void CExecView::OnToggleCategory()
       PutInsFlagHint(SET(isStateObjectX,-1),SET(firstHint,lastHint,-1));
   }
   else {
-    if (text->currentSynObj->flags.Contains(isStateObjectX))
-      PutDelFlagHint(SET(isStateObjectX,-1),SET(firstHint,lastHint,-1));
+    if (text->currentSynObj->flags.Contains(isStateObjectX)) {
+      if (text->currentSynObj->primaryToken == new_T) {
+        PutDelFlagHint(SET(isStateObjectX,-1),SET(firstHint,-1));
+        text->currentSynObj = (VarName*)((NewExpression*)text->currentSynObj)->varName.ptr;
+        PutDelFlagHint(SET(isStateObjectX,-1),SET(lastHint,-1));
+        text->currentSynObj = currentSynObjBAK;
+      }
+      else
+        PutDelFlagHint(SET(isStateObjectX,-1),SET(firstHint,lastHint,-1));
+    }
     else
-      PutInsFlagHint(SET(isStateObjectX,-1),SET(firstHint,lastHint,-1));
+      if (text->currentSynObj->primaryToken == new_T) {
+        PutInsFlagHint(SET(isStateObjectX,-1),SET(firstHint,-1));
+        text->currentSynObj = (VarName*)((NewExpression*)text->currentSynObj)->varName.ptr;
+        PutInsFlagHint(SET(isStateObjectX,-1),SET(lastHint,-1));
+        text->currentSynObj = currentSynObjBAK;
+      }
+      else
+        PutInsFlagHint(SET(isStateObjectX,-1),SET(firstHint,lastHint,-1));
   }
 }
 

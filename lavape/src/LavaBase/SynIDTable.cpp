@@ -1967,6 +1967,7 @@ bool TIDTable::isValOfVirtual(LavaDECL *decl, LavaDECL* baseDECL, LavaDECL** vt)
 {
   LavaDECL *param = 0, *bparam = 0;
   CContext con, bcon;
+
   if (!decl || (decl->DeclType != Interface))
     return false;
   GetPattern(decl, con);

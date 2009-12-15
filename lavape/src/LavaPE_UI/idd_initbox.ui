@@ -74,22 +74,6 @@
       </layout>
      </item>
      <item>
-      <widget class="QCheckBox" name="ReadOnly">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::StrongFocus</enum>
-       </property>
-       <property name="text">
-        <string>Read-only</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QCheckBox" name="Transaction">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
@@ -238,7 +222,6 @@
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>NewName</tabstop>
-  <tabstop>ReadOnly</tabstop>
   <tabstop>Transaction</tabstop>
   <tabstop>Synch</tabstop>
   <tabstop>Concurrent</tabstop>

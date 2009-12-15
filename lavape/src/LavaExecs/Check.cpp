@@ -746,100 +746,6 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   return ok;
 }
 
-bool compatibleCallExpr(CheckData &ckd, Expression *actCallObj, CHE *formParm, const CContext &callCtx, Category callObjCat)
-{
-  LavaDECL *actTypeDecl, *actDecl, *formDecl, *formTypeDecl;
-  bool ok=true;
-  Category actCat, formCat;
-  CContext callContext=callCtx;
-  SynFlags ctxFlags;
-  int closedLevel;
-
-  actCallObj->ExprGetFVType(ckd,actTypeDecl,actCat,ctxFlags);
-  if (actTypeDecl == (LavaDECL*)-1)
-    if (actCallObj->NullAdmissible(ckd))
-      return true;
-    else { // "nothing" admissible?
-      actCallObj->SetError(ckd,&ERR_Optional);
-      return false;
-    }
-  actDecl = ckd.document->GetType(actTypeDecl);
-  formDecl = (LavaDECL*)formParm->data;
-
-  if (actCallObj->IsOptional(ckd)
-  && !formDecl->TypeFlags.Contains(isOptional)
-  && !actCallObj->IsDefChecked(ckd)) {
-    actCallObj->SetError(ckd,&ERR_Optional);
-    ok &= false;
-  }
-
-  if (NoPH(actCallObj)) {
-    closedLevel = actCallObj->ClosedLevel(ckd);
-    if (closedLevel && !formDecl->SecondTFlags.Contains(closed))
-      if (ckd.inIniClause) {
-        if (closedLevel >= (int)((VarName*)ckd.iniVar)->varIndex) {
-          actCallObj->SetError(ckd,&ERR_Closed);
-          ok &= false;
-        }
-      }
-      else {
-        actCallObj->SetError(ckd,&ERR_Closed);
-        ok &= false;
-      }
-  }
-
-  //if (actCallObj->flags.Contains(isSelfVar)) {
-  //  if (actCallObj->parentObject->parentObject->primaryToken != initializing_T
-  //  && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-  //  && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
-  //  && !formDecl->SecondTFlags.Contains(closed)) {
-  //    ((SynObject*)((CHE*)((ObjReference*)actCallObj)->refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
-  //    ok &= false;
-  //  }
-  //}
-
-  ckd.document->MemberTypeContext(formDecl, callContext,&ckd);
-  callContext = callCtx;
-  formTypeDecl = ckd.document->GetFinalMVType(formDecl->RefID,formDecl->inINCL,callContext,formCat,&ckd);
-  callContext = callCtx;
-  if (formCat == unknownCat)
-    if (formDecl->TypeFlags.Contains(isStateObjectY))
-      formCat = stateObjectCat;
-    else if (formDecl->TypeFlags.Contains(isAnyCatY))
-      formCat = anyCat;
-    else
-      formCat = valueObjectCat;
-  if (NoPH(actCallObj))
-    ((Expression*)actCallObj)->targetCat = formCat;
-  if (actDecl == 0 && !actCallObj->IsIfStmExpr())
-    return false; // but actTypeDecl == -1 ("nothing") is ok!
-
-  if (formDecl->TypeFlags.Contains(substitutable))
-    callContext.ContextFlags = SET(multiContext,-1);
-  if (ctxFlags.bits) // of actParm???
-    ckd.tempCtx.ContextFlags = ctxFlags;
-  if (actCallObj->IsIfStmExpr()) {
-    ((CondExpression*)actCallObj)->targetDecl = formTypeDecl;
-    ((CondExpression*)actCallObj)->targetCtx = ckd.tempCtx;
-    ((CondExpression*)actCallObj)->targetCat = formCat;
-    ((CondExpression*)actCallObj)->callObjCat = callObjCat;
-    ok &= actCallObj->Check(ckd);
-  }
-  else {
-    if (!compatibleTypes(ckd,actTypeDecl,ckd.tempCtx,formTypeDecl,callContext)) {
-      actCallObj->SetError(ckd,ckd.errorCode);
-      ok = false;
-    }
-
-    if (formCat != anyCat
-    && actCat != formCat) {
-      actCallObj->SetError(ckd,&ERR_IncompatibleCategory);
-      ok = false;
-    }
-  }
-  return ok;
-}
-
 bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext &callCtx, Category callObjCat)
 {
   SynObject *actSynObj=(SynObject*)actParm->data;
@@ -2305,7 +2211,8 @@ bool SelfVar::Check (CheckData &ckd)
     ckd.selfTypeDECL = execDECL->ParentDECL->ParentDECL;
     ckd.lpc.ContextFlags.INCL(selfiContext);
     ckd.lpc.ContextFlags.INCL(selfoContext);
-    if (execDECL->ParentDECL->TypeFlags.Contains(forceOverride))
+    if (execDECL->ParentDECL->TypeFlags.Contains(forceOverride)
+    || execDECL->ParentDECL->TypeFlags.Contains(isStatic))
       ckd.lpc.ContextFlags.INCL(staticContext);
     else
       ckd.lpc.ContextFlags.EXCL(staticContext);
@@ -3655,12 +3562,12 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   if (!decl->SecondTFlags.Contains(closed))
     if (!flags.Contains(isIniCallOrHandle) && ClosedLevel(ckd)) {
       SetError(ckd,&ERR_CallObjClosed);
-      ok &= false;
+      ok = false;
     }
     else if (parentObject->parentObject->primaryToken == initializing_T // base initializer call
     && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
       SetError(ckd,&ERR_SelfNotClosed);
-      ok &= false;
+      ok = false;
     }
     else if (flags.Contains(isSelfVar)
     && refIDs.first == refIDs.last
@@ -3691,23 +3598,37 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   if (decl->ParentDECL->DeclType == Interface
   && ckd.document->IDTable.isValOfVirtual(decl->ParentDECL,0,&vt)) { // self type is virtual
     ckd.document->IDTable.GetPattern(vt, con);
-    if (con.oContext
-    && ckd.myDECL->isInSubTree(con.oContext)
-    && myFinalVType->DeclType != VirtualType) {
-      SetError(ckd,&ERR_SelfVirtual);
-      return false;
-    }
-    else if (con.iContext
-    && ckd.myDECL->isInSubTree(con.iContext)
-    && myFinalVType->DeclType != VirtualType) {
-      SetError(ckd,&ERR_SelfVirtual);
-      return false;
-    }
+    if (con.oContext && ckd.myDECL->isInSubTree(con.oContext)
+    || con.iContext && ckd.myDECL->isInSubTree(con.iContext))
+      if (myFinalVType->DeclType == VirtualType)
+        return true;
+      else {
+        SetError(ckd,&ERR_SelfVirtual);
+        return false;
+      }
     else if (myFinalVType->DeclType == VirtualType
-    && myFinalVType != vt) {
+         && myFinalVType != vt) {
       SetError(ckd,&ERR_NotSelfVT);
       return false;
     }
+
+    //if (con.oContext
+    //&& ckd.myDECL->isInSubTree(con.oContext)
+    //&& myFinalVType->DeclType != VirtualType) {
+    //  SetError(ckd,&ERR_SelfVirtual);
+    //  return false;
+    //}
+    //else if (con.iContext
+    //&& ckd.myDECL->isInSubTree(con.iContext)
+    //&& myFinalVType->DeclType != VirtualType) {
+    //  SetError(ckd,&ERR_SelfVirtual);
+    //  return false;
+    //}
+    //else if (myFinalVType->DeclType == VirtualType
+    //&& myFinalVType != vt) {
+    //  SetError(ckd,&ERR_NotSelfVT);
+    //  return false;
+    //}
   }
   return ok;
 }
@@ -3890,7 +3811,8 @@ void VarName::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
     ((SynObject*)((Run*)parentObject)->initiator.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
     break;
   case new_T:
-    ((SynObject*)((NewExpression*)parentObject)->objType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
+    //((SynObject*)((NewExpression*)parentObject)->objType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
+    ((NewExpression*)parentObject)->ExprGetFVType(ckd,decl,cat,ctxFlags);
     break;
   case clone_T:
     ((SynObject*)((CloneExpression*)parentObject)->fromObj.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
@@ -3928,9 +3850,9 @@ Reference *VarName::TypeRef ()
 bool VarName::Check (CheckData &ckd)
 {
   ENTRY
-  if (primaryToken == function_T)
-  //|| primaryToken == dftInitializer_T
-  //|| primaryToken == initializer_T)
+  if (primaryToken == function_T
+  || primaryToken == dftInitializer_T
+  || primaryToken == initializer_T)
     if (((SelfVar*)ckd.selfVar)->execDECL->ParentDECL->TypeFlags.Contains(isStateObjectY)) {
       flags.INCL(isStateObjectX);
       flags.EXCL(isAnyCatX);
@@ -4471,7 +4393,7 @@ bool FuncExpression::Check (CheckData &ckd)
   CHE *chpActIn, *chpFormIn, *chpFormOut;
   Expression *opd, *actParm;
   TID objTypeTid, selfTid, funcItfTid, funcTid;
-  LavaDECL *funcItf, *funcImpl=0, *implItfDecl;
+  LavaDECL *funcItf, *funcImpl=0, *implItfDecl, *callType;
   Expression *callExpr;
   ObjReference *callObj;
   Category cat;
@@ -4527,6 +4449,10 @@ bool FuncExpression::Check (CheckData &ckd)
   if (callExpr) {
     ckd.tempCtx = ckd.lpc;
     ((Expression*)handle.ptr)->ExprGetFVType(ckd,objTypeDecl,cat,myCtxFlags);
+    if (objTypeDecl) {
+      callCtx = ckd.tempCtx;
+      callType = objTypeDecl;
+    }
     objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
 
 #ifndef INTERPRETER
@@ -4544,8 +4470,8 @@ bool FuncExpression::Check (CheckData &ckd)
 #endif
 
     if (objTypeDecl) {
-      callCtx = ckd.tempCtx;
-      ckd.document->NextContext(objTypeDecl, callCtx);
+      //callCtx = ckd.tempCtx;
+      ckd.document->NextContext(callType, callCtx);
       callObjCat = cat;
       if (callExpr->flags.Contains(isSelfVar)
       && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
@@ -4685,49 +4611,50 @@ bool FuncExpression::Check (CheckData &ckd)
   if (parentObject->primaryToken != connect_T) {
     chpActIn = (CHE*)inputs.first;
 	closedLevel = 0;
-    while (chpFormIn) {
-      // locate act. parm. and reposition it if necessary:
-      reposition(ckd,this,true,&inputs,chpFormIn,chpActIn);
-      opd = (Expression*)chpActIn->data;
-      // check act. parm.:
-      actParm =
-        (opd->primaryToken==parameter_T?(Expression*)((Parameter*)opd)->parameter.ptr : opd);
-      if (!actParm->IsIfStmExpr()) {
-        ok &= opd->Check(ckd);
-        if (((SynObject*)((Parameter*)opd)->parameter.ptr)->primaryToken == ObjRef_T && ok) {
-          vn = ((ObjReference*)((Parameter*)opd)->parameter.ptr)->PrimaryVar(ckd);
-        }
+
+  // check input parameter compatibility
+  while (chpFormIn) {
+    // locate act. parm. and reposition it if necessary:
+    reposition(ckd,this,true,&inputs,chpFormIn,chpActIn);
+    opd = (Expression*)chpActIn->data;
+    // check act. parm.:
+    actParm =
+      (opd->primaryToken==parameter_T?(Expression*)((Parameter*)opd)->parameter.ptr : opd);
+    if (!actParm->IsIfStmExpr()) {
+      ok &= opd->Check(ckd);
+      if (((SynObject*)((Parameter*)opd)->parameter.ptr)->primaryToken == ObjRef_T && ok) {
+        vn = ((ObjReference*)((Parameter*)opd)->parameter.ptr)->PrimaryVar(ckd);
       }
-      closedLevel = qMax(opd->closedLevel,closedLevel);
-      // check act.parm/form.parm. type compatibility:
-      ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
-#ifdef INTERPRETER
-      formInParmDecl = (LavaDECL*)chpFormIn->data;
-      ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
-      ckd.tempCtx = callContext;
-      ((Expression*)chpActIn->data)->formVType = ckd.document->IDTable.GetDECL(formInParmDecl->RefID,formInParmDecl->inINCL);
-      ((Expression*)chpActIn->data)->vSectionNumber = ckd.document->GetVTSectionNumber(ckd, callCtx, ((Expression*)chpActIn->data)->formVType, ((Expression*)chpActIn->data)->isOuter);
-      formInParmDecl = ckd.document->GetFinalMTypeAndContext(formInParmDecl->RefID,formInParmDecl->inINCL,ckd.tempCtx,&ckd);
-      if (actDecl != (LavaDECL*)-1) { // "nothing"?
-        actDecl = ckd.document->GetType(actDecl);
-        ((Expression*)chpActIn->data)->sectionNumber = ckd.document->GetSectionNumber(ckd, actDecl,formInParmDecl);
-      }
-      //if (callExpr && callExpr->flags.Contains(isDisabled)) // initializer call
-      //  opd->flags.INCL(unfinishedAllowed);
-#endif
-      if (chpActIn)
-        chpActIn = (CHE*)chpActIn->successor;
-      chpFormIn = (CHE*)chpFormIn->successor;
-      if (chpFormIn && ((LavaDECL*)chpFormIn->data)->DeclType != IAttr)
-        chpFormIn = 0;
     }
-    if (chpActIn)
+    closedLevel = qMax(opd->closedLevel,closedLevel);
+    // check act.parm/form.parm. type compatibility:
+    ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
 #ifdef INTERPRETER
-      SetError(ckd,&ERR_RedundantParms);
+    formInParmDecl = (LavaDECL*)chpFormIn->data;
+    ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
+    ckd.tempCtx = callContext;
+    ((Expression*)chpActIn->data)->formVType = ckd.document->IDTable.GetDECL(formInParmDecl->RefID,formInParmDecl->inINCL);
+    ((Expression*)chpActIn->data)->vSectionNumber = ckd.document->GetVTSectionNumber(ckd, callCtx, ((Expression*)chpActIn->data)->formVType, ((Expression*)chpActIn->data)->isOuter);
+    formInParmDecl = ckd.document->GetFinalMTypeAndContext(formInParmDecl->RefID,formInParmDecl->inINCL,ckd.tempCtx,&ckd);
+    if (actDecl != (LavaDECL*)-1) { // "nothing"?
+      actDecl = ckd.document->GetType(actDecl);
+      ((Expression*)chpActIn->data)->sectionNumber = ckd.document->GetSectionNumber(ckd, actDecl,formInParmDecl);
+    }
+    //if (callExpr && callExpr->flags.Contains(isDisabled)) // initializer call
+    //  opd->flags.INCL(unfinishedAllowed);
+#endif
+    if (chpActIn)
+      chpActIn = (CHE*)chpActIn->successor;
+    chpFormIn = (CHE*)chpFormIn->successor;
+    if (chpFormIn && ((LavaDECL*)chpFormIn->data)->DeclType != IAttr)
+      chpFormIn = 0;
+  }
+  if (chpActIn)
+#ifdef INTERPRETER
+    SetError(ckd,&ERR_RedundantParms);
 #else
-    for ( ;
-          chpActIn;
-          chpActIn = (CHE*)chpActIn->successor)  // delete remainder of parameter chain
+    for ( ; chpActIn; chpActIn = (CHE*)chpActIn->successor)  
+      // delete remainder of parameter chain
       PutDelChainHint(ckd,this,&inputs,chpActIn);
 #endif
   }

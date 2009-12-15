@@ -264,7 +264,7 @@ $TYPE +CDP {
     isPropSet,
     //12/4096, X0000 1000, set property function in a service implementation, the RefID is the ID of the property
     isAnyCatY,
-    //13/8192, X0000 2000, indefinite object category (isStateObjectY or valueObject)
+    //13/8192, X0000 2000, //attribute or "self" of function may have any object category
     constituent,
     //14/16384, X0000 4000 constituent link
     acquaintance,

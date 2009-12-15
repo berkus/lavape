@@ -2111,7 +2111,7 @@ void CFuncBox::on_StaticFunc_clicked()
     Initializer->setEnabled(false);
     Abstract->setEnabled(false);
     EnforceOver->setEnabled(false);
-    myDECL->TypeFlags.INCL(isConst); 
+    //myDECL->TypeFlags.INCL(isConst); 
     //ConstFunc->setChecked(true);
     //ConstFunc->setEnabled(false);
     Closed->setEnabled(false);
@@ -2221,7 +2221,7 @@ void CFuncBox::on_Signal_clicked()
   if (Signal->isChecked()) {
     //ConstFunc->setChecked(true); 
     //ConstFunc->setEnabled(false);
-    myDECL->TypeFlags.INCL(isConst); 
+    //myDECL->TypeFlags.INCL(isConst); 
     Protected->setChecked(true);
     Protected->setEnabled(false);
     Abstract->setChecked(false);
@@ -2873,12 +2873,12 @@ ValOnInit CInitBox::OnInitDialog()
 
   if (onNew) {
     Transaction->setChecked(false);
-    ReadOnly->setChecked(false);
+    //ReadOnly->setChecked(false);
     valSynch = 0;
   }
   else {
     Transaction->setChecked(myDECL->TypeFlags.Contains(isTransaction));
-    ReadOnly->setChecked(myDECL->TypeFlags.Contains(isConst));
+    //ReadOnly->setChecked(myDECL->TypeFlags.Contains(isConst));
     if (myDECL->TypeFlags.Contains(execConcurrent)) 
       valSynch = 1;
     /*
@@ -2915,10 +2915,10 @@ void CInitBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(isTransaction); 
   else
     myDECL->TypeFlags.EXCL(isTransaction); 
-  if (ReadOnly->isChecked())
-    myDECL->TypeFlags.INCL(isConst); 
-  else
-    myDECL->TypeFlags.EXCL(isConst); 
+  //if (ReadOnly->isChecked())
+  //  myDECL->TypeFlags.INCL(isConst); 
+  //else
+  //  myDECL->TypeFlags.EXCL(isConst); 
 //  myDECL->TypeFlags.EXCL(execIndependent);
   myDECL->TypeFlags.INCL(execIndependent);
   myDECL->TypeFlags.EXCL(execConcurrent);

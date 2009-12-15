@@ -1197,8 +1197,8 @@ void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
       iniDecl = t.document->IDTable.GetDECL(((Reference*)((FuncStatement*)initializerCall.ptr)->function.ptr)->refID,t.ckd.inINCL);
     if (showTemp) {
       t.Blank();
-      if (flags.Contains(isStateObjectX))
-        t.Insert(Tilde_T);
+      //if (flags.Contains(isStateObjectX))
+      //  t.Insert(Tilde_T);
       DRAW(varName.ptr);
     }
     if (!ignore
