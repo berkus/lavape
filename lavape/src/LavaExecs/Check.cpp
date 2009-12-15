@@ -3603,23 +3603,6 @@ bool ObjReference::CallCheck (CheckData &ckd) {
       return false;
     }
 
-    //if (con.oContext
-    //&& ckd.myDECL->isInSubTree(con.oContext)
-    //&& myFinalVType->DeclType != VirtualType) {
-    //  SetError(ckd,&ERR_SelfVirtual);
-    //  return false;
-    //}
-    //else if (con.iContext
-    //&& ckd.myDECL->isInSubTree(con.iContext)
-    //&& myFinalVType->DeclType != VirtualType) {
-    //  SetError(ckd,&ERR_SelfVirtual);
-    //  return false;
-    //}
-    //else if (myFinalVType->DeclType == VirtualType
-    //&& myFinalVType != vt) {
-    //  SetError(ckd,&ERR_NotSelfVT);
-    //  return false;
-    //}
   return ok;
 }
 
