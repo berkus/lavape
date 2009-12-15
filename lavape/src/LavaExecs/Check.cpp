@@ -4505,15 +4505,15 @@ bool FuncExpression::Check (CheckData &ckd)
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_NoInitializer);
         ok &= false;
       }
+      if (flags.Contains(staticCall)
+      && funcDecl->TypeFlags.Contains(forceOverride)){
+        ((SynObject*)function.ptr)->SetError(ckd,&ERR_ForceOverCalled);
+        ok &= false;
+      }
       if (funcDecl->TypeFlags.Contains(isStatic)) {
         ((SynObject*)handle.ptr)->SetError(ckd,&ERR_CallObjInStatic);
         ok &= false;
       }
-      //if (funcDecl->TypeFlags.Contains(forceOverride)) {
-
-      //  ((SynObject*)function.ptr)->SetError(ckd,&ERR_ForceOverCalled);
-      //  ok &= false;
-      //}
       if (funcDecl->TypeFlags.Contains(isInitializer)
       && !flags.Contains(staticCall)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_ExplicitInitializerCall);
