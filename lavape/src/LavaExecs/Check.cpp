@@ -3549,7 +3549,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   Expression *funcExpr=(Expression*)parentObject;
   TID tid;
   LavaDECL *decl;
-  bool ok=true;
+  bool ok=true, sC=true;
   LavaDECL *vt=0;
   CContext con;
 
@@ -3596,19 +3596,10 @@ bool ObjReference::CallCheck (CheckData &ckd) {
     }
 
   if (decl->ParentDECL->DeclType == Interface
-  && ckd.document->IDTable.isValOfVirtual(decl->ParentDECL,0,&vt)) { // self type is virtual
-    ckd.document->IDTable.GetPattern(vt, con);
-    if (con.oContext && ckd.myDECL->isInSubTree(con.oContext)
-    || con.iContext && ckd.myDECL->isInSubTree(con.iContext))
-      if (myFinalVType->DeclType == VirtualType)
-        return true;
-      else {
-        SetError(ckd,&ERR_SelfVirtual);
-        return false;
-      }
-    else if (myFinalVType->DeclType == VirtualType
-         && myFinalVType != vt) {
-      SetError(ckd,&ERR_NotSelfVT);
+  && ckd.document->IDTable.isValOfVirtual(decl->ParentDECL,0,&vt)// class of function is val of virtual
+  && ckd.document->IDTable.lowerOContext(ckd.myDECL, decl->ParentDECL, sC)) //called function and call in the same context
+    if (myFinalVType->DeclType != VirtualType) {
+      SetError(ckd,&ERR_SelfVirtual);
       return false;
     }
 
@@ -3629,7 +3620,6 @@ bool ObjReference::CallCheck (CheckData &ckd) {
     //  SetError(ckd,&ERR_NotSelfVT);
     //  return false;
     //}
-  }
   return ok;
 }
 
