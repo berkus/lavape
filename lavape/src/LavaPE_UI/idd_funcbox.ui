@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>411</width>
-    <height>513</height>
+    <width>437</width>
+    <height>511</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -385,7 +385,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -404,7 +404,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>200</width>
+            <width>400</width>
             <height>70</height>
            </size>
           </property>
@@ -423,7 +423,7 @@
      <item>
       <widget class="QGroupBox" name="GroupBox_IDC_STATIC24">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -450,14 +450,14 @@
            <bool>true</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
+           <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="maximumSize">
            <size>
-            <width>200</width>
+            <width>400</width>
             <height>70</height>
            </size>
           </property>
@@ -497,14 +497,14 @@
      <item>
       <widget class="QGroupBox" name="GroupBox_IDC_STATIC25">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>1</width>
+         <width>0</width>
          <height>0</height>
         </size>
        </property>
@@ -535,6 +535,12 @@
          <widget class="QCheckBox" name="EnforceOver">
           <property name="enabled">
            <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="focusPolicy">
            <enum>Qt::StrongFocus</enum>
