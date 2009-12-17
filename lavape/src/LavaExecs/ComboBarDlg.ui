@@ -1,25 +1,23 @@
-<ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>ComboBarDlg</class>
- <widget class="QWidget" name="ComboBarDlg" >
-  <property name="geometry" >
+ <widget class="QWidget" name="ComboBarDlg">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>403</width>
-    <height>20</height>
+    <width>397</width>
+    <height>21</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>ComboBarDlg</string>
   </property>
-  <widget class="QPushButton" name="IDC_ButtonEnum" >
-   <property name="enabled" >
+  <widget class="QPushButton" name="IDC_ButtonEnum">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>280</x>
      <y>0</y>
@@ -27,18 +25,19 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="text" >
+   <property name="text">
     <string/>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >:/LavaExecs/res/TOOLBUTTONS/bitmap2.xpm</iconset>
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
+     <normaloff>:/LavaExecs/res/TOOLBUTTONS/bitmap2.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/bitmap2.xpm</iconset>
    </property>
   </widget>
-  <widget class="QPushButton" name="IDC_NewPFunc" >
-   <property name="enabled" >
+  <widget class="QPushButton" name="IDC_NewPFunc">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>310</x>
      <y>0</y>
@@ -46,42 +45,49 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New private member function</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>&lt;b>Function creation shortcut:&lt;/b>&lt;br>&lt;br>Creates a new private member function in the (implementation of the) current class and replaces the current &lt;font color=red>&amp;lt;func&amp;gt;&lt;/font> placeholder with a reference to it.&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;&lt;b&gt;Function creation shortcut:&lt;/b&gt;&lt;br&gt;&lt;br&gt;Creates a new private member function in the (implementation of the) current class and replaces the current &lt;font color=red&gt;&amp;lt;func&amp;gt;&lt;/font&gt; placeholder with a reference to it.&lt;/p&gt;</string>
    </property>
-   <property name="text" >
+   <property name="text">
     <string/>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >:/LavaExecs/res/TOOLBUTTONS/bmNewPFunc.xpm</iconset>
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
+     <normaloff>:/LavaExecs/res/TOOLBUTTONS/bmNewPFunc.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/bmNewPFunc.xpm</iconset>
    </property>
   </widget>
-  <widget class="QComboBox" name="IDC_CompaBTypes" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_CompaBTypes">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>141</x>
      <y>1</y>
-     <width>138</width>
+     <width>91</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string> (Basic types)</string>
     </property>
    </item>
   </widget>
-  <widget class="QPushButton" name="IDC_NewFunc" >
-   <property name="enabled" >
+  <widget class="QPushButton" name="IDC_NewFunc">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>280</x>
      <y>0</y>
@@ -89,336 +95,442 @@
      <height>20</height>
     </rect>
    </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>New public member function</string>
    </property>
-   <property name="whatsThis" >
-    <string>&lt;p>&lt;b>Function creation shortcut:&lt;/b>&lt;br>&lt;br>Creates a new public member function in the current class and replaces the current &lt;font color=red>&amp;lt;func&amp;gt;&lt;/font> placeholder with a reference to it.&lt;/p></string>
+   <property name="whatsThis">
+    <string>&lt;p&gt;&lt;b&gt;Function creation shortcut:&lt;/b&gt;&lt;br&gt;&lt;br&gt;Creates a new public member function in the current class and replaces the current &lt;font color=red&gt;&amp;lt;func&amp;gt;&lt;/font&gt; placeholder with a reference to it.&lt;/p&gt;</string>
    </property>
-   <property name="text" >
+   <property name="text">
     <string/>
    </property>
-   <property name="icon" >
-    <iconset resource="../LavaPE_res.qrc" >:/LavaExecs/res/TOOLBUTTONS/bmNewFunc.xpm</iconset>
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
+     <normaloff>:/LavaExecs/res/TOOLBUTTONS/bmNewFunc.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/bmNewFunc.xpm</iconset>
    </property>
   </widget>
-  <widget class="QComboBox" name="IDC_CompaTypes" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_CompaTypes">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>62</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string>(Types)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboFuncs" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_ComboFuncs">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>92</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string> (Virtual calls) </string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboTypes" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_ComboTypes">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>121</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string>(Types)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboSubObjects" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_ComboSubObjects">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>77</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string>(Members)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboNew" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_ComboNew">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>82</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string>(Initializers)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboSetObjects" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_ComboSetObjects">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>96</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string>(Set variables)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboCompObjects" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_ComboCompObjects">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>76</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string>(Variables)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboSetTypes" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_ComboSetTypes">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>80</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string>(Set types)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboAttach" >
-   <property name="geometry" >
+  <widget class="QComboBox" name="IDC_ComboAttach">
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>140</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string>(Persistent comp. objs.)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_CompoInterf" >
-   <property name="geometry" >
+  <widget class="QComboBox" name="IDC_CompoInterf">
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>141</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string> (Comp. obj. interfaces)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_COMBOCall" >
-   <property name="geometry" >
+  <widget class="QComboBox" name="IDC_COMBOCall">
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>112</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string> (Main programs)  </string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboBaseInis" >
-   <property name="geometry" >
+  <widget class="QComboBox" name="IDC_ComboBaseInis">
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>87</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string>(Initializers)  </string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_BasicTypes" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_BasicTypes">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>140</x>
      <y>0</y>
-     <width>138</width>
+     <width>91</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string> (Basic types)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboClassFuncs" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_ComboClassFuncs">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>140</x>
      <y>0</y>
-     <width>138</width>
+     <width>113</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string> (Non-virtual calls)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboSNew" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_ComboSNew">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>140</x>
      <y>0</y>
-     <width>138</width>
+     <width>135</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string> (Compon. obj. specs.)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_StaticFuncs" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_StaticFuncs">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>280</x>
      <y>0</y>
-     <width>120</width>
+     <width>111</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string> (Static functions)</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboEnums" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_ComboEnums">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>160</x>
      <y>0</y>
-     <width>138</width>
+     <width>132</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string> (Enumeration types)  </string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="IDC_ComboObjects" >
-   <property name="enabled" >
+  <widget class="QComboBox" name="IDC_ComboObjects">
+   <property name="enabled">
     <bool>true</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>138</width>
+     <width>76</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="maxVisibleItems">
+    <number>20</number>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QComboBox::AdjustToContents</enum>
+   </property>
    <item>
-    <property name="text" >
+    <property name="text">
      <string>(Variables)</string>
     </property>
    </item>
   </widget>
  </widget>
- <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../LavaPE_res.qrc" />
+  <include location="../LavaPE_res.qrc"/>
+  <include location="../LavaPE_res.qrc"/>
  </resources>
  <connections/>
 </ui>
