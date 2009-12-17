@@ -1,10 +1,8 @@
-<ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>IDD_ChainFormPage</class>
- <widget class="QWidget" name="IDD_ChainFormPage" >
-  <property name="geometry" >
+ <widget class="QWidget" name="IDD_ChainFormPage">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -12,106 +10,105 @@
     <height>435</height>
    </rect>
   </property>
-  <property name="sizePolicy" >
-   <sizepolicy>
-    <hsizetype>7</hsizetype>
-    <vsizetype>7</vsizetype>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Chain/array element</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
+  <layout class="QVBoxLayout">
+   <property name="spacing">
     <number>6</number>
    </property>
+   <property name="margin">
+    <number>9</number>
+   </property>
    <item>
-    <widget class="QGroupBox" name="GroupBox_IDC_STATIC13" >
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>7</hsizetype>
-       <vsizetype>7</vsizetype>
+    <widget class="QGroupBox" name="GroupBox_IDC_STATIC13">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="focusPolicy" >
+     <property name="focusPolicy">
       <enum>Qt::NoFocus</enum>
      </property>
-     <property name="title" >
+     <property name="title">
       <string>Chain/array element</string>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>11</number>
-      </property>
-      <property name="spacing" >
+     <layout class="QVBoxLayout">
+      <property name="spacing">
        <number>6</number>
       </property>
+      <property name="margin">
+       <number>11</number>
+      </property>
       <item>
-       <widget class="QLabel" name="Label_IDC_STATIC29" >
-        <property name="focusPolicy" >
+       <widget class="QLabel" name="Label_IDC_STATIC29">
+        <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
-        <property name="text" >
+        <property name="text">
          <string>Name</string>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="NewName" >
-        <property name="enabled" >
+       <widget class="QLineEdit" name="NewName">
+        <property name="enabled">
          <bool>false</bool>
         </property>
-        <property name="focusPolicy" >
+        <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignLeading</set>
         </property>
-        <property name="readOnly" >
+        <property name="readOnly">
          <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="Label_IDC_STATIC30" >
-        <property name="focusPolicy" >
+       <widget class="QLabel" name="Label_IDC_STATIC30">
+        <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
-        <property name="text" >
+        <property name="text">
          <string>Type</string>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="ChFormElem" >
-        <property name="enabled" >
+       <widget class="QLineEdit" name="ChFormElem">
+        <property name="enabled">
          <bool>false</bool>
         </property>
-        <property name="focusPolicy" >
+        <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignLeading</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="ChElemFormTypes" >
+       <widget class="QComboBox" name="ChElemFormTypes">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>(Types/forms also available)</string>
          </property>
         </item>
@@ -121,129 +118,123 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="GroupBox_IDC_STATIC14" >
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>7</hsizetype>
-       <vsizetype>7</vsizetype>
+    <widget class="QGroupBox" name="GroupBox_IDC_STATIC14">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="focusPolicy" >
+     <property name="focusPolicy">
       <enum>Qt::NoFocus</enum>
      </property>
-     <property name="title" >
+     <property name="title">
       <string>Iteration</string>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>11</number>
-      </property>
-      <property name="spacing" >
+     <layout class="QVBoxLayout">
+      <property name="spacing">
        <number>6</number>
       </property>
+      <property name="margin">
+       <number>11</number>
+      </property>
       <item>
-       <widget class="QCheckBox" name="HasButtons" >
-        <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>1</hsizetype>
-          <vsizetype>1</vsizetype>
+       <widget class="QCheckBox" name="HasButtons">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="focusPolicy" >
+        <property name="focusPolicy">
          <enum>Qt::TabFocus</enum>
         </property>
-        <property name="text" >
+        <property name="text">
          <string>Has append/delete buttons</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="ConstChain" >
-        <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>1</hsizetype>
-          <vsizetype>1</vsizetype>
+       <widget class="QCheckBox" name="ConstChain">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="focusPolicy" >
+        <property name="focusPolicy">
          <enum>Qt::TabFocus</enum>
         </property>
-        <property name="text" >
+        <property name="text">
          <string>Constant chain length</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="Label_IDC_STATIC32" >
-        <property name="focusPolicy" >
+       <widget class="QLabel" name="Label_IDC_STATIC32">
+        <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
-        <property name="text" >
+        <property name="text">
          <string>Insert button label</string>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="EditInsertButton" >
-        <property name="focusPolicy" >
+       <widget class="QLineEdit" name="EditInsertButton">
+        <property name="focusPolicy">
          <enum>Qt::StrongFocus</enum>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignLeading</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="Label_IDC_STATIC33" >
-        <property name="focusPolicy" >
+       <widget class="QLabel" name="Label_IDC_STATIC33">
+        <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
-        <property name="text" >
+        <property name="text">
          <string>Delete button label</string>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="EDITDelButton" >
-        <property name="focusPolicy" >
+       <widget class="QLineEdit" name="EDITDelButton">
+        <property name="focusPolicy">
          <enum>Qt::StrongFocus</enum>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignLeading</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="Label_IDC_STATIC34" >
-        <property name="focusPolicy" >
+       <widget class="QLabel" name="Label_IDC_STATIC34">
+        <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
-        <property name="text" >
+        <property name="text">
          <string>Default array length</string>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="LengthSPIN" >
-        <property name="enabled" >
+       <widget class="QSpinBox" name="LengthSPIN">
+        <property name="enabled">
          <bool>false</bool>
         </property>
-        <property name="focusPolicy" >
+        <property name="focusPolicy">
          <enum>Qt::StrongFocus</enum>
         </property>
        </widget>
@@ -253,8 +244,7 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>

@@ -148,6 +148,9 @@
           </property>
           <item>
            <widget class="QComboBox" name="BasicTypes">
+            <property name="sizeAdjustPolicy">
+             <enum>QComboBox::AdjustToContents</enum>
+            </property>
             <item>
              <property name="text">
               <string>(Basic classes)</string>
@@ -157,6 +160,9 @@
           </item>
           <item>
            <widget class="QComboBox" name="NamedTypes">
+            <property name="sizeAdjustPolicy">
+             <enum>QComboBox::AdjustToContents</enum>
+            </property>
             <item>
              <property name="text">
               <string>(Other classes)</string>

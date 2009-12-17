@@ -1,10 +1,8 @@
-<ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>IDD_GotoDeclSel</class>
- <widget class="QDialog" name="IDD_GotoDeclSel" >
-  <property name="geometry" >
+ <widget class="QDialog" name="IDD_GotoDeclSel">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -12,104 +10,100 @@
     <height>86</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Goto</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
+  <layout class="QGridLayout">
+   <property name="margin">
     <number>11</number>
    </property>
-   <property name="spacing" >
+   <property name="spacing">
     <number>6</number>
    </property>
-   <item row="1" column="0" >
-    <widget class="QComboBox" name="GotoCombo" >
+   <item row="1" column="0">
+    <widget class="QComboBox" name="GotoCombo">
+     <property name="sizeAdjustPolicy">
+      <enum>QComboBox::AdjustToContents</enum>
+     </property>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>(Select where to go to)</string>
       </property>
      </item>
     </widget>
    </item>
-   <item row="0" column="0" >
-    <widget class="QLabel" name="IDC_STATIC_NotAllRefs" >
-     <property name="enabled" >
+   <item row="0" column="0">
+    <widget class="QLabel" name="IDC_STATIC_NotAllRefs">
+     <property name="enabled">
       <bool>true</bool>
      </property>
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>0</hsizetype>
-       <vsizetype>0</vsizetype>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize" >
+     <property name="minimumSize">
       <size>
        <width>1</width>
        <height>0</height>
       </size>
      </property>
-     <property name="focusPolicy" >
+     <property name="focusPolicy">
       <enum>Qt::NoFocus</enum>
      </property>
-     <property name="text" >
+     <property name="text">
       <string>Cannot show all referenced types</string>
      </property>
-     <property name="alignment" >
+     <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
     </widget>
    </item>
-   <item row="0" column="1" >
-    <widget class="QPushButton" name="ID_OK" >
-     <property name="enabled" >
+   <item row="0" column="1">
+    <widget class="QPushButton" name="ID_OK">
+     <property name="enabled">
       <bool>false</bool>
      </property>
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>0</hsizetype>
-       <vsizetype>0</vsizetype>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize" >
+     <property name="minimumSize">
       <size>
        <width>1</width>
        <height>0</height>
       </size>
      </property>
-     <property name="text" >
+     <property name="text">
       <string>OK</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1" >
-    <widget class="QPushButton" name="ID_CANCEL" >
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>0</hsizetype>
-       <vsizetype>0</vsizetype>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="ID_CANCEL">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize" >
+     <property name="minimumSize">
       <size>
        <width>1</width>
        <height>0</height>
       </size>
      </property>
-     <property name="text" >
+     <property name="text">
       <string>Cancel</string>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>
