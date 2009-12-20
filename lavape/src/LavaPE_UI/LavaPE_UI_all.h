@@ -17,7 +17,6 @@
 #include "ui_idd_findrefsbox.h"
 #include "ui_idd_fontcolorpage.h"
 #include "ui_idd_formbox.h"
-#include "ui_idd_formview.h"
 #include "ui_idd_ftextpage.h"
 #include "ui_idd_funcbox.h"
 #include "ui_idd_generalpage.h"
