@@ -1632,8 +1632,13 @@ ValOnInit CFuncBox::OnInitDialog()
       Closed->setEnabled(false);
       Closed->setChecked(false);
     }
-    else
+    else {
       StaticFunc->setChecked(false);
+      if (myDECL->SecondTFlags.Contains(closed)) 
+        Closed->setChecked(true);
+      else
+        Closed->setChecked(false);
+    }
     if (myDECL->TypeFlags.Contains(isProtected)) {
       Protected->setChecked(true);
       StaticFunc->setEnabled(false);

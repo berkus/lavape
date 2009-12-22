@@ -1286,6 +1286,17 @@ bool CLavaPEDoc::CheckOverInOut (LavaDECL* funcDECL, int checkLevel)
 		funcDECL->TypeFlags.EXCL (isProtected);
 		changed = true;
 	}
+  if (OverFunc->SecondTFlags.Contains(closed)) {
+    if (!funcDECL->SecondTFlags.Contains(closed)) {
+      funcDECL->SecondTFlags.INCL(closed);
+      changed = true;
+    }
+  }
+  else
+    if (funcDECL->SecondTFlags.Contains(closed)) {
+      funcDECL->SecondTFlags.EXCL(closed);
+      changed = true;
+    }
 	if (funcDECL->DeclType == Attr)
 		return changed;
 

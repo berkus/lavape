@@ -3564,14 +3564,15 @@ bool ObjReference::CallCheck (CheckData &ckd) {
       SetError(ckd,&ERR_CallObjClosed);
       ok = false;
     }
-    else if (parentObject->parentObject->primaryToken == initializing_T // base initializer call
-    && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
-      SetError(ckd,&ERR_SelfNotClosed);
-      ok = false;
-    }
-    else if (flags.Contains(isSelfVar)
-    && refIDs.first == refIDs.last
+    //else if (parentObject->parentObject->primaryToken == initializing_T // base initializer call
+    //&& !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
+    //  SetError(ckd,&ERR_SelfNotClosed);
+    //  ok = false;
+    //}
+    else if (parentObject->parentObject->primaryToken != initializing_T // no base initializer call
     && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+    && flags.Contains(isSelfVar)
+    && refIDs.first == refIDs.last
     && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
       ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedCallObj);
       return false;
