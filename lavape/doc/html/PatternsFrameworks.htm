@@ -118,7 +118,7 @@ declarations:</p>
     Classes declared in a pattern <em>P'</em> that is derived from <em>P</em>
     cannot be referenced in <em>P</em>.</li>
   <li><a id="VTandNonVT"></a>If a class <em>A</em> is the value of a virtual type
-    <em>V</em> then <em>A</em> then A cannot also be the value of another virtual 
+    <em>V</em> then <em>A</em> cannot also be the value of another virtual 
       type. (A motivation of this rule
     is given in our <a href="IsSelfVirtualSample.htm">IsSelfVirtual
   sample</a>.)</li>
@@ -162,7 +162,8 @@ latter implements.</p>
 be referenced as types of variables in <em class="c3">Lava</em> programs.)</p>
 
 <p>A type is called a <strong><a id="multiform"></a>multiform type</strong> if it is
-either a virtual type or a class that is declared within a pattern. The meaning
+either a virtual type or a class that is declared within a pattern. The structure 
+    and meaning
 of a multiform type may depend on the pattern context where it is used. We use
 "uniform" as a synonym for "non-multiform".</p>
 
@@ -170,7 +171,7 @@ of a multiform type may depend on the pattern context where it is used. We use
 "owner" package or class, but also in implementations of classes belonging to
 that scope. (These implementations may be located even outside this scope.)</p>
 
-<p>Summary: A <em class="c3">Lava</em> pattern is just a quite normal package or
+<p><b>Summary:</b> A <em class="c3">Lava</em> pattern is just a quite normal package or
 class declaration, having virtual types.</p>
 
 <h3>2. Representation and specialization of patterns in <strong
