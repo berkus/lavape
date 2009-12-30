@@ -2188,8 +2188,9 @@ bool SelfVar::Check (CheckData &ckd)
   RefTable refTable;
 #ifdef INTERPRETER
   TID itfTID;
-
 #else
+  if (execView)
+    ((CExecView*)execView)->isDirty = true;
   if (ckd.concernExecs)
     concernExecs = true;
   else if (concernExecs) {

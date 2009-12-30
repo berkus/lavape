@@ -121,6 +121,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 {
   initialUpdateDone = false; // indicates whether OnInitialUpdate has already been executed
   notYetPainted = true;
+  isDirty = true; //initially + after Check/before RedrawExec
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
   layout->addWidget(sv);
@@ -584,7 +585,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   BreakPointList bpl;
   BreakPointList::iterator it;
 
-  if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
+  if (!execView || !execView->myDoc || !execView->myDoc->mySynDef || execView->isDirty)
     return;
 
   p.setRenderHint(QPainter::Antialiasing,true);
@@ -2128,6 +2129,7 @@ void CExecView::RedrawExec()
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSelect, 0,0, (address)&sData);
   }
   notYetPainted = false;
+  isDirty = false;
   Select();
   redCtl->update();
 }
