@@ -106,7 +106,7 @@ QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
   close->setIcon(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/close.xpm")));
   tabWid->setCornerWidget(close);
   close->setToolTip("Close current page");
-  connect(close,SIGNAL(clicked()),tabWid,SLOT(closePage()));
+  connect(close,SIGNAL(released()),tabWid,SLOT(closePage()));
   return m_ClientArea;
 }
 
@@ -173,7 +173,7 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   close->setCursor(Qt::ArrowCursor);
   close->setAutoRaise(true);
   newTW->setCornerWidget(close);
-  connect(close,SIGNAL(clicked()),newTW,SLOT(closePage()));
+  connect(close,SIGNAL(released()),newTW,SLOT(closePage()));
 
   int splitterIndex = m_ClientArea->indexOf(tw);
   m_ClientArea->insertWidget(splitterIndex+1,newTW);
