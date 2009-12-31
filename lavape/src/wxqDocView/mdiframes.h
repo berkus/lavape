@@ -142,11 +142,13 @@ public:
   void setTabTextColor (int index, const QColor &color) {
     tabBar()->setTabTextColor(index,color);
   }
+  void closePage();
+  void customEvent(QEvent*);
 
   wxTabBar *m_tabBar;
 
 public slots:
-  void closePage();
+  void postClosePage();
 
 private:
   Q_OBJECT

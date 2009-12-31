@@ -106,7 +106,7 @@ QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
   close->setIcon(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/close.xpm")));
   tabWid->setCornerWidget(close);
   close->setToolTip("Close current page");
-  connect(close,SIGNAL(released()),tabWid,SLOT(closePage()));
+  connect(close,SIGNAL(released()),tabWid,SLOT(postClosePage()));
   return m_ClientArea;
 }
 
@@ -173,7 +173,7 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   close->setCursor(Qt::ArrowCursor);
   close->setAutoRaise(true);
   newTW->setCornerWidget(close);
-  connect(close,SIGNAL(released()),newTW,SLOT(closePage()));
+  connect(close,SIGNAL(released()),newTW,SLOT(postClosePage()));
 
   int splitterIndex = m_ClientArea->indexOf(tw);
   m_ClientArea->insertWidget(splitterIndex+1,newTW);
@@ -533,6 +533,15 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
   else if (triggeredAction == ((wxTabBar*)tabBar())->movePageLeftAction) {
     wxTheApp->m_appWindow->MoveToPrecedingTabbedWindow(this,index);
   }
+}
+
+void wxTabWidget::postClosePage() {
+  QApplication::postEvent(this,new CustomEvent(UEV_ClosePage));
+}
+
+void wxTabWidget::customEvent(QEvent *ev) {
+  if (ev->type() == UEV_ClosePage)
+    closePage();
 }
 
 void wxTabWidget::closePage() {
