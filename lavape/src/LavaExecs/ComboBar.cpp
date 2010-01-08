@@ -1570,6 +1570,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
         if (!elDECL->SecondTFlags.Contains(funcImpl)
             && !elDECL->TypeFlags.Contains(isStatic)
             && !elDECL->TypeFlags.Contains(isInitializer)
+            && !elDECL->TypeFlags.Contains(forceOverride)
 //            && (elDECL->op == OP_noOp)
             && !signalDecl
             && (!elDECL->TypeFlags.Contains(isProtected) || allowProtected)) {
