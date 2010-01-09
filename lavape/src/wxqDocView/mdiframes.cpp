@@ -303,6 +303,9 @@ void wxChildFrame::Activate(bool topDown)
   if (this == oldFrame)
     return;
 
+  //if (oldFrame)
+  //  oldFrame->Disable();
+  //Enable();
   docMan->RememberActiveFrame(this);
   m_tabWidget->setCurrentWidget(this);
   docMan->SetCurrentTabWidget(m_tabWidget);

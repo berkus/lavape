@@ -14,6 +14,7 @@
 #include "SylTraversal.h"
 #include "PEBaseDoc.h"
 #include "Constructs.h"
+#include "docview.h"
 #include "ui_ComboBarDlg.h"
 #include "CHAINANY.h"
 
@@ -78,6 +79,7 @@ public:
 
   LavaDECL *ExecDECL;
   LavaDECL *myDECL; //parent of exec
+  wxView *myExecView;
   LavaDECL *SelfTypeDECL;  //Implementation if myDECL function
   LavaDECL *IntfDECL;
   LavaDECL *FuncParentDecl;
@@ -167,30 +169,6 @@ protected:
   void SetCombos(bool setVar, bool hideCombo);
   void showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL *decl, LavaDECL* signalDecl, const CContext &callCtx, bool withStatic=false, bool showSignals=false);  //decl is interface or implementation
 
-/*
-	void OnCloseupBasicTypes();
-	void OnCloseupCompaBTypes();
-	void OnCloseupComboAttach();
-	void OnCloseupComboBaseInis();
-	void OnCloseupCOMBOCall();
-	void OnCloseupCOMBOCallback();
-	void OnCloseupComboClassFuncs();
-	void OnCloseupComboCompObjects();
-	void OnCloseupComboEnums();
-	void OnCloseupComboFuncs();
-	void OnCloseupComboNew();
-	void OnCloseupComboObjects();
-	void OnCloseupComboSetObjects();
-	void OnCloseupComboSetTypes();
-	void OnCloseupComboSNew();
-	void OnCloseupComboSubObjects();
-	void OnCloseupComboTypes();
-	void OnCloseupCompaTypes();
-	void OnCloseupCompoInterf();
-	void OnCloseupStaticFuncs();
-*/
-//  void OnSelendokComboStatFuncs();
-
 public slots:
   void OnEnumMenu(QAction *action);
   void OnSelendokComboObjects(int pos);
@@ -217,6 +195,16 @@ public slots:
   void OnButtonEnum();
   void OnNewFunc();
   void OnNewPFunc();
+
+  void ActivateView() {
+    myExecView->Activate(false);
+  }
+  void ActivateView(int) {
+    myExecView->Activate(false);
+  }
+  void ActivateView(QAction*) {
+    myExecView->Activate(false);
+  }
 
 private:
   Q_OBJECT

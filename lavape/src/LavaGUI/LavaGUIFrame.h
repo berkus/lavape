@@ -34,7 +34,11 @@ public:
   void NewTitle(LavaDECL* decl, const DString& lavaName);
   void SetModified(const QString& lavaName, bool changed);
   virtual void closeEvent(QCloseEvent *e);
-  //QToolBar* m_GUIBar;
+
+  void mousePressEvent(QMouseEvent* ev) {
+    Activate(true);
+  }
+
   wxView* myView;
   CLavaBaseDoc* myDoc;
   bool onClose;

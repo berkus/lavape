@@ -215,7 +215,6 @@ void wxApp::onUpdateUI()
 
   focView = m_docManager->GetActiveView();
   if (focView && !focView->m_viewFrame->deleting) {
-    //qDebug() << "view upateUI:" << focView;
     ((wxView*)focView)->GetParentFrame()->UpdateUI();
     ((wxView*)focView)->UpdateUI();
   }
