@@ -96,6 +96,9 @@ public:
   QString InitWebBrowser ();
   void OnCloseLastExecView();
 
+public slots:
+  void onFocusChanged(QWidget *old, QWidget *now);
+
 private:
   Q_OBJECT;
 };

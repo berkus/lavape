@@ -150,7 +150,6 @@ wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
   assistant = new Assistant;
 }
 
-
 wxApp::~wxApp() {
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 

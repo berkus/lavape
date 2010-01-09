@@ -196,15 +196,15 @@ public slots:
   void OnNewFunc();
   void OnNewPFunc();
 
-  void ActivateView() {
-    myExecView->Activate(false);
-  }
-  void ActivateView(int) {
-    myExecView->Activate(false);
-  }
-  void ActivateView(QAction*) {
-    myExecView->Activate(false);
-  }
+  //void ActivateView() {
+  //  myExecView->Activate(false);
+  //}
+  //void ActivateView(int) {
+  //  myExecView->Activate(false);
+  //}
+  //void ActivateView(QAction*) {
+  //  myExecView->Activate(false);
+  //}
 
 private:
   Q_OBJECT

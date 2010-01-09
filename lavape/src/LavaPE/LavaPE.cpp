@@ -245,6 +245,7 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
   m_docManager->AssociateTemplate(pFormTemplate);
 
   Tokens_INIT();
+  connect(this,SIGNAL(focusChanged(QWidget*,QWidget*)),this,SLOT(onFocusChanged(QWidget*,QWidget*)));
 }
 
 void CLavaPEApp::OnAppCreate() { // pixmaps may be created only after the app object
@@ -331,6 +332,19 @@ void CLavaPEApp::OnAppCreate() { // pixmaps may be created only after the app ob
   LavaIcons[38] = new QIcon(*LavaPixmaps[38]);
   LavaIcons[39] = new QIcon(*LavaPixmaps[39]);
   LavaIcons[40] = 0;
+}
+
+void CLavaPEApp::onFocusChanged(QWidget *old, QWidget *now) {
+  QWidget *parent=now;
+
+  while (parent && !parent->inherits("wxView") && !parent->inherits("CComboBar"))
+    parent = parent->parentWidget();
+  if (!parent)
+    return;
+  if (parent->inherits("CComboBar"))
+    ((CComboBar*)parent)->myExecView->Activate(false);
+  else if (parent->inherits("wxView"))
+    ((wxView*)parent)->Activate(false);
 }
 
 bool CLavaPEApp::event(QEvent *e)

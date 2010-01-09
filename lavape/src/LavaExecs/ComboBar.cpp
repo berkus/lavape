@@ -138,73 +138,73 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
   ((SelfVar*)ExecDECL->Exec.ptr)->selfCtx = context;
   OnUpdate(ExecDECL,true);   //calculates all other boxes
 
-  connect (&EnumMenu,SIGNAL(triggered(QAction*)),SLOT(ActivateView(QAction*)));
+  //connect (&EnumMenu,SIGNAL(triggered(QAction*)),SLOT(ActivateView(QAction*)));
   connect (&EnumMenu,SIGNAL(triggered(QAction*)),SLOT(OnEnumMenu(QAction*)));
 
-  connect (IDC_ComboObjects,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboObjects,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboObjects,SIGNAL(activated(int)),SLOT(OnSelendokComboObjects(int)));
 
-  connect (IDC_ComboSetObjects,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboSetObjects,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboSetObjects,SIGNAL(activated(int)),SLOT(OnSelendokComboSetObjects(int)));
 
-  connect (IDC_ComboCompObjects,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboCompObjects,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboCompObjects,SIGNAL(activated(int)),SLOT(OnSelendokComboCompObjects(int)));
 
-  connect (IDC_ComboSubObjects,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboSubObjects,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboSubObjects,SIGNAL(activated(int)),SLOT(OnSelendokComboSubObjects(int)));
 
-  connect (IDC_ComboTypes,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboTypes,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboTypes,SIGNAL(activated(int)),SLOT(OnSelendokComboTypes(int)));
 
-  connect (IDC_CompaTypes,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_CompaTypes,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_CompaTypes,SIGNAL(activated(int)),SLOT(OnSelendokCompaTypes(int)));
 
-  connect (IDC_ComboFuncs,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboFuncs,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboFuncs,SIGNAL(activated(int)),SLOT(OnSelendokComboFuncs(int)));
 
-  connect (IDC_ComboBaseInis,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboBaseInis,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboBaseInis,SIGNAL(activated(int)),SLOT(OnSelendokComboBaseInis(int)));
 
-  connect (IDC_BasicTypes,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_BasicTypes,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_BasicTypes,SIGNAL(activated(int)),SLOT(OnSelendokBasicTypes(int)));
 
-  connect (IDC_CompaBTypes,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_CompaBTypes,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_CompaBTypes,SIGNAL(activated(int)),SLOT(OnSelendokCompaBTypes(int)));
 
-  connect (IDC_ComboClassFuncs,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboClassFuncs,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboClassFuncs,SIGNAL(activated(int)),SLOT(OnSelendokComboClassFuncs(int)));
 
-  connect (IDC_ComboNew,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboNew,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboNew,SIGNAL(activated(int)),SLOT(OnSelendokComboNew(int)));
 
-  connect (IDC_ComboSNew,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboSNew,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboSNew,SIGNAL(activated(int)),SLOT(OnSelendokComboSNew(int)));
 
-  connect (IDC_ComboAttach,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboAttach,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboAttach,SIGNAL(activated(int)),SLOT(OnSelendokComboAttach(int)));
 
-  connect (IDC_ComboEnums,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboEnums,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboEnums,SIGNAL(activated(int)),SLOT(OnSelendokComboEnums(int)));
 
-  connect (IDC_ComboSetTypes,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_ComboSetTypes,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_ComboSetTypes,SIGNAL(activated(int)),SLOT(OnSelendokComboSetTypes(int)));
 
-  connect (IDC_CompoInterf,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_CompoInterf,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_CompoInterf,SIGNAL(activated(int)),SLOT(OnSelendokCompoInterf(int)));
 
-  connect (IDC_COMBOCall,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_COMBOCall,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_COMBOCall,SIGNAL(activated(int)),SLOT(OnSelendokCOMBOCall(int)));
 
-  connect (IDC_StaticFuncs,SIGNAL(activated(int)),SLOT(ActivateView(int)));
+  //connect (IDC_StaticFuncs,SIGNAL(activated(int)),SLOT(ActivateView(int)));
   connect (IDC_StaticFuncs,SIGNAL(activated(int)),SLOT(OnSelendokStaticFuncs(int)));
 
-  connect (IDC_ButtonEnum,SIGNAL(clicked()),SLOT(ActivateView()));
+  //connect (IDC_ButtonEnum,SIGNAL(clicked()),SLOT(ActivateView()));
   connect (IDC_ButtonEnum,SIGNAL(clicked()),SLOT(OnButtonEnum()));
 
-  connect (IDC_NewFunc,SIGNAL(clicked()),SLOT(ActivateView()));
+  //connect (IDC_NewFunc,SIGNAL(clicked()),SLOT(ActivateView()));
   connect (IDC_NewFunc,SIGNAL(clicked()),SLOT(OnNewFunc()));
 
-  connect (IDC_NewPFunc,SIGNAL(clicked()),SLOT(ActivateView()));
+  //connect (IDC_NewPFunc,SIGNAL(clicked()),SLOT(ActivateView()));
   connect (IDC_NewPFunc,SIGNAL(clicked()),SLOT(OnNewPFunc()));
 
 }

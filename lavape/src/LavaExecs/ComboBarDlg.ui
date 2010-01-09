@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>397</width>
+    <width>483</width>
     <height>21</height>
    </rect>
   </property>
@@ -25,6 +25,12 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="text">
     <string/>
    </property>
@@ -39,11 +45,17 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>450</x>
      <y>0</y>
      <width>31</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="toolTip">
     <string>New private member function</string>
@@ -65,11 +77,17 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>141</x>
-     <y>1</y>
-     <width>91</width>
+     <x>142</x>
+     <y>0</y>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -89,11 +107,17 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>420</x>
      <y>0</y>
      <width>30</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="toolTip">
     <string>New public member function</string>
@@ -117,9 +141,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>62</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -141,9 +171,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>92</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -165,9 +201,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>121</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -189,9 +231,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>77</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -213,9 +261,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>82</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -237,9 +291,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>96</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -261,9 +321,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>76</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -285,9 +351,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>80</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -306,9 +378,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>140</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -331,6 +409,12 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="maxVisibleItems">
     <number>20</number>
    </property>
@@ -348,9 +432,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>112</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -369,9 +459,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>87</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -391,11 +487,17 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>142</x>
      <y>0</y>
-     <width>91</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -415,11 +517,17 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>142</x>
      <y>0</y>
-     <width>113</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -439,11 +547,17 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>142</x>
      <y>0</y>
-     <width>135</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -463,11 +577,17 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>283</x>
      <y>0</y>
-     <width>111</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="sizeAdjustPolicy">
     <enum>QComboBox::AdjustToContents</enum>
@@ -484,11 +604,17 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>141</x>
      <y>0</y>
-     <width>132</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
@@ -510,9 +636,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>76</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="maxVisibleItems">
     <number>20</number>
