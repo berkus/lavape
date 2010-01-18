@@ -1,0 +1,641 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{5d56744a-d802-421f-a8a2-11343f8630f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{2832696c-852a-4119-8dcd-19ab02d2d177}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{5678cdff-1492-4204-94f8-f8740ef5075e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ToolButtons">
+      <UniqueIdentifier>{44042e93-0cc5-4ab3-8f6a-5e241da10db5}</UniqueIdentifier>
+      <Extensions>bmp xpm</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\TreeIcons">
+      <UniqueIdentifier>{ba645c8a-4cad-4cae-8ef2-b7c533e21c01}</UniqueIdentifier>
+      <Extensions>xpm</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0b90bd14-5223-4c85-95dc-2c615deb6552}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Bars.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Boxes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DebuggerPE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FindRefsBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\LavaPE_res.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_Bars.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_Boxes.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\moc_DebuggerPE.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_FindRefsBox.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_InclView.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_LavaPE.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_LavaPEFrames.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_LavaPEView.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_LavaPEWizard.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_TreeView.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_VTView.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="GenHTML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InclView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPEDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPEFrames.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPEStringInit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPEView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPEWizard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPE_all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VTView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ExecTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LavaPEStringInit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LavaPE_all.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\doc\LavaPE.qhp" />
+    <None Include="..\..\Makefile">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\common.mk">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="LavaPE.reg" />
+    <None Include="res\execfram.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\formfram.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\idr_lava.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Lava.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\LavaComponent.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\LavaDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_EditSel.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_EditSel.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_FindByName.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_FindByName.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_FindRefs.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_FindRefs.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_GotoDecl.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_GotoDecl.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_GotoImpl.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_GotoImpl.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q2_MakeGUI.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_MakeLitStr.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_MakeLitStr.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_Override.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_Override.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_Return.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_Return.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_ShowForm.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_ShowForm.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_ShowOvers.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q2_ShowOvers.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_Include.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_Include.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewCompo.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewCompo.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewCompoSpec.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewCompoSpec.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewEnum.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewEnum.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewEnumItem.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewEnumItem.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewFunc.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewFunc.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewImpl.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewImpl.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewInitiator.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewInitiator.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewInterface.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewInterface.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewMember.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewMember.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewPackage.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewPackage.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewSet.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewSet.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewVT.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q3_NewVT.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_Check.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_Check.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_CheckAll.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_CheckAll.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_Collaps.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_Collaps.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_Expand.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_Expand.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_HideEmptyOpts.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_HideEmptyOpts.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_NextComment.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_NextComment.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_NextError.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_NextError.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_PrevComment.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_PrevComment.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_PrevError.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_PrevError.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_Run.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_Run.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_ShowAllOpts.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_ShowAllOpts.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_ShowBar.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_ShowBar.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_ShowOpts.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q4_ShowOpts.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Cascade.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Cascade.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_CompoNew.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_CompoNew.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Copy.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Copy.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Cut.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Cut.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Delete.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_fileNew.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_fileNew.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_FileOpen.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_FileOpen.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Insert.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_ok.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Paste.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Paste.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Redo.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Redo.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Save.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Save.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_SaveAll.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_SaveAll.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_State.Value.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_TileHori.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_TileHori.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_TileVert.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_TileVert.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Undo.bmp">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Undo.xpm">
+      <Filter>Resource Files\ToolButtons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_basicatt.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_BasicType.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_classAttr.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_classimpl.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_classint.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_coimpl.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_commentt.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_cospec.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_debugTab.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_definitions.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_ensure.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_ensureDis.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_enum.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_enumattr.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_enumsel.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_errtab.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_exec.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_execEmpty.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_findtab.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_form.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_formAt.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_formimpl.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_functab.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_function.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_initiato.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_inputs.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_invariant.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_invariantDis.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_lavafile.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_literal.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_members.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_outputs.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_overwrit.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_package.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_paramatt.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_params.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_patpara.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_require.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_requireDis.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_setatt.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_settyp.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_undefine.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_xcommask.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_xerrcommask.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+    <None Include="res\TreeIcons\PX_xerrmask.xpm">
+      <Filter>Resource Files\TreeIcons</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\LavaPE.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\doc\LavaPE.qhcp" />
+    <CustomBuild Include="..\LavaPE_res.qrc" />
+    <CustomBuild Include="Bars.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Boxes.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="DebuggerPE.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="FindRefsBox.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="InclView.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LavaPE.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LavaPEDoc.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LavaPEFrames.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LavaPEView.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LavaPEWizard.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TreeView.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="VTView.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
