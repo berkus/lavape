@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{6f69bfbc-62b4-464e-a288-dc4792797bf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{683056b3-39f1-42fb-b877-59d307834bca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{450aa0b1-cdb9-42a9-9d92-8c50080b9022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI files">
+      <UniqueIdentifier>{7a4e2587-5808-4ca6-afe6-b1013cf640c4}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="generated\cmainframe.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="Lava_UI_all.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="generated\moc_LavaMainFrameBase.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaMainFrameBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lava_UI_all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="cmainframe.ui">
+      <Filter>UI files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LavaMainFrameBase.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
