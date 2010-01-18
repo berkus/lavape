@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{f490d51b-5b96-4a3b-891d-4c2401b0552e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{a2f09a78-0d27-4416-8cbe-6cbd8b3ddc47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{f7a5af37-e978-41ce-ae21-f8beb70eb8f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI Files">
+      <UniqueIdentifier>{a109f299-bf58-4465-9666-4b077918ddc8}</UniqueIdentifier>
+      <Extensions>.ui</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LavaPE_UI_all.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Generated\moc_LavaPEMainFrameBase.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPEMainFrameBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPE_UI_all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="cmainframe.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\cmainframe.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="generated\idd_attachhandler.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_attrbox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_chainformpage.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_compspecbox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_corroverbox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_enumbox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_enumitem.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_findbynamebox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_findrefsbox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_fontcolorpage.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_formbox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_formview.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_ftextpage.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_funcbox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_generalpage.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_gotodeclsel.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_implbox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_includebox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_initbox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_interfacebox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_iobox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_iopage.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_literalitem.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_literalspage.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_menuitem.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_menupage.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_packagebox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_setbox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_supportpage.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_vtypebox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_attachhandler.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_attrbox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_chainformpage.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_compspecbox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_corroverbox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_enumbox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_enumitem.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_findbynamebox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_findrefsbox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_fontcolorpage.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_formbox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_ftextpage.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_funcbox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_generalpage.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_gotodeclsel.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_implbox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_includebox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_initbox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_interfacebox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_iobox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_iopage.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_literalitem.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_literalspage.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_menuitem.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_menupage.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_packagebox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_setbox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_supportpage.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_vtypebox.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LavaPEMainFrameBase.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
