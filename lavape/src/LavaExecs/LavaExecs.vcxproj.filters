@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{4528bef5-c645-45ad-bd3b-9223d65a20f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header-Dateien">
+      <UniqueIdentifier>{172b8f8e-d5ab-4db5-9a9b-b384f8cbf68c}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;fi;fd</Extensions>
+    </Filter>
+    <Filter Include="Ressourcendateien">
+      <UniqueIdentifier>{94f14bd4-03f9-4e8c-8cc5-2f59016cfb4c}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Ressourcendateien\ToolButtons">
+      <UniqueIdentifier>{e2b2bb0b-8613-4a4a-9ee4-013e7cbf1e56}</UniqueIdentifier>
+      <Extensions>bmp xpm</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{aa89eb16-632b-4f15-9f1b-e519dc37d7ce}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;hpj;bat;for;f90</Extensions>
+    </Filter>
+    <Filter Include="UI Files">
+      <UniqueIdentifier>{8c283157-b192-4cbe-a12f-7ae27b4f7fb1}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Check.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClosedLevelVisitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComboBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Constructs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstructsG.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstructsV.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EditConst.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_ComboBar.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_ExecFrame.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_ExecView.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaExecsStringInit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaExecs_all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scanner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TableVisitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tokens.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TokensG.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VisitorTraversal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bitmap2.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="bmNewFunc.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="bmNewPFunc.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="constr_tools.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="op_toolb.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="op_toolbar.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="ReadMe.txt">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\bitmap2.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\bmNewFunc.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\bmNewPFunc.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\breakPoint.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\debugStop.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\debugStopGreen.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q5_conflict.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q5_ignore.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q5_inputArrow.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q5_insert.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q5_insertBefore.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q5_newLine.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q5_optLocalVar.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q5_showComments.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q5_toggle.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q5_toggleArrows.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q5_toggleSubstType.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_bitAnd.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_bitOr.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_bitXor.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_divide.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_equal.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_evaluate.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_false.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_greater.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_gtEqual.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_handle.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_interval.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_invert.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_lessEqual.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_lessThan.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_lshift.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_modulus.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_mult.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_notEqual.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_null.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_ord.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_plus.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_plusMinus.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_rshift.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_staticCall.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_true.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\TOOLBUTTONS\Q6_vFuncCall.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="Test.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Check.h">
+      <Filter>Header-Dateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Constructs.h">
+      <Filter>Header-Dateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstructsV.h">
+      <Filter>Header-Dateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ExecUpdate.h">
+      <Filter>Header-Dateien</Filter>
+    </ClInclude>
+    <ClInclude Include="LavaExecsStringInit.h">
+      <Filter>Header-Dateien</Filter>
+    </ClInclude>
+    <ClInclude Include="LavaExecs_all.h">
+      <Filter>Header-Dateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Scanner.h">
+      <Filter>Header-Dateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Tokens.h">
+      <Filter>Header-Dateien</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="ComboBar.h">
+      <Filter>Header-Dateien</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ComboBarDlg.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Comment.ui">
+      <Filter>UI Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Constructs.ph">
+      <Filter>Header-Dateien</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ExecFrame.h">
+      <Filter>Header-Dateien</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ExecView.h">
+      <Filter>Header-Dateien</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\ComboBarDlg.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\Comment.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Tokens.ph">
+      <Filter>Header-Dateien</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
