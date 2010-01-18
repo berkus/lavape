@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{52fc8814-93a1-4606-b4fc-6229655bc084}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{ff715e9b-7260-42f7-8f99-6d582edfd026}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;fi;fd</Extensions>
+    </Filter>
+    <Filter Include="Ressourcendateien">
+      <UniqueIdentifier>{0410c1fd-b14f-4284-a316-052f2073a34f}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Ressourcendateien\ToolButtons">
+      <UniqueIdentifier>{fd2ff37a-064e-469c-b416-5a6219beeba9}</UniqueIdentifier>
+      <Extensions>bmp xpm</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{7de7e4ed-d047-40ff-a064-52c9c136ff21}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;hpj;bat;for;f90</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CmdExec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Conv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FormWid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_FormWid.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_LavaGUIFrame.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_LavaGUIPopup.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_LavaGUIView.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_LavaMenu.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_TButton.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_TComboBox.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_TEdit.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_TStatic.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIProg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIProgBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIwid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaGUIFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaGUIPopup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaGUIView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaGUI_all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MakeGUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TComboBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeSrch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TStatic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Conv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIProg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIProgBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIres.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIwid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LavaForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LavaGUI_all.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MakeGUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeSrch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="guibar.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="guibar1.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="guieditb.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="res\LavaGUI.rc2">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Delete.bmp">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Delete.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Insert.bmp">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Insert.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_ok.bmp">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_ok.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_State.Value.bmp">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_State.Value.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Undo.bmp">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+    <None Include="res\ToolButtons\Q_Undo.xpm">
+      <Filter>Ressourcendateien\ToolButtons</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="CmdExec.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="FormWid.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LavaGUIFrame.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LavaGUIPopup.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LavaGUIView.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="LavaMenu.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TButton.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TComboBox.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TEdit.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TStatic.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
