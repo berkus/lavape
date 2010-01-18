@@ -154,6 +154,7 @@ public:
 //  bool SetToolText( UINT id, NMHDR * pTTTStruct, LRESULT * pResult );
 
 protected:
+  QWidget *lastVisible;
   bool lastOK;
   TShowCombo lastCombo;
   QString lastSelStr;

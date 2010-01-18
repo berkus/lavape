@@ -113,10 +113,11 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
 
   m_EnumsCtrl->show();
   EnumsEnable = false;
-  EnumsShow = true;
+  EnumsShow = false; //???
   NewFuncEnable = false;
   NewPFuncEnable = false;
   lastSignalDecl = 0;
+  lastVisible = 0;
 
   CContext context;
   myDoc->NextContext(myDECL, context);
@@ -161,6 +162,29 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
   connect (IDC_ButtonEnum,SIGNAL(clicked()),SLOT(OnButtonEnum()));
   connect (IDC_NewFunc,SIGNAL(clicked()),SLOT(OnNewFunc()));
   connect (IDC_NewPFunc,SIGNAL(clicked()),SLOT(OnNewPFunc()));
+
+  IDC_BasicTypes->hide();
+  IDC_ButtonEnum->hide();
+  IDC_ComboClassFuncs->hide();
+  IDC_COMBOCall->hide();
+  IDC_ComboEnums->hide();
+  IDC_ComboFuncs->hide();
+  IDC_ComboNew->hide();
+  //IDC_ComboObjects->hide();
+  IDC_ComboSNew->hide();
+  IDC_ComboTypes->hide();
+  IDC_CompaBTypes->hide();
+  IDC_CompaTypes->hide();
+  IDC_NewFunc->hide();
+  IDC_NewPFunc->hide();
+  IDC_StaticFuncs->hide();
+  IDC_ComboAttach->hide();
+  IDC_ComboBaseInis->hide();
+  IDC_ComboCompObjects->hide();
+  IDC_ComboSetObjects->hide();
+  IDC_ComboSetTypes->hide();
+  IDC_ComboSubObjects->hide();
+  IDC_CompoInterf->hide();
 }
 
 CComboBar::~CComboBar()
@@ -940,7 +964,8 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
             }
           }
         }
-        VarAndEnumCombos->raise();
+        //VarAndEnumCombos->raise();
+        //VarAndEnumCombos->show();
         break;
       case objSetCombo:
         m_SetObjectsCtrl->show();
@@ -955,7 +980,8 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         RightCombo = IDC_ComboEnums;
         m_ButtonEnum->hide();
         EnumsShow = false;
-        IDC_ComboSetObjects->raise();
+        //IDC_ComboSetObjects->raise();
+        IDC_ComboSetObjects->show();
         break;
       case objSetEnumCombo:
         m_SetObjectsCtrl->show();
@@ -986,7 +1012,8 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         if (!LBaseData->debugger->isConnected)
           m_BasicTypesCtrl->setEnabled(true);
         RightCombo = IDC_BasicTypes;
-        TypeCombos->raise();
+        //TypeCombos->raise();
+        //TypeCombos->show();
         break;
       case setTypeCombo:
         m_SetTypesCtrl->show();
@@ -995,7 +1022,8 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         if (!LBaseData->debugger->isConnected)
           m_SetTypesCtrl->setEnabled(true);
         LeftCombo = IDC_ComboSetTypes;
-        IDC_ComboSetTypes->raise();
+        //IDC_ComboSetTypes->raise();
+        IDC_ComboSetTypes->show();
         break;
         /*
       case signalsCombo:
@@ -1014,7 +1042,8 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         if (!LBaseData->debugger->isConnected)
           m_NewCtrl->setEnabled(true);
         LeftCombo = IDC_ComboNew;
-        NewExprCombos->raise();
+        //NewExprCombos->raise();
+        //NewExprCombos->show();
         break;
       case newAndCObjCombo:
         m_NewCtrl->show();
@@ -1029,7 +1058,8 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         if (!LBaseData->debugger->isConnected)
           m_SNewCtrl->setEnabled(true);
         RightCombo = IDC_ComboSNew;
-        NewExprCombos->raise();
+        //NewExprCombos->raise();
+        //NewExprCombos->show();
         break;
       case attachCombo:
         m_AttachCtrl->show();
@@ -1038,7 +1068,8 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         if (!LBaseData->debugger->isConnected)
           m_AttachCtrl->setEnabled(true);
         LeftCombo = IDC_ComboAttach;
-        IDC_ComboAttach->raise();
+        //IDC_ComboAttach->raise();
+        IDC_ComboAttach->show();
         break;
       case coiCombo:
         m_CompoObjIntCtrl->show();
@@ -1055,7 +1086,8 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         if (!LBaseData->debugger->isConnected)
           m_CallIntCtrl->setEnabled(true);
         LeftCombo = IDC_COMBOCall;
-        IDC_CompoInterf->raise();
+        //IDC_CompoInterf->raise();
+        IDC_CompoInterf->show();
         break;
       default: ;
       }
@@ -1441,17 +1473,18 @@ void CComboBar::ShowSubObjects(LavaDECL* decl, const CContext &context)
     delete execF;
   }
   lastCombo = invalidateLast;
-  if (m_SubObjectsCtrl->count() == 1)
-    ShowCombos(disableCombo);
-  else {
+  //if (m_SubObjectsCtrl->count() == 1)
+  //  ShowCombos(disableCombo);
+  //else {
     SetCombos(true, true);
     m_SubObjectsCtrl->show();
     m_SubObjectsCtrl->setCurrentIndex(0);
-    if (!LBaseData->debugger->isConnected)
-      m_SubObjectsCtrl->setEnabled(true);
+    //if (!LBaseData->debugger->isConnected)
+      m_SubObjectsCtrl->setEnabled(!LBaseData->debugger->isConnected && m_SubObjectsCtrl->count() > 1);
     LeftCombo = IDC_ComboSubObjects;
-  }
-  IDC_ComboSubObjects->raise();
+  //}
+  //IDC_ComboSubObjects->raise();
+  IDC_ComboSubObjects->show();
 }
 
 void CComboBar::ShowClassInis(const TID& id) //id is interface, service interface or implementation
@@ -1487,7 +1520,8 @@ void CComboBar::ShowClassInis(const TID& id) //id is interface, service interfac
     m_BaseInisCtrl->setEnabled(true);
   LeftCombo = IDC_ComboBaseInis;
   lastCombo = invalidateLast;
-  IDC_ComboBaseInis->raise();
+  //IDC_ComboBaseInis->raise();
+  IDC_ComboBaseInis->show();
 }
 
 void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* signalDecl, const CContext &callCtx, bool withStatic, bool showSignals)
@@ -1626,7 +1660,8 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
     RightCombo = IDC_ComboClassFuncs;
   }
   lastCombo = invalidateLast;
-  FuncCallsCombos->raise();
+  //FuncCallsCombos->raise();
+  //FuncCallsCombos->show();
 }
 
 
@@ -1654,7 +1689,8 @@ void CComboBar::ShowStaticFuncs(CheckData &ckd)
     m_StaticFuncsCtrl->setCurrentIndex(0);
   m_StaticFuncsCtrl->setEnabled(false);
   lastCombo = invalidateLast;
-  TypeCombos->raise();
+  //TypeCombos->raise();
+  //TypeCombos->show();
 }
 
 void CComboBar::ShowSignalFuncs(CheckData &ckd)
@@ -1679,7 +1715,8 @@ void CComboBar::ShowSignalFuncs(CheckData &ckd)
   m_StaticFuncsCtrl->setEnabled(false);
   m_StaticFuncsCtrl->show();
   lastCombo = invalidateLast;
-  TypeCombos->raise();
+  //TypeCombos->raise();
+  //TypeCombos->show();
 }
 
 void CComboBar::ShowSlotFuncs(CheckData &ckd, LavaDECL* signalDecl)
@@ -1704,7 +1741,8 @@ void CComboBar::ShowSlotFuncs(CheckData &ckd, LavaDECL* signalDecl)
   m_StaticFuncsCtrl->setEnabled(false);
   m_StaticFuncsCtrl->show();
   lastCombo = invalidateLast;
-  TypeCombos->raise();
+  //TypeCombos->raise();
+  //TypeCombos->show();
 }
 
 void CComboBar::showIFFuncs()
@@ -1744,7 +1782,8 @@ void CComboBar::showIFFuncs()
   RightCombo = IDC_BasicTypes;
   ThirdCombo = IDC_StaticFuncs;
   lastCombo = invalidateLast;
-  TypeCombos->raise();
+  //TypeCombos->raise();
+  //TypeCombos->show();
 }
 
 
