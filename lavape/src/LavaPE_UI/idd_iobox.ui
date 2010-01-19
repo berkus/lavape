@@ -52,6 +52,12 @@
          </property>
          <item>
           <widget class="QLabel" name="Label_IDC_STATIC64">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
            </property>
@@ -85,6 +91,12 @@
          </property>
          <item>
           <widget class="QLabel" name="Label_IDC_STATIC65">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
            </property>
@@ -113,6 +125,12 @@
        </item>
        <item>
         <widget class="QCheckBox" name="Substitutable">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="focusPolicy">
           <enum>Qt::StrongFocus</enum>
          </property>
@@ -123,6 +141,12 @@
        </item>
        <item>
         <widget class="QCheckBox" name="Closed">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="toolTip">
           <string>Possibly still incomplete object</string>
          </property>
@@ -151,6 +175,12 @@
           </property>
           <item>
            <widget class="QComboBox" name="BasicTypes">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="sizeAdjustPolicy">
              <enum>QComboBox::AdjustToContents</enum>
             </property>
@@ -163,6 +193,12 @@
           </item>
           <item>
            <widget class="QComboBox" name="NamedTypes">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="sizeAdjustPolicy">
              <enum>QComboBox::AdjustToContents</enum>
             </property>
@@ -197,6 +233,12 @@
           </property>
           <item>
            <widget class="QRadioButton" name="ValueObject">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::StrongFocus</enum>
             </property>
@@ -207,6 +249,12 @@
           </item>
           <item>
            <widget class="QRadioButton" name="StateObject">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::StrongFocus</enum>
             </property>
@@ -217,6 +265,12 @@
           </item>
           <item>
            <widget class="QRadioButton" name="AnyCategory">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Any object category</string>
             </property>
@@ -227,38 +281,40 @@
        </item>
        <item>
         <widget class="QGroupBox" name="BGroup_Mode">
-         <widget class="QRadioButton" name="Optional">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>60</y>
-            <width>116</width>
-            <height>19</height>
-           </rect>
-          </property>
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="text">
-           <string>Optional</string>
-          </property>
-         </widget>
-         <widget class="QRadioButton" name="Mandatory">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>20</y>
-            <width>111</width>
-            <height>19</height>
-           </rect>
-          </property>
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="text">
-           <string>Mandatory</string>
-          </property>
-         </widget>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QRadioButton" name="Mandatory">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+            <property name="text">
+             <string>Mandatory</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="Optional">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+            <property name="text">
+             <string>Optional</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>

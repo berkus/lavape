@@ -209,7 +209,7 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
   LBaseData.m_lfDefGlobalFont = settings.value(szGlobalFont,QVariant(QApplication::font().toString())).toString();
   LBaseData.m_GlobalFont.fromString(LBaseData.m_lfDefGlobalFont);
 
-  setFont(LBaseData.m_GlobalFont,false);
+  setFont(LBaseData.m_GlobalFont);
 
   settings.endGroup();
 
@@ -673,6 +673,9 @@ void CLavaPEApp::OnChooseGlobalFont()
 {
   QFont lf;
   bool ok;
+  //int docpos, viewpos;
+  //wxDocument *doc;
+  //wxView *view;
 
   lf = QFontDialog::getFont(&ok,LBaseData.m_GlobalFont,m_appWindow);
   if (ok) {
@@ -681,6 +684,17 @@ void CLavaPEApp::OnChooseGlobalFont()
     setFont(LBaseData.m_GlobalFont);
     saveSettings();
   }
+
+  //for (docpos = 0; docpos < wxTheApp->m_docManager->m_docs.size(); docpos++) {
+  //  doc = wxTheApp->m_docManager->m_docs[docpos];
+  //  for (viewpos = 0; viewpos < doc->m_documentViews.size(); viewpos++) {
+  //    view = doc->m_documentViews[viewpos];
+  //    if (view->inherits("CExecView")) {
+  //      QCoreApplication::postEvent(((CExecView*)view)->m_ComboBar,new QEvent(QEvent::ApplicationFontChange));
+  //      ((CExecView*)view)->update();
+  //    }
+  //  }
+  //}
 }
 
 
