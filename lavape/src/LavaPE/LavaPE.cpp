@@ -335,16 +335,16 @@ void CLavaPEApp::OnAppCreate() { // pixmaps may be created only after the app ob
 }
 
 void CLavaPEApp::onFocusChanged(QWidget *old, QWidget *now) {
-  QWidget *parent=now;
+  QWidget *wid=now;
 
-  while (parent && !parent->inherits("wxView") && !parent->inherits("CComboBar"))
-    parent = parent->parentWidget();
-  if (!parent)
+  while (wid && !wid->inherits("wxView") && !wid->inherits("CComboBar"))
+    wid = wid->parentWidget();
+  if (!wid)
     return;
-  if (parent->inherits("CComboBar"))
-    ((CComboBar*)parent)->myExecView->Activate(false);
-  else if (parent->inherits("wxView"))
-    ((wxView*)parent)->Activate(false);
+  if (wid->inherits("CComboBar"))
+    ((CComboBar*)wid)->myExecView->Activate(false);
+  else if (wid->inherits("wxView"))
+    ((wxView*)wid)->Activate(false);
 }
 
 bool CLavaPEApp::event(QEvent *e)
