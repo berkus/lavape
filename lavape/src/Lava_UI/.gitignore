@@ -1,0 +1,5 @@
+LavaMainFrameBase.o
+Makefile
+moc_LavaMainFrameBase.cpp
+moc_LavaMainFrameBase.o
+ui_cmainframe.h

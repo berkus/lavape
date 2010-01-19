@@ -1,0 +1,7 @@
+Makefile
+docview.o
+mdiframes.o
+moc_docview.cpp
+moc_docview.o
+moc_mdiframes.cpp
+moc_mdiframes.o
