@@ -66,6 +66,7 @@ bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   m_ComboBar = new CComboBar(decl, (CPEBaseDoc*)myDoc, GetClientWindow());
   m_ExecView = (CExecView *)temp->m_viewClassInfo(GetClientWindow(),doc);
   m_ComboBar->myExecView = m_ExecView;
+  m_ExecView->m_ComboBar = m_ComboBar;
   if (m_ExecView->OnCreate())
     wxDocManager::GetDocumentManager()->RememberActiveView(m_ExecView);
   else {

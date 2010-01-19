@@ -127,9 +127,6 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   layout->addWidget(sv);
   layout->setMargin(0);
   redCtl = sv->execCont;
-  //sv->setFocusProxy(redCtl);
-  //sv->viewport()->setFocusProxy(redCtl);
-  //setFocusProxy(redCtl);
   QPalette palette=redCtl->palette();
   palette.setColor(QPalette::Active,QPalette::Window,Qt::white);
   redCtl->setPalette(palette);
