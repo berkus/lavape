@@ -414,16 +414,16 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   palette.setColor(QPalette::Active,QPalette::ButtonText,Qt::blue);
   tb->setPalette(palette);
 
-  newKwdToolbutton(tb,LBaseData->declareButton,"&declare",SLOT(declare()),
+  newKwdToolbutton(tb,LBaseData->declareButton,"declare",SLOT(declare()),
     QObject::tr("Declare local variables: \"d\""),
     QObject::tr("<p><a href=\"Declare.htm\">declare</a> local variables</p>"));
-  newKwdToolbutton(tb,LBaseData->existsButton,"&exists",SLOT(exists()),
+  newKwdToolbutton(tb,LBaseData->existsButton,"exists",SLOT(exists()),
     QObject::tr("Existential quantifier: \"e\""),
     QObject::tr("<p><a href=\"Exists.htm\">Existential quantifier</a> ranging \nover a finite set</p>"));
-  newKwdToolbutton(tb,LBaseData->foreachButton,"&foreach",SLOT(foreachStm()),
+  newKwdToolbutton(tb,LBaseData->foreachButton,"foreach",SLOT(foreachStm()),
     QObject::tr("Universal quantifier: \"f\""),
     QObject::tr("<p><a href=\"Foreach.htm\">Universal quantifier</a> ranging \nover a finite set</p>"));
-  newKwdToolbutton(tb,LBaseData->selectButton,"se&lect",SLOT(select()),
+  newKwdToolbutton(tb,LBaseData->selectButton,"select",SLOT(select()),
     QObject::tr("Select elements from set(s) and add derived new elements to a given set: \"l\""),
     QObject::tr("<p><a href=\"Select.htm\">Select</a> quantifier ranging \nover a finite set</p>"));
   newKwdToolbutton(tb,LBaseData->elInSetButton,"el. in set",SLOT(elInSet()),
@@ -432,28 +432,28 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 
   tb->addSeparator();
 
-  newKwdToolbutton(tb,LBaseData->setButton,"&set",SLOT(set()),
+  newKwdToolbutton(tb,LBaseData->setButton,"set",SLOT(set()),
     QObject::tr("Assignment statement: \"s\""),
     QObject::tr("<p><a href=\"Assign.htm\">Assignment statement</a></p>"));
-  newKwdToolbutton(tb,LBaseData->copyButton,"&copy",SLOT(copy()),
+  newKwdToolbutton(tb,LBaseData->copyButton,"copy",SLOT(copy()),
     QObject::tr("Copy an object onto another object: \"c\""),
     QObject::tr("<p><a href=\"Copy.htm\">Copy</a> an existing <b><i><font color=\"red\">Lava</font></i></b> object onto another object</p>"));
-  newKwdToolbutton(tb,LBaseData->ifButton,"&if",SLOT(ifStm()),
+  newKwdToolbutton(tb,LBaseData->ifButton,"if",SLOT(ifStm()),
     QObject::tr("If-then-else statement: \"i\""),
     QObject::tr("<p><a href=\"IfStm.htm\">if-then-elsif-else</a> statement with optional\nelif and else branches</p>"));
-  newKwdToolbutton(tb,LBaseData->ifdefButton,"&ifdef",SLOT(ifdefStm()),
+  newKwdToolbutton(tb,LBaseData->ifdefButton,"ifdef",SLOT(ifdefStm()),
     QObject::tr("Ifdef statement"),
     QObject::tr("<p><a href=\"IfdefElse.htm\">ifdef</a> statement: if variable != null then ...</p>"));
-  newKwdToolbutton(tb,LBaseData->switchButton,"s&witch",SLOT(switchStm()),
+  newKwdToolbutton(tb,LBaseData->switchButton,"switch",SLOT(switchStm()),
     QObject::tr("Switch statement: \"w\""),
     QObject::tr("<p><a href=\"Switch.htm\">switch</a> statement with optional else branch</p>"));
-  newKwdToolbutton(tb,LBaseData->typeSwitchButton,"&type",SLOT(typeStm()),
+  newKwdToolbutton(tb,LBaseData->typeSwitchButton,"type",SLOT(typeStm()),
     QObject::tr("Type switch statement: \"t\""),
     QObject::tr("<p><a href=\"TypeSwitch.htm\">type switch</a> statement with optional else branch</p>"));
-  newKwdToolbutton(tb,LBaseData->andButton,"&and / ;",SLOT(and_stm()),
+  newKwdToolbutton(tb,LBaseData->andButton,"and / ;",SLOT(and_stm()),
     QObject::tr("AND conjunction of statements: \"a\""),
     QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>"));
-  newKwdToolbutton(tb,LBaseData->orButton,"&or",SLOT(or_stm()),
+  newKwdToolbutton(tb,LBaseData->orButton,"or",SLOT(or_stm()),
     QObject::tr("OR conjunction of statements: \"o\""),
     QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>"));
   newKwdToolbutton(tb,LBaseData->xorButton,"xor",SLOT(xor_stm()),
@@ -472,7 +472,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p>Consciously ignore certain mandatory input parameters "
     "(which would have to be used otherwise!). </p>"
     "\"ignore\" must be the first statement after the function header"));
-  newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),
+  newKwdToolbutton(tb,LBaseData->tryButton,"try",SLOT(try_stm()),
     QObject::tr("Try a statement, catch exceptions: \"y\""),
     QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"));
   newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(throwEx()),
@@ -491,13 +491,13 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->emitButton,"signal",SLOT(emitSignal()),
     QObject::tr("Emit a signal"),
     QObject::tr("<p>Emit a <a href=\"../Callbacks.htm\">software signal</a></p>"));
-  newKwdToolbutton(tb,LBaseData->runButton,"&run",SLOT(call()),
+  newKwdToolbutton(tb,LBaseData->runButton,"run",SLOT(call()),
     QObject::tr("Run a nested initiator"),
     QObject::tr("<p><a href=\"Run.htm\">Run</a> a nested <a href=\"../Packages.htm#initiator\">main program</a></p>"));
 
   tb->addSeparator();
 
-  newKwdToolbutton(tb,LBaseData->newButton,"&new",SLOT(newExpr()),
+  newKwdToolbutton(tb,LBaseData->newButton,"new",SLOT(newExpr()),
     QObject::tr("Create a new object: \"n\""),
     QObject::tr("<p>Create a <a href=\"New.htm\">new</a> object</p>"));
   newKwdToolbutton(tb,LBaseData->oldButton,"old",SLOT(old()),
