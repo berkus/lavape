@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1182</width>
-    <height>685</height>
+    <width>830</width>
+    <height>901</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,7 +37,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <addaction name="fileNewAction"/>
    <addaction name="newCompoAction"/>
@@ -71,7 +71,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <addaction name="expandAction"/>
    <addaction name="collapseAction"/>
@@ -104,7 +104,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <addaction name="whatNextAction"/>
   </widget>
@@ -125,7 +125,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <addaction name="newIncludeAction"/>
    <addaction name="separator"/>
@@ -164,7 +164,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <addaction name="editSelItemAction"/>
    <addaction name="editCommentAction"/>
@@ -212,7 +212,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <addaction name="DbgAction"/>
    <addaction name="DbgStepNextAct"/>
@@ -241,7 +241,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <addaction name="toggleCategoryAction"/>
    <addaction name="toggleSubstTypeAction"/>
@@ -250,7 +250,6 @@
    <addaction name="insertBeforeAction"/>
    <addaction name="execInsAction"/>
    <addaction name="toggleArrowsAction"/>
-   <addaction name="toggleInputArrowsAction"/>
    <addaction name="parmNameAction"/>
    <addaction name="conflictingAssigAction"/>
    <addaction name="newLineAction"/>
@@ -274,7 +273,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <addaction name="lessThanAction"/>
    <addaction name="lessEqualAction"/>
@@ -283,6 +282,7 @@
    <addaction name="greaterEqualAction"/>
    <addaction name="greaterThanAction"/>
    <addaction name="separator"/>
+   <addaction name="toggleInputArrowsAction"/>
    <addaction name="functionCallAction"/>
    <addaction name="staticCallAction"/>
    <addaction name="trueAction"/>
@@ -306,6 +306,13 @@
    <addaction name="ordAction"/>
   </widget>
   <widget class="QToolBar" name="Toolbar_7">
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="windowTitle">
     <string>Keyword toolbar</string>
    </property>
@@ -322,15 +329,17 @@
     <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
+   <addaction name="actionDeclare"/>
+   <addaction name="actionExists"/>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1182</width>
+     <width>830</width>
      <height>22</height>
     </rect>
    </property>
@@ -2857,6 +2866,42 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="whatsThis">
     <string>Show formal parameter names in function calls</string>
+   </property>
+  </action>
+  <action name="actionDeclare">
+   <property name="text">
+    <string>declare</string>
+   </property>
+   <property name="toolTip">
+    <string>Declare local variables: &quot;d&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>Declare local variables: &quot;d&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=&quot;Declare.htm&quot;&gt;declare&lt;/a&gt; local variables</string>
+   </property>
+  </action>
+  <action name="actionExists">
+   <property name="text">
+    <string>exists</string>
+   </property>
+   <property name="toolTip">
+    <string>Existential quantifier: &quot;e&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>Existential quantifier: &quot;e&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=&quot;Exists.htm&quot;&gt;Existential quantifier&lt;/a&gt; ranging 
+over a finite set</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
    </property>
   </action>
  </widget>

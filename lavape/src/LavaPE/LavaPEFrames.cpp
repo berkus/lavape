@@ -267,11 +267,11 @@ void CLavaMainFrame::makeStyle(const QString &style)
   isVisible = Toolbar_7->isVisible();
   if (!LBaseData->declareButton) {
     firstTime = true;
-    fillKwdToolbar(Toolbar_7);
+//    fillKwdToolbar(Toolbar_7);
   }
-  Toolbar_7->setAllowedAreas(Qt::RightToolBarArea|Qt::LeftToolBarArea);
-  int w = Toolbar_7->width();
-  Toolbar_7->setContentsMargins(0,0,0,0);
+//  Toolbar_7->setAllowedAreas(Qt::RightToolBarArea|Qt::LeftToolBarArea);
+//  int w = Toolbar_7->width();
+//  Toolbar_7->setContentsMargins(0,0,0,0);
 
   if (!firstTime) {
     delete LBaseData->myWhatsThisAction;

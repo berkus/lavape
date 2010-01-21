@@ -463,16 +463,16 @@ public:
   QAction* DbgBreakpointActPtr;
   QAction* DbgStopActionPtr;
 
-  QToolButton
-    *declareButton, *existsButton, *foreachButton,
-    *selectButton, *elInSetButton, *ifButton, *ifdefButton,
-    *ifxButton, *elsexButton, *switchButton, *typeSwitchButton,
-    *andButton, *orButton,
-    *xorButton, *notButton, *assertButton, *ignoreButton,
-    *tryButton, *succeedButton, *failButton, *runButton,
-    *setButton, *newButton, *oldButton, *cloneButton,
-    *copyButton, *attachButton, *qryItfButton,
-    *scaleButton, *itemButton, *connectButton, *disconnectButton, *emitButton;
+  QAction
+    *declareAction, *existsAction, *foreachAction,
+    *selectAction, *elInSetAction, *ifAction, *ifdefAction,
+    *ifxAction, *elsexAction, *switchAction, *typeSwitchAction,
+    *andAction, *orAction,
+    *xorAction, *notAction, *assertAction, *ignoreAction,
+    *tryAction, *succeedAction, *failAction, *runAction,
+    *setAction, *newAction, *oldAction, *cloneAction,
+    *copyAction, *attachAction, *qryItfAction,
+    *scaleAction, *itemAction, *connectAction, *disconnectAction, *emitButton;
 
   QAction *myWhatsThisAction;
 
