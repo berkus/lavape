@@ -5872,39 +5872,39 @@ void CExecView::UpdateUI()
   OnUpdateDbgClearBreakpoints(LBaseData->DbgClearBreakpointsActPtr);
   OnUpdateDbgStop(LBaseData->DbgStopActionPtr);
 
-  OnUpdateDeclare(LBaseData->declareButton);
-  OnUpdateExists(LBaseData->existsButton);
-  OnUpdateForeach(LBaseData->foreachButton);
-  OnUpdateSelect(LBaseData->selectButton);
-  OnUpdateIn(LBaseData->elInSetButton);
-  OnUpdateIf(LBaseData->ifButton);
-  OnUpdateIfdef(LBaseData->ifdefButton);
-  OnUpdateIfExpr(LBaseData->ifxButton);
-  OnUpdateElseExpr(LBaseData->elsexButton);
-  OnUpdateSwitch(LBaseData->switchButton);
-  OnUpdateTypeSwitch(LBaseData->typeSwitchButton);
-  OnUpdateAnd(LBaseData->andButton);
-  OnUpdateOr(LBaseData->orButton);
-  OnUpdateXor(LBaseData->xorButton);
-  OnUpdateNot(LBaseData->notButton);
-  OnUpdateAssert(LBaseData->assertButton);
-  OnUpdateIgnoreButton(LBaseData->ignoreButton);
-  OnUpdateTry(LBaseData->tryButton);
-  OnUpdateSucceed(LBaseData->succeedButton);
-  OnUpdateFail(LBaseData->failButton);
-  OnUpdateCall(LBaseData->runButton);
-  OnUpdateAssign(LBaseData->setButton);
-  OnUpdateCreate(LBaseData->newButton);
-  OnUpdateOld(LBaseData->oldButton);
-  OnUpdateClone(LBaseData->cloneButton);
-  OnUpdateCopy(LBaseData->copyButton);
-  OnUpdateQua(LBaseData->scaleButton);
-  OnUpdateConnect(LBaseData->connectButton);
-  OnUpdateDisconnect(LBaseData->disconnectButton);
-  OnUpdateEmitSignal(LBaseData->emitButton);
-  OnUpdateItem(LBaseData->itemButton);
-  OnUpdateAttach(LBaseData->attachButton);
-  OnUpdateQueryItf(LBaseData->qryItfButton);
+  OnUpdateDeclare(LBaseData->actionDeclare);
+  OnUpdateExists(LBaseData->actionExists);
+  OnUpdateForeach(LBaseData->actionForeach);
+  OnUpdateSelect(LBaseData->actionSelect);
+  OnUpdateIn(LBaseData->actionEl_in_set);
+  OnUpdateIf(LBaseData->actionIf);
+  OnUpdateIfdef(LBaseData->actionIfdef);
+  OnUpdateIfExpr(LBaseData->actionIf_expr);
+  OnUpdateElseExpr(LBaseData->actionElse_expr);
+  OnUpdateSwitch(LBaseData->actionSwitch);
+  OnUpdateTypeSwitch(LBaseData->actionType);
+  OnUpdateAnd(LBaseData->actionAnd);
+  OnUpdateOr(LBaseData->actionOr);
+  OnUpdateXor(LBaseData->actionXor);
+  OnUpdateNot(LBaseData->actionNot);
+  OnUpdateAssert(LBaseData->actionAssert);
+  OnUpdateIgnoreButton(LBaseData->actionIgnore);
+  OnUpdateTry(LBaseData->actionTry);
+  OnUpdateSucceed(LBaseData->actionSucceed);
+  OnUpdateFail(LBaseData->actionFail);
+  OnUpdateCall(LBaseData->actionRun);
+  OnUpdateAssign(LBaseData->actionSet);
+  OnUpdateCreate(LBaseData->actionNew);
+  OnUpdateOld(LBaseData->actionOld);
+  OnUpdateClone(LBaseData->actionClone);
+  OnUpdateCopy(LBaseData->actionCopy);
+  OnUpdateQua(LBaseData->actionScale);
+  OnUpdateConnect(LBaseData->actionConnect);
+  OnUpdateDisconnect(LBaseData->actionDisconn);
+  OnUpdateEmitSignal(LBaseData->actionSignal);
+  OnUpdateItem(LBaseData->actionItem);
+  OnUpdateAttach(LBaseData->actionAttach);
+  OnUpdateQueryItf(LBaseData->actionQry_itf);
 }
 
 void CExecView::DisableActions()
@@ -5982,39 +5982,39 @@ void CExecView::DisableActions()
 }
 
 void CExecView::DisableKwdButtons() {
-  LBaseData->declareButton->setEnabled(false);
-  LBaseData->existsButton->setEnabled(false);
-  LBaseData->foreachButton->setEnabled(false);
-  LBaseData->selectButton->setEnabled(false);
-  LBaseData->elInSetButton->setEnabled(false);
-  LBaseData->ifButton->setEnabled(false);
-  LBaseData->ifdefButton->setEnabled(false);
-  LBaseData->ifxButton->setEnabled(false);
-  LBaseData->elsexButton->setEnabled(false);
-  LBaseData->switchButton->setEnabled(false);
-  LBaseData->typeSwitchButton->setEnabled(false);
-  LBaseData->andButton->setEnabled(false);
-  LBaseData->orButton->setEnabled(false);
-  LBaseData->xorButton->setEnabled(false);
-  LBaseData->notButton->setEnabled(false);
-  LBaseData->assertButton->setEnabled(false);
-  LBaseData->ignoreButton->setEnabled(false);
-  LBaseData->tryButton->setEnabled(false);
-  LBaseData->succeedButton->setEnabled(false);
-  LBaseData->failButton->setEnabled(false);
-  LBaseData->runButton->setEnabled(false);
-  LBaseData->setButton->setEnabled(false);
-  LBaseData->newButton->setEnabled(false);
-  LBaseData->oldButton->setEnabled(false);
-  LBaseData->cloneButton->setEnabled(false);
-  LBaseData->copyButton->setEnabled(false);
-  LBaseData->scaleButton->setEnabled(false);
-  LBaseData->connectButton->setEnabled(false);
-  LBaseData->disconnectButton->setEnabled(false);
-  LBaseData->emitButton->setEnabled(false);
-  LBaseData->itemButton->setEnabled(false);
-  LBaseData->attachButton->setEnabled(false);
-  LBaseData->qryItfButton->setEnabled(false);
+  LBaseData->actionDeclare->setEnabled(false);
+  LBaseData->actionExists->setEnabled(false);
+  LBaseData->actionForeach->setEnabled(false);
+  LBaseData->actionSelect->setEnabled(false);
+  LBaseData->actionEl_in_set->setEnabled(false);
+  LBaseData->actionIf->setEnabled(false);
+  LBaseData->actionIfdef->setEnabled(false);
+  LBaseData->actionIf_expr->setEnabled(false);
+  LBaseData->actionElse_expr->setEnabled(false);
+  LBaseData->actionSwitch->setEnabled(false);
+  LBaseData->actionType->setEnabled(false);
+  LBaseData->actionAnd->setEnabled(false);
+  LBaseData->actionOr->setEnabled(false);
+  LBaseData->actionXor->setEnabled(false);
+  LBaseData->actionNot->setEnabled(false);
+  LBaseData->actionAssert->setEnabled(false);
+  LBaseData->actionIgnore->setEnabled(false);
+  LBaseData->actionTry->setEnabled(false);
+  LBaseData->actionSucceed->setEnabled(false);
+  LBaseData->actionFail->setEnabled(false);
+  LBaseData->actionRun->setEnabled(false);
+  LBaseData->actionSet->setEnabled(false);
+  LBaseData->actionNew->setEnabled(false);
+  LBaseData->actionOld->setEnabled(false);
+  LBaseData->actionClone->setEnabled(false);
+  LBaseData->actionCopy->setEnabled(false);
+  LBaseData->actionScale->setEnabled(false);
+  LBaseData->actionConnect->setEnabled(false);
+  LBaseData->actionDisconn->setEnabled(false);
+  LBaseData->actionSignal->setEnabled(false);
+  LBaseData->actionItem->setEnabled(false);
+  LBaseData->actionAttach->setEnabled(false);
+  LBaseData->actionQry_itf->setEnabled(false);
 }
 
 
@@ -6162,7 +6162,7 @@ void CExecView::OnUpdateNewPFunc()
     bar->IDC_NewPFunc->hide();
 }
 
-void CExecView::OnUpdateAnd(QToolButton *pb)
+void CExecView::OnUpdateAnd(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6190,14 +6190,14 @@ void CExecView::OnUpdateBitXor(QAction* action)
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateClone(QToolButton *pb)
+void CExecView::OnUpdateClone(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateSelect(QToolButton *pb)
+void CExecView::OnUpdateSelect(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6284,7 +6284,7 @@ void CExecView::OnUpdateEvaluate(QAction* action)
 
 }
 
-void CExecView::OnUpdateCopy(QToolButton *pb)
+void CExecView::OnUpdateCopy(QAction *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
     && text->currentSynObj->ReadOnlyContext() != roClause);
@@ -6347,12 +6347,12 @@ void CExecView::OnUpdatePrevError(QAction* action)
   action->setEnabled(true);
 }
 
-void CExecView::OnUpdateAssert(QToolButton *pb)
+void CExecView::OnUpdateAssert(QAction *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateIgnoreButton(QToolButton *pb)
+void CExecView::OnUpdateIgnoreButton(QAction *pb)
 {
   CHAINX *chain;
   CHE *chp;
@@ -6430,12 +6430,12 @@ void CExecView::OnUpdateIgnoreButton(QToolButton *pb)
   }
 }
 
-void CExecView::OnUpdateCreate(QToolButton *pb)
+void CExecView::OnUpdateCreate(QAction *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateOld(QToolButton *pb)
+void CExecView::OnUpdateOld(QAction *pb)
 {
   pb->setEnabled(!Taboo()
     && !text->currentSynObj->InOldExpression()
@@ -6445,14 +6445,14 @@ void CExecView::OnUpdateOld(QToolButton *pb)
             && myDECL->ParentDECL->DeclType == Function)));
 }
 
-void CExecView::OnUpdateCall(QToolButton *pb)
+void CExecView::OnUpdateCall(QAction *pb)
 {
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection)
     && text->currentSynObj->ReadOnlyContext() != roClause);
 }
 /*
-void CExecView::OnUpdateUuid(QToolButton *pb)
+void CExecView::OnUpdateUuid(QAction *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
@@ -6477,47 +6477,47 @@ void CExecView::OnUpdateInterval(QAction* action)
     || text->currentSynObj->primaryToken == SetPH_T);
 }
 
-void CExecView::OnUpdateExists(QToolButton *pb)
+void CExecView::OnUpdateExists(QAction *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateTypeSwitch(QToolButton *pb)
+void CExecView::OnUpdateTypeSwitch(QAction *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateConnect(QToolButton *pb)
+void CExecView::OnUpdateConnect(QAction *pb)
 {
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateDisconnect(QToolButton *pb)
+void CExecView::OnUpdateDisconnect(QAction *pb)
 {
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateEmitSignal(QToolButton *pb)
+void CExecView::OnUpdateEmitSignal(QAction *pb)
 {
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection)
     && selfVar->primaryToken != initiator_T);
 }
 
-void CExecView::OnUpdateAssign(QToolButton *pb)
+void CExecView::OnUpdateAssign(QAction *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
     && text->currentSynObj->ReadOnlyContext() != roClause);
 }
 
-void CExecView::OnUpdateAttach(QToolButton *pb)
+void CExecView::OnUpdateAttach(QAction *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateQueryItf(QToolButton *pb)
+void CExecView::OnUpdateQueryItf(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6548,7 +6548,7 @@ void CExecView::OnUpdateIgnore(QAction* action)
   action->setChecked(ig);
 }
 
-void CExecView::OnUpdateFail(QToolButton *pb)
+void CExecView::OnUpdateFail(QAction *pb)
 {
         // TODO: Add your command update UI handler code here
 
@@ -6557,14 +6557,14 @@ void CExecView::OnUpdateFail(QToolButton *pb)
     /*&& !text->currentSynObj->InReadOnlyContext()*/);
 }
 
-void CExecView::OnUpdateQua(QToolButton *pb)
+void CExecView::OnUpdateQua(QAction *pb)
 {
         // TODO: Add your command update UI handler code here
 
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateItem(QToolButton *pb)
+void CExecView::OnUpdateItem(QAction *pb)
 {
         // TODO: Add your command update UI handler code here
 
@@ -6708,7 +6708,7 @@ bool CExecView::EnablePaste()
   return true;
 }
 
-void CExecView::OnUpdateTry(QToolButton *pb)
+void CExecView::OnUpdateTry(QAction *pb)
 {
         // TODO: Add your command update UI handler code here
 
@@ -6716,7 +6716,7 @@ void CExecView::OnUpdateTry(QToolButton *pb)
     && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateSucceed(QToolButton *pb)
+void CExecView::OnUpdateSucceed(QAction *pb)
 {
         // TODO: Add your command update UI handler code here
 
@@ -6766,7 +6766,7 @@ void CExecView::OnUpdateEq(QAction* action)
   action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateDeclare(QToolButton *pb)
+void CExecView::OnUpdateDeclare(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6786,7 +6786,7 @@ void CExecView::OnUpdateFalse(QAction* action)
         || text->currentSynObj->parentObject->primaryToken == ifx_T));
 }
 
-void CExecView::OnUpdateForeach(QToolButton *pb)
+void CExecView::OnUpdateForeach(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6807,21 +6807,21 @@ void CExecView::OnUpdateGt(QAction* action)
   action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateIf(QToolButton *pb)
+void CExecView::OnUpdateIf(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateIfdef(QToolButton *pb)
+void CExecView::OnUpdateIfdef(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateIfExpr(QToolButton *pb)
+void CExecView::OnUpdateIfExpr(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
   SynObject *synObj=text->currentSynObj;
@@ -6838,7 +6838,7 @@ void CExecView::OnUpdateIfExpr(QToolButton *pb)
         || synObj->whereInParent != (address)&((FuncExpression*)synObj->parentObject)->handle.ptr));
 }
 
-void CExecView::OnUpdateElseExpr(QToolButton *pb)
+void CExecView::OnUpdateElseExpr(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
   SynObject *synObj=text->currentSynObj;
@@ -6855,7 +6855,7 @@ void CExecView::OnUpdateElseExpr(QToolButton *pb)
         || synObj->whereInParent != (address)&((FuncExpression*)synObj->parentObject)->handle.ptr));
 }
 
-void CExecView::OnUpdateIn(QToolButton *pb)
+void CExecView::OnUpdateIn(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -7044,7 +7044,7 @@ void CExecView::OnUpdateShowComments(QAction* action)
   action->setChecked(text->showComments);
 }
 
-void CExecView::OnUpdateNot(QToolButton *pb)
+void CExecView::OnUpdateNot(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -7063,7 +7063,7 @@ void CExecView::OnUpdateNull(QAction* action)
            && text->currentSynObj->parentObject->primaryToken == disconnect_T)));
 }
 
-void CExecView::OnUpdateOr(QToolButton *pb)
+void CExecView::OnUpdateOr(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -7149,7 +7149,7 @@ void CExecView::OnUpdateShowOptionals(QAction* action)
   }
 }
 
-void CExecView::OnUpdateSwitch(QToolButton *pb)
+void CExecView::OnUpdateSwitch(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -7168,7 +7168,7 @@ void CExecView::OnUpdateTrue(QAction* action)
         || text->currentSynObj->parentObject->primaryToken == ifx_T));
 }
 
-void CExecView::OnUpdateXor(QToolButton *pb)
+void CExecView::OnUpdateXor(QAction *pb)
 {
   // TODO: Add your command update UI handler code here
 

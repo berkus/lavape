@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>830</width>
-    <height>901</height>
+    <width>1082</width>
+    <height>1013</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,6 +21,12 @@
   </property>
   <widget class="QWidget" name="widget"/>
   <widget class="QToolBar" name="Toolbar_1">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="windowTitle">
     <string>General toolbar</string>
    </property>
@@ -37,7 +43,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="fileNewAction"/>
    <addaction name="newCompoAction"/>
@@ -55,6 +61,12 @@
    <addaction name="splitVerticAction"/>
   </widget>
   <widget class="QToolBar" name="Toolbar_2">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="windowTitle">
     <string>Tree op. tooolbar</string>
    </property>
@@ -71,7 +83,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="expandAction"/>
    <addaction name="collapseAction"/>
@@ -88,6 +100,12 @@
    <addaction name="checkAllAction"/>
   </widget>
   <widget class="QToolBar" name="HelpToolbar">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="windowTitle">
     <string>Help toolbar</string>
    </property>
@@ -104,11 +122,17 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="whatNextAction"/>
   </widget>
   <widget class="QToolBar" name="Toolbar_3">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="windowTitle">
     <string>Declaration toolbar</string>
    </property>
@@ -125,7 +149,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="newIncludeAction"/>
    <addaction name="separator"/>
@@ -148,6 +172,12 @@
    <addaction name="makeGUIAction"/>
   </widget>
   <widget class="QToolBar" name="Toolbar_4">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="windowTitle">
     <string>Details toolbar</string>
    </property>
@@ -184,6 +214,12 @@
    <addaction name="delAction"/>
   </widget>
   <widget class="QToolBar" name="ToolbarDbg">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="maximumSize">
     <size>
      <width>16777215</width>
@@ -212,7 +248,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="DbgAction"/>
    <addaction name="DbgStepNextAct"/>
@@ -225,6 +261,12 @@
    <addaction name="DbgStopAction"/>
   </widget>
   <widget class="QToolBar" name="Toolbar_5">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="windowTitle">
     <string>Exec switches toolbar</string>
    </property>
@@ -241,7 +283,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="toggleCategoryAction"/>
    <addaction name="toggleSubstTypeAction"/>
@@ -257,6 +299,12 @@
    <addaction name="toggleCommentsAction"/>
   </widget>
   <widget class="QToolBar" name="Toolbar_6">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="windowTitle">
     <string>Exec operations toolbar</string>
    </property>
@@ -306,11 +354,52 @@
    <addaction name="ordAction"/>
   </widget>
   <widget class="QToolBar" name="Toolbar_7">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="palette">
+    <palette>
+     <active>
+      <colorrole role="ButtonText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>0</red>
+         <green>0</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </active>
+     <inactive>
+      <colorrole role="ButtonText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>0</red>
+         <green>0</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </inactive>
+     <disabled>
+      <colorrole role="ButtonText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>120</red>
+         <green>120</green>
+         <blue>120</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </disabled>
+    </palette>
+   </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
+     <pointsize>13</pointsize>
     </font>
    </property>
    <property name="windowTitle">
@@ -329,18 +418,51 @@
     <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actionDeclare"/>
    <addaction name="actionExists"/>
+   <addaction name="actionForeach"/>
+   <addaction name="actionSelect"/>
+   <addaction name="actionEl_in_set"/>
+   <addaction name="separator"/>
+   <addaction name="actionSet"/>
+   <addaction name="actionCopy"/>
+   <addaction name="actionIf"/>
+   <addaction name="actionIfdef"/>
+   <addaction name="actionSwitch"/>
+   <addaction name="actionType"/>
+   <addaction name="actionAnd"/>
+   <addaction name="actionOr"/>
+   <addaction name="actionXor"/>
+   <addaction name="actionNot"/>
+   <addaction name="actionAssert"/>
+   <addaction name="actionIgnore"/>
+   <addaction name="actionTry"/>
+   <addaction name="actionFail"/>
+   <addaction name="actionSucceed"/>
+   <addaction name="actionConnect"/>
+   <addaction name="actionDisconn"/>
+   <addaction name="actionSignal"/>
+   <addaction name="actionRun"/>
+   <addaction name="separator"/>
+   <addaction name="actionNew"/>
+   <addaction name="actionOld"/>
+   <addaction name="actionClone"/>
+   <addaction name="actionElse_expr"/>
+   <addaction name="actionIf_expr"/>
+   <addaction name="actionScale"/>
+   <addaction name="actionItem"/>
+   <addaction name="actionAttach"/>
+   <addaction name="actionQry_itf"/>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>830</width>
-     <height>22</height>
+     <width>1082</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="helpMenu">
@@ -2881,6 +3003,9 @@ p, li { white-space: pre-wrap; }
    <property name="whatsThis">
     <string>&lt;a href=&quot;Declare.htm&quot;&gt;declare&lt;/a&gt; local variables</string>
    </property>
+   <property name="shortcut">
+    <string>D</string>
+   </property>
   </action>
   <action name="actionExists">
    <property name="text">
@@ -2893,15 +3018,544 @@ p, li { white-space: pre-wrap; }
     <string>Existential quantifier: &quot;e&quot;</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=&quot;Exists.htm&quot;&gt;Existential quantifier&lt;/a&gt; ranging 
-over a finite set</string>
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;Exists.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Existential quantifier&lt;/span&gt;&lt;/a&gt; ranging&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;over a finite set&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
+   <property name="shortcut">
+    <string>E</string>
+   </property>
+  </action>
+  <action name="actionForeach">
+   <property name="text">
+    <string>foreach</string>
+   </property>
+   <property name="toolTip">
+    <string>Universal quantifier: &quot;f&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>Universal quantifier: &quot;f&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Foreach.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Universal quantifier&lt;/span&gt;&lt;/a&gt; ranging&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;over a finite set&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>F</string>
+   </property>
+  </action>
+  <action name="actionSelect">
+   <property name="text">
+    <string>select</string>
+   </property>
+   <property name="toolTip">
+    <string>Select elements from set(s) and add derived new elements to a given set: &quot;l&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>Select elements from set(s) and add derived new elements to a given set: &quot;l&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Select.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Select&lt;/span&gt;&lt;/a&gt; quantifier ranging&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;over a finite set&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>L</string>
+   </property>
+  </action>
+  <action name="actionEl_in_set">
+   <property name="text">
+    <string>el. in set</string>
+   </property>
+   <property name="toolTip">
+    <string>Test if element is contained in set</string>
+   </property>
+   <property name="statusTip">
+    <string>Test if element is contained in set</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;InSet.htm\&quot;&gt;Element in set&lt;/a&gt; test</string>
+   </property>
+  </action>
+  <action name="actionSet">
+   <property name="text">
+    <string>set</string>
+   </property>
+   <property name="toolTip">
+    <string>Assignment statement: &quot;s&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>Assignment statement: &quot;s&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;Assign.htm\&quot;&gt;Assignment statement&lt;/a&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>S</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="text">
+    <string>copy</string>
+   </property>
+   <property name="toolTip">
+    <string>Copy an object onto another object: &quot;c&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>Copy an object onto another object: &quot;c&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Copy.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Copy&lt;/span&gt;&lt;/a&gt; an existing &lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;Lava &lt;/span&gt; object onto another object&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>C</string>
+   </property>
+  </action>
+  <action name="actionIf">
+   <property name="text">
+    <string>if</string>
+   </property>
+   <property name="toolTip">
+    <string>If-then-else statement: &quot;i&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>If-then-else statement: &quot;i&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;IfStm.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;if-then-elsif-else&lt;/span&gt;&lt;/a&gt; statement with optional&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;elsif and else branches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>I</string>
+   </property>
+  </action>
+  <action name="actionIfdef">
+   <property name="text">
+    <string>ifdef</string>
+   </property>
+   <property name="toolTip">
+    <string>Ifdef statement</string>
+   </property>
+   <property name="statusTip">
+    <string>Ifdef statement</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;IfdefElse.htm\&quot;&gt;ifdef&lt;/a&gt; statement: if variable != null then ...</string>
+   </property>
+  </action>
+  <action name="actionSwitch">
+   <property name="text">
+    <string>switch</string>
+   </property>
+   <property name="toolTip">
+    <string>Switch statement: &quot;w&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>Switch statement: &quot;w&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Switch.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;switch&lt;/span&gt;&lt;/a&gt; statement with&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;optional else branch&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>W</string>
+   </property>
+  </action>
+  <action name="actionType">
+   <property name="text">
+    <string>type</string>
+   </property>
+   <property name="toolTip">
+    <string>Type switch statement: &quot;t&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>Type switch statement: &quot;t&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;TypeSwitch.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;type switch&lt;/span&gt;&lt;/a&gt; statement&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;with optional else branch&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>T</string>
+   </property>
+  </action>
+  <action name="actionAnd">
+   <property name="text">
+    <string>and / ;</string>
+   </property>
+   <property name="toolTip">
+    <string>AND conjunction of statements: &quot;a&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>AND conjunction of statements: &quot;a&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;LogOps.htm\&quot;&gt;Logical conjunction&lt;/a&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>A</string>
+   </property>
+  </action>
+  <action name="actionOr">
+   <property name="text">
+    <string>or</string>
+   </property>
+   <property name="toolTip">
+    <string>OR conjunction of statements: &quot;o&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>OR conjunction of statements: &quot;o&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;LogOps.htm\&quot;&gt;Logical conjunction&lt;/a&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>O</string>
+   </property>
+  </action>
+  <action name="actionXor">
+   <property name="text">
+    <string>xor</string>
+   </property>
+   <property name="toolTip">
+    <string>Exclusive OR of statements</string>
+   </property>
+   <property name="statusTip">
+    <string>Exclusive OR of statements</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;LogOps.htm\&quot;&gt;Logical conjunction&lt;/a&gt;</string>
+   </property>
+  </action>
+  <action name="actionNot">
+   <property name="text">
+    <string>not</string>
+   </property>
+   <property name="toolTip">
+    <string>Negation of a statement</string>
+   </property>
+   <property name="statusTip">
+    <string>Negation of a statement</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;LogOps.htm\&quot;&gt;Logical negation&lt;/a&gt;</string>
+   </property>
+  </action>
+  <action name="actionAssert">
+   <property name="text">
+    <string>assert</string>
+   </property>
+   <property name="toolTip">
+    <string>Assertion</string>
+   </property>
+   <property name="statusTip">
+    <string>Assertion</string>
+   </property>
+   <property name="whatsThis">
+    <string>An &lt;a href=\&quot;Assert.htm\&quot;&gt;embedded assertion&lt;/a&gt; is embedded anywhwere in executable code  (in contrast to &lt;a href=\&quot;../DBC.htm\&quot;&gt;attached assertions&lt;/a&gt;)  and throws a specific exception in case of violation</string>
+   </property>
+  </action>
+  <action name="actionIgnore">
+   <property name="text">
+    <string>ignore</string>
+   </property>
+   <property name="toolTip">
+    <string>Consciously ignore certain mandatory input parameters (must be the first statement!)</string>
+   </property>
+   <property name="statusTip">
+    <string>Consciously ignore certain mandatory input parameters (must be the first statement!)</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Consciously ignore certain mandatory input parameters&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;(which would have to be used otherwise!). &amp;quot;ignore&amp;quot; must be&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the first statement after the function header&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionTry">
+   <property name="text">
+    <string>try</string>
+   </property>
+   <property name="toolTip">
+    <string>Try a statement, catch exceptions: &quot;y&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>Try a statement, catch exceptions: &quot;y&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;Try.htm\&quot;&gt;Try&lt;/a&gt; a statement, catch exceptions</string>
+   </property>
+   <property name="shortcut">
+    <string>Y</string>
+   </property>
+  </action>
+  <action name="actionFail">
+   <property name="text">
+    <string>fail</string>
+   </property>
+   <property name="toolTip">
+    <string>Fail or even throw an exception</string>
+   </property>
+   <property name="statusTip">
+    <string>Fail or even throw an exception</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;FailSucceed.htm\&quot;&gt;Throw&lt;/a&gt;: immediate negative/unsuccessful return from an &lt;a href=\&quot;../EditExec.htm#\&quot;&gt;exec&lt;/a&gt;, optionally throw an &lt;a href=\&quot;../ExceptionSamples.htm\&quot;&gt;exception&lt;/a&gt;</string>
+   </property>
+  </action>
+  <action name="actionSucceed">
+   <property name="text">
+    <string>succeed</string>
+   </property>
+   <property name="toolTip">
+    <string>Immediate affirmative/successful return</string>
+   </property>
+   <property name="statusTip">
+    <string>Immediate affirmative/successful return</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;FailSucceed.htm\&quot;&gt;Succeed&lt;/a&gt;: immediate affirmative/successful return from an &lt;a href=\&quot;../EditExec.htm\&quot;&gt;exec&lt;/a&gt;</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="text">
+    <string>connect</string>
+   </property>
+   <property name="toolTip">
+    <string>Connect a signal to a handler (&quot;callback&quot;)</string>
+   </property>
+   <property name="statusTip">
+    <string>Connect a signal to a handler (&quot;callback&quot;)</string>
+   </property>
+   <property name="whatsThis">
+    <string>Connect a software signal to a &lt;a href=\&quot;../Callbacks.htm\&quot;&gt;handler (&quot;callback&quot;)&lt;/a&gt;</string>
+   </property>
+  </action>
+  <action name="actionDisconn">
+   <property name="text">
+    <string>disconn</string>
+   </property>
+   <property name="toolTip">
+    <string>Disconnect a handler (&quot;callback&quot;) from a signal</string>
+   </property>
+   <property name="statusTip">
+    <string>Disconnect a handler (&quot;callback&quot;) from a signal</string>
+   </property>
+   <property name="whatsThis">
+    <string>Disconnect a signal from a &lt;a href=\&quot;../Callbacks.htm\&quot;&gt;handler (&quot;callback&quot;)&lt;/a&gt;</string>
+   </property>
+  </action>
+  <action name="actionSignal">
+   <property name="text">
+    <string>signal</string>
+   </property>
+   <property name="toolTip">
+    <string>Emit a signal</string>
+   </property>
+   <property name="statusTip">
+    <string>Emit a signal</string>
+   </property>
+   <property name="whatsThis">
+    <string>Emit a &lt;a href=\&quot;../Callbacks.htm\&quot;&gt;software signal&lt;/a&gt;</string>
+   </property>
+  </action>
+  <action name="actionRun">
+   <property name="text">
+    <string>run</string>
+   </property>
+   <property name="toolTip">
+    <string>Run a nested initiator</string>
+   </property>
+   <property name="statusTip">
+    <string>Run a nested initiator</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;Run.htm\&quot;&gt;Run&lt;/a&gt; a nested &lt;a href=\&quot;../Packages.htm#initiator\&quot;&gt;main program&lt;/a&gt;</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>new</string>
+   </property>
+   <property name="toolTip">
+    <string>Create a new object: &quot;n&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>Create a new object: &quot;n&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>Create a &lt;a href=\&quot;New.htm\&quot;&gt;new&lt;/a&gt; object</string>
+   </property>
+   <property name="shortcut">
+    <string>N</string>
+   </property>
+  </action>
+  <action name="actionOld">
+   <property name="text">
+    <string>old</string>
+   </property>
+   <property name="toolTip">
+    <string>Old value (on entry to function)</string>
+   </property>
+   <property name="statusTip">
+    <string>Old value (on entry to function)</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Old.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Old&lt;/span&gt;&lt;/a&gt; value of a variable or expression (on entry to the current function)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionClone">
+   <property name="text">
+    <string>clone</string>
+   </property>
+   <property name="toolTip">
+    <string>Clone an object</string>
+   </property>
+   <property name="statusTip">
+    <string>Clone an object</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Clone.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Clone&lt;/span&gt;&lt;/a&gt; an existing &lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;Lava &lt;/span&gt; object&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionElse_expr">
+   <property name="text">
+    <string>else-expr</string>
+   </property>
+   <property name="toolTip">
+    <string>else expression</string>
+   </property>
+   <property name="statusTip">
+    <string>else expression</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&amp;quot;x &lt;a href=&quot;\&amp;quot;IfdefElse.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;else&lt;/span&gt;&lt;/a&gt; y&amp;quot; yields x if x != null, else y&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionIf_expr">
+   <property name="text">
+    <string>if-expr</string>
+   </property>
+   <property name="toolTip">
+    <string>If-then-else expression: &quot;x&quot;</string>
+   </property>
+   <property name="statusTip">
+    <string>If-then-else expression: &quot;x&quot;</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;IfExpr.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;if-then-elsif-else&lt;/span&gt;&lt;/a&gt; conditional expression with optional elsif and else branches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>X</string>
+   </property>
+  </action>
+  <action name="actionScale">
+   <property name="text">
+    <string>scale</string>
+   </property>
+   <property name="toolTip">
+    <string>Add a scale unit (e.g. &quot;Meters&quot;, derived from float/double) to a raw object (e.g. &quot;3.5&quot;): 3.5 Meters</string>
+   </property>
+   <property name="statusTip">
+    <string>Add a scale unit (e.g. &quot;Meters&quot;, derived from float/double) to a raw object (e.g. &quot;3.5&quot;): 3.5 Meters</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Add a &lt;a href=&quot;\&amp;quot;Scale.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;scale unit&lt;/span&gt;&lt;/a&gt; (e.g. &amp;quot;Meters&amp;quot;, derived from float/double) to a raw object (e.g. &amp;quot;3.5&amp;quot;): 3.5 Meters&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionItem">
+   <property name="text">
+    <string>item</string>
+   </property>
+   <property name="toolTip">
+    <string>Get an enumeration item from its index</string>
+   </property>
+   <property name="statusTip">
+    <string>Get an enumeration item from its index</string>
+   </property>
+   <property name="whatsThis">
+    <string>Get an enumeration &lt;a href=\&quot;EnumItem.htm\&quot;&gt;item&lt;/a&gt; from its index</string>
+   </property>
+  </action>
+  <action name="actionAttach">
+   <property name="text">
+    <string>attach</string>
+   </property>
+   <property name="toolTip">
+    <string>Attach a component object through an interface</string>
+   </property>
+   <property name="statusTip">
+    <string>Attach a component object through an interface</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Attach.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Attach&lt;/span&gt;&lt;/a&gt; an existing &lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;Lava&lt;/span&gt;  component object through one of its interfaces&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionQry_itf">
+   <property name="text">
+    <string>qry itf</string>
+   </property>
+   <property name="toolTip">
+    <string>Query interface: get another component object interface from an already known one</string>
+   </property>
+   <property name="statusTip">
+    <string>Query interface: get another component object interface from an already known one</string>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;a href=\&quot;QryItf.htm\&quot;&gt;Query interface:&lt;/a&gt; Make another interface of a component object accessible, starting from a known interface</string>
    </property>
   </action>
  </widget>

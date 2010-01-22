@@ -37,9 +37,9 @@ public:
   bool UtilitiesHidden;
   int LastUtilitiesState; //-1:hidden, else: ActTab of m_UtilityView
   void helpContents() { on_helpContentsAction_triggered(); }
-  void fillKwdToolbar(QToolBar *tb);
+  //void fillKwdToolbar(QToolBar *tb);
+  //void newKwdToolbutton(QToolBar *tb,QToolButton *&pb,const char *text,const char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
   void fillHelpToolbar(QToolBar *tb);
-  void newKwdToolbutton(QToolBar *tb,QToolButton *&pb,const char *text,const char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
   void newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
   void installToolButtonEvtFilters(QToolBar *tb);
 	void customEvent(QEvent *ev);
@@ -124,47 +124,6 @@ public slots:
     virtual void on_insertTextAction_triggered();
     virtual void on_showUtilWindowAction_triggered();
     virtual void on_makeGUIAction_triggered();
-/*
-    virtual void newCompo();
-    virtual void showUtilWindow();
-    virtual void expandSubtree();
-    virtual void collapseSubtree();
-    virtual void showOpts();
-    virtual void showAllOpts();
-    virtual void hideEmptyOpts();
-    virtual void nextComment();
-    virtual void prevComment();
-    virtual void nextError();
-    virtual void prevError();
-    virtual void check();
-    virtual void checkAll();
-    virtual void run();
-    virtual void newInclude();
-    virtual void newPackage();
-    virtual void newInitiator();
-    virtual void new_Interface();
-    virtual void newImpl();
-    virtual void newCOspec();
-    virtual void newCOimpl();
-    virtual void newSet();
-    virtual void newEnum();
-    virtual void newVT();
-    virtual void newFunc();
-    virtual void newMemVar();
-    virtual void newEnumItem();
-    virtual void editSelItem();
-    virtual void editComment();
-    virtual void gotoDec();
-    virtual void gotoImpl();
-    virtual void returnToRef();
-    virtual void findByName();
-    virtual void showOverridables();
-    virtual void override();
-    virtual void openFormView();
-    virtual void makeGUI();
-    virtual void insertText();
-    virtual void importComponent();
-*/
     virtual void on_insAction_triggered();
     virtual void on_delAction_triggered();
     virtual void on_deleteAction_triggered();

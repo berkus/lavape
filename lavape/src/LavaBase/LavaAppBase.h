@@ -333,7 +333,7 @@ class LAVABASE_DLL  CLavaBaseData : public QObject
 public:
   CLavaBaseData() {
     setObjectName("LavaBaseData");
-    declareButton = 0;
+    actionDeclare = 0;
     ContData = 0;
     debugger = 0;
     tempBrkPoint = 0;
@@ -464,15 +464,15 @@ public:
   QAction* DbgStopActionPtr;
 
   QAction
-    *declareAction, *existsAction, *foreachAction,
-    *selectAction, *elInSetAction, *ifAction, *ifdefAction,
-    *ifxAction, *elsexAction, *switchAction, *typeSwitchAction,
-    *andAction, *orAction,
-    *xorAction, *notAction, *assertAction, *ignoreAction,
-    *tryAction, *succeedAction, *failAction, *runAction,
-    *setAction, *newAction, *oldAction, *cloneAction,
-    *copyAction, *attachAction, *qryItfAction,
-    *scaleAction, *itemAction, *connectAction, *disconnectAction, *emitButton;
+    *actionDeclare, *actionExists, *actionForeach,
+    *actionSelect, *actionEl_in_set, *actionIf, *actionIfdef,
+    *actionIf_expr, *actionElse_expr, *actionSwitch, *actionType,
+    *actionAnd, *actionOr,
+    *actionXor, *actionNot, *actionAssert, *actionIgnore,
+    *actionTry, *actionSucceed, *actionFail, *actionRun,
+    *actionSet, *actionNew, *actionOld, *actionClone,
+    *actionCopy, *actionScale, *actionConnect, *actionDisconn,
+    *actionSignal, *actionItem, *actionAttach, *actionQry_itf;
 
   QAction *myWhatsThisAction;
 
