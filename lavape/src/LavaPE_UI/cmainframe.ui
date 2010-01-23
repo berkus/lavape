@@ -3044,7 +3044,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Foreach.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Universal quantifier&lt;/span&gt;&lt;/a&gt; ranging&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;Foreach.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Universal quantifier&lt;/span&gt;&lt;/a&gt; ranging&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;over a finite set&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="shortcut">
@@ -3066,7 +3066,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Select.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Select&lt;/span&gt;&lt;/a&gt; quantifier ranging&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;Select.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Select&lt;/span&gt;&lt;/a&gt; quantifier ranging&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;over a finite set&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="shortcut">
@@ -3084,7 +3084,7 @@ p, li { white-space: pre-wrap; }
     <string>Test if element is contained in set</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;InSet.htm\&quot;&gt;Element in set&lt;/a&gt; test</string>
+    <string>&lt;a href=&quot;InSet.htm&quot;&gt;Element in set&lt;/a&gt; test</string>
    </property>
   </action>
   <action name="actionSet">
@@ -3098,7 +3098,7 @@ p, li { white-space: pre-wrap; }
     <string>Assignment statement: &quot;s&quot;</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;Assign.htm\&quot;&gt;Assignment statement&lt;/a&gt;</string>
+    <string>&lt;a href=&quot;Assign.htm&quot;&gt;Assignment statement&lt;/a&gt;</string>
    </property>
    <property name="shortcut">
     <string>S</string>
@@ -3119,7 +3119,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Copy.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Copy&lt;/span&gt;&lt;/a&gt; an existing &lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;Lava &lt;/span&gt; object onto another object&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;Copy.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Copy&lt;/span&gt;&lt;/a&gt; an existing &lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;Lava &lt;/span&gt; object onto another object&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="shortcut">
     <string>C</string>
@@ -3140,7 +3140,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;IfStm.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;if-then-elsif-else&lt;/span&gt;&lt;/a&gt; statement with optional&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;IfStm.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;if-then-elsif-else&lt;/span&gt;&lt;/a&gt; statement with optional&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;elsif and else branches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="shortcut">
@@ -3158,7 +3158,7 @@ p, li { white-space: pre-wrap; }
     <string>Ifdef statement</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;IfdefElse.htm\&quot;&gt;ifdef&lt;/a&gt; statement: if variable != null then ...</string>
+    <string>&lt;a href=&quot;IfdefElse.htm&quot;&gt;ifdef&lt;/a&gt; statement: if variable != null then ...</string>
    </property>
   </action>
   <action name="actionSwitch">
@@ -3176,7 +3176,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Switch.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;switch&lt;/span&gt;&lt;/a&gt; statement with&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;Switch.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;switch&lt;/span&gt;&lt;/a&gt; statement with&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;optional else branch&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="shortcut">
@@ -3198,7 +3198,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;TypeSwitch.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;type switch&lt;/span&gt;&lt;/a&gt; statement&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;TypeSwitch.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;type switch&lt;/span&gt;&lt;/a&gt; statement&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;with optional else branch&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="shortcut">
@@ -3216,7 +3216,11 @@ p, li { white-space: pre-wrap; }
     <string>AND conjunction of statements: &quot;a&quot;</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;LogOps.htm\&quot;&gt;Logical conjunction&lt;/a&gt;</string>
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;LogOps.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Logical conjunction: &amp;quot;and&amp;quot;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="shortcut">
     <string>A</string>
@@ -3233,7 +3237,11 @@ p, li { white-space: pre-wrap; }
     <string>OR conjunction of statements: &quot;o&quot;</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;LogOps.htm\&quot;&gt;Logical conjunction&lt;/a&gt;</string>
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;LogOps.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Logical &amp;quot;or&amp;quot;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="shortcut">
     <string>O</string>
@@ -3250,7 +3258,11 @@ p, li { white-space: pre-wrap; }
     <string>Exclusive OR of statements</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;LogOps.htm\&quot;&gt;Logical conjunction&lt;/a&gt;</string>
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;LogOps.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Exclusive &amp;quot;or&amp;quot;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
   <action name="actionNot">
@@ -3264,7 +3276,11 @@ p, li { white-space: pre-wrap; }
     <string>Negation of a statement</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;LogOps.htm\&quot;&gt;Logical negation&lt;/a&gt;</string>
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;LogOps.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Logical negation: &amp;quot;not&amp;quot;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
   <action name="actionAssert">
@@ -3278,7 +3294,7 @@ p, li { white-space: pre-wrap; }
     <string>Assertion</string>
    </property>
    <property name="whatsThis">
-    <string>An &lt;a href=\&quot;Assert.htm\&quot;&gt;embedded assertion&lt;/a&gt; is embedded anywhwere in executable code  (in contrast to &lt;a href=\&quot;../DBC.htm\&quot;&gt;attached assertions&lt;/a&gt;)  and throws a specific exception in case of violation</string>
+    <string>An &lt;a href=&quot;Assert.htm&quot;&gt;embedded assertion&lt;/a&gt; is embedded anywhwere in executable code  (in contrast to &lt;a href=&quot;../DBC.htm&quot;&gt;attached assertions&lt;/a&gt;)  and throws a specific exception in case of violation</string>
    </property>
   </action>
   <action name="actionIgnore">
@@ -3312,7 +3328,7 @@ p, li { white-space: pre-wrap; }
     <string>Try a statement, catch exceptions: &quot;y&quot;</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;Try.htm\&quot;&gt;Try&lt;/a&gt; a statement, catch exceptions</string>
+    <string>&lt;a href=&quot;Try.htm&quot;&gt;Try&lt;/a&gt; a statement, catch exceptions</string>
    </property>
    <property name="shortcut">
     <string>Y</string>
@@ -3329,7 +3345,11 @@ p, li { white-space: pre-wrap; }
     <string>Fail or even throw an exception</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;FailSucceed.htm\&quot;&gt;Throw&lt;/a&gt;: immediate negative/unsuccessful return from an &lt;a href=\&quot;../EditExec.htm#\&quot;&gt;exec&lt;/a&gt;, optionally throw an &lt;a href=\&quot;../ExceptionSamples.htm\&quot;&gt;exception&lt;/a&gt;</string>
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;FailSucceed.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Fail/throw&lt;/span&gt;&lt;/a&gt;: immediate negative/unsuccessful return from an &lt;a href=&quot;../EditExec.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;exec&lt;/span&gt;&lt;/a&gt;, optionally throw an &lt;a href=&quot;../ExceptionSamples.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;exception&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
   <action name="actionSucceed">
@@ -3343,7 +3363,7 @@ p, li { white-space: pre-wrap; }
     <string>Immediate affirmative/successful return</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;FailSucceed.htm\&quot;&gt;Succeed&lt;/a&gt;: immediate affirmative/successful return from an &lt;a href=\&quot;../EditExec.htm\&quot;&gt;exec&lt;/a&gt;</string>
+    <string>&lt;a href=&quot;FailSucceed.htm&quot;&gt;Succeed&lt;/a&gt;: immediate affirmative/successful return from an &lt;a href=&quot;../EditExec.htm&quot;&gt;exec&lt;/a&gt;</string>
    </property>
   </action>
   <action name="actionConnect">
@@ -3357,7 +3377,7 @@ p, li { white-space: pre-wrap; }
     <string>Connect a signal to a handler (&quot;callback&quot;)</string>
    </property>
    <property name="whatsThis">
-    <string>Connect a software signal to a &lt;a href=\&quot;../Callbacks.htm\&quot;&gt;handler (&quot;callback&quot;)&lt;/a&gt;</string>
+    <string>Connect a software signal to a &lt;a href=&quot;../Callbacks.htm&quot;&gt;handler (&quot;callback&quot;)&lt;/a&gt;</string>
    </property>
   </action>
   <action name="actionDisconn">
@@ -3371,7 +3391,7 @@ p, li { white-space: pre-wrap; }
     <string>Disconnect a handler (&quot;callback&quot;) from a signal</string>
    </property>
    <property name="whatsThis">
-    <string>Disconnect a signal from a &lt;a href=\&quot;../Callbacks.htm\&quot;&gt;handler (&quot;callback&quot;)&lt;/a&gt;</string>
+    <string>Disconnect a signal from a &lt;a href=&quot;../Callbacks.htm&quot;&gt;handler (&quot;callback&quot;)&lt;/a&gt;</string>
    </property>
   </action>
   <action name="actionSignal">
@@ -3385,7 +3405,7 @@ p, li { white-space: pre-wrap; }
     <string>Emit a signal</string>
    </property>
    <property name="whatsThis">
-    <string>Emit a &lt;a href=\&quot;../Callbacks.htm\&quot;&gt;software signal&lt;/a&gt;</string>
+    <string>Emit a &lt;a href=&quot;../Callbacks.htm&quot;&gt;software signal&lt;/a&gt;</string>
    </property>
   </action>
   <action name="actionRun">
@@ -3399,7 +3419,7 @@ p, li { white-space: pre-wrap; }
     <string>Run a nested initiator</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;Run.htm\&quot;&gt;Run&lt;/a&gt; a nested &lt;a href=\&quot;../Packages.htm#initiator\&quot;&gt;main program&lt;/a&gt;</string>
+    <string>&lt;a href=&quot;Run.htm&quot;&gt;Run&lt;/a&gt; a nested &lt;a href=&quot;../Packages.htm#initiator&quot;&gt;main program&lt;/a&gt;</string>
    </property>
   </action>
   <action name="actionNew">
@@ -3413,7 +3433,7 @@ p, li { white-space: pre-wrap; }
     <string>Create a new object: &quot;n&quot;</string>
    </property>
    <property name="whatsThis">
-    <string>Create a &lt;a href=\&quot;New.htm\&quot;&gt;new&lt;/a&gt; object</string>
+    <string>Create a &lt;a href=&quot;New.htm&quot;&gt;new&lt;/a&gt; object</string>
    </property>
    <property name="shortcut">
     <string>N</string>
@@ -3434,7 +3454,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Old.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Old&lt;/span&gt;&lt;/a&gt; value of a variable or expression (on entry to the current function)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;Old.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Old&lt;/span&gt;&lt;/a&gt; value of a variable or expression (on entry to the current function)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
   <action name="actionClone">
@@ -3452,7 +3472,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Clone.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Clone&lt;/span&gt;&lt;/a&gt; an existing &lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;Lava &lt;/span&gt; object&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;Clone.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Clone&lt;/span&gt;&lt;/a&gt; an existing &lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;Lava &lt;/span&gt; object&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
   <action name="actionElse_expr">
@@ -3470,7 +3490,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&amp;quot;x &lt;a href=&quot;\&amp;quot;IfdefElse.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;else&lt;/span&gt;&lt;/a&gt; y&amp;quot; yields x if x != null, else y&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&amp;quot;x &lt;a href=&quot;IfdefElse.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;else&lt;/span&gt;&lt;/a&gt; y&amp;quot; yields x if x != null, else y&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
   <action name="actionIf_expr">
@@ -3488,7 +3508,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;IfExpr.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;if-then-elsif-else&lt;/span&gt;&lt;/a&gt; conditional expression with optional elsif and else branches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;IfExpr.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;if-then-elsif-else&lt;/span&gt;&lt;/a&gt; conditional expression with optional elsif and else branches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="shortcut">
     <string>X</string>
@@ -3509,7 +3529,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Add a &lt;a href=&quot;\&amp;quot;Scale.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;scale unit&lt;/span&gt;&lt;/a&gt; (e.g. &amp;quot;Meters&amp;quot;, derived from float/double) to a raw object (e.g. &amp;quot;3.5&amp;quot;): 3.5 Meters&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Add a &lt;a href=&quot;Scale.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;scale unit&lt;/span&gt;&lt;/a&gt; (e.g. &amp;quot;Meters&amp;quot;, derived from float/double) to a raw object (e.g. &amp;quot;3.5&amp;quot;): 3.5 Meters&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
   <action name="actionItem">
@@ -3523,7 +3543,7 @@ p, li { white-space: pre-wrap; }
     <string>Get an enumeration item from its index</string>
    </property>
    <property name="whatsThis">
-    <string>Get an enumeration &lt;a href=\&quot;EnumItem.htm\&quot;&gt;item&lt;/a&gt; from its index</string>
+    <string>Get an enumeration &lt;a href=&quot;EnumItem.htm&quot;&gt;item&lt;/a&gt; from its index</string>
    </property>
   </action>
   <action name="actionAttach">
@@ -3541,7 +3561,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;\&amp;quot;Attach.htm\&amp;quot;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Attach&lt;/span&gt;&lt;/a&gt; an existing &lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;Lava&lt;/span&gt;  component object through one of its interfaces&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;Attach.htm&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Attach&lt;/span&gt;&lt;/a&gt; an existing &lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;Lava&lt;/span&gt;  component object through one of its interfaces&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
   <action name="actionQry_itf">
@@ -3555,7 +3575,7 @@ p, li { white-space: pre-wrap; }
     <string>Query interface: get another component object interface from an already known one</string>
    </property>
    <property name="whatsThis">
-    <string>&lt;a href=\&quot;QryItf.htm\&quot;&gt;Query interface:&lt;/a&gt; Make another interface of a component object accessible, starting from a known interface</string>
+    <string>&lt;a href=&quot;QryItf.htm&quot;&gt;Query interface:&lt;/a&gt; Make another interface of a component object accessible, starting from a known interface</string>
    </property>
   </action>
  </widget>
@@ -3564,5 +3584,570 @@ p, li { white-space: pre-wrap; }
   <include location="../LavaPE_res.qrc"/>
   <include location="../LavaPE_res.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionDeclare</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>declare()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionExists</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>exists()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAnd</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>and_stm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAssert</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>assert_stm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAttach</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>attach()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionClone</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>clone()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionConnect</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>connectSignal()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionEl_in_set</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>elInSet()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionElse_expr</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>elseExpr()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionForeach</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>foreachStm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionIf</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>ifStm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionIf_expr</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>ifExpr()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionIfdef</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>ifdefStm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionIgnore</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>ignore_stm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionItem</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>getEnumItem()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionNew</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>newExpr()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFail</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>throwEx()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionNot</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>not_stm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionOld</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>old()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionOr</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>or_stm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionQry_itf</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>qryItf()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRun</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>call()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionScale</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>scale()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSelect</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>select()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSet</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>set()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSignal</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>emitSignal()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSucceed</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>succeed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSwitch</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>switchStm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTry</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>try_stm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionType</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>typeStm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionXor</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>xor_stm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCopy</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>copy()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDisconn</sender>
+   <signal>triggered()</signal>
+   <receiver>CMainFrame</receiver>
+   <slot>disconnect()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>declare()</slot>
+  <slot>exists()</slot>
+  <slot>foreachStm()</slot>
+  <slot>select()</slot>
+  <slot>elInSet()</slot>
+  <slot>set()</slot>
+  <slot>copy()</slot>
+  <slot>ifStm()</slot>
+  <slot>ifdefStm()</slot>
+  <slot>switchStm()</slot>
+  <slot>typeStm()</slot>
+  <slot>and_stm()</slot>
+  <slot>or_stm()</slot>
+  <slot>xor_stm()</slot>
+  <slot>not_stm()</slot>
+  <slot>assert_stm()</slot>
+  <slot>ignore_stm()</slot>
+  <slot>try_stm()</slot>
+  <slot>throwEx()</slot>
+  <slot>succeed()</slot>
+  <slot>connectSignal()</slot>
+  <slot>disconnect()</slot>
+  <slot>emitSignal()</slot>
+  <slot>call()</slot>
+  <slot>newExpr()</slot>
+  <slot>old()</slot>
+  <slot>clone()</slot>
+  <slot>elseExpr()</slot>
+  <slot>ifExpr()</slot>
+  <slot>scale()</slot>
+  <slot>getEnumItem()</slot>
+  <slot>attach()</slot>
+  <slot>qryItf()</slot>
+  <slot>fail()</slot>
+ </slots>
 </ui>
