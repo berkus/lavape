@@ -1,5 +1,2 @@
-IDR_MAINFRAME           ICON    DISCARDABLE     "Lava.ico"
-IDR_LAVATASKTYPE        ICON    DISCARDABLE     "LavaTask.ico"
-IDR_LAVACOMTYPE         ICON    DISCARDABLE     "LavaCom.ico"
-IDR_LAVADOCTYPE         ICON    DISCARDABLE     "LavaDoc.ico"
+IDI_ICON1               ICON    DISCARDABLE     "Lava.ico"
 
