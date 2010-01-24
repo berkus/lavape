@@ -77,7 +77,7 @@ bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   layout->setSpacing(1);
   layout->addWidget(m_ComboBar);
   layout->addWidget(m_ExecView);
-  setWindowIcon(QIcon(QPixmap((const char**) execframe)));
+  //setWindowIcon(QIcon(QPixmap((const char**) execframe)));
   return wxChildFrame::OnCreate(temp,doc);
 }
 

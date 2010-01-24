@@ -332,7 +332,7 @@ bool CLavaMainFrame::OnCreate()
     if (fn.Substr(fn.l-5,5) == DString(".ldoc"))
       fileHist->m_actions[i]->setEnabled(false);
   }
-  setWindowIcon(QPixmap((const char**) Lava));
+  //setWindowIcon(QPixmap((const char**) Lava));
   QSplitter* split = new QSplitter(this);
   m_CentralWidget = split;
   setCentralWidget(m_CentralWidget);
@@ -1666,7 +1666,7 @@ CTreeFrame::CTreeFrame(QWidget* parent):wxChildFrame(parent)
 
 bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
-  setWindowIcon(QPixmap((const char**) Lava));
+  //setWindowIcon(QPixmap((const char**) Lava));
   QSize sz;
   int totalW=0;
 

@@ -74,7 +74,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				Culture="1033"
-				AdditionalIncludeDirectories="../LavaBase"
+				AdditionalIncludeDirectories=""
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -1263,7 +1263,7 @@
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
-						AdditionalIncludeDirectories="res"
+						AdditionalIncludeDirectories=""
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1275,10 +1275,6 @@
 						AdditionalIncludeDirectories="res"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\Makefile"
-				>
 			</File>
 			<Filter
 				Name="ToolButtons"
@@ -1892,7 +1888,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="qcollectiongenerator wird auf $(InputPath) angewandt"
-					CommandLine="$(QTDIR)\bin\qcollectiongenerator -helpCollection $(InputPath)"
+					CommandLine="$(QTDIR)\bin\qcollectiongenerator -helpCollection $(InputPath)&#x0D;&#x0A;"
 					AdditionalDependencies=""
 					Outputs="..\..\doc\$(InputName).qhc;..\..\doc\$(InputName).qch"
 				/>
@@ -1903,7 +1899,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="qcollectiongenerator wird auf $(InputPath) angewandt"
-					CommandLine="$(QTDIR)\bin\qcollectiongenerator -helpCollection $(InputPath)"
+					CommandLine="$(QTDIR)\bin\qcollectiongenerator -helpCollection $(InputPath)&#x0D;&#x0A;"
 					AdditionalDependencies="..\..\doc\LavaPE.qhcp;..\..\doc\LavaPE.qhp"
 					Outputs="..\..\doc\$(InputName).qhc;..\..\doc\$(InputName).qch"
 				/>
@@ -1926,7 +1922,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated\$(InputName).cpp $(InputPath)"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated\$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
 					Outputs="Generated\$(InputName).cpp"
 				/>
 			</FileConfiguration>
@@ -1936,7 +1932,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated\$(InputName).cpp $(InputPath)"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated\$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
 					Outputs="Generated\$(InputName).cpp"
 				/>
 			</FileConfiguration>
