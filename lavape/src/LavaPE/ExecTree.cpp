@@ -435,7 +435,7 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
     if (elDef->TypeFlags.Contains(isStatic))
       lab1 += DString("static ");
     else {
-      if (!elDef->TypeFlags.Contains(isStateObjectY))
+      if (!elDef->TypeFlags.Contains(isStateObjectY) && !elDef->TypeFlags.Contains(isInitializer))
         lab1 += DString("read-only ");
       if (elDef->SecondTFlags.Contains(closed))
         lab1 += DString("closed-self ");
@@ -480,7 +480,7 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
       if (elDef->TypeFlags.Contains(isStatic))
         lab1 += DString("static ");
       else {
-        if (!elDef->TypeFlags.Contains(isStateObjectY))
+        if (!elDef->TypeFlags.Contains(isStateObjectY) && !elDef->TypeFlags.Contains(isInitializer))
           lab1 += DString("read-only ");
         if (elDef->SecondTFlags.Contains(closed))
           lab1 += DString("closed-self ");
