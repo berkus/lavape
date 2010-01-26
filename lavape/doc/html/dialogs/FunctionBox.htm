@@ -23,6 +23,12 @@
           color: #0000FF;
           font-weight: bold;
       }
+      .style2
+      {
+          color: #FF0000;
+          font-weight: bold;
+          font-style: italic;
+      }
   </style>
 </head>
 
@@ -83,7 +89,7 @@
 
   <h3>&quot;Self&quot; category combo box</h3>
 
-  <p>A function doesn&#39;t modify &quot;self&quot; if it treats its &quot;self&quot; object as immutable, i.e., it doesn&#39;t modify the immediate and nested <a href="../PointersRefCounts.htm#refTypes">constituents</a> of &quot;self&quot;.</p>
+  <p>Select &quot;Self is immutable&quot; if the function doesn&#39;t change the immediate and nested <a href="../PointersRefCounts.htm#refTypes">constituents</a> of &quot;self&quot;.</p>
 
   <h3><a id="native"></a>Native</h3>
 
@@ -113,14 +119,26 @@
 
   <p>Transforms an overridden function into a non-overridden function, as if it had been newly declared in the containing class.</p>
 
-  <h3><a id="forceOverride"></a>Callable only from this VT context</h3>
+  <h3><a id="forceOverride">F</a>orce override on class derivation</h3>
 
-  <p>The function together with its containing class must always be <a href="../OverrideView.htm">overridden</a> when the containing pattern is derived. Thus it cannot be called with a <em>self</em> object of a more <a href="../TypeSafety.htm#p-derived">p-derived</a> run-time type, and static calls are forbidden either.</p>
+  <p>Check this if the function&#39;s implementation is meaningful only in the context of 
+      its containing class and must not be invoked with a call object from a more 
+      derived class.</p>
+    <p>As a consequence, <span class="style2">LavaPE</span> forces the programmer to <a href="../OverrideView.htm">override</a> 
+        the function whenever another class is derived from its containing class <i>C</i>, 
+        and if <i>C</i> is contained in a <a href="../PatternsFrameworks.htm">pattern</a>
+        <i>P</i> and a pattern <i>P&#39;</i> is 
+        derived from <i>P</i> then <span class="style2">LavaPE</span> automatically includes a derivation C&#39; of C 
+        in P&#39; and C&#39; contains an overridden version of the function in question. Static calls 
+        from a more derived class / pattern context are forbidden and prevented either.</p>
 
-  <p>This may be necessary particularly if a local variable or formal parameter whose type is <a href="../PatternsFrameworks.htm#multiform">multiform</a> occurs on the target side of an assignment in the body of this function and the source side of the assignment is non-multiform.</p>
+  <p>This may be necessary particularly if a local variable or formal parameter whose type is <a href="../PatternsFrameworks.htm#multiform">
+      virtual</a> occurs on the target side of an assignment in the body of this function and the source side of the assignment is 
+      of a non-virtual, concrete type.</p>
 
-  <p>Example: the right-hand side is a &quot;<span class="style1">new</span> <em>type</em>&quot; expression 
-      or a constant, the left-hand side is a variable having some virtual type whose concrete value is <em>type</em> in the context of the function body. This is the typical purpose and behavior of a &quot;factory function&quot; which is overridden when the respective class is specialized.</p>
+  <p>Example: the right-hand side is a &quot;<span class="style1">new</span> <em>C</em>&quot; expression 
+      or a constant, the left-hand side is a variable having some virtual type whose concrete value is <em>
+      C</em> in the context of the function body. This is the typical purpose and behavior of a &quot;factory function&quot; which is overridden when the respective class is specialized.</p>
 
   <h3 class="c4">See also</h3>
 
