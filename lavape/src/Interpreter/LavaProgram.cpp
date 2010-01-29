@@ -1548,7 +1548,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
     if (ElDECL->TypeFlags.Contains(forceOverride) && (ElDECL->ParentDECL->DeclType == Interface))
       if (!IDTable.isValOfVirtual(ElDECL->ParentDECL))
         ElDECL->TypeFlags.EXCL(forceOverride);
-      else if (ElDECL->ParentDECL != classDECL)) {
+      else if (ElDECL->ParentDECL != classDECL) {
         LavaError(*pckd, true, classDECL, &ERR_ForceOver, ElDECL);
         return false;
       }
