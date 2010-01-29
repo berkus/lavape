@@ -1556,6 +1556,7 @@ ValOnInit CFuncBox::OnInitDialog()
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
     Native->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isNative));
   }
+  EnforceOver->setEnabled((myDECL->ParentDECL->DeclType == Interface) && myDoc->IDTable.isValOfVirtual(myDECL->ParentDECL));
 
   if (onNew) {
     hasParams = 0;
@@ -1566,7 +1567,6 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     EventType->setCurrentIndex(0);
 
-	  EnforceOver->setEnabled((myDECL->ParentDECL->DeclType == Interface) && myDoc->IDTable.isValOfVirtual(myDECL->ParentDECL));
 
     //EnforceOver->setChecked(myDECL->ParentDECL->DeclType == Impl);
 
@@ -1591,7 +1591,7 @@ ValOnInit CFuncBox::OnInitDialog()
     cheIO = (CHE*)myDECL->NestedDecls.first;
     hasParams = cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc);
     hasOutput = false;
-    EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
+    //EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     while (cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)) {
       hasOutput = hasOutput || (((LavaDECL*)cheIO->data)->DeclType == OAttr);
       //if (((LavaDECL*)cheIO->data)->TypeFlags.Contains(sameAsSelf)) {

@@ -1545,11 +1545,13 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
         return false;
       }
     }
-    if (ElDECL->TypeFlags.Contains(forceOverride)
-      && (ElDECL->ParentDECL->DeclType == Interface) && (ElDECL->ParentDECL != classDECL)) {
-      LavaError(*pckd, true, classDECL, &ERR_ForceOver, ElDECL);
-      return false;
-    }
+    if (ElDECL->TypeFlags.Contains(forceOverride) && (ElDECL->ParentDECL->DeclType == Interface))
+      if (!IDTable.isValOfVirtual(ElDECL->ParentDECL))
+        ElDECL->TypeFlags.EXCL(forceOverride);
+      else if (ElDECL->ParentDECL != classDECL)) {
+        LavaError(*pckd, true, classDECL, &ERR_ForceOver, ElDECL);
+        return false;
+      }
     if (declID != El->data.VTClss) {
       declID = El->data.VTClss;
       baseDECL = IDTable.GetDECL(declID);

@@ -1676,8 +1676,7 @@ void CLavaPEDoc::ConcernImpls (CLavaPEHint* hint, LavaDECL* ppDECL, bool)
 		lastHint = UndoMem.GetLastHint();
 	else
 		lastHint = hint;
-	do
-	{
+	do	{
 		if (getFromMem)
 			actHint = UndoMem.DoFromMem (pos);
 		else
@@ -1694,11 +1693,9 @@ void CLavaPEDoc::ConcernImpls (CLavaPEHint* hint, LavaDECL* ppDECL, bool)
 		          && (ppDECL->DeclType == Interface)
 		          || (hintDECL->DeclType == VirtualType)
 		          || (hintDECL->DeclType == Attr) && hintDECL->TypeFlags.Contains (hasSetGet)
-		          && (ppDECL->DeclType == Impl)))
-		{
+		          && (ppDECL->DeclType == Impl)))	{
 			dragdropParent = (LavaDECL*) actHint->CommandData5;
-			if (!dragdropParent || (hintDECL->ParentDECL != dragdropParent))
-			{
+			if (!dragdropParent || (hintDECL->ParentDECL != dragdropParent))	{
 				funcID.nID = hintDECL->OwnID;
 				ifaceID.nID = ppDECL->OwnID;
 				fcf = new CExecImpls (mySynDef, ifaceID, funcID, actHint);
@@ -1706,14 +1703,11 @@ void CLavaPEDoc::ConcernImpls (CLavaPEHint* hint, LavaDECL* ppDECL, bool)
 					fcfo = new CExecOverrides (mySynDef, ifaceID, funcID, actHint);
 			}
 		}
-		else
-		{
+		else	{
 			if (ppDECL && ((hintDECL->DeclType == IAttr) || (hintDECL->DeclType == OAttr))
-			        && (ppDECL->DeclType == Function)  && ppDECL->ParentDECL)
-			{
+			        && (ppDECL->DeclType == Function)  && ppDECL->ParentDECL)	{
 				pppDECL = ppDECL->ParentDECL;
-				if (pppDECL->DeclType == Interface)
-				{
+				if (pppDECL->DeclType == Interface)	{
 					funcID.nID = ppDECL->OwnID;
 					ifaceID.nID = pppDECL->OwnID;
 //          fcf = new CExecImpls(mySynDef, ifaceID, funcID, actHint);
@@ -1726,8 +1720,7 @@ void CLavaPEDoc::ConcernImpls (CLavaPEHint* hint, LavaDECL* ppDECL, bool)
 			}
 			else
 				if ((actHint->com != CPECommand_Insert)
-				        && (hintDECL->DeclType == Interface))
-				{
+				        && (hintDECL->DeclType == Interface))	{
 					ifaceID.nID = hintDECL->OwnID;
 					fcf = new CExecImpls (mySynDef, ifaceID, funcID, actHint);
 					if (execO)

@@ -462,11 +462,11 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
     if (checkLevel != CHLV_noCheck) {
       bool changed = Doc->CheckOverInOut(elDef, checkLevel);
       Doc->changeInUpdate = Doc->changeInUpdate || changed;
-			if (elDef->TypeFlags.Contains(forceOverride) && !Doc->IDTable.isValOfVirtual(elDef->ParentDECL)) {
-				elDef->TypeFlags.EXCL(forceOverride);
-				Doc->changeInUpdate = true;
-			}
     }
+		if ( (checkLevel == CHLV_fit) && elDef->TypeFlags.Contains(forceOverride) && !Doc->IDTable.isValOfVirtual(elDef->ParentDECL)) {
+			elDef->TypeFlags.EXCL(forceOverride);
+			Doc->changeInUpdate = true;
+		}
     if (elDef->SecondTFlags.Contains(isLavaSignal))
       lab1 += DString("signal ");
     else {
@@ -1337,6 +1337,18 @@ void CExecOverrides::ExecDefs(LavaDECL ** pelDef, int )
         delete newDECL;
     }
     return;
+  }
+  if ((HintDECL->DeclType ==  VirtualType) && ( (*pelDef)->DeclType == Function)
+    && (TID((*pelDef)->ParentDECL->OwnID,(*pelDef)->inINCL) ==  HintDECL->RefID)
+    && (*pelDef)->TypeFlags.Contains(forceOverride)) {
+    newDECL = NewLavaDECL();
+    *newDECL = *(*pelDef);
+    newDECL->TypeFlags.EXCL(forceOverride);
+    pStr = new DString((*pelDef)->FullName);
+    NewHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, newDECL, pStr, 0, pelDef);
+    ((CPEBaseDoc*)Hint->fromDoc)->UndoMem.AddToMem(NewHint);
+    ((CPEBaseDoc*)Hint->fromDoc)->UpdateDoc(NULL, false, NewHint);
+
   }
   if ( ( (*pelDef)->DeclType == VirtualType)
        && ( (*pelDef)->SecondTFlags.Contains(overrides)

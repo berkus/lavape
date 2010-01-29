@@ -305,7 +305,7 @@ public:
   LavaDECL* myDECL;
   LavaDECL* FieldTypeDECL;
   CLavaPEDoc *myDoc;
-  bool onNew;
+  bool onNew;//, isInPattern;
   LavaDECL * OrigDECL;
   TID exID;
   bool hasOutput;
