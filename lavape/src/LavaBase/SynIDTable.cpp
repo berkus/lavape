@@ -1430,7 +1430,7 @@ bool TIDTable::Overrides(const TID& upId, int upinINCL, const TID& id, int inINC
     return false;
   if (funcDECL1 == funcDECL2)
     return true;
-  return IneritsFrom(funcDECL1->ParentDECL, TID(funcDECL2->ParentDECL->OwnID, funcDECL2->inINCL), 0, conDECL, true);
+  return InheritsFrom(funcDECL1->ParentDECL, TID(funcDECL2->ParentDECL->OwnID, funcDECL2->inINCL), 0, conDECL, true);
 
 }
 
@@ -1439,7 +1439,7 @@ bool TIDTable::IsA(LavaDECL *decl, const TID& id, int inINCL )
   if (decl == GetDECL(id, inINCL))
     return true;
   else
-    return IneritsFrom(decl, id, inINCL);
+    return InheritsFrom(decl, id, inINCL);
 }
 
 bool TIDTable::IsA(const TID& upId, int upinINCL, const TID& id, int inINCL )
@@ -1447,15 +1447,15 @@ bool TIDTable::IsA(const TID& upId, int upinINCL, const TID& id, int inINCL )
   if (EQEQ(upId, upinINCL, id, inINCL))
     return true;
   else
-    return IneritsFrom(GetDECL(upId, upinINCL), id, inINCL);
+    return InheritsFrom(GetDECL(upId, upinINCL), id, inINCL);
 }
 
-bool TIDTable::IneritsFrom(const TID& upId, int upinINCL, const TID& id, int inINCL, LavaDECL* conDECL, bool isI )
+bool TIDTable::InheritsFrom(const TID& upId, int upinINCL, const TID& id, int inINCL, LavaDECL* conDECL, bool isI )
 {
-  return IneritsFrom(GetDECL(upId, upinINCL), id, inINCL, conDECL, isI );
+  return InheritsFrom(GetDECL(upId, upinINCL), id, inINCL, conDECL, isI );
 }
 
-bool TIDTable::IneritsFrom(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL, bool isI, bool cheStart)
+bool TIDTable::InheritsFrom(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL, bool isI, bool cheStart)
 {
   CHETID* cheID;
   LavaDECL *baseDecl, *baseDecl0;
@@ -1508,7 +1508,7 @@ bool TIDTable::IneritsFrom(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* 
         //return false;
         return true;
       }
-      if (baseDecl && IneritsFrom(baseDecl, TID(baseDecl0->OwnID, baseDecl0->inINCL), 0, conDECL, isI, cheStart))
+      if (baseDecl && InheritsFrom(baseDecl, TID(baseDecl0->OwnID, baseDecl0->inINCL), 0, conDECL, isI, cheStart))
         return true;
     }
     else {
@@ -1519,7 +1519,7 @@ bool TIDTable::IneritsFrom(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* 
         //return false;
         return true;
       }
-      if (IneritsFrom(baseDecl, id, inINCL, conDECL, isI, cheStart))
+      if (InheritsFrom(baseDecl, id, inINCL, conDECL, isI, cheStart))
         return true;
     }
   }
@@ -1598,7 +1598,7 @@ bool TIDTable::Overrides(const TID& upId, int upinINCL, const TID& id, int inINC
   for (decl = GetDECL(id, inINCL);
        decl && decl->Supports.first;
        decl = GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL));
-  if (decl && IneritsFrom(upId, upinINCL, TID(decl->OwnID, decl->inINCL), 0))
+  if (decl && InheritsFrom(upId, upinINCL, TID(decl->OwnID, decl->inINCL), 0))
     return true;
   return false;
 }
@@ -1614,7 +1614,7 @@ bool TIDTable::Overrides(LavaDECL* decl1, LavaDECL* decl2)
   for (decl = decl2;
        decl && decl->Supports.first;
        decl = GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL));
-  if (decl && IneritsFrom(decl1, TID(decl->OwnID, decl->inINCL), 0))
+  if (decl && InheritsFrom(decl1, TID(decl->OwnID, decl->inINCL), 0))
     return true;
   return false;
 }
@@ -1894,7 +1894,7 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
     return 0;
   if ((contDECL->OwnID == decl->OwnID)
       && ((contDECL == newbasedecl)
-        || IneritsFrom(newbasedecl, TID(contDECL->OwnID, contDECL->inINCL),0,contDECL,true)))
+        || InheritsFrom(newbasedecl, TID(contDECL->OwnID, contDECL->inINCL),0,contDECL,true)))
     return 0;
   TID newbaseID = TID(newbasedecl->OwnID, newbasedecl->inINCL);
   if (newbasedecl->DeclType == VirtualType)
@@ -1919,7 +1919,7 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
         if (finalnewBasedecl == findecl)
           return 0;
         if (newbasedecl->DeclType != VirtualType)
-          if (IneritsFrom(findecl, finalBaseID, decl->inINCL, contDECL, true))
+          if (InheritsFrom(findecl, finalBaseID, decl->inINCL, contDECL, true))
             return 0;
           else
             if (HasVBase(finalnewBasedecl, che->data, 0)) {
@@ -1935,11 +1935,11 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
             return 0;
         }
         else {
-          if (IneritsFrom(bdecl, finalBaseID, 0, contDECL, true))
+          if (InheritsFrom(bdecl, finalBaseID, 0, contDECL, true))
             return 0;
         }
         if ((finalnewBasedecl == bdecl)
-            || IneritsFrom(finalnewBasedecl, che->data, decl->inINCL, contDECL, true)) {
+            || InheritsFrom(finalnewBasedecl, che->data, decl->inINCL, contDECL, true)) {
           if (putBase) {
             che->data = newbaseID;
             //multiContainer = false;

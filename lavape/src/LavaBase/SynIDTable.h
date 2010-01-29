@@ -114,8 +114,8 @@ public:
   bool Overrides(const TID& upId, int upinINCL, const TID& id, int inINCL, LavaDECL* conDECL);
   bool IsA(LavaDECL *decl, const TID& id, int inINCL);
   bool IsA(const TID& upId, int upinINCL, const TID& id, int inINCL); //with equals
-  bool IneritsFrom(const TID& upId, int upinINCL, const TID& id, int inINCL, LavaDECL* conDECL=0, bool isI = false);//true :  id is an ancestor of upId, without equals
-  bool IneritsFrom(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL=0, bool isI = false, bool cheStart=true);
+  bool InheritsFrom(const TID& upId, int upinINCL, const TID& id, int inINCL, LavaDECL* conDECL=0, bool isI = false);//true :  id is an ancestor of upId, without equals
+  bool InheritsFrom(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL=0, bool isI = false, bool cheStart=true);
   bool HasVBase(LavaDECL *decl, const TID& vid, int inINCL);
   LavaDECL* GetFinalDef(const TID& id, int inINCL = 0);
   LavaDECL* GetFinalBaseType(const TID& id, int inINCL, LavaDECL* conDECL);

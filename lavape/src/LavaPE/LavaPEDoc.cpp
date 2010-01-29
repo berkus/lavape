@@ -173,7 +173,7 @@ bool CLavaPEDoc::AddVElems (LavaDECL *decl, LavaDECL* baseDECL)
 				El = ElC;
 				El = ElC;
 				//is it an extension of an element in the table?
-				while (El && !IDTable.IneritsFrom (addElem->data.VTEl, 0, El->data.VTEl, 0))
+				while (El && !IDTable.InheritsFrom (addElem->data.VTEl, 0, El->data.VTEl, 0))
 					if (El == lastEl)
 						El = 0;
 					else
@@ -466,7 +466,7 @@ bool CLavaPEDoc::CheckForm (LavaDECL* formDECL, int checkLevel)
 				return false;
 			}
 
-			if (IDTable.IneritsFrom (formDECL->RefID, 0, basefDECL->RefID, basefDECL->inINCL))
+			if (IDTable.InheritsFrom (formDECL->RefID, 0, basefDECL->RefID, basefDECL->inINCL))
 			{
 				cheF = new CHETID;
 				cheF->data.nID = basefDECL->OwnID;
@@ -1456,11 +1456,12 @@ bool CLavaPEDoc::CollectP (const TIDs& paramIDs, LavaDECL* collectDECL)
 {
 	TIDs refIDs, baseParamIDs;
 	CHETID *cheID, *cheIDbase, *cheIDVal;
-	LavaDECL *ElDECL, *bDECL;
+	LavaDECL *ElDECL, *bDECL, *newParent=0;
 
+	if (collectDECL)
+		newParent = collectDECL->ParentDECL;
 	cheID = (CHETID*) paramIDs.first;
-	while (cheID)
-	{
+	while (cheID) {
 		ElDECL = IDTable.GetDECL (cheID->data);
 		if (ElDECL)	{
 			ElDECL->WorkFlags.INCL (checkmark);
@@ -1479,7 +1480,7 @@ bool CLavaPEDoc::CollectP (const TIDs& paramIDs, LavaDECL* collectDECL)
 	}
 	if (baseParamIDs.first)
 		CollectP (baseParamIDs, 0);
-	collectPattern (ElDECL->ParentDECL, paramIDs, refIDs);
+	collectPattern (ElDECL->ParentDECL, paramIDs, refIDs, newParent);
 	if (baseParamIDs.first)	{
 		bDECL = IDTable.GetDECL (((CHETID*) baseParamIDs.first)->data);
 		if (bDECL)
@@ -1526,13 +1527,14 @@ bool CLavaPEDoc::CollectPattern (LavaDECL *paramDECL, LavaDECL* collectDECL)
 }
 
 
-bool CLavaPEDoc::collectPattern (LavaDECL *decl, const TIDs& paramIDs, const TIDs& refIDs)
+bool CLavaPEDoc::collectPattern(LavaDECL *decl, const TIDs& paramIDs, const TIDs& refIDs, LavaDECL* newParent)
 {
-	LavaDECL* elDECL /*, *baseElDECL -siehe unten*/;
+	LavaDECL *elDECL, *vt=0 /*, *baseElDECL -siehe unten*/;
 	CHE *che = (CHE*) decl->NestedDecls.first;
 	CHETID* cheID;
 	TID id;
-	bool inp, inPC = false;
+	bool inp, inPC = false, isNew;
+	CHETVElem *El;
 
 	while (che)	{
 		elDECL = (LavaDECL*) che->data;
@@ -1543,19 +1545,31 @@ bool CLavaPEDoc::collectPattern (LavaDECL *decl, const TIDs& paramIDs, const TID
 			for (cheID = (CHETID*) refIDs.first; !inp && (cheID != 0); cheID = (CHETID*) cheID->successor)
 				if (cheID->data == id)
 					inp = true;
-			if (collectPattern (elDECL, paramIDs, refIDs))
+			if (collectPattern (elDECL, paramIDs, refIDs, newParent))
 				inp = true;
 		}
-		else
-		{
+		else {
 			if (elDECL->DeclType == Function)	{
-				if (elDECL->TypeFlags.Contains (forceOverride))	{
-					elDECL->WorkFlags.INCL (checkmark);
-					elDECL->Inherits.Destroy();
-					inp = true;
+				if (elDECL->TypeFlags.Contains (forceOverride)
+					&& IDTable.isValOfVirtual(elDECL->ParentDECL, 0, &vt) && vt) 	{
+          //vt allready overridden?
+					isNew = true;
+					MakeVElems(newParent);
+					for (El = (CHETVElem*)newParent->VElems.VElems.first; El; El = (CHETVElem*)El->successor) {
+						if (IDTable.InheritsFrom(El->data.VTEl, 0, TID( vt->OwnID, vt->inINCL), 0)) {
+							isNew = IDTable.EQEQ(El->data.VTEl, 0, TID( vt->OwnID, vt->inINCL), 0);
+							break;
+						}
+					}
+					if (isNew) {
+						elDECL->WorkFlags.INCL(checkmark);
+						elDECL->Inherits.Destroy();
+					  vt->WorkFlags.INCL(checkmark);
+						inp = true;
+					}
 				}
 				else
-					inp = collectPattern (elDECL, paramIDs, refIDs);
+					inp = collectPattern (elDECL, paramIDs, refIDs, newParent);
 			}
 		}
 		if ((elDECL->DeclType == Interface) || (elDECL->DeclType == VirtualType))	{
@@ -3080,7 +3094,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 				cheID = (CHETID*) elDecl->Supports.first;
 				if (!IDTable.EQEQ (El->data.VTEl, 0, cheID->data, elDecl->inINCL) || El->data.Ambgs.first)
 				{
-					if (IDTable.IneritsFrom (El->data.VTEl,0,TID (elDecl->OwnID, elDecl->inINCL),0))
+					if (IDTable.InheritsFrom (El->data.VTEl,0,TID (elDecl->OwnID, elDecl->inINCL),0))
 					{
 						for (elBase = IDTable.GetDECL (El->data.VTEl);
 						        elBase->Supports.first &&
@@ -4093,12 +4107,10 @@ void CLavaPEDoc::ShrinkCollectDECL (LavaDECL* decl)
 	CHE* che = (CHE*) decl->NestedDecls.first;
 	LavaDECL* elDECL;
 
-	while (che)
-	{
+	while (che)	{
 		elDECL = (LavaDECL*) che->data;
 		if (!elDECL->WorkFlags.Contains (checkmark)
-		        && (elDECL->DeclType != IAttr) && (elDECL->DeclType != OAttr))
-		{
+		        && (elDECL->DeclType != IAttr) && (elDECL->DeclType != OAttr))	{
 			decl->NestedDecls.Uncouple (che);
 			delete che;
 			if (chePre)
@@ -4106,13 +4118,11 @@ void CLavaPEDoc::ShrinkCollectDECL (LavaDECL* decl)
 			else
 				che = (CHE*) decl->NestedDecls.first;
 		}
-		else
-		{
+		else {
 			elDECL->WorkFlags.EXCL (checkmark);
 			elDECL->Supports.Destroy();
 			elDECL->DECLComment.Destroy();
-			if (elDECL->DeclType == Interface)
-			{
+			if (elDECL->DeclType == Interface)	{
 				elDECL->Items.Destroy();
 				elDECL->DeclDescType = StructDesc;
 			}

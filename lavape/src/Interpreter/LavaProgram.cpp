@@ -1005,7 +1005,7 @@ bool CLavaProgram::AddVElems(CheckData& ckd, LavaDECL *classDECL, LavaDECL* base
       if (!El) {
         El = ElC;
         //is it an extension of an element in the table?
-        while (El && !IDTable.IneritsFrom(addElem->data.VTEl, 0, El->data.VTEl, 0))
+        while (El && !IDTable.InheritsFrom(addElem->data.VTEl, 0, El->data.VTEl, 0))
           if (El == lastEl)
             El = 0;
           else

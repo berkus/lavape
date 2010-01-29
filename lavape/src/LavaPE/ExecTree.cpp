@@ -462,6 +462,10 @@ void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
     if (checkLevel != CHLV_noCheck) {
       bool changed = Doc->CheckOverInOut(elDef, checkLevel);
       Doc->changeInUpdate = Doc->changeInUpdate || changed;
+			if (elDef->TypeFlags.Contains(forceOverride) && !Doc->IDTable.isValOfVirtual(elDef->ParentDECL)) {
+				elDef->TypeFlags.EXCL(forceOverride);
+				Doc->changeInUpdate = true;
+			}
     }
     if (elDef->SecondTFlags.Contains(isLavaSignal))
       lab1 += DString("signal ");
@@ -1256,7 +1260,7 @@ void CExecImpls::ExecDefs(LavaDECL ** pelDef, int level)
   if (Hint->FirstLast.Contains(multiDocHint))
     firstlast.INCL(multiDocHint);
   if ( ((*pelDef)->DeclType == Impl) || ((*pelDef)->DeclType == CompObj)) {
-    if (((CLavaPEDoc*)Hint->fromDoc)->IDTable.IneritsFrom(*pelDef, IFaceID, 0 )) {
+    if (((CLavaPEDoc*)Hint->fromDoc)->IDTable.InheritsFrom(*pelDef, IFaceID, 0 )) {
       LavaDECL* newDECL = NewLavaDECL();
       *newDECL = *(*pelDef);
       if ( ((*pelDef)->DeclType == Impl)
@@ -1304,8 +1308,8 @@ void CExecOverrides::ExecDefs(LavaDECL ** pelDef, int )
     if ((*pelDef)->DeclType == Interface) {
       id.nID = (*pelDef)->OwnID;
       id2.nID = HintDECL->ParentDECL->OwnID;
-      if (((CLavaPEDoc*)Hint->fromDoc)->IDTable.IneritsFrom(id, 0, id2, HintDECL->inINCL)
-         || ((CLavaPEDoc*)Hint->fromDoc)->IDTable.IneritsFrom( id2, HintDECL->inINCL, id, 0))
+      if (((CLavaPEDoc*)Hint->fromDoc)->IDTable.InheritsFrom(id, 0, id2, HintDECL->inINCL)
+         || ((CLavaPEDoc*)Hint->fromDoc)->IDTable.InheritsFrom( id2, HintDECL->inINCL, id, 0))
          (*pelDef)->WorkFlags.INCL(recalcVT);
       return;
     }
@@ -1316,10 +1320,10 @@ void CExecOverrides::ExecDefs(LavaDECL ** pelDef, int )
     }
   if ( ( (*pelDef)->DeclType == Function) && (*pelDef)->SecondTFlags.Contains(overrides)) {
     id2 = TID((*pelDef)->ParentDECL->OwnID,  (*pelDef)->inINCL);
-    if ( ((CLavaPEDoc*)Hint->fromDoc)->IDTable.IneritsFrom(id, 0, FuncID, HintDECL->inINCL)
+    if ( ((CLavaPEDoc*)Hint->fromDoc)->IDTable.InheritsFrom(id, 0, FuncID, HintDECL->inINCL)
         || (HintDECL->DeclType == Interface)
            && (Hint->com != CPECommand_Insert)
-           && ((CLavaPEDoc*)Hint->fromDoc)->IDTable.IneritsFrom(id2, 0, IFaceID, HintDECL->inINCL) ) {
+           && ((CLavaPEDoc*)Hint->fromDoc)->IDTable.InheritsFrom(id2, 0, IFaceID, HintDECL->inINCL) ) {
       newDECL = NewLavaDECL();
       *newDECL = *(*pelDef);
       if (((CLavaPEDoc*)Hint->fromDoc)->CheckOverInOut(newDECL, CHLV_inUpdateHigh/*CHLV_fit*/)) {
@@ -1336,7 +1340,7 @@ void CExecOverrides::ExecDefs(LavaDECL ** pelDef, int )
   }
   if ( ( (*pelDef)->DeclType == VirtualType)
        && ( (*pelDef)->SecondTFlags.Contains(overrides)
-             && ((CLavaPEDoc*)Hint->fromDoc)->IDTable.IneritsFrom(id, 0, FuncID, HintDECL->inINCL)
+             && ((CLavaPEDoc*)Hint->fromDoc)->IDTable.InheritsFrom(id, 0, FuncID, HintDECL->inINCL)
            || (HintDECL->DeclType == VirtualType)
                && ((CLavaPEDoc*)Hint->fromDoc)->IDTable.EQEQ(FuncID, HintDECL->inINCL,
                                                   (*pelDef)->RefID, (*pelDef)->inINCL))) {
@@ -1387,7 +1391,7 @@ void CExecOverrides::ExecMember(LavaDECL ** pelDef, int )
   if (( (*pelDef)->DeclType == Attr)
        && (*pelDef)->SecondTFlags.Contains(overrides)
        && (Hint->com == CPECommand_Change)
-       && ((CLavaPEDoc*)Hint->fromDoc)->IDTable.IneritsFrom(id, 0, idB, HintDECL->inINCL)) {
+       && ((CLavaPEDoc*)Hint->fromDoc)->IDTable.InheritsFrom(id, 0, idB, HintDECL->inINCL)) {
     typeFlags = (*pelDef)->TypeFlags;
     ((CLavaPEDoc*)Hint->fromDoc)->GetCategoryFlags(*pelDef, catErr);
     if (typeFlags != (*pelDef)->TypeFlags) {

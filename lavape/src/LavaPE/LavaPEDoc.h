@@ -98,7 +98,7 @@ protected:
   bool CheckFuncImpl(LavaDECL* funcDECL, int checkLevel, bool& changed);
   bool CheckMenu(LavaDECL* formDECL, LavaDECL* classDECL);
   bool CollectP(const TIDs& paramIDs, LavaDECL* collectDECL);
-  bool collectPattern(LavaDECL *decl, const TIDs& paramIDs, const TIDs& refIDs);
+  bool collectPattern(LavaDECL *decl, const TIDs& paramIDs, const TIDs& refIDs, LavaDECL* newParent);
 
   LavaDECL* MakeOneSetGet(TypeFlag setgetflag, LavaDECL* implDECL,
                                      LavaDECL* propDecl, int checkLevel);

@@ -1566,8 +1566,9 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     EventType->setCurrentIndex(0);
 
-    EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
-    EnforceOver->setChecked(myDECL->ParentDECL->DeclType == Impl);
+	  EnforceOver->setEnabled((myDECL->ParentDECL->DeclType == Interface) && myDoc->IDTable.isValOfVirtual(myDECL->ParentDECL));
+
+    //EnforceOver->setChecked(myDECL->ParentDECL->DeclType == Impl);
 
     if ((myDECL->ParentDECL->DeclType == Interface)
     || (myDECL->ParentDECL->DeclType == Impl) ) {
