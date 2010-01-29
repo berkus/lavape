@@ -2120,10 +2120,12 @@ void CFuncBox::on_StaticFunc_clicked()
     //myDECL->TypeFlags.INCL(isConst); 
     //ConstFunc->setChecked(true);
     //ConstFunc->setEnabled(false);
+    SelfCategory->setEnabled(false); 
     Closed->setEnabled(false);
   }
   else {
     Protected->setEnabled(true);
+    SelfCategory->setEnabled(true); 
     Initializer->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
@@ -2145,6 +2147,7 @@ void CFuncBox::on_Initializer_clicked()
     //ConstFunc->setEnabled(false); 
     //ConstFunc->setChecked(false); 
     //Protected->setEnabled(false);
+    SelfCategory->setCurrentIndex(1);
     StaticFunc->setEnabled(false);
     StaticFunc->setChecked(false);
     myDECL->TypeFlags.EXCL(isAbstract);
@@ -2165,6 +2168,7 @@ void CFuncBox::on_Initializer_clicked()
     Protected->setEnabled(true);
     //Closed->setEnabled(true);
     Signal->setEnabled(true);
+    SelfCategory->setEnabled(true); 
   }
   myDECL->TypeFlags.EXCL(isConst);
   UpdateData(false);  
