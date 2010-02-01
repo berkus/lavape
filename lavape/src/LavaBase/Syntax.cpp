@@ -343,3 +343,16 @@ bool LavaDECL::HasDefaultInitializer()
       return true;
   return false;
 }
+
+bool LavaDECL::hasForceOverFunc()
+{
+  CHE *che;
+
+  if (DeclType != Interface)
+    return false;
+  for (che = (CHE*)NestedDecls.first; che; che = (CHE*)che->successor)
+    if (((LavaDECL*)che->data)->TypeFlags.Contains (forceOverride))
+      return true;
+  return false;
+}
+

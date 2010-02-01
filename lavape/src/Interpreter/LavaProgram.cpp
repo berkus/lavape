@@ -1385,13 +1385,14 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
     return true;
 
   CHETID *cheID, *cheIDA;
-  LavaDECL *baseDECL = 0, *ElDECL;
+  LavaDECL *baseDECL = 0, *ElDECL, *valDECL;
   CHETVElem *El;
   SynFlags typeFlags;
   bool inTab, catErr, hasEnum = false;;
   QString *errID;
   CHE* cheDecl;
   TID declID = TID(-1,0);
+
   classDECL->VElems.UpdateNo = -1;
   for (cheID = (CHETID*)classDECL->Supports.first; cheID; cheID = (CHETID*)cheID->successor) {//!
     baseDECL = IDTable.GetFinalBaseType(cheID->data, classDECL->inINCL, classDECL);
@@ -1542,6 +1543,14 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
     if (isCreatable) {
       if (ElDECL->TypeFlags.Contains(isAbstract)) {
         LavaError(*pckd, true, classDECL, &ERR_AbstractInherited, ElDECL);
+        return false;
+      }
+    }
+    if ((ElDECL->DeclType == VirtualType) && (ElDECL->ParentDECL != classDECL)
+      && !ElDECL->TypeFlags.Contains(isAbstract)) {
+        valDECL = IDTable.GetDECL(ElDECL->RefID, ElDECL->inINCL);
+      if (valDECL && valDECL->isInSubTree(ElDECL->ParentDECL) && valDECL->hasForceOverFunc()) {
+			  LavaError (*pckd, true, classDECL, &ERR_ForceOverInValOfVT, ElDECL);
         return false;
       }
     }

@@ -839,6 +839,7 @@ $TYPE +CDP {
     bool isInSubTree(LavaDECL * ancestor);
     bool usableIn(LavaDECL * decl);
     bool HasDefaultInitializer();
+    bool hasForceOverFunc();
 //    bool usableInA(LavaDECL * decl);
     void CompleteFullName();
     void ResetCheckmarks();

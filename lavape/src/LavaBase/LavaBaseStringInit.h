@@ -190,6 +190,7 @@ extern LAVABASE_DLL QString ERR_ExactlyOneLcom;
 extern LAVABASE_DLL QString ERR_AllocObjectFailed;
 extern LAVABASE_DLL QString ERR_ImmutableArray;
 extern LAVABASE_DLL QString ERR_ForceOver;
+extern LAVABASE_DLL QString ERR_ForceOverInValOfVT;
 extern LAVABASE_DLL QString ERR_ForceOverCalled;
 extern LAVABASE_DLL QString ERR_IsntEnum;
 extern LAVABASE_DLL QString ERR_AssigToMultiArray;

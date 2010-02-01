@@ -3017,7 +3017,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 	bool isNSp, isCreatable, elOk, allOk = true, /*GUInew = true, GUInewE = true,*/ hasEnum = false;
 	QString cstr;
 	CHETVElem *El;
-	LavaDECL *elDecl, *IFace, *elBase;
+	LavaDECL *elDecl, *IFace, *elBase, *valDECL;
 	CHE *cheDecl;
 	CHETID *cheID;
 	TID declID = TID (classDECL->OwnID, classDECL->inINCL);
@@ -3057,8 +3057,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 		cheID = (CHETID*) cheID->successor;
 	}
 	elOk = AddVBase (classDECL, classDECL);
-	if (!elOk)  // there is an error in a base class
-	{
+  if (!elOk) { // there is an error in a base class
 		new CLavaError (&classDECL->DECLError2, &ERR_InVTofBaseIF);
 		classDECL->WorkFlags.INCL (recalcVT);
 	}
@@ -3069,32 +3068,26 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 
 	cheDecl = (CHE*) classDECL->NestedDecls.first;
 	isNSp = classDECL->DeclType == Package;
-	while (cheDecl)
-	{
+	while (cheDecl)	{
 		elDecl = (LavaDECL*) cheDecl->data;
 		if (((elDecl->DeclType == VirtualType)
 		        || (elDecl->DeclType == Function)
 		        || (elDecl->DeclType == Attr)
 		    )
-		        && elDecl->Supports.first)
-		{
+		        && elDecl->Supports.first)	{
 			//check and replace the extensions and GUI-Show-function
 			for (El = (CHETVElem*) classDECL->VElems.VElems.first;
 			        El && !IDTable.Overrides (TID (elDecl->OwnID, 0), elDecl->inINCL, El->data.VTEl, 0);
 			        El = (CHETVElem*) El->successor);
-			if (El)
-			{
+			if (El)	{
 				cheID = (CHETID*) elDecl->Supports.first;
-				if (!IDTable.EQEQ (El->data.VTEl, 0, cheID->data, elDecl->inINCL) || El->data.Ambgs.first)
-				{
-					if (IDTable.InheritsFrom (El->data.VTEl,0,TID (elDecl->OwnID, elDecl->inINCL),0))
-					{
+				if (!IDTable.EQEQ (El->data.VTEl, 0, cheID->data, elDecl->inINCL) || El->data.Ambgs.first)	{
+					if (IDTable.InheritsFrom (El->data.VTEl,0,TID (elDecl->OwnID, elDecl->inINCL),0))	{
 						for (elBase = IDTable.GetDECL (El->data.VTEl);
 						        elBase->Supports.first &&
 						        !IDTable.EQEQ (TID (elDecl->OwnID,elDecl->inINCL),0, ((CHETID*) elBase->Supports.first)->data,elBase->inINCL);
 						        elBase = IDTable.GetDECL (((CHETID*) elBase->Supports.first)->data,elBase->inINCL));
-						if (elBase->Supports.first)
-						{
+						if (elBase->Supports.first)	{
 							elBase->Supports.Destroy();
 							elBase->Supports = elDecl->Supports;
 						}
@@ -3115,8 +3108,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 				El->data.Ambgs.Destroy();
 				El->data.ok = true;
 			}
-			else   //the overridden object was not found
-			{
+      else {  //the overridden object was not found
 				El = new CHETVElem;
 				El->data.VTClss = declID;
 				El->data.VTEl = TID (elDecl->OwnID, elDecl->inINCL);
@@ -3155,8 +3147,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 			cheDecl = (CHE*) cheDecl->successor;
 	}
 	cheDecl = (CHE*) classDECL->NestedDecls.first;
-	while (cheDecl)
-	{
+	while (cheDecl)	{
 		elDecl = (LavaDECL*) cheDecl->data;
 		if (((elDecl->DeclType == VirtualType)
 		        || (elDecl->DeclType == Function) && !elDecl->TypeFlags.Contains (isStatic)
@@ -3164,8 +3155,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 		        && !elDecl->Supports.first
 		        //&& (GUInew || !elDecl->TypeFlags.Contains (oldIsGUI))
 		        //&& (GUInewE || !elDecl->TypeFlags.Contains (isGUIEdit))
-            )
-		{
+            )	{
 			El = new CHETVElem;
 			El->data.VTClss = declID;
 			El->data.VTEl = TID (elDecl->OwnID, elDecl->inINCL);
@@ -3180,40 +3170,39 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 		else
 			cheDecl = (CHE*) cheDecl->successor;
 	}
-	if (allOk)
-	{
+	if (allOk)	{
 		elOk = true;
 		declID = TID (-1,0);
 		isCreatable = !classDECL->TypeFlags.Contains (isAbstract) && (classDECL->DeclType != Package);
 		for (El = (CHETVElem*) classDECL->VElems.VElems.first;
 		        El && El->data.ok;
-		        El = (CHETVElem*) El->successor)
-		{
+		        El = (CHETVElem*) El->successor)	{
 			elDecl = IDTable.GetDECL (El->data.VTEl);
-			if (isCreatable)
-			{
-				if (elDecl->TypeFlags.Contains (isAbstract))
-				{
+			if (isCreatable)	{
+				if (elDecl->TypeFlags.Contains (isAbstract))	{
 					new CLavaError (&classDECL->DECLError1, &ERR_AbstractInherited, &elDecl->FullName);
 					classDECL->WorkFlags.INCL (recalcVT);
 					elOk = false;
 				}
 			}
+      if ((elDecl->DeclType == VirtualType) && (elDecl->ParentDECL != classDECL)
+        && !elDecl->TypeFlags.Contains(isAbstract)) {
+          valDECL = IDTable.GetDECL(elDecl->RefID, elDecl->inINCL);
+        if (valDECL && valDECL->isInSubTree(elDecl->ParentDECL) && valDECL->hasForceOverFunc())
+				  new CLavaError (&classDECL->DECLError1, &ERR_ForceOverInValOfVT, &elDecl->FullName);
+      }
 			if (elDecl->TypeFlags.Contains (forceOverride)
       && !elDecl->TypeFlags.Contains (isInitializer)
 			&& (elDecl->ParentDECL != classDECL)) {
-				new CLavaError (&classDECL->DECLError1, &ERR_ForceOver, &elDecl->FullName);
 				classDECL->WorkFlags.INCL (recalcVT);
 				El->data.ok = false;
 				elOk = false;
 			}
-			if (declID != El->data.VTClss)
-			{
+			if (declID != El->data.VTClss)	{
 				declID = El->data.VTClss;
 				IFace = IDTable.GetDECL (declID);
 				if (IFace->DeclDescType == EnumType)
-					if (hasEnum && !classDECL->inINCL)
-					{
+					if (hasEnum && !classDECL->inINCL)	{
 						new CLavaError (&classDECL->DECLError1, &ERR_OneEnum, &classDECL->FullName);
 						classDECL->WorkFlags.INCL (recalcVT);
 						elOk = false;
@@ -3224,8 +3213,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 		}
 		allOk = El == 0;
 	}
-	if (!allOk)
-	{
+	if (!allOk)	{
 		new CLavaError (&classDECL->DECLError1, &ERR_InVT);
 		classDECL->WorkFlags.INCL (recalcVT);
 	}

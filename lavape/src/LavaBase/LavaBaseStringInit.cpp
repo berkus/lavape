@@ -215,6 +215,7 @@ QString ERR_ExactlyOneLcom;
 QString ERR_AllocObjectFailed;
 QString ERR_ImmutableArray;
 QString ERR_ForceOver;
+QString ERR_ForceOverInValOfVT;
 QString ERR_ForceOverCalled;
 QString ERR_IsntEnum;
 QString ERR_AssigToMultiArray;
@@ -391,7 +392,8 @@ void LavaBaseStringInit() {
   ERR_TempUnfinished  = QObject::tr("""temp"" must not be passed as a parameter (unless to initializers) since it counts as ""still unfinished""");
   ERR_One_must_remain  = QObject::tr("At least one such item must remain!");
   ERR_No_input  = QObject::tr("An empty input is not allowed here");
-  ERR_ForceOver  = QObject::tr(": Function of a base class has the force override on derivation flag and must therefore be overridden in the derivation class");
+  ERR_ForceOver  = QObject::tr(": Function of a base class has the force override on derivation flag and must therefore be overridden in the derived class");
+  ERR_ForceOverInValOfVT  = QObject::tr(": The value-class of this virtual type in a base pattern has a function with the \"force override on derivation\" flag and must therefore be overridden in the derived pattern");
   ERR_ForceOverCalled  = QObject::tr("This function has the \"force override on derivation\" flag and must not be invoked by a static call");
   ERR_IsntEnum  = QObject::tr("Must be an enumeration type");
   ERR_AssigToMultiArray  = QObject::tr("Multi-dimensional (""nested"") arrays must be constructed layer by layer");
