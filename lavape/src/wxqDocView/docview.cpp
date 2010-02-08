@@ -1110,6 +1110,8 @@ void wxDocManager::OnFileSaveAs()
 void wxDocManager::OnFileClose()
 {
   wxDocument *doc = GetActiveDocument();
+
+  RememberActiveFrame(0);
   if (!doc || doc->deleting)
     return;
   if (doc->Close())

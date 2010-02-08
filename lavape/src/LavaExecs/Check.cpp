@@ -3616,7 +3616,7 @@ bool ObjReference::Check (CheckData &ckd) {
         SetError(ckd,&ERR_MissingInitialization,refName.c);
         ((SynObject*)ckd.succeed)->SetError(ckd,&ERR_MissingInitialization,refName.c);
       }
-      else if (!((TDOD*)((CHE*)refIDs.last)->data)->errorChain.first)
+      else //if (!((TDOD*)((CHE*)refIDs.last)->data)->errorChain.first)
         SetError(ckd,&ERR_MissingInitialization,refName.c);
       ok1 = false;
     }
