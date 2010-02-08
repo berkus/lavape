@@ -19,10 +19,7 @@
   <property name="windowTitle">
    <string>Function</string>
   </property>
-  <layout class="QFormLayout" name="formLayout">
-   <property name="fieldGrowthPolicy">
-    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-   </property>
+  <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="GroupBox_IDC_STATIC21">
      <property name="sizePolicy">
@@ -548,7 +545,7 @@
         <item>
          <widget class="QComboBox" name="NamedTypes">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>

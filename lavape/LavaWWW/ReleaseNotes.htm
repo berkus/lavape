@@ -30,6 +30,16 @@
       {
           color: #000000;
       }
+      .style9
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style10
+      {
+          font-style: normal;
+          color: #000000;
+      }
       </style>
 </head>
 
@@ -43,15 +53,26 @@
 
 <p style="font-family: Arial,Helvetica,sans-serif"></p>
 
-<h2 style="font-family: Arial, Helvetica, Sans-Serif">A) Lava &quot;virtual types&quot; have 
+<h2 style="font-family: Arial, Helvetica, Sans-Serif">A) <span class="style1">Lava</span> &quot;virtual types&quot; have 
     been relieved from an unnecessary restriction</h2>
+    <p style="font-family: Arial, Helvetica, Sans-Serif">Before release 0.9.2 you had to 
+        observe the following rather restrictive rule:</p>
+    <blockquote style="font-family: Arial, Helvetica, Sans-Serif"><b>If a class <i>C</i> 
+        is the value of a virtual type <i>V</i> then you can reference <i>C</i> only 
+        through this virtual type <i>V</i> within the containing
+        <a href="http://lavape.sourceforge.net/doc/html/PatternsFrameworks.htm">pattern</a></b>.</blockquote>
+    <p style="font-family: Arial, Helvetica, Sans-Serif">In release 0.9.2 we could 
+        completely get rid of this restriction: You may now reference C directly and may 
+        in particular create an object &quot;<span class="style9">new</span> <i>C</i>&quot; 
+        (which, however, will not be assignment-compatible to a variable of type <i>V</i>, 
+        but only to one of type <i>C</i> or of a base class of<i> C</i>!).</p>
     <p style="font-family: Arial, Helvetica, Sans-Serif">&nbsp;</p>
     <h2 style="font-family: Arial, Helvetica, Sans-Serif">B) Overriding of several 
         virtual types in a derived class/package may now be performed successively</h2>
     <p style="font-family: Arial, Helvetica, Sans-Serif">Before release 0.9.2 you had to 
         perform this in a single step by selecting all virtual types that you wanted to 
         specialize at once in the <span class="style6">Lava</span> 
-        <a href="doc/html/OverrideView.htm">override view</a>, and then you had to click 
+        <a href="http://lavape.sourceforge.net/doc/html/OverrideView.htm">override view</a>, and then you had to click 
         the override toolbutton (little yelow triangle pointing upward). Beginning from 
         release 0.9.2 you may now override several virtual types successively in any 
         order.</p>
@@ -62,8 +83,8 @@
         <span class="style6">Lava</span> GIT
         <a href="http://sourceforge.net/projects/lavape/develop" target="_blank">
         repository</a>:</p>
-    <p style="font-family: Arial, Helvetica, Sans-Serif" class="style7"><b>
-        git://lavape.git.sourceforge.net/gitroot/lavape/lavape</b></p>
+    <blockquote>
+        <b>git://lavape.git.sourceforge.net/gitroot/lavape/lavape</b></blockquote>
     <p style="font-family: Arial, Helvetica, Sans-Serif">&nbsp;</p>
     <h1 style="font-family: Arial, Helvetica, Sans-Serif" class="style7">II) 
         Installation of <span class="style1">LavaPE</span></h1>
@@ -73,7 +94,7 @@
         other Unix variants that we shall provide only a single source tarball for all 
         of these. Since we have migrated to the qmake build tool, the make process is so 
         perfectly portable, that it should work without problems on most of these 
-        platforms.</p>
+        platforms, provided the Qt4 framework is available, too.</p>
 
 <h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">A) How to 
     install the Windows binary release of <span class="style1">LavaPE</span></h3>
@@ -137,14 +158,17 @@ following command in a shell window:</p>
 <p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">git fetch
 git://lavape.git.sourceforge.net/gitroot/lavape/lavape</p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">You need to have GNU
-gcc/make and the developer version of Nokia (formerly TrollTech)/Qt4.</p>
+<p style="font-family: Arial,Helvetica,sans-serif">but note that it may be less 
+    stable and complete, of course, than the downloadable stable version.</p>
+    <p style="font-family: Arial,Helvetica,sans-serif">You need to have GNU
+gcc/make and the developer version of Qt4 from Nokia (formerly TrollTech).</p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">Either you may download (the
 OpenSource version of) Qt4 from ftp://ftp.qtsoftware.com/qt/source/ and build
 it yourself. In this case you must set the environment variable QTDIR to point
 to the Qt-&lt;release&gt; directory that is created by the build process,
-before you build <em style="color:#ff0000"><strong>Lava/LavaPE</strong></em>
+before you build <em style="color:#ff0000"><strong>Lava</em><em><span 
+        class="style10">/</span></em><em style="color:#ff0000">LavaPE</em></strong>
 from the sources.</p>
 
 <p style="font-family: Arial,Helvetica,sans-serif">Or, on a Linux box, the
@@ -199,5 +223,16 @@ that you have encounterd during the installation or while using <span
 style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
 style="color:#ff0000">Lava</span><span class="style8">/</span><span
 style="color:#ff0000">LavaPE</span></strong></em>.</span></p>
+    <p style="font-family: Arial, Helvetica, sans-serif">
+        &nbsp;</p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">D) How
+to install <em style="color:#ff0000">LavaPE</em> from the source distribution
+on Windows platforms</h3>
+
+<p class="style5">Intrepid users may build LavaPE from the sources also on Windows 
+using VisualStudio VC++ Express 2008 (which is our primary development 
+platform).</p>
+
 </body>
 </html>

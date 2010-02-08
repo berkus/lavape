@@ -555,6 +555,11 @@ bool ExecContents::event(QEvent *ev) {
       execView->editCtl->setFocus();
     return QWidget::event(ev);
   }
+  else if (ev->type() == QEvent::Paint) {
+    paintEvent((QPaintEvent*)ev);
+    ev->setAccepted(true);
+    return true;
+  }
   else
     return QWidget::event(ev);
 }
@@ -573,6 +578,9 @@ static int nPaint=1;
 
 void ExecContents::paintEvent (QPaintEvent *ev)
 {
+  if (!execView || !execView->myDoc || !execView->myDoc->mySynDef || execView->isDirty)
+    return;
+
   fmt.fontFamily = fmt.font.family();
   QPainter p(this);
   CHETokenNode *currentToken;
@@ -581,9 +589,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   QFontMetrics *fm;
   BreakPointList bpl;
   BreakPointList::iterator it;
-
-  if (!execView || !execView->myDoc || !execView->myDoc->mySynDef || execView->isDirty)
-    return;
 
   p.setRenderHint(QPainter::Antialiasing,true);
   p.setBackgroundMode(Qt::OpaqueMode);
@@ -1246,8 +1251,7 @@ MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
   setWidget(execCont);
 }
 
-ExecContents::ExecContents (MyScrollView *sv) {
-  //setFocusPolicy(Qt::ClickFocus);
+ExecContents::ExecContents (MyScrollView *sv) : QWidget(sv) {
   this->sv = sv;
   execView = sv->execView;
   setFocusPolicy(Qt::StrongFocus);
@@ -1988,7 +1992,7 @@ exp: // Const_T
 
   case parameter_T:
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-    //redCtl->update();
+    redCtl->update();
     return;
 
   default:
@@ -2088,10 +2092,11 @@ void CExecView::SetSelectAtHint (CLavaPEHint *hint) {
 
 
 void CExecView::Check () {
-//  text->ckd.currentSynObj = 0;
   text->ckd.nErrors = 0;
   text->ckd.nPlaceholders = 0;
+  selfVar->checked = false;
   ((SynObject*)myDECL->Exec.ptr)->Check(text->ckd);
+  selfVar->checked = true;
 }
 
 
@@ -5368,7 +5373,7 @@ void CExecView::OnNextComment()
       text->newSelection = currToken;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       text->Select();
-      redCtl->update();
+      //redCtl->update();
       return;
     }
   }
@@ -5379,7 +5384,7 @@ void CExecView::OnNextComment()
       text->newSelection = currToken;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       text->Select();
-      redCtl->update();
+      //redCtl->update();
       return;
     }
   }
@@ -5396,7 +5401,7 @@ void CExecView::OnPrevComment()
       text->newSelection = currToken;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       text->Select();
-      redCtl->update();
+      //redCtl->update();
       return;
     }
   }
@@ -5408,7 +5413,7 @@ void CExecView::OnPrevComment()
       text->newSelection = currToken;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       text->Select();
-      redCtl->update();
+      //redCtl->update();
       return;
     }
   }

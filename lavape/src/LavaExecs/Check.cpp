@@ -2189,7 +2189,7 @@ bool SelfVar::Check (CheckData &ckd)
 #ifdef INTERPRETER
   TID itfTID;
 #else
-  if (execView)
+  if (execView && !checked)
     ((CExecView*)execView)->isDirty = true;
   if (ckd.concernExecs)
     concernExecs = true;
@@ -2287,11 +2287,9 @@ bool SelfVar::Check (CheckData &ckd)
 
   if (execDECL->DeclType == ExecDef
   && execDECL->ParentDECL->DeclType != Impl) {
-//#ifndef INTERPRETER
     UpdateParameters(ckd);
     // must be done before BaseInitsCheck since it resets the "isReferenced" WorkFlag of
     // input parameters
-//#endif
 
     if (execDECL->ParentDECL->TypeFlags.Contains(isInitializer))
       ok &= BaseInitsCheck(ckd);

@@ -878,7 +878,7 @@ void wxView::Activate(bool topDown)
   wxDocManager::GetDocumentManager()->RememberActiveView(this);
   if (!topDown)
     GetParentFrame()->Activate(topDown);
-  //setFocus();
+  setFocus();
 }
 
 bool wxView::on_cancelButton_clicked()
