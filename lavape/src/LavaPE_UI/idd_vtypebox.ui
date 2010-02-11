@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>439</width>
+    <width>427</width>
     <height>332</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
   </property>
   <property name="focusPolicy">
    <enum>Qt::StrongFocus</enum>
@@ -25,21 +19,9 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QWidget" name="widget" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QWidget" name="widget_5" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <property name="spacing">
           <number>0</number>
@@ -49,12 +31,6 @@
          </property>
          <item>
           <widget class="QLabel" name="Label_IDC_STATIC56">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
            <property name="minimumSize">
             <size>
              <width>1</width>
@@ -90,12 +66,6 @@
            <property name="enabled">
             <bool>false</bool>
            </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
            <property name="focusPolicy">
             <enum>Qt::StrongFocus</enum>
            </property>
@@ -109,12 +79,6 @@
       </item>
       <item>
        <widget class="QLineEdit" name="NewName">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="focusPolicy">
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -125,12 +89,6 @@
       </item>
       <item>
        <widget class="QLabel" name="Label_IDC_STATIC57">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
@@ -144,12 +102,6 @@
         <property name="enabled">
          <bool>false</bool>
         </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
@@ -160,12 +112,6 @@
       </item>
       <item>
        <widget class="QCheckBox" name="Final">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="text">
          <string>Final (= non-overridable) virtual type</string>
         </property>
@@ -173,12 +119,6 @@
       </item>
       <item>
        <widget class="QCheckBox" name="Substitutable">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="text">
          <string>Substitutable type</string>
         </property>
@@ -186,12 +126,6 @@
       </item>
       <item>
        <widget class="QGroupBox" name="GroupBox_IDC_STATIC29">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
@@ -207,12 +141,6 @@
          </property>
          <item>
           <widget class="QComboBox" name="BasicTypes">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
            <property name="sizeAdjustPolicy">
             <enum>QComboBox::AdjustToContents</enum>
            </property>
@@ -225,12 +153,6 @@
          </item>
          <item>
           <widget class="QComboBox" name="NamedTypes">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
            <property name="sizeAdjustPolicy">
             <enum>QComboBox::AdjustToContents</enum>
            </property>
@@ -244,28 +166,29 @@
         </layout>
        </widget>
       </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </item>
    <item row="0" column="1">
     <widget class="QWidget" name="widget_2" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QCheckBox" name="RMOverrides">
         <property name="enabled">
          <bool>false</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
         </property>
         <property name="focusPolicy">
          <enum>Qt::StrongFocus</enum>
@@ -277,12 +200,6 @@
       </item>
       <item>
        <widget class="QCheckBox" name="VTAbstract">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="focusPolicy">
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -293,12 +210,6 @@
       </item>
       <item>
        <widget class="QCheckBox" name="DefCat">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="focusPolicy">
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -309,12 +220,6 @@
       </item>
       <item>
        <widget class="QGroupBox" name="BGroup_ObjCat">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <layout class="QVBoxLayout">
          <property name="spacing">
           <number>6</number>
@@ -326,12 +231,6 @@
           <widget class="QRadioButton" name="ValueObject">
            <property name="enabled">
             <bool>false</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
            </property>
            <property name="text">
             <string>Value object</string>
@@ -346,12 +245,6 @@
            <property name="enabled">
             <bool>false</bool>
            </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
            <property name="focusPolicy">
             <enum>Qt::StrongFocus</enum>
            </property>
@@ -365,12 +258,6 @@
            <property name="enabled">
             <bool>false</bool>
            </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
            <property name="text">
             <string>Any object category</string>
            </property>
@@ -381,12 +268,6 @@
       </item>
       <item>
        <widget class="QGroupBox" name="BGroup_KindOfRef">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <layout class="QVBoxLayout">
          <property name="spacing">
           <number>6</number>
@@ -398,12 +279,6 @@
           <widget class="QRadioButton" name="DownC">
            <property name="enabled">
             <bool>false</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
            </property>
            <property name="text">
             <string>Constituent</string>
@@ -421,12 +296,6 @@
            <property name="enabled">
             <bool>false</bool>
            </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
            <property name="text">
             <string>Acquaintance</string>
            </property>
@@ -439,12 +308,6 @@
           <widget class="QRadioButton" name="Back">
            <property name="enabled">
             <bool>false</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
            </property>
            <property name="text">
             <string>Reverse (back or up link)</string>
