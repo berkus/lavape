@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Generated">
-      <UniqueIdentifier>{5d56744a-d802-421f-a8a2-11343f8630f4}</UniqueIdentifier>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{895c2017-2a3f-491e-8642-d83e61933b90}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{2832696c-852a-4119-8dcd-19ab02d2d177}</UniqueIdentifier>
+      <UniqueIdentifier>{fa32c7bf-4f04-44c1-9cca-a9583bb9c929}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{6681865b-420a-4673-b6af-75a68f54f655}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{5678cdff-1492-4204-94f8-f8740ef5075e}</UniqueIdentifier>
+      <UniqueIdentifier>{b1a328a7-2281-4efc-bd8e-fdfd9c3bce7e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\ToolButtons">
-      <UniqueIdentifier>{44042e93-0cc5-4ab3-8f6a-5e241da10db5}</UniqueIdentifier>
+      <UniqueIdentifier>{40737aba-fc15-4750-b37b-092461f0d8ae}</UniqueIdentifier>
       <Extensions>bmp xpm</Extensions>
     </Filter>
     <Filter Include="Resource Files\TreeIcons">
-      <UniqueIdentifier>{ba645c8a-4cad-4cae-8ef2-b7c533e21c01}</UniqueIdentifier>
+      <UniqueIdentifier>{1fca94bc-957d-47c8-933c-ca08e9babf14}</UniqueIdentifier>
       <Extensions>xpm</Extensions>
-    </Filter>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{0b90bd14-5223-4c85-95dc-2c615deb6552}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +38,39 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FindRefsBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GenHTML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InclView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPE_all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPEDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPEFrames.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPEStringInit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPEView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaPEWizard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VTView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Generated\LavaPE_res.cpp">
@@ -76,60 +109,22 @@
     <ClCompile Include="Generated\moc_VTView.cpp">
       <Filter>Generated</Filter>
     </ClCompile>
-    <ClCompile Include="GenHTML.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InclView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LavaPE.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LavaPEDoc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LavaPEFrames.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LavaPEStringInit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LavaPEView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LavaPEWizard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LavaPE_all.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TreeView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VTView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ExecTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LavaPEStringInit.h">
+    <ClInclude Include="LavaPE_all.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LavaPE_all.h">
+    <ClInclude Include="LavaPEStringInit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\doc\LavaPE.qhp" />
-    <None Include="..\..\Makefile">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="..\common.mk">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="LavaPE.reg" />
     <None Include="res\execfram.ico">
       <Filter>Resource Files</Filter>
     </None>
@@ -592,6 +587,8 @@
     <None Include="res\TreeIcons\PX_xerrmask.xpm">
       <Filter>Resource Files\TreeIcons</Filter>
     </None>
+    <None Include="..\..\doc\LavaPE.qhp" />
+    <None Include="LavaPE.reg" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\LavaPE.rc">
@@ -599,8 +596,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\doc\LavaPE.qhcp" />
-    <CustomBuild Include="..\LavaPE_res.qrc" />
     <CustomBuild Include="Bars.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -637,5 +632,7 @@
     <CustomBuild Include="VTView.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="..\..\doc\LavaPE.qhcp" />
+    <CustomBuild Include="..\LavaPE_res.qrc" />
   </ItemGroup>
 </Project>

@@ -17,6 +17,9 @@
    <string>Virtual type</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
    <item row="0" column="0">
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -142,7 +145,7 @@
          <item>
           <widget class="QComboBox" name="BasicTypes">
            <property name="sizeAdjustPolicy">
-            <enum>QComboBox::AdjustToContents</enum>
+            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
            </property>
            <item>
             <property name="text">
@@ -154,7 +157,7 @@
          <item>
           <widget class="QComboBox" name="NamedTypes">
            <property name="sizeAdjustPolicy">
-            <enum>QComboBox::AdjustToContents</enum>
+            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
            </property>
            <item>
             <property name="text">

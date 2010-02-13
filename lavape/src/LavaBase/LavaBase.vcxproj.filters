@@ -1,23 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Generated">
-      <UniqueIdentifier>{19831d31-89e1-44ab-a79e-9111f3694dd2}</UniqueIdentifier>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{8a1847bb-8daf-48f8-ac3e-a571f40f09d4}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{7f89ad52-cc1e-4425-9549-a5250ad3ce2c}</UniqueIdentifier>
+      <UniqueIdentifier>{da8e1854-d131-4a08-9c6e-71ef73d3639e}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{6dd35fba-6135-4b2f-8759-7bb86a831d51}</UniqueIdentifier>
+      <UniqueIdentifier>{b5a236f7-b6cf-4640-8b4b-37d84cf5b1f0}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{9ec5052a-3286-42fd-b26d-3877485f5f8d}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{2112651b-20b6-42b0-97c1-6fc79a7c7794}</UniqueIdentifier>
     </Filter>
     <Filter Include="UI Files">
-      <UniqueIdentifier>{cf5ee7fa-3fb2-454e-9663-0a09f5fd1b26}</UniqueIdentifier>
+      <UniqueIdentifier>{38352e36-ff25-4049-b347-d1af9f9ab932}</UniqueIdentifier>
       <Extensions>.ui</Extensions>
     </Filter>
   </ItemGroup>
@@ -31,37 +31,19 @@
     <ClCompile Include="DumpView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Generated\moc_AboutBox.cpp">
-      <Filter>Generated</Filter>
-    </ClCompile>
-    <ClCompile Include="Generated\moc_DumpView.cpp">
-      <Filter>Generated</Filter>
-    </ClCompile>
-    <ClCompile Include="Generated\moc_LavaAppBase.cpp">
-      <Filter>Generated</Filter>
-    </ClCompile>
-    <ClCompile Include="Generated\moc_LavaBaseDoc.cpp">
-      <Filter>Generated</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\moc_LavaThread.cpp">
-      <Filter>Generated</Filter>
-    </ClCompile>
-    <ClCompile Include="Generated\moc_PEBaseDoc.cpp">
-      <Filter>Generated</Filter>
-    </ClCompile>
     <ClCompile Include="InterprBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LavaAppBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LavaBase_all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="LavaBaseDoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LavaBaseStringInit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LavaBase_all.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LavaThread.cpp">
@@ -85,6 +67,24 @@
     <ClCompile Include="SyntaxG.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Generated\moc_AboutBox.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_DumpView.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_LavaAppBase.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_LavaBaseDoc.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\moc_LavaThread.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\moc_PEBaseDoc.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BAdapter.h">
@@ -93,10 +93,10 @@
     <ClInclude Include="BASEMACROS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LavaBaseStringInit.h">
+    <ClInclude Include="LavaBase_all.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LavaBase_all.h">
+    <ClInclude Include="LavaBaseStringInit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SafeInt.h">
@@ -116,13 +116,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Makefile" />
     <None Include="res\LavaBase.rc2">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\LavaDoc.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="AboutBox.h">
@@ -130,12 +130,6 @@
     </CustomBuild>
     <CustomBuild Include="DumpView.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Generated\idd_aboutbox.h">
-      <Filter>Generated</Filter>
-    </CustomBuild>
-    <CustomBuild Include="idd_aboutbox.ui">
-      <Filter>UI Files</Filter>
     </CustomBuild>
     <CustomBuild Include="LavaAppBase.h">
       <Filter>Header Files</Filter>
@@ -151,6 +145,12 @@
     </CustomBuild>
     <CustomBuild Include="Syntax.ph">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Generated\idd_aboutbox.h">
+      <Filter>Generated</Filter>
+    </CustomBuild>
+    <CustomBuild Include="idd_aboutbox.ui">
+      <Filter>UI Files</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

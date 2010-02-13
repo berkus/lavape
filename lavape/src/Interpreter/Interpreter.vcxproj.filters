@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Generated">
-      <UniqueIdentifier>{4ebb59f1-15f6-497b-9963-1bfca2d1dcf5}</UniqueIdentifier>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{aa8dc236-ec40-46bd-9b4b-f8125a617ac1}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{0206405f-6503-41f5-88b0-3f3f470e9631}</UniqueIdentifier>
+      <UniqueIdentifier>{98f34510-a4ec-42a4-baf0-abfbb4c99985}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{423e9aec-e3dd-447d-9b85-5931b66d43f0}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{5aa84b1a-0971-4f11-a2d0-cb8f2e711eba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -26,6 +26,18 @@
     <ClCompile Include="..\LavaExecs\ConstructsG.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConstructsX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debugger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Interpreter_all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LavaProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\LavaExecs\TableVisitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -38,20 +50,8 @@
     <ClCompile Include="..\LavaExecs\VisitorTraversal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConstructsX.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Debugger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="generated\moc_Debugger.cpp">
       <Filter>Generated</Filter>
-    </ClCompile>
-    <ClCompile Include="Interpreter_all.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LavaProgram.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,9 +59,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\LavaExecs\Constructs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\LavaExecs\Tokens.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConstructsX.h">
@@ -73,14 +70,19 @@
     <ClInclude Include="LavaProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\LavaExecs\Tokens.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\LavaExecs\Constructs.ph">
+    <CustomBuildStep Include="..\LavaExecs\Constructs.ph">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\LavaExecs\Tokens.ph">
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\LavaExecs\Tokens.ph">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </CustomBuildStep>
+  </ItemGroup>
+  <ItemGroup>
     <CustomBuild Include="Debugger.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
