@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup
+    Condition="'$(qhcp_regelBeforeTargets)' == '' and '$(qhcp_regelAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <qhcp_regelBeforeTargets>Midl</qhcp_regelBeforeTargets>
+    <qhcp_regelAfterTargets>CustomBuild</qhcp_regelAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <qhcp_regelDependsOn
+      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(qhcp_regelDependsOn)</qhcp_regelDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <qhcp_regel>
+      <CommandLineTemplate>$(QTDIR)/bin/qcollectiongenerator [inputs]</CommandLineTemplate>
+      <Outputs>LavaPE.qhc LavaPE.qch</Outputs>
+      <ExecutionDescription>Generate Help Collection</ExecutionDescription>
+    </qhcp_regel>
+  </ItemDefinitionGroup>
+</Project>
