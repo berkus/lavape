@@ -19,8 +19,11 @@
   <property name="windowTitle">
    <string>Lava Class</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
+   <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -92,7 +95,7 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QWidget" name="widget_2" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -305,7 +308,7 @@
                </sizepolicy>
               </property>
               <property name="sizeAdjustPolicy">
-               <enum>QComboBox::AdjustToContents</enum>
+               <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
               </property>
               <item>
                <property name="text">
@@ -323,7 +326,7 @@
                </sizepolicy>
               </property>
               <property name="sizeAdjustPolicy">
-               <enum>QComboBox::AdjustToContents</enum>
+               <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
               </property>
               <item>
                <property name="text">
@@ -341,7 +344,7 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0">
     <widget class="QWidget" name="widget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">

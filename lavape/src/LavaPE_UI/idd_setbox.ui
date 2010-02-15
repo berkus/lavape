@@ -6,21 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>200</width>
-    <height>251</height>
+    <width>223</width>
+    <height>224</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Set</string>
   </property>
-  <layout class="QVBoxLayout">
-   <property name="spacing">
-    <number>10</number>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
    </property>
    <property name="margin">
     <number>11</number>
    </property>
-   <item>
+   <item row="0" column="0">
     <layout class="QVBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -109,7 +109,7 @@
         <item>
          <widget class="QComboBox" name="BasicTypes">
           <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToContents</enum>
+           <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
           </property>
           <item>
            <property name="text">
@@ -121,7 +121,7 @@
         <item>
          <widget class="QComboBox" name="ExTypes">
           <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToContents</enum>
+           <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
           </property>
           <item>
            <property name="text">
@@ -135,7 +135,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="1" column="0">
     <layout class="QHBoxLayout">
      <property name="spacing">
       <number>6</number>

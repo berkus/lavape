@@ -14,6 +14,9 @@
    <string>Find declaration by name</string>
   </property>
   <layout class="QGridLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
    <property name="margin">
     <number>11</number>
    </property>
@@ -26,7 +29,7 @@
       <bool>true</bool>
      </property>
      <property name="sizeAdjustPolicy">
-      <enum>QComboBox::AdjustToContents</enum>
+      <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
      </property>
      <item>
       <property name="text">

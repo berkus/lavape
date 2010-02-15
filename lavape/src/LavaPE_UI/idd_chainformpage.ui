@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>228</width>
-    <height>435</height>
+    <width>230</width>
+    <height>383</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,6 +22,9 @@
   <layout class="QVBoxLayout">
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
    </property>
    <property name="margin">
     <number>9</number>
@@ -105,7 +108,7 @@
       <item>
        <widget class="QComboBox" name="ChElemFormTypes">
         <property name="sizeAdjustPolicy">
-         <enum>QComboBox::AdjustToContents</enum>
+         <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
         </property>
         <item>
          <property name="text">

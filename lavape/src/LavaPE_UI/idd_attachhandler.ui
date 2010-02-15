@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>287</width>
-    <height>164</height>
+    <width>166</width>
+    <height>128</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,13 +20,16 @@
    <property name="spacing">
     <number>6</number>
    </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
    <property name="margin">
     <number>9</number>
    </property>
    <item>
     <widget class="QComboBox" name="HandlerList">
      <property name="sizeAdjustPolicy">
-      <enum>QComboBox::AdjustToContents</enum>
+      <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
      </property>
      <item>
       <property name="text">
