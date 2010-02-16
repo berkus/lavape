@@ -88,7 +88,6 @@ static const char slash='/';
 // CLavaPEApp
 int main(int argc, char ** argv ) {
   CLavaPEApp app(argc,argv);
-//  bool ok; QFontDialog::getFont(&ok); app.exit();
   app.OnAppCreate(); // pixmaps may be created only after the app object
 
   ExeDir = wxTheApp->applicationDirPath();
