@@ -119,7 +119,7 @@
 
   <p>Transforms an overridden function into a non-overridden function, as if it had been newly declared in the containing class.</p>
 
-  <h3><a id="forceOverride">F</a>orce override on class derivation</h3>
+  <h3><a id="forceOverride" name="forceOverride"></a>Force override on class derivation</h3>
 
   <p>Check this if the function&#39;s implementation is meaningful only in the context of 
       its containing class and must not be invoked with a call object from a more 
@@ -129,7 +129,7 @@
         and if <i>C</i> is contained in a <a href="../PatternsFrameworks.htm">pattern</a>
         <i>P</i> and a pattern <i>P&#39;</i> is 
         derived from <i>P</i> then <span class="style2">LavaPE</span> automatically includes a derivation C&#39; of C 
-        in P&#39; and C&#39; contains an overridden version of the function in question. Static calls 
+        in P&#39;, and C&#39; contains an overridden version of the function in question. Static calls 
         from a more derived class / pattern context are forbidden and prevented either.</p>
 
   <p>This may be necessary particularly if a local variable or formal parameter whose type is <a href="../PatternsFrameworks.htm#multiform">
