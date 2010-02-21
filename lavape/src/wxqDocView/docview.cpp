@@ -70,6 +70,9 @@
 #include <QTimer>
 #include <QtDebug>
 
+#ifdef WIN32
+#include <QProcessEnvironment>
+#endif
 
 //#if wxUSE_PRINTING_ARCHITECTURE
 //  #include "prntbase.h"
@@ -2145,27 +2148,38 @@ Assistant::Assistant()
 
  bool Assistant::startAssistant()
  {
-     if (!proc)
-         proc = new QProcess();
+	 if (!proc)
+	     proc = new QProcess();
 
-     if (proc->state() != QProcess::Running) {
-       //QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
-       QString app;
-       QStringList args;
+	 if (proc->state() != QProcess::Running) {
+	   //QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
+	   QString app;
+	   QStringList args;
 
-       app = QLatin1String("./assistant");
-       args << QLatin1String("-collectionFile")
-            << QLatin1String("../doc/LavaPE.qhc")
-            << QLatin1String("-enableRemoteControl");
+#ifdef WIN32
+     QProcessEnvironment env = QProcessEnvironment::systemEnvironment ();
+     QString qtdir = env.value(QString("QTDIR"));
+     QString assPath;
+     if (qtdir.isEmpty())
+      assPath = "assistant.exe";
+     else
+       assPath = qtdir + "\\bin\\assistant.exe";
+	   app = QLatin1String(qPrintable(assPath));
+#else
+	   app = QLatin1String("./assistant");
+#endif
+     args << QLatin1String("-collectionFile")
+	        << QLatin1String("../doc/LavaPE.qhc")
+	        << QLatin1String("-enableRemoteControl");
 
-         proc->start(app, args);
+	     proc->start(app, args);
 
-         if (!proc->waitForStarted()) {
-             QMessageBox::critical(0, QObject::tr("LavaPE: "),
-                 QObject::tr("Unable to launch Qt Assistant (%1)").arg(app));
-             return false;
-         }
-     }
-     return true;
+	     if (!proc->waitForStarted()) {
+	         QMessageBox::critical(0, QObject::tr("LavaPE: "),
+	             QObject::tr("Unable to launch Qt Assistant (%1)").arg(app));
+	         return false;
+	     }
+	 }
+ return true;
  }
 

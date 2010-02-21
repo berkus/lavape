@@ -15,7 +15,9 @@
 #include <QToolButton>
 #include <QTimer>
 #include <QAbstractEventDispatcher>
-
+#ifdef WIN32
+#include <QProcessEnvironment>
+#endif
 #ifdef MINGW32
 #include <shlobj.h>
 #include <windows.h>
