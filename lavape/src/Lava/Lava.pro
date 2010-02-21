@@ -9,6 +9,7 @@ QT += network gui
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase ../LavaExecs ../LavaGUI ../Lava_UI res/TOOLBUTTONS res ../Interpreter
 
 win32:DEFINES += WIN32
+macx:DEFINES += __Darwin __UNIX__
 else:DEFINES += __UNIX__
 DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT INTERPRETER
 

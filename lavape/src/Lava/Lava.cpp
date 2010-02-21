@@ -203,14 +203,14 @@ CLavaApp::CLavaApp(int &argc, char ** argv )
   settings.endGroup();
 
   settings.beginGroup("otherSettings");
-  LBaseData.m_myWebBrowser = settings.value(favoriteBrowser).toString();
+//  LBaseData.m_myWebBrowser = settings.value(favoriteBrowser).toString();
   LBaseData.m_style = settings.value(gui_style).toString();
   QString lfo = QString(settings.value(lfOpen).toString());
   wxTheApp->lastFileOpen = lfo;
   settings.endGroup();
-#ifndef WIN32
-  if (LBaseData.m_myWebBrowser.isEmpty())
-#endif
+//#ifndef WIN32
+//  if (LBaseData.m_myWebBrowser.isEmpty())
+//#endif
     LBaseData.m_myWebBrowser = InitWebBrowser();
 
   pLavaTaskTemplate = new wxDocTemplate(m_docManager,
@@ -264,10 +264,13 @@ QString CLavaApp::InitWebBrowser () {
     else
       prog = str;
   }
+#ifdef __Darwin
+  prog = "open";
 #else
-        prog = "firefox";
+  prog = "firefox";
 #endif
-        return prog;
+#endif
+  return prog;
 }
 
 bool CLavaApp::event(QEvent *e)
@@ -525,7 +528,7 @@ void CLavaApp::saveSettings()
   settings.endGroup();
 
   settings.beginGroup("otherSettings");
-  settings.setValue(favoriteBrowser,LBaseData.m_myWebBrowser);
+//  settings.setValue(favoriteBrowser,LBaseData.m_myWebBrowser);
   settings.setValue(gui_style,LBaseData.m_style);
   settings.setValue(lfOpen,wxTheApp->GetLastFileOpen());
   settings.endGroup();

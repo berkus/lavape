@@ -45,7 +45,7 @@ CAboutBox::CAboutBox(QWidget* parent, const char* name, bool modal) : QDialog(pa
   setObjectName(name);
   setModal(modal);
   setupUi(this);
-  browserPath->setText(LBaseData->m_myWebBrowser);
+//  browserPath->setText(LBaseData->m_myWebBrowser);
 } 
 
 //CAboutBox::~CAboutBox() {}
@@ -67,7 +67,7 @@ void CAboutBox::on_selectBrowser_clicked() {
                   progDir,
                   filter);
 	if (s != QString::null) {
-		browserPath->setText(s);
+//		browserPath->setText(s);
 		LBaseData->m_myWebBrowser = s;
     wxTheApp->saveSettings();
 	}
@@ -82,10 +82,10 @@ void CAboutBox::on_LavaHomePage_clicked()
 {
 	QStringList args;
 
-	if (browserPath->text().isEmpty()) {
-    QMessageBox::critical(this,qApp->applicationName(),ERR_MissingBrowserPath,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
-		return;
-	}
+//	if (browserPath->text().isEmpty()) {
+//    QMessageBox::critical(this,qApp->applicationName(),ERR_MissingBrowserPath,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+//		return;
+//	}
 
 	args << "http://lavape.sourceforge.net/index.htm";
 

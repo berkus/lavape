@@ -418,7 +418,11 @@ QString CLavaPEApp::InitWebBrowser () {
       prog = str;
   }
 #else
+#ifdef __Darwin
+  prog = "open";
+#else
   prog = "firefox";
+#endif
 #endif
   return prog;
 }
