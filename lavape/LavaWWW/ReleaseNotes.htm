@@ -162,20 +162,26 @@ style="color:#ff0000"><strong>LavaPE</strong></em> source distribution and store
         <li>
             <p style="font-family: Arial,Helvetica,sans-serif">
                 On a Linux box, the software package manager of your Linux distribution usually 
-                offers the possibility to download and install the Qt4 development package(s).</p>
-        </li>
-        <li>
-            <p style="font-family: Arial,Helvetica,sans-serif">
-                Or you may download the sources of Qt4 from the Nokia web site, currently
-                <a href="http://qt.nokia.com/downloads/linux-x11-cpp">
-                http://qt.nokia.com/downloads/linux-x11-cpp</a>, and build it yourself.</p>
+                offers the possibility to download and install the Qt4 development package(s).<br />
+                <br />
+                Slight disadvantage: You won&#39;t get the most recent Qt 4.6.x release this way, an 
+                the older 4.5.x releases unfortunately won&#39;t allow us to successfully invoke Qt 
+                Assistant, which is our online help tool, from LavaPE/Lava. This seems to work 
+                only for the Qt 4.6.x releases.</p>
         </li>
         <li>
             <p style="font-family: Arial,Helvetica,sans-serif">
                 Or you may download the binary version of Qt4 for Linux from
                 <a href="http://qt.nokia.com/downloads/sdk-linux-x11-32bit-cpp">
                 http://qt.nokia.com/downloads/sdk-linux-x11-32bit-cpp</a> and install it in the 
-                default directory /opt/qtsdk-&lt;release&gt;</p>
+                default directory /opt/qtsdk-&lt;release&gt;.</p>
+        </li>
+        <li>
+            <p style="font-family: Arial,Helvetica,sans-serif">
+                Or you may download the 
+                Qt4 sources from the Nokia web site, currently at
+                <a href="http://qt.nokia.com/downloads/linux-x11-cpp">
+                http://qt.nokia.com/downloads/linux-x11-cpp</a>, and build it yourself.</p>
         </li>
     </ol>
     
@@ -186,20 +192,20 @@ style="color:#ff0000"><strong>LavaPE</strong></em> source distribution and store
         In any case you must add the &quot;bin&quot; directory, where the Qt executables reside, 
         to your PATH environment variable, if the Qt executables aren't located in a 
         standard PATH directory anyhow.<br />
-        <br />In case 2 the Qt directory is named Qt-&lt;release&gt; and is a sibling 
-        directory of the original source directory (i.e., it is located on the same 
-        level of nesting as the former). In case 3 the actual Qt directory is 
+        <br />In case 2 the actual Qt directory is the subdirectory&nbsp; 
         /opt/qtsdk-&lt;release&gt;/qt of the primary installation directory 
-        /opt/qtsdk-&lt;release&gt;.</p>
+        /opt/qtsdk-&lt;release&gt;. In case 3 the Qt directory is named Qt-&lt;release&gt; and 
+        is a sibling directory of the original source directory (i.e., it is located on 
+        the same level of nesting as the latter).</p>
     
 
 
 
     <p style="font-family: Arial,Helvetica,sans-serif">
                 Then build the <em style="color:#ff0000"><strong>LavaPE</strong></em> 
-                executables as follows:</p>
+                executables from within the <em>lavape</em> installation directory as follows:</p>
     <blockquote style="font-family: Arial,Helvetica,sans-serif">
-                cd lavape<br />qmake lavape.pro<br />
+                qmake lavape.pro<br />
                 make</blockquote>
     <p style="font-family: Arial,Helvetica,sans-serif">
                 &nbsp;On some platforms the Qt4 version of qmake may have a different name (to 
@@ -211,10 +217,10 @@ style="color:#ff0000"><strong>LavaPE</strong></em> source distribution and store
     <p style="font-family: Arial,Helvetica,sans-serif">
                 On some Linux platforms the Qt4 version of qmake is named &quot;qmake-qt4&quot;</p>
     <p style="font-family: Arial,Helvetica,sans-serif">
-                Execute &quot;qmake -v&quot; to make sure that you don't use the qt3 version erroneously 
-                (which won't work).</p>
-    <p style="font-family: Arial,Helvetica,sans-serif">
-                If you have installed the Qt4 IDE &quot;QtCreator&quot; then you can build
+                Execute &quot;qmake -v&quot; to make sure that you don't use the qt3 version 
+                accidentally (wIf you have installed the Qt development environment &quot;QtCreator&quot; then you can 
+                build
+                <span class="style10"><strong><em>LavaPEuot;QtCreator&quot; then you can build
                 <span class="style10"><strong><em>LavaPE</em></strong></span> easily by opening 
                 the project file lavape.pro in QtCreator and issuing a &quot;Build all&quot; from the 
                 &quot;Build&quot; menu.</p>
@@ -228,43 +234,51 @@ style="color:#ff0000"><strong>Lava</strong></em> Programming Environment in
     lavape/bin finally: &quot;<em
 style="color:#ff0000"><strong>LavaPE</strong></em>&quot;, &quot;<em
 style="color:#ff0000"><strong>Lava</strong></em>&quot;, and &quot;LPC&quot;. (The <em
-style="color:#ff0000"><strong>Lava</strong></em> Precompiler &quot;LPC&quot; is needed only 
-    during the build process.)</p>
-
-<p style="font-family: Arial,Helvetica,sans-serif">Go to the lavape/bin directory, 
-    launch &quot;./LavaPE&quot;, consult the Online Help, open some sample programs from the 
-    lavape/samples directory and enjoy the unique structure editing features of <em style="color:#ff0000"><strong>
+style="color:#ff0000"><strong>Lava</strong></em> Precompiler &quot;LPC&quot; is nGo to the lavape/bin directory, 
+  launch &quot;./LavaPE&quot;, consult the &quot;what is&quot;, &quot;what next&quot; and online help, open some 
+  sample programs from the lavape/samples directory and enjoy the unique structure 
+  editing features of <em style="color:#ff0000"><strong>
+    LavaPEirectory and enjoy the unique structure editing features of <em style="color:#ff0000"><strong>
     LavaPE</strong></em>.</p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">You can run the <em
-style="color:#ff0000"><strong>Lava</strong></em> interpreter &quot;Lava&quot;</p>
+<p style="font interpreter &quot;Lava&quot;</p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">1. either by executing &quot;./Lava&quot; 
-    in the lavape/bin directory and by opening a *.lava or *.ldoc file from the file 
-    menu or by clicking the file open button, or</p>
-
-<p style="font-family: Arial,Helvetica,sans-serif">2. from <em
+  <ol>
+    <li>
+      <p style="font-family: Arial,Helvetica,sans-serif">
+&nbsp;either by executing &quot;./Lava&quot; in the lavape/bin directory and by opening a *.lava 
+        or *.ldoc file from the file menu or by clicking the file open button,</p>
+    </li>
+    <li>
+      <p style="font-family: Arial,Helvetica,sans-serif">
+        or from <em
 style="color:#ff0000"><strong>LavaPE</strong></em> by clicking the &quot;running man&quot; 
-    toolbutton, after you have activated a view containing the executable code of a
-    <span class="style10"><strong><em>Lava</em></strong></span> main program or a 
-    declaration tree view that contains a main program declaration.</p>
+        toolbutton, after you have activated the executable code of a
+        <span class="style10"><strong><em>Lava</em></strong></span> main program or a 
+        declaration tree view that <em>contains</em> a main program declaration.</p>
+    </li>
+  </ol>
 
-<p style="font-family: Arial,Helvetica,sans-serif">We'd appreciate very much if you 
-    would inform us about any problems that you have encounterd during the 
-    installation or while using <span
+<p style="font-family: Arial,Helvetica,sans-serif">We'd appreciate very much if 
+  you would inform us about any problems that you have encounterd during the 
+  installation or while using <span
+style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
+style="color:#ff0000">Lavaon or while using <span
 style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
 style="color:#ff0000">Lava</span><span class="style8">/</span><span
-style="color:#ff0000">LavaPE</span></strong></em>.</span></p>
-    <p style="font-family: Arial, Helvetica, sans-serif">
-        &nbsp;</p>
+style="color&nbsp;</p>
 
 <h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">D) How to 
-    install <em style="color:#ff0000">LavaPE</em> from the source distribution on 
-    Windows platforms</h3>
+  build <em style="color:#ff0000">LavaPEle="f from the sources on Windows 
+  platforms</h3>
 
-<p class="style5">On Windows you may build <span class="style10"><strong><em>LavaPE</em></strong></span> 
-    from the sources using VisualStudio VC++ [Express] 2008 or VisualStudio 2010 
-    (which is available as a release candidate now):</p>
+<p class="style5">On Windows you may build 0">LavaPE</em> from the source distribution on 
+    Windows plat from the sources using VisualStudio VC++ [Express] 
+  2008 or VisualStudio 2010 (which is available as a release candidate presently):</p>
+    <ol>
+        <li>
+            <p class="style5">
+                Get the binary version of Qt4 from e now):</p>
     <ol>
         <li>
             <p class="style5">
@@ -276,27 +290,22 @@ style="color:#ff0000">LavaPE</span></strong></em>.</span></p>
         <li>
             <p class="style5">
                 Set the Windows environment variable QTDIR to point to the Qt4 installation 
-                directory selected in the first step.</p>
-        </li>
-        <li>
-            <p class="style5">
-                Get the LavaPE sources in the same way as in the UNIX case.</p>
+                Get the <span class="style10"><strong><em>LavaPE</em></strong></span> sources in 
+                the same way as in the UNIX case.</p>
         </li>
         <li>
             <p class="style5">
                 Open the solution file &lt;lavape-dir&gt;\src\LavaPE.sln in VS2010 or 
+                &lt;lavape-dir&gt;\src\LavaPE-VS2008.sln in VS2008.ile &lt;lavape-dir&gt;\src\LavaPE.sln in VS2010 or 
                 &lt;lavape-dir&gt;\src\LavaPE-VS2008.sln in VS2008.</p>
         </li>
         <li>
             <p class="style5">
-                Select the &quot;Build solution&quot; command from the &quot;Build&quot; menu.</p>
-        </li>
-    </ol>
-    <p class="style5">
-        After completion of the build process you can launch LavaPE or Lava directly 
-        from VC++. Don't forget to select the LavaPE or the Lava sub-project, 
-        respectively, as &quot;startup project&quot; in the solution or class view first. Of course 
-        you may also launch LavaPE or Lava from the lavape\bin directory.</p>
+                Select the &quot;BuildAfter completion of the build process you can launch LavaPE.exe or Lava.exe 
+        directly from VC++. Don't forget to select the LavaPE or the Lava sub-project, 
+        respectively, as &quot;StartUp Project&quot; in the solution or class view first. Of 
+        course you may also launch LavaPE.exe or Lava.exe directly from the lavape\bin 
+        directory.</p>
 
 </body>
 </html>
