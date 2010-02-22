@@ -389,7 +389,6 @@ QString CLavaPEApp::InitWebBrowser () {
   QString prog;
 
 #ifdef WIN32
-
   QString str, arg1;
   HKEY hkey=0;
   DWORD valType=0, dataSize=100;
@@ -421,7 +420,11 @@ QString CLavaPEApp::InitWebBrowser () {
 #ifdef __Darwin
   prog = "open";
 #else
+#ifdef __LINUX
+  prog = "xdg-open";
+#else
   prog = "firefox";
+#endif
 #endif
 #endif
   return prog;

@@ -10,6 +10,9 @@
     <Link>
       <OutputFile>$(SolutionDir)bin\$(TargetName)$(TargetExt)</OutputFile>
     </Link>
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
 </Project>
