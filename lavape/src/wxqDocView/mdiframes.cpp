@@ -196,7 +196,7 @@ void wxMainFrame::MoveToNextTabbedWindow(wxTabWidget *tw,int index){
   page->Activate(true);
   nextTW->setTabTextColor(nextTW->indexOf(page),Qt::red);
   if (tw->count() == 0 && m_ClientArea->count() > 1) {
-    delete tw;
+    tw->deleteLater();
     equalize();
   }
 }
@@ -215,7 +215,7 @@ void wxMainFrame::MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index){
   page->Activate(true);
   precTW->setTabTextColor(precTW->indexOf(page),Qt::red);
   if (tw->count() == 0 && m_ClientArea->count() > 1) {
-    delete tw;
+    tw->deleteLater();
     equalize();
   }
 }
