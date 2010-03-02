@@ -138,6 +138,8 @@ public:
     setTabBar(m_tabBar);
   }
 
+  virtual ~wxTabWidget();
+
   void postTabChange(int index, QAction* triggeredAction);
   void setTabTextColor (int index, const QColor &color) {
     tabBar()->setTabTextColor(index,color);

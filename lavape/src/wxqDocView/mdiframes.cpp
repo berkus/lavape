@@ -92,6 +92,7 @@ QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
 
   m_ClientArea=new QSplitter(parent);
   tabWid = new wxTabWidget(m_ClientArea);
+  m_ClientArea->addWidget(tabWid);
   wxDocManager::GetDocumentManager()->SetCurrentTabWidget(tabWid);
   tabWid->setTabShape(QTabWidget::Triangular);
   tabWid->setUsesScrollButtons(true);
@@ -152,7 +153,7 @@ void wxMainFrame::OnMRUFile(int histFileIndex)
 }
 
 void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
-  wxTabWidget *newTW=new wxTabWidget(0);
+  wxTabWidget *newTW=new wxTabWidget(m_ClientArea);
   newTW->setTabShape(QTabWidget::Triangular);
   newTW->setUsesScrollButtons(true);
   QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
@@ -509,6 +510,10 @@ void wxDocManager::SetNewCurrentFrame() {
   }
   if (m_currentTabWidget && m_currentTabWidget->currentWidget())
     ((wxChildFrame*)m_currentTabWidget->currentWidget())->Activate(true);
+}
+
+
+wxTabWidget::~wxTabWidget() {
 }
 
 void wxTabWidget::postTabChange(int index, QAction* triggeredAction)

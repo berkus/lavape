@@ -302,11 +302,7 @@ void CLavaMainFrame::makeStyle(const QString &style)
   isVisible = Toolbar_7->isVisible();
   if (!LBaseData->actionDeclare) {
     firstTime = true;
-//    fillKwdToolbar(Toolbar_7);
   }
-//  Toolbar_7->setAllowedAreas(Qt::RightToolBarArea|Qt::LeftToolBarArea);
-//  int w = Toolbar_7->width();
-//  Toolbar_7->setContentsMargins(0,0,0,0);
 
   if (!firstTime) {
     delete LBaseData->myWhatsThisAction;
@@ -332,14 +328,13 @@ bool CLavaMainFrame::OnCreate()
     if (fn.Substr(fn.l-5,5) == DString(".ldoc"))
       fileHist->m_actions[i]->setEnabled(false);
   }
-  //setWindowIcon(QPixmap((const char**) Lava));
   QSplitter* split = new QSplitter(this);
   m_CentralWidget = split;
   setCentralWidget(m_CentralWidget);
   split->setOrientation(Qt::Vertical);
   CreateWorkspace(split);
   split->addWidget(m_ClientArea);
-  m_UtilityView = new CUtilityView(0);
+  m_UtilityView = new CUtilityView(split);
   split->addWidget(m_UtilityView);
   QList<int> list=split->sizes();
   list.replace(0,700);//int(totalW * 0.7));
