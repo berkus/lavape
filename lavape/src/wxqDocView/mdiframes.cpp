@@ -152,7 +152,7 @@ void wxMainFrame::OnMRUFile(int histFileIndex)
 }
 
 void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
-  wxTabWidget *newTW=new wxTabWidget(0);
+  wxTabWidget *newTW=new wxTabWidget(m_ClientArea);
   newTW->setTabShape(QTabWidget::Triangular);
   newTW->setUsesScrollButtons(true);
   QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
