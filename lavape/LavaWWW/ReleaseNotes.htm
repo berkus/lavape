@@ -3,9 +3,9 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <html>
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
   <title>LavaPE Release Notes</title>
-  <meta name="generator" content="Amaya, see http://www.w3.org/Amaya/"/>
+  <meta name="generator" content="Amaya, see http://www.w3.org/Amaya/">
   <style type="text/css">
         .style1
         {
@@ -39,273 +39,284 @@
       {
           color: #FF0000;
       }
-      </style>
+  </style>
 </head>
 
 <body>
-<h1 style="text-align:center;" class="style5">Release notes for release 0.9.2</h1>
+<h1 style="text-align:center;" class="style5">Release notes for release
+0.9.2</h1>
 
 <p></p>
 
-<h1 style="font-family: Arial, Helvetica, Sans-Serif;" class="style7">I) Change Log 
-    for Release 0.9.2</h1>
+<h1 style="font-family: Arial, Helvetica, Sans-Serif;" class="style7">I) Change
+Log for Release 0.9.2</h1>
 
 <p style="font-family: Arial,Helvetica,sans-serif"></p>
 
-<h2 style="font-family: Arial, Helvetica, Sans-Serif">A) <span class="style1">Lava</span> 
-    &quot;virtual types&quot; have been relieved from an unnecessary restriction</h2>
-    <p style="font-family: Arial, Helvetica, Sans-Serif">Before release 0.9.2 you had to 
-        observe the following rather restrictive rule:</p>
-    <blockquote style="font-family: Arial, Helvetica, Sans-Serif"><b>If a class <i>C</i> 
-        is the value of a virtual type <i>V</i> then you can reference <i>C</i> only 
-        through this virtual type <i>V</i> within the containing
-        <a href="http://lavape.sourceforge.net/doc/html/PatternsFrameworks.htm">pattern</a></b>.</blockquote>
-    <p style="font-family: Arial, Helvetica, Sans-Serif">In release 0.9.2 we could 
-        completely get rid of this restriction: You may now reference C directly and may 
-        in particular create an object &quot;<span class="style9">new</span> <i>C</i>&quot; 
-        (which, however, will not be assignment-compatible to a variable of type <i>V</i>, 
-        but only to one of type <i>C</i> or of a base class of<i> C</i>!). See also
-        <a href="http://lavape.sourceforge.net/doc/html/dialogs/FunctionBox.htm#forceOverride">
-        here</a>.</p>
-    <p style="font-family: Arial, Helvetica, Sans-Serif"><strong>But note:</strong> The 
-        other pertinent restriction, that a class <em>C</em> may be the value of <strong>
-        only one</strong> 
-        virtual type, remains valid, since this unique VT serves as the type of the 
-        &quot;self&quot; variables of the methods of <em>C</em>.</p>
-    <p style="font-family: Arial, Helvetica, Sans-Serif">&nbsp;</p>
-    <h2 style="font-family: Arial, Helvetica, Sans-Serif">B) Overriding of several 
-        virtual types in a derived class/package may now be performed successively</h2>
-    <p style="font-family: Arial, Helvetica, Sans-Serif">Before release 0.9.2 you had to 
-        perform this in a single step by selecting all virtual types that you wanted to 
-        specialize at once in the <span class="style6">Lava</span> 
-        <a href="http://lavape.sourceforge.net/doc/html/OverrideView.htm">override view</a>, 
-        and then you had to click the override toolbutton (little yelow triangle 
-        pointing upward). Beginning from release 0.9.2 you may now override several 
-        virtual types successively in any order.</p>
-    <p style="font-family: Arial, Helvetica, Sans-Serif">&nbsp;</p>
-    <h2 style="font-family: Arial, Helvetica, Sans-Serif">C) The <span class="style1">
-        Lava</span> source code repository has been migrated from SVN to GIT.</h2>
-    <p style="font-family: Arial, Helvetica, Sans-Serif">Here the URL of the
-        <span class="style6">Lava</span> GIT
-        <a href="http://sourceforge.net/projects/lavape/develop" target="_blank">
-        repository</a>:</p>
-    <blockquote>
-        <b>git://lavape.git.sourceforge.net/gitroot/lavape/lavape</b></blockquote>
-    <p style="font-family: Arial, Helvetica, Sans-Serif">&nbsp;</p>
-    <h1 style="font-family: Arial, Helvetica, Sans-Serif" class="style7">II) 
-        Installation of <span class="style1">LavaPE</span></h1>
-    <p style="font-family: Arial, Helvetica, Sans-Serif" class="style7">For simplicity 
-        we have decided to provide binary releases of <span class="style6">LavaPE</span> 
-        only for Windows and Mac OS (Intel) in the future. There are so many Linux and 
-        other Unix variants that we shall provide only a single source tarball for all 
-        of these. Since we have migrated to the qmake build tool, the make process is so 
-        perfectly portable, that it should work without problems on most of these 
-        platforms, provided GNU make, GNU g++, and the developer version of the Qt4 
-        framework have been installed before.</p>
-    <p style="font-family: Arial, Helvetica, Sans-Serif" class="style7">&nbsp;</p>
+<h2 style="font-family: Arial, Helvetica, Sans-Serif">A) <span
+class="style1">Lava</span> "virtual types" have been relieved from an
+unnecessary restriction</h2>
 
-<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">A) How to 
-    install the Windows binary release of <span class="style1">LavaPE</span></h3>
+<p style="font-family: Arial, Helvetica, Sans-Serif">Before release 0.9.2 you
+had to observe the following rather restrictive rule:</p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">Simply launch the downloaded 
-    lavape-&lt;rel&gt;-win32-bin.exe file and follow the instructions of the installer.</p>
-    <p style="font-family: Arial,Helvetica,sans-serif">&nbsp;</p>
+<blockquote style="font-family: Arial, Helvetica, Sans-Serif">
+  <b>If a class <i>C</i> is the value of a virtual type <i>V</i> then you can
+  reference <i>C</i> only through this virtual type <i>V</i> within the
+  containing <a
+  href="http://lavape.sourceforge.net/doc/html/PatternsFrameworks.htm">pattern</a></b>.</blockquote>
 
-<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">C) How to 
-    install the Mac OS (Intel) binary release of <em
+<p style="font-family: Arial, Helvetica, Sans-Serif">In release 0.9.2 we could
+completely get rid of this restriction: You may now reference C directly and
+may in particular create an object "<span class="style9">new</span> <i>C</i>"
+(which, however, will not be assignment-compatible to a variable of type
+<i>V</i>, but only to one of type <i>C</i> or of a base class of<i>C</i>!). See
+also <a
+href="http://lavape.sourceforge.net/doc/html/dialogs/FunctionBox.htm#forceOverride">here</a>.</p>
+
+<p style="font-family: Arial, Helvetica, Sans-Serif"><strong>But note:</strong>
+The other pertinent restriction, that a class <em>C</em> may be the value of
+<strong>only one</strong> virtual type, remains valid, since this unique VT
+serves as the type of the "self" variables of the methods of <em>C</em>.</p>
+
+<p style="font-family: Arial, Helvetica, Sans-Serif"> </p>
+
+<h2 style="font-family: Arial, Helvetica, Sans-Serif">B) Overriding of several
+virtual types in a derived class/package may now be performed successively</h2>
+
+<p style="font-family: Arial, Helvetica, Sans-Serif">Before release 0.9.2 you
+had to perform this in a single step by selecting all virtual types that you
+wanted to specialize at once in the <span class="style6">Lava</span> <a
+href="http://lavape.sourceforge.net/doc/html/OverrideView.htm">override
+view</a>, and then you had to click the override toolbutton (little yelow
+triangle pointing upward). Beginning from release 0.9.2 you may now override
+several virtual types successively in any order.</p>
+
+<p style="font-family: Arial, Helvetica, Sans-Serif"> </p>
+
+<h2 style="font-family: Arial, Helvetica, Sans-Serif">C) The <span
+class="style1">Lava</span> source code repository has been migrated from SVN to
+GIT.</h2>
+
+<p style="font-family: Arial, Helvetica, Sans-Serif">Here the URL of the <span
+class="style6">Lava</span> GIT <a
+href="http://sourceforge.net/projects/lavape/develop"
+target="_blank">repository</a>:</p>
+
+<blockquote>
+  <b>git://lavape.git.sourceforge.net/gitroot/lavape/lavape</b></blockquote>
+
+<p style="font-family: Arial, Helvetica, Sans-Serif"> </p>
+
+<h1 style="font-family: Arial, Helvetica, Sans-Serif" class="style7">II)
+Installation of <span class="style1">LavaPE</span></h1>
+
+<p style="font-family: Arial, Helvetica, Sans-Serif" class="style7">For
+simplicity we have decided to provide binary releases of <span
+class="style6">LavaPE</span> only for Windows and Mac OS (Intel) in the future.
+There are so many Linux and other Unix variants that we shall provide only a
+single source tarball for all of these. Since we have migrated to the qmake
+build tool, the make process is so perfectly portable, that it should work
+without problems on most of these platforms, provided GNU make, GNU g++, and
+the developer version of the Qt4 framework have been installed before.</p>
+
+<p style="font-family: Arial, Helvetica, Sans-Serif" class="style7"> </p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">A) How
+to install the Windows binary release of <span class="style1">LavaPE</span></h3>
+
+<p style="font-family: Arial,Helvetica,sans-serif">Simply launch the downloaded
+lavape-&lt;rel&gt;-win32-bin.exe file and follow the instructions of the
+installer.</p>
+
+<p style="font-family: Arial,Helvetica,sans-serif"> </p>
+
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">C) How
+to install the Mac OS (Intel) binary release of <em
 style="color:#ff0000">LavaPE</em></h3>
 
-<p style="font-family: Arial,Helvetica,sans-serif">Download the most recent Qt4 
-    release, presently</p>
+<p style="font-family: Arial,Helvetica,sans-serif">Download the most recent Qt4
+release, presently</p>
 
-<p
-style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">
-    <a href="http://get.qt.nokia.com/qt/source/qt-mac-cocoa-opensource-4.6.2.dmg" 
-        target="_blank">
-    http://get.qt.nokia.com/qt/source/qt-mac-cocoa-opensource-4.6.2.dmg</a></p>
+<p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;"><a
+href="http://get.qt.nokia.com/qt/source/qt-mac-cocoa-opensource-4.6.2.dmg"
+target="_blank">http://get.qt.nokia.com/qt/source/qt-mac-cocoa-opensource-4.6.2.dmg</a></p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">and install it in the proposed 
-    default location.</p>
+<p style="font-family: Arial,Helvetica,sans-serif">and install it in the
+proposed default location.</p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">Download the 
-    lavape-&lt;rel&gt;-macos.dmg disk image file and mount it by double-clicking. A 
-    double-click on LavaPE.app or Lava.app will launch the <em
+<p style="font-family: Arial,Helvetica,sans-serif">Download the
+lavape-&lt;rel&gt;-macos.dmg disk image file and mount it by double-clicking. A
+double-click on LavaPE.app or Lava.app will launch the <em
 style="color:#ff0000"><strong>Lava</strong></em> Programming Environment or the
-<em style="color:#ff0000"><strong>Lava</strong></em> Interpreter, respectively.</p>
+<em style="color:#ff0000"><strong>Lava</strong></em> Interpreter,
+respectively.</p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">For a more permanent 
-    installation, copy and paste the mounted image to your &quot;Applications&quot; folder or 
-    any other folder. Drag LavaPE.app/Lava.app to your dock, if you like.</p>
+<p style="font-family: Arial,Helvetica,sans-serif">For a more permanent
+installation, copy and paste the mounted image to your "Applications" folder or
+any other folder. Drag LavaPE.app/Lava.app to your dock, if you like.</p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">A number of sample programs can 
-    be opened in LavaPE.app or Lava.app from the &quot;samples&quot; subdirectory of the 
-    installation directory &quot;lavape&quot;.</p>
+<p style="font-family: Arial,Helvetica,sans-serif">A number of sample programs
+can be opened in LavaPE.app or Lava.app from the "samples" subdirectory of the
+installation directory "lavape".</p>
 
 <p style="font-family: Arial,Helvetica,sans-serif"></p>
 
-<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">D) How to 
-    build <em style="color:#ff0000">LavaPE</em> from the sources on UNIX platforms</h3>
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">D) How
+to build <em style="color:#ff0000">LavaPE</em> from the sources on UNIX
+platforms</h3>
 
-    <p><span class="style5">Download the compressed tar file 
-        lavape-&lt;release&gt;-src.tar.bz2 of the <em
-style="color:#ff0000"><strong>LavaPE</strong></em> source distribution and store it in 
-        the parent directory of the envisaged lavape installation directory. Uncompress 
-        it using the command</span></p>
+<p><span class="style5">Download the compressed tar file
+lavape-&lt;release&gt;-src.tar.bz2 of the <em
+style="color:#ff0000"><strong>LavaPE</strong></em> source distribution and
+store it in the parent directory of the envisaged lavape installation
+directory. Uncompress it using the command</span></p>
 
-<p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">tar xjf 
-    lavape-&lt;release&gt;-src.tar.bz2</p>
+<p style="font-family: Arial,Helvetica,sans-serif;margin-left:2em;">tar xjf
+lavape-&lt;release&gt;-src.tar.bz2</p>
 
-    <p style="font-family: Arial,Helvetica,sans-serif">You need to have GNU g++/make and 
-        to get the developer version of Qt4 from Nokia (formerly TrollTech).</p>
+<p style="font-family: Arial,Helvetica,sans-serif">You need to have GNU
+g++/make and to get the developer version of Qt4 from Nokia (formerly
+TrollTech).</p>
+<ol>
+  <li><p style="font-family: Arial,Helvetica,sans-serif">On a Linux box, the
+    software package manager of your Linux distribution usually offers the
+    possibility to download and install the Qt4 development package(s).<br>
+    <br>
+    Slight disadvantage: You won't get the most recent Qt 4.6.x release this
+    way, an the older 4.5.x releases unfortunately won't allow us to
+    successfully invoke Qt Assistant, which is our online help tool, from
+    LavaPE/Lava. This seems to work only for the Qt 4.6.x releases.</p>
+  </li>
+  <li><p style="font-family: Arial,Helvetica,sans-serif">Or you may download
+    the binary version of Qt4 for Linux from <a
+    href="http://qt.nokia.com/downloads/sdk-linux-x11-32bit-cpp">http://qt.nokia.com/downloads/sdk-linux-x11-32bit-cpp</a>
+    and install it in the default directory /opt/qtsdk-&lt;release&gt;.</p>
+  </li>
+  <li><p style="font-family: Arial,Helvetica,sans-serif">Or you may download
+    the Qt4 sources from the Nokia web site, currently at <a
+    href="http://qt.nokia.com/downloads/linux-x11-cpp">http://qt.nokia.com/downloads/linux-x11-cpp</a>,
+    and build it yourself.</p>
+  </li>
+</ol>
 
-    <ol>
-        <li>
-            <p style="font-family: Arial,Helvetica,sans-serif">
-                On a Linux box, the software package manager of your Linux distribution usually 
-                offers the possibility to download and install the Qt4 development package(s).<br />
-                <br />
-                Slight disadvantage: You won&#39;t get the most recent Qt 4.6.x release this way, an 
-                the older 4.5.x releases unfortunately won&#39;t allow us to successfully invoke Qt 
-                Assistant, which is our online help tool, from LavaPE/Lava. This seems to work 
-                only for the Qt 4.6.x releases.</p>
-        </li>
-        <li>
-            <p style="font-family: Arial,Helvetica,sans-serif">
-                Or you may download the binary version of Qt4 for Linux from
-                <a href="http://qt.nokia.com/downloads/sdk-linux-x11-32bit-cpp">
-                http://qt.nokia.com/downloads/sdk-linux-x11-32bit-cpp</a> and install it in the 
-                default directory /opt/qtsdk-&lt;release&gt;.</p>
-        </li>
-        <li>
-            <p style="font-family: Arial,Helvetica,sans-serif">
-                Or you may download the 
-                Qt4 sources from the Nokia web site, currently at
-                <a href="http://qt.nokia.com/downloads/linux-x11-cpp">
-                http://qt.nokia.com/downloads/linux-x11-cpp</a>, and build it yourself.</p>
-        </li>
-    </ol>
-    
+<p style="font-family: Arial,Helvetica,sans-serif">In any case you must add the
+"bin" directory, where the Qt executables reside, to your PATH environment
+variable, if the Qt executables aren't located in a standard PATH directory
+anyhow.<br>
+<br>
+In case 2 the actual Qt directory is the subdirectory 
+/opt/qtsdk-&lt;release&gt;/qt of the primary installation directory
+/opt/qtsdk-&lt;release&gt;. In case 3 the Qt directory is named
+Qt-&lt;release&gt; and is a sibling directory of the original source directory
+(i.e., it is located on the same level of nesting as the latter).</p>
 
+<p style="font-family: Arial,Helvetica,sans-serif">Then build the <em
+style="color:#ff0000"><strong>LavaPE</strong></em> executables from within the
+<em>lavape</em> installation directory as follows:</p>
 
+<blockquote style="font-family: Arial,Helvetica,sans-serif">
+  qmake lavape.pro<br>
+  make</blockquote>
 
-    <p style="font-family: Arial,Helvetica,sans-serif">
-        In any case you must add the &quot;bin&quot; directory, where the Qt executables reside, 
-        to your PATH environment variable, if the Qt executables aren't located in a 
-        standard PATH directory anyhow.<br />
-        <br />In case 2 the actual Qt directory is the subdirectory&nbsp; 
-        /opt/qtsdk-&lt;release&gt;/qt of the primary installation directory 
-        /opt/qtsdk-&lt;release&gt;. In case 3 the Qt directory is named Qt-&lt;release&gt; and 
-        is a sibling directory of the original source directory (i.e., it is located on 
-        the same level of nesting as the latter).</p>
-    
+<p style="font-family: Arial,Helvetica,sans-serif">On some platforms the Qt4
+version of qmake may have a different name (to distinguish it from the older
+Qt3 qmake).</p>
 
+<p style="font-family: Arial,Helvetica,sans-serif">On Mac OS X the qmake
+command should read</p>
 
+<blockquote style="font-family: Arial,Helvetica,sans-serif">
+  qmake -spec macx-g++ lavape.pro</blockquote>
 
-    <p style="font-family: Arial,Helvetica,sans-serif">
-                Then build the <em style="color:#ff0000"><strong>LavaPE</strong></em> 
-                executables from within the <em>lavape</em> installation directory as follows:</p>
-    <blockquote style="font-family: Arial,Helvetica,sans-serif">
-                qmake lavape.pro<br />
-                make</blockquote>
-    <p style="font-family: Arial,Helvetica,sans-serif">
-                &nbsp;On some platforms the Qt4 version of qmake may have a different name (to 
-                distinguish it from the older Qt3 qmake).</p>
-    <p style="font-family: Arial,Helvetica,sans-serif">
-                On Mac OS X the qmake command should read</p>
-    <blockquote style="font-family: Arial,Helvetica,sans-serif">
-                qmake-4.6 -spec macx-g++ lavape.pro</blockquote>
-    <p style="font-family: Arial,Helvetica,sans-serif">
-                On some Linux platforms the Qt4 version of qmake is named &quot;qmake-qt4&quot;</p>
-    <p style="font-family: Arial,Helvetica,sans-serif">
-                Execute &quot;qmake -v&quot; to make sure that you don't use the qt3 version 
-                accidentally (wIf you have installed the Qt development environment &quot;QtCreator&quot; then you can 
-                build
-                <span class="style10"><strong><em>LavaPEuot;QtCreator&quot; then you can build
-                <span class="style10"><strong><em>LavaPE</em></strong></span> easily by opening 
-                the project file lavape.pro in QtCreator and issuing a &quot;Build all&quot; from the 
-                &quot;Build&quot; menu.</p>
-    
+<p style="font-family: Arial,Helvetica,sans-serif">On some Linux platforms the
+Qt4 version of qmake is named "qmake-qt4"</p>
 
+<p style="font-family: Arial,Helvetica,sans-serif">Execute "qmake -v" to make
+sure that you don't use the qt3 version accidentally (wIf you have installed
+the Qt development environment "QtCreator" then you can build <span
+class="style10"><strong><em>LavaPEuot;QtCreator" then you can build <span
+class="style10"><strong><em>LavaPE</em></strong></span> easily by opening the
+project file lavape.pro in QtCreator and issuing a "Build all" from the "Build"
+menu.</em></strong></span></p>
 
+<p style="font-family: Arial,Helvetica,sans-serif">The build process will take
+quite a while. You will find the executables of the <em
+style="color:#ff0000"><strong>Lava</strong></em> Programming Environment in
+lavape/bin finally: "<em style="color:#ff0000"><strong>LavaPE</strong></em>",
+"<em style="color:#ff0000"><strong>Lava</strong></em>", and "LPC". (The <em
+style="color:#ff0000"><strong>Lava</strong></em> Precompiler "LPC" is nGo to
+the lavape/bin directory, launch "./LavaPE", consult the "what is", "what next"
+and online help, open some sample programs from the lavape/samples directory
+and enjoy the unique structure editing features of <em
+style="color:#ff0000"><strong>LavaPEirectory and enjoy the unique structure
+editing features of <em
+style="color:#ff0000"><strong>LavaPE</strong></em>.</strong></em></p>
 
-<p style="font-family: Arial,Helvetica,sans-serif">The build process will take quite 
-    a while. You will find the executables of the <em
-style="color:#ff0000"><strong>Lava</strong></em> Programming Environment in 
-    lavape/bin finally: &quot;<em
-style="color:#ff0000"><strong>LavaPE</strong></em>&quot;, &quot;<em
-style="color:#ff0000"><strong>Lava</strong></em>&quot;, and &quot;LPC&quot;. (The <em
-style="color:#ff0000"><strong>Lava</strong></em> Precompiler &quot;LPC&quot; is nGo to the lavape/bin directory, 
-  launch &quot;./LavaPE&quot;, consult the &quot;what is&quot;, &quot;what next&quot; and online help, open some 
-  sample programs from the lavape/samples directory and enjoy the unique structure 
-  editing features of <em style="color:#ff0000"><strong>
-    LavaPEirectory and enjoy the unique structure editing features of <em style="color:#ff0000"><strong>
-    LavaPE</strong></em>.</p>
+<p
+style="font interpreter &#34;Lava&#34;&lt;/p&gt;    &lt;ol&gt;     &lt;li&gt;       &lt;p style="> either
+by executing "./Lava" in the lavape/bin directory and by opening a *.lava or
+*.ldoc file from the file menu or by clicking the file open button,</p>
+<ul>
+  <li><p style="font-family: Arial,Helvetica,sans-serif">or from <em
+    style="color:#ff0000"><strong>LavaPE</strong></em> by clicking the "running
+    man" toolbutton, after you have activated the executable code of a <span
+    class="style10"><strong><em>Lava</em></strong></span> main program or a
+    declaration tree view that <em>contains</em> a main program declaration.</p>
+  </li>
+</ul>
 
-<p style="font interpreter &quot;Lava&quot;</p>
-
-  <ol>
-    <li>
-      <p style="font-family: Arial,Helvetica,sans-serif">
-&nbsp;either by executing &quot;./Lava&quot; in the lavape/bin directory and by opening a *.lava 
-        or *.ldoc file from the file menu or by clicking the file open button,</p>
-    </li>
-    <li>
-      <p style="font-family: Arial,Helvetica,sans-serif">
-        or from <em
-style="color:#ff0000"><strong>LavaPE</strong></em> by clicking the &quot;running man&quot; 
-        toolbutton, after you have activated the executable code of a
-        <span class="style10"><strong><em>Lava</em></strong></span> main program or a 
-        declaration tree view that <em>contains</em> a main program declaration.</p>
-    </li>
-  </ol>
-
-<p style="font-family: Arial,Helvetica,sans-serif">We'd appreciate very much if 
-  you would inform us about any problems that you have encounterd during the 
-  installation or while using <span
+<p style="font-family: Arial,Helvetica,sans-serif">We'd appreciate very much if
+you would inform us about any problems that you have encounterd during the
+installation or while using <span
 style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
 style="color:#ff0000">Lavaon or while using <span
 style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
 style="color:#ff0000">Lava</span><span class="style8">/</span><span
-style="color&nbsp;</p>
-
-<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">D) How to 
-  build <em style="color:#ff0000">LavaPEle="f from the sources on Windows 
-  platforms</h3>
-
-<p class="style5">On Windows you may build 0">LavaPE</em> from the source distribution on 
-    Windows plat from the sources using VisualStudio VC++ [Express] 
-  2008 or VisualStudio 2010 (which is available as a release candidate presently):</p>
+style="color&nbsp;&lt;/p&gt;  &lt;h3 style=">D) How to build <em
+style="color:#ff0000">LavaPEle="f from the sources on Windows
+platforms</em></span></strong></em></span></span></strong></em></span>
+<p class="style5"><span
+style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
+style="color:#ff0000"><span
+style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
+style="color&nbsp;&lt;/p&gt;  &lt;h3 style="><em style="color:#ff0000">On
+Windows you may build
+0"&gt;LavaPE</em></span></strong></em></span></span></strong></em></span></p>
+<span style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
+style="color:#ff0000"><span
+style="font-family: Arial,Helvetica,sans-serif"><em><strong><span
+style="color&nbsp;&lt;/p&gt;  &lt;h3 style="> from the source distribution on
+Windows plat from the sources using VisualStudio VC++ [Express] 2008 or
+VisualStudio 2010 (which is available as a release candidate
+presently):</span></strong></em></span></span></strong></em></span></p>
+<ol>
+  <li><p class="style5">Get the binary version of Qt4 from e now):</p>
     <ol>
-        <li>
-            <p class="style5">
-                Get the binary version of Qt4 from e now):</p>
-    <ol>
-        <li>
-            <p class="style5">
-                Get the binary version of Qt4 from
-                <a href="http://qt.nokia.com/downloads/windows-cpp-vs2008">
-                http://qt.nokia.com/downloads/windows-cpp-vs2008</a> and install it in a 
-                directory of your choice.</p>
-        </li>
-        <li>
-            <p class="style5">
-                Set the Windows environment variable QTDIR to point to the Qt4 installation 
-                Get the <span class="style10"><strong><em>LavaPE</em></strong></span> sources in 
-                the same way as in the UNIX case.</p>
-        </li>
-        <li>
-            <p class="style5">
-                Open the solution file &lt;lavape-dir&gt;\src\LavaPE.sln in VS2010 or 
-                &lt;lavape-dir&gt;\src\LavaPE-VS2008.sln in VS2008.ile &lt;lavape-dir&gt;\src\LavaPE.sln in VS2010 or 
-                &lt;lavape-dir&gt;\src\LavaPE-VS2008.sln in VS2008.</p>
-        </li>
-        <li>
-            <p class="style5">
-                Select the &quot;BuildAfter completion of the build process you can launch LavaPE.exe or Lava.exe 
-        directly from VC++. Don't forget to select the LavaPE or the Lava sub-project, 
-        respectively, as &quot;StartUp Project&quot; in the solution or class view first. Of 
-        course you may also launch LavaPE.exe or Lava.exe directly from the lavape\bin 
+      <li><p class="style5">Get the binary version of Qt4 from <a
+        href="http://qt.nokia.com/downloads/windows-cpp-vs2008">http://qt.nokia.com/downloads/windows-cpp-vs2008</a>
+        and install it in a directory of your choice.</p>
+      </li>
+      <li><p class="style5">Set the Windows environment variable QTDIR to point
+        to the Qt4 installation Get the <span
+        class="style10"><strong><em>LavaPE</em></strong></span> sources in the
+        same way as in the UNIX case.</p>
+      </li>
+      <li><p class="style5">Open the solution file
+        &lt;lavape-dir&gt;\src\LavaPE.sln in VS2010 or
+        &lt;lavape-dir&gt;\src\LavaPE-VS2008.sln in VS2008.ile
+        &lt;lavape-dir&gt;\src\LavaPE.sln in VS2010 or
+        &lt;lavape-dir&gt;\src\LavaPE-VS2008.sln in VS2008.</p>
+      </li>
+      <li><p class="style5">Select the "BuildAfter completion of the build
+        process you can launch LavaPE.exe or Lava.exe directly from VC++. Don't
+        forget to select the LavaPE or the Lava sub-project, respectively, as
+        "StartUp Project" in the solution or class view first. Of course you
+        may also launch LavaPE.exe or Lava.exe directly from the lavape\bin
         directory.</p>
-
+      </li>
+    </ol>
+  </li>
+</ol>
 </body>
 </html>
