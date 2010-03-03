@@ -512,10 +512,6 @@ void wxDocManager::SetNewCurrentFrame() {
     ((wxChildFrame*)m_currentTabWidget->currentWidget())->Activate(true);
 }
 
-
-wxTabWidget::~wxTabWidget() {
-}
-
 void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
 {
   wxChildFrame *page=(wxChildFrame*)widget(index);
