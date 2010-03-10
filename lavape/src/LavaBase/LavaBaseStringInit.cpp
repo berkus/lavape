@@ -472,7 +472,7 @@ void LavaBaseStringInit() {
   ERR_MissingFuncDecl  = QObject::tr("No such member function or variable:");
   ERR_MissingItfFuncDecl  = QObject::tr("No such member function in class interface:");
   ERR_UnaryOpUndefined  = QObject::tr("Operator undefined for this type of operand");
-  ERR_HandleOpParm  = QObject::tr("Parameter of handle operator # must be a quantified variable");
+  ERR_HandleOpParm  = QObject::tr("Parameter of handle operator @ must be a quantified variable");
   ERR_UseVT  = QObject::tr("Error: This or a base type is virtual; => ref. to concrete class forbidden");
   ERR_WrongContext  = QObject::tr("Type cannot be referenced from the current pattern context");
   ERR_ImmutableCallObj  = QObject::tr("This (immutable!) value object is used to call a non-read-only member function (= whose \"self\" is variable)");

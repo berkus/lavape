@@ -2213,7 +2213,7 @@ bool SelfVar::Check (CheckData &ckd)
     ckd.lpc.ContextFlags.INCL(selfiContext);
     ckd.lpc.ContextFlags.INCL(selfoContext);
     if (execDECL->ParentDECL->TypeFlags.Contains(forceOverride)
-    || execDECL->ParentDECL->TypeFlags.Contains(isStatic))
+    /*|| execDECL->ParentDECL->TypeFlags.Contains(isStatic)*/)
       ckd.lpc.ContextFlags.INCL(staticContext);
     else
       ckd.lpc.ContextFlags.EXCL(staticContext);
@@ -2232,7 +2232,7 @@ bool SelfVar::Check (CheckData &ckd)
   }
   else {
     ckd.selfTypeDECL = execDECL->ParentDECL;
-    ckd.lpc.ContextFlags.INCL(staticContext);
+    //ckd.lpc.ContextFlags.INCL(staticContext);
     ckd.lpc.ContextFlags.EXCL(selfiContext);
     ckd.lpc.ContextFlags.EXCL(selfoContext);
   }
@@ -2356,7 +2356,7 @@ void HandleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
   cat = valueObjectCat;
   decl = ckd.document->IDTable.GetDECL(ckd.document->isStd?0:1,ckd.document->IDTable.BasicTypesID[B_Che]);
   ckd.tempCtx = CContext(0,0);
-  ckd.tempCtx.ContextFlags.INCL(staticContext);
+  //ckd.tempCtx.ContextFlags.INCL(staticContext);
   ctxFlags.bits = 0;
 #ifdef INTERPRETER
   finalType = ckd.document->GetType(decl);
@@ -3020,7 +3020,7 @@ void EvalExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &ca
   cat = valueObjectCat;
   decl = ckd.document->IDTable.GetDECL(ckd.document->isStd?0:1,ckd.document->IDTable.BasicTypesID[B_Bool]);
   ckd.tempCtx = CContext(0,0);
-  ckd.tempCtx.ContextFlags.INCL(staticContext);
+  //ckd.tempCtx.ContextFlags.INCL(staticContext);
   ctxFlags.bits = 0;
 #ifdef INTERPRETER
   finalType = decl;

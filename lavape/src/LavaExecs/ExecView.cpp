@@ -1780,7 +1780,7 @@ exp: // Const_T
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objCombo);
     else if (text->currentSelection->data.token == Exp_T
     && text->currentSynObj->parentObject->primaryToken == Handle_T) {
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,0,nullCtx,valueObjectCat,true);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,0,nullCtx,anyCat,true);
     }
     else if (text->currentSynObj->parentObject->primaryToken == assign_T) {
       assigStm = (Assignment*)text->currentSynObj->parentObject;

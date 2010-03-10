@@ -340,9 +340,11 @@ void CLavaPEApp::onFocusChanged(QWidget *old, QWidget *now) {
     wid = wid->parentWidget();
   if (!wid)
     return;
-  if (wid->inherits("CComboBar")&& !((CComboBar*)wid)->myExecView->active)
+  if (wid->inherits("CComboBar")
+  && !((CComboBar*)wid)->myExecView->active)  // to avoid infinite recursion
     ((CComboBar*)wid)->myExecView->Activate(false);
-  else if (wid->inherits("wxView")&& !((wxView*)wid)->active)
+  else if (wid->inherits("wxView")
+  && !((wxView*)wid)->active)  // to avoid infinite recursion
     ((wxView*)wid)->Activate(false);
 }
 
