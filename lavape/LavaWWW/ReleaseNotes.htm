@@ -43,12 +43,7 @@
     {
       text-align: center;
     }
-    .style13
-    {
-      color: #FF0000;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-  </style>
+    </style>
 </head>
 
 <body>
@@ -140,7 +135,7 @@ installer.</p>
 
 <p style="font-family: Arial,Helvetica,sans-serif"> </p>
 
-<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">C) How
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">B) How
 to install the Mac OS (Intel) binary release of <em
 style="color:#ff0000">LavaPE</em></h3>
 
@@ -171,7 +166,7 @@ installation directory "lavape".</p>
 
 <p style="font-family: Arial,Helvetica,sans-serif"></p>
 
-<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">D) How
+<h3 style="font-family: Arial,Helvetica,sans-serif;text-align:center;">C) How
 to build <em style="color:#ff0000">LavaPE</em> from the sources on UNIX
 platforms</h3>
 
@@ -293,7 +288,7 @@ by executing "./Lava" in the lavape/bin directory and by opening a *.lava or
 you would inform us about any problems that you have encounterd during the
 installation or while using <span class="style10"><strong><em>Lava</em></strong></span>.
   <p style="font-family: Arial,Helvetica,sans-serif">&nbsp;<h3 
-    style="font-family: Arial,Helvetica,sans-serif" class="style12">E) How to build <em
+    style="font-family: Arial,Helvetica,sans-serif" class="style12">D) How to build <em
 style="color:#ff0000">LavaPE </em> <span class="style8"> from the sources on Windows
 platforms</h3>
   <p class="style5">
@@ -301,42 +296,41 @@ platforms</h3>
 VisualStudio 2010 (which is available as a release candidate
 presently):</p>
       <ol>
-        <li class="style5">Get the binary version of Qt4 from 
+        <li><span class="style5">Get the binary version of Qt4 from 
           <a href="http://qt.nokia.com/downloads/windows-cpp-vs2008">http://qt.nokia.com/downloads/windows-cpp-vs2008</a>
-        and install it in a directory of your choice.<br />
+        and install it in a directory of your choice.</span><br class="style5" />
+          <br class="style5" />
         </li>
-        <li><span class="style5"></li>
-        Set the Windows environment variable QTDIR to point
-        to the Qt4 installation directory.<br />
-          </span></li>
-        <li><span class="style5">Get the </span> <span
-        class="style13"><strong><em>LavaPE</em></strong></span><span class="style5"> sources in the
-        same way as in the UNIX case.<br />
-          </span></li>
-          <li>
-            <p class="style5">
-        Open the solution file
+        <li><span class="style5">Set the Windows environment variable QTDIR to point
+        to the Qt4 installation directory. Add %QTDIR%\bin to your PATH environment 
+          variable (or else the Qt DLL&#39;s won&#39;t be found when launching LavaPE.exe/Lava.exe 
+          after the build process has finished).</span><br class="style5" />
+          <br class="style5" />
+        </li>
+        <li><span class="style5">Get the </span></span><span class="style5">
+          <span class="style10"> <strong><em>LavaPE</em></strong></span><span class="style8"> sources in the same way as in the UNIX case.</span></span><span class="style8"><br 
+            class="style5" /><br class="style5" />
+        </li>
+        <li>
+          <span class="style5">Open the solution file
         &lt;lavape-dir&gt;\src\LavaPE.sln in VS2010 or
         &lt;lavape-dir&gt;\src\LavaPE-VS2008.sln in VS2008.ile
         &lt;lavape-dir&gt;\src\LavaPE.sln in VS2010 or
-        &lt;lavape-dir&gt;\src\LavaPE-VS2008.sln in VS2008.</p>
-          </li>
-          <li>
-            <p class="style5">
-        Select the "Build 
-              Solution&quot; entry from the &quot;Build&quot; menu.</p>
-          </li>
-        <li>
-            <p class="style5">
-              After completion of the build process you can launch LavaPE.exe or Lava.exe 
-              directly from VC++<span class="style8">: Just select the LavaPE or the Lava 
+        &lt;lavape-dir&gt;\src\LavaPE-VS2008.sln in VS2008.</span><br class="style5" />
+          <br class="style5" />
+        </li>
+        <li><span class="style5">Select the &quot;Build Solution&quot; command from the &quot;Build&quot; menu.</span><br 
+            class="style5" /><br class="style5" />
+        </li>
+        <li><span class="style5">After completion of the build process you can launch LavaPE.exe or Lava.exe 
+              from VC++: Just select the LavaPE or the Lava 
               sub-project, respectively, as &quot;StartUp Project&quot; in the solution or class view 
-              first. </span>Of course you
+              first.</span><br class="style5" /><br class="style5" />
+          <span class="style5">Of course you
         may also launch LavaPE.exe or Lava.exe directly from the lavape\bin
-        directory.</p>
+        directory.
+    </span>
     </li>
-          </li>
-        </ol>
-  </ol>
+    </ol>
 </body>
 </html>
