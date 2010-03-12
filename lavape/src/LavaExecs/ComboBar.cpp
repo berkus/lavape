@@ -130,7 +130,7 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
       context.ContextFlags.EXCL(staticContext);
   }
   else {
-    context.ContextFlags.INCL(staticContext);
+    //context.ContextFlags.INCL(staticContext);
     context.ContextFlags.EXCL(selfiContext);
     context.ContextFlags.EXCL(selfoContext);
   }
