@@ -591,7 +591,7 @@ void CLavaBaseDoc::NextContext(LavaDECL *decl, CContext &context)
       if (!con.oContext || !context.oContext
         || !IDTable.IsA(context.oContext, TID(con.oContext->OwnID, con.oContext->inINCL), 0)) {
         context.oContext = con.oContext;
-        context.ContextFlags.INCL(staticContext);
+        //context.ContextFlags.INCL(staticContext);
         context.ContextFlags.EXCL(selfoContext);
         context.ContextFlags.EXCL(multiContext);
         context.ContextFlags.EXCL(undefContext);
