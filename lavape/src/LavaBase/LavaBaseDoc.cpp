@@ -875,6 +875,7 @@ bool CLavaBaseDoc::OverriddenMatch(LavaDECL *decl, bool setName, CheckData* pckd
 
 QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, CheckData* pckd)
 { //note: do not use this function in Boxes.cpp
+  LavaDECL* valDECL;
   CContext con;
   bool sameContext;
   if (!decl)
@@ -885,9 +886,22 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
   if (!con.oContext || (con.oContext == baseDECL))
     return 0;
   if (baseDECL->DeclType == VirtualType) {
-    IDTable.GetPattern(decl, con);
-    if ((baseDECL->ParentDECL == con.iContext) || (baseDECL->ParentDECL == con.oContext))
-      return 0;
+    if (IDTable.lowerOContext(decl, baseDECL, sameContext)
+                && sameContext && (CheckGetFinalMType(decl, baseDECL) == baseDECL)) {
+      //IDTable.GetPattern(decl, con);
+      //((if ((baseDECL->ParentDECL == con.iContext) || (baseDECL->ParentDECL == con.oContext)) {
+      if (baseDECL->RefID.nID == -1)
+        return 0;
+      valDECL = GetType(baseDECL);
+      if (!valDECL)
+        return 0;
+      if (TID(valDECL->OwnID,isStd?0:1) == TID(IDTable.BasicTypesID[B_Object],isStd?0:1))
+        return 0;
+      if  (IDTable.IsA(decl,TID( baseDECL->OwnID, baseDECL->inINCL), 0) || IDTable.IsA(baseDECL, TID(decl->OwnID, decl->inINCL), 0))
+        return &ERR_IllegalExtention;
+      else
+        return 0;
+    }
     else
       return &ERR_OverInOtherCon;
   }

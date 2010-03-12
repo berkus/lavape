@@ -175,6 +175,7 @@ QString ERR_NoImplClass;
 QString ERR_ImplOfAbstract;
 QString ERR_CleanSupports;
 QString ERR_OverInOtherCon;
+QString ERR_IllegalExtention;
 QString ERR_NoDefaultIni;
 QString ERR_CopyToSelf;
 QString ERR_NoIFforForm;
@@ -498,6 +499,7 @@ void LavaBaseStringInit() {
   ERR_ImplOfAbstract  = QObject::tr("An abstract function cannot have an implementation");
   ERR_CleanSupports  = QObject::tr("Redundant entry in the list of base types");
   ERR_OverInOtherCon  = QObject::tr("You cannot extend a class that has been declared in another context");
+  ERR_IllegalExtention  = QObject::tr("The value of the virtual type and the class itself are not independent");
   ERR_NoDefaultIni  = QObject::tr("Default initializer missing");
   ERR_CopyToSelf  = QObject::tr("Copy onto self permitted only from a source expression of the same or a more derived type");
   ERR_NoIFforForm  = QObject::tr("The associated class of this GUI service is missing");
