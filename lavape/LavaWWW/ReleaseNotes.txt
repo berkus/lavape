@@ -1,0 +1,193 @@
+                                  Release notes for release 0.9.1
+                                  ===============================
+           (HTML version of these release notes: http://lavape.sf.net/ReleaseNotes.htm)
+           
+
+I) Change Log for Release 0.9.1
+===============================
+
+A) The LavaPE/Lava user interface is now based on tabbed and splitter widgets
+
+The user interface of the Lava Programming Environment LavaPE and of the Lava interpreter
+is no longer based on the MDI (Multiple Document Interface) concept but on tabbed and
+splitter widgets, which provide more neatly arranged, non-overlapping windows.
+
+The individual tabs can be rearranged by drag-and-drop within a tabbed widget as well
+as between different tabbed widgets. The latter may be arranged horizontally or vertically.
+
+
+B) The state/value object distinction has been revised
+
+Before this revision only the top level attributes of a constant value object had been
+protected against replacement. Now also the nested constituents of an object are
+protected against replacement. We believe this to be a more consistant usage of the term
+"constant object". But note that "constant object" actually isn't a property of a Lava object
+any longer, but a property of Lava variables, and LavaPE makes sure that this property is used
+consistantly. For instance, you cannot assign a state variable to a value variable and vice versa.
+
+However, you can take an immutable "snapshot" of the current state of a state object
+by using the "copy" statement or the "clone" expression to copy the state object
+to a variable of category "value object": The target of copy/clone may be of any category.
+
+Using copy/clone you can in particular produce an object of a known, specific category
+from a variable having the indefinite category "Any category".
+
+
+C) A virtual type (= type parameter) may be declared "final" now
+
+This means that it cannot be derived/specialized any further in a derived class or package.
+Two new little sample programs (FinalVirtualType.lava and ForceOverride.lava) explain
+the motivation behind this and the related "force override" attribute of member functions.
+
+
+D) LavaPE has been ported to Mac OS
+
+The Lava programming environment can now also be built and run on the Mac OS 10.5 platform.
+A binary package for Mac OS 10.5 (Intel) is available in particular.
+
+
+E) LavaPE has been ported from custom makefiles to qmake
+
+This makes it, among other advantages, much easier to produce *.app bundles and *.framework
+library bundles on Mac OS.
+
+
+F) HTML documentation files now conform to XHTML 1.0
+
+Our online and web help files have been revised so as to conform to the current
+"XHTML 1.0 transitional" standard. The HTML representation generated from *.lava files
+conforms to "XHTML 1.0 transitional" now, too.
+
+
+G) Online help uses the newer Qt Assistant now
+
+We have changed the LavaPE/Lava online help interface so as to use the newer Qt Assistant
+rather than the old Assistant_adp help display program. Qt Assistant supports a much more
+comprehensive set of (X)HTML and CSS tags.
+
+
+II) Installation of Lava/LavaPE
+===============================
+
+A) How to install the Windows binary release of LavaPE
+
+Simply launch the downloaded lavape-<rel>-win32-bin.exe file and follow the instructions
+of the installer.
+
+
+B) How to install the Linux binary releases of LavaPE
+
+Download the pertinent *.rpm / *.deb packages and install them in the usual way using
+"rpm -i <package>.rpm" or "dpkg -i <package>.deb".
+
+(These commands will report the absence of required Qt4 packages. In this case you must
+install these first before repeating the lavape installation.)
+
+A "lavape" installation directory will be created in /opt. The shared libraries will
+be installed in /usr/local/lib.
+
+The LavaPE/Lava executables can be started from /opt/lavape/bin or any other working directory
+or by double-clicking in the nautilus or konqueror file manager.
+
+A number of sample programs can be found in the "samples" subdirectory of the "/opt/lavape"
+installation directory.
+
+
+C) How to install the Mac OS 10.5 binary release of LavaPE
+
+Download Qt-4.5.2 from the following link:
+
+http://get.qtsoftware.com/qt/source/qt-mac-opensource-4.5.2.dmg
+
+and install it in the default location.
+
+Download the lavape-<rel>-macos.dmg disk image file and mount it by double-clicking.
+
+A double-click on LavaPE.app or Lava.app will launch the Lava Programming Environment
+or the Lava Interpreter, respectively.
+
+For a more permanent installation, copy and paste the mounted image to your "Applications"
+folder or any other folder. Drag LavaPE.app/Lava.app to your dock, if you like.
+
+A number of sample programs can be opened in LavaPE.app or Lava.app from the "samples"
+subdirectory of the installation directory "lavape".
+
+
+C) How to install the OpenSolaris binary release of LavaPE
+
+Download lavape-<rel>-solaris-11-intel.pkg.gz, use
+
+gunzip lavape-<rel>-solaris-11-intel.pkg.gz
+
+to uncompress it, and execute
+
+pkgadd -d lavape-<rel>-solaris-11-intel.pkg
+
+as superuser to install the package.
+
+A "lavape" installation directory will be created in /opt. The shared libraries will
+be installed in /usr/local/lib and /usr/local/Trolltech/Qt-<qt-release>
+
+The LavaPE/Lava executables can be started from the command line in /opt/lavape/bin
+or any other working directory, or by double-clicking in the file manager.
+
+A number of sample programs can be found in the "samples" subdirectory of the
+"/opt/lavape" installation directory.
+
+
+D) How to install LavaPE from the source distribution on UNIX platforms
+
+Download the compressed tar file lavape-<release>-src.tar.bz2 of the LavaPE source distribution
+and store it in the parent directory of the envisaged lavape installation directory.
+
+Uncompress it using the command
+
+tar xjvf lavape-<release>-src.tar.bz2
+
+Or download the most recent developer version of lavape from our GIT repository at SourceForge,
+using the following command in a shell window:
+
+git fetch git://lavape.git.sourceforge.net/gitroot/lavape/lavape
+
+You need to have GNU gcc/make and the developer version of Nokia (formerly TrollTech)/Qt4.
+
+Either you may download (the OpenSource version of) Qt4 from ftp://ftp.qtsoftware.com/qt/source/
+and build it yourself. In this case you must set the environment variable QTDIR to point to the
+Qt-<release> directory that is created by the build process, before you build Lava/LavaPE
+from the sources.
+
+Or, on a Linux box, the software package manager of your Linux distribution usually offers
+the possibility to download and install the Qt4 development package(s).
+
+Then build the LavaPE executables as follows:
+
+cd lavape
+
+qmake lavape.pro // "qmake -spec macx-g++ lavape.pro" on Mac OS X
+
+make
+
+On some platforms the Qt4 version of qmake has a different name, like "qmake-qt4".
+
+The command "qmake -v" will display the Qt version used by qmake.
+
+The build process will take quite a while. You will find the executables of the Lava
+Programming Environment in lavape/bin thereafter: "LavaPE", "Lava", and "LPC".
+(The Lava Precompiler "LPC" is needed only during the build process.)
+
+Go to the lavape/bin directory, launch "./LavaPE", consult the Online Help, open some sample programs
+from the lavape/samples directory and enjoy the unique structure editing features of LavaPE.
+
+You can run the Lava interpreter "Lava"
+
+1. either by executing "./Lava" in the lavape/bin directory and by
+
+opening a *.lava or *.ldoc file from the file menu or from the
+
+file open button, or
+
+2. from LavaPE by clicking the "running man" toolbutton, after you have activated a view containing
+the executable code of a main program or a declaration tree view that contains a main program declaration.
+
+We'd appreciate very much if you would inform us (e-mail: Klaus.D.Guenther(at)gmail.com)
+about any problems that you have encounterd during the installation or while using Lava/LavaPE.
