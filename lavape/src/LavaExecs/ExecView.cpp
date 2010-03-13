@@ -5971,7 +5971,7 @@ void CExecView::DisableActions()
   LBaseData->toggleCommentsActionPtr->setEnabled(false);
   LBaseData->nullActionPtr->setEnabled(false);
   LBaseData->additionActionPtr->setEnabled(false);
-        LBaseData->ordActionPtr->setEnabled(false);
+  LBaseData->ordActionPtr->setEnabled(false);
 
   LBaseData->DbgActionPtr->setEnabled(false);
   LBaseData->DbgStepNextActPtr->setEnabled(false);
@@ -5979,7 +5979,7 @@ void CExecView::DisableActions()
   LBaseData->DbgStepintoActPtr->setEnabled(false);
   LBaseData->DbgStepoutActPtr->setEnabled(false);
   LBaseData->DbgRunToSelActPtr->setEnabled(false);
-        LBaseData->DbgBreakpointActPtr->setEnabled(false);
+  LBaseData->DbgBreakpointActPtr->setEnabled(false);
   LBaseData->DbgClearBreakpointsActPtr->setEnabled(false);
   LBaseData->DbgStopActionPtr->setEnabled(false);
 
