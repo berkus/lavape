@@ -130,7 +130,7 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
       context.ContextFlags.EXCL(staticContext);
   }
   else {
-    context.ContextFlags.INCL(staticContext);
+    //context.ContextFlags.INCL(staticContext);
     context.ContextFlags.EXCL(selfiContext);
     context.ContextFlags.EXCL(selfoContext);
   }
@@ -1203,7 +1203,7 @@ void CComboBar::ShowUpcasts(const TID& id, bool theTop)
 
 void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &context, Category category, bool forInput, bool forCopy)
  //if decl != 0: decl is final virtual type
- //if decl = 0 local variables only for handle operator (#)
+ //if decl = 0 local variables only for handle operator (@)
 {
   Category cat = unknownCat, catComp = unknownCat;
   CContext compContext = context, bContext;
@@ -1258,8 +1258,10 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
             if (ctxFlags.bits)
               bContext.ContextFlags = ctxFlags;
           }
-          else
+          else {
             forHandle = true;
+            cat = anyCat;
+          }
         }
         if (catComp == unknownCat)
           catComp = cat;

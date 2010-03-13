@@ -5181,7 +5181,7 @@ void CExecAllDefs::FitBox(QComboBox* combo, int maxWidth)
 
 void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
 {
-  LavaDECL *elDef = *pelDef, *decl = elDef;
+  LavaDECL *elDef = *pelDef, *decl = elDef, *valDECL;
   if ((elDef->fromBType != NonBasic)
     && ((DeclType != Function)
         || (elDef->DeclType != Interface)
@@ -5241,15 +5241,22 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
     putIt = putIt && (!CallingDECL || !myDoc->IDTable.IsA(elDef, TID(CallingDECL->OwnID, CallingDECL->inINCL), 0)
                   && !myDoc->IDTable.IsA(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0));
   }
-  else if ((DeclType == Interface) && (elType == VirtualType)) 
-    if (CallingDECL) {
-      putIt = myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext)
-              && sameContext && (myDoc->CheckGetFinalMType(CallingDECL, elDef) == elDef);
-      putIt = putIt && !myDoc->IDTable.IsA(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0);
+  else if ((DeclType == Interface) && (elType == VirtualType)) {
+    valDECL = myDoc->GetType(elDef);
+    putIt = (valDECL != 0);
+    if (putIt) {
+      if (CallingDECL) {
+        putIt = myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext)
+                && sameContext && (myDoc->CheckGetFinalMType(CallingDECL, elDef) == elDef);
+        putIt = putIt 
+          && ((TID(valDECL->OwnID, valDECL->inINCL) == TID(myDoc->IDTable.BasicTypesID[B_Object],myDoc->isStd?0:1))
+                   || !myDoc->IDTable.IsA(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0));
+      }
+      else
+        putIt = myDoc->IDTable.lowerOContext(ParentDECL, elDef, sameContext)
+                && sameContext && (myDoc->CheckGetFinalMType(ParentDECL, elDef) == elDef);
     }
-    else
-      putIt = myDoc->IDTable.lowerOContext(ParentDECL, elDef, sameContext)
-              && sameContext && (myDoc->CheckGetFinalMType(ParentDECL, elDef) == elDef);
+  }
   else if ((DeclType == Impl) && (elType == Interface)) 
     putIt = (*pelDef)->inINCL != 1;
                  //true; //!elDef->TypeFlags.Contains(isComponent) //impl of
