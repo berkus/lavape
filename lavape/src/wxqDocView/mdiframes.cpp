@@ -375,9 +375,14 @@ void wxChildFrame::closeMyPage() {
 wxChildFrame::~wxChildFrame()
 {
   QString title;
+  wxDocManager *docMan=wxDocManager::GetDocumentManager();
+
+  docMan->RememberActiveFrame(0);
+  if (docMan->GetOldActiveFrame() == this)
+    docMan->ResetOldActiveFrame();
+  docMan->SetNewCurrentFrame();
 
   deleting = true;
- 
   if (m_document->deleting)
     return;
 
@@ -561,8 +566,6 @@ void wxTabWidget::closePage() {
     delete page;
     if (!count() && splitter->count() > 1)
       deleteLater();
-    docMan->RememberActiveFrame(0);
-    docMan->SetNewCurrentFrame();
   }
 }
 
