@@ -879,6 +879,7 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
   CContext con;
   bool sameContext;
   CHETID *cheTID;
+
   if (!decl)
     return 0;
   if (!baseDECL->usableIn(decl))
@@ -887,7 +888,14 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
   if (!con.oContext || (con.oContext == baseDECL))
     return 0;
   if (baseDECL->DeclType == VirtualType) {
+    if (baseDECL->TypeFlags.Contains(isAbstract))
+       if (IDTable.lowerOContext(decl, baseDECL, sameContext) && sameContext)
+         return 0;
+       else
+         return &ERR_OverInOtherCon;
     valDECL = GetType(baseDECL);
+    if (!valDECL)
+      return &ERR_NoBaseIF;
     if  (IDTable.IsA(valDECL, TID(decl->OwnID, decl->inINCL), 0))
       return &ERR_IllegalExtention;
     if (TID(valDECL->OwnID,valDECL->inINCL) != TID(IDTable.BasicTypesID[B_Object],isStd?0:1)) {
@@ -923,8 +931,11 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
     return &ERR_OverInOtherCon;
   if (!sameContext && IDTable.isValOfVirtual(decl, baseDECL))
     return 0;
-  if (sameContext && IsCDerivation(decl, baseDECL, pckd))
-    return 0;
+  if (sameContext)
+    if (IsCDerivation(decl, baseDECL, pckd) || !IDTable.isValOfVirtual(decl) && !IDTable.isValOfVirtual(baseDECL))
+      return 0;
+    else 
+      return &ERR_OverInSameCon;
   return &ERR_OverInOtherCon;
 }
 

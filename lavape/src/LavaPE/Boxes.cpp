@@ -1529,6 +1529,7 @@ ValOnInit CFuncBox::OnInitDialog()
   CListBoxItem *listItem;
   CHETIDs *ncheTIDs = 0;
   QString nameText, cstr;
+  CContext con;
 
   if (myDoc->changeNothing) {
     ID_OK->setEnabled(false);
@@ -1556,7 +1557,8 @@ ValOnInit CFuncBox::OnInitDialog()
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
     Native->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isNative));
   }
-  EnforceOver->setEnabled((myDECL->ParentDECL->DeclType == Interface) && myDoc->IDTable.isValOfVirtual(myDECL->ParentDECL));
+  myDoc->IDTable.GetPattern(myDECL, con);
+  EnforceOver->setEnabled((myDECL->ParentDECL->DeclType == Interface) && ((con.iContext != 0) || (con.oContext != 0)));
 
   if (onNew) {
     hasParams = 0;

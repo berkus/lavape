@@ -73,7 +73,7 @@ bool CLavaPEDoc::AddVBase (LavaDECL* classDECL, LavaDECL* conDECL)
 	while (cheID)	{
 		IFace = IDTable.GetDECL (cheID->data, classDECL->inINCL);
 		if (IFace)	{
-			if (IFace->DeclType == VirtualType)	{
+			if ((IFace->DeclType == VirtualType) && !IFace->TypeFlags.Contains(isAbstract))	{
 				IFace = IDTable.GetFinalBaseType (cheID->data, classDECL->inINCL, conDECL);
         if (!IFace) {
 				  IFace = IDTable.GetFinalBaseType (cheID->data, classDECL->inINCL, classDECL);
@@ -110,12 +110,14 @@ bool CLavaPEDoc::AddVBase (LavaDECL* classDECL, LavaDECL* conDECL)
 				}
 
 			}
-			elOk = AddVBase (IFace, conDECL);
-			ok = ok && elOk;
-      if (!ok) { // there is an error in a base class
-				new CLavaError (&classDECL->DECLError1, &ERR_InVTofBaseIF);
-				classDECL->WorkFlags.INCL (recalcVT);
-			}
+      if (IFace) {
+			  elOk = AddVBase (IFace, conDECL);
+			  ok = ok && elOk;
+        if (!ok) { // there is an error in a base class
+				  new CLavaError (&classDECL->DECLError1, &ERR_InVTofBaseIF);
+				  classDECL->WorkFlags.INCL (recalcVT);
+			  }
+      }
 		}
 		cheID = (CHETID*) cheID->successor;
 	}
@@ -2999,7 +3001,7 @@ bool CLavaPEDoc::MakeSetAndGets (LavaDECL* implDECL, LavaDECL* classDECL, int ch
 
 bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 {
-	bool isNSp, isCreatable, elOk, allOk = true, /*GUInew = true, GUInewE = true,*/ hasEnum = false;
+	bool isNSp, isCreatable, elOk = true, allOk = true, /*GUInew = true, GUInewE = true,*/ hasEnum = false;
 	QString cstr;
 	CHETVElem *El;
 	LavaDECL *elDecl, *IFace, *elBase, *valDECL;
@@ -3019,9 +3021,14 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 	while (cheID) {  
 		IFace = IDTable.GetDECL (cheID->data, classDECL->inINCL);
 		if (IFace)	{
-			if (IFace->DeclType == VirtualType)
+      if ((IFace->DeclType == VirtualType) && !IFace->TypeFlags.Contains(isAbstract)) {
 				IFace = IDTable.GetFinalBaseType (cheID->data, classDECL->inINCL, classDECL);
-			if (IFace)	{
+        if (!IFace) {
+				  allOk = false;
+				  new CLavaError (&classDECL->DECLError1, &ERR_NoBaseIF);
+			  }
+      }
+			if (IFace && ((IFace->DeclType != VirtualType) || !IFace->TypeFlags.Contains(isAbstract)))	{
         if (IDTable.IsA(TID(IFace->OwnID, IFace->inINCL),0, TID(classDECL->OwnID, classDECL->inINCL),0)) {
 					new CLavaError (&classDECL->DECLError1, &ERR_IllegalExtention);
           return false;
@@ -3036,10 +3043,6 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 				if (!allOk) { // there is an error in a base class	
 					classDECL->WorkFlags.INCL (recalcVT);
 				}
-			}
-			else	{
-				allOk = false;
-				new CLavaError (&classDECL->DECLError1, &ERR_NoBaseIF);
 			}
 		}
 		cheID = (CHETID*) cheID->successor;

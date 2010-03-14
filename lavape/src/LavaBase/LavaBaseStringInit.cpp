@@ -175,6 +175,7 @@ QString ERR_NoImplClass;
 QString ERR_ImplOfAbstract;
 QString ERR_CleanSupports;
 QString ERR_OverInOtherCon;
+QString ERR_OverInSameCon;
 QString ERR_IllegalExtention;
 QString ERR_NoDefaultIni;
 QString ERR_CopyToSelf;
@@ -499,6 +500,7 @@ void LavaBaseStringInit() {
   ERR_ImplOfAbstract  = QObject::tr("An abstract function cannot have an implementation");
   ERR_CleanSupports  = QObject::tr("Redundant entry in the list of base classes");
   ERR_OverInOtherCon  = QObject::tr("You cannot extend a class that has been declared in another context");
+  ERR_OverInSameCon  = QObject::tr("Illegal extension in the same context: if the class or the base class is value of a virtual type only C-derivations are allowed");
   ERR_IllegalExtention  = QObject::tr("Illegal extension by virtual type in the class or a base class (cannot calculate the the virtual table)");
   ERR_NoDefaultIni  = QObject::tr("Default initializer missing");
   ERR_CopyToSelf  = QObject::tr("Copy onto self permitted only from a source expression of the same or a more derived type");

@@ -1569,7 +1569,7 @@ LavaDECL* TIDTable::GetFinalBaseType(const TID& id, int inINCL, LavaDECL* conDEC
   CHE *che;
   if (!decl || (decl->DeclType != VirtualType))
     return decl;
-  CContext con;
+  CContext con, conBase;
   GetContextDECLs(conDECL, con);
   if (con.iContext) {
     for (che = (CHE*)con.iContext->NestedDecls.first;
@@ -1587,7 +1587,9 @@ LavaDECL* TIDTable::GetFinalBaseType(const TID& id, int inINCL, LavaDECL* conDEC
     if (che && (((LavaDECL*)che->data)->DeclType == VirtualType))
       return GetDECL(((LavaDECL*)che->data)->RefID, ((LavaDECL*)che->data)->inINCL);
   }
-  return 0;
+  while (decl && (decl->DeclType == VirtualType))
+    decl = GetDECL(decl->RefID, decl->inINCL);
+  return decl;
 }
 
 bool TIDTable::Overrides(const TID& upId, int upinINCL, const TID& id, int inINCL)
@@ -1886,9 +1888,10 @@ QString* TIDTable::CleanSupports(LavaDECL *decl, LavaDECL* contDECL)
 int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDECL, bool putBase)
 {
   //returns 0: type already contained return -1: second container class, 1 : type realy new, 2 : overrides an already contained type
-  LavaDECL* findecl, *finalnewBasedecl, *bdecl;
+  LavaDECL* findecl, *finalnewBasedecl=0, *bdecl;
   CHETID *che;
-  bool sameContext;
+  bool isAbs = false;
+  TID finalBaseID;
   //bool multiContainer;
 
   if (!decl || !newbasedecl || !contDECL)
@@ -1899,31 +1902,41 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
     return 0;
   TID newbaseID = TID(newbasedecl->OwnID, newbasedecl->inINCL);
   if (newbasedecl->DeclType == VirtualType) {
-    if (newbasedecl->TypeFlags.Contains(isAbstract) && decl->TypeFlags.Contains(isAbstract)
-       && lowerOContext(newbasedecl, contDECL, sameContext)  && sameContext)
-      return 1;
-    finalnewBasedecl = GetFinalBaseType(newbaseID, decl->inINCL, contDECL);
+    isAbs = newbasedecl->TypeFlags.Contains(isAbstract);
+    if (!isAbs) 
+     finalnewBasedecl = GetFinalBaseType(newbaseID, decl->inINCL, contDECL);
   }
   else
     finalnewBasedecl = newbasedecl;
-  if (!finalnewBasedecl)
+  if (!isAbs && !finalnewBasedecl)
     return 0;
   /*multiContainer = decl->Supports.first && 
     (decl->SecondTFlags.Contains(isSet) && (finalnewBasedecl->SecondTFlags.Contains(isChain) || finalnewBasedecl->SecondTFlags.Contains(isArray))
       || decl->SecondTFlags.Contains(isChain) && (finalnewBasedecl->SecondTFlags.Contains(isSet) || finalnewBasedecl->SecondTFlags.Contains(isArray))
       || decl->SecondTFlags.Contains(isArray) && (finalnewBasedecl->SecondTFlags.Contains(isSet) || finalnewBasedecl->SecondTFlags.Contains(isChain)));*/
-  TID finalBaseID = TID(finalnewBasedecl->OwnID, finalnewBasedecl->inINCL);
+  if (!isAbs)
+    finalBaseID = TID(finalnewBasedecl->OwnID, finalnewBasedecl->inINCL);
   che = (CHETID*)decl->Supports.first;
   while (che) {
     bdecl = GetDECL(che->data, decl->inINCL);
     if (bdecl) {
       if (bdecl == newbasedecl)
         return 0;
-      if (bdecl->DeclType == VirtualType) {
+      if ((bdecl->DeclType == VirtualType) && (newbasedecl->DeclType == VirtualType)) {
+        if (Overrides(newbasedecl, bdecl)) {
+          if (putBase)
+            che->data = newbaseID;
+          return 2;
+        }
+        else
+          if (Overrides(bdecl, newbasedecl))
+            return 0;
+      }
+      else if ((bdecl->DeclType == VirtualType) && !isAbs) {
         findecl = GetFinalBaseType(che->data, decl->inINCL, contDECL);
         if (finalnewBasedecl == findecl)
           return 0;
-        if (newbasedecl->DeclType != VirtualType)
+        if (newbasedecl->DeclType != VirtualType) {
           if (InheritsFrom(findecl, finalBaseID, decl->inINCL, contDECL, true))
             return 0;
           else
@@ -1932,6 +1945,7 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
                 che->data = newbaseID;
               return 2;
             }
+        }
       }
       else {
         if (newbasedecl->DeclType == VirtualType) {

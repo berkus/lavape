@@ -1339,7 +1339,7 @@ bool CLavaProgram::AddVBase(CheckData& ckd, LavaDECL* decl, LavaDECL* conDECL )
   CHETID *cheID = (CHETID*)decl->Supports.first;
   while (cheID) {
     IFace = IDTable.GetDECL(cheID->data, decl->inINCL);
-    if (IFace && (IFace->DeclType == VirtualType)) {
+    if (IFace && (IFace->DeclType == VirtualType) && !IFace->TypeFlags.Contains(isAbstract)) {
       IFace = IDTable.GetFinalBaseType(cheID->data, decl->inINCL, conDECL);
       if (!MakeVElems(IFace, &ckd))
         return false;
@@ -1358,7 +1358,7 @@ bool CLavaProgram::AddVBase(CheckData& ckd, LavaDECL* decl, LavaDECL* conDECL )
         }
       }
     }
-    if (!AddVBase(ckd, IFace, conDECL))
+    if (IFace && !AddVBase(ckd, IFace, conDECL))
       return false;
     cheID = (CHETID*)cheID->successor;
   }
@@ -1395,13 +1395,21 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
 
   classDECL->VElems.UpdateNo = -1;
   for (cheID = (CHETID*)classDECL->Supports.first; cheID; cheID = (CHETID*)cheID->successor) {//!
-    baseDECL = IDTable.GetFinalBaseType(cheID->data, classDECL->inINCL, classDECL);
+    baseDECL = IDTable.GetDECL (cheID->data, classDECL->inINCL);
     if (!baseDECL) {
       LavaError(*pckd, true, classDECL, &ERR_Broken_ref);
       return false;
     }
-    if (!MakeVElems(baseDECL, pckd) || !AddVElems(*pckd, classDECL, baseDECL))
-      return false;
+    if ((baseDECL->DeclType == VirtualType) && !baseDECL->TypeFlags.Contains(isAbstract)) {
+		  baseDECL = IDTable.GetFinalBaseType (cheID->data, classDECL->inINCL, classDECL);
+      if (!baseDECL) {
+        LavaError(*pckd, true, classDECL, &ERR_Broken_ref);
+        return false;
+      }
+    }
+    if (baseDECL)
+      if (!MakeVElems(baseDECL, pckd) || !AddVElems(*pckd, classDECL, baseDECL))
+        return false;
   }
   if (!AddVBase(*pckd, classDECL, classDECL))
     return false;

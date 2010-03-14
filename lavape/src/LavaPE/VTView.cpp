@@ -549,7 +549,7 @@ bool CVTView::EnableOverride(CTreeItem* item)
             return false;
           GetDocument()->IDTable.GetPattern(ElDECL, con);
           if (con.oContext && (ElDECL->ParentDECL != con.oContext))
-             return GetDocument()->IDTable.lowerOContext(myDECL, ElDECL, sameContext) && !sameContext;
+             return GetDocument()->IDTable.lowerOContext(myDECL, ElDECL, sameContext) /*&& !sameContext??14.03.2010*/;
           else {
             cheID = (CHETID*)myDECL->Supports.first;
             while (cheID) { //!
@@ -557,7 +557,7 @@ bool CVTView::EnableOverride(CTreeItem* item)
                 baseDECL = GetDocument()->IDTable.GetFinalDef(cheID->data, myDECL->inINCL);
                 GetDocument()->IDTable.GetPattern(baseDECL, con);
                 if (con.oContext && (baseDECL != con.oContext)
-                  && (!GetDocument()->IDTable.lowerOContext(myDECL, ElDECL, sameContext) || sameContext))
+                  && (!GetDocument()->IDTable.lowerOContext(myDECL, ElDECL, sameContext) /*|| sameContext??14.03.2010*/))
                   return false;
               }
               cheID = (CHETID*)cheID->successor;
