@@ -875,9 +875,10 @@ bool CLavaBaseDoc::OverriddenMatch(LavaDECL *decl, bool setName, CheckData* pckd
 
 QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, CheckData* pckd)
 { //note: do not use this function in Boxes.cpp
-  LavaDECL* valDECL;
+  LavaDECL *valDECL, *decl2;
   CContext con;
   bool sameContext;
+  CHETID *cheTID;
   if (!decl)
     return 0;
   if (!baseDECL->usableIn(decl))
@@ -886,21 +887,34 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
   if (!con.oContext || (con.oContext == baseDECL))
     return 0;
   if (baseDECL->DeclType == VirtualType) {
+    valDECL = GetType(baseDECL);
+    if  (IDTable.IsA(valDECL, TID(decl->OwnID, decl->inINCL), 0))
+      return &ERR_IllegalExtention;
+    if (TID(valDECL->OwnID,valDECL->inINCL) != TID(IDTable.BasicTypesID[B_Object],isStd?0:1)) {
+      decl2 = NewLavaDECL();
+      *decl2 = *decl;
+      for (cheTID = (CHETID*)decl2->Supports.first; cheTID && !IDTable.EQEQ(cheTID->data,decl2->inINCL,TID(baseDECL->OwnID, baseDECL->inINCL),0);
+        cheTID = (CHETID*)cheTID->successor);
+      if (cheTID)
+        decl2->Supports.Remove(cheTID->predecessor);
+      if  (IDTable.IsA(decl2,TID(baseDECL->OwnID, baseDECL->inINCL), 0)) {
+        delete decl2;
+        return &ERR_IllegalExtention;
+      }
+      delete decl2;
+    }
     if (IDTable.lowerOContext(decl, baseDECL, sameContext)
                 && sameContext && (CheckGetFinalMType(decl, baseDECL) == baseDECL)) {
       //IDTable.GetPattern(decl, con);
       //((if ((baseDECL->ParentDECL == con.iContext) || (baseDECL->ParentDECL == con.oContext)) {
-      if (baseDECL->RefID.nID == -1)
-        return 0;
-      valDECL = GetType(baseDECL);
-      if (!valDECL)
-        return 0;
-      if (TID(valDECL->OwnID,isStd?0:1) == TID(IDTable.BasicTypesID[B_Object],isStd?0:1))
-        return 0;
-      if  (IDTable.IsA(decl,TID( baseDECL->OwnID, baseDECL->inINCL), 0) || IDTable.IsA(baseDECL, TID(decl->OwnID, decl->inINCL), 0))
-        return &ERR_IllegalExtention;
-      else
-        return 0;
+      //if (baseDECL->RefID.nID == -1)
+      //  return 0;
+      //if (!valDECL)
+      //  return 0;
+      //else {
+      //  return 0;
+      //}
+      return 0;
     }
     else
       return &ERR_OverInOtherCon;

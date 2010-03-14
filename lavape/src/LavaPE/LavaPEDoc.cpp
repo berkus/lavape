@@ -70,34 +70,34 @@ bool CLavaPEDoc::AddVBase (LavaDECL* classDECL, LavaDECL* conDECL)
 	CHETVElem *El;
 
 	CHETID *cheID = (CHETID*) classDECL->Supports.first;
-	while (cheID)
-	{
+	while (cheID)	{
 		IFace = IDTable.GetDECL (cheID->data, classDECL->inINCL);
-		if (IFace)
-		{
-			if (IFace->DeclType == VirtualType)
-			{
+		if (IFace)	{
+			if (IFace->DeclType == VirtualType)	{
 				IFace = IDTable.GetFinalBaseType (cheID->data, classDECL->inINCL, conDECL);
-				if (!IFace)
-					return false;
-				if (IFace->VElems.UpdateNo <= UpdateNo)
-				{
+        if (!IFace) {
+				  IFace = IDTable.GetFinalBaseType (cheID->data, classDECL->inINCL, classDECL);
+          if (!IFace)
+					  return false;
+        }
+        if (IDTable.IsA(TID(IFace->OwnID, IFace->inINCL),0, TID(classDECL->OwnID, classDECL->inINCL),0)) {
+					new CLavaError (&classDECL->DECLError1, &ERR_IllegalExtention);
+          return false;
+        }
+				if (IFace->VElems.UpdateNo <= UpdateNo)	{
 					ResetVElems (IFace);
 					elOk = MakeVElems (IFace);
 					ok = ok && elOk;
 				}
 				elOk = AddVElems (conDECL, IFace);
 				ok = ok && elOk;
-				if (IFace->fromBType == NonBasic)
-				{
+				if (IFace->fromBType == NonBasic)	{
 					//default initializer vorhanden?
 					ElFunc = 0;
 					for (El = (CHETVElem*) IFace->VElems.VElems.first;
 					        El && (!ElFunc || !ElFunc->TypeFlags.Contains (defaultInitializer));
-					        El = (CHETVElem*) El->successor)
-					{
-						if (IFace == IDTable.GetDECL (El->data.VTClss))
-						{
+					        El = (CHETVElem*) El->successor)	{
+						if (IFace == IDTable.GetDECL (El->data.VTClss))	{
 							ElFunc = IDTable.GetDECL (El->data.VTEl);
 							if (ElFunc && (ElFunc->DeclType != Function))
 								ElFunc = 0;
@@ -112,8 +112,7 @@ bool CLavaPEDoc::AddVBase (LavaDECL* classDECL, LavaDECL* conDECL)
 			}
 			elOk = AddVBase (IFace, conDECL);
 			ok = ok && elOk;
-			if (!ok)  // there is an error in a base class
-			{
+      if (!ok) { // there is an error in a base class
 				new CLavaError (&classDECL->DECLError1, &ERR_InVTofBaseIF);
 				classDECL->WorkFlags.INCL (recalcVT);
 			}
@@ -133,17 +132,14 @@ bool CLavaPEDoc::AddVElems (LavaDECL *decl, LavaDECL* baseDECL)
 	TID addID, addID2, IDClss;
 
 	addElem = (CHETVElem*) baseDECL->VElems.VElems.first;
-	while (addElem)
-	{
+	while (addElem)	{
 		for (El = (CHETVElem*) decl->VElems.VElems.first;
 		        El && (El->data.VTClss != addElem->data.VTClss);
 		        El = (CHETVElem*) El->successor);
-		if (!El)
-		{
+		if (!El)	{
 			//it is from a new class, add all entries from this class
 			IDClss = addElem->data.VTClss;
-			while (addElem && (addElem->data.VTClss == IDClss))
-			{
+			while (addElem && (addElem->data.VTClss == IDClss)) {
 				El = new CHETVElem;
 				El->data.VTClss = addElem->data.VTClss;
 				El->data.VTEl = addElem->data.VTEl;
@@ -156,8 +152,7 @@ bool CLavaPEDoc::AddVElems (LavaDECL *decl, LavaDECL* baseDECL)
 				addElem = (CHETVElem*) addElem->successor;
 			}
 		}
-		else
-		{
+		else	{
 			ElC = El;
 			for (lastEl = El;
 			        lastEl && (lastEl->data.VTClss == addElem->data.VTClss);
@@ -168,9 +163,7 @@ bool CLavaPEDoc::AddVElems (LavaDECL *decl, LavaDECL* baseDECL)
 					El = 0;
 				else
 					El = (CHETVElem*) El->successor;
-			if (!El)
-			{
-				El = ElC;
+			if (!El)	{
 				El = ElC;
 				//is it an extension of an element in the table?
 				while (El && !IDTable.InheritsFrom (addElem->data.VTEl, 0, El->data.VTEl, 0))
@@ -178,40 +171,33 @@ bool CLavaPEDoc::AddVElems (LavaDECL *decl, LavaDECL* baseDECL)
 						El = 0;
 					else
 						El = (CHETVElem*) El->successor;
-				if (El)
-				{
+				if (El)	{
 					El->data.VTEl = addElem->data.VTEl;
 					El->data.VTBaseEl = addElem->data.VTBaseEl;
 					El->data.TypeFlags = addElem->data.TypeFlags;
 					El->data.op = addElem->data.op;
 					El->data.ok = addElem->data.ok;
 				}
-				else
-				{
+				else	{
 					//find the position in the table
 					El = IDTable.FindSamePosInVT (addElem, ElC, lastEl);
-					if (El) //same pos in VT
-					{
-						if (!IDTable.Overrides (El->data.VTEl, 0, addElem->data.VTEl, 0,decl))
-						{
-							if (IDTable.Overrides (addElem->data.VTEl, 0, El->data.VTEl, 0, decl))
-							{
+          if (El) { //same pos in VT
+						if (!IDTable.Overrides (El->data.VTEl, 0, addElem->data.VTEl, 0,decl))	{
+							if (IDTable.Overrides (addElem->data.VTEl, 0, El->data.VTEl, 0, decl))	{
 								El->data.VTEl = addElem->data.VTEl;
 								El->data.VTBaseEl = addElem->data.VTBaseEl;
 								El->data.TypeFlags = addElem->data.TypeFlags;
 								El->data.op = addElem->data.op;
 								El->data.ok = addElem->data.ok;
 							}
-							else
-							{
+							else	{
 								if (El->data.Ambgs.first)
 									for (cheID = (CHETID*) El->data.Ambgs.first;
 									        cheID && (cheID->data != addElem->data.VTEl);
 									        cheID = (CHETID*) cheID->successor);
 								else
 									cheID = 0;
-								if (!cheID)
-								{
+								if (!cheID)	{
 									cheID = new CHETID;
 									cheID->data = addElem->data.VTEl;
 									El->data.Ambgs.Append (cheID);
@@ -221,8 +207,7 @@ bool CLavaPEDoc::AddVElems (LavaDECL *decl, LavaDECL* baseDECL)
 						}//same pos in VT
 						//else El overrides addElem
 					}
-					else
-					{
+					else	{
 						//the base class IFace has an error in the table
 						new CLavaError (&baseDECL->DECLError2, &ERR_InVT);
 						ok = false;
@@ -3037,6 +3022,10 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 			if (IFace->DeclType == VirtualType)
 				IFace = IDTable.GetFinalBaseType (cheID->data, classDECL->inINCL, classDECL);
 			if (IFace)	{
+        if (IDTable.IsA(TID(IFace->OwnID, IFace->inINCL),0, TID(classDECL->OwnID, classDECL->inINCL),0)) {
+					new CLavaError (&classDECL->DECLError1, &ERR_IllegalExtention);
+          return false;
+        }
 				if (IFace->VElems.UpdateNo <= UpdateNo)	{
 					ResetVElems (IFace);
 					elOk = MakeVElems (IFace);
@@ -3045,7 +3034,6 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 				elOk = AddVElems (classDECL, IFace);
 				allOk = allOk && elOk;
 				if (!allOk) { // there is an error in a base class	
-					new CLavaError (&classDECL->DECLError1, &ERR_InVTofBaseIF);
 					classDECL->WorkFlags.INCL (recalcVT);
 				}
 			}

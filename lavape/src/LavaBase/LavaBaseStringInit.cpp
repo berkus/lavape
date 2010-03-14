@@ -497,9 +497,9 @@ void LavaBaseStringInit() {
   ERR_VBaseWithoutDefaultIni  = QObject::tr("A virtual base class needs a default initializer");
   ERR_NoImplClass  = QObject::tr("The class to be implemented by this implementation is missing");
   ERR_ImplOfAbstract  = QObject::tr("An abstract function cannot have an implementation");
-  ERR_CleanSupports  = QObject::tr("Redundant entry in the list of base types");
+  ERR_CleanSupports  = QObject::tr("Redundant entry in the list of base classes");
   ERR_OverInOtherCon  = QObject::tr("You cannot extend a class that has been declared in another context");
-  ERR_IllegalExtention  = QObject::tr("The value of the virtual type and the class itself are not independent");
+  ERR_IllegalExtention  = QObject::tr("Illegal extension by virtual type in the class or a base class (cannot calculate the the virtual table)");
   ERR_NoDefaultIni  = QObject::tr("Default initializer missing");
   ERR_CopyToSelf  = QObject::tr("Copy onto self permitted only from a source expression of the same or a more derived type");
   ERR_NoIFforForm  = QObject::tr("The associated class of this GUI service is missing");

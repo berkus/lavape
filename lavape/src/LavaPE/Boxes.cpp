@@ -3232,12 +3232,14 @@ void CInterfaceBox::on_NonCreatable_clicked()
 {
   InterfaceID->setEnabled(false);
   Native->setEnabled(true);
+  myDECL->TypeFlags.INCL(isAbstract);
 }
 
 void CInterfaceBox::on_Creatable_clicked() 
 {
   InterfaceID->setEnabled(false);
   Native->setEnabled(true);
+  myDECL->TypeFlags.EXCL(isAbstract);
 }
 
 /*
@@ -5242,19 +5244,24 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
                   && !myDoc->IDTable.IsA(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0));
   }
   else if ((DeclType == Interface) && (elType == VirtualType)) {
-    valDECL = myDoc->GetType(elDef);
-    putIt = (valDECL != 0);
-    if (putIt) {
-      if (CallingDECL) {
-        putIt = myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext)
-                && sameContext && (myDoc->CheckGetFinalMType(CallingDECL, elDef) == elDef);
-        putIt = putIt 
-          && ((TID(valDECL->OwnID, valDECL->inINCL) == TID(myDoc->IDTable.BasicTypesID[B_Object],myDoc->isStd?0:1))
-                   || !myDoc->IDTable.IsA(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0));
+    if (elDef->TypeFlags.Contains(isAbstract) && TypeFlags.Contains(isAbstract)
+       && myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext)  && sameContext)
+      putIt = true;
+    else {
+      valDECL = myDoc->GetType(elDef);
+      putIt = (valDECL != 0);
+      if (putIt) {
+        if (CallingDECL) {
+          putIt = myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext)
+                  && sameContext && (myDoc->CheckGetFinalMType(CallingDECL, elDef) == elDef);
+          putIt = putIt 
+            && ((TID(valDECL->OwnID, valDECL->inINCL) == TID(myDoc->IDTable.BasicTypesID[B_Object],myDoc->isStd?0:1))
+                     || !myDoc->IDTable.IsA(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0));
+        }
+        else
+          putIt = myDoc->IDTable.lowerOContext(ParentDECL, elDef, sameContext)
+                  && sameContext && (myDoc->CheckGetFinalMType(ParentDECL, elDef) == elDef);
       }
-      else
-        putIt = myDoc->IDTable.lowerOContext(ParentDECL, elDef, sameContext)
-                && sameContext && (myDoc->CheckGetFinalMType(ParentDECL, elDef) == elDef);
     }
   }
   else if ((DeclType == Impl) && (elType == Interface)) 

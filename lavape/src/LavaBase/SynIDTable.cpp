@@ -1888,6 +1888,7 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
   //returns 0: type already contained return -1: second container class, 1 : type realy new, 2 : overrides an already contained type
   LavaDECL* findecl, *finalnewBasedecl, *bdecl;
   CHETID *che;
+  bool sameContext;
   //bool multiContainer;
 
   if (!decl || !newbasedecl || !contDECL)
@@ -1897,8 +1898,12 @@ int TIDTable::InsertBaseClass(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* c
         || InheritsFrom(newbasedecl, TID(contDECL->OwnID, contDECL->inINCL),0,contDECL,true)))
     return 0;
   TID newbaseID = TID(newbasedecl->OwnID, newbasedecl->inINCL);
-  if (newbasedecl->DeclType == VirtualType)
+  if (newbasedecl->DeclType == VirtualType) {
+    if (newbasedecl->TypeFlags.Contains(isAbstract) && decl->TypeFlags.Contains(isAbstract)
+       && lowerOContext(newbasedecl, contDECL, sameContext)  && sameContext)
+      return 1;
     finalnewBasedecl = GetFinalBaseType(newbaseID, decl->inINCL, contDECL);
+  }
   else
     finalnewBasedecl = newbasedecl;
   if (!finalnewBasedecl)
