@@ -121,7 +121,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 {
   initialUpdateDone = false; // indicates whether OnInitialUpdate has already been executed
   notYetPainted = true;
-  isDirty = true; //initially + after Check/before RedrawExec
+  isDirty = true; //initially + at begin of SelfVar::Check
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
   layout->addWidget(sv);
@@ -555,11 +555,11 @@ bool ExecContents::event(QEvent *ev) {
       execView->editCtl->setFocus();
     return QWidget::event(ev);
   }
-  else if (ev->type() == QEvent::Paint) {
-    paintEvent((QPaintEvent*)ev);
-    ev->setAccepted(true);
-    return true;
-  }
+  //else if (ev->type() == QEvent::Paint) {
+  //  paintEvent((QPaintEvent*)ev);
+  //  ev->setAccepted(true);
+  //  return true;
+  //}
   else
     return QWidget::event(ev);
 }
@@ -578,8 +578,10 @@ static int nPaint=1;
 
 void ExecContents::paintEvent (QPaintEvent *ev)
 {
-  if (!execView || !execView->myDoc || !execView->myDoc->mySynDef || execView->isDirty)
+  if (!execView || !execView->myDoc || !execView->myDoc->mySynDef || execView->isDirty) {
+    ev->setAccepted(false);
     return;
+  }
 
   fmt.fontFamily = fmt.font.family();
   QPainter p(this);
@@ -713,6 +715,8 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     execView->autoScroll = false;
   }
   delete fm;
+  execView->isDirty = false;
+  ev->setAccepted(true);
 }
 
 void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
@@ -2108,7 +2112,6 @@ void CExecView::RedrawExec()
   text->tokenChain.Destroy();
   text->INIT();
   replacedObj = 0;
-  //redCtl->setUpdatesEnabled(false);
   if (myDECL->TreeFlags.Contains(leftArrows))
     text->leftArrows = true;
   else

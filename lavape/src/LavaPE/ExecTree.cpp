@@ -200,9 +200,9 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
     lab += DString(" := Component obj. impl.");
     break;
   case Initiator:
-    if (elDef->TypeFlags.Contains(isConst))
-      lab += DString(" := Read-only main program");
-    else
+    //if (elDef->TypeFlags.Contains(isConst))
+    //  lab += DString(" := Read-only main program");
+    //else
       lab += DString(" := Main program");
     break;
   case Package:

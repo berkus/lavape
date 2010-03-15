@@ -27,15 +27,4 @@ class WXDLLEXPORT wxCommandProcessor;
 class WXDLLEXPORT wxHistory;
 class WXDLLEXPORT QAction;
 
-#ifdef WIN32
-/*
-template class WXDLLEXPORT QList<wxView>;
-template class WXDLLEXPORT QList<wxDocument>;
-template class WXDLLEXPORT QList<wxDocTemplate>;
-template class WXDLLEXPORT QList<wxCommand>;
-template class WXDLLEXPORT QList<QMenu>;
-template class WXDLLEXPORT QList<QAction>;
-*/
-#endif
-
 #endif //_WX_export__
