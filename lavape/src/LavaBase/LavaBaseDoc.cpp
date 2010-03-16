@@ -897,7 +897,7 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
     if (!valDECL)
       return &ERR_NoBaseIF;
     if  (IDTable.IsA(valDECL, TID(decl->OwnID, decl->inINCL), 0))
-      return &ERR_IllegalExtention;
+      return &;
     if (TID(valDECL->OwnID,valDECL->inINCL) != TID(IDTable.BasicTypesID[B_Object],isStd?0:1)) {
       decl2 = NewLavaDECL();
       *decl2 = *decl;
@@ -907,7 +907,7 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
         decl2->Supports.Remove(cheTID->predecessor);
       if  (IDTable.IsA(decl2,TID(baseDECL->OwnID, baseDECL->inINCL), 0)) {
         delete decl2;
-        return &ERR_IllegalExtention;
+        return &ERR_IllegalExtension;
       }
       delete decl2;
     }
