@@ -2202,6 +2202,7 @@ bool SelfVar::Check (CheckData &ckd)
 
   ENTRY
 
+  checked = false;
   ckd.selfVar = this;
   ok &= ((SynObject*)execName.ptr)->Check(ckd);
   ckd.inINCL = ckd.myDECL->inINCL;

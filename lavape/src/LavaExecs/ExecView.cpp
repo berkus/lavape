@@ -555,11 +555,6 @@ bool ExecContents::event(QEvent *ev) {
       execView->editCtl->setFocus();
     return QWidget::event(ev);
   }
-  //else if (ev->type() == QEvent::Paint) {
-  //  paintEvent((QPaintEvent*)ev);
-  //  ev->setAccepted(true);
-  //  return true;
-  //}
   else
     return QWidget::event(ev);
 }
@@ -2098,9 +2093,9 @@ void CExecView::SetSelectAtHint (CLavaPEHint *hint) {
 void CExecView::Check () {
   text->ckd.nErrors = 0;
   text->ckd.nPlaceholders = 0;
-  selfVar->checked = false;
+  //selfVar->checked = false;
   ((SynObject*)myDECL->Exec.ptr)->Check(text->ckd);
-  selfVar->checked = true;
+  //selfVar->checked = true;
 }
 
 
