@@ -81,7 +81,7 @@ bool CLavaPEDoc::AddVBase (LavaDECL* classDECL, LavaDECL* conDECL)
 					  return false;
         }
         if (IDTable.IsA(TID(IFace->OwnID, IFace->inINCL),0, TID(classDECL->OwnID, classDECL->inINCL),0)) {
-					new CLavaError (&classDECL->DECLError1, &ERR_IllegalExtention);
+                                        new CLavaError (&classDECL->DECLError1, &ERR_IllegalExtension);
           return false;
         }
 				if (IFace->VElems.UpdateNo <= UpdateNo)	{
@@ -3030,7 +3030,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
       }
 			if (IFace && ((IFace->DeclType != VirtualType) || !IFace->TypeFlags.Contains(isAbstract)))	{
         if (IDTable.IsA(TID(IFace->OwnID, IFace->inINCL),0, TID(classDECL->OwnID, classDECL->inINCL),0)) {
-					new CLavaError (&classDECL->DECLError1, &ERR_IllegalExtention);
+                                        new CLavaError (&classDECL->DECLError1, &ERR_IllegalExtension);
           return false;
         }
 				if (IFace->VElems.UpdateNo <= UpdateNo)	{
