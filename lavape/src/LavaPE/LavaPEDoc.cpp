@@ -3185,6 +3185,7 @@ bool CLavaPEDoc::MakeVElems (LavaDECL *classDECL, CheckData* pckd)
 			if (elDecl->TypeFlags.Contains (forceOverride)
       && !elDecl->TypeFlags.Contains (isInitializer)
 			&& (elDecl->ParentDECL != classDECL)) {
+				new CLavaError (&classDECL->DECLError1, &ERR_ForceOver, &elDecl->FullName);
 				classDECL->WorkFlags.INCL (recalcVT);
 				El->data.ok = false;
 				elOk = false;

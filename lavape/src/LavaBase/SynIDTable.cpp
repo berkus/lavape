@@ -1286,6 +1286,7 @@ bool TIDTable::GetParamID(LavaDECL* decl, TID& ElID, SecondTFlag flag)
   return false;
 }
 
+
 void TIDTable::GetPattern(LavaDECL* decl, CContext& context, bool start)
 {
   LavaDECL* pdecl;
@@ -1353,6 +1354,12 @@ void TIDTable::GetPattern(LavaDECL* decl, CContext& context, bool start)
   }
 }
 
+bool TIDTable::isInPattern(LavaDECL* decl)
+{
+  CContext con;
+  GetPattern(decl,con);
+  return (con.iContext != 0) || (con.oContext != 0);
+}
 
 void TIDTable::GetContextDECLs(LavaDECL* decl, CContext& context, bool start)
 {

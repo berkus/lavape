@@ -932,7 +932,7 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
   if (!sameContext && IDTable.isValOfVirtual(decl, baseDECL))
     return 0;
   if (sameContext)
-    if (IsCDerivation(decl, baseDECL, pckd) || !IDTable.isValOfVirtual(decl) && !IDTable.isValOfVirtual(baseDECL))
+    if (/*IsCDerivation(decl, baseDECL, pckd) || !IDTable.isValOfVirtual(decl) &&*/ !IDTable.isValOfVirtual(baseDECL))
       return 0;
     else 
       return &ERR_OverInSameCon;

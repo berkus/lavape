@@ -1558,7 +1558,7 @@ ValOnInit CFuncBox::OnInitDialog()
     Native->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isNative));
   }
   myDoc->IDTable.GetPattern(myDECL, con);
-  EnforceOver->setEnabled((myDECL->ParentDECL->DeclType == Interface) && ((con.iContext != 0) || (con.oContext != 0)));
+  EnforceOver->setEnabled((myDECL->ParentDECL->DeclType == Interface) && myDoc->IDTable.isValOfVirtual(myDECL->ParentDECL));
 
   if (onNew) {
     hasParams = 0;
@@ -5050,7 +5050,8 @@ void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
         && (!con.oContext
             || (con.oContext == elDef)
             || (con.oContext == IBox->OrigDECL)
-            || IBox->myDoc->IDTable.lowerOContext(IBox->myDECL->ParentDECL, elDef, sameContext) && sameContext)) {
+            || IBox->myDoc->IDTable.lowerOContext(IBox->myDECL->ParentDECL, elDef, sameContext) && sameContext)
+               && !IBox->myDoc->IDTable.isValOfVirtual(elDef)) {
     lab = elDef->FullName;
     if (elDef->DeclType == VirtualType) {
       lab.Insert(grthen, lab.l);
@@ -5239,7 +5240,9 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
     putIt = (TypeFlags.Contains(isComponent) == elDef->TypeFlags.Contains(isComponent))
             && (!con.oContext
                || (con.oContext == elDef)
-               || myDoc->IDTable.lowerOContext(ParentDECL, elDef, sameContext) && sameContext);
+               || myDoc->IDTable.lowerOContext(ParentDECL, elDef, sameContext) && sameContext
+                 && !myDoc->IDTable.isValOfVirtual(elDef)
+                 );
 //             || (DeclType == CompObjSpec) && (elType == Interface) && elDef->TypeFlags.Contains(isComponent)
 //             || (DeclType == Package) && (elType == Package);
     putIt = putIt && (!CallingDECL || !myDoc->IDTable.IsA(elDef, TID(CallingDECL->OwnID, CallingDECL->inINCL), 0)
@@ -5247,7 +5250,7 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
   }
   else if ((DeclType == Interface) && (elType == VirtualType)) {
     if (elDef->TypeFlags.Contains(isAbstract) && TypeFlags.Contains(isAbstract)
-       && myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext)  && sameContext)
+       && myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext) && sameContext)
       putIt = true;
     else {
       valDECL = myDoc->GetType(elDef);

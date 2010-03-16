@@ -127,6 +127,7 @@ public:
   CHETVElem* FindSamePosInVT(CHETVElem *addElem, CHETVElem *ElStart, CHETVElem *ElLast);
   //  bool PatParamInContext(LavaDECL* patparamDECL, LavaDECL* decl);
   void GetPattern(LavaDECL* decl, CContext& context, bool start=true);
+  bool isInPattern(LavaDECL* decl);
   void GetContextDECLs(LavaDECL* decl, CContext& context, bool start=true);
   bool okPatternLevel(LavaDECL* paramDECL);
   bool lowerOContext(LavaDECL* highDECL, LavaDECL *lowDECL, bool& sameContext);
