@@ -881,6 +881,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     text->ckd.hint = hint;
     text->ckd.undoRedo = undoRedo;
 
+    isDirty = true;
     Check();
     sData.execView = this;
     sData.doc = myDoc;
@@ -2104,6 +2105,7 @@ void CExecView::RedrawExec()
   // TODO: Add your command handler code here
   CSearchData sData;
 
+  isDirty = true;
   text->tokenChain.Destroy();
   text->INIT();
   replacedObj = 0;

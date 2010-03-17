@@ -2189,8 +2189,8 @@ bool SelfVar::Check (CheckData &ckd)
 #ifdef INTERPRETER
   TID itfTID;
 #else
-  if (execView /*&& !checked*/)
-    ((CExecView*)execView)->isDirty = true;
+  //if (execView /*&& !checked*/)
+  //  ((CExecView*)execView)->isDirty = true;
   if (ckd.concernExecs)
     concernExecs = true;
   else if (concernExecs) {
@@ -3588,7 +3588,8 @@ bool ObjReference::CallCheck (CheckData &ckd) {
       funcExpr->SetError(ckd,&ERR_NonROCallInROClause);
       return false;
     }
-    else if (!((TDOD*)((CHE*)refIDs.last)->data)->IsStateObject(ckd)
+     //else if (!((TDOD*)((CHE*)refIDs.last)->data)->IsStateObject(ckd
+    else if (myCategory != stateObjectCat
     && !flags.Contains(isIniCallOrHandle)
     //&& !flags.Contains(isSelfVar)
     && !flags.Contains(isTempVar)) {
@@ -7011,6 +7012,10 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
         }
         else
           dod->flags.EXCL(isOptionalExpr);
+        if (fieldDECL->TypeFlags.Contains(isStateObjectY)) {
+          dod->flags.INCL(isStateObjectX);
+          dod->flags.EXCL(isAnyCatX);
+        }
         if (fieldDECL->DeclType == Attr) {
           if (typeDECL)
             fldInType = FieldInType(ckd, typeDECL, fieldDECL);
