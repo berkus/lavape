@@ -888,6 +888,8 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
   if (!con.oContext || (con.oContext == baseDECL))
     return 0;
   if (baseDECL->DeclType == VirtualType) {
+    if (!IDTable.IsA(decl, TID(baseDECL->ParentDECL->OwnID, baseDECL->inINCL), 0))
+      return &ERR_IllegalVTExtension;
     if (baseDECL->TypeFlags.Contains(isAbstract))
        if (IDTable.lowerOContext(decl, baseDECL, sameContext) && sameContext)
          return 0;
@@ -1103,33 +1105,35 @@ QString* CLavaBaseDoc::CommonContext(LavaDECL* paramDECL)
   return 0;
 }
 
-bool CLavaBaseDoc::okPattern(LavaDECL* decl)
+QString* CLavaBaseDoc::okPattern(LavaDECL* decl)
 {//Interface and Package only
   CContext con;
   CHETVElem *Eli, *Elo;
   LavaDECL* elDECLi, *elDECLo;
 
   if (!decl)
-    return false;
+    return 0;
   IDTable.GetPattern(decl, con);
-  if (!con.iContext || (decl != con.iContext))
-    return true;
+  if (!con.iContext && !con.oContext)
+    return 0;
   MakeVElems(decl, 0);
   MakeVElems(con.oContext, 0);
-  for (Eli = (CHETVElem*)decl->VElems.VElems.first;
-       Eli ;
-       Eli = (CHETVElem*)Eli->successor) {
-    elDECLi = IDTable.GetDECL(Eli->data.VTEl);
-    if (elDECLi && (elDECLi->DeclType == VirtualType)) 
-      for (Elo = (CHETVElem*)con.oContext->VElems.VElems.first;
-           Elo ;
-           Elo = (CHETVElem*)Elo->successor) {
-        elDECLo = IDTable.GetDECL(Elo->data.VTEl);
-        if (elDECLo && (elDECLo->DeclType == VirtualType) && (Eli->data.VTClss == Elo->data.VTClss))
-          return false;
-      }
+  if (con.iContext && (decl == con.iContext)) {
+    for (Eli = (CHETVElem*)decl->VElems.VElems.first;
+         Eli ;
+         Eli = (CHETVElem*)Eli->successor) {
+      elDECLi = IDTable.GetDECL(Eli->data.VTEl);
+      if (elDECLi && (elDECLi->DeclType == VirtualType)) 
+        for (Elo = (CHETVElem*)con.oContext->VElems.VElems.first;
+             Elo ;
+             Elo = (CHETVElem*)Elo->successor) {
+          elDECLo = IDTable.GetDECL(Elo->data.VTEl);
+          if (elDECLo && (elDECLo->DeclType == VirtualType) && (Eli->data.VTClss == Elo->data.VTClss))
+            return &ERR_CommonContext;
+        }
+    }
   }
-  return true;
+  return 0;
 }
 
 SynFlags CLavaBaseDoc::GetCategoryFlags(LavaDECL* memDECL, bool& catErr)

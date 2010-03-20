@@ -152,6 +152,7 @@ extern LAVABASE_DLL QString ERR_CleanSupports;
 extern LAVABASE_DLL QString ERR_OverInOtherCon;
 extern LAVABASE_DLL QString ERR_OverInSameCon;
 extern LAVABASE_DLL QString ERR_IllegalExtension;
+extern LAVABASE_DLL QString ERR_IllegalVTExtension;
 extern LAVABASE_DLL QString ERR_NoDefaultIni;
 extern LAVABASE_DLL QString ERR_CopyToSelf;
 extern LAVABASE_DLL QString ERR_NoIFforForm;

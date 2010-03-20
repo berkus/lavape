@@ -5047,6 +5047,7 @@ void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
   IBox->myDoc->IDTable.GetPattern(elDef, con);
   if ( IBox->myDoc->IDTable.InsertBaseClass(IBox->myDECL, elDef, IBox->ContextDECL, false)
         && (IBox->myDECL->TypeFlags.Contains(isComponent) == elDef->TypeFlags.Contains(isComponent))
+        && ((elDef->DeclType != VirtualType) || IBox->myDoc->IDTable.IsA(IBox->myDECL, TID(elDef->ParentDECL->OwnID, elDef->inINCL), 0))
         && (!con.oContext
             || (con.oContext == elDef)
             || (con.oContext == IBox->OrigDECL)
@@ -5249,23 +5250,25 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
                   && !myDoc->IDTable.IsA(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0));
   }
   else if ((DeclType == Interface) && (elType == VirtualType)) {
-    if (elDef->TypeFlags.Contains(isAbstract) && TypeFlags.Contains(isAbstract)
-       && myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext) && sameContext)
-      putIt = true;
-    else {
-      valDECL = myDoc->GetType(elDef);
-      putIt = (valDECL != 0);
-      if (putIt) {
-        if (CallingDECL) {
-          putIt = myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext)
-                  && sameContext && (myDoc->CheckGetFinalMType(CallingDECL, elDef) == elDef);
-          putIt = putIt 
-            && ((TID(valDECL->OwnID, valDECL->inINCL) == TID(myDoc->IDTable.BasicTypesID[B_Object],myDoc->isStd?0:1))
-                     || !myDoc->IDTable.IsA(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0));
+    putIt = myDoc->IDTable.IsA(CallingDECL, TID(elDef->ParentDECL->OwnID, elDef->inINCL), 0);
+    if (putIt) {
+      if (elDef->TypeFlags.Contains(isAbstract))
+        putIt = TypeFlags.Contains(isAbstract) && myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext) && sameContext;
+      else {
+        valDECL = myDoc->GetType(elDef);
+        putIt = (valDECL != 0);
+        if (putIt) {
+          if (CallingDECL) {
+            putIt = myDoc->IDTable.lowerOContext(CallingDECL, elDef, sameContext)
+                    && sameContext && (myDoc->CheckGetFinalMType(CallingDECL, elDef) == elDef);
+            putIt = putIt 
+              && ((TID(valDECL->OwnID, valDECL->inINCL) == TID(myDoc->IDTable.BasicTypesID[B_Object],myDoc->isStd?0:1))
+                       || !myDoc->IDTable.IsA(CallingDECL, TID(elDef->OwnID, elDef->inINCL), 0));
+          }
+          else
+            putIt = myDoc->IDTable.lowerOContext(ParentDECL, elDef, sameContext)
+                    && sameContext && (myDoc->CheckGetFinalMType(ParentDECL, elDef) == elDef);
         }
-        else
-          putIt = myDoc->IDTable.lowerOContext(ParentDECL, elDef, sameContext)
-                  && sameContext && (myDoc->CheckGetFinalMType(ParentDECL, elDef) == elDef);
       }
     }
   }

@@ -149,7 +149,7 @@ public:
   bool MemberTypeContext(LavaDECL *memDECL, CContext &context, CheckData* pckd);
   void NextContext(LavaDECL *decl, CContext &context);
   virtual bool OnSaveModified() {return wxDocument::OnSaveModified();}
-  bool okPattern(LavaDECL* decl);
+  QString* okPattern(LavaDECL* decl);
   virtual LavaObjectPtr OpenObject(CheckData& ckd, LavaObjectPtr urlObj) {return 0;}
   virtual bool OverriddenMatch(LavaDECL *decl, bool setName=false, CheckData* pckd=0);
   virtual int ReadSynDef(const QString& fn, SynDef* &sntx, ASN1* cid = 0);//fn has all links resolved

@@ -215,8 +215,8 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
       elDef->WorkFlags.INCL(isPattern);
     else {
       elDef->WorkFlags.EXCL(isPattern);
-      if (!Doc->okPattern(elDef))
-        new CLavaError(&elDef->DECLError1, &ERR_CommonContext);
+      if (errCode = Doc->okPattern(elDef))
+        new CLavaError(&elDef->DECLError1, errCode);
     }
     if (elDef->TypeFlags.Contains(isProtected))
       lab1 += DString("opaque ");
@@ -554,8 +554,8 @@ void CExecTree::ExecInterface(LavaDECL *elDef, DString* lab)
     else
       elDef->WorkFlags.INCL(recalcVT);
   }
-  if (!elDef->WorkFlags.Contains(isPattern) && !Doc->okPattern(elDef))
-    new CLavaError(&elDef->DECLError1, &ERR_CommonContext);
+  if (/* ! ??26.03.2010*/elDef->WorkFlags.Contains(isPattern) && (errCode = Doc->okPattern(elDef)))
+    new CLavaError(&elDef->DECLError1, errCode);
   *lab += DString(" := ");
   if (elDef->TypeFlags.Contains(isNative))
     lab1 = DString("native ");
@@ -964,7 +964,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     refID = elDef->RefID;
     typeDECL = Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
     if (typeDECL) {
-      /*
+      /**/
       if (typeDECL->TypeFlags.Contains(isAbstract))
         if (elDef->DeclType == Attr) {
           if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract))
@@ -973,7 +973,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
         else
           if (!elDef->ParentDECL->ParentDECL->TypeFlags.Contains(isAbstract))
             new CLavaError(&elDef->DECLError1, &ERR_AbstrMemType);
-      */
+      /**/
 
       if (typeDECL->DeclType == Interface) {
         if (errCode = Doc->TypeForMem(elDef, typeDECL, 0))
