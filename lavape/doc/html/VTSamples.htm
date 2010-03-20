@@ -99,7 +99,7 @@ href="RepetComputSamples.htm">indirect tree recursion</a>.</p>
 <p>Since release 0.9.1 a virtual type (= type parameter) may be declared
 "final". This means that it cannot be derived/specialized any further in a
 derived class or package. Two new little sample programs (FinalVirtualType.lava
-and ForceOverride.lava) explain the motivation behind this and the related
+and ForceFunctionOverride.lava) explain the motivation behind this and the related
 "force override" attribute of member functions. </p>
 
 <h3>Where to look and what to do</h3>
@@ -110,7 +110,7 @@ Note in particular the "<a href="PatternsFrameworks.htm#covariant">covariant
 specialization</a>" of the only input parameter of function <em>registerView</em>
 of class <em>Model</em>.</p>
 
-<p>Note how this is exploited in the exec of the initiator <em>ModelViewDemo</em>
+<p>Note how this is exploited in the exec of the main program <em>ModelViewDemo</em>
 to pass a view object of the derived type <em>DrawFW::View</em> to this
 function.</p>
 
@@ -119,7 +119,7 @@ sense (of <a href="TypeSafety.htm#c-derived">c-derivation</a>) to
 ModelViewFW::View, since it contains member variables (<em>myModel</em>) and
 function parameters (m of initializer <em>ini</em>) that are of a more derived
 type in pattern <em>DrawFW</em> than in <em>ModelViewFW</em> (as a consequence of
-covariant specialization of the VT <em>&lt;model&gt;</em>).</p>
+covariant specialization of the VT <em>&lt;MODEL&gt;</em>).</p>
 
 <p><strong><a id="queueOfPoint"></a>QueueOfPoint:<br />
 </strong><br />
