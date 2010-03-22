@@ -49,6 +49,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
   FuncExpression *funcExpr;
   TID tid;
 
+  ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->isDirty = true;
   if (toBeDrawn
   && !insMult
   && !(undo && hint->CommandData3 == (void*)InsMult)
@@ -127,7 +128,6 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
         *ptr = synObj;
         synObj->MakeTable((address)&((CPEBaseDoc*)doc)->IDTable,0,synObj->parentObject,onUndoDeleteID,(address)ptr,0);
       }
-      //synObj->flags.EXCL(subtreeRemoved);
 
       toBeDrawn = synObj->parentObject;
       replacedObj = synObj->parentObject;

@@ -121,7 +121,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 {
   initialUpdateDone = false; // indicates whether OnInitialUpdate has already been executed
   notYetPainted = true;
-  isDirty = true; //initially + at begin of SelfVar::Check
+  isDirty = true; //initially + on RedrawExec + on ExecUpdate::ChangeExec
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
   layout->addWidget(sv);
@@ -710,7 +710,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     execView->autoScroll = false;
   }
   delete fm;
-  execView->isDirty = false;
   ev->setAccepted(true);
 }
 
@@ -881,7 +880,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     text->ckd.hint = hint;
     text->ckd.undoRedo = undoRedo;
 
-    isDirty = true;
+    //isDirty = true;
     Check();
     sData.execView = this;
     sData.doc = myDoc;
