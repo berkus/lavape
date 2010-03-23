@@ -48,8 +48,12 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
   MinusOp *newMinusOp;
   FuncExpression *funcExpr;
   TID tid;
+  LavaDECL *execDecl=(LavaDECL*)hint->CommandData1;
+  CExecView *execView=(CExecView*)((SynObject*)execDecl->Exec.ptr)->execView;
 
-  ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->isDirty = true;
+ if (execView)
+   execView->isDirty = true;
+  //((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->isDirty = true;
   if (toBeDrawn
   && !insMult
   && !(undo && hint->CommandData3 == (void*)InsMult)

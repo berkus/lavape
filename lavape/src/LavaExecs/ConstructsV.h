@@ -169,7 +169,8 @@ public:
 
 class SelfVarV : public SelfVar {
 public:
-  SelfVarV (){}
+  SelfVarV (){
+}
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
 };
