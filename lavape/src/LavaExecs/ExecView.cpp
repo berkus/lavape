@@ -5780,6 +5780,8 @@ void CExecView::SetHelpText () {
       helpMsg = ID_REPLACE_EXP;
     else if (text->currentSynObj->type == VarPH_T)
       helpMsg = ID_ENTER_VARNAME;
+    else
+      helpMsg = ID_F1_HELP;
   }
   else
     helpMsg = ID_F1_HELP;
