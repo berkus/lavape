@@ -5760,25 +5760,27 @@ void CExecView::SetHelpText () {
   SynObject *ocl;
   CHAINX *chxp;
 
-  if (text->currentSynObj->primaryToken == Exp_T
-  || text->currentSynObj->IsEditableConstant())
-    helpMsg = ID_ENTER_CONST;
-  else if (text->currentSelection->data.token == Comment_T)
-    helpMsg = ID_EDIT_COMMENT;
-  else if (text->currentSelection->data.OptionalClauseToken(ocl)
-  || (text->currentSynObj->IsRepeatableClause(chxp)
-      && !text->currentSynObj->IsIfClause()))
-    helpMsg = ID_OPT_CLAUSE;
-  else if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-  && !text->currentSynObj->IsPlaceHolder())
-    helpMsg = ID_INSERT_STM;
-  else if (ToggleCatEnabled())
-    helpMsg = ID_TOGGLE_CATEGORY;
-  else if (!Ignorable() && text->currentSynObj->ExpressionSelected(text->currentSelection)
-  && !text->currentSynObj->IsPlaceHolder())
-    helpMsg = ID_REPLACE_EXP;
-  else if (text->currentSynObj->type == VarPH_T)
-    helpMsg = ID_ENTER_VARNAME;
+  if (text->currentSynObj) {
+    if (text->currentSynObj->primaryToken == Exp_T
+    || text->currentSynObj->IsEditableConstant())
+      helpMsg = ID_ENTER_CONST;
+    else if (text->currentSelection->data.token == Comment_T)
+      helpMsg = ID_EDIT_COMMENT;
+    else if (text->currentSelection->data.OptionalClauseToken(ocl)
+    || (text->currentSynObj->IsRepeatableClause(chxp)
+        && !text->currentSynObj->IsIfClause()))
+      helpMsg = ID_OPT_CLAUSE;
+    else if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
+    && !text->currentSynObj->IsPlaceHolder())
+      helpMsg = ID_INSERT_STM;
+    else if (ToggleCatEnabled())
+      helpMsg = ID_TOGGLE_CATEGORY;
+    else if (!Ignorable() && text->currentSynObj->ExpressionSelected(text->currentSelection)
+    && !text->currentSynObj->IsPlaceHolder())
+      helpMsg = ID_REPLACE_EXP;
+    else if (text->currentSynObj->type == VarPH_T)
+      helpMsg = ID_ENTER_VARNAME;
+  }
   else
     helpMsg = ID_F1_HELP;
 
@@ -5802,7 +5804,7 @@ void CExecView::OnInsertEnum (QString &itemName, TID &typeID)
 
 void CExecView::UpdateUI()
 {
-  if (!initialUpdateDone || notYetPainted || editCtlVisible)
+  if (!initialUpdateDone || notYetPainted || editCtlVisible || isDirty)
     return;
   SetHelpText();
 
