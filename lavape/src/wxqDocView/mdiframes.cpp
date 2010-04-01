@@ -552,20 +552,25 @@ void wxTabWidget::customEvent(QEvent *ev) {
 
 void wxTabWidget::closePage() {
   wxChildFrame *page=(wxChildFrame*)currentWidget();
-  int index=currentIndex();
+  int index = currentIndex();
   QSplitter *splitter=(QSplitter*)parentWidget();
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
 
   page->Activate(true);
   if (page->inherits("CTreeFrame")
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
+    docMan->RememberClosedPage(index,0);
     docMan->OnFileClose();
   }
   else {
     removeTab(index);
     delete page;
-    if (!count() && splitter->count() > 1)
+    if (!count() && splitter->count() > 1) {
+      docMan->RememberClosedPage(index,splitter->indexOf(this));
       deleteLater();
+    }
+    else
+      docMan->RememberClosedPage(index,0);
   }
 }
 

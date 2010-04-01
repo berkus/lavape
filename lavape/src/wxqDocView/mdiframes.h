@@ -146,6 +146,7 @@ public:
   void customEvent(QEvent*);
 
   wxTabBar *m_tabBar;
+  int m_closedPageIndex;
 
 public slots:
   void postClosePage();
