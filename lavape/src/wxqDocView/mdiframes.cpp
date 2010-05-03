@@ -179,6 +179,8 @@ void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
   int splitterIndex = m_ClientArea->indexOf(tw);
   m_ClientArea->insertWidget(splitterIndex+1,newTW);
   page->Activate(true);
+  page->m_pageIndex = 0;
+  page->m_tabWidIndex = ((QSplitter*)newTW->parentWidget())->indexOf(newTW);
   newTW->setTabTextColor(newTW->indexOf(page),Qt::red);
   equalize();
 }
@@ -195,6 +197,8 @@ void wxMainFrame::MoveToNextTabbedWindow(wxTabWidget *tw,int index){
   nextTW->setCurrentIndex(0);
   wxDocManager::GetDocumentManager()->SetCurrentTabWidget(nextTW);
   page->Activate(true);
+  page->m_pageIndex = 0;
+  page->m_tabWidIndex = ((QSplitter*)nextTW->parentWidget())->indexOf(nextTW);
   nextTW->setTabTextColor(nextTW->indexOf(page),Qt::red);
   if (tw->count() == 0 && m_ClientArea->count() > 1) {
     tw->deleteLater();
@@ -214,6 +218,8 @@ void wxMainFrame::MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index){
   precTW->setCurrentIndex(0);
   wxDocManager::GetDocumentManager()->SetCurrentTabWidget(precTW);
   page->Activate(true);
+  page->m_pageIndex = 0;
+  page->m_tabWidIndex = ((QSplitter*)precTW->parentWidget())->indexOf(precTW);
   precTW->setTabTextColor(precTW->indexOf(page),Qt::red);
   if (tw->count() == 0 && m_ClientArea->count() > 1) {
     tw->deleteLater();
@@ -237,6 +243,8 @@ void wxMainFrame::DropPage(wxTabWidget* sTw, int sIndex, wxTabWidget* dTw, int d
   }
   wxDocManager::GetDocumentManager()->SetCurrentTabWidget(dTw);
   page->Activate(true);
+  page->m_pageIndex = dIndex;
+  page->m_tabWidIndex = ((QSplitter*)dTw->parentWidget())->indexOf(dTw);
   dTw->setTabTextColor(dTw->indexOf(page),Qt::red);
 }
 
@@ -260,6 +268,7 @@ wxChildFrame::wxChildFrame(QWidget *parent)
   m_tabWidget = (wxTabWidget*)parent;
   lastActive = 0;
   m_tabWidget->addTab(this,QString());
+  m_pageIndex = m_tabWidget->indexOf(this);
   layout = new QVBoxLayout(this);
   setLayout(layout);
   layout->setMargin(0);
@@ -305,6 +314,7 @@ void wxChildFrame::Activate(bool topDown)
     return;
 
   docMan->RememberActiveFrame(this);
+  docMan->RememberActiveIndexes(m_tabWidget->indexOf(this),wxTheApp->m_appWindow->m_ClientArea->indexOf(m_tabWidget));
   m_tabWidget->setCurrentWidget(this);
   docMan->SetCurrentTabWidget(m_tabWidget);
   m_tabWidget->setTabTextColor(m_tabWidget->indexOf(this),Qt::red);
@@ -375,11 +385,19 @@ void wxChildFrame::closeMyPage() {
 wxChildFrame::~wxChildFrame()
 {
   QString title;
-  wxDocManager *docMan=wxDocManager::GetDocumentManager();
+  wxDocManager *docMan = wxDocManager::GetDocumentManager();
+  QSplitter *splitter = (QSplitter*)m_tabWidget->parentWidget();
+  int tabWidIndex = splitter->indexOf(m_tabWidget);
+  int tabWidCount = m_tabWidget->count();
+
+  if (tabWidCount)
+    docMan->RememberActiveIndexes(m_pageIndex,tabWidIndex);
+  else if (m_tabWidget == docMan->GetCurrentTabWidget())
+    docMan->RememberActiveIndexes(0,0);
 
   docMan->RememberActiveFrame(0);
-  if (docMan->GetOldActiveFrame() == this)
-    docMan->ResetOldActiveFrame();
+  //if (docMan->GetOldActiveFrame() == this)
+  //  docMan->ResetOldActiveFrame();
   docMan->SetNewCurrentFrame();
 
   deleting = true;
@@ -501,17 +519,24 @@ void wxTabBar::dropEvent(QDropEvent *evt)
 }
 
 void wxDocManager::SetNewCurrentFrame() {
+  QSplitter *clientArea=wxTheApp->m_appWindow->m_ClientArea;
+
   if (m_totalCheckFrame) {
     m_totalCheckFrame->Activate(true);
     m_oldActiveFrame = m_totalCheckFrame;
     return;
   }
-  if (m_oldActiveFrame) {
-    m_oldActiveFrame->Activate(true);
-    return;
-  }
-  if (m_currentTabWidget && m_currentTabWidget->currentWidget())
-    ((wxChildFrame*)m_currentTabWidget->currentWidget())->Activate(true);
+
+  if (m_currentTabWidget->count())
+    ((wxChildFrame*)((wxTabWidget*)clientArea->widget(m_currTabWidInd))->widget(m_currFrameInd))->Activate(true);
+  //else {
+  //}
+  //if (m_oldActiveFrame) {
+  //  m_oldActiveFrame->Activate(true);
+  //  return;
+  //}
+  //if (m_currentTabWidget && m_currentTabWidget->currentWidget())
+  //  ((wxChildFrame*)m_currentTabWidget->currentWidget())->Activate(true);
 }
 
 void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
@@ -556,21 +581,21 @@ void wxTabWidget::closePage() {
   QSplitter *splitter=(QSplitter*)parentWidget();
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
 
-  page->Activate(true);
+  //page->Activate(true);
   if (page->inherits("CTreeFrame")
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
-    docMan->RememberClosedPage(index,0);
+    //docMan->RememberActiveIndexes(index,0);
     docMan->OnFileClose();
   }
   else {
     removeTab(index);
     delete page;
     if (!count() && splitter->count() > 1) {
-      docMan->RememberClosedPage(index,splitter->indexOf(this));
+    //  docMan->RememberActiveIndexes(index,splitter->indexOf(this));
       deleteLater();
     }
-    else
-      docMan->RememberClosedPage(index,0);
+    //else
+    //  docMan->RememberActiveIndexes(index,0);
   }
 }
 

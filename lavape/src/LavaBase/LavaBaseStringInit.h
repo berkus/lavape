@@ -178,7 +178,6 @@ extern LAVABASE_DLL QString ERR_IncompAbstractVT;
 extern LAVABASE_DLL QString ERR_CallExprRequired;
 extern LAVABASE_DLL QString ERR_CorruptForm3;
 extern LAVABASE_DLL QString ERR_CorruptObject;
-extern LAVABASE_DLL QString ERR_AbstrMemType;
 extern LAVABASE_DLL QString ERR_IfxForbidden;
 extern LAVABASE_DLL QString ERR_MissingExec;
 extern LAVABASE_DLL QString ERR_NoAbstractForm;

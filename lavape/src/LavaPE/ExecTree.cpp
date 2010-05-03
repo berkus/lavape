@@ -964,7 +964,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     refID = elDef->RefID;
     typeDECL = Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
     if (typeDECL) {
-      /**/
+      /*
       if (typeDECL->TypeFlags.Contains(isAbstract))
         if (elDef->DeclType == Attr) {
           if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract))
@@ -973,7 +973,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
         else
           if (!elDef->ParentDECL->ParentDECL->TypeFlags.Contains(isAbstract))
             new CLavaError(&elDef->DECLError1, &ERR_AbstrMemType);
-      /**/
+      */
 
       if (typeDECL->DeclType == Interface) {
         if (errCode = Doc->TypeForMem(elDef, typeDECL, 0))

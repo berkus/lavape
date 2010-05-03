@@ -138,6 +138,13 @@ public:
     setTabBar(m_tabBar);
   }
 
+  ~wxTabWidget() {
+    wxDocManager *docMan=wxDocManager::GetDocumentManager();
+
+    if (docMan && (this == docMan->GetCurrentTabWidget()))
+      docMan->RememberActiveIndexes(0,0);
+  }
+
   void postTabChange(int index, QAction* triggeredAction);
   void setTabTextColor (int index, const QColor &color) {
     tabBar()->setTabTextColor(index,color);
@@ -179,6 +186,8 @@ public:
   wxView* GetLastActive() {return lastActive;}
   virtual void Activate(bool topDown);
   wxTabWidget *m_tabWidget;
+  int m_pageIndex;
+  int m_tabWidIndex;
   wxDocument *m_document;
 
 //  FRAMEFACTORY(wxChildFrame)

@@ -203,7 +203,6 @@ QString ERR_IncompAbstractVT;
 QString ERR_CallExprRequired;
 QString ERR_CorruptForm3;
 QString ERR_CorruptObject;
-QString ERR_AbstrMemType;
 QString ERR_IfxForbidden;
 QString ERR_MissingExec;
 QString ERR_NoAbstractForm;
@@ -348,7 +347,6 @@ void LavaBaseStringInit() {
   ERR_CallExprRequired  = QObject::tr("This function is no longer static; a call expression is required");
   ERR_CorruptForm3  = QObject::tr("Member type in form is not a form of member type in class");
   ERR_CorruptObject  = QObject::tr("Cannot read lava object with this lava component program");
-  ERR_AbstrMemType  = QObject::tr("Do not use an abstract type for a member or formal parameter in a creatable class");
   ERR_PrevDescAssig  = QObject::tr("Single assignment violation: replacement of an ancestor; press the ""conflict button"" (red and blue left arrows) to see the conflicting previous assignment");
   ERR_PrevAncestAssig  = QObject::tr("Single assignment violation: overwrites a descendant; press the ""conflict button"" (red and blue left arrows) to see the conflicting previous assignment");
   ERR_IfdefMissing  = QObject::tr("Access to member function or variable of optional variable/expression isn't secured by \"ifdef\" statement or \"else\" expression");

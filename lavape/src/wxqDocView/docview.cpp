@@ -1022,6 +1022,7 @@ wxDocManager::wxDocManager(long flags)
   m_oldActiveFrame = 0;
   m_totalCheckFrame = 0;
   m_currentTabWidget = 0;
+  m_currFrameInd = 0;
 }
 
 wxDocManager::~wxDocManager()
@@ -1029,6 +1030,8 @@ wxDocManager::~wxDocManager()
     Clear();
     if (m_fileHistory)
         delete m_fileHistory;
+    m_currFrameInd = -1;
+    m_currTabWidInd = -1;
     myDocManager = 0;
 }
 

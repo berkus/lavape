@@ -381,7 +381,7 @@ public:
     virtual ~wxDocManager();
     QList<wxDocument*> m_docs;
 
-    int               m_deletedFrame, m_currTabWid;
+    int m_currFrameInd, m_currTabWidInd;
 
     // Handlers for UI update commands
     void OnUpdateFileOpen(QAction *action);
@@ -433,12 +433,12 @@ public:
     virtual wxChildFrame *GetOldActiveFrame() {
       return m_oldActiveFrame; }
     virtual void RememberActiveFrame(wxChildFrame *af);
-    virtual void RememberClosedPage(int pageIndex, int currTabWid) {
-      m_deletedFrame = pageIndex;
-      m_currTabWid = currTabWid;
+    virtual void RememberActiveIndexes(int pageIndex, int tabWidIndex) {
+      m_currFrameInd = pageIndex;
+      m_currTabWidInd = tabWidIndex;
     }
     virtual int GetDeletedFrame() {
-      return m_deletedFrame; }
+      return m_currFrameInd; }
     virtual void ResetOldActiveFrame() {
       m_oldActiveFrame = 0; };
     virtual void RememberTotalCheckFrame() {
