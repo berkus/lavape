@@ -453,8 +453,6 @@ bool wxDocument::DeleteAllChildFrames()
           delete tabWid;
         else
           delete child;
-        tabWid = (wxTabWidget*)wxTheApp->m_appWindow->m_ClientArea->widget(0);
-        docMan->SetCurrentTabWidget(tabWid);
       }
       else
         delete child;

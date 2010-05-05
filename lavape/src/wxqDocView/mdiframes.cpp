@@ -390,10 +390,10 @@ wxChildFrame::~wxChildFrame()
   int tabWidIndex = splitter->indexOf(m_tabWidget);
   int tabWidCount = m_tabWidget->count();
 
-  if (tabWidCount)
-    docMan->RememberActiveIndexes(m_pageIndex,tabWidIndex);
-  else if (m_tabWidget == docMan->GetCurrentTabWidget())
-    docMan->RememberActiveIndexes(0,0);
+  //if (tabWidCount) // I'm not the last page of my tab widget
+  //  docMan->RememberActiveIndexes(m_pageIndex,tabWidIndex);
+  //else if (m_tabWidget == docMan->GetCurrentTabWidget())
+  //  docMan->RememberActiveIndexes(0,0);
 
   docMan->RememberActiveFrame(0);
   //if (docMan->GetOldActiveFrame() == this)
@@ -520,6 +520,8 @@ void wxTabBar::dropEvent(QDropEvent *evt)
 
 void wxDocManager::SetNewCurrentFrame() {
   QSplitter *clientArea=wxTheApp->m_appWindow->m_ClientArea;
+  wxChildFrame *currFrame=0;
+  wxTabWidget *currTabWid=0;
 
   if (m_totalCheckFrame) {
     m_totalCheckFrame->Activate(true);
@@ -527,16 +529,37 @@ void wxDocManager::SetNewCurrentFrame() {
     return;
   }
 
-  if (m_currentTabWidget->count())
-    ((wxChildFrame*)((wxTabWidget*)clientArea->widget(m_currTabWidInd))->widget(m_currFrameInd))->Activate(true);
-  //else {
-  //}
-  //if (m_oldActiveFrame) {
-  //  m_oldActiveFrame->Activate(true);
-  //  return;
-  //}
-  //if (m_currentTabWidget && m_currentTabWidget->currentWidget())
-  //  ((wxChildFrame*)m_currentTabWidget->currentWidget())->Activate(true);
+  currTabWid = (wxTabWidget*)clientArea->widget(m_currTabWidInd);
+
+  if (currTabWid == m_currentTabWidget)
+    if (currTabWid->count()) {
+      currFrame = (wxChildFrame*)currTabWid->widget(m_currFrameInd);
+      while (!currFrame && m_currFrameInd) {
+        m_currFrameInd--;
+        currFrame = (wxChildFrame*)currTabWid->widget(m_currFrameInd);
+      }
+    }
+    else if (m_currTabWidInd) {
+      m_currTabWidInd--;
+      currTabWid = (wxTabWidget*)clientArea->widget(m_currTabWidInd);
+      while (!currTabWid) {
+        m_currTabWidInd--;
+        currTabWid = (wxTabWidget*)clientArea->widget(m_currTabWidInd);
+      }
+      currFrame = (wxChildFrame*)currTabWid->currentWidget();
+    }
+    else
+      currFrame = 0;
+  else {
+    while (!currTabWid) {
+      m_currTabWidInd--;
+      currTabWid = (wxTabWidget*)clientArea->widget(m_currTabWidInd);
+    }
+    currFrame = (wxChildFrame*)currTabWid->currentWidget();
+  }
+
+  if (currFrame)
+    currFrame->Activate(true);
 }
 
 void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
@@ -577,9 +600,11 @@ void wxTabWidget::customEvent(QEvent *ev) {
 
 void wxTabWidget::closePage() {
   wxChildFrame *page=(wxChildFrame*)currentWidget();
-  int index = currentIndex();
   QSplitter *splitter=(QSplitter*)parentWidget();
+  int pageIndex=currentIndex(), tabWidIndex=splitter->indexOf(this);
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
+  
+  docMan->RememberActiveIndexes(pageIndex,tabWidIndex);
 
   //page->Activate(true);
   if (page->inherits("CTreeFrame")
@@ -588,7 +613,7 @@ void wxTabWidget::closePage() {
     docMan->OnFileClose();
   }
   else {
-    removeTab(index);
+    removeTab(pageIndex);
     delete page;
     if (!count() && splitter->count() > 1) {
     //  docMan->RememberActiveIndexes(index,splitter->indexOf(this));
