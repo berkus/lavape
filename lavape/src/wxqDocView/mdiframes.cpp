@@ -539,7 +539,7 @@ void wxDocManager::SetNewCurrentFrame() {
         currFrame = (wxChildFrame*)currTabWid->widget(m_currFrameInd);
       }
     }
-    else if (m_currTabWidInd) {
+    else if (m_currTabWidInd) { // there is a preceding tab widget
       m_currTabWidInd--;
       currTabWid = (wxTabWidget*)clientArea->widget(m_currTabWidInd);
       while (!currTabWid) {
@@ -548,8 +548,12 @@ void wxDocManager::SetNewCurrentFrame() {
       }
       currFrame = (wxChildFrame*)currTabWid->currentWidget();
     }
+    else if (clientArea->count()) { // first tab widget deleted, but there is one more
+      currTabWid = (wxTabWidget*)clientArea->widget(1);
+      currFrame = (wxChildFrame*)currTabWid->currentWidget();
+    }
     else
-      currFrame = 0;
+      return; // last tab widget is deleted
   else {
     while (!currTabWid) {
       m_currTabWidInd--;
@@ -594,8 +598,10 @@ void wxTabWidget::postClosePage() {
 }
 
 void wxTabWidget::customEvent(QEvent *ev) {
-  if (ev->type() == UEV_ClosePage)
+  if (ev->type() == UEV_ClosePage) {
+    ((wxChildFrame*)currentWidget())->Activate(true);
     closePage();
+  }
 }
 
 void wxTabWidget::closePage() {
