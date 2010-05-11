@@ -141,8 +141,10 @@ public:
   ~wxTabWidget() {
     wxDocManager *docMan=wxDocManager::GetDocumentManager();
 
-    if (docMan && (this == docMan->GetCurrentTabWidget()))
+    if (docMan && (this == docMan->GetCurrentTabWidget())) {
+      docMan->SetCurrentTabWidget(0);
       docMan->RememberActiveIndexes(0,0);
+    }
   }
 
   void postTabChange(int index, QAction* triggeredAction);

@@ -531,36 +531,11 @@ void wxDocManager::SetNewCurrentFrame() {
 
   currTabWid = (wxTabWidget*)clientArea->widget(m_currTabWidInd);
 
-  if (currTabWid == m_currentTabWidget)
-    if (currTabWid->count()) {
-      currFrame = (wxChildFrame*)currTabWid->widget(m_currFrameInd);
-      while (!currFrame && m_currFrameInd) {
-        m_currFrameInd--;
-        currFrame = (wxChildFrame*)currTabWid->widget(m_currFrameInd);
-      }
-    }
-    else if (m_currTabWidInd) { // there is a preceding tab widget
-      m_currTabWidInd--;
-      currTabWid = (wxTabWidget*)clientArea->widget(m_currTabWidInd);
-      while (!currTabWid) {
-        m_currTabWidInd--;
-        currTabWid = (wxTabWidget*)clientArea->widget(m_currTabWidInd);
-      }
-      currFrame = (wxChildFrame*)currTabWid->currentWidget();
-    }
-    else if (clientArea->count()) { // first tab widget deleted, but there is one more
-      currTabWid = (wxTabWidget*)clientArea->widget(1);
-      currFrame = (wxChildFrame*)currTabWid->currentWidget();
-    }
-    else
-      return; // last tab widget is deleted
-  else {
-    while (!currTabWid) {
-      m_currTabWidInd--;
-      currTabWid = (wxTabWidget*)clientArea->widget(m_currTabWidInd);
-    }
+  while (!currTabWid && m_currTabWidInd)
+    currTabWid = (wxTabWidget*)clientArea->widget(--m_currTabWidInd);
+
+  if (currTabWid->count())
     currFrame = (wxChildFrame*)currTabWid->currentWidget();
-  }
 
   if (currFrame)
     currFrame->Activate(true);

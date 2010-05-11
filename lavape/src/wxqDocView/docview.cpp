@@ -809,15 +809,6 @@ wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : QWidget(par
     ((QMainWindow*)parent)->setCentralWidget(this);
 }
 
-//void wxChildFrame::focusIn( )
-//{
-//  qDebug() << "wxChildFrame::focusIn" << this << "lastActive:" << lastActive << "focWid:" << qApp->focusWidget();
-//  wxTheApp->m_appWindow->SetCurrentTabWidget(myTabWidget);
-//  if (lastActive) {
-//    wxDocManager::GetDocumentManager()->RememberActiveView(lastActive, true);
-//    lastActive->setFocus();
-//  }
-//}
 
 wxChildFrame *wxView::CalcParentFrame()
 {
