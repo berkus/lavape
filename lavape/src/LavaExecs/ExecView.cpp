@@ -242,6 +242,10 @@ void CExecView::OnInitialUpdate()
     text->leftArrows = true;
   else
     text->leftArrows = false;
+  if (myDECL->TreeFlags.Contains(qualifiedNames))
+    text->qualifiedNames = true;
+  else
+    text->qualifiedNames = false;
   if (myDECL->TreeFlags.Contains(parmNames))
     text->parmNames = true;
   else
@@ -2112,6 +2116,10 @@ void CExecView::RedrawExec()
     text->leftArrows = true;
   else
     text->leftArrows = false;
+  if (myDECL->TreeFlags.Contains(qualifiedNames))
+    text->qualifiedNames = true;
+  else
+    text->qualifiedNames = false;
   if (myDECL->TreeFlags.Contains(parmNames))
     text->parmNames = true;
   else
@@ -5575,6 +5583,20 @@ void CExecView::OnToggleClosed()
   }
 }
 
+void CExecView::OnToggleQualifiedNames()
+{
+  if (!EditOK()) return;
+
+  text->qualifiedNames = !text->qualifiedNames;
+  if (text->qualifiedNames)
+    myDECL->TreeFlags.INCL(qualifiedNames);
+  else
+    myDECL->TreeFlags.EXCL(qualifiedNames);
+
+  RedrawExec();
+  //redCtl->update();
+}
+
 void CExecView::OnToggleParmNames()
 {
   if (!EditOK()) return;
@@ -5817,6 +5839,7 @@ void CExecView::UpdateUI()
   OnUpdateEvaluate(LBaseData->evaluateActionPtr);
   OnUpdateToggleSubstitutable(LBaseData->toggleSubstTypeActionPtr);
   OnUpdateToggleClosed(LBaseData->toggleClosedActionPtr);
+  OnUpdateToggleQualifiedNames(LBaseData->actionQualifiedNamesPtr);
   OnUpdateToggleParmNames(LBaseData->parmNameActionPtr);
   OnUpdateConflict(LBaseData->conflictingAssigActionPtr);
   OnUpdateToggleCategory(LBaseData->toggleCategoryActionPtr);
@@ -5931,6 +5954,7 @@ void CExecView::DisableActions()
   LBaseData->evaluateActionPtr->setEnabled(false);
   LBaseData->toggleSubstTypeActionPtr->setEnabled(false);
   LBaseData->toggleClosedActionPtr->setEnabled(false);
+  LBaseData->actionQualifiedNamesPtr->setEnabled(false);
   LBaseData->parmNameActionPtr->setEnabled(false);
   LBaseData->conflictingAssigActionPtr->setEnabled(false);
   LBaseData->toggleCategoryActionPtr->setEnabled(false);
@@ -6640,6 +6664,19 @@ void CExecView::OnUpdateToggleArrows(QAction* action)
 
   action->setEnabled(true);
   action->setChecked(!myDECL->TreeFlags.Contains(leftArrows));
+}
+
+void CExecView::OnUpdateToggleQualifiedNames(QAction* action)
+{
+  // TODO: Add your command update UI handler code here
+
+  if (GetDocument()->changeNothing) {
+    action->setEnabled(false);
+    return;
+  }
+
+  action->setEnabled(true);
+  action->setChecked(myDECL->TreeFlags.Contains(qualifiedNames));
 }
 
 void CExecView::OnUpdateToggleParmNames(QAction* action)

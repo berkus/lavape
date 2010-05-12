@@ -450,6 +450,7 @@ public:
   QAction* toggleSubstTypeActionPtr;
   QAction* toggleClosedActionPtr;
   QAction* parmNameActionPtr;
+  QAction* actionQualifiedNamesPtr;
   QAction* trueActionPtr;
   QAction* updateResetActionPtr;
 

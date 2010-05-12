@@ -142,6 +142,7 @@ public slots:
     virtual void on_optLocalVarAction_triggered();
     virtual void on_toggleSubstTypeAction_triggered();
     virtual void on_toggleClosedAction_triggered();
+    virtual void on_actionQualifiedNames_triggered();
     virtual void on_parmNameAction_triggered();
     virtual void on_insertBeforeAction_triggered();
     virtual void on_execInsAction_triggered();

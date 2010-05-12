@@ -289,7 +289,7 @@ public:
 
   int insertedChars;
   bool plhSearch, htmlGen,
-       showComments, leftArrows, parmNames, ignored, singleFile;
+       showComments, leftArrows, qualifiedNames, parmNames, ignored, singleFile;
 };
 
 

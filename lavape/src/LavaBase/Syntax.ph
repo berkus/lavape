@@ -195,8 +195,9 @@ $TYPE +CDP {
     //8, 256, X0000 0100 in exec: assignment arrows from right to left
     parmNames,
     //9, 512, X0000 0200 in exec: show formal parameter names in function calls
+    qualifiedNames,
+    //10, 1024, X0000 0400 in exec: show fully qualified names
 
-    FREE_TREEFLAG10,//, X0000 0400
     FREE_TREEFLAG11,//, X0000 0800
     FREE_TREEFLAG12,//, X0000 1000
     FREE_TREEFLAG13,//, X0000 20000
@@ -204,6 +205,7 @@ $TYPE +CDP {
     FREE_TREEFLAG15,//, X0000 8000
     FREE_TREEFLAG16,//, X0001 0000
     FREE_TREEFLAG17,//, X0002 0000
+
     dragOverrides,  //overrides on clipboard
     //18//, X0004 0000,
     mixedDrag,

@@ -1,5 +1,6 @@
 <RCC>
-  <qresource prefix="/" >
+  <qresource prefix="/">
+    <file>LavaExecs/res/TOOLBUTTONS/Q5_qualifiedNames.xpm</file>
     <file>LavaPE/res/TOOLBUTTONS/Q_CompoNew.xpm</file>
     <file>LavaExecs/res/TOOLBUTTONS/Q5_conflict.xpm</file>
     <file>LavaExecs/res/TOOLBUTTONS/Q5_formParmNames.xpm</file>

@@ -203,6 +203,7 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
   LBaseData->toggleSignActionPtr = toggleSignAction;
   LBaseData->toggleSubstTypeActionPtr = toggleSubstTypeAction;
   LBaseData->toggleClosedActionPtr = toggleClosedAction;
+  LBaseData->actionQualifiedNamesPtr = actionQualifiedNames;
   LBaseData->parmNameActionPtr = parmNameAction;
   LBaseData->trueActionPtr = trueAction;
 
@@ -967,6 +968,12 @@ void CLavaMainFrame::on_toggleClosedAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnToggleClosed();
+}
+
+void CLavaMainFrame::on_actionQualifiedNames_triggered(){
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->OnToggleQualifiedNames();
 }
 
 void CLavaMainFrame::on_parmNameAction_triggered(){

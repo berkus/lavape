@@ -292,6 +292,7 @@
    <addaction name="insertBeforeAction"/>
    <addaction name="execInsAction"/>
    <addaction name="toggleArrowsAction"/>
+   <addaction name="actionQualifiedNames"/>
    <addaction name="parmNameAction"/>
    <addaction name="conflictingAssigAction"/>
    <addaction name="newLineAction"/>
@@ -2990,6 +2991,9 @@ p, li { white-space: pre-wrap; }
    <property name="whatsThis">
     <string>Show formal parameter names in function calls</string>
    </property>
+   <property name="autoRepeat">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionDeclare">
    <property name="text">
@@ -3579,10 +3583,33 @@ p, li { white-space: pre-wrap; }
     <string>&lt;a href=&quot;QryItf.htm&quot;&gt;Query interface:&lt;/a&gt; Make another interface of a component object accessible, starting from a known interface</string>
    </property>
   </action>
+  <action name="actionQualifiedNames">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../LavaPE_res.qrc">
+     <normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_qualifiedNames.xpm</normaloff>:/LavaExecs/res/TOOLBUTTONS/Q5_qualifiedNames.xpm</iconset>
+   </property>
+   <property name="text">
+    <string>Use fully qualified names</string>
+   </property>
+   <property name="toolTip">
+    <string>Use fully qualified names</string>
+   </property>
+   <property name="whatsThis">
+    <string>Use fully qualified names</string>
+   </property>
+   <property name="autoRepeat">
+    <bool>false</bool>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../LavaPE_res.qrc"/>
   <include location="../LavaPE_res.qrc"/>
  </resources>
  <connections>

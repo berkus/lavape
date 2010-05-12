@@ -193,6 +193,7 @@ public:
   void OnToggleCategory();
   void OnToggleSubstitutable();
   void OnToggleClosed();
+  void OnToggleQualifiedNames();
   void OnToggleParmNames();
   void OnEvaluate();
   void OnInputArrow();
@@ -266,6 +267,7 @@ public:
   void OnUpdateGotoImpl(QAction* action);
   void OnUpdateFindReferences(QAction* action);
   void OnUpdateToggleArrows(QAction* action);
+  void OnUpdateToggleQualifiedNames(QAction* action);
   void OnUpdateToggleParmNames(QAction* action);
   void OnUpdateComment(QAction* action);
   void OnUpdateButtonEnum();
