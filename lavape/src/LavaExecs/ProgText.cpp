@@ -164,7 +164,8 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
   case FuncRef_T:
     if (currentSynObj->parentObject->primaryToken == initializer_T
     || currentSynObj->parentObject->primaryToken == dftInitializer_T
-    || currentSynObj->parentObject->primaryToken == function_T)
+    || currentSynObj->parentObject->primaryToken == function_T
+    || qualifiedNames)
         currentToken->data.str = ((Reference*)currentSynObj)->refDecl->FullName.c;
     else
       currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
@@ -175,7 +176,10 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
     break;
   case TypeRef_T:
   case CrtblRef_T:
-    currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
+    if (qualifiedNames)
+      currentToken->data.str = ((Reference*)currentSynObj)->refDecl->FullName.c;
+    else
+      currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
     break;
   case enumConst_T:
     currentToken->data.str = ((EnumConst*)currentSynObj)->Id.c;
