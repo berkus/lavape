@@ -248,7 +248,6 @@ void CComboBar::OnUpdate(LavaDECL *execDecl, bool externalHint)
     m_TypesCtrl->setCurrentIndex(0);
     m_SetTypesCtrl->setCurrentIndex(0);
     //m_SignalsCtrl->setCurrentIndex(0);
-    m_ObjectsCtrl->setCurrentIndex(0);
     m_EnumsCtrl->setCurrentIndex(0);
   //  m_StatFuncsCtrl->setCurrentIndex(0);
     m_NewCtrl->setCurrentIndex(0);
@@ -259,6 +258,43 @@ void CComboBar::OnUpdate(LavaDECL *execDecl, bool externalHint)
   }
   lastCombo = invalidateLast;
   lastOK = false;
+}
+
+void CComboBar::ToggleQNames()
+{
+	int indT, indST, indO, indE, indComp, indNew, indSNew, indAttac, indCallInt;
+
+	indT = m_TypesCtrl->currentIndex();
+	indST = m_SetTypesCtrl->currentIndex();
+	indO = m_ObjectsCtrl->currentIndex();
+	indE = m_EnumsCtrl->currentIndex();
+	indComp = m_CompoObjIntCtrl->currentIndex();
+	indNew = m_NewCtrl->currentIndex();
+	indSNew = m_SNewCtrl->currentIndex();
+	indAttac = m_AttachCtrl->currentIndex();
+	indCallInt = m_CallIntCtrl->currentIndex();
+    ResetComboItems(m_TypesCtrl);
+    ResetComboItems(m_ObjectsCtrl);
+    ResetComboItems(m_SetTypesCtrl);
+    ResetComboItems(m_EnumsCtrl);
+    ResetComboItems(m_CompoObjIntCtrl);
+    ResetComboItems(m_NewCtrl);
+    ResetComboItems(m_SNewCtrl);
+    ResetComboItems(m_AttachCtrl);
+    ResetComboItems(m_CallIntCtrl);
+    CExecTypes * execFuncType = new CExecTypes(this);
+    delete execFuncType;
+    CExecFields* execFields = new CExecFields(this, myDECL, ((SelfVar*)ExecDECL->Exec.ptr)->selfCtx);
+    delete execFields;
+    m_TypesCtrl->setCurrentIndex(indT);
+    m_ObjectsCtrl->setCurrentIndex(indST);
+    m_SetTypesCtrl->setCurrentIndex(indO);
+    m_EnumsCtrl->setCurrentIndex(indE);
+    m_CompoObjIntCtrl->setCurrentIndex(indComp);
+    m_NewCtrl->setCurrentIndex(indNew);
+    m_SNewCtrl->setCurrentIndex(indSNew);
+    m_AttachCtrl->setCurrentIndex(indAttac);
+    m_CallIntCtrl->setCurrentIndex(indCallInt);
 }
 
 
@@ -376,13 +412,17 @@ void CComboBar::OnNewPFunc()
 {
   TID id;
   LavaDECL *funcDecl;
+  QString refName;
 
   CExecView *view = (CExecView*)myExecView;
   id.nID = myDoc->MakeFunc(SelfTypeDECL, false, view);
   id.nINCL = 0;
   if (id.nID > 0) {
     funcDecl = myDoc->IDTable.GetDECL(id);
-    QString refName = QString(funcDecl->LocalName.c);
+	if (ExecDECL->TreeFlags.Contains(qualifiedNames))
+      refName = QString(funcDecl->FullName.c);
+	else 
+      refName = QString(funcDecl->LocalName.c);
     view->OnInsertRef(refName, id, false, 0, true);
   }
 }
@@ -1571,7 +1611,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
             && (showSignals == elDECL->SecondTFlags.Contains(isLavaSignal))
             && (!signalDecl || slotFunction(ckd, elDECL, callCtx, signalDecl,signalCtx))
             && !IsInBox(funcBox,elDECL->LocalName, elDECL->OwnID, elDECL->inINCL, sameName)) {
-          if (sameName) {
+		 if (sameName || ExecDECL->TreeFlags.Contains(qualifiedNames)) {
             item = new CComboBoxItem(TID(elDECL->OwnID, elDECL->inINCL));
             addItemAlpha(funcBox, QString(elDECL->FullName.c),QVariant::fromValue(item));//sort#
           }
@@ -1620,7 +1660,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
           && (showSignals == elDECL->SecondTFlags.Contains(isLavaSignal))
           && (!signalDecl || slotFunction(ckd, elDECL, callCtx, signalDecl,signalCtx))
           && !IsInBox(funcBox, elDECL->LocalName, elDECL->OwnID, elDECL->inINCL, sameName)) {
-        if (sameName) {
+        if (sameName || ExecDECL->TreeFlags.Contains(qualifiedNames)) {
           item = new CComboBoxItem(TID(elDECL->OwnID, elDECL->inINCL));
           addItemAlpha(funcBox, QString(elDECL->FullName.c),QVariant::fromValue(item));//sort#
         }
@@ -1764,7 +1804,10 @@ void CComboBar::showIFFuncs()
         && !elDECL->SecondTFlags.Contains(funcImpl)
         && elDECL->TypeFlags.Contains(isStatic)) {
           item = new CComboBoxItem(TID(elDECL->OwnID, elDECL->inINCL));
-          addItemAlpha(m_StaticFuncsCtrl, QString(elDECL->LocalName.c),QVariant::fromValue(item));
+		  if (ExecDECL->TreeFlags.Contains(qualifiedNames)) 
+			addItemAlpha(m_StaticFuncsCtrl, QString(elDECL->FullName.c),QVariant::fromValue(item));
+		  else
+			addItemAlpha(m_StaticFuncsCtrl, QString(elDECL->LocalName.c),QVariant::fromValue(item));
       }
     }
     if ((decl == IntfDECL) && (IntfDECL != SelfTypeDECL))
@@ -1866,7 +1909,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
             && (showSignals == cheDECL->SecondTFlags.Contains(isLavaSignal))
             && (!signalDecl || slotFunction(ckd, cheDECL, callCtx, signalDecl,signalCtx))
             && !IsInBox(funcBox,cheDECL->LocalName, cheDECL->OwnID, cheDECL->inINCL, sameName)) {
-          if (sameName) {
+          if (sameName || ExecDECL->TreeFlags.Contains(qualifiedNames)) {
             item = new CComboBoxItem(TID(cheDECL->OwnID, cheDECL->inINCL));
             addItemAlpha(funcBox, QString(cheDECL->FullName.c),QVariant::fromValue(item));//sort#
           }
@@ -1908,7 +1951,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
               && (!signalDecl || slotFunction(ckd, cheDECL, callCtx, signalDecl,signalCtx))
               && (!cheDECL->TypeFlags.Contains(isProtected) || allowProtected)
               && !IsInBox(funcBox,cheDECL->LocalName/*FullName*/, cheDECL->OwnID, cheDECL->inINCL, sameName)) {
-              if (sameName) {
+              if (sameName|| ExecDECL->TreeFlags.Contains(qualifiedNames)) {
                 item = new CComboBoxItem(TID(cheDECL->OwnID, cheDECL->inINCL));
                 addItemAlpha(funcBox, QString(cheDECL->FullName.c),QVariant::fromValue(item));//sort#
               }
@@ -1943,7 +1986,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
               && (!ElDECL->TypeFlags.Contains(isProtected) || allowProtected)
               && !ElDECL->TypeFlags.Contains(isInitializer)
               && !IsInBox(funcBox, ElDECL->LocalName, ElDECL->OwnID, ElDECL->inINCL, sameName)) {
-            if (sameName) {
+            if (sameName || ExecDECL->TreeFlags.Contains(qualifiedNames)) {
               item = new CComboBoxItem(TID(ElDECL->OwnID, ElDECL->inINCL));
               addItemAlpha(funcBox, QString(ElDECL->FullName.c),QVariant::fromValue(item));
             }
@@ -2068,7 +2111,7 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
   default: ;
   }
   if (combo) {
-    if (Bar->myDECL && Bar->myDECL->FullName.l) {
+    if (Bar->myDECL && Bar->myDECL->FullName.l && !Bar->ExecDECL->TreeFlags.Contains(qualifiedNames)) {
       Label = LBaseData->calcRelName (elDef->FullName, Bar->myDECL->FullName);
       if (setClassName && !Label.Contains(ddppkt,1,loc)) {
         Label.Insert( ddppkt, 0);
@@ -2194,7 +2237,7 @@ void CExecFields::AddToBox(LavaDECL** pdecl, DString& name, QComboBox* fieldList
         delete fdata;
       }
       else {
-        if (!fdata->withClass) {
+        if (!fdata->withClass && !Bar->ExecDECL->TreeFlags.Contains(qualifiedNames)) {
           name.Delete(name.l - (*pdecl)->LocalName.l, (*pdecl)->LocalName.l);
           fName = name + fdata->QName;
           nfdata = new CFieldsItem();

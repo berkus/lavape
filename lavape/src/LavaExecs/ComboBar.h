@@ -102,6 +102,7 @@ public:
   void OnUpdate(LavaDECL *execDecl, bool externalHint);
   bool UsedName(const DString& name);
   void TrackEnum();
+  void ToggleQNames();
 
   //static boxes
   QComboBox*  m_TypesCtrl;

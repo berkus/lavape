@@ -5592,7 +5592,7 @@ void CExecView::OnToggleQualifiedNames()
     myDECL->TreeFlags.INCL(qualifiedNames);
   else
     myDECL->TreeFlags.EXCL(qualifiedNames);
-
+  m_ComboBar->ToggleQNames();
   RedrawExec();
   //redCtl->update();
 }
