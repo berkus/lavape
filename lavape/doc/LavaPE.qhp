@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QtHelpProject version="1.0">
     <namespace>lavape.com</namespace>
-    <virtualFolder>LavaDoc</virtualFolder>
+    <virtualFolder>lavadoc</virtualFolder>
     <filterSection>
         <toc>
             <section title="LavaPE Manual" ref="LavaOnlineDoc.htm">
