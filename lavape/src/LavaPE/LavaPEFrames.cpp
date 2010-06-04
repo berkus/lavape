@@ -64,7 +64,7 @@
 #include "qhash.h"
 #include "qevent.h"
 #include "qtooltip.h"
-#include "QtAssistant/qassistantclient.h"
+//#include "QtAssistant/qassistantclient.h"
 //Added by qt3to4:
 #include <QActionGroup>
 #include <QCloseEvent>

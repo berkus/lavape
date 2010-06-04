@@ -56,7 +56,7 @@
 //#include "q3dragobject.h"
 #include "qdatastream.h"
 #include "qmessagebox.h"
-#include "QtAssistant/qassistantclient.h"
+//#include "QtAssistant/qassistantclient.h"
 #include <QTreeWidget>
 //#include "q3header.h"
 

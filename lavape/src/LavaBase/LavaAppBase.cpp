@@ -45,7 +45,7 @@
 #pragma hdrstop
 
 
-QAssistantClient *qacl=0;
+//QAssistantClient *qacl=0;
 
 
 CLavaPEHint::CLavaPEHint(CPECommand cc, wxDocument* fromdoc, SynFlags first,

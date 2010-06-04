@@ -22,7 +22,7 @@
 #include "qstring.h"
 #include "qfileinfo.h"
 #include "qtoolbutton.h"
-#include "QtAssistant/qassistantclient.h"
+//#include "QtAssistant/qassistantclient.h"
 #include "qwhatsthis.h"
 
 
@@ -576,7 +576,7 @@ extern LAVABASE_DLL int question(QWidget *parent, const QString &caption,
 			 const QString& text,
 			 int button0, int button1, int button2=0);
 
-extern LAVABASE_DLL QAssistantClient *qacl;
+//extern LAVABASE_DLL QAssistantClient *qacl;
 
 
 #endif

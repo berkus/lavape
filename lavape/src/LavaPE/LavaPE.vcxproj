@@ -80,7 +80,7 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>..\..\bin\disco.lib;..\..\bin\wxqDocView.lib;..\..\bin\LavaExecs.lib;..\..\bin\LavaBase.lib;..\..\bin\LavaGUI.lib;..\..\bin\LavaPE_UI.lib;$(QTDIR)\lib\QtAssistantClientd4.lib;$(QTDIR)\lib\QtCored4.lib;$(QTDIR)\lib\QtGuid4.lib;$(QTDIR)\lib\qtmaind.lib;$(QTDIR)\lib\QtNetworkd4.lib;$(QTDIR)\lib\QtTestd4.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\bin\disco.lib;..\..\bin\wxqDocView.lib;..\..\bin\LavaExecs.lib;..\..\bin\LavaBase.lib;..\..\bin\LavaGUI.lib;..\..\bin\LavaPE_UI.lib;$(QTDIR)\lib\QtCored4.lib;$(QTDIR)\lib\QtGuid4.lib;$(QTDIR)\lib\qtmaind.lib;$(QTDIR)\lib\QtNetworkd4.lib;$(QTDIR)\lib\QtTestd4.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\..\bin\LavaPE.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -694,7 +694,9 @@
     <None Include="res\TreeIcons\PX_xcommask.xpm" />
     <None Include="res\TreeIcons\PX_xerrcommask.xpm" />
     <None Include="res\TreeIcons\PX_xerrmask.xpm" />
-    <None Include="..\..\doc\LavaPE.qhp" />
+    <None Include="..\..\doc\LavaPE.qhp">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="LavaPE.reg" />
     <CustomBuild Include="..\LavaPE_res.qrc">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying rcc to %(FullPath)</Message>
@@ -726,6 +728,7 @@
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\doc\LavaPE.qhcp;..\..\doc\LavaPE.qhp;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\doc\%(Filename).qhc;..\..\doc\%(Filename).qch;%(Outputs)</Outputs>
+      <SubType>Designer</SubType>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

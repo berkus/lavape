@@ -4,7 +4,7 @@
 #include "qaction.h"
 #include "qapplication.h"
 #include "qhash.h"
-#include "QtAssistant/qassistantclient.h"
+//#include "QtAssistant/qassistantclient.h"
 #include "qpushbutton.h"
 #include "qgroupbox.h"
 #include "qcheckbox.h"

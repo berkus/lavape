@@ -35,7 +35,7 @@
 #include "qmessagebox.h"
 //Added by qt3to4:
 #include <signal.h>
-#include "QtAssistant/qassistantclient.h"
+//#include "QtAssistant/qassistantclient.h"
 #include <stdlib.h>
 
 #ifndef WIN32

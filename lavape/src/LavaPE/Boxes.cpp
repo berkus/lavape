@@ -1,4 +1,4 @@
-/* LavaPE -- Lava Programming Environment
+﻿/* LavaPE -- Lava Programming Environment
    Copyright (C) 2002 Fraunhofer-Gesellschaft
 	 (http://www.sit.fraunhofer.de/english/)
 
@@ -37,7 +37,7 @@
 #include "qlabel.h"
 #include "qmessagebox.h"
 #include "qfiledialog.h"
-#include "QtAssistant/qassistantclient.h"
+//#include "QtAssistant/qassistantclient.h"
 
 #pragma hdrstop
 

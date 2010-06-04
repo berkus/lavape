@@ -77,7 +77,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib $(QTDIR)\lib\QtAssistantClientd4.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtGuid4.lib $(QTDIR)\lib\QtNetworkd4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtGuid4.lib $(QTDIR)\lib\QtNetworkd4.lib"
 				OutputFile="..\..\bin\LavaBase.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -974,7 +974,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\ui_$(InputName).h"
 					/>
 				</FileConfiguration>
@@ -984,7 +984,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputFileName)"
-						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\ui_$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\ui_$(InputName).h"
 					/>
 				</FileConfiguration>

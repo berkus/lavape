@@ -81,7 +81,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaExecs.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\LavaPE_UI.lib $(QTDIR)\lib\QtAssistantClientd4.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtGuid4.lib $(QTDIR)\lib\qtmaind.lib $(QTDIR)\lib\QtNetworkd4.lib $(QTDIR)\lib\QtTestd4.lib wsock32.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaExecs.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\LavaPE_UI.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtGuid4.lib $(QTDIR)\lib\qtmaind.lib $(QTDIR)\lib\QtNetworkd4.lib $(QTDIR)\lib\QtTestd4.lib wsock32.lib"
 				OutputFile="..\..\bin\LavaPE.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
