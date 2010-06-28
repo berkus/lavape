@@ -397,13 +397,11 @@
     <ClInclude Include="ChainA.h" />
     <ClInclude Include="CHAINANY.h" />
     <ClInclude Include="ChString.h" />
-    <ClInclude Include="Code98.h" />
     <ClInclude Include="Convert.h" />
     <ClInclude Include="DateTime.h" />
     <ClInclude Include="DIO.h" />
     <ClInclude Include="disco_all.h" />
     <ClInclude Include="DString.h" />
-    <ClInclude Include="fdQueues.h" />
     <ClInclude Include="Halt.h" />
     <ClInclude Include="InFile.h" />
     <ClInclude Include="MachDep.h" />
