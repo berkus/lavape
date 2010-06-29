@@ -136,6 +136,7 @@ public:
   wxTabWidget(QWidget *parent) : QTabWidget(parent) {
     m_tabBar = new wxTabBar(this);
     setTabBar(m_tabBar);
+      deleting = false;
   }
 
   ~wxTabWidget() {
@@ -156,6 +157,7 @@ public:
 
   wxTabBar *m_tabBar;
   int m_closedPageIndex;
+  bool deleting;
 
 public slots:
   void postClosePage();

@@ -390,14 +390,7 @@ wxChildFrame::~wxChildFrame()
   int tabWidIndex = splitter->indexOf(m_tabWidget);
   int tabWidCount = m_tabWidget->count();
 
-  //if (tabWidCount) // I'm not the last page of my tab widget
-  //  docMan->RememberActiveIndexes(m_pageIndex,tabWidIndex);
-  //else if (m_tabWidget == docMan->GetCurrentTabWidget())
-  //  docMan->RememberActiveIndexes(0,0);
-
   docMan->RememberActiveFrame(0);
-  //if (docMan->GetOldActiveFrame() == this)
-  //  docMan->ResetOldActiveFrame();
   docMan->SetNewCurrentFrame();
 
   deleting = true;
@@ -531,10 +524,10 @@ void wxDocManager::SetNewCurrentFrame() {
 
   currTabWid = (wxTabWidget*)clientArea->widget(m_currTabWidInd);
 
-  while (!currTabWid && m_currTabWidInd)
+  while ((!currTabWid || currTabWid->deleting) && m_currTabWidInd)
     currTabWid = (wxTabWidget*)clientArea->widget(--m_currTabWidInd);
 
-  if (currTabWid->count())
+  if (currTabWid && currTabWid->count())
     currFrame = (wxChildFrame*)currTabWid->currentWidget();
 
   if (currFrame)
@@ -587,21 +580,17 @@ void wxTabWidget::closePage() {
   
   docMan->RememberActiveIndexes(pageIndex,tabWidIndex);
 
-  //page->Activate(true);
   if (page->inherits("CTreeFrame")
   || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
-    //docMan->RememberActiveIndexes(index,0);
     docMan->OnFileClose();
   }
   else {
     removeTab(pageIndex);
-    delete page;
     if (!count() && splitter->count() > 1) {
-    //  docMan->RememberActiveIndexes(index,splitter->indexOf(this));
+      deleting = true;
       deleteLater();
     }
-    //else
-    //  docMan->RememberActiveIndexes(index,0);
+    delete page;
   }
 }
 
