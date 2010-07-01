@@ -707,11 +707,16 @@ bool wxDocument::OnSaveModified()
           QMessageBox::No,
           QMessageBox::Cancel)) {
         case QMessageBox::No:
+          Modify(false);
+          return true;
+        case QMessageBox::Yes:
+          return Save();
+        case QMessageBox::Cancel:
+			    if (wxTheApp->appExit) { // treat like "No"
             Modify(false);
             return true;
-        case QMessageBox::Yes:
-            return Save();
-        case QMessageBox::Cancel:
+          }
+          else
             return false;
         }
     }
