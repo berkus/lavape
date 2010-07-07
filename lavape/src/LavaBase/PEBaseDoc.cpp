@@ -763,8 +763,7 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
             SetExecChe(decl,(LavaDECL*)hint->CommandData1);
           OpenExecView((LavaDECL*)hint->CommandData1);
         }
-        else
-          LBaseData->ExecUpdate->ChangeExec(hint, this, undo || redo);
+        LBaseData->ExecUpdate->ChangeExec(hint, this, undo || redo);
       }
       break;
     case CPECommand_Change:
