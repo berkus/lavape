@@ -1712,8 +1712,8 @@ void wxDocManager::RemoveDocument(wxDocument *doc)
 // Called from ~wxDocument
 {
   m_docs.removeAt(m_docs.indexOf(doc));
-  //if (!m_docs.count())
-  //  wxTheApp->m_appWindow->ClearMainFrame();
+  if (!m_docs.count())
+    wxTheApp->m_appWindow->ClearMainFrame();
 }
 
 // Views should inform the document manager
