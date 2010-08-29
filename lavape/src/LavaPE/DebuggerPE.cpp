@@ -213,7 +213,7 @@ void CLavaPEDebugger::stop(DbgExitReason reason) {
   }
 
   if (startedFromLava || errBeforeStarted)
-    qApp->exit(0);
+    ((CLavaMainFrame*)wxTheApp->m_appWindow)->OnFileExit();//qApp->exit(0);
   else
     QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)0));
 }
