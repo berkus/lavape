@@ -484,7 +484,7 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
   LavaObjectPtr sectionPtr, newStackFrame[SFH+2];
   LavaVariablePtr memPtr;
   LavaDECL *classDECL, *secClassDECL;
-  int iStore, iCast, iTab, iSect, ll, lmem, llast, objINCL, ii, *reversTab=0;
+  long int iStore, iCast, iTab, iSect, ll, lmem, llast, objINCL, ii, *reversTab=0;
   TAdapterFunc* funcAdapter;
   QString dPN;
   DString synName, linkName;
@@ -503,7 +503,7 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
       ObjTab[0] = 0;
       ObjTab[1] = object;
       if (objINCL) {
-        reversTab = new int [IDTable.maxINCL];//.IDTab[0]->maxTrans];
+        reversTab = new long [IDTable.maxINCL];//.IDTab[0]->maxTrans];
         for (ii = 0;
              ii < IDTable.IDTab[0]->maxTrans;
              ii++)
@@ -549,12 +549,12 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
                     StoreArray(cid, sectionPtr);
                 }
                 else {
-                  llast = (int)(unsigned)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
+                  llast = (long int)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
                   for (ll = LSH; ll < llast; ll++)
                     cid->PUTint(*(long int*)(sectionPtr+ll)); //(*cid->Ar) << *(DWORD*)(sectionPtr + ll);
                 }
               }
-              lmem = (int)(unsigned)funcAdapter[0] + LSH;
+              lmem = (long int)funcAdapter[0] + LSH;
             }
             //else {  //(##########)
               llast = secClassDECL->SectionInfo2 + LSH;
@@ -735,8 +735,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
   LavaVariablePtr memPtr;
   LavaDECL *classDECL, *implDECL, *secClassDECL;
   CHESimpleSyntax *cheSyn;
-  int iTab, iSect, ll, lmem, llast, objINCL, iEnum, iObj;
-  long lon;
+  long int iTab, iSect, ll, lmem, llast, objINCL, iEnum, iObj, lon;
   TID id;
   SynFlags secFlag;
   TAdapterFunc* funcAdapter;
@@ -905,12 +904,12 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
                   }
                 }
                 else {
-                  llast = (int)(unsigned)funcAdapter[0] + LSH;
+                  llast = (long int)funcAdapter[0] + LSH;
                   for (ll = LSH; ll < llast; ll++)
                     cid->GETint(*(long int*)(sectionPtr + ll)); 
                 }
               }
-              lmem = (int)(unsigned)funcAdapter[0] + LSH;
+              lmem = (long int)funcAdapter[0] + LSH;
             }
             llast = secClassDECL->SectionInfo2 + LSH;
             for (/*ll = LSH*/; lmem < llast; lmem++) 
@@ -937,7 +936,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
                 LoadArray2(ckd, sectionPtr);
               funcAdapter = GetAdapterTable(ckd, secClassDECL,0);
               if (funcAdapter)
-                lmem = (int)(unsigned)funcAdapter[0] + LSH;
+                lmem = (long int)funcAdapter[0] + LSH;
             }
             llast = secClassDECL->SectionInfo2 + LSH;
             for (/*ll = LSH*/; lmem < llast; lmem++) {

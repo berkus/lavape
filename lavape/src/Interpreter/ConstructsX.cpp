@@ -75,7 +75,7 @@
   else /* operator function */ \
     NEWSTACK[0] = (LavaObjectPtr)this; \
   NEWSTACK[1] = (LavaObjectPtr)stackFrame;\
-  NEWSTACK[2] = (LavaObjectPtr)((unsigned)stackFrame[2] & ~2); \
+  NEWSTACK[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] & ~2); \
   try { RESULT = CALLEDSELF->Execute(CKD, NEWSTACK, newOldExprLevel); \
     ckd.selfVar = mySelfVar;}\
   catch (CHWException ex) {\
@@ -104,8 +104,8 @@
   }\
   if (LBaseData->debugger->isConnected && !caught) {\
     if (nextDebugStep == noStep) {\
-      stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
-      if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
+      stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] | ((unsigned long)NEWSTACK[2] & 2)); \
+      if (!((unsigned long)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
         nextDebugStep = oldDebugStep; }\
     else if (nextDebugStep == stepOut) {\
       if (currentStackDepth < stepOutStackDepth) { \
@@ -134,7 +134,7 @@
   else /* operator function */ \
     NEWSTACK[0] = (LavaObjectPtr)this; \
   NEWSTACK[1] = (LavaObjectPtr)stackFrame;\
-  NEWSTACK[2] = (LavaObjectPtr)((unsigned)stackFrame[2] & ~2); \
+  NEWSTACK[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] & ~2); \
   try { __try1(_catch1) RESULT = CALLEDSELF->Execute(CKD, NEWSTACK, newOldExprLevel); \
     ckd.selfVar = mySelfVar;\
   __except1 \
@@ -161,8 +161,8 @@
   }\
   if (LBaseData->debugger->isConnected && !caught) {\
     if (nextDebugStep == noStep) {\
-      stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
-      if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
+      stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] | ((unsigned long)NEWSTACK[2] & 2)); \
+      if (!((unsigned long)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
         nextDebugStep = oldDebugStep; }\
     else if (nextDebugStep == stepOut) {\
       if (currentStackDepth < stepOutStackDepth) { \
@@ -191,7 +191,7 @@
   else \
     NEWSTACK[0] = (LavaObjectPtr)this; \
   NEWSTACK[1] = (LavaObjectPtr)stackFrame; \
-  NEWSTACK[2] = (LavaObjectPtr)((unsigned)stackFrame[2] & ~2); \
+  NEWSTACK[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] & ~2); \
   try {\
     if (!setjmp(contOnHWexception)) {\
       RESULT = CALLEDSELF->Execute(CKD, NEWSTACK, newOldExprLevel); ckd.selfVar = mySelfVar;}\
@@ -220,8 +220,8 @@
   }\
   if (LBaseData->debugger->isConnected && !caught) {\
     if (nextDebugStep == noStep) {\
-      stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
-      if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
+      stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] | ((unsigned long)NEWSTACK[2] & 2)); \
+      if (!((unsigned long)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
         nextDebugStep = oldDebugStep; }\
     else if (nextDebugStep == stepOut) {\
       if (currentStackDepth < stepOutStackDepth) { \
@@ -253,7 +253,7 @@
   else \
     NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)this; \
   NEWSTACK[1] = CKD.stackFrame[1] = (LavaObjectPtr)stackFrame; \
-  NEWSTACK[2] = CKD.stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] & ~2); \
+  NEWSTACK[2] = CKD.stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] & ~2); \
   try { RESULT = FUNC(CKD, NEWSTACK); ckd.selfVar = mySelfVar;}\
   catch (CHWException ex) {\
     ckd.selfVar = mySelfVar;\
@@ -292,8 +292,8 @@
   }\
   if (LBaseData->debugger->isConnected && !caught) {\
     if (nextDebugStep == noStep) {\
-      stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
-      if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
+      stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] | ((unsigned long)NEWSTACK[2] & 2)); \
+      if (!((unsigned long)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
         nextDebugStep = oldDebugStep; }\
     else if (nextDebugStep == stepOut) {\
       if (currentStackDepth < stepOutStackDepth) { \
@@ -322,7 +322,7 @@
   else \
     NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)this; \
   NEWSTACK[1] = CKD.stackFrame[1] = (LavaObjectPtr)stackFrame; \
-  NEWSTACK[2] = CKD.stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] & ~2); \
+  NEWSTACK[2] = CKD.stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] & ~2); \
   try { RESULT = FUNC(CKD, NEWSTACK); ckd.selfVar = mySelfVar;}\
   catch (CHWException ex) {\
     ckd.selfVar = mySelfVar;\
@@ -357,8 +357,8 @@
   }\
   if (LBaseData->debugger->isConnected && !caught) {\
     if (nextDebugStep == noStep) {\
-      stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
-      if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
+      stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] | ((unsigned long)NEWSTACK[2] & 2)); \
+      if (!((unsigned long)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
         nextDebugStep = oldDebugStep; }\
     else if (nextDebugStep == stepOut) {\
       if (currentStackDepth < stepOutStackDepth) { \
@@ -386,7 +386,7 @@
   else \
     NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)this; \
   NEWSTACK[1] = CKD.stackFrame[1] = (LavaObjectPtr)stackFrame; \
-  NEWSTACK[2] = CKD.stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] & ~2); \
+  NEWSTACK[2] = CKD.stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] & ~2); \
   try { \
     if (!setjmp(contOnHWexception)) {\
       RESULT = FUNC(CKD, NEWSTACK); ckd.selfVar = mySelfVar;}\
@@ -428,8 +428,8 @@
   }\
   if (LBaseData->debugger->isConnected && !caught) { \
     if (nextDebugStep == noStep) {\
-      stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
-      if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
+      stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] | ((unsigned long)NEWSTACK[2] & 2)); \
+      if (!((unsigned long)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
         nextDebugStep = oldDebugStep; }\
     else if (nextDebugStep == stepOut) {\
       if (currentStackDepth < stepOutStackDepth) { \
@@ -503,7 +503,7 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
   ckd.synError = 0;
   if (synObj) {
     if (debug) {
-      stopStack[2] = (LavaObjectPtr)((unsigned)stopStack[2] | 2);
+      stopStack[2] = (LavaObjectPtr)((unsigned long)stopStack[2] | 2);
         // set flag: breakpoint encountered
       if (synObj->primaryToken == assignFS_T
       && synObj->parentObject->primaryToken == new_T
@@ -869,7 +869,7 @@ bool AssertionData::EvalPreConditions (CheckData &ckd, RTAssDataDict &rtadDict, 
   bool ok=true, thisOk;
   unsigned oldExprLevel=0;
 
-  stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | 1);
+  stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] | 1);
   oldSelfObject ;
   if (requireDECL) {
     objClassDECL = oldSelfObject[0][0].classDECL;
@@ -958,7 +958,7 @@ bool AssertionData::EvalPostConditions (CheckData &ckd, RTAssDataDict &rtadDict,
       secn = ckd.document->GetSectionNumber(ckd, objClassDECL, funcDECL->ParentDECL);
       stackFrame[SFH] = (LavaObjectPtr)(oldSelfObject + (*oldSelfObject)[secn].sectionOffset);
     }
-    stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | 1);
+    stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] | 1);
     ok = ((SynObject*)ensureDECL->Exec.ptr)->Execute(ckd,stackFrame,oldExprLevel);
     stackFrame[2] = oldSF2;
     stackFrame[SFH] = oldSelfObject;
@@ -977,7 +977,7 @@ bool AssertionData::EvalPostConditions (CheckData &ckd, RTAssDataDict &rtadDict,
       secn = ckd.document->GetSectionNumber(ckd, objClassDECL, funcDECL->ParentDECL);
       stackFrame[SFH] = (LavaObjectPtr)(oldSelfObject + (*oldSelfObject)[secn].sectionOffset);
     }
-    stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | 1);
+    stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] | 1);
     ok = ((SynObject*)ensureDECLimpl->Exec.ptr)->Execute(ckd,stackFrame,oldExprLevel);
     stackFrame[2] = oldSF2;
     stackFrame[SFH] = oldSelfObject;
@@ -1043,7 +1043,7 @@ bool InvarData::EvalInvariants (CheckData &ckd, RTInvDataDict &rtidDict, LavaVar
       secn = ckd.document->GetSectionNumber(ckd, objClassDECL, itfDECL);
       stackFrame[SFH] = (LavaObjectPtr)(oldSelfObject + (*oldSelfObject)[secn].sectionOffset);
     }
-    stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | 1);
+    stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] | 1);
     ok = ((SynObject*)invariantDECL->Exec.ptr)->Execute(ckd,stackFrame,0);
     stackFrame[2] = oldSF2;
     stackFrame[SFH] = oldSelfObject;
@@ -1062,7 +1062,7 @@ bool InvarData::EvalInvariants (CheckData &ckd, RTInvDataDict &rtidDict, LavaVar
       secn = ckd.document->GetSectionNumber(ckd, objClassDECL, itfDECL);
       stackFrame[SFH] = (LavaObjectPtr)(oldSelfObject + (*oldSelfObject)[secn].sectionOffset);
     }
-    stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | 1);
+    stackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] | 1);
     ok = ((SynObject*)invariantDECLimpl->Exec.ptr)->Execute(ckd,stackFrame,0);
     stackFrame[2] = oldSF2;
     stackFrame[SFH] = oldSelfObject;
@@ -1180,7 +1180,7 @@ bool SelfVarX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
 
   if (LBaseData->m_checkPreconditions
   && isFuncBody
-  && !((unsigned)stackFrame[2] & 1)
+  && !((unsigned long)stackFrame[2] & 1)
   && adp
   && adp->hasOrInheritsPreconditions) {
     ok = adp->EvalPreConditions(ckd,rtadDict,stackFrame,0,true);
@@ -1208,7 +1208,7 @@ bool SelfVarX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
 
   if (LBaseData->m_checkPostconditions
   && isFuncBody
-  && !((unsigned)stackFrame[2] & 1)
+  && !((unsigned long)stackFrame[2] & 1)
   && adp
   && adp->hasOrInheritsPostconditions) {
     ok = adp->EvalPostConditions(ckd,rtadDict,stackFrame,0);
@@ -1220,7 +1220,7 @@ bool SelfVarX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
   && isFuncBody
   && !funcDECL->TypeFlags.Contains(isInitializer)
   && funcDECL->TypeFlags.Contains(isStateObjectY)
-  && !((unsigned)stackFrame[2] & 1)
+  && !((unsigned long)stackFrame[2] & 1)
   && idp
   && idp->hasOrInheritsInvariants)
     ok = idp->EvalInvariants(ckd,rtidDict,stackFrame);
@@ -3498,7 +3498,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
 
     idp = (InvarData*)typeDECL->Exec.ptr;
     if (LBaseData->m_checkInvariants
-    && !((unsigned)stackFrame[2] & 1)
+    && !((unsigned long)stackFrame[2] & 1)
     && idp
     && idp->hasOrInheritsInvariants) { // invoke invariant if it exists
       frameSize=idp->stackFrameSize;
@@ -3513,7 +3513,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
 #endif
       newStackFrame[0] = (LavaObjectPtr)this;
       newStackFrame[1] = (LavaObjectPtr)stackFrame;
-      newStackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] & ~2);
+      newStackFrame[2] = (LavaObjectPtr)((unsigned long)stackFrame[2] & ~2);
       newStackFrame[SFH] = object;
       ckd.selfVar = mySelfVar;
       DebugStep oldDebugStep=nextDebugStep;

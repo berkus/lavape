@@ -62,7 +62,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
   insMult = false;
 
   if (undo)
-    switch ((InsertMode)(unsigned)hint->CommandData3) {
+    switch ((InsertMode)(long unsigned)hint->CommandData3) {
     case InsNested:
       goto insNested;
 
@@ -207,7 +207,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
 
     case InsFlags:
       synObj = (SynObject*)hint->CommandData2;
-      flagBits = (unsigned)hint->CommandData4;
+      flagBits = (long unsigned)hint->CommandData4;
       flags = SET(flagBits);
       if (flags.Contains(newLine)) {
         parent = synObj->parentObject;
@@ -238,7 +238,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
 
     case DelFlags:
       synObj = (SynObject*)hint->CommandData2;
-      flagBits = (unsigned)hint->CommandData4;
+      flagBits = (unsigned long)hint->CommandData4;
       flags = SET(flagBits);
       if (flags.Contains(newLine)) {
         parent = synObj->parentObject;
@@ -281,7 +281,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
 
     case ChgOp:
       synObj = (SynObject*)hint->CommandData2;
-      newToken = (TToken)(unsigned)hint->CommandData4;
+      newToken = (TToken)(unsigned long)hint->CommandData4;
       hint->CommandData4 = (void*)synObj->primaryToken;
       synObj->primaryToken = newToken;
       replacedObj = synObj;
@@ -289,7 +289,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
       break;
     }
   else
-    switch ((InsertMode)(unsigned)hint->CommandData3) {
+    switch ((InsertMode)(unsigned long)hint->CommandData3) {
     case InsNested:
 insNested:
       chx = (CHAINX*)hint->CommandData5;
@@ -496,7 +496,7 @@ insNested:
 
     case InsFlags:
       synObj = (SynObject*)hint->CommandData2;
-      flagBits = (unsigned)hint->CommandData4;
+      flagBits = (unsigned long)hint->CommandData4;
       flags = SET(flagBits);
       if (flags.Contains(newLine)) {
         parent = synObj->parentObject;
@@ -595,7 +595,7 @@ plusMinus:
 
     case DelFlags:
       synObj = (SynObject*)hint->CommandData2;
-      flagBits = (unsigned)hint->CommandData4;
+      flagBits = (unsigned long)hint->CommandData4;
       flags = SET(flagBits);
       if (flags.Contains(newLine)) {
         parent = synObj->parentObject;
@@ -637,7 +637,7 @@ plusMinus:
 
     case ChgOp:
       synObj = (SynObject*)hint->CommandData2;
-      newToken = (TToken)(unsigned)hint->CommandData4;
+      newToken = (TToken)(unsigned long)hint->CommandData4;
       hint->CommandData4 = (void*)synObj->primaryToken;
       synObj->primaryToken = newToken;
       replacedObj = synObj;
@@ -653,7 +653,7 @@ void CExecUpdate::DeleteHint(CLavaPEHint *hint) {
   CHE *che;
   TComment *pCmt;
 
-  switch ((InsertMode)(unsigned)hint->CommandData3) {
+  switch ((InsertMode)(unsigned long)hint->CommandData3) {
   case InsFlags:
   case DelFlags:
   case DelNested:

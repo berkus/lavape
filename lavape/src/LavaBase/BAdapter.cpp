@@ -109,7 +109,7 @@ bool ObjectFinalize(CheckData& ckd, LavaVariablePtr stack)
   CSectionDesc* secTab;
   LavaDECL *classDECL, *secClassDECL, *attrDECL;
   TAdapterFunc *funcAdapter;
-  int ii, lmem, llast;
+  long int ii, lmem, llast;
 
   object = stack[SFH] - stack[SFH][0][0].sectionOffset;
   if (*(object - LOH) && ((RunTimeData*)*(object-LOH))->urlObj && ((SynFlags*)(object+1))->Contains(objectModified))  //url object?
@@ -135,7 +135,7 @@ bool ObjectFinalize(CheckData& ckd, LavaVariablePtr stack)
             funcAdapter[5](ckd, newStackFrame);
           }
           if (funcAdapter)
-            lmem = (int)(unsigned)funcAdapter[0] + LSH;
+            lmem = (long int)funcAdapter[0] + LSH;
         }
         llast = LSH + secClassDECL->SectionInfo2;
         for (/*ll = LSH*/; lmem < llast; lmem++) {

@@ -130,9 +130,9 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
     myDECL = (*ServicePtr)[0]->implDECL;
     NewTitle(myDECL, myDoc->IDTable.DocName);
     myID = TID(myDECL->OwnID, 0);
-    myGUIProg->FrozenObject = (int)pHint->CommandData4;
+    myGUIProg->FrozenObject = (long int)pHint->CommandData4;
     myThread = (CLavaThread*)pHint->CommandData5;
-    myGUIProg->fromFillIn = (int)pHint->CommandData6;
+    myGUIProg->fromFillIn = (long int)pHint->CommandData6;
     myGUIProg->myDECL = myDECL;
     myGUIProg->OnUpdate( myDECL, ResultDPtr);
     if (myGUIProg->ckd.exceptionThrown || myGUIProg->ex) {

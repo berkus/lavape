@@ -345,7 +345,7 @@ void CUndoMem::SetCom8()
       && (((LavaDECL*)UndoMemory[posDel]->CommandData1)->ParentDECL->DeclType == Impl)) {
     UndoMemory[posDel]->CommandData8 = (void *)((LavaDECL*)UndoMemory[posIns]->CommandData1)->OwnID;
     UndoMemory[posIns]->CommandData8 = (void *)((LavaDECL*)UndoMemory[posDel]->CommandData1)->OwnID;
-    ((CPEBaseDoc*)UndoMemory[posDel]->fromDoc)->ExecViewPrivToPub((LavaDECL*)UndoMemory[posIns]->CommandData1,(int)UndoMemory[posIns]->CommandData8);
+    ((CPEBaseDoc*)UndoMemory[posDel]->fromDoc)->ExecViewPrivToPub((LavaDECL*)UndoMemory[posIns]->CommandData1,(long int)UndoMemory[posIns]->CommandData8);
     posDel--;
     posIns--;
   }

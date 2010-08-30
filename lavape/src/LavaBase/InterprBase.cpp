@@ -196,7 +196,7 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
   LavaObjectPtr sectionPtr, callPtr, newStackFrame[SFH+1], member;
   LavaDECL *classDECL, *secClassDECL, *attrDECL;
   TAdapterFunc *funcAdapter;
-  int ii, lmem, llast;
+  long int ii, lmem, llast;
   CVFuncDesc *fDesc;
 
   object = object - (*object)->sectionOffset;
@@ -248,7 +248,7 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
             funcAdapter[5](ckd, newStackFrame);
           }
           if (funcAdapter)
-            lmem = (int)(unsigned)funcAdapter[0] + LSH;
+            lmem = (long int)funcAdapter[0] + LSH;
         }
         llast = LSH + secClassDECL->SectionInfo2;
         for (; lmem < llast; lmem++) {
@@ -395,7 +395,7 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
 #endif
     newStackFrame[0] = ckd.stackFrame[0];
     newStackFrame[1] = ckd.stackFrame[1];
-    newStackFrame[2] = (LavaObjectPtr)((unsigned)ckd.stackFrame[2] & ~2);
+    newStackFrame[2] = (LavaObjectPtr)((long unsigned)ckd.stackFrame[2] & ~2);
     newStackFrame[SFH] = object;
 
     if (nextDebugStep == nextStm || nextDebugStep == nextFunc)
@@ -405,7 +405,7 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
     else
       ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newStackFrame);
     
-    if (!((unsigned)newStackFrame[2] & 2))
+    if (!((long unsigned)newStackFrame[2] & 2))
       nextDebugStep = oldDebugStep;
 #ifndef __GNUC__
     __asm {
@@ -565,7 +565,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
   //CVFuncDesc *fDesc;
   CRuntimeException *ex;
   CContext context;
-  int ii, sii, ll, lmem, llast;
+  long int ii, sii, ll, lmem, llast;
   //unsigned fsizeBytes;
   bool constit, secCopy=false, fullCopy, stateO, copyStart = false, isNew = false;
 
@@ -648,12 +648,12 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
 #endif
           }
           else {        
-            llast = (int)(unsigned)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
+            llast = (long int)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
             for (ll = LSH; ll < llast; ll++)
               *(resultSectionPtr + ll) = *(sourceSectionPtr + ll);
           }
           if (funcAdapter)
-            lmem = (int)(unsigned)funcAdapter[0] + LSH;
+            lmem = (long int)funcAdapter[0] + LSH;
         }
         //else { //(##########)
           llast = secClassDECL->SectionInfo2 + LSH;
@@ -782,7 +782,7 @@ bool EqualObjects(CheckData &ckd, LavaObjectPtr leftPtr, LavaObjectPtr rightPtr,
   LavaVariablePtr newStackFrame;
   LavaDECL *classDECL, *secClassDECL, *attrDECL;
   TAdapterFunc *funcAdapter;
-  int ii, ll, lmem, llast;
+  long int ii, ll, lmem, llast;
   bool equ;
   CSectionDesc* secTab;
 
@@ -839,12 +839,12 @@ bool EqualObjects(CheckData &ckd, LavaObjectPtr leftPtr, LavaObjectPtr rightPtr,
               return false;
           }
           else {        
-            llast = (int)(unsigned)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
+            llast = (long int)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
             for (ll = LSH; ll < llast; ll++)
               if (rightSectionPtr[ll] != leftSectionPtr[ll])
                 return false;
           }
-          lmem = LSH + (int)(unsigned)funcAdapter[0];
+          lmem = LSH + (long int)funcAdapter[0];
         }//has funcadapter
       }
      // else { //(##########)
@@ -873,7 +873,7 @@ bool OneLevelCopy(CheckData &ckd, LavaObjectPtr& object)
 
   LavaObjectPtr sourceSectionPtr, resultSectionPtr, sourceObjPtr, resultObjPtr;
   LavaDECL *secClassDECL, *attrDECL, *classDECL;
-  int ii, ll, lmem, llast;
+  long int ii, ll, lmem, llast;
   TAdapterFunc *funcAdapter;
 
   if (!object)
@@ -897,13 +897,13 @@ bool OneLevelCopy(CheckData &ckd, LavaObjectPtr& object)
           HArrayOneLevelCopy(ckd, sourceSectionPtr, resultSectionPtr); //new array with same element objects
         else {
           if (funcAdapter) {
-            llast = (int)(unsigned)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
+            llast = (long int)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
             for (ll = LSH; ll < llast; ll++)
               *(resultSectionPtr + ll) = *(sourceSectionPtr + ll);
           }
         }
         if (funcAdapter)
-          lmem = (int)(unsigned)funcAdapter[0] + LSH;
+          lmem = (long int)funcAdapter[0] + LSH;
       }
       //else { //(##########)
         llast = secClassDECL->SectionInfo2 + LSH;
@@ -933,7 +933,7 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
   LavaVariablePtr newStackFrame;
   LavaDECL *classDECL, *secClassDECL, *attrDECL;
   TAdapterFunc *funcAdapter;
-  int ii, ll, lmem, llast;
+  long int ii, ll, lmem, llast;
   CSectionDesc* secTab;
   bool isNew = false, equ;
 
@@ -995,7 +995,7 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
           }
           else {
             equ = true;
-            llast = (int)(unsigned)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
+            llast = (long int)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
             for (ll = LSH; equ && (ll < llast); ll++)
               equ = updateSectionPtr[ll] == origSectionPtr[ll];
           }
@@ -1005,7 +1005,7 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
               if (secClassDECL->fromBType == VLString)
                 HStringCopy(origSectionPtr, updateSectionPtr);
               else {
-                llast = (int)(unsigned)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
+                llast = (long int)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
                 for (ll = LSH; ll < llast; ll++) 
                   *(origSectionPtr + ll) = *(updateSectionPtr + ll);
               }
@@ -1018,7 +1018,7 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
           }
         }//not set and not array
         if (funcAdapter)
-          lmem = (int)(unsigned)funcAdapter[0] + LSH;
+          lmem = (long int)funcAdapter[0] + LSH;
       }//native
       //else { //(##########)
         llast = secClassDECL->SectionInfo2 + LSH;

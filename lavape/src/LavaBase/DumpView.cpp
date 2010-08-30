@@ -126,11 +126,11 @@ bool DDMakeClass::hasChildren()
   ckd.document = myDoc;
   if (!myObject || !myObject[0])
     return false;
-  int ll = myObject[0][0].classDECL->SectionInfo2;
+  long int ll = myObject[0][0].classDECL->SectionInfo2;
   if (myObject[0][0].classDECL->TypeFlags.Contains(isNative)) {
     funcAdapter = GetAdapterTable(ckd, myObject[0][0].classDECL, myObject[0][0].classDECL);
     if (funcAdapter)
-      ll = ll - (unsigned)*funcAdapter[0]; //- native part of section
+      ll = ll - (long int)*funcAdapter[0]; //- native part of section
   }
   if (isSection)
     return ll > 0;
@@ -146,7 +146,7 @@ void DDMakeClass::makeChildren()
   LavaVariablePtr memPtr;
   LavaDECL *secClassDECL, *attrDecl, *attrType;
   DDItem *childItem=0;
-  int iSect, ll, llast;
+  long int iSect, ll, llast;
   QString label;
   bool hasChain=false;
   TAdapterFunc *funcAdapter;
@@ -164,7 +164,8 @@ void DDMakeClass::makeChildren()
           funcAdapter = GetAdapterTable(ckd, secClassDECL, secClassDECL);
           if (funcAdapter)
             //llast = llast - (unsigned)*funcAdapter[0]; //- native part of section
-            ll = LSH + (unsigned)*funcAdapter[0]; //- members behind native part of section 
+            ll = LSH + (long int)*funcAdapter[0]; //- members behind native part of section
+//          ll = LSH + (unsigned)*funcAdapter[0]; //- members behind native part of section
         }
         for (/*ll = LSH*/; ll < llast; ll++) {
           memPtr = (LavaVariablePtr)(sectionPtr + ll);
@@ -200,7 +201,8 @@ void DDMakeClass::makeChildren()
           funcAdapter = GetAdapterTable(ckd, secClassDECL, secClassDECL);
           if (funcAdapter)
             //llast = llast - (unsigned)*funcAdapter[0]; //- native part of section
-            ll = LSH + (unsigned)*funcAdapter[0];
+            ll = LSH + (long int)*funcAdapter[0];
+//          ll = LSH + (unsigned)*funcAdapter[0];
         }
         for (/*ll = LSH*/; ll < llast; ll++) {
           memPtr = (LavaVariablePtr)(sectionPtr + ll);

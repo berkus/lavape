@@ -192,7 +192,7 @@ void  CPEBaseDoc::MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bo
 bool CPEBaseDoc::Step(CLavaPEHint* hint, LavaDECL* parDECL, CHE*& relElem)
 {
   CHE *cheElLast = 0;
-  int ipos;
+  long int ipos;
 
   DString name;
   LavaDECL* hintDECL = (LavaDECL*)hint->CommandData1;
@@ -231,14 +231,14 @@ bool CPEBaseDoc::Step(CLavaPEHint* hint, LavaDECL* parDECL, CHE*& relElem)
   else
     for ( ; relElem && (((LavaDECL*)relElem->data)->DeclDescType != ExecDesc);
             relElem = (CHE*)relElem->successor);
-  ipos = (int)hint->CommandData3-1;
+  ipos = (long int)hint->CommandData3-1;
 
   while (relElem && ipos && (relElem != cheElLast)) {
     relElem = (CHE*)relElem->successor;
     ipos--;
   }
   if (!relElem) {
-    hint->CommandData3 = (void*)(((int)hint->CommandData3) - ipos);
+    hint->CommandData3 = (void*)(((long int)hint->CommandData3) - ipos);
     if (cheElLast)
       relElem = (CHE*)cheElLast->predecessor;
   }
@@ -254,7 +254,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
   DString *str, *str2 = 0, absName;
   LavaDECL *hintDECL, *parEl = 0, **pNewDecl, *elDECL, *colDECL, *oldDECL, *decl4;
   TDeclType lastDefType = NoDef;
-  int pos;
+  long int pos;
   TID id;
   SynFlags firstlast;
   CPECommand com;
@@ -293,7 +293,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
       else
         localMove = false;
       if ((viewHint->com != CPECommand_Move) || viewHint->CommandData6 && !localMove) {
-        if (viewHint->CommandData6 && (hint->FirstLast.Contains(firstHint) || ((TRefacMove)(unsigned int)hint->CommandData8 == exToBase) && !IDTable.ClipTree))
+        if (viewHint->CommandData6 && (hint->FirstLast.Contains(firstHint) || ((TRefacMove)(long int)hint->CommandData8 == exToBase) && !IDTable.ClipTree))
           IDTable.PrepareClipTree((SyntaxDefinition*) viewHint->CommandData6, (DString*)viewHint->CommandData7);
         IDTable.NewID(pNewDecl);
       }
@@ -302,7 +302,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
       if (hintDECL->DeclType == PatternDef)
         pos = parEl->GetAppendPos(VirtualType);
       else
-        pos = (int)hint->CommandData3;
+        pos = (long int)hint->CommandData3;
       decl4 = *(LavaDECL**)hint->CommandData4;
       while (cheHint) {
         elDECL = (LavaDECL*)cheHint->data;
@@ -540,7 +540,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
           }
       }
       if (newHint->CommandData8)
-        ExecViewPrivToPub(*pNewDecl,(int)newHint->CommandData8);
+        ExecViewPrivToPub(*pNewDecl,(long int)newHint->CommandData8);
     }
   }//insert
   else {    // CPECommand_Delete:
@@ -555,7 +555,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
       */
       firstlast = hint->FirstLast;
       firstlast.EXCL(lastHint);
-      pos = (int)hint->CommandData3;
+      pos = (long int)hint->CommandData3;
       lastDefType = ((LavaDECL*)cheHint->data)->DeclType;
       while (cheHint) {
         elDECL = (LavaDECL*)cheHint->data;

@@ -2053,7 +2053,7 @@ void CExecView::SetSelectAtHint (CLavaPEHint *hint) {
   MultipleOp *multOp;
 
   text->selectAfter = text->selectAt;
-  switch ((InsertMode)(unsigned)hint->CommandData3) {
+  switch ((InsertMode)(unsigned long)hint->CommandData3) {
   case InsMult:
     if (text->selectAt) break;
     multOp = (MultipleOp*)hint->CommandData4;

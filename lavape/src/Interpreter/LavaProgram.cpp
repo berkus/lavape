@@ -1741,7 +1741,7 @@ bool CLavaProgram::CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNam
                                 //is reserved for the default constructor
   funcAdapter = (TAdapterFunc*)fAdapt;
   if (classDECL->TypeFlags.Contains(isNative) && funcAdapter)
-    classDECL->SectionInfo2 = (unsigned)*funcAdapter[0];
+    classDECL->SectionInfo2 = (unsigned long)*funcAdapter[0];
   else
     classDECL->SectionInfo2 = 0;
   classDECL->SectionInfo3 = 0;
@@ -1997,7 +1997,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
         //if (!funcAdapter)
         //  return false;
         if (funcAdapter)
-          dist =(unsigned)funcAdapter[0];
+          dist =(unsigned long)funcAdapter[0];
         else
           dist = 0;
         posAttr += dist; //positions for the native object
@@ -2714,7 +2714,7 @@ bool GUIEdit(CheckData& ckd, LavaVariablePtr stack)
   LavaObjectPtr newStackFrame[SFH+3];
   newStackFrame[0] = 0;
   newStackFrame[1] = (LavaObjectPtr)stack;
-  newStackFrame[2] = (LavaObjectPtr)((unsigned)stack[2] & ~2);
+  newStackFrame[2] = (LavaObjectPtr)((unsigned long)stack[2] & ~2);
   newStackFrame[SFH] = servObj; //stack[SFH];
   newStackFrame[SFH+1] = CastTo(newStackFrame[SFH][0][0].classDECL->RelatedDECL, stack[SFH+1]);
   if (!newStackFrame[SFH+1])
@@ -2755,7 +2755,7 @@ bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack)
 
   newStackFrame[0] = 0;
   newStackFrame[1] = (LavaObjectPtr)stack;
-  newStackFrame[2] = (LavaObjectPtr)((unsigned)stack[2] & ~2);
+  newStackFrame[2] = (LavaObjectPtr)((unsigned long)stack[2] & ~2);
   if (stack[SFH+2])
     DFC( stack[SFH+2]);
   newStackFrame[SFH] = stack[SFH] - stack[SFH][0][0].sectionOffset;

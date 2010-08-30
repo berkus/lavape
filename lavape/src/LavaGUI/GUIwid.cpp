@@ -386,7 +386,7 @@ void GUIwidCLASS::SetLabel (QWidget* widget, DString& label)
 
 void GUIwidCLASS::SetOptionDefault (QWidget* menuWidget, const QWidget* entry, DString& labelText)
 {
-  int ientry = int(entry);
+  long int ientry = (long int)entry;
   QAbstractItemModel *mod=((CTComboBox*)menuWidget)->model();
   QModelIndexList matches;
 

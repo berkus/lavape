@@ -2432,7 +2432,7 @@ void CLavaPEView::OnDropPost(void* act)
   CPECommand com;
   int pos;
   CMainItemData* itemDat;
-  Qt::DropAction action = (Qt::DropAction)(int)act;
+  Qt::DropAction action = (Qt::DropAction)(long int)act;
 
   declClip =  (LavaDECL*)Clipdata->synEl;
   clipDefType = declClip->DeclType;

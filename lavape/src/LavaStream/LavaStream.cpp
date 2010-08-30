@@ -435,7 +435,7 @@ TAdapterFunc* DataOStream()
 
 bool DDStreamClass::hasChildren()
 {
-  if ((int)myObject <= 3)
+  if ((long int)myObject <= 3)
     return false;
   else
     return true;
