@@ -386,9 +386,6 @@ wxChildFrame::~wxChildFrame()
 {
   QString title;
   wxDocManager *docMan = wxDocManager::GetDocumentManager();
-  QSplitter *splitter = (QSplitter*)m_tabWidget->parentWidget();
-  int tabWidIndex = splitter->indexOf(m_tabWidget);
-  int tabWidCount = m_tabWidget->count();
 
   docMan->RememberActiveFrame(0);
   docMan->SetNewCurrentFrame();
@@ -396,6 +393,10 @@ wxChildFrame::~wxChildFrame()
   deleting = true;
   if (m_document->deleting)
     return;
+
+  QSplitter *splitter = (QSplitter*)m_tabWidget->parentWidget();
+  int tabWidIndex = splitter->indexOf(m_tabWidget);
+  int tabWidCount = m_tabWidget->count();
 
   while (m_viewList.size()) {
     m_document->RemoveView(m_viewList.at(0));
