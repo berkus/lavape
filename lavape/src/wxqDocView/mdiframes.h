@@ -152,7 +152,7 @@ public:
   void setTabTextColor (int index, const QColor &color) {
     tabBar()->setTabTextColor(index,color);
   }
-  void closePage();
+  void closePage(wxChildFrame *page=0);
   void customEvent(QEvent*);
 
   wxTabBar *m_tabBar;

@@ -546,7 +546,7 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
     || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp")))
       docMan->OnFileClose();
     else
-      closePage();
+      closePage(page);
   }
   else if (triggeredAction == ((wxTabBar*)tabBar())->closeFileAction) {
     wxDocManager::GetDocumentManager()->OnFileClose();
@@ -573,10 +573,10 @@ void wxTabWidget::customEvent(QEvent *ev) {
   }
 }
 
-void wxTabWidget::closePage() {
-  wxChildFrame *page=(wxChildFrame*)currentWidget();
+void wxTabWidget::closePage(wxChildFrame *p) {
+  wxChildFrame *page=p?p:(wxChildFrame*)currentWidget();
   QSplitter *splitter=(QSplitter*)parentWidget();
-  int pageIndex=currentIndex(), tabWidIndex=splitter->indexOf(this);
+  int pageIndex=indexOf(page), tabWidIndex=splitter->indexOf(this);
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
   
   docMan->RememberActiveIndexes(pageIndex,tabWidIndex);
