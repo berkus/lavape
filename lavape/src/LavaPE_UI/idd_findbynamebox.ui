@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>226</width>
-    <height>132</height>
+    <width>241</width>
+    <height>121</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Find declaration by name</string>
@@ -36,6 +42,13 @@
        <string>(What name)</string>
       </property>
      </item>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QCheckBox" name="SearchWholeName">
+     <property name="text">
+      <string>Match whole name only                                 </string>
+     </property>
     </widget>
    </item>
    <item row="2" column="0">
@@ -101,13 +114,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="1" column="0">
-    <widget class="QCheckBox" name="SearchWholeName">
-     <property name="text">
-      <string>Match whole name only</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

@@ -417,6 +417,7 @@ void CUtilityView::OnDblclk(QTreeWidgetItem* item, int col)
           sData.execView = wxDocManager::GetDocumentManager()->GetActiveView();
           // sData.finished = false;
           ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)execDecl, onSelect, 0,0, (address)&sData);
+          ((CExecView*)sData.execView)->RedrawExec();
         }
       }
     }
