@@ -159,8 +159,9 @@ Section "LavaPE (required)" SEC01
   SetOutPath $INSTDIR\bin\LavaIcons
   File "bin\LavaIcons\*.*"
   
-  SetOutPath $INSTDIR\bin\Microsoft.VC90.CRT
-  File "C:\Program Files\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT\*"
+  SetOutPath $INSTDIR\bin\Microsoft.VC100.CRT
+  File "C:\Windows\System32\msvcp100.dll"
+  File "C:\Windows\System32\msvcr100.dll"
   
   SetOutPath $INSTDIR\doc
   File /r /x .svn /x _* ".\doc\LavaPE.qhc" ".\doc\LavaPE.qch"
