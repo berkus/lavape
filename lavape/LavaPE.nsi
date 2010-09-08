@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "LavaPE"
-!define PRODUCT_VERSION "0.9.1"
+!define PRODUCT_VERSION "0.9.2"
 !define QTREL "Qt470-beta1"
 !define PRODUCT_PUBLISHER "The lavape project "
 !define PRODUCT_WEB_SITE "http://lavape.sourceforge.net/index.htm"
@@ -18,7 +18,7 @@ SetCompressor lzma
 !include "MUI.nsh"
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "lavape-0.9.1-win32-bin.exe"
+OutFile "lavape-0.9.2-win32-bin.exe"
 Var instForAll
 Var userName
 Var unInstString
@@ -137,6 +137,10 @@ Section "LavaPE (required)" SEC01
   File "C:\Qt\${QTREL}\bin\QtSql4.dll"
   File "C:\Qt\${QTREL}\bin\phonon4.dll"
   File "C:\Qt\${QTREL}\bin\QtWebKit4.dll"
+  File "C:\Qt\${QTREL}\bin\QTMEDIASERVICES4.DLL"
+  File "C:\Qt\${QTREL}\bin\QTMULTIMEDIA4.DLL"
+  File "C:\Qt\${QTREL}\bin\QTOPENGL4.DLL"
+  File "C:\Qt\${QTREL}\bin\QTXMLPATTERNS4.DLL"
   
   CreateDirectory $INSTDIR\data
   AccessControl::GrantOnFile \
@@ -159,9 +163,9 @@ Section "LavaPE (required)" SEC01
   SetOutPath $INSTDIR\bin\LavaIcons
   File "bin\LavaIcons\*.*"
   
-  SetOutPath $INSTDIR\bin\Microsoft.VC100.CRT
-  File "C:\Windows\System32\msvcp100.dll"
-  File "C:\Windows\System32\msvcr100.dll"
+  SetOutPath $INSTDIR\bin\Microsoft.VC90.CRT
+  File "C:\Program Files\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT\msvcp90.dll"
+  File "C:\Program Files\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT\msvcr90.dll"
   
   SetOutPath $INSTDIR\doc
   File /r /x .svn /x _* ".\doc\LavaPE.qhc" ".\doc\LavaPE.qch"

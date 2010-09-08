@@ -175,7 +175,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib $(QTDIR)\lib\QtAssistantClient4.lib $(QTDIR)\lib\QtCore4.lib $(QTDIR)\lib\QtGui4.lib $(QTDIR)\lib\QtNetwork4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib $(QTDIR)\lib\QtCore4.lib $(QTDIR)\lib\QtGui4.lib $(QTDIR)\lib\QtNetwork4.lib"
 				OutputFile="..\..\bin\LavaBase.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

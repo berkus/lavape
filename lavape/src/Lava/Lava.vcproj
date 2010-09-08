@@ -169,7 +169,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\Interpreter.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\Lava_UI.lib $(QTDIR)\lib\QtAssistantClient4.lib $(QTDIR)\lib\QtCore4.lib $(QTDIR)\lib\QtGui4.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\QtNetwork4.lib wsock32.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\Interpreter.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\Lava_UI.lib $(QTDIR)\lib\QtCore4.lib $(QTDIR)\lib\QtGui4.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\QtNetwork4.lib wsock32.lib"
 				OutputFile="..\..\bin\Lava.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
