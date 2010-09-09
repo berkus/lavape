@@ -375,7 +375,7 @@ void LavaBaseStringInit() {
   ERR_ReservedName  = QObject::tr("Reserved name");
   ERR_Parameter  = QObject::tr("Formal/actual parameters don't match");
   ERR_NullException  = QObject::tr("Fail statement: exception parameter is null");
-  ERR_MissingInitialization  = QObject::tr(": a value must be assigned in all preceding program branches (check also for missing \"else\" branches!)");
+  ERR_MissingInitialization  = QObject::tr(": a value must be assigned in all or all preceding program branches (check also for missing \"else\" branches!)");
   ERR_AssigToRdOnly  = QObject::tr("Forbidden assignment to read-only member variable");
   ERR_IncompatibleType  = QObject::tr("Incompatible type");
   ERR_IncompatibleTypeTargetIsVT  = QObject::tr("Type of actual parameter (or assignment source) could become incompatible with a derivation of the (virtual!) formal parameter type (or assignment target type, resp.)");

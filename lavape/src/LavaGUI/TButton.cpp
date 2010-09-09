@@ -50,7 +50,8 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
   QSize size = GUIProg->CalcStringRect(label, font());
   int bord = GUIProg->GetLineWidth(parent);
   size = qApp->style()->sizeFromContents(QStyle::CT_CheckBox, &qsob, size, this);
-  setGeometry(bord,bord, size.width(), size.height());
+  //size.setWidth(size.width()+5);
+  //setGeometry(bord,bord, size.width(), size.height());
   //setWFlags(GUIProg->checkBoxStyle);
   setChecked(myFormNode->data.B);
   setAutoFillBackground(true);
@@ -452,7 +453,8 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
   QSize size = GUIProg->CalcStringRect(label, font());
   int bord = GUIProg->GetLineWidth(parent);
   size = qApp->style()->sizeFromContents(QStyle::CT_RadioButton, &qsob, size, this);
-  setGeometry(bord,bord, size.width(), size.height());
+  //size.setWidth(size.width()+5);
+  //setGeometry(bord,bord, size.width(), size.height());
   if (!myFormNode->data.IoSigFlags.Contains(DONTPUT)) 
     setChecked(num == EnumNode->data.D+1);
   if (GUIProg->FrozenObject || ((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(DONTPUT)
