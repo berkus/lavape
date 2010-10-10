@@ -159,7 +159,6 @@
             </section>
         </toc>
         <keywords>
-            <keyword name="design patterns" ref="html/Unsolved.htm#patterns"/>
             <keyword name="refactoring" ref="html/Refactoring.htm"/>
             <keyword name="COM" ref="html/AdvantJava.htm"/>
             <keyword name="Ada" ref="html/AdvantJava.htm"/>
