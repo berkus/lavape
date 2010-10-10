@@ -122,8 +122,8 @@ void CLavaMainFrame::makeStyle(const QString &style)
     else if (style == "Mac")
       QApplication::setStyle(new MyMacStyle);
 #endif
-#ifdef Q_WS_X11
-    else if (style == "Mac")
+#ifdef __Linux
+    else if (style == "GTK+")
       QApplication::setStyle(new MyGtkStyle);
 #endif
     else if (style == "CDE")

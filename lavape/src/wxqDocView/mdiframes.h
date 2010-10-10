@@ -29,7 +29,7 @@
 #include <QTextEdit>
 #include <QWindowsStyle>
 #include <QWindowsXPStyle>
-#include <QWindowsVistaStyle>
+#include <QGtkStyle>
 #include <QMotifStyle>
 #include <QCDEStyle>
 #include <QPlastiqueStyle>
@@ -223,7 +223,7 @@ MYSTYLE(WindowsXP)
 #ifdef Q_WS_MAC
 MYSTYLE(Mac)
 #endif
-#ifdef Q_WS_X11
+#ifdef __Linux
 MYSTYLE(Gtk)
 #endif
 MYSTYLE(Windows)

@@ -615,7 +615,7 @@ MYSTYLEIMP(WindowsXP)
 #ifdef Q_WS_MAC
 MYSTYLEIMP(Mac)
 #endif
-#ifdef Q_WS_X11
+#ifdef __Linux
 MYSTYLEIMP(Gtk)
 #endif
 MYSTYLEIMP(Windows)
