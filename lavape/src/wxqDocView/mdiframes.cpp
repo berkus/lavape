@@ -609,12 +609,14 @@ void wxTabWidget::closePage(wxChildFrame *p) {
   return px;\
 }
 
-#ifdef WIN32
+#ifdef Q_WS_WIN
 MYSTYLEIMP(WindowsXP)
-MYSTYLEIMP(WindowsVista)
 #endif
-#ifdef __Darwin
+#ifdef Q_WS_MAC
 MYSTYLEIMP(Mac)
+#endif
+#ifdef Q_WS_X11
+MYSTYLEIMP(Gtk)
 #endif
 MYSTYLEIMP(Windows)
 MYSTYLEIMP(Plastique)

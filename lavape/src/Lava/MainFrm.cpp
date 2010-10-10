@@ -114,15 +114,17 @@ void CLavaMainFrame::makeStyle(const QString &style)
   if (!style.isEmpty()) {
     if (style == "Windows")
       QApplication::setStyle(new MyWindowsStyle);
-#ifdef WIN32
+#ifdef Q_WS_WIN
     else if (style == "WindowsXP")
       QApplication::setStyle(new MyWindowsXPStyle);
-    else if (style == "WindowsVista")
-      QApplication::setStyle(new MyWindowsVistaStyle);
 #endif
-#ifdef __Darwin
+#ifdef Q_WS_MAC
     else if (style == "Mac")
       QApplication::setStyle(new MyMacStyle);
+#endif
+#ifdef Q_WS_X11
+    else if (style == "Mac")
+      QApplication::setStyle(new MyGtkStyle);
 #endif
     else if (style == "CDE")
       QApplication::setStyle(new MyCDEStyle);
@@ -136,7 +138,7 @@ void CLavaMainFrame::makeStyle(const QString &style)
 	    QApplication::setStyle(style);
   }
   else {
-#ifdef __Darwin
+#ifdef Q_WS_MAC
     LBaseData->m_style = "Mac";
     wxTheApp->saveSettings();
     QApplication::setStyle(new MyMacStyle);

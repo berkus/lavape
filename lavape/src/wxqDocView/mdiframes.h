@@ -217,12 +217,14 @@ public:\
   int pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const;\
 };
 
-#ifdef WIN32
+#ifdef Q_WS_WIN
 MYSTYLE(WindowsXP)
-MYSTYLE(WindowsVista)
 #endif
-#ifdef __Darwin
+#ifdef Q_WS_MAC
 MYSTYLE(Mac)
+#endif
+#ifdef Q_WS_X11
+MYSTYLE(Gtk)
 #endif
 MYSTYLE(Windows)
 MYSTYLE(Plastique)
