@@ -72,7 +72,7 @@ public:
   void OnUpdateDbgStart(QAction* action);
   bool OpenGUIView(LavaDECL** pdecl);
   bool OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate);
-  CLavaBaseView* CLavaPEDoc::ExecHasView (LavaDECL* execDecl);
+  CLavaBaseView* ExecHasView (LavaDECL* execDecl);
   virtual bool OpenExecView(LavaDECL* execDecl);
 
   bool OpenWizardView(CLavaBaseView* formView, LavaDECL** pdecl/*, unsigned long autoUpdate*/);
