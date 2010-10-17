@@ -69,7 +69,7 @@ VarConstCheck MiniEdit::InputIsCorrect(TToken &token, CComboBar *comboBar)
 
   if (!IsOK(txt,token,pos,msgID,comboBar)) {
     setCursorPosition(pos);
-    QMessageBox::critical(this,qApp->applicationName(),*msgID,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),*msgID);
     rc = wrong;
   }
 

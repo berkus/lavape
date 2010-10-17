@@ -703,13 +703,13 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
     if (isEx)
       if (!ckd.document->debugOn && !ckd.document->openForDebugging) {
         pmMsg = excMsg + "\n\n" + msg + "\n\nDebug this exception?\n\nClick \"No to all\" to disable debugging perpetually";
-        rc = information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(pmMsg.toAscii()),QMessageBox::Yes|QMessageBox::Default,QMessageBox::No,QMessageBox::NoAll);
+        rc = information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(pmMsg.toAscii()),QMessageBox::Yes|QMessageBox::No|QMessageBox::NoToAll,QMessageBox::Yes);
 
       }
       else {
         rc = QMessageBox::Yes;
         pmMsg = excMsg + "\n\n" + msg;
-        information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(pmMsg)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton,Qt::NoButton);
+        information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(pmMsg)));
       }
     else
       rc = QMessageBox::Yes;

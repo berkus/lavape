@@ -158,7 +158,7 @@ void CLavaDebugger::start() {
     else
 	    args << ((CLavaProgram*)myDoc)->LcomFileName << host_addr << QString("%1").arg(locPort);
     if (!QProcess::startDetached(lavapePath,args)) {
-      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaPEStartFailed,QMessageBox::Ok,0,0);
+      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaPEStartFailed);
 		  return;
 	  }
     //if (!((CLavaProgram*)myDoc)->corruptSyntax) 

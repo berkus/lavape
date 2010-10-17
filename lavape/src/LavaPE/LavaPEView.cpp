@@ -2768,7 +2768,7 @@ void CLavaPEView::OnInitialUpdate()
       GetDocument()->modified = true;
     }
     if (GetDocument()->modified) {
-      QMessageBox::critical(this, qApp->applicationName(), "This Lava file was modified by automatically generated corrections after opening",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(this, qApp->applicationName(), "This Lava file was modified by automatically generated corrections after opening");
       GetDocument()->Modify(true);
     }
     CExecChecks* ch = new CExecChecks(GetDocument(), true);
@@ -2803,15 +2803,15 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
   else
     item = (CTreeItem*)Tree->currentItem();
   if (!item) {
-    QMessageBox::critical(this, qApp->applicationName(),IDP_NoInsertionPos,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this, qApp->applicationName(),IDP_NoInsertionPos);
     return false;
   }
   if (myInclView && (item == Tree->RootItem)) {
-    QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion);
     return false;
   }
   if (!myInclView && (eType != FormText) && !isHandlerFunc) {
-    QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion);
     return false;
   }
   data = (CMainItemData*)item->getItemData();
@@ -2906,7 +2906,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
         asChild = true;
       }
       else {
-        QMessageBox::critical(this, qApp->applicationName(),IDP_NoInsertionPos,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(this, qApp->applicationName(),IDP_NoInsertionPos);
         return false;
       }
     }
@@ -2955,7 +2955,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
     && (*(LavaDECL**)ppdata->synEl)->SecondTFlags.Contains(funcImpl)) {
     //no insertion of io into a function implementation
     delete decl;
-    QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion);
     return false;
   }
 
@@ -2982,13 +2982,13 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
     }
     else {
       delete decl;
-      QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion);
       return false;
     }
   }
   if ((ppdata->type != TIType_DECL) && (ppar != Tree->RootItem)) {
       delete decl;
-      QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion);
       return false;
   }
   decl->ParentDECL = *(LavaDECL**)ppdata->synEl;
@@ -3159,9 +3159,9 @@ void CLavaPEView::OnNextEC(CTreeItem* itemStart, bool onErr)
   while (item1) {
     if (item1 == itemStart) {
       if (onErr)
-          QMessageBox::critical(this, qApp->applicationName(), "No (more) errors found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(this, qApp->applicationName(), "No (more) errors found");
       else
-          QMessageBox::critical(this, qApp->applicationName(), "No (more) comments found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(this, qApp->applicationName(), "No (more) comments found");
       return;
     }
     if (PutEC(item1, onErr))
@@ -3171,9 +3171,9 @@ void CLavaPEView::OnNextEC(CTreeItem* itemStart, bool onErr)
     while (item2) {
       if (item2 == itemStart) {
         if (onErr)
-          QMessageBox::critical(this, qApp->applicationName(), "No (more) errors found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(this, qApp->applicationName(), "No (more) errors found");
         else
-          QMessageBox::critical(this, qApp->applicationName(), "No (more) comments found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(this, qApp->applicationName(), "No (more) comments found");
         return;
       }
       if (PutEC(item2, onErr))
@@ -3205,9 +3205,9 @@ void CLavaPEView::OnPrevEC(CTreeItem* itemStart, bool onErr)
         item1 = (CTreeItem*)item1->parent();
         if (item1 == itemStart) {
           if (onErr)
-            QMessageBox::critical(this, qApp->applicationName(), "No (more) errors found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+            QMessageBox::critical(this, qApp->applicationName(), "No (more) errors found");
           else
-            QMessageBox::critical(this, qApp->applicationName(), "No (more) comments found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+            QMessageBox::critical(this, qApp->applicationName(), "No (more) comments found");
           return;
         }
         if (item1) {
@@ -3234,9 +3234,9 @@ void CLavaPEView::OnPrevEC(CTreeItem* itemStart, bool onErr)
       item1 = item2;
       if (item1 == itemStart) {
         if (onErr)
-          QMessageBox::critical(this, qApp->applicationName(), "No (more) errors found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(this, qApp->applicationName(), "No (more) errors found");
         else
-          QMessageBox::critical(this, qApp->applicationName(), "No (more) comments found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(this, qApp->applicationName(), "No (more) comments found");
         return;
       }
       item2 = 0;
@@ -3421,9 +3421,9 @@ void CLavaPEView::OnShowSpecialView(TDeclType exprType)
   }
   if (!hasView)
     if (exprType == FormDef)
-      QMessageBox::critical(this, qApp->applicationName(),IDP_NoFormView,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(this, qApp->applicationName(),IDP_NoFormView);
     else
-      QMessageBox::critical(this, qApp->applicationName(),IDP_NoExecView,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(this, qApp->applicationName(),IDP_NoExecView);
 }
 
 void CLavaPEView::StoreSelection()
@@ -4034,7 +4034,7 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
       if (clipEl) {
         QMessageBox::critical(this, qApp->applicationName(),"Cannot move feature because the implementation\n"
           "of the target class interface does not yet exist\n"
-          "or is in another Lava file that is not open currently",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          "or is in another Lava file that is not open currently");
         return false;
       }
       else
@@ -4281,7 +4281,7 @@ void CLavaPEView::RenameOk(QLineEdit* editor, CTreeItem *item)
   }
   else {
     if (err) {
-      QMessageBox::critical(this, qApp->applicationName(),*err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(this, qApp->applicationName(),*err);
       item->actLab = lab;
 //!!!!!      item->startRename(0);
     }
@@ -4850,7 +4850,7 @@ void CLavaPEView::OnEditSel()
 {
   CTreeItem* item = (CTreeItem*)Tree->currentItem();
   if (!item ) { //||  (myInclView && (item == Tree->child(0)))) {
-    QMessageBox::critical(this, qApp->applicationName(),IDP_NoElemSel,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this, qApp->applicationName(),IDP_NoElemSel);
     return;
   }
   else
@@ -4910,7 +4910,7 @@ void CLavaPEView::OnGotoImpl()
            && ((DECL->DeclType == Function) || (DECL->DeclType == Attr) && DECL->TypeFlags.Contains(hasSetGet)))) {
       if (((DECL->DeclType == Function) || (DECL->DeclType == Attr))
         && (DECL->TypeFlags.Contains(isAbstract) || DECL->TypeFlags.Contains(isNative)) )
-         QMessageBox::information(this, qApp->applicationName(),ERR_NoImplForAbstract,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+         QMessageBox::information(this, qApp->applicationName(),ERR_NoImplForAbstract);
       else
         //find implemetation id
         ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext = new CBrowseContext(this, DECL);//item, item->parent());
@@ -4918,22 +4918,22 @@ void CLavaPEView::OnGotoImpl()
           ((CLavaPEApp*)wxTheApp)->Browser.DestroyLastBrsContext();
           if (DECL->DeclType == Interface)
             if (DECL->TypeFlags.Contains(isComponent))
-              QMessageBox::critical(this, qApp->applicationName(),ERR_LookForCompoObj,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+              QMessageBox::critical(this, qApp->applicationName(),ERR_LookForCompoObj);
             else
-              QMessageBox::critical(this, qApp->applicationName(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+              QMessageBox::critical(this, qApp->applicationName(),ERR_NoClassImpl);
           else if (DECL->DeclType == Function)
             if (DECL->ParentDECL->TypeFlags.Contains(isComponent))
-              QMessageBox::critical(this, qApp->applicationName(),ERR_LookForCompoObjF,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+              QMessageBox::critical(this, qApp->applicationName(),ERR_LookForCompoObjF);
             else
-              QMessageBox::critical(this, qApp->applicationName(),ERR_NoFuncImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+              QMessageBox::critical(this, qApp->applicationName(),ERR_NoFuncImpl);
           else if (DECL->DeclType == Attr)
             if (DECL->ParentDECL->TypeFlags.Contains(isComponent))
-              QMessageBox::critical(this, qApp->applicationName(),ERR_LookForCompoObjF,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+              QMessageBox::critical(this, qApp->applicationName(),ERR_LookForCompoObjF);
             else
-              QMessageBox::critical(this, qApp->applicationName(),ERR_SetGetError,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+              QMessageBox::critical(this, qApp->applicationName(),ERR_SetGetError);
 
           else if (DECL->DeclType == CompObjSpec)
-            QMessageBox::critical(this, qApp->applicationName(),ERR_LookForCompoObj,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+            QMessageBox::critical(this, qApp->applicationName(),ERR_LookForCompoObj);
         }
       }
     else

@@ -90,7 +90,7 @@ void CAboutBox::on_LavaHomePage_clicked()
 	args << "http://lavape.sourceforge.net/index.htm";
 
   if (!QProcess::startDetached(LBaseData->m_myWebBrowser,args)) {
-    QMessageBox::critical(this,qApp->applicationName(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),ERR_BrowserStartFailed.arg(errno));
 		return;
 	}
 }

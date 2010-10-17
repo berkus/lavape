@@ -2963,7 +2963,7 @@ void CExecView::OnDelete ()
       reject = true;
 
   if (reject) {
-    QMessageBox::critical(this,qApp->applicationName(),ERR_One_must_remain,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),ERR_One_must_remain);
     text->currentSynObj = oldCurrentSynObj;
     return;
   }
@@ -4287,20 +4287,20 @@ void CExecView::OnGotoImpl()
   case FuncRef_T:
     decl = GetDocument()->IDTable.GetDECL(((Reference*)text->currentSynObj)->refID);
     if (decl && (decl->TypeFlags.Contains(isAbstract) || decl->TypeFlags.Contains(isNative))) {
-      QMessageBox::information(this, qApp->applicationName(),ERR_NoImplForAbstract,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::information(this, qApp->applicationName(),ERR_NoImplForAbstract);
       Base->Browser->DestroyLastBrsContext();
     }
     else
       if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
   //      AfxMessageBox(&ERR_NoFuncImpl, MB_OK+MB_ICONINFORMATION);
-        QMessageBox::critical(this,qApp->applicationName(),ERR_NoFuncImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        QMessageBox::critical(this,qApp->applicationName(),ERR_NoFuncImpl);
         Base->Browser->DestroyLastBrsContext();
       }
     break;
   case TypeRef_T:
     if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
 //      AfxMessageBox(&ERR_NoClassImpl, MB_OK+MB_ICONINFORMATION);
-        QMessageBox::critical(this,qApp->applicationName(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        QMessageBox::critical(this,qApp->applicationName(),ERR_NoClassImpl);
       Base->Browser->DestroyLastBrsContext();
     }
     break;
@@ -4309,7 +4309,7 @@ void CExecView::OnGotoImpl()
     || text->currentSynObj->parentObject->primaryToken == new_T)
     if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
 //        AfxMessageBox(&ERR_NoClassImpl, MB_OK+MB_ICONINFORMATION);
-        QMessageBox::critical(this,qApp->applicationName(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        QMessageBox::critical(this,qApp->applicationName(),ERR_NoClassImpl);
         Base->Browser->DestroyLastBrsContext();
       }
     break;
@@ -5326,7 +5326,7 @@ void CExecView::OnNextError()
     }
   }
   else
-    QMessageBox::critical(this,qApp->applicationName(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),ERR_NoErrors);
 }
 
 void CExecView::OnPrevError()
@@ -5376,7 +5376,7 @@ void CExecView::OnPrevError()
     }
   }
   else
-    QMessageBox::critical(this,qApp->applicationName(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),ERR_NoErrors);
 }
 
 void CExecView::OnNextComment()
@@ -7351,7 +7351,7 @@ void CExecView::on_DbgRunToSelAct_triggered() {
   pp->FuncID.nINCL = LBaseData->debugger->myDoc->IDTable.GetINCL(pp->FuncDocName,pp->FuncDocDir);
   if (pp->FuncID.nINCL < 0) {
     LBaseData->ContData->RunToPnt.Destroy();
-    QMessageBox::critical(this,qApp->applicationName(),"This run-to-selection is not part of the debugged lava program",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),"This run-to-selection is not part of the debugged lava program");
     return;
   }
   DbgMessage* mess = new DbgMessage(Dbg_Continue);

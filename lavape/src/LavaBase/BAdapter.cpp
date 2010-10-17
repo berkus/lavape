@@ -753,15 +753,13 @@ bool StringBox(CheckData& ckd, LavaVariablePtr stack)
   if ((QString*)(stack[SFH]+LSH))
     rc = information(
       parent,qApp->applicationName(),*(QString*)(stack[SFH]+LSH),
-      QMessageBox::Ok, QMessageBox::Cancel,
-      0);
+      QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
 
   if (rc == QMessageBox::Cancel)
 		if (question(
 			parent,qApp->applicationName(),ERR_AbortQuestion,
-			QMessageBox::Yes | QMessageBox::Default,
-			QMessageBox::No,
-      0) == QMessageBox::Yes) {
+                        QMessageBox::Ok|QMessageBox::Cancel,
+                        QMessageBox::Ok) == QMessageBox::Ok) {
         CRuntimeException *ex;
         ex = new CRuntimeException(RunTimeException_ex, &ERR_ExecutionAborted);
         throw *ex;
@@ -779,9 +777,8 @@ bool StringQuestionBox(CheckData& ckd, LavaVariablePtr stack)
   if ((QString*)(stack[SFH]+LSH)) {
 		*(bool*)(stack[SFH+1]+LSH) = question(
 			parent,qApp->applicationName(),*(QString*)(stack[SFH]+LSH),
-			QMessageBox::Yes | QMessageBox::Default,
-			QMessageBox::No,
-			0) == QMessageBox::Yes;
+                        QMessageBox::Yes | QMessageBox::No,
+                        QMessageBox::No) == QMessageBox::Yes;
       return true;
   }
   return false;

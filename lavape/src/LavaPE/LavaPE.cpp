@@ -763,7 +763,7 @@ void CLavaPEApp::OnSaveAll()
 
 void CLavaPEApp::OnImport()
 {
-  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), applicationName(), "Not yet implemented!",QMessageBox::Ok| QMessageBox::Default,Qt::NoButton);
+  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), applicationName(), "Not yet implemented!");
 }
 
 void CLavaPEApp::OnFindByName()
@@ -1262,18 +1262,18 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
       }
       else {
         if (sendMess)
-          QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->applicationName(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->applicationName(),IDP_RefNotFound);
         else
-          QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->applicationName(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->applicationName(),IDP_NoDefFound);
         return false;
       }
     }
   }
   else {
     if (sendMess)
-      QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->applicationName(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->applicationName(),IDP_RefNotFound);
     else
-      QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->applicationName(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->applicationName(),IDP_NoDefFound);
     return false;
   }
 }

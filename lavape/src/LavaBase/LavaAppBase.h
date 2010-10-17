@@ -24,7 +24,7 @@
 #include "qtoolbutton.h"
 //#include "QtAssistant/qassistantclient.h"
 #include "qwhatsthis.h"
-
+#include <QMessageBox>
 
 #ifdef WIN32
 #include "qt_windows.h"
@@ -533,23 +533,23 @@ extern LAVABASE_DLL QStringList L_GetOpenFileNames(const QString& startFileName,
 class LAVABASE_DLL CMsgBoxParams {
 public:
   CMsgBoxParams (CLavaThread *thr, int funcSpec, QWidget *parent, const QString &caption,
-			 const QString &text, int button0, int button1, int button2) {
+                 const QString &text, QMessageBox::StandardButtons buttons, QMessageBox::StandardButton dftButton) {
 		this->thr = thr;
 		this->funcSpec = funcSpec;
 		this->parent = parent;
 		this->caption = &caption;
 		this->text = &text;
-		this->button0 = button0;
-		this->button1 = button1;
-		this->button2 = button2;
-		result = 0;
+                this->buttons = buttons;
+                this->dftButton = dftButton;
+                result = QMessageBox::NoButton;
   }
 
-	CLavaThread *thr;
+  CLavaThread *thr;
   int funcSpec;
-	QWidget *parent;
-	const QString *caption, *text;
-	int button0, button1, button2, result;
+  QWidget *parent;
+  const QString *caption, *text;
+  QMessageBox::StandardButtons buttons;
+  QMessageBox::StandardButton dftButton, result;
 };
 
 class LAVABASE_DLL WhatNextEvent : public QEvent {
@@ -564,17 +564,17 @@ public:
 };
 
 
-extern LAVABASE_DLL int critical(QWidget *parent, const QString &caption,
+extern LAVABASE_DLL QMessageBox::StandardButton critical(QWidget *parent, const QString &caption,
 			 const QString& text,
-			 int button0, int button1=0, int button2=0);
+                         QMessageBox::StandardButtons buttons=QMessageBox::Ok, QMessageBox::StandardButton dftButton=QMessageBox::NoButton);
 
-extern LAVABASE_DLL int information(QWidget *parent, const QString &caption,
+extern LAVABASE_DLL QMessageBox::StandardButton information(QWidget *parent, const QString &caption,
 			 const QString& text,
-			 int button0, int button1, int button2=0);
+                         QMessageBox::StandardButtons buttons=QMessageBox::Ok, QMessageBox::StandardButton dftButton=QMessageBox::NoButton);
 
-extern LAVABASE_DLL int question(QWidget *parent, const QString &caption,
+extern LAVABASE_DLL QMessageBox::StandardButton question(QWidget *parent, const QString &caption,
 			 const QString& text,
-			 int button0, int button1, int button2=0);
+                         QMessageBox::StandardButtons buttons=QMessageBox::Ok, QMessageBox::StandardButton dftButton=QMessageBox::NoButton);
 
 //extern LAVABASE_DLL QAssistantClient *qacl;
 

@@ -100,7 +100,7 @@ void ASN1::error (ErrCode errCode,
   QString errMsg=QString("Error in input file:\n\nDetails:\n+++++ ")+QString(callingProcedure)+QString(": ")+QString(ASN1Emsg[errCode].c);
   if (!Silent) {
     qDebug(qPrintable(errMsg));
-    QMessageBox::critical(0,"Lava/LavaPE",errMsg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(0,"Lava/LavaPE",errMsg);
   }
   errorExitProc();
   skip = true;

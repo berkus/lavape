@@ -220,7 +220,7 @@ void CInclView::OnNewInclude()
     }
     else
       if (firstLast == 1)
-        QMessageBox::critical(this, qApp->applicationName(),IDP_AlreadyIncluded,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        QMessageBox::critical(this, qApp->applicationName(),IDP_AlreadyIncluded);
  }
  if (!firstLast)
    GetDocument()->SetLastHint();
@@ -236,13 +236,13 @@ void CInclView::OnDelete()
   if (item && (item != Tree->RootItem)) {
     CHESimpleSyntax* cheSyn = (CHESimpleSyntax*)item->getItemData();
     if (cheSyn->data.nINCL == 1) {
-      QMessageBox::critical(this, qApp->applicationName(),ERR_StdNotRemovable, QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(this, qApp->applicationName(),ERR_StdNotRemovable);
       return;
     }
     in = GetDocument()->IDTable.IsFileInherited(cheSyn->data.SyntaxName);
     if (in) {
       errStr = IDP_InclInherited + QString(GetDocument()->IDTable.IDTab[in]->FileName.c);
-      QMessageBox::critical(this, qApp->applicationName(), errStr, QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(this, qApp->applicationName(), errStr);
       return;
     }
     else {
@@ -444,7 +444,7 @@ void CInclView::OnExpandAll()
 
 void CInclView::on_whatNextAction_triggered()
 {
-  QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("\"What next?\" help not yet available for the include view"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+  QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("\"What next?\" help not yet available for the include view"));
 }
 
 bool CInclView::event(QEvent *ev) {

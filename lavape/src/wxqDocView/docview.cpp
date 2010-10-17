@@ -524,7 +524,7 @@ bool wxDocument::Save()
   QFileInfo fileInfo(m_documentFile);
   if (fileInfo.exists() && !fileInfo.isWritable()) {
     QString str = QString("File '") + m_documentFile + QString("' couldn't be opened for writing");
-    QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),str ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),str);
     return false;
   }
   bool ret = false;
@@ -560,7 +560,7 @@ bool wxDocument::SaveAs()
     QFileInfo fileInfo(fn);
     if (fileInfo.exists() && !fileInfo.isWritable()) {
       QString str = QString("File '") + fn + QString("' couldn't be opened for writing");
-      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),str ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),str);
       return false;
   }
     QString ext = fileInfo.suffix();
@@ -603,7 +603,7 @@ bool wxDocument::OnSaveDocument(const QString& file)
     QFile f(file);
     if (!f.open(QIODevice::WriteOnly))
     {
-        QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("Sorry, couldn't open this file for saving."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("Sorry, couldn't open this file for saving."));
         return false;
     }
 
@@ -631,7 +631,7 @@ bool wxDocument::OnOpenDocument(const QString& file)
     QFile f(file);
     if (!f.open(QIODevice::ReadOnly))
     {
-        QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("Sorry, couldn't open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("Sorry, couldn't open this file."));
         return false;
     }
 
@@ -703,9 +703,8 @@ bool wxDocument::OnSaveModified()
                 qPrintable(title));
         switch (QMessageBox::question(
           wxTheApp->m_appWindow,qApp->applicationName(),prompt,
-          QMessageBox::Yes | QMessageBox::Default,
-          QMessageBox::No,
-          QMessageBox::Cancel)) {
+          QMessageBox::Yes | QMessageBox::No,
+          QMessageBox::Yes)) {
         case QMessageBox::No:
           Modify(false);
           return true;
@@ -1561,7 +1560,7 @@ wxDocTemplate *wxDocManager::SelectDocumentPath(wxDocTemplate **templates,
             else
                 msgTitle = QString(tr("File error"));
 
-            QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("Sorry, couldn't open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+            QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("Sorry, couldn't open this file."));
 
             path = QString("");
             return (wxDocTemplate *) NULL;
@@ -1880,7 +1879,7 @@ DString *wxHistory::GetHistoryItem(int i) const
     if ( i < m_historyN )
       return m_history[i];
 
-		QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("bad index in wxHistory::GetHistoryItem"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+                QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("bad index in wxHistory::GetHistoryItem"));
     return &ret;
 }
 
@@ -1899,7 +1898,7 @@ void wxHistory::RemoveItemFromHistory(QString name)
 void wxHistory::RemoveItemFromHistory(int i)
 {
   if (i >= m_historyN) {
-    QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("invalid index in wxHistory::RemoveFileFromHistory"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("invalid index in wxHistory::RemoveFileFromHistory"));
     return;
   }
   // delete the element from the array (could use memmove() too...)
@@ -2049,18 +2048,18 @@ static bool ResolveShortCut (HWND hwnd, QString pszLink, QString &resolved)
           hres = psl->GetPath (szGotPath, MAX_PATH,(WIN32_FIND_DATA *)&wfd, SLGP_UNCPRIORITY /*SLGP_SHORTPATH*/);
           if (! SUCCEEDED (hres)) {
             mm = QString("Resolving shortcut ") + pszLink + " failed!";
-            QMessageBox::critical(wxTheApp->m_appWindow, qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+            QMessageBox::critical(wxTheApp->m_appWindow, qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/);
           }
           resolved = szGotPath;
         }
         else {
           mm = QString("Resolving shortcut ") + pszLink + " failed!";
-          QMessageBox::critical(wxTheApp->m_appWindow, qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          QMessageBox::critical(wxTheApp->m_appWindow, qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/);
         }
       }
       else {
         mm = QString("Loading shortcut ") + pszLink + " failed!";
-        QMessageBox::critical(wxTheApp->m_appWindow, qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        QMessageBox::critical(wxTheApp->m_appWindow, qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/);
       }
       // Release the pointer to IPersistFile.
       ppf->Release ();

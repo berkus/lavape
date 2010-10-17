@@ -142,7 +142,7 @@ void wxMainFrame::OnMRUFile(int histFileIndex)
     if (!f.open(QIODevice::ReadOnly))
     {
         wxDocManager::GetDocumentManager()->RemoveFileFromHistory(histFileIndex);
-        QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("Sorry, couldn't open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("Sorry, couldn't open this file."));
                                 delete file;
         return;
     }

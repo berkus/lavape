@@ -498,7 +498,7 @@ bool CMultiUndoMem::Undo(CLavaPEHint *withLastHint)
         mess += QString("\n\nWould you like to undo the update nevertheless in those documents where it is possible?\nPress Yes-button if you like, press No otherwise");
       if (QMessageBox::question(
         wxTheApp->m_appWindow,qApp->applicationName(),mess,
-        QMessageBox::Yes,
+        QMessageBox::Yes|QMessageBox::No,
         QMessageBox::No) == QMessageBox::Yes) {
         //if (QMessageBox() == QMessageBox::Yes) {//mess, MB_YESNO|MB_ICONQUESTION) == IDYES) {
           che = cheFin;
@@ -524,7 +524,7 @@ bool CMultiUndoMem::Undo(CLavaPEHint *withLastHint)
         }
       }
       else
-        critical(wxTheApp->m_appWindow,qApp->applicationName(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),mess);
         //QMessageBox(mess);
     }
   }
@@ -591,7 +591,7 @@ bool CMultiUndoMem::Redo(CLavaPEHint *withFirstHint)
         mess += QString("\n\nWould you like to redo the update nevertheless in those documents where it is possible?\nPress Yes-button if you like, press No otherwise");
       if (QMessageBox::question(
         wxTheApp->m_appWindow,qApp->applicationName(),mess,
-        QMessageBox::Yes,
+        QMessageBox::Yes|QMessageBox::No,
         QMessageBox::No) == QMessageBox::Yes) {
         //if (QMessageBox()) {//mess, MB_YESNO|MB_ICONQUESTION) == IDYES) {
           che = cheStart;
@@ -617,7 +617,7 @@ bool CMultiUndoMem::Redo(CLavaPEHint *withFirstHint)
         }
       }
       else
-        critical(wxTheApp->m_appWindow,qApp->applicationName(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),mess);
         //QMessageBox();//mess);
     }
   }
@@ -1009,32 +1009,32 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
   }
 }
 
-int critical(QWidget *parent, const QString &caption,
+QMessageBox::StandardButton critical(QWidget *parent, const QString &caption,
 	  const QString &text,
-		int button0, int button1, int button2) {
+                QMessageBox::StandardButtons buttons, QMessageBox::StandardButton dftButton) {
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
 
 	if (currentThread == wxTheApp->mainThread) // mainThread!
-		return QMessageBox::critical(parent,caption,text,button0,button1,button2);
+                return QMessageBox::critical(parent,caption,text,buttons,dftButton);
 
   CMsgBoxParams params(
-		currentThread,0,parent,caption,text,button0,button1,button2);
+                currentThread,0,parent,caption,text,buttons,dftButton);
 
 	QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaMsgBox,&params));
   currentThread->suspend();
 	return params.result;
 }
 
-int information(QWidget *parent, const QString &caption,
+QMessageBox::StandardButton information(QWidget *parent, const QString &caption,
 		const QString& text,
-		int button0, int button1, int button2) {
+                QMessageBox::StandardButtons buttons, QMessageBox::StandardButton dftButton) {
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
 
   if (currentThread == wxTheApp->mainThread) // mainThread!
-    return QMessageBox::information(parent,caption,text,button0,button1,button2);
+    return QMessageBox::information(parent,caption,text,buttons,dftButton);
 
   CMsgBoxParams params(
-		currentThread,1,parent,caption,text,button0,button1,button2);
+                currentThread,1,parent,caption,text,buttons,dftButton);
 
   currentThread->waitingForUI = true;
 	QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaMsgBox,&params));
@@ -1042,16 +1042,16 @@ int information(QWidget *parent, const QString &caption,
 	return params.result;
 }
 
-int question(QWidget *parent, const QString &caption,
+QMessageBox::StandardButton question(QWidget *parent, const QString &caption,
 		const QString& text,
-		int button0, int button1, int button2) {
+                QMessageBox::StandardButtons buttons, QMessageBox::StandardButton dftButton) {
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
 
 	if (currentThread == wxTheApp->mainThread) // mainThread!
-		return QMessageBox::question(parent,caption,text,button0,button1,button2);
+                return QMessageBox::question(parent,caption,text,buttons,dftButton);
 
   CMsgBoxParams params(
-		currentThread,2,parent,caption,text,button0,button1,button2);
+                currentThread,2,parent,caption,text,buttons,dftButton);
 
 	QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaMsgBox,&params));
   currentThread->suspend();

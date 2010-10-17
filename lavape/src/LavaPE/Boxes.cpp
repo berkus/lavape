@@ -605,7 +605,7 @@ void CAttrBox::on_ID_OK_clicked()
   UpdateData(true);
   QString* ids = CheckNewName(valNewName, myDECL, myDoc/*, OrigDECL*/);
   if (ids) {
-    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids);
     //NewName->SetCurSel(0, -1);
     NewName->setFocus();
     return;
@@ -619,7 +619,7 @@ void CAttrBox::on_ID_OK_clicked()
   else
     myDECL->SecondTFlags.EXCL(enableName);
   if (!valNewTypeType.length()) {
-    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel);
     BasicTypes->setFocus();
     return;
   }
@@ -813,7 +813,7 @@ void CCompSpecBox::on_CompoProt_activated(int pos)
     EnumDel->setEnabled(true);
     EnumEdit->setEnabled(true);
     if ((myDECL->nOutput != PROT_LAVA) && (myDECL->nOutput != PROT_NATIVE))
-      QMessageBox::critical(this,qApp->applicationName(),ERR_NotYetImplemented,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),ERR_NotYetImplemented);
   }
 }
 
@@ -842,7 +842,7 @@ void CCompSpecBox::on_EnumAdd_clicked()
     ss += 1;
   if (myDECL->nOutput == PROT_LAVA) {
     if (ss > 1)
-      QMessageBox::critical(this,qApp->applicationName(),ERR_ExactlyOneLcom,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),ERR_ExactlyOneLcom);
     else {
       dir = ExeDir + ComponentLinkDir;
 
@@ -869,7 +869,7 @@ void CCompSpecBox::on_EnumAdd_clicked()
   }
   else if (myDECL->nOutput == PROT_NATIVE) {
     if (ss > 1)
-      QMessageBox::critical(this,qApp->applicationName(),ERR_OneLibName,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),ERR_OneLibName);
     else {
       CEnumItem *cm = new CEnumItem(&iT, 0, 0, false, this);
       if (cm->exec() == QDialog::Accepted) {
@@ -993,14 +993,14 @@ void CCompSpecBox::on_ID_OK_clicked()
   UpdateData(true);
   QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
-    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids);
     //NewName->SetCurSel(0, -1);
     NewName->setFocus();
     return;
   }
   ListToChain(Extends, &myDECL->Supports);
   if (!myDECL->Supports.first) {
-    QMessageBox::critical(this,qApp->applicationName(),IDP_SelInterface,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_SelInterface);
     ExtTypes->setFocus();
     return;
   }
@@ -1012,21 +1012,21 @@ void CCompSpecBox::on_ID_OK_clicked()
   else
     myDECL->TypeFlags.EXCL(isPersistent);
   if (myDECL->nOutput < 0) {
-    QMessageBox::critical(this,qApp->applicationName(),IDP_NoCompoProt,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoCompoProt);
     CompoProt->setFocus();
     return;
   }
 
   if (myDECL->nOutput == PROT_LAVA) {
     if (EnumItems->count() > 1) {
-      QMessageBox::critical(this,qApp->applicationName(),ERR_ExactlyOneLcom,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),ERR_ExactlyOneLcom);
       EnumItems->setFocus();
       return;
     }
   }
   else if (myDECL->nOutput == PROT_NATIVE) {
     if (EnumItems->count() > 1) {
-      QMessageBox::critical(this,qApp->applicationName(),ERR_OneLibName,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),ERR_OneLibName);
       EnumItems->setFocus();
       return;
     }
@@ -1372,7 +1372,7 @@ void CEnumBox::on_ID_OK_clicked()
   UpdateData(true);
   QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
-    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids);
     NewName->setCursorPosition(0);
     NewName->setFocus();
     return;
@@ -1382,7 +1382,7 @@ void CEnumBox::on_ID_OK_clicked()
   int ipos = 0;
   int maxi = EnumItems->count();
   if (!maxi) {
-    QMessageBox::critical(this,qApp->applicationName(),IDP_NoEnumItem,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoEnumItem);
     EnumAdd->setFocus();
     return;
   }
@@ -1433,7 +1433,7 @@ void CEnumItem::on_ID_OK_clicked()
   CListBoxItem *item;
 
   if ((Items || ItemsBox) && isID && !((CLavaPEApp*)wxTheApp)->LBaseData.isIdentifier(EnumItem->text()))
-    QMessageBox::critical(this,qApp->applicationName(),IDP_IsNoID,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_IsNoID);
   else {
     if (ItemsBox) {
       maxi = ItemsBox->count();
@@ -1444,7 +1444,7 @@ void CEnumItem::on_ID_OK_clicked()
           txt = item->text();
         }
         if (newText == txt) 
-          QMessageBox::critical(this,qApp->applicationName(),ERR_NameInUse,QMessageBox::Ok,0,0);
+          QMessageBox::critical(this,qApp->applicationName(),ERR_NameInUse);
         else {
           *m_ItemAdr = EnumItem->text();
           QDialog::accept();
@@ -1460,7 +1460,7 @@ void CEnumItem::on_ID_OK_clicked()
         str = qPrintable(EnumItem->text());
         for (che = (CHEEnumSelId*)Items->first; che && (che->data.Id != str); che = (CHEEnumSelId*)che->successor);
         if (che)
-          QMessageBox::critical(this,qApp->applicationName(),ERR_NameInUse,QMessageBox::Ok,0,0);
+          QMessageBox::critical(this,qApp->applicationName(),ERR_NameInUse);
         else {
           *m_ItemAdr = EnumItem->text();
           QDialog::accept();
@@ -1915,7 +1915,7 @@ void CFuncBox::setHandlerData()
           nameText += "???";
           cstr = "Broken reference in handler client.\n"
            "Click \"yes\" to remove this client.";
-          if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes,QMessageBox::Cancel,0) == QMessageBox::Cancel)
+          if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes|QMessageBox::Cancel,QMessageBox::Cancel) == QMessageBox::Cancel)
             nameText += "???";
           else {
             ncheTIDs = (CHETIDs*)cheTIDs->successor;
@@ -2493,7 +2493,7 @@ void CFuncBox::on_ID_OK_clicked()
     if (myDECL->op == OP_noOp) {
       QString* ids = CheckNewName(valNewName, myDECL, myDoc);
       if (ids) {
-        QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+        QMessageBox::critical(this,qApp->applicationName(),*ids);
         NewName->setFocus();
         //NewName->SetSel(0, -1);
         return;
@@ -2510,7 +2510,7 @@ void CFuncBox::on_ID_OK_clicked()
     else
       myDECL->GUISignaltype = EventType->currentIndex();
     if (myDECL->GUISignaltype < 1) {
-      QMessageBox::critical(this, qApp->applicationName(), IDP_NoEvTypeSel, QMessageBox::Ok,0,0);
+      QMessageBox::critical(this, qApp->applicationName(), IDP_NoEvTypeSel);
       EventType->setFocus();
       return;
     }
@@ -2639,7 +2639,7 @@ ValOnInit CImplBox::OnInitDialog()
         if (classDECL) 
           valImplSel = QString(classDECL->LocalName.c); 
         else {
-          QMessageBox::critical(this, qApp->applicationName(), ERR_NoImplIF,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(this, qApp->applicationName(), ERR_NoImplIF);
           valImplSel = QString("??: ");
           Convert.IntToString(cheS->data.nINCL, strINCL);
           Convert.IntToString(cheS->data.nID, strID);
@@ -2670,7 +2670,7 @@ ValOnInit CImplBox::OnInitDialog()
       if (dataID != myDECL->RefID) {  
         cstr = "DATATYPE of GUI-interface differs from DATATYPE in form declaration of GUI-implementation.\n"
                "Click \"yes\" to replace the form declaration.";
-        if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes,QMessageBox::Cancel,0) == QMessageBox::Yes) {
+        if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes|QMessageBox::Cancel,QMessageBox::Cancel) == QMessageBox::Yes) {
           che = (CHE*)myDECL->NestedDecls.first;
           while (che && ((LavaDECL*)che->data)->DeclType != FormDef)
             che = (CHE*)che->successor;
@@ -2717,7 +2717,7 @@ void CImplBox::on_ID_OK_clicked()
   
   UpdateData(true);
   if (!myDECL->Supports.first) {
-    QMessageBox::critical(this,qApp->applicationName(),IDP_SelInterface,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_SelInterface);
     ImplTypes->setFocus();
     return;
   }
@@ -2917,7 +2917,7 @@ void CInitBox::on_ID_OK_clicked()
   else  {
     QString* ids = CheckNewName(valNewName, myDECL, myDoc);
     if (ids) {
-      QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),*ids);
       NewName->setFocus();
       return;
     }
@@ -3283,7 +3283,7 @@ void CInterfaceBox::on_ID_OK_clicked()
     extendsException = false, extendsEnum = false, extendsGUI = false;
 
   if (ids) {
-    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids);
     NewName->setCursorPosition(0);
     NewName->setFocus();
     return;
@@ -3741,13 +3741,13 @@ void CIOBox::on_ID_OK_clicked()
   }
   QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
-    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids);
 //    NewName->SetSel(0, -1);
     NewName->setFocus();
     return;
   }
   if (!valNewTypeType.length()) {
-    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel);
     BasicTypes->setFocus();
     return;
   }
@@ -3889,7 +3889,7 @@ void CPackageBox::on_ID_OK_clicked()
   else  {
     QString* ids = CheckNewName(valNewName, myDECL, myDoc);
     if (ids) {
-      QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),*ids);
       //NewName->SetSel(0, -1);
       NewName->setFocus();
       return;
@@ -4004,7 +4004,7 @@ void CSetBox::on_ID_OK_clicked()
   UpdateData(true);
   QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
-    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids);
     NewName->setFocus();
     //NewName->SetSel(0, -1);
     return;
@@ -4015,7 +4015,7 @@ void CSetBox::on_ID_OK_clicked()
     myDECL->TreeFlags.INCL(ParaExpanded);
   }
   else {
-    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel);
     BasicTypes->setFocus();
     ExTypes->setCurrentIndex(0);
     BasicTypes->setCurrentIndex(0);
@@ -4474,7 +4474,7 @@ void CVTypeBox::on_ID_OK_clicked()
 
   QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
-    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids);
     //NewName->SetSel(0, -1);
     NewName->setFocus();
     return;
@@ -4526,7 +4526,7 @@ void CVTypeBox::on_ID_OK_clicked()
   else 
     myDECL->TypeFlags.EXCL(isAbstract);
   if (!valNewTypeType.length() && !myDECL->TypeFlags.Contains(isAbstract)) {
-    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel);
     BasicTypes->setFocus();
     return;
   }

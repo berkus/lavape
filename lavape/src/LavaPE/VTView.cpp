@@ -384,7 +384,7 @@ void CVTView::gotoDef(CTreeItem* item, bool toImpl)
       ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext = new CBrowseContext(this, GetDocument()->IDTable.GetDECL(itd->VTEl_Tree.VTClss), (int)bCase);//, (CTreeItem*)item->parent());//GetParentItem(item));
       if (toImpl) {
         if (!LBaseData->Browser->GotoImpl(GetDocument(), itd->VTEl_Tree.VTClss))
-          QMessageBox::critical(this, qApp->applicationName(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(this, qApp->applicationName(),ERR_NoClassImpl);
       }
       else
         LBaseData->Browser->BrowseDECL(GetDocument(), itd->VTEl_Tree.VTClss);
@@ -405,9 +405,9 @@ void CVTView::gotoDef(CTreeItem* item, bool toImpl)
       if (toImpl) {
         if (!LBaseData->Browser->GotoImpl(GetDocument(), decl))
           if (decl->TypeFlags.Contains(isAbstract) || decl->TypeFlags.Contains(isNative))
-            QMessageBox::information(this, qApp->applicationName(),ERR_NoImplForAbstract,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+            QMessageBox::information(this, qApp->applicationName(),ERR_NoImplForAbstract);
           else
-            QMessageBox::critical(this, qApp->applicationName(),ERR_NoFuncImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+            QMessageBox::critical(this, qApp->applicationName(),ERR_NoFuncImpl);
       }
       else
         ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(GetDocument(), id);

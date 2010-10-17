@@ -285,6 +285,7 @@ bool CLavaApp::event(QEvent *e)
   CLavaPEHint *pHint;
   CLavaThread *thr;
   DumpEventData* dumpdata;
+  QMessageBox::StandardButton btn;
   int result;
   CheckData ckd;
 
@@ -314,28 +315,28 @@ bool CLavaApp::event(QEvent *e)
     thr = mbp->thr;
     switch (mbp->funcSpec) {
     case 0:
-      result = QMessageBox::critical(
-        mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+      btn = QMessageBox::critical(
+        mbp->parent,*mbp->caption,*mbp->text,mbp->buttons,mbp->dftButton);
       if (result != QMessageBox::NoButton) {
-        mbp->result = result;
+        mbp->result = btn;
         mbp->thr->waitingForUI = false;
         mbp->thr->resume();
       }
       return true;
     case 1:
-      result =   QMessageBox::information(
-        mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+      btn =   QMessageBox::information(
+        mbp->parent,*mbp->caption,*mbp->text,mbp->buttons,mbp->dftButton);
       if (result != QMessageBox::NoButton) {
-        mbp->result = result;
+        mbp->result = btn;
         mbp->thr->waitingForUI = false;
         mbp->thr->resume();
       }
       return true;
     case 2:
-      result =   QMessageBox::question(
-        mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+      btn =   QMessageBox::question(
+        mbp->parent,*mbp->caption,*mbp->text,mbp->buttons,mbp->dftButton);
       if (result != QMessageBox::NoButton) {
-        mbp->result = result;
+        mbp->result = btn;
         mbp->thr->waitingForUI = false;
         mbp->thr->resume();
       }

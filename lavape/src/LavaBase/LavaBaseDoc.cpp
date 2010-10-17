@@ -254,13 +254,13 @@ CHESimpleSyntax* CLavaBaseDoc::IncludeSyntax(const QString& fn, bool& isNew, int
     if ((ReadSynDef(fn, isyntax) < 0) || !isyntax) {
       if (!isyntax) {
         str = QString("File '") + fn + "' not found";
-        critical(wxTheApp->m_appWindow,qApp->applicationName(),str,QMessageBox::Ok,0,0);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),str);
       }
       return 0;
     }
     if (hint && (isyntax->SynDefTree.first == isyntax->SynDefTree.last)) {
       str = QString("File '") + fn + " is not a valid lava file";
-      critical(wxTheApp->m_appWindow,qApp->applicationName(),str,QMessageBox::Ok,0,0);
+      critical(wxTheApp->m_appWindow,qApp->applicationName(),str);
       SynIO.DeleteSynDef(isyntax);
       return 0;
     }
@@ -365,7 +365,7 @@ CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, const QString& fn, 
         if (!LBaseData->inMultiDocUpdate) {
           DString str = DString("Include-file '") + fullfn/*cheSynIncl->data.SyntaxName*/ + DString("' not found");
           //QMessageBox();//str.c, MB_OK+MB_ICONSTOP);
-          critical(wxTheApp->m_appWindow,qApp->applicationName(),str.c,QMessageBox::Ok,0,0);
+          critical(wxTheApp->m_appWindow,qApp->applicationName(),str.c);
         }
         cheSynIncl->data.notFound = true;
         if (cheSyn)

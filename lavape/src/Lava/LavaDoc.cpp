@@ -106,7 +106,7 @@ CLavaDoc::~CLavaDoc()
   deleting = true;
   DeleteContents();
   if (numAllocObjects) {
-    QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(numAllocObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(numAllocObjects));
   }
 #ifdef ALLOCOBJLIST
   int sz = allocatedObjects.size();
@@ -331,7 +331,7 @@ bool CLavaDoc::OnSaveDocument(const QString& lpszPathName)
       if (file.error() != QFile::NoError) {
         QString err = file.errorString();
         file.unsetError();
-        critical(wxTheApp->m_appWindow, qApp->applicationName(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        critical(wxTheApp->m_appWindow, qApp->applicationName(), err);
         LObjectError(ckd, lpszPathName, emptyName, &ERR_ldocNotStored);
         file.close();
         return false;
@@ -395,7 +395,7 @@ LavaObjectPtr CLavaDoc::OpenObject(CheckData& ckd, LavaObjectPtr urlObj)
       if (!ar.atEnd() || (file.error() != QFile::NoError)) {
         if (!ckd.exceptionThrown) {
           err = file.fileName() + ": " + file.errorString();
-          critical(wxTheApp->m_appWindow, qApp->applicationName(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          critical(wxTheApp->m_appWindow, qApp->applicationName(), err);
           LObjectError(ckd, *pfileName, noName, &ERR_ldocNotOpened);
         }
         file.unsetError();
@@ -434,7 +434,7 @@ bool CLavaDoc::SaveObject(CheckData& ckd, LavaObjectPtr object)
       QFile file(qf.absoluteFilePath());
       if( !file.open(QIODevice::WriteOnly)) {
         QString str = QString("File '") + *pfileName + QString("' couldn't be opened for writing");
-        QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),str ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),str);
         return false;
       }
       QDataStream ar(&file);
@@ -445,7 +445,7 @@ bool CLavaDoc::SaveObject(CheckData& ckd, LavaObjectPtr object)
       if (fErr != QFile::NoError) {
         QString err = file.errorString();
         file.unsetError();
-        critical(wxTheApp->m_appWindow, qApp->applicationName(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        critical(wxTheApp->m_appWindow, qApp->applicationName(), err);
         LObjectError(ckd, *pfileName, noName, &ERR_ldocNotOpened);
         file.close();
         return false;
@@ -1028,7 +1028,7 @@ void CLavaDoc::LObjectError(CheckData& ckd, const QString& ldocName, const QStri
       else
         code = CorruptObject_ex;
       if (isObject && throwError)
-        critical(wxTheApp->m_appWindow, qApp->applicationName(),msg,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        critical(wxTheApp->m_appWindow, qApp->applicationName(),msg);
       else
         if (!SetLavaException(ckd, code, msg))
           throw CRuntimeException(code, &msg);
@@ -1142,7 +1142,7 @@ bool CLavaDoc::ExecuteLavaObject()
     return true;
   }
   else {
-    critical(wxTheApp->m_appWindow, qApp->applicationName(),"No executable Lava-GUI-service",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    critical(wxTheApp->m_appWindow, qApp->applicationName(),"No executable Lava-GUI-service");
     return false;
   }
 }

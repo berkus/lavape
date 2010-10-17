@@ -68,7 +68,7 @@ void CLavaPEDebugger::start() {
     QStringList args;
 	  args << lavaFile << host_addr << QString("%1").arg(locPort);
     if (!QProcess::startDetached(interpreterPath,args)) {
-      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaStartFailed,QMessageBox::Ok,0,0);
+      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaStartFailed);
 		  return;
 	  }
   }
@@ -344,7 +344,7 @@ void CLavaPEDebugger::adjustBrkPnts(CHAINANY* brkPntsChain)
       chePP = (CHEProgPoint*)chePP->successor;
       brkPntsChain->Remove(rmPP->predecessor);
       if (doMess)
-        QMessageBox::information(wxTheApp->m_appWindow, qApp->applicationName(),"One or more breakpoints cannot not be set and have been removed",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::information(wxTheApp->m_appWindow, qApp->applicationName(),"One or more breakpoints cannot not be set and have been removed");
     }
     else {
       if (!myDoc->IDTable.GetDECL(chePP->data.FuncID))

@@ -401,7 +401,7 @@ void CUtilityView::OnDblclk(QTreeWidgetItem* item, int col)
         if (doc->TrueReference(decl, data->refCase, data->refTid))
           ((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, decl, tid, true, &data->enumID);
         else
-          QMessageBox::critical(this, qApp->applicationName(), IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          QMessageBox::critical(this, qApp->applicationName(), IDP_RefNotFound);
       }
       else if (data->index == 2)
         ((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, decl, tid, true, &data->enumID);
