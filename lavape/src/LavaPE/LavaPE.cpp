@@ -380,7 +380,7 @@ bool CLavaPEApp::event(QEvent *e)
   case UEV_LavaGUIEvent:
     actView = wxDocManager::GetDocumentManager()->GetActiveView();
     if ( actView->inherits("CLavaGUIView") )
-      ((CLavaGUIView*)actView)->myGUIProg->CmdExec.GUIEvent( e);
+      ((CLavaGUIView*)actView)->myGUIProg->CmdExec.GUIEvent(e);
     return true;
    default:
     return wxApp::event(e);

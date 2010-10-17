@@ -2202,6 +2202,11 @@ bool SelfVar::Check (CheckData &ckd)
 
   ENTRY
 
+#ifndef INTERPRETER
+  if (execView)
+    ((CExecView*)execView)->isDirty = true;
+#endif
+
   checked = false;
   ckd.selfVar = this;
   ok &= ((SynObject*)execName.ptr)->Check(ckd);

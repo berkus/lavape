@@ -3521,21 +3521,36 @@ void CLavaPEDoc::OnUpdateDbgStart (QAction* action)
 	action->setEnabled (che && (((LavaDECL*) che->data)->DeclType == Initiator));
 }
 
+CLavaBaseView* CLavaPEDoc::ExecHasView (LavaDECL* execDecl)
+{
+	bool active=false;
+	CLavaBaseView *view=0;
+	int pos; // = GetFirstViewPos();
+	for (pos= 0; pos < m_documentViews.size(); pos++)
+	{
+		view = (CLavaBaseView*) m_documentViews[pos];
+		if (view->inherits ("CExecView") && (((CExecView*) view)->myDECL == execDecl))
+      return view;
+	}
+  return 0;
+}
+
 bool CLavaPEDoc::OpenExecView (LavaDECL* eDECL)
 {
 	bool active=false;
 	CLavaBaseView *view;
 	wxChildFrame *execChild;
 //  LavaDECL *eDECL = (LavaDECL*)execChe->data;
-	int pos; // = GetFirstViewPos();
-	for (pos= 0; pos < m_documentViews.size(); pos++)
-	{
-		view = (CLavaBaseView*) m_documentViews[pos];
-		active = view->inherits ("CExecView") && (((CExecView*) view)->myDECL == eDECL);
-		if (active)
-			pos = m_documentViews.size();
-	}
-	if (active)
+	//int pos; // = GetFirstViewPos();
+	//for (pos= 0; pos < m_documentViews.size(); pos++)
+	//{
+	//	view = (CLavaBaseView*) m_documentViews[pos];
+	//	active = view->inherits ("CExecView") && (((CExecView*) view)->myDECL == eDECL);
+	//	if (active)
+	//		pos = m_documentViews.size();
+	//}
+  view = ExecHasView(eDECL);
+	if (view)
 		execChild = view->GetParentFrame();
 	else
 	{

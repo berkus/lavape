@@ -577,7 +577,10 @@ static int nPaint=1;
 
 void ExecContents::paintEvent (QPaintEvent *ev)
 {
-  if (!execView || !execView->myDoc || !execView->myDoc->mySynDef || execView->isDirty) {
+  if (!execView
+  || !execView->myDoc
+  || !execView->myDoc->mySynDef
+  || execView->isDirty) {
     ev->setAccepted(false);
     return;
   }
@@ -2095,6 +2098,7 @@ void CExecView::SetSelectAtHint (CLavaPEHint *hint) {
 
 
 void CExecView::Check () {
+  isDirty = true;
   text->ckd.nErrors = 0;
   text->ckd.nPlaceholders = 0;
   //selfVar->checked = false;
