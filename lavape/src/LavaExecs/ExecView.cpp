@@ -127,6 +127,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   layout->addWidget(sv);
   layout->setMargin(0);
   redCtl = sv->execCont;
+  redCtl->setUpdatesEnabled(false);
   QPalette palette=redCtl->palette();
   palette.setColor(QPalette::Active,QPalette::Window,Qt::white);
   redCtl->setPalette(palette);
@@ -577,6 +578,9 @@ static int nPaint=1;
 
 void ExecContents::paintEvent (QPaintEvent *ev)
 {
+  QPainter p(this);
+  QRect r=rect();
+
   if (!execView
   || !execView->myDoc
   || !execView->myDoc->mySynDef
@@ -586,7 +590,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   }
 
   fmt.fontFamily = fmt.font.family();
-  QPainter p(this);
   CHETokenNode *currentToken;
   bool inSelection=false, debugStopOccurred=false;
   QPen myPen(Qt::NoPen);
@@ -594,6 +597,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   BreakPointList bpl;
   BreakPointList::iterator it;
 
+  p.eraseRect(r);
   p.setRenderHint(QPainter::Antialiasing,true);
   p.setBackgroundMode(Qt::OpaqueMode);
   contentsWidth = 0;
@@ -1260,6 +1264,8 @@ MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
 ExecContents::ExecContents (MyScrollView *sv) : QWidget(sv) {
   this->sv = sv;
   execView = sv->execView;
+  setBackgroundRole(QPalette::Base);
+  setAttribute(Qt::WA_OpaquePaintEvent);
   setFocusPolicy(Qt::StrongFocus);
   setWhatsThis(tr("No specific help available here"));
   debugStop = new QPixmap((const char**)debugStop_xpm);
@@ -2098,7 +2104,7 @@ void CExecView::SetSelectAtHint (CLavaPEHint *hint) {
 
 
 void CExecView::Check () {
-  isDirty = true;
+  //isDirty = true;
   text->ckd.nErrors = 0;
   text->ckd.nPlaceholders = 0;
   //selfVar->checked = false;
@@ -2144,6 +2150,7 @@ void CExecView::RedrawExec()
   notYetPainted = false;
   isDirty = false;
   Select();
+  redCtl->setUpdatesEnabled(true);
   redCtl->update();
 }
 
@@ -2816,7 +2823,6 @@ void CExecView::OnComment()
 
   if (!EditOK()) return;
   clicked = false;
-//!!!  setUpdatesEnabled(true);
   CComment *pComment = new CComment(this);
 
   if (synObj->comment.ptr) {

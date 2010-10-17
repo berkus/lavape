@@ -2189,8 +2189,6 @@ bool SelfVar::Check (CheckData &ckd)
 #ifdef INTERPRETER
   TID itfTID;
 #else
-  //if (execView /*&& !checked*/)
-  //  ((CExecView*)execView)->isDirty = true;
   if (ckd.concernExecs)
     concernExecs = true;
   else if (concernExecs) {

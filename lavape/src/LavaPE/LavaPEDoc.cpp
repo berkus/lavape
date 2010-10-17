@@ -3223,8 +3223,12 @@ void CLavaPEDoc::Modify (bool bModified)
 void CLavaPEDoc::OnCheck()
 {
 	CExecChecks* ch = new CExecChecks (this);
+	CLavaPEHint* hint;
+
 	delete ch;
 	ShowErrorBox (false);
+	hint = new CLavaPEHint (CPECommand_FromOtherDoc, this, 0);//(const unsigned long) 0);
+	UpdateAllViews (NULL, CHLV_showError, hint);
 }
 
 bool CLavaPEDoc::OnCloseDocument()
