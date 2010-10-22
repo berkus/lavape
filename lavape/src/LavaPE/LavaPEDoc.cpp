@@ -3225,10 +3225,10 @@ void CLavaPEDoc::OnCheck()
 	CExecChecks* ch = new CExecChecks (this);
 	CLavaPEHint* hint;
 
-	delete ch;
 	ShowErrorBox (false);
-	hint = new CLavaPEHint (CPECommand_FromOtherDoc, this, 0);//(const unsigned long) 0);
+  hint = new CLavaPEHint (CPECommand_FromOtherDoc, this, 0);//(const unsigned long) 0);
 	UpdateAllViews (NULL, CHLV_showError, hint);
+  delete ch;
 }
 
 bool CLavaPEDoc::OnCloseDocument()
@@ -4088,9 +4088,9 @@ void CLavaPEDoc::ShowErrorBox (bool inOpen)
 	}
 	mess += QString (pkt.c);
 	if (nErrors + nPlaceholders)
-                QMessageBox::critical (wxTheApp->m_appWindow,qApp->applicationName(),mess);
+    QMessageBox::critical (wxTheApp->m_appWindow,qApp->applicationName(),mess);
 	else
-                QMessageBox::information (wxTheApp->m_appWindow,qApp->applicationName(),mess);
+    QMessageBox::information (wxTheApp->m_appWindow,qApp->applicationName(),mess);
 }
 
 void CLavaPEDoc::ShrinkCollectDECL (LavaDECL* decl)

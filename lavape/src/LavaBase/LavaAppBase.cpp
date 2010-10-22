@@ -1014,7 +1014,7 @@ QMessageBox::StandardButton critical(QWidget *parent, const QString &caption,
                 QMessageBox::StandardButtons buttons, QMessageBox::StandardButton dftButton) {
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
 
-	if (currentThread == wxTheApp->mainThread) // mainThread!
+  if (currentThread == wxTheApp->mainThread) // mainThread!
                 return QMessageBox::critical(parent,caption,text,buttons,dftButton);
 
   CMsgBoxParams params(
