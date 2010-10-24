@@ -121,7 +121,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 {
   initialUpdateDone = false; // indicates whether OnInitialUpdate has already been executed
   notYetPainted = true;
-  isDirty = true; //initially + on RedrawExec + on ExecUpdate::ChangeExec
+//  isDirty = true; //initially + on RedrawExec + on ExecUpdate::ChangeExec
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
   layout->addWidget(sv);
@@ -589,6 +589,8 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     return;
   }
 
+
+
   fmt.fontFamily = fmt.font.family();
   CHETokenNode *currentToken;
   bool inSelection=false, debugStopOccurred=false;
@@ -597,7 +599,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   BreakPointList bpl;
   BreakPointList::iterator it;
 
-  p.eraseRect(r);
+//  p.eraseRect(r);
   p.setRenderHint(QPainter::Antialiasing,true);
   p.setBackgroundMode(Qt::OpaqueMode);
   contentsWidth = 0;
@@ -1265,7 +1267,7 @@ ExecContents::ExecContents (MyScrollView *sv) : QWidget(sv) {
   this->sv = sv;
   execView = sv->execView;
   setBackgroundRole(QPalette::Base);
-  setAttribute(Qt::WA_OpaquePaintEvent);
+//  setAttribute(Qt::WA_OpaquePaintEvent);
   setFocusPolicy(Qt::StrongFocus);
   setWhatsThis(tr("No specific help available here"));
   debugStop = new QPixmap((const char**)debugStop_xpm);
@@ -2118,7 +2120,7 @@ void CExecView::RedrawExec()
   // TODO: Add your command handler code here
   CSearchData sData;
 
-  isDirty = true;
+//  isDirty = true;
   text->tokenChain.Destroy();
   text->INIT();
   replacedObj = 0;

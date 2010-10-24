@@ -3227,7 +3227,7 @@ void CLavaPEDoc::OnCheck()
 
 	ShowErrorBox (false);
   hint = new CLavaPEHint (CPECommand_FromOtherDoc, this, 0);//(const unsigned long) 0);
-	UpdateAllViews (NULL, CHLV_showError, hint);
+//	UpdateAllViews (NULL, CHLV_showError, hint);
   delete ch;
 }
 
