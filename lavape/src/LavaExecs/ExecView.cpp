@@ -121,13 +121,11 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 {
   initialUpdateDone = false; // indicates whether OnInitialUpdate has already been executed
   notYetPainted = true;
-//  isDirty = true; //initially + on RedrawExec + on ExecUpdate::ChangeExec
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
   layout->addWidget(sv);
   layout->setMargin(0);
   redCtl = sv->execCont;
-  redCtl->setUpdatesEnabled(false);
   QPalette palette=redCtl->palette();
   palette.setColor(QPalette::Active,QPalette::Window,Qt::white);
   redCtl->setPalette(palette);
@@ -583,8 +581,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
 
   if (!execView
   || !execView->myDoc
-  || !execView->myDoc->mySynDef
-  || execView->isDirty) {
+  || !execView->myDoc->mySynDef) {
     ev->setAccepted(false);
     return;
   }
@@ -893,14 +890,12 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     text->ckd.hint = hint;
     text->ckd.undoRedo = undoRedo;
 
-    //isDirty = true;
     Check();
     sData.execView = this;
     sData.doc = myDoc;
     sData.nextFreeID = 0;
     sData.execDECL = myDECL;
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSetSynOID, 0,0, (address)&sData);
-    RedrawExec();
 
     toBeDrawn = 0;
     multipleUpdates = false;
@@ -2106,12 +2101,9 @@ void CExecView::SetSelectAtHint (CLavaPEHint *hint) {
 
 
 void CExecView::Check () {
-  //isDirty = true;
   text->ckd.nErrors = 0;
   text->ckd.nPlaceholders = 0;
-  //selfVar->checked = false;
   ((SynObject*)myDECL->Exec.ptr)->Check(text->ckd);
-  //selfVar->checked = true;
 }
 
 
@@ -2120,7 +2112,6 @@ void CExecView::RedrawExec()
   // TODO: Add your command handler code here
   CSearchData sData;
 
-//  isDirty = true;
   text->tokenChain.Destroy();
   text->INIT();
   replacedObj = 0;
@@ -2150,9 +2141,7 @@ void CExecView::RedrawExec()
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSelect, 0,0, (address)&sData);
   }
   notYetPainted = false;
-  isDirty = false;
   Select();
-  redCtl->setUpdatesEnabled(true);
   redCtl->update();
 }
 
@@ -5840,7 +5829,7 @@ void CExecView::OnInsertEnum (QString &itemName, TID &typeID)
 
 void CExecView::UpdateUI()
 {
-  if (!initialUpdateDone || notYetPainted || editCtlVisible || isDirty)
+  if (!initialUpdateDone || notYetPainted || editCtlVisible)
     return;
   SetHelpText();
 

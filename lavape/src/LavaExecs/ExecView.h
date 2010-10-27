@@ -70,7 +70,7 @@ public:
   MiniEdit *editCtl;
         CComboBar *m_ComboBar;
 
-  bool notYetPainted, isDirty, editCtlVisible, insertBefore, on_editCutAction_triggered, doubleClick,
+  bool notYetPainted, editCtlVisible, insertBefore, on_editCutAction_triggered, doubleClick,
        clicked, escapePressed, forcePrimTokenSelect, deletePending,
        inIgnore, inExecHeader, inFormParms, inBaseInits,
        inParameter, inForeach, externalHint, nextError,

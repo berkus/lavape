@@ -2200,11 +2200,6 @@ bool SelfVar::Check (CheckData &ckd)
 
   ENTRY
 
-//#ifndef INTERPRETER
-//  if (execView)
-//    ((CExecView*)execView)->isDirty = true;
-//#endif
-
   checked = false;
   ckd.selfVar = this;
   ok &= ((SynObject*)execName.ptr)->Check(ckd);
@@ -2216,8 +2211,7 @@ bool SelfVar::Check (CheckData &ckd)
     ckd.selfTypeDECL = execDECL->ParentDECL->ParentDECL;
     ckd.lpc.ContextFlags.INCL(selfiContext);
     ckd.lpc.ContextFlags.INCL(selfoContext);
-    if (execDECL->ParentDECL->TypeFlags.Contains(forceOverride)
-    /*|| execDECL->ParentDECL->TypeFlags.Contains(isStatic)*/)
+    if (execDECL->ParentDECL->TypeFlags.Contains(forceOverride))
       ckd.lpc.ContextFlags.INCL(staticContext);
     else
       ckd.lpc.ContextFlags.EXCL(staticContext);
@@ -2236,7 +2230,6 @@ bool SelfVar::Check (CheckData &ckd)
   }
   else {
     ckd.selfTypeDECL = execDECL->ParentDECL;
-    //ckd.lpc.ContextFlags.INCL(staticContext);
     ckd.lpc.ContextFlags.EXCL(selfiContext);
     ckd.lpc.ContextFlags.EXCL(selfoContext);
   }
@@ -2349,6 +2342,8 @@ bool SelfVar::Check (CheckData &ckd)
     ((CExecView*)ckd.execView)->nErrors = ckd.nErrors;
     ((CExecView*)ckd.execView)->nPlaceholders = ckd.nPlaceholders;
   }
+  if (execView)
+    ((CExecView*)execView)->RedrawExec();
 #endif
 
   ((RefTable*)ckd.refTable)->EndOfExec();

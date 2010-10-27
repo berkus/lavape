@@ -3222,12 +3222,17 @@ void CLavaPEDoc::Modify (bool bModified)
 //check the own document
 void CLavaPEDoc::OnCheck()
 {
+  DString str0;
 	CExecChecks* ch = new CExecChecks (this);
 	CLavaPEHint* hint;
+	CExecSetImpls *impls;
 
 	ShowErrorBox (false);
-  hint = new CLavaPEHint (CPECommand_FromOtherDoc, this, 0);//(const unsigned long) 0);
-//	UpdateAllViews (NULL, CHLV_showError, hint);
+	hint = new CLavaPEHint (CPECommand_FromOtherDoc, this, SETpp());//(const unsigned long) 0);
+	changeInUpdate = false;
+	impls = new CExecSetImpls (mySynDef);
+	delete impls;
+	UpdateAllViews (NULL, CHLV_showError, hint);
   delete ch;
 }
 
