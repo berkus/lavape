@@ -3444,8 +3444,8 @@ void CLavaPEDoc::OnTotalCheck()
 	if (/*nTreeErrors ||*/ nErrors || nPlaceholders)
 	{
 		ShowErrorBox (true);
-    QString efile(m_documentFile);
-    ((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView->setErrorFile(efile);
+    //QString efile(m_documentFile);
+    //((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView->setErrorFile(efile);
 		nErrBoxShown++;
 	}
 	for (ii = 1; ii < IDTable.freeINCL; ii++)
@@ -3479,8 +3479,8 @@ void CLavaPEDoc::OnTotalCheck()
 				{
 					nErrBoxShown++;
 					doc->ShowErrorBox (true);
-          QString efile(absName.c);
-          ((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView->setErrorFile(efile);
+          //QString efile(absName.c);
+          //((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView->setErrorFile(efile);
 				}
 			}
 		}
