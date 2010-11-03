@@ -132,9 +132,10 @@ void CUtilityView::SetErrorOnUtil(LavaDECL* decl)
   singleError = true;
   setError(decl->DECLError1, &cstrA);
   setError(decl->DECLError2, &cstrA);
-  CTreeItem *item = new CTreeItem(cstrA, ErrorPage);
-  //ErrorPage->setPlainText(cstrA);
   ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
+  if (!ErrorEmpty)
+    CTreeItem *item = new CTreeItem(cstrA, ErrorPage);
+  //ErrorPage->setPlainText(cstrA);
 }
 
 void CUtilityView::SetErrorOnUtil(const CHAINX& ErrChain)
@@ -144,8 +145,9 @@ void CUtilityView::SetErrorOnUtil(const CHAINX& ErrChain)
   singleError = true;
   setError(ErrChain, &cstrA);
   //ErrorPage->setPlainText(cstrA);
-  CTreeItem *item = new CTreeItem(cstrA, ErrorPage);
   ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
+  if (!ErrorEmpty)
+    CTreeItem *item = new CTreeItem(cstrA, ErrorPage);
 }
 
 void CUtilityView::setError(const CHAINX& ErrChain, QString* cstrA)
