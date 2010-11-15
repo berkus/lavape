@@ -7241,8 +7241,10 @@ void CExecView::UpdateErrMsg (QString &helpMsg) {
     nextError = false;
     return;
   }
-  else if (nextError)
+  else if (nextError || text->currentSynObj->IsPlaceHolder()) {
     myDoc->SetPEError(plhChain,true);
+    nextError = false;
+  }
   else {
     myDoc->SetPEError(emptyChain,false);
     nextError = false;

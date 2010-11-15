@@ -6788,9 +6788,9 @@ bool CopyStatement::Check (CheckData &ckd)
         kindOfTarget = property;
       else
         kindOfTarget = field;
-      if (!ontoTypeDecl->TypeFlags.Contains(constituent)
-        && !ontoTypeDecl->TypeFlags.Contains(acquaintance))
-        target->flags.INCL(isReverseLink);
+      //if (!ontoTypeDecl->TypeFlags.Contains(constituent)
+      //  && !ontoTypeDecl->TypeFlags.Contains(acquaintance))
+      //  target->flags.INCL(isReverseLink); ???
     }
   }
 #endif

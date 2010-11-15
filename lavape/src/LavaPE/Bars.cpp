@@ -146,7 +146,9 @@ void CUtilityView::SetErrorOnUtil(const CHAINX& ErrChain)
   setError(ErrChain, &cstrA);
   //ErrorPage->setPlainText(cstrA);
   ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
-  if (!ErrorEmpty)
+  //if (ErrorEmpty)
+    ;//((CLavaMainFrame*)wxTheApp->m_appWindow)->on_showUtilWindowAction_triggered();
+  //else
     CTreeItem *item = new CTreeItem(cstrA, ErrorPage);
 }
 
