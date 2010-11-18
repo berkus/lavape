@@ -272,7 +272,7 @@ BaseInitV::BaseInitV (address,SelfVar *selfVar,LavaDECL *formBase) {
   replacedType = type;
   primaryToken = initializing_T;
   if (formBase->DeclType == VirtualType)
-    baseName = "<" + formBase->FullName + ">";
+    baseName = formBase->FullName;
   else
     baseName = formBase->FullName;
 

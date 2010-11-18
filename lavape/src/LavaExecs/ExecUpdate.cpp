@@ -699,6 +699,7 @@ void CExecUpdate::MakeExec(LavaDECL *myDECL) {
   selfVar->stackPos = SFH;
   selfVar->execDECL = myDECL;
   myDECL->Exec.ptr = selfVar;
+  //myDECL->TreeFlags.INCL(qualifiedNames); //by default
 
   decl = myDECL->ParentDECL;
   declName = decl;

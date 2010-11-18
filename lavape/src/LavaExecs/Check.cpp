@@ -1162,12 +1162,12 @@ bool SynObject::UpdateReference (CheckData &ckd) {
             if (((FuncExpression*)parentObject)->vtypeID.nID != -1) {
               declVID = ckd.document->IDTable.GetDECL(((FuncExpression*)parentObject)->vtypeID,ckd.inINCL);
               if (declVID)
-                ((Reference*)this)->refName = "<" + declVID->FullName + ">::" + decl->LocalName;
+                ((Reference*)this)->refName = declVID->FullName + "::" + decl->LocalName;
               else {
                 Convert.CardToString(((FuncExpression*)parentObject)->vtypeID.nINCL,nINCLstring);
                 Convert.CardToString(((FuncExpression*)parentObject)->vtypeID.nID,nIDstring);
                 ((Reference*)this)->refName
-                  = "<(" + nIDstring + "," + nINCLstring + ")>::" + decl->LocalName;
+                  = "(" + nIDstring + "," + nINCLstring + ")::" + decl->LocalName;
                 SetError(ckd,&ERR_Broken_ref);
                 ok = false;
               }
@@ -1227,7 +1227,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
 #endif
       }
       else if (decl->DeclType == VirtualType)
-        ((Reference*)this)->refName = "<" + decl->FullName + ">";
+        ((Reference*)this)->refName = decl->FullName;
       else if (parentObject->IsFuncInvocation())
         ((Reference*)this)->refName = decl->FullName;
       else // [dis]connect
