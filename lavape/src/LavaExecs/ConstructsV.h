@@ -54,7 +54,7 @@ public:
   QWidget *redCtl;
 	QScrollArea *sv;
 
-
+  QString CProgText::NaturalName (QString str);
   void Insert(TToken token,bool isPrimToken=false,bool isOpt=false);
   void SynObjNewLine();
   void Blank ();

@@ -132,6 +132,24 @@ static void PutLink(TIDTable *IDTable,TID refID,bool singleFile,bool error,char 
     code("</a>");
 }
 
+QString CProgText::NaturalName (QString str) {
+  QString DblColon("::");
+  int loc=str.lastIndexOf(DblColon);
+
+  if (loc == -1)
+    return str;
+
+  QString declName=myDECL->FullName.c, declQuali, nameQuali=declName.left(loc);
+
+  int locDECL=declName.lastIndexOf(DblColon);
+  if (locDECL != -1)
+    declQuali = declName.left(locDECL);
+  if (nameQuali == declQuali)
+    return str.right(str.length()-loc-2);
+  else
+    return str;
+}
+
 void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
   CHETokenNode *newChel;
   QString str;
@@ -162,12 +180,15 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
     currentToken->data.str = ((Constant*)currentSynObj)->str.c;
     break;
   case FuncRef_T:
-    if ((currentSynObj->parentObject->primaryToken == initializer_T
-    || currentSynObj->parentObject->primaryToken == dftInitializer_T
-    || currentSynObj->parentObject->primaryToken == function_T
-    || qualifiedNames)
-    && ((Reference*)currentSynObj)->refDecl)
-      currentToken->data.str = ((Reference*)currentSynObj)->refDecl->FullName.c;
+    if (((Reference*)currentSynObj)->refDecl)
+      if ((currentSynObj->parentObject->primaryToken == initializer_T
+      || currentSynObj->parentObject->primaryToken == dftInitializer_T
+      || currentSynObj->parentObject->primaryToken == function_T
+      || qualifiedNames)
+      /*&& ((Reference*)currentSynObj)->refDecl*/)
+        currentToken->data.str = ((Reference*)currentSynObj)->refDecl->FullName.c;
+      else
+        currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
     else
       currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
     break;
@@ -177,13 +198,19 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
     break;
   case TypeRef_T:
   case CrtblRef_T:
-    if (qualifiedNames)
-      currentToken->data.str = ((Reference*)currentSynObj)->refDecl->FullName.c;
+    if (((Reference*)currentSynObj)->refDecl)
+      if (qualifiedNames)
+        currentToken->data.str = ((Reference*)currentSynObj)->refDecl->FullName.c;
+      else
+        currentToken->data.str = NaturalName(((Reference*)currentSynObj)->refDecl->FullName.c);//refName.c;
     else
       currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
     break;
   case enumConst_T:
-    currentToken->data.str = ((EnumConst*)currentSynObj)->Id.c;
+    if (((Reference*)currentSynObj)->refDecl)
+      currentToken->data.str = NaturalName(((Reference*)currentSynObj)->refDecl->FullName.c);//Id.c;
+    else
+      currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
     break;
   case Comment_T:
     currentToken->data.str = currentSynObj->comment.ptr->str.c;

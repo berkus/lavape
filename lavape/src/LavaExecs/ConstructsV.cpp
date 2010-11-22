@@ -2654,6 +2654,7 @@ void DrawExec (DString file,bool singleFile,CLavaBaseDoc *doc,LavaDECL *myDECL,S
   CProgHTML text;
 
 //  Tokens_INIT();
+  text.myDECL = myDECL;
   text.htmlGen = true;
   text.singleFile = singleFile;
   text.showComments = true;

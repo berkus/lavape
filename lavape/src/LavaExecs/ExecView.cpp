@@ -204,6 +204,7 @@ void CExecView::OnInitialUpdate()
   Base->actHint = 0;
   myMainView = (wxView*)pHint->CommandData2;
   myDECL = (LavaDECL*)pHint->CommandData1;
+  text->myDECL = myDECL;
   myExecCategory = myDECL->DeclType;
   statusBar = wxTheApp->m_appWindow->statusBar();
   myID = TID(myDECL->ParentDECL->OwnID, 0);

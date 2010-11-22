@@ -413,7 +413,7 @@
      </property>
      <item>
       <property name="text">
-       <string> (Non-virtual calls)</string>
+       <string> (Static calls)</string>
       </property>
      </item>
     </widget>

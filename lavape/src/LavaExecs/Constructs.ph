@@ -278,6 +278,7 @@ public:
 
   virtual ~CProgTextBase () {};
 
+  LavaDECL *myDECL;
   CHToken tokenChain;
   int currentPos, posInLine, newLines, lastIndent;
   unsigned currentSynObjID;

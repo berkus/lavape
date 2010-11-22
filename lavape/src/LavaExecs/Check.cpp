@@ -1138,10 +1138,10 @@ bool SynObject::UpdateReference (CheckData &ckd) {
   case enumConst_T:
     if (primaryToken == enumConst_T) {
       decl = ckd.document->IDTable.GetDECL(((EnumConst*)this)->refID,ckd.inINCL);
-#ifdef INTERPRETER
+//#ifdef INTERPRETER
       ((EnumConst*)this)->refDecl = decl;
       ((EnumConst*)this)->finalType = ckd.document->GetType(decl);
-#endif
+//#endif
     }
     else {
       decl = ckd.document->IDTable.GetDECL(((Reference*)this)->refID,ckd.inINCL);
