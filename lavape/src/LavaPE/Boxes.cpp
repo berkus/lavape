@@ -3107,7 +3107,7 @@ void CInterfaceBox::SupportsToList()
         decl = myDoc->IDTable.GetDECL(cheS->data);
         if (decl) {
           if (decl->DeclType == VirtualType) {
-            str = lthen + decl->FullName + grthen;
+            str = /*lthen +*/ decl->FullName /*+ grthen*/;
             listItem = new CListBoxItem(str, cheS->data);
           }
           else 
@@ -5054,10 +5054,10 @@ void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
             || IBox->myDoc->IDTable.lowerOContext(IBox->myDECL->ParentDECL, elDef, sameContext) && sameContext)
                && !IBox->myDoc->IDTable.isValOfVirtual(elDef)) {
     lab = elDef->FullName;
-    if (elDef->DeclType == VirtualType) {
-      lab.Insert(grthen, lab.l);
-      lab.Insert(lthen, 0);
-    }
+    //if (elDef->DeclType == VirtualType) {
+    //  lab.Insert(grthen, lab.l);
+    //  lab.Insert(lthen, 0);
+    //}
     //comboItem = new CComboBoxItem(lab, TID(elDef->OwnID, elDef->inINCL));
     //IBox->ExtTypes->listBox()->insertItem(comboItem);//sort
     comboItem = new CComboBoxItem(TID(elDef->OwnID, elDef->inINCL));
@@ -5285,10 +5285,10 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
       lab = ((CLavaPEApp*)wxTheApp)->LBaseData.calcRelName (elDef->FullName, ParentDECL->FullName);
     else 
       lab = elDef->FullName;
-    if (elDef->DeclType == VirtualType) {
-      lab.Insert(grthen, lab.l);
-      lab.Insert(lthen, 0);
-    }
+    //if (elDef->DeclType == VirtualType) {
+    //  lab.Insert(grthen, lab.l);
+    //  lab.Insert(lthen, 0);
+    //}
     //comboItem = new CComboBoxItem(lab, TID(elDef->OwnID, incl));
     //Combo->listBox()->insertItem(comboItem);//sort
     comboItem = new CComboBoxItem(TID(elDef->OwnID, incl));

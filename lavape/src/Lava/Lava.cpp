@@ -317,7 +317,7 @@ bool CLavaApp::event(QEvent *e)
     case 0:
       btn = QMessageBox::critical(
         mbp->parent,*mbp->caption,*mbp->text,mbp->buttons,mbp->dftButton);
-      if (result != QMessageBox::NoButton) {
+      if (btn != QMessageBox::NoButton) {
         mbp->result = btn;
         mbp->thr->waitingForUI = false;
         mbp->thr->resume();
@@ -326,7 +326,7 @@ bool CLavaApp::event(QEvent *e)
     case 1:
       btn =   QMessageBox::information(
         mbp->parent,*mbp->caption,*mbp->text,mbp->buttons,mbp->dftButton);
-      if (result != QMessageBox::NoButton) {
+      if (btn != QMessageBox::NoButton) {
         mbp->result = btn;
         mbp->thr->waitingForUI = false;
         mbp->thr->resume();
@@ -335,7 +335,7 @@ bool CLavaApp::event(QEvent *e)
     case 2:
       btn =   QMessageBox::question(
         mbp->parent,*mbp->caption,*mbp->text,mbp->buttons,mbp->dftButton);
-      if (result != QMessageBox::NoButton) {
+      if (btn != QMessageBox::NoButton) {
         mbp->result = btn;
         mbp->thr->waitingForUI = false;
         mbp->thr->resume();

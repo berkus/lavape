@@ -658,9 +658,9 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
           }
         if (withName)
           if (pp->DeclType == VirtualType) {
-            *lab += lthen;
+            //*lab += lthen;
             *lab += pp->FullName;
-            *lab += grthen;
+            //*lab += grthen;
           }
           else
             *lab += pp->FullName;
@@ -708,9 +708,9 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
               new CLavaError(&elDef->DECLError1, &ERR_NoBaseFormIF);
           *lab = *lab + DString(", ");
           if (pp->DeclType == VirtualType) {
-            *lab += lthen;
+            //*lab += lthen;
             *lab += pp->FullName;
-            *lab += grthen;
+            //*lab += grthen;
           }
           else
             *lab += pp->FullName;

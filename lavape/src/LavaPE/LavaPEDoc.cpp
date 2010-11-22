@@ -2130,7 +2130,7 @@ DString CLavaPEDoc::GetTypeLabel (LavaDECL* elDef, bool goDown)
 				decl = CheckGetFinalMType (elDef);
 				if (decl)
 					if (decl->DeclType == VirtualType)
-						lab = lab + lthen + decl->LocalName + grthen;
+						lab = lab /*+ lthen*/ + decl->LocalName /*+ grthen*/;
 					else
 						if (decl->DeclType == FormDef)
 							lab += decl->ParentDECL->FullName;
@@ -3228,11 +3228,11 @@ void CLavaPEDoc::OnCheck()
 	CExecSetImpls *impls;
 
 	ShowErrorBox (false);
-	hint = new CLavaPEHint (CPECommand_FromOtherDoc, this, SETpp());//(const unsigned long) 0);
 	changeInUpdate = false;
 	impls = new CExecSetImpls (mySynDef);
 	delete impls;
-	UpdateAllViews (NULL, CHLV_showError, hint);
+	//hint = new CLavaPEHint (CPECommand_FromOtherDoc, this, SETpp());//(const unsigned long) 0);
+	//UpdateAllViews (NULL, CHLV_showError, hint);
   delete ch;
 }
 

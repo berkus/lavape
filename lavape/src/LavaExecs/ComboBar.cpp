@@ -1941,7 +1941,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
               idata = new CStatFuncItem(cheDECL->OwnID, cheDECL->inINCL);
               addItemAlpha(m_ClassFuncsCtrl, QString(cheDECL->FullName.c),QVariant::fromValue(idata));//sort#
               if (vDECL) {
-                vStr = lthen + vDECL->FullName + grthen + ddppkt + cheDECL->LocalName;
+                vStr = /*lthen + */vDECL->FullName /*+ grthen*/ + ddppkt + cheDECL->LocalName;
                 idata = new CStatFuncItem(cheDECL->OwnID, cheDECL->inINCL, vDECL->OwnID, vDECL->inINCL);
                 addItemAlpha(m_ClassFuncsCtrl, QString(vStr.c),QVariant::fromValue(idata));//sort#
               }
@@ -2120,10 +2120,10 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
     }
     else
       Label = elDef->FullName;
-    if (elDef->DeclType == VirtualType) {
-      Label.Insert(lthen, 0);
-      Label += grthen;
-    }
+    //if (elDef->DeclType == VirtualType) {
+    //  Label.Insert(lthen, 0);
+    //  Label += grthen;
+    //}
     item = new CComboBoxItem(TID(elDef->OwnID, incl));
     addItemAlpha(combo, QString(Label.c),QVariant::fromValue(item));//sort#
     if (combo2) {

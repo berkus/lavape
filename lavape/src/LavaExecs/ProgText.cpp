@@ -173,6 +173,9 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
     if (currentSynObj->parentObject->parentObject->primaryToken == FormParm_T
     && currentSynObj->parentObject->flags.Contains(isClosed))
       currentToken->data.str = QString("(") + ((TDOD*)currentSynObj)->name.c + QString(")");
+    else if (qualifiedNames && currentSynObj->whereInParent!=currentSynObj->containingChain->first) {
+      currentToken->data.str = ((TDOD*)currentSynObj)->fieldDecl->FullName.c;
+    }
     else
       currentToken->data.str = ((TDOD*)currentSynObj)->name.c;
     break;
