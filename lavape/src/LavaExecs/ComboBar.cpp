@@ -1157,8 +1157,8 @@ void CComboBar::SetCombos(bool setVar, bool hideCombo)
     m_NewFunc = IDC_NewFunc;
     m_NewPFunc = IDC_NewPFunc;
     m_ClassFuncsCtrl = IDC_ComboClassFuncs;
-    m_SubObjectsCtrl = IDC_ComboSubObjects;
-    m_CompaObjectsCtrl = IDC_ComboCompObjects;
+    m_SubObjectsCtrl = IDC_ComboSubObjects; IDC_ComboSubObjects->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    m_CompaObjectsCtrl = IDC_ComboCompObjects; IDC_ComboCompObjects->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     m_CompaTypesCtrl = IDC_CompaTypes;
     m_CompaBTypesCtrl = IDC_CompaBTypes;
     m_BaseInisCtrl = IDC_ComboBaseInis;
@@ -2274,12 +2274,12 @@ void CExecFields::OnField(LavaDECL **pdecl, DString accuName, TDODC accuIDs,
     nAccuName = accuName;
     if (accuName != pkt)
       nAccuName += pkt;
-    nAccuName += (*pdecl)->LocalName;
-    tdod->name = (*pdecl)->LocalName;
+    nAccuName += (*pdecl)->FullName;//LocalName;
+    tdod->name = (*pdecl)->FullName;//LocalName;
   }
   else {
-    nAccuName = (*pdecl)->LocalName;
-    tdod->name = (*pdecl)->LocalName;
+    nAccuName = (*pdecl)->FullName;//LocalName;
+    tdod->name = (*pdecl)->FullName;//LocalName;
     accuIDs.Destroy();
   }
   tdod->context = context;
