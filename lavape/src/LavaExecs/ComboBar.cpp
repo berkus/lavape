@@ -2278,8 +2278,8 @@ void CExecFields::OnField(LavaDECL **pdecl, DString accuName, TDODC accuIDs,
     tdod->name = (*pdecl)->FullName;//LocalName;
   }
   else {
-    nAccuName = (*pdecl)->LocalName;
-    tdod->name = (*pdecl)->LocalName;
+    nAccuName = (*pdecl)->FullName;//LocalName;
+    tdod->name = (*pdecl)->FullName;//LocalName;
     accuIDs.Destroy();
   }
   tdod->context = context;
