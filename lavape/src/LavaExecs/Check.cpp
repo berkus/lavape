@@ -2027,6 +2027,7 @@ static void reposBaseInits (CheckData &ckd,SelfVar *selfVar,CHAINX *chain,LavaDE
   baseInit = new BaseInitV((address)&ckd.document->IDTable,selfVar,formBase);
   actBase = NewCHE(baseInit);
   PutInsChainHint(ckd,selfVar,chain,actBase,pred);
+  ((Parameter*)actBase->data)->Check(ckd);
 #endif
 }
 
