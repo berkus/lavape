@@ -902,7 +902,11 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
       return &ERR_IllegalExtension;
     if (TID(valDECL->OwnID,valDECL->inINCL) != TID(IDTable.BasicTypesID[B_Object],isStd?0:1)) {
       decl2 = NewLavaDECL();
+
       *decl2 = *decl;
+      decl2->SectionTabPtr = 0; // to avoid being destroyed in ~LavaDECL
+      decl2->runTimeData = 0;
+
       for (cheTID = (CHETID*)decl2->Supports.first; cheTID && !IDTable.EQEQ(cheTID->data,decl2->inINCL,TID(baseDECL->OwnID, baseDECL->inINCL),0);
         cheTID = (CHETID*)cheTID->successor);
       if (cheTID)
