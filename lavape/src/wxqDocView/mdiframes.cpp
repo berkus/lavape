@@ -412,6 +412,11 @@ wxTabBar::wxTabBar(QWidget* parent) : QTabBar(parent)
   setAcceptDrops(true);
   wxDragFormat = "wxTabWidget";
   dragStartPosition=QPoint(0,0);
+  closePageAction = tabMenu.addAction("Close this page");
+  closeFileAction = tabMenu.addAction("Close this file");
+  newTabWidAction = tabMenu.addAction("Move to new tabbed window");
+  movePageRightAction = tabMenu.addAction("Move to next tabbed window");
+  movePageLeftAction = tabMenu.addAction("Move to preceding tabbed window");
 }
 
 void wxTabBar::mousePressEvent ( QMouseEvent *evt )
@@ -432,14 +437,8 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
     dragStartPosition = QPoint(0,0);
     if (mb != Qt::RightButton || index == -1)
       return;
-    QMenu tabMenu;
-    QAction *triggeredAction;
 
-    closePageAction = tabMenu.addAction("Close this page");
-    closeFileAction = tabMenu.addAction("Close this file");
-    newTabWidAction = tabMenu.addAction("Move to new tabbed window");
-    movePageRightAction = tabMenu.addAction("Move to next tabbed window");
-    movePageLeftAction = tabMenu.addAction("Move to preceding tabbed window");
+    QAction *triggeredAction;
 
     if (count() == 1)
       newTabWidAction->setEnabled(false);

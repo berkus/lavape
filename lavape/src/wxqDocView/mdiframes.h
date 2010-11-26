@@ -124,6 +124,7 @@ public:
 
   QPoint dragStartPosition;
   const char* wxDragFormat;
+  QMenu tabMenu;
   QAction *closePageAction;
   QAction *closeFileAction;
   QAction *newTabWidAction;
