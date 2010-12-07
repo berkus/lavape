@@ -607,7 +607,6 @@ public:
   NESTEDANY<Reference> baseItf;
   NESTEDANY<FuncStatement> initializerCall;
   NESTEDANY<ObjReference>-- self; //for virtual base classes
-  NESTEDANY<Reference>-- baseItf2; //for virtual base classes
 
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);

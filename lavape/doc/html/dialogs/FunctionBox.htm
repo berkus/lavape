@@ -125,12 +125,18 @@
       its containing class and must not be invoked with a call object from a more 
       derived class.</p>
     <p>As a consequence, <span class="style2">LavaPE</span> forces the programmer to <a href="../OverrideView.htm">override</a> 
-        the function whenever another class is derived from its containing class <i>C</i>, 
-        and if <i>C</i> is contained in a <a href="../PatternsFrameworks.htm">pattern</a>
-        <i>P</i> and a pattern <i>P&#39;</i> is 
-        derived from <i>P</i> then <span class="style2">LavaPE</span> automatically includes a derivation C&#39; of C 
-        in P&#39;, and C&#39; contains an overridden version of the function in question. Static calls 
-        from a more derived class / pattern context are forbidden and prevented either.</p>
+        the function, say <em>f</em>, under the following circumstances:</p>
+    <ul>
+        <li><em>f </em>is a member function of a class <em>C</em>,</li>
+        <li><em>C</em> is declared in a pattern <em>P</em>,</li>
+        <li><em>C</em> is the value of a virtual type, say <em>VC</em>, declared in <em>P</em>, 
+            (else the force override check box won&#39;t be enabled anyway),</li>
+        <li>VC is overridden in a pattern P&#39; derived from P, (then a class <em>C&#39;</em> 
+            derived from <em>C</em> will be established automatically in <em>P&#39;</em> containing an 
+            overridden version of <em>f</em>),</li>
+    </ul>
+        <p>Static calls 
+        from a more derived class / pattern context are forbidden and prevented, either.</p>
 
   <p>This may be necessary particularly if a local variable or formal parameter whose type is <a href="../PatternsFrameworks.htm#multiform">
       virtual</a> occurs on the target side of an assignment in the body of this function and the source side of the assignment is 

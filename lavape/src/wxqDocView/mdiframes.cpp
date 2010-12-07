@@ -442,6 +442,8 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
 
     if (count() == 1)
       newTabWidAction->setEnabled(false);
+    else
+      newTabWidAction->setEnabled(true);
     if (splitterIndex == splitter->count()-1)
       movePageRightAction->setEnabled(false);
     if (splitterIndex == 0)

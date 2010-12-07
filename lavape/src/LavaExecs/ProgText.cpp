@@ -205,15 +205,19 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
       if (qualifiedNames)
         currentToken->data.str = ((Reference*)currentSynObj)->refDecl->FullName.c;
       else
+        //currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
         currentToken->data.str = NaturalName(((Reference*)currentSynObj)->refDecl->FullName.c);//refName.c;
     else
       currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
     break;
   case enumConst_T:
-    if (((Reference*)currentSynObj)->refDecl)
-      currentToken->data.str = NaturalName(((Reference*)currentSynObj)->refDecl->FullName.c);//Id.c;
+    if (((EnumConst*)currentSynObj)->refDecl)
+      if (qualifiedNames)
+        currentToken->data.str = ((EnumConst*)currentSynObj)->refDecl->FullName.c + QString("::") + ((EnumConst*)currentSynObj)->Id.c;
+      else
+        currentToken->data.str = ((EnumConst*)currentSynObj)->Id.c;
     else
-      currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
+      currentToken->data.str = ((EnumConst*)currentSynObj)->Id.c;
     break;
   case Comment_T:
     currentToken->data.str = currentSynObj->comment.ptr->str.c;

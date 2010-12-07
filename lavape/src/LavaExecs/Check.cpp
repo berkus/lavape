@@ -1186,9 +1186,9 @@ bool SynObject::UpdateReference (CheckData &ckd) {
           enumsel;
           enumsel = (CHEEnumSelId*)enumsel->successor) {
           if (enumsel->data.Id == ((EnumConst*)this)->Id) {
-#ifdef INTERPRETER
+//#ifdef INTERPRETER
             ((EnumConst*)this)->enumItem = iItem;
-#endif
+//#endif
             break;
           }
           else
@@ -1940,12 +1940,7 @@ bool BaseInit::Check (CheckData &ckd)
   ((SynObject*)baseItf.ptr)->Check(ckd);
   if (initializerCall.ptr)
     ((SynObject*)initializerCall.ptr)->Check(ckd);
-  else if (self.ptr) {
-#ifndef INTERPRETER
-  ((Reference*)baseItf2.ptr)->refName = ((Reference*)baseItf.ptr)->refName;
-#endif
-  }
-  else {
+  else if (!self.ptr) {
 #ifndef INTERPRETER
     tdod = new TDODV(true);
     tdod->name = STRING("self");
@@ -1957,7 +1952,6 @@ bool BaseInit::Check (CheckData &ckd)
     objRef->flags.INCL(isDisabled);
     objRef->flags.INCL(isSelfVar);
     self.ptr = objRef;
-    baseItf2.ptr = baseItf.ptr->Clone();
 #endif
   }
   EXIT

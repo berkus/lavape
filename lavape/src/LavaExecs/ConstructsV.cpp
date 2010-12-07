@@ -290,7 +290,6 @@ BaseInitV::BaseInitV (address,SelfVar *selfVar,LavaDECL *formBase) {
 
   if (formBase->DeclType == VirtualType) {
     self.ptr = objRef;
-    baseItf2.ptr = baseItf.ptr->Clone();
     initializerCall.ptr = 0;
   }
   else {
@@ -318,7 +317,7 @@ void BaseInitV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) 
   else {
     DRAW(self.ptr);
     t.Insert(Period_T);
-    DRAW(baseItf2.ptr);
+    DRAW(baseItf.ptr);
     t.Insert(Colon_T);
     t.Insert(Colon_T);
     t.Insert(Lparenth_T);
