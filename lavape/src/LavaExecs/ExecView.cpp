@@ -891,6 +891,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     text->ckd.hint = hint;
     text->ckd.undoRedo = undoRedo;
 
+    toBeDrawn = 0;
     Check();
     sData.execView = this;
     sData.doc = myDoc;
@@ -898,7 +899,6 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     sData.execDECL = myDECL;
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSetSynOID, 0,0, (address)&sData);
 
-    toBeDrawn = 0;
     multipleUpdates = false;
     externalHint = false;
     if (hint && hint->com == CPECommand_OpenExecView)
@@ -5477,20 +5477,20 @@ void CExecView::OnToggleCategory()
   else {
     if (text->currentSynObj->flags.Contains(isStateObjectX)) {
       if (text->currentSynObj->primaryToken == new_T) {
-        PutDelFlagHint(SET(isStateObjectX,-1),SET(firstHint,-1));
         text->currentSynObj = (VarName*)((NewExpression*)text->currentSynObj)->varName.ptr;
-        PutDelFlagHint(SET(isStateObjectX,-1),SET(lastHint,-1));
+        PutDelFlagHint(SET(isStateObjectX,-1),SET(firstHint,-1));
         text->currentSynObj = currentSynObjBAK;
+        PutDelFlagHint(SET(isStateObjectX,-1),SET(lastHint,-1));
       }
       else
         PutDelFlagHint(SET(isStateObjectX,-1),SET(firstHint,lastHint,-1));
     }
     else
       if (text->currentSynObj->primaryToken == new_T) {
-        PutInsFlagHint(SET(isStateObjectX,-1),SET(firstHint,-1));
         text->currentSynObj = (VarName*)((NewExpression*)text->currentSynObj)->varName.ptr;
-        PutInsFlagHint(SET(isStateObjectX,-1),SET(lastHint,-1));
+        PutInsFlagHint(SET(isStateObjectX,-1),SET(firstHint,-1));
         text->currentSynObj = currentSynObjBAK;
+        PutInsFlagHint(SET(isStateObjectX,-1),SET(lastHint,-1));
       }
       else
         PutInsFlagHint(SET(isStateObjectX,-1),SET(firstHint,lastHint,-1));
@@ -5509,6 +5509,10 @@ bool CExecView::ToggleCatEnabled()
 
   switch (text->currentSynObj->primaryToken) {
   case new_T:
+    if (((NewExpression*)text->currentSynObj)->varName.ptr)
+      return true;
+    else
+      return false;
   case attach_T:
     return true;
     break;
