@@ -60,9 +60,11 @@
   <p>These rules guarantee that unfinished objects are recognized as such and propagated only to &quot;closed&quot; variables, and their members can never be referenced.</p>
   <hr />
 
-  <p><strong>Note 1:</strong> A <a href="ObjectLifeCycle.htm#creation">newly created</a> object is always guaranteed to be completely finished if you don&#39;t pass a closed object as an actual input parameter to the object&#39;s initializer.</p>
+  <p><strong>Note 1:</strong> A <a href="ObjectLifeCycle.htm#creation">newly created</a> object is always guaranteed to be completely finished 
+      unless you pass a closed object as an actual input parameter to the object&#39;s initializer 
+      and insert it anywhere in the new object.</p>
 
-  <p>Or in other words: Incompleteness can be propagated in upward direction in the programs call stack only if it has been passed downward before.</p>
+  <p>Or loosely speaking: Incompleteness can be propagated in upward direction in the programs call stack only if it has been passed downward before.</p>
 
   <p><strong>Note 2:</strong> For the sake of simplicity the &quot;closed&quot; attribute cannot be assigned to individual member variables of <em class="c2">Lava</em> classes but only to local variables, function parameters and the <em>self</em> variable of functions.</p>
 

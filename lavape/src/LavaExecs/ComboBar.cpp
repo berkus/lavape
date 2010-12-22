@@ -2274,12 +2274,24 @@ void CExecFields::OnField(LavaDECL **pdecl, DString accuName, TDODC accuIDs,
     nAccuName = accuName;
     if (accuName != pkt)
       nAccuName += pkt;
-    nAccuName += (*pdecl)->FullName;//LocalName;
-    tdod->name = (*pdecl)->FullName;//LocalName;
+    if (Bar->ExecDECL->TreeFlags.Contains(qualifiedNames)) {
+      nAccuName += (*pdecl)->FullName;//LocalName;
+      tdod->name = (*pdecl)->FullName;//LocalName;
+    }
+    else {
+      nAccuName += (*pdecl)->LocalName;
+      tdod->name = (*pdecl)->LocalName;
+    }
   }
   else {
-    nAccuName = (*pdecl)->FullName;//LocalName;
-    tdod->name = (*pdecl)->FullName;//LocalName;
+    if (Bar->ExecDECL->TreeFlags.Contains(qualifiedNames)) {
+      nAccuName = (*pdecl)->FullName;//LocalName;
+      tdod->name = (*pdecl)->FullName;//LocalName;
+    }
+    else {
+      nAccuName = (*pdecl)->LocalName;
+      tdod->name = (*pdecl)->LocalName;
+    }
     accuIDs.Destroy();
   }
   tdod->context = context;
