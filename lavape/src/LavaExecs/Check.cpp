@@ -1798,7 +1798,7 @@ void UpdateParameters (CheckData &ckd) {
     selfVar->formParms.ptr = 0;
   }
 #ifndef INTERPRETER
-  if (selfVar->execView)
+  if (ckd.execView)
     ((CExecView*)selfVar->execView)->redCtl->update();
 #endif
 }
