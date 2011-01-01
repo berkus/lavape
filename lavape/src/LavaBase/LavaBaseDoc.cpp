@@ -798,6 +798,7 @@ bool CLavaBaseDoc::OverriddenMatch(LavaDECL *decl, bool setName, CheckData* pckd
   //Value (=RefID) of VirtualType, Attr, IAttr or OAttr match 
   //with the value of the overridden VirtualType, Attr IAttr or OAttr
   LavaDECL *iDecl, *cDecl, *nameDecl, *ivalDECL, *cvalDECL;
+  TID ivalID, cvalID;
   bool ok = true;
   if (!decl)
     return true;
@@ -848,8 +849,11 @@ bool CLavaBaseDoc::OverriddenMatch(LavaDECL *decl, bool setName, CheckData* pckd
           //C-derivation or part of a pattern and its pattern derivation
           if (ok) {
             IDTable.GetPattern(iDecl, icon);
-            if (!IsCDerivation(cvalDECL, ivalDECL, pckd) && (!pckd || !pckd->exceptionThrown))
-              if (icon.oContext && ivalDECL->isInSubTree(icon.oContext) && cvalDECL->isInSubTree(con.oContext)) {
+            if (!IsCDerivation(cvalDECL, ivalDECL, pckd) && (!pckd || !pckd->exceptionThrown)) {
+              ivalID = TID(ivalDECL->OwnID,ivalDECL->inINCL);
+              cvalID = TID(cvalDECL->OwnID,cvalDECL->inINCL);
+              if (icon.oContext && (ivalID == GetMappedVType(ivalID, icon,0)) && (cvalID == GetMappedVType(cvalID, con,0))) {
+                //ivalDECL->isInSubTree(icon.oContext) && cvalDECL->isInSubTree(con.oContext)) {
                 if (!icon.iContext && con.iContext)
                   ok = IDTable.IsA(con.iContext, TID(icon.oContext->OwnID, icon.oContext->inINCL), 0); 
                 else
@@ -860,9 +864,10 @@ bool CLavaBaseDoc::OverriddenMatch(LavaDECL *decl, bool setName, CheckData* pckd
               }
               else
                 return false;
-             else
-               if (pckd && pckd->exceptionThrown)
-                 return false;
+            }
+            else
+              if (pckd && pckd->exceptionThrown)
+                return false;
           }
         }
 
