@@ -1442,7 +1442,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
           cheID = 0;
       }
       if (El) {
-        if (ElDECL->DeclType == Function) {
+        /*if (ElDECL->DeclType == Function) {
           if (!CheckFuncInOut(*pckd, ElDECL))
             return false;
         }
@@ -1455,15 +1455,16 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
             && (errID = IDTable.CheckValOfVirtual(ElDECL, false))) {
             LavaError(*pckd, true, ElDECL, errID);
             return false;
-          }
-          if (baseDECL && (ElDECL->DeclType == Attr)) {
-            if (!baseDECL->TypeFlags.Contains(isStateObjectY))
-              ElDECL->TypeFlags.EXCL(isStateObjectY);
-            if (!baseDECL->TypeFlags.Contains(isAnyCatY))
-              ElDECL->TypeFlags.EXCL(isAnyCatY);
-            if (!baseDECL->TypeFlags.Contains(isProtected))
-              ElDECL->TypeFlags.EXCL(isProtected);
-          }
+          }*/
+        if (baseDECL && (ElDECL->DeclType == Attr)) {
+          if (!baseDECL->TypeFlags.Contains(isStateObjectY))
+            ElDECL->TypeFlags.EXCL(isStateObjectY);
+          if (!baseDECL->TypeFlags.Contains(isAnyCatY))
+            ElDECL->TypeFlags.EXCL(isAnyCatY);
+          if (!baseDECL->TypeFlags.Contains(isProtected))
+            ElDECL->TypeFlags.EXCL(isProtected);
+        }
+        if (ElDECL->DeclType != Function) {
           typeFlags = ElDECL->TypeFlags;
           GetCategoryFlags(ElDECL, catErr);
           if (catErr || (typeFlags != ElDECL->TypeFlags)) {
@@ -1581,28 +1582,37 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
           hasEnum = true;
     }
   }
-  //now make checks that uses virtual table
+  //now make checks that uses virtual tables
 
   classDECL->VElems.UpdateNo = -2;
   for (cheID = (CHETID*)classDECL->Supports.first; cheID; cheID = (CHETID*)cheID->successor) {//!
     baseDECL = IDTable.GetDECL(cheID->data, classDECL->inINCL);
     if (errID = ExtensionAllowed(classDECL, baseDECL, pckd)) {
       LavaError(*pckd, true, classDECL, errID, baseDECL);
+      classDECL->VElems.UpdateNo = -1;
       return false;
     }
   }
 
   for (cheDecl = (CHE*)classDECL->NestedDecls.first; cheDecl; cheDecl = (CHE*)cheDecl->successor) {
     ElDECL = (LavaDECL*)cheDecl->data;
-    if (ElDECL->DeclType == Function) {
-      if (!CheckFuncInOut(*pckd, ElDECL))
+     if (ElDECL->DeclType == Function) {
+      if (!CheckFuncInOut(*pckd, ElDECL)) {
+        classDECL->VElems.UpdateNo = -1;
         return false;
+      }
     }
-    else
-      if (ElDECL->DeclType == VirtualType) {
+     else {
+      if (!OverriddenMatch(ElDECL, false, pckd)) {
+        LavaError(*pckd, true, ElDECL, &ERR_OverriddenDiffs);
+        return false;
+      }
+    }
+    if (ElDECL->DeclType == VirtualType) {
         if (!ElDECL->TypeFlags.Contains(isAbstract)
           && (errID = TestValOfVirtual(ElDECL, ElDECL->RuntimeDECL))) {
           LavaError(*pckd, true, ElDECL->RuntimeDECL, errID);
+          classDECL->VElems.UpdateNo = -1;
           return false;
         }
       }
@@ -1610,6 +1620,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
         if ((ElDECL->DeclType == Attr)
           && (errID = TypeForMem(ElDECL, ElDECL->RuntimeDECL, pckd))) {
           LavaError(*pckd, true, ElDECL, errID, ElDECL->RuntimeDECL);
+          classDECL->VElems.UpdateNo = -1;
           return false;
         }
   }

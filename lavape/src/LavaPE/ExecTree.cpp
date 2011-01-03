@@ -592,7 +592,7 @@ void CExecTree::ExecInterface(LavaDECL *elDef, DString* lab)
 
 void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
 {
-  LavaDECL *pp;
+  LavaDECL *baseDECL;
   CHETID* cheS = (CHETID*)elDef->Supports.first;
   bool withName = true, isContainer = false;
   SynFlags typeFlags;
@@ -639,47 +639,47 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
       else
         if ((elDef->DeclType == VirtualType) && (elDef->ParentDECL->DeclType == FormDef))
           return;
-      pp = Doc->IDTable.GetDECL(cheS->data, elDef->inINCL);
-      if (pp) {
+      baseDECL = Doc->IDTable.GetDECL(cheS->data, elDef->inINCL);
+      if (baseDECL) {
         elDef->WorkFlags.EXCL(allowDEL);
         if ((elDef->DeclType == VirtualType)
              && (elDef->SecondTFlags.Contains(isSet) || elDef->SecondTFlags.Contains(isArray))
-             && !pp->TypeFlags.Contains(isAbstract))
-          if (pp->TypeFlags.Contains(constituent)) {
+             && !baseDECL->TypeFlags.Contains(isAbstract))
+          if (baseDECL->TypeFlags.Contains(constituent)) {
             elDef->TypeFlags.INCL(constituent);
             elDef->TypeFlags.EXCL(acquaintance);
           }
           else {
             elDef->TypeFlags.EXCL(constituent);
-            if (pp->TypeFlags.Contains(acquaintance))
+            if (baseDECL->TypeFlags.Contains(acquaintance))
               elDef->TypeFlags.INCL(acquaintance);
             else
               elDef->TypeFlags.EXCL(acquaintance);
           }
         if (withName)
-          if (pp->DeclType == VirtualType) {
+          if (baseDECL->DeclType == VirtualType) {
             //*lab += lthen;
-            *lab += pp->FullName;
+            *lab += baseDECL->FullName;
             //*lab += grthen;
           }
           else
-            *lab += pp->FullName;
-        if ((elDef->DeclType == Interface) && (pp->SecondTFlags.Contains(isSet)
-                                               || pp->SecondTFlags.Contains(isChain)
-                                               || pp->SecondTFlags.Contains(isArray))) 
+            *lab += baseDECL->FullName;
+        if ((elDef->DeclType == Interface) && (baseDECL->SecondTFlags.Contains(isSet)
+                                               || baseDECL->SecondTFlags.Contains(isChain)
+                                               || baseDECL->SecondTFlags.Contains(isArray))) 
           //if (isContainer)
           //  new CLavaError(&elDef->DECLError1, &ERR_NotSingleContainer);
           //else
             isContainer = true;
         if ((elDef->DeclType == Interface)
             && elDef->SecondTFlags.Contains(isGUI)
-            && pp->SecondTFlags.Contains(isGUI)
-            && (pp->fromBType == NonBasic))
-          if (!Doc->IDTable.GetDECL(pp->RefID, pp->inINCL))
+            && baseDECL->SecondTFlags.Contains(isGUI)
+            && (baseDECL->fromBType == NonBasic))
+          if (!Doc->IDTable.GetDECL(baseDECL->RefID, baseDECL->inINCL))
             new CLavaError(&elDef->DECLError1, &ERR_NoBaseFormIF);
-        if ((elDef->DeclType == Interface) && (errID = Doc->ExtensionAllowed(elDef, pp, 0)))
+        if ((elDef->DeclType == Interface) && (errID = Doc->ExtensionAllowed(elDef, baseDECL, 0)))
           new CLavaError(&elDef->DECLError1, errID);
-        if (pp->TypeFlags.Contains(isStatic) && !elDef->SecondTFlags.Contains(funcImpl) )
+        if (baseDECL->TypeFlags.Contains(isStatic) && !elDef->SecondTFlags.Contains(funcImpl) )
           new CLavaError(&elDef->DECLError1, &ERR_OverriddenStatic, 0, useAutoBox);
       }
       else {
@@ -689,31 +689,31 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
       }
       cheS = (CHETID*)cheS->successor;
       while (cheS) {
-        pp = Doc->IDTable.GetDECL(cheS->data, elDef->inINCL);
-        if (pp) {
-          if ((elDef->DeclType == Interface) && (pp->SecondTFlags.Contains(isSet)
-                                                 || pp->SecondTFlags.Contains(isChain)
-                                                 || pp->SecondTFlags.Contains(isArray)) )
+        baseDECL = Doc->IDTable.GetDECL(cheS->data, elDef->inINCL);
+        if (baseDECL) {
+          if ((elDef->DeclType == Interface) && (baseDECL->SecondTFlags.Contains(isSet)
+                                                 || baseDECL->SecondTFlags.Contains(isChain)
+                                                 || baseDECL->SecondTFlags.Contains(isArray)) )
             //if (isContainer)
             //  new CLavaError(&elDef->DECLError1, &ERR_NotSingleContainer);
             //else
               isContainer = true;
-          if ((elDef->DeclType == Interface) && (errID = Doc->ExtensionAllowed(elDef, pp, 0)))
+          if ((elDef->DeclType == Interface) && (errID = Doc->ExtensionAllowed(elDef, baseDECL, 0)))
             new CLavaError(&elDef->DECLError1, errID);
           if ((elDef->DeclType == Interface)
               && elDef->SecondTFlags.Contains(isGUI)
-              && pp->SecondTFlags.Contains(isGUI)
-              && (pp->fromBType == NonBasic))
-            if (!Doc->IDTable.GetDECL(pp->RefID, elDef->inINCL))
+              && baseDECL->SecondTFlags.Contains(isGUI)
+              && (baseDECL->fromBType == NonBasic))
+            if (!Doc->IDTable.GetDECL(baseDECL->RefID, elDef->inINCL))
               new CLavaError(&elDef->DECLError1, &ERR_NoBaseFormIF);
           *lab = *lab + DString(", ");
-          if (pp->DeclType == VirtualType) {
+          if (baseDECL->DeclType == VirtualType) {
             //*lab += lthen;
-            *lab += pp->FullName;
+            *lab += baseDECL->FullName;
             //*lab += grthen;
           }
           else
-            *lab += pp->FullName;
+            *lab += baseDECL->FullName;
         }
         else {
           *lab += DString(", ??");

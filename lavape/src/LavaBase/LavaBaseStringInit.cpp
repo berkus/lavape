@@ -498,7 +498,7 @@ void LavaBaseStringInit() {
   ERR_NoImplClass  = QObject::tr("The class to be implemented by this implementation is missing");
   ERR_ImplOfAbstract  = QObject::tr("An abstract function cannot have an implementation");
   ERR_CleanSupports  = QObject::tr("Redundant entry in the list of base classes");
-  ERR_OverInOtherCon  = QObject::tr("You cannot extend a class that has been declared in another context");
+  ERR_OverInOtherCon  = QObject::tr("You cannot extend a class or override a virtual type that has been declared in another context");
   ERR_OverInSameCon  = QObject::tr("Illegal extension in the same context: you cannot extend a class that is value of a virtual type");
   ERR_IllegalExtension  = QObject::tr("The virtual type used as virtual base of the interface must be declared in the interface");
   ERR_IllegalVTExtension  = QObject::tr("Illegal extension by virtual type in the class or a base class (cannot calculate the the virtual table)");

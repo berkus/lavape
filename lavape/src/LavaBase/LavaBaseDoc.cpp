@@ -852,7 +852,7 @@ bool CLavaBaseDoc::OverriddenMatch(LavaDECL *decl, bool setName, CheckData* pckd
             if (!IsCDerivation(cvalDECL, ivalDECL, pckd) && (!pckd || !pckd->exceptionThrown)) {
               ivalID = TID(ivalDECL->OwnID,ivalDECL->inINCL);
               cvalID = TID(cvalDECL->OwnID,cvalDECL->inINCL);
-              if (icon.oContext && (ivalID == GetMappedVType(ivalID, icon,0)) && (cvalID == GetMappedVType(cvalID, con,0))) {
+              if ((icon.oContext) && (ivalID == GetMappedVType(ivalID, icon,0)) && (cvalID == GetMappedVType(cvalID, con,0))) {
                 //ivalDECL->isInSubTree(icon.oContext) && cvalDECL->isInSubTree(con.oContext)) {
                 if (!icon.iContext && con.iContext)
                   ok = IDTable.IsA(con.iContext, TID(icon.oContext->OwnID, icon.oContext->inINCL), 0); 
@@ -893,10 +893,10 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
   if (!con.oContext || (con.oContext == baseDECL))
     return 0;
   if (baseDECL->DeclType == VirtualType) {
-    if (!IDTable.IsA(decl, TID(baseDECL->ParentDECL->OwnID, baseDECL->inINCL), 0))
+    if (!IDTable.IsA(decl->ParentDECL, TID(baseDECL->ParentDECL->OwnID, baseDECL->inINCL), 0))
       return &ERR_IllegalVTExtension;
     if (baseDECL->TypeFlags.Contains(isAbstract))
-       if (IDTable.lowerOContext(decl, baseDECL, sameContext) && sameContext)
+       if (IDTable.lowerOContext(decl, baseDECL, sameContext)/* && sameContext*/)
          return 0;
        else
          return &ERR_OverInOtherCon;
@@ -923,7 +923,7 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
       delete decl2;
     }
     if (IDTable.lowerOContext(decl, baseDECL, sameContext)
-                && sameContext && (CheckGetFinalMType(decl, baseDECL) == baseDECL)) {
+                /*&& sameContext*/ && (CheckGetFinalMType(decl, baseDECL) == baseDECL)) {
       //IDTable.GetPattern(decl, con);
       //((if ((baseDECL->ParentDECL == con.iContext) || (baseDECL->ParentDECL == con.oContext)) {
       //if (baseDECL->RefID.nID == -1)
