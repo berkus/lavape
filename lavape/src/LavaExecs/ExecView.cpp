@@ -7349,7 +7349,7 @@ void CExecView::on_DbgRunToSelAct_triggered() {
   pp->FuncID.nINCL = LBaseData->debugger->myDoc->IDTable.GetINCL(pp->FuncDocName,pp->FuncDocDir);
   if (pp->FuncID.nINCL < 0) {
     LBaseData->ContData->RunToPnt.Destroy();
-    QMessageBox::critical(this,qApp->applicationName(),"This run-to-selection is not part of the debugged lava program");
+    QMessageBox::critical(this,qApp->applicationName(),"This run-to-selection is not part of the lava program being debugged");
     return;
   }
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
@@ -7366,31 +7366,35 @@ void CExecView::on_DbgRunToSelAct_triggered() {
 void CExecView::OnUpdateDbgStepNext(QAction* action) {
   action->setEnabled(LBaseData->debugger->isConnected
     && LBaseData->debugger->sendPending
-    && myDoc == LBaseData->debugger->myDoc);
+//    && myDoc == LBaseData->debugger->myDoc
+    );
 }
 
 void CExecView::OnUpdateDbgStepNextFunction(QAction* action) {
   action->setEnabled(LBaseData->debugger->isConnected
     && LBaseData->debugger->sendPending
-    && myDoc == LBaseData->debugger->myDoc);
+//    && myDoc == LBaseData->debugger->myDoc
+    );
 }
 
 void CExecView::OnUpdateDbgStepinto(QAction* action) {
   action->setEnabled(LBaseData->debugger->isConnected
     && LBaseData->debugger->sendPending
-    && myDoc == LBaseData->debugger->myDoc);
+//    && myDoc == LBaseData->debugger->myDoc
+    );
 }
 
 void CExecView::OnUpdateDbgStepout(QAction* action) {
   action->setEnabled(LBaseData->debugger->isConnected
     && LBaseData->debugger->sendPending
-    && myDoc == LBaseData->debugger->myDoc);
+//    && myDoc == LBaseData->debugger->myDoc
+    );
 }
 
 void CExecView::OnUpdateDbgRunToSel(QAction* action)
 {
   action->setEnabled(!Taboo(true)
-    && myDoc == LBaseData->debugger->myDoc
+//    && myDoc == LBaseData->debugger->myDoc
     && text->currentSynObj->IsExecutable()
     && LBaseData->debugger->isConnected 
     && LBaseData->debugger->sendPending);
@@ -7399,7 +7403,8 @@ void CExecView::OnUpdateDbgRunToSel(QAction* action)
 void CExecView::OnUpdateDbgBreakpoint(QAction* action)
 {
   action->setEnabled(!Taboo(true)
-    && (!LBaseData->debugger->isConnected || myDoc == LBaseData->debugger->myDoc)
+    //&& LBaseData->debugger->isConnected
+    //&& (!LBaseData->debugger->isConnected || myDoc == LBaseData->debugger->myDoc)
     && text->currentSynObj->IsExecutable()
     && !text->currentSynObj->IsPlaceHolder()
     && !text->currentSynObj->IsConstant()
@@ -7408,12 +7413,12 @@ void CExecView::OnUpdateDbgBreakpoint(QAction* action)
 }
 
 void CExecView::OnUpdateDbgClearBreakpoints(QAction* action) {
-  action->setEnabled(!LBaseData->debugger->isConnected || myDoc == LBaseData->debugger->myDoc);
+  action->setEnabled(LBaseData->debugger->isConnected/*!LBaseData->debugger->isConnected || myDoc == LBaseData->debugger->myDoc*/);
 }
 
 void CExecView::OnUpdateDbgStop(QAction* action) {
   action->setEnabled(LBaseData->debugger->isConnected
-    && myDoc == LBaseData->debugger->myDoc);
+   /* && myDoc == LBaseData->debugger->myDoc*/);
 }
 
 void CComment::on_okButton_clicked()
