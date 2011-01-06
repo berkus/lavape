@@ -139,6 +139,7 @@ void CLavaPEDebugger::connected() {
 void CLavaPEDebugger::receive() {
   if (!get_cid->bytesAvailable())
     return;
+  wxTheApp->selectionChanged = true; // to enforce update of debugging buttons
   sendPending = true;
   ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->DebugPage->setEnabled(true);
   if (dbgReceived.lastReceived)
