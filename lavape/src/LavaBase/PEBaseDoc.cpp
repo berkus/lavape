@@ -145,7 +145,7 @@ CLavaBaseData* CPEBaseDoc::GetLBaseData()
 
 void CPEBaseDoc::IncludeHint(const QString& fullfn, CHESimpleSyntax* cheSyn)
 {
-  QString* pfn = new QString(fullfn);
+  DString* pfn = new DString(qPrintable(fullfn));
   CLavaPEHint *newHint = new CLavaPEHint(CPECommand_Include, this, (const unsigned long)0,  cheSyn, pfn, cheSyn->predecessor);
   UndoMem.AddToMem(newHint);
 }
