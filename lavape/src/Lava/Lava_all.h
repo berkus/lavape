@@ -15,6 +15,16 @@
 #include "MakeGUI.h"
 
 #include <QActionGroup>
+#include "qclipboard.h"
+#include "qfiledialog.h"
+#include "qfontdialog.h"
+#include "qmessagebox.h"
+#include "qprocess.h"
+#include <QTextStream>
+#include "qfile.h"
+#include "qfileinfo.h"
+#include "qdatastream.h"
+#include "qt_windows.h"
 
 #include "LavaDoc.h"
 #include "Lava.h"
