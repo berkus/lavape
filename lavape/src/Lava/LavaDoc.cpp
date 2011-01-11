@@ -103,11 +103,11 @@ bool CLavaDoc::OnCloseDocument()
 
 CLavaDoc::~CLavaDoc()
 {
-  deleting = true;
-  DeleteContents();
   if (numAllocObjects) {
     QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(numAllocObjects));
   }
+  deleting = true;
+  DeleteContents();
 #ifdef ALLOCOBJLIST
   int sz = allocatedObjects.size();
 #endif

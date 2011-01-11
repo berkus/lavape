@@ -90,6 +90,7 @@ LavaDECL::LavaDECL() {
   op = OP_noOp;
   VElems.UpdateNo = 0;
   RuntimeDECL = 0;
+  runTimeData = 0;
   RelatedDECL = 0;
   runTimeData = 0;
   SectionTabPtr = 0;   //used at run time in implementations
