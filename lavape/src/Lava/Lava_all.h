@@ -24,7 +24,9 @@
 #include "qfile.h"
 #include "qfileinfo.h"
 #include "qdatastream.h"
+#ifdef WIN32
 #include "qt_windows.h"
+#endif
 
 #include "LavaDoc.h"
 #include "Lava.h"
