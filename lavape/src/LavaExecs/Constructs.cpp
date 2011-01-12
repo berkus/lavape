@@ -242,7 +242,11 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
   || parentObject->primaryToken == ifx_T)
     return false;
   else if (parentObject->IsBinaryOp())
-    return false;
+    if (parentObject->primaryToken == Equal_T
+    || parentObject->primaryToken == NotEqual_T)
+      return true;
+    else
+      return false;
   else if (parentObject->primaryToken == Minus_T)
     return false;
   else if (parentObject->primaryToken == attach_T)
