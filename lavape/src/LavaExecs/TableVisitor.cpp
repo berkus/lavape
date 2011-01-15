@@ -123,8 +123,15 @@ void TableVisitor::VisitEnumConst (EnumConst *obj,SynObject *parent,address wher
 
 void TableVisitor::VisitParameter (Parameter *obj,SynObject *parent,address where,CHAINX *chxp)
 {
-  if (update == onCopy)
+  TID oldFormParmID=obj->formParmID;
+  LavaDECL *parmDecl;
+
+  if (update == onCopy) {
     ((TIDTable*)table)->ChangeFromTab(obj->formParmID);
+    parmDecl = ((TIDTable*)table)->GetDECL(obj->formParmID);
+    if (parmDecl->ParentDECL->WorkFlags.Contains(fromPrivToPub))
+      obj->formParmID = oldFormParmID;
+  }
   else if (update == onMove)
     ((TIDTable*)table)->ChangeRefToClipID(obj->formParmID);
 }
@@ -137,10 +144,18 @@ void TableVisitor::VisitFormParm (FormParm *obj,SynObject *parent,address where,
 }
 
 void TableVisitor::VisitReference (Reference *obj,SynObject *parent,address where,CHAINX *chxp) {
+  TID funcTidOld=obj->refID;
+  LavaDECL *funcDecl;
+
   switch (update) {
   case onCopy:
-    if (obj->parentObject->parentObject)
-      ((TIDTable*)table)->ChangeFromTab(obj->refID);
+    ((TIDTable*)table)->ChangeFromTab(obj->refID);
+    if (obj->parentObject->primaryToken == assignFS_T
+    || obj->parentObject->primaryToken == assignFX_T) {
+      funcDecl = ((TIDTable*)table)->GetDECL(obj->refID);
+      if (funcDecl->WorkFlags.Contains(fromPrivToPub))
+        obj->refID = funcTidOld;
+    }
     break;
   case onMove:
     ((TIDTable*)table)->ChangeRefToClipID(obj->refID);
