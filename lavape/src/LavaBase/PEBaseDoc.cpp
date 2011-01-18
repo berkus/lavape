@@ -874,7 +874,7 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
     default: ;
     }//switch Command
     if (viewHint) {
-      if (!undoRedo || !viewHint->FirstLast.Contains(multiDocHint))
+      if (!undoRedo || !viewHint->FirstLast.Contains(multiDocHint) || (viewHint->com == CPECommand_Delete) )
         UpdateAllViews(NULL, undoRedo, viewHint);
       if (hint != viewHint)
         delete viewHint;

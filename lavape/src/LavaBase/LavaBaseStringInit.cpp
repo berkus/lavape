@@ -410,7 +410,7 @@ void LavaBaseStringInit() {
   ERR_EnumOrdLow  = QObject::tr("Ord of enumeration item <0 forbidden");
   ERR_EnumOrdHigh  = QObject::tr("Given integer value is higher than maximum Ord of enumeration");
   ERR_RunTimeException  = QObject::tr("Lava run time system: internal exception");
-  ERR_OneEnum  = QObject::tr("More then one set of enumerated items is declared in this class and/or in its base interfaces");
+  ERR_OneEnum  = QObject::tr("More than one set of enumerated items is declared in this class and/or in its base interfaces");
   ERR_NotYetImplemented  = QObject::tr("Not yet implemented");
   ERR_AssigToInput  = QObject::tr("Forbidden assignment to input variable");
   ERR_AssigToSelf  = QObject::tr("Forbidden assignment to ""self""");
@@ -549,6 +549,6 @@ void LavaBaseStringInit() {
   ERR_SetLavaExceptionFailed = QObject::tr("SetLavaException failed");
   ERR_AbortQuestion = QObject::tr("Do you really want to abort this Lava program?");
   ERR_ExecutionAborted = QObject::tr("Lava program: Execution aborted");
-  ERR_NotSingleContainer = QObject::tr("Interface extends more then one container classes (set, chain or array)");
+  ERR_NotSingleContainer = QObject::tr("Interface extends more than one container classes (set, chain or array)");
   ERR_FinalVTisOverridden = QObject::tr("This VT illegally overrides a final (=non-overridable) VT");
 }

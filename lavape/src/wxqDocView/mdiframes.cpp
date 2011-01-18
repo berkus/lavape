@@ -543,6 +543,8 @@ void wxTabWidget::postTabChange(int index, QAction* triggeredAction)
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
 
   if (triggeredAction == ((wxTabBar*)tabBar())->closePageAction) {
+    if (!page)
+      return;
     if (page->inherits("CTreeFrame")
     || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp")))
       docMan->OnFileClose();

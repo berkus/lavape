@@ -105,8 +105,8 @@ public:
   bool drawTree;
   bool DropPosted;
   bool CanDelete;
-  bool clipboard_lava_notEmpty;
-  const char* m_nIDClipFormat;
+  //bool clipboard_lava_notEmpty;
+  //const char* m_nIDClipFormat;
 
   CLavaGUIView* myFormView;  //myFormView != 0 :  -> FormView
   CLavaPEDoc* DragDoc;    //defined in drop-view
@@ -131,9 +131,9 @@ public:
   LavaDECL ** p_myDECL;
   LavaDECL* VisibleDECL;
   LavaSource* dragSource;
-  SynFlags treeflagsSpicked;
-  SynFlags secondtflagsSpicked;
-  TDeclType defTypeSpicked;
+  //SynFlags treeflagsSpicked;
+  //SynFlags secondtflagsSpicked;
+  //TDeclType defTypeSpicked;
   TDeclType DefTypeSel;   //used in OnUpdate...
   TDeclType SelType;
   TID myID;

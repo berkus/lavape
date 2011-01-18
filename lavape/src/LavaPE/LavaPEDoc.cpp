@@ -947,9 +947,12 @@ bool CLavaPEDoc::CheckImpl (LavaDECL* implDECL, int checkLevel)
 	  }*/
 	if (implDECL->SecondTFlags.Contains (isGUI)) {
 		dataID = GetGUIDataTypeID (classDECL);
+    /*
     classDECL->RefID = dataID;
     implDECL->RefID.nID = dataID.nID;
     implDECL->RefID.nINCL = IDTable.IDTab[classDECL->inINCL]->nINCLTrans[classDECL->RefID.nINCL].nINCL;
+    */
+    implDECL->RefID = dataID;
 		if (!IDTable.GetDECL(dataID))	{
 			new CLavaError(&implDECL->DECLError1, &ERR_NoIFforForm);
 			return false;

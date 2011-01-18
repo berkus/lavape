@@ -66,6 +66,10 @@ public:
   ChainOfString FindList;
   QIcon* LavaIcons[50];
   QPixmap* LavaPixmaps[50];
+  const char* TreeClipFormatID;
+  SynFlags treeflagsClip;    //Clipboard data
+  SynFlags secondtflagsClip; //Clipboard data
+  TDeclType defTypeClip;     //Clipboard data
 
   virtual bool event(QEvent *e);
   virtual int OnAppExit();

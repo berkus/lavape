@@ -144,6 +144,7 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
  {
   bool b1=false;
   QString lfo;
+  LavaDECL *declClip;
 
   LBaseData.stdUpdate = 0;
   //stop here and set stdUpdate = 1 to allow updates in std.lava
@@ -222,7 +223,19 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
   if (LBaseData.m_myWebBrowser.isEmpty())
 #endif
   LBaseData.m_myWebBrowser = InitWebBrowser();
-
+  TreeClipFormatID =  "QLavaTreeView";
+  if (clipboard()->mimeData(QClipboard::Clipboard)->hasFormat(TreeClipFormatID)) {
+    CMainItemData clipdata;
+    QByteArray ba = ((LavaSource*)wxTheApp->clipboard()->mimeData(QClipboard::Clipboard))->data(TreeClipFormatID);
+		QDataStream ar(ba);
+    clipdata.Serialize(ar);
+    declClip = (LavaDECL*)clipdata.synEl;
+    treeflagsClip = declClip->TreeFlags;    //Clipboard data
+    secondtflagsClip = declClip->SecondTFlags; //Clipboard data
+    defTypeClip = declClip->DeclType;     //Clipboard data
+  }
+  else
+    defTypeClip = NoDef;
   pLavaTemplate = new wxDocTemplate(m_docManager,
     "LavaPE", "*.lava","", "lava", "Lava Doc", "Lava Frame", "Lava Tree View",
     &CLavaPEDoc::CreateObject, &CTreeFrame::CreateObject, &CLavaPEView::CreateObject);

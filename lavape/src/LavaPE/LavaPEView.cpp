@@ -184,7 +184,7 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
 //  ParItemSel = 0;
 //  ParDataSel = 0;
   lastCurrent = 0;
-  m_nIDClipFormat = "QLavaTreeView";
+  //m_nIDClipFormat = "QLavaTreeView";
   CollectDECL = 0;
   m_hitemDrag = 0;
   m_hitemDrop = 0;
@@ -192,7 +192,7 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
   drawTree = false;
   inSync = false;
   Clipdata = 0;
-  clipboard_lava_notEmpty = false;
+  //clipboard_lava_notEmpty = false;
   DropPosted = false;
 
   if (!GetDocument()->MainView)
@@ -496,6 +496,9 @@ TIType CLavaPEView::CanPaste (TDeclType defType, SynFlags treeFlags, SynFlags se
   CMainItemData *pardata, *toData;
   CTreeItem* parItem=0;
   LavaDECL *ppdecl;
+
+  if (defType == NoDef)
+    return TIType_NoType;
 
   toData = (CMainItemData*)toItem->getItemData();
   if (defType == DragFText) {
@@ -1903,14 +1906,14 @@ void CLavaPEView::IOnEditCopy()
       clipData.ClipTree = &GetDocument()->mySynDef->SynDefTree;
       clipData.docPathName = new DString(GetDocument()->GetAbsSynFileName());
       clipData.Serialize(ar);
-      defTypeSpicked = ((LavaDECL*)clipData.synEl)->DeclType;
-      treeflagsSpicked = ((LavaDECL*)clipData.synEl)->TreeFlags;
-      secondtflagsSpicked = ((LavaDECL*)clipData.synEl)->SecondTFlags;
+      ((CLavaPEApp*)wxTheApp)->defTypeClip = ((LavaDECL*)clipData.synEl)->DeclType;
+      ((CLavaPEApp*)wxTheApp)->treeflagsClip = ((LavaDECL*)clipData.synEl)->TreeFlags;
+      ((CLavaPEApp*)wxTheApp)->secondtflagsClip = ((LavaDECL*)clipData.synEl)->SecondTFlags;
 
       LavaSource *ls = new LavaSource();
-      ls->setData(m_nIDClipFormat, ba);
+      ls->setData(((CLavaPEApp*)wxTheApp)->TreeClipFormatID, ba);
       wxTheApp->clipboard()->setMimeData(ls, QClipboard::Clipboard);
-      clipboard_lava_notEmpty = wxTheApp->clipboard()->mimeData(QClipboard::Clipboard)->hasFormat(m_nIDClipFormat);
+      //clipboard_lava_notEmpty = wxTheApp->clipboard()->mimeData(QClipboard::Clipboard)->hasFormat(TreeClipFormatID);
     }
   }
 
@@ -2162,8 +2165,11 @@ QDrag*  CLavaPEView::OnDragBegin()
   *(LavaDECL*)clipdata.synEl = *declDrag;
   clipdata.docPathName = new DString(GetDocument()->GetAbsSynFileName());
   clipdata.Serialize(ar);
+  ((CLavaPEApp*)wxTheApp)->defTypeClip = ((LavaDECL*)clipdata.synEl)->DeclType;
+  ((CLavaPEApp*)wxTheApp)->treeflagsClip = ((LavaDECL*)clipdata.synEl)->TreeFlags;
+  ((CLavaPEApp*)wxTheApp)->secondtflagsClip = ((LavaDECL*)clipdata.synEl)->SecondTFlags;
   dragSource = new LavaSource();
-  dragSource->setData(m_nIDClipFormat, ba);
+  dragSource->setData(((CLavaPEApp*)wxTheApp)->TreeClipFormatID, ba);
   QDrag* drag = new QDrag(Tree);
   drag->setMimeData(dragSource);
 
@@ -2172,8 +2178,11 @@ QDrag*  CLavaPEView::OnDragBegin()
   DragDoc = GetDocument();
   //Q3dragSource->drag();
   drag->exec(Qt::CopyAction | Qt::MoveAction);
-  if (clipdata.synEl)
+  if (clipdata.synEl) {
     delete (LavaDECL*)clipdata.synEl;
+    clipdata.synEl = 0;
+    ((CLavaPEApp*)wxTheApp)->defTypeClip = NoDef;
+  }
   //if (m_hitemDrop)
   //  Tree->setItemSelected(m_hitemDrop, false);
   if (!DropPosted) {
@@ -2186,17 +2195,15 @@ QDrag*  CLavaPEView::OnDragBegin()
   return 0;
 }
 
-
 void CLavaPEView::OnDragEnter(QDragEnterEvent* ev)
 {
-
   CLavaPEDoc *dropDoc = GetDocument();
   CHESimpleSyntax *cheSyn;
   SynFlags treeflags, secondtflags;
   DString  dropAbsName;
 
-  if (ev->provides(m_nIDClipFormat)) {
-    QByteArray ba = ev->encodedData(m_nIDClipFormat);
+  if (ev->provides(((CLavaPEApp*)wxTheApp)->TreeClipFormatID)) {
+    QByteArray ba = ev->encodedData(((CLavaPEApp*)wxTheApp)->TreeClipFormatID);
 		QDataStream ar(ba);
     if (Clipdata) {
       Clipdata->Destroy();
@@ -2204,6 +2211,9 @@ void CLavaPEView::OnDragEnter(QDragEnterEvent* ev)
     }
     Clipdata = new CMainItemData;
     Clipdata->Serialize(ar);
+    ((CLavaPEApp*)wxTheApp)->defTypeClip = ((LavaDECL*)Clipdata->synEl)->DeclType;
+    ((CLavaPEApp*)wxTheApp)->treeflagsClip = ((LavaDECL*)Clipdata->synEl)->TreeFlags;
+    ((CLavaPEApp*)wxTheApp)->secondtflagsClip = ((LavaDECL*)Clipdata->synEl)->SecondTFlags;
     if ((((LavaDECL*)Clipdata->synEl)->DeclType == DragFeature)
         || (((LavaDECL*)Clipdata->synEl)->DeclType == DragFeatureF)) {
       dropAbsName = dropDoc->GetAbsSynFileName();
@@ -2267,7 +2277,7 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
   TIType tiType;
   CTreeItem* item;
 
-  if (ev->provides(m_nIDClipFormat) && (!GetDocument()->changeNothing)) {
+  if (ev->provides(((CLavaPEApp*)wxTheApp)->TreeClipFormatID) && (!GetDocument()->changeNothing)) {
     item = (CTreeItem*)Tree->itemAt(ev->pos());//(Tree->contentsToViewport(ev->pos()));
     if (m_hitemDrop && (item != m_hitemDrop))
       m_hitemDrop->setSelected(false);
@@ -2386,7 +2396,7 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
 
 void CLavaPEView::OnDrop(QDropEvent* ev)
 {
-  if (ev->provides(m_nIDClipFormat)) {
+  if (ev->provides(((CLavaPEApp*)wxTheApp)->TreeClipFormatID)) {
     m_hitemDrop = (CTreeItem*)Tree->itemAt(ev->pos());//(Tree->contentsToViewport(ev->pos()));
     if (m_hitemDrop) {
       lastDropped = m_hitemDrop;
@@ -4760,13 +4770,14 @@ void CLavaPEView::OnEditPaste()
   CLavaPEHint *hint;
   DString *str2;
   void *d4;
+  CExecSetImpls* impls; 
 
   if (GetDocument()->changeNothing)
     return;
 
-//  if (wxTheApp->clipboard()->data(QClipboard::Clipboard)->provides(m_nIDClipFormat)) {
-  if (clipboard_lava_notEmpty) {
-    QByteArray ba = ((LavaSource*)wxTheApp->clipboard()->mimeData(QClipboard::Clipboard))->data/*encodedData*/(m_nIDClipFormat);
+  if (wxTheApp->clipboard()->mimeData(QClipboard::Clipboard)->hasFormat(((CLavaPEApp*)wxTheApp)->TreeClipFormatID)) {
+  //if (clipboard_lava_notEmpty) {
+    QByteArray ba = ((LavaSource*)wxTheApp->clipboard()->mimeData(QClipboard::Clipboard))->data(((CLavaPEApp*)wxTheApp)->TreeClipFormatID);
 		QDataStream ar(ba/*,QIODevice::ReadOnly*/);
     item = (CTreeItem*)Tree->currentItem();
     clipdata.Serialize(ar);
@@ -4828,6 +4839,8 @@ void CLavaPEView::OnEditPaste()
         }
         hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1, declClip, str2, (void*)pos, d4, 0, clipdata.ClipTree, clipdata.docPathName);
         GetDocument()->UpdateDoc(this, false, hint);
+				impls = new CExecSetImpls (GetDocument()->mySynDef);
+				delete impls;
         clipdata.synEl = 0;
         clipdata.ClipTree = 0;
         if (myInclView) {
@@ -5264,9 +5277,10 @@ void CLavaPEView::OnUpdateEditPaste(QAction* action)
 {
   bool enable = !GetDocument()->changeNothing;
   if (enable) {
-    enable = clipboard_lava_notEmpty;
+    enable = wxTheApp->clipboard()->mimeData(QClipboard::Clipboard)->hasFormat(((CLavaPEApp*)wxTheApp)->TreeClipFormatID);
 		if (enable)
-      enable = (CanPaste(defTypeSpicked, treeflagsSpicked, secondtflagsSpicked, ItemSel) != TIType_NoType);
+      enable = (CanPaste(((CLavaPEApp*)wxTheApp)->defTypeClip, ((CLavaPEApp*)wxTheApp)->treeflagsClip,
+                         ((CLavaPEApp*)wxTheApp)->secondtflagsClip, ItemSel) != TIType_NoType);
   }
   action->setEnabled(enable);
 }
