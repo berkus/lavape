@@ -555,7 +555,7 @@ bool compatibleContext(CheckData &ckd, LavaDECL* decl2, const CContext &context1
   CContext con;
   ckd.document->IDTable.GetPattern(decl2, con);
 //  if (!decl2->WorkFlags.Contains(isPartOfPattern))
-  if (!con.oContext || (con.oContext == decl2))
+  if (!con.oContext || (con.oContext == decl2) || (con.oContext == context1.oContext))
     return true;
   if (!context2.oContext && (decl2->DeclType == VirtualType)
       || (context1.oContext != context2.oContext)
