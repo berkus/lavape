@@ -548,23 +548,24 @@ bool sameType(CheckData &ckd, const TID &t1, const TID &t2)
     return false;
 }
 
-bool compatibleContext(CheckData &ckd, LavaDECL* decl2, const CContext &context1, const CContext &context2)
+bool compatibleContext(CheckData &ckd, LavaDECL* decl1, LavaDECL* decl2, const CContext &context1, const CContext &context2)
 { // compatibleContext returns false if the result of compatibleTypes
   // must be false for types decl1 and decl2
   // although decl1 and decl2 are equal or decl1 is c-derived from decl2
-  CContext con;
-  ckd.document->IDTable.GetPattern(decl2, con);
+  CContext con1, con2;
+  ckd.document->IDTable.GetPattern(decl2, con2);
+  ckd.document->IDTable.GetPattern(decl1, con1);
 //  if (!decl2->WorkFlags.Contains(isPartOfPattern))
-  if (!con.oContext || (con.oContext == decl2) || (con.oContext == context1.oContext))
+  if (!con2.oContext || (con2.oContext == decl2))
     return true;
   if (!context2.oContext && (decl2->DeclType == VirtualType)
-      || (context1.oContext != context2.oContext)
+      || (context1.oContext != context2.oContext) && (con2.oContext != context1.oContext) && (con1.oContext != context2.oContext)
       || (context1.ContextFlags.Contains(selfoContext) != context2.ContextFlags.Contains(selfoContext))
          && (context1.ContextFlags.Contains(staticContext) != context2.ContextFlags.Contains(staticContext)))
     return false;
   if (context2.iContext
       && ckd.document->IDTable.IsA(context2.iContext,
-                                    TID(con.oContext->OwnID, con.oContext->inINCL),0)) {
+                                    TID(con2.oContext->OwnID, con2.oContext->inINCL),0)) {
     if ((context1.iContext != context2.iContext)
        || (context1.ContextFlags.Contains(selfiContext) != context2.ContextFlags.Contains(selfiContext))
          && (context1.ContextFlags.Contains(staticContext) != context2.ContextFlags.Contains(staticContext)))
@@ -600,13 +601,13 @@ bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, 
       return true;
     if ((decl1 != decl2) && !ckd.document->IsCDerivation(decl1,decl2,&ckd))
       return false;
-    return compatibleContext(ckd, decl2, context1, context2);
+    return compatibleContext(ckd, decl1, decl2, context1, context2);
   }
   else
     if ((decl1->DeclType == VirtualType) && (decl2->DeclType == VirtualType)) {
       ckd.errorCode = &ERR_IncompWithTargetVT;
       if (decl1 == decl2)
-        return compatibleContext(ckd, decl2, context1, context2);
+        return compatibleContext(ckd, decl1, decl2, context1, context2);
       else {
         decl22 = ckd.document->IDTable.GetDECL(decl2->RefID,decl2->inINCL);
         if (!compatibleTypes(ckd, decl1, context1, decl22, context2))
@@ -625,7 +626,7 @@ bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, 
         && !decl2->TypeFlags.Contains(isFinalVT))
           return false;
         if (decl2->TypeFlags.Contains(isAbstract))
-          return compatibleContext(ckd, decl2, context1, context2);
+          return compatibleContext(ckd, decl1, decl2, context1, context2);
         decl2 = ckd.document->IDTable.GetDECL(decl2->RefID,decl2->inINCL);
       }
       else {  //(decl1->DeclType == VirtualType)
@@ -645,7 +646,7 @@ bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, 
         && ckd.document->IDTable.IsA(TID(decl1->OwnID, decl1->inINCL),0,TID(decl2->OwnID, decl2->inINCL),0))
         return true;
       else
-        return !decl2 || compatibleContext(ckd, decl2, context1, context2);
+        return !decl2 || compatibleContext(ckd, decl1, decl2, context1, context2);
     }
 }
 

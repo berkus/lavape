@@ -1043,7 +1043,7 @@ QString* CLavaBaseDoc::TestValOfVirtual(LavaDECL* vdecl, LavaDECL* valDECL)
     par = IDTable.GetDECL(((CHETID*)par->ParentDECL->Supports.first)->data, par->inINCL);
 
   if (val->DeclType == VirtualType)
-    if (IDTable.lowerOContext(par, val, sameContext) && sameContext)
+    if (IDTable.lowerOContext(par, val, sameContext) && (CheckGetFinalMType(par, val) == val)) //sameContext)
       return 0;
     else
       return &ERR_WrongContext;
