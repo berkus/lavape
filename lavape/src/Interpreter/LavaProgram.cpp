@@ -1544,7 +1544,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
   vElems.first = 0;
   vElems.last = 0;
 
-  bool isCreatable = !classDECL->TypeFlags.Contains(isAbstract);
+  bool isCreatable = !classDECL->TypeFlags.Contains(isAbstract) && (classDECL->DeclType != Package);
   for (El = (CHETVElem*)classDECL->VElems.VElems.first;
        El && El->data.ok;
        El = (CHETVElem*)El->successor) {
