@@ -1482,6 +1482,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
             LavaError(*pckd, true, ElDECL, &ERR_Broken_ref);
             return false;
           }
+          /*
           if ((ElDECL->DeclType == VirtualType)
             && (errID = TestValOfVirtual(ElDECL, ElDECL->RuntimeDECL))) {
             LavaError(*pckd, true, classDECL, errID);
@@ -1493,6 +1494,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
               LavaError(*pckd, true, ElDECL, errID, ElDECL->RuntimeDECL);
               return false;
             }
+            */
         }
       }
       else  {//the overridden object was not found
