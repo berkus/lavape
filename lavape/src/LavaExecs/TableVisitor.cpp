@@ -129,7 +129,7 @@ void TableVisitor::VisitParameter (Parameter *obj,SynObject *parent,address wher
   if (update == onCopy) {
     ((TIDTable*)table)->ChangeFromTab(obj->formParmID);
     parmDecl = ((TIDTable*)table)->GetDECL(obj->formParmID);
-    if (parmDecl->ParentDECL->WorkFlags.Contains(fromPrivToPub))
+    if (parmDecl && parmDecl->ParentDECL->WorkFlags.Contains(fromPrivToPub))
       obj->formParmID = oldFormParmID;
   }
   else if (update == onMove)
@@ -153,7 +153,7 @@ void TableVisitor::VisitReference (Reference *obj,SynObject *parent,address wher
     if (obj->parentObject->primaryToken == assignFS_T
     || obj->parentObject->primaryToken == assignFX_T) {
       funcDecl = ((TIDTable*)table)->GetDECL(obj->refID);
-      if (funcDecl->WorkFlags.Contains(fromPrivToPub))
+      if (funcDecl && funcDecl->WorkFlags.Contains(fromPrivToPub))
         obj->refID = funcTidOld;
     }
     break;
