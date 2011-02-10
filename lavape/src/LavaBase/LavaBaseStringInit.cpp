@@ -501,7 +501,7 @@ void LavaBaseStringInit() {
   ERR_OverInOtherCon  = QObject::tr("You cannot extend a class or override a virtual type that has been declared in another context");
   ERR_OverInSameCon  = QObject::tr("Illegal extension in the same context: you cannot extend a class that is value of a virtual type");
   ERR_IllegalExtension  = QObject::tr("The virtual type used as virtual base of the interface must be declared in the interface");
-  ERR_IllegalVTExtension  = QObject::tr("Illegal extension by virtual type in the class or a base class (cannot calculate the the virtual table)");
+  ERR_IllegalVTExtension  = QObject::tr("Illegal extension by virtual type in the class or a base class (cannot compute the virtual table)");
   ERR_NoDefaultIni  = QObject::tr("Default initializer missing");
   ERR_CopyToSelf  = QObject::tr("Copy onto self permitted only from a source expression of the same or a more derived type");
   ERR_NoIFforForm  = QObject::tr("The associated class of this GUI service is missing");

@@ -363,7 +363,7 @@ bool TIDTable::ChangeFromTab(TID& id)
       }
     }
   }
-  //only in the the copied subtree:
+  //only in the copied subtree:
   if ((id.nID >= 0) && (id.nINCL == DropINCL)) {
     //special: public function to private:
     //map the id of the old implementation io to the mapped old interface io
