@@ -893,7 +893,7 @@ QString* CLavaBaseDoc::ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, Chec
   if (!con.oContext || (con.oContext == baseDECL))
     return 0;
   if (baseDECL->DeclType == VirtualType) {
-    if (!IDTable.IsA(decl->ParentDECL, TID(baseDECL->ParentDECL->OwnID, baseDECL->inINCL), 0))
+    if (!IDTable.IsA(decl/*->ParentDECL*/, TID(baseDECL->ParentDECL->OwnID, baseDECL->inINCL), 0))
       return &ERR_IllegalVTExtension;
     if (baseDECL->TypeFlags.Contains(isAbstract))
        if (IDTable.lowerOContext(decl, baseDECL, sameContext)/* && sameContext*/)
