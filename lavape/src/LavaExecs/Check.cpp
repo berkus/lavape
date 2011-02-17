@@ -631,7 +631,7 @@ bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, 
       }
       else {  //(decl1->DeclType == VirtualType)
         ckd.errorCode = &ERR_IncompWithTargetVT;
-        if (!ctxFlags1.Contains(staticContext) && !ctxFlags2.Contains(multiContext))
+        if (!ctxFlags1.Contains(staticContext)&& !decl1->TypeFlags.Contains(isFinalVT) && !ctxFlags2.Contains(multiContext))
           return false;
         if (decl1->TypeFlags.Contains(isAbstract)) {
           ckd.errorCode = &ERR_IncompAbstractVT;
