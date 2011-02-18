@@ -369,11 +369,16 @@ void CLavaPEDoc::AutoCorr (LavaDECL* decl)
 					}
 				}
 			}
-			for (cheEl = (CHE*) decl->ParentDECL->NestedDecls.first;
-			        cheEl && ((LavaDECL*) cheEl->data != decl);
-			        cheEl = (CHE*) cheEl->successor);
 			DString *name = new DString (decl->FullName);
-			CLavaPEHint* hint = new CLavaPEHint (CPECommand_Change, this, (const unsigned long) 3, newDECL, name, 0, &cheEl->data);
+      CLavaPEHint* hint;
+      if (decl->ParentDECL) {
+        for (cheEl = (CHE*) decl->ParentDECL->NestedDecls.first;
+			          cheEl && ((LavaDECL*) cheEl->data != decl);
+			          cheEl = (CHE*) cheEl->successor);
+			  hint = new CLavaPEHint (CPECommand_Change, this, (const unsigned long) 3, newDECL, name, 0, &cheEl->data);
+      }
+      else
+			  hint = new CLavaPEHint (CPECommand_Change, this, (const unsigned long) 3, newDECL, name, 0, &((CHESimpleSyntax*)mySynDef->SynDefTree.first)->data.TopDef.ptr);
 			UndoMem.AddToMem (hint);
 			UpdateDoc (0, FALSE, hint);
 			return;
