@@ -446,8 +446,12 @@ void wxTabBar::mousePressEvent ( QMouseEvent *evt )
       newTabWidAction->setEnabled(true);
     if (splitterIndex == splitter->count()-1)
       movePageRightAction->setEnabled(false);
+    else
+      movePageRightAction->setEnabled(true);
     if (splitterIndex == 0)
       movePageLeftAction->setEnabled(false);
+    else
+      movePageLeftAction->setEnabled(true);
 
     triggeredAction = tabMenu.exec(QCursor::pos());
     if (triggeredAction)
