@@ -1305,7 +1305,9 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
         }
         if (catComp == unknownCat)
           catComp = cat;
-        if ((forHandle || fmvType) && (forCopy || catComp == category || category == anyCat)) {
+        if ((forHandle || fmvType) /*&&  (forCopy|| catComp == category || category == anyCat)*/) {
+        // ignore category in order to avoid the user to be confused if a var of compatible type isn't offered;
+        // the subsequent check will reveal the incompatible category anyway after insertion of the var
           if (forHandle || !forHandle &&
               (   (( forInput || forCopy)
                               && compatibleTypes(ckd, fmvType, bContext, decl, compContext))
