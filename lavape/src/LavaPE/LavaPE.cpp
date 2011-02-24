@@ -148,7 +148,7 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
 
   LBaseData.stdUpdate = 0;
   //stop here and set stdUpdate = 1 to allow updates in std.lava
-
+  //Sleep(20000);
   SetVendorName("LavaPE-Project");
   SetAppName("LavaPE");
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());

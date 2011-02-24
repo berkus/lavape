@@ -353,6 +353,7 @@ struct LAVABASE_DLL CheckData {
     nPlaceholders = 0;
     nErrors = 0;
     errorCode = 0;
+    suppressError = false;
     iArg = 0;
     inINCL = 0;
     stateObjectCat = false;
@@ -392,7 +393,7 @@ struct LAVABASE_DLL CheckData {
 	  iArg;
   QString *errorCode;
   Category callObjCat;
-  bool stateObjectCat, iniCheck, concernExecs, criticalScope, handleOpd,
+  bool stateObjectCat, iniCheck, suppressError, concernExecs, criticalScope, handleOpd,
        inQuant, inInitialUpdate, inIniClause, immediateReturn, exceptionThrown,
 	     checkClosedParmLevel;
   SET flags;

@@ -493,6 +493,7 @@ bool SynObject::ExpressionSelected (CHETokenNode *currentSelection) {
   && !currentSelection->data.OptionalClauseToken(optClause)
   && !IsAssigTarget()
   && !parentObject->flags.Contains(isIniCallOrHandle)
+  && parentObject->primaryToken != ignore_T
   && !(primaryToken == TDOD_T && parentObject->parentObject->primaryToken == ifdef_T)
   && !(parentObject->primaryToken == ObjRef_T && parentObject->flags.Contains(isDisabled)))
     return true;

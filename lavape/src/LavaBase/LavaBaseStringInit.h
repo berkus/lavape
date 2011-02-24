@@ -259,6 +259,7 @@ extern LAVABASE_DLL QString ERR_CallCheck_NYI;
 extern LAVABASE_DLL QString ERR_clone_copy_inp_closed;
 extern LAVABASE_DLL QString ERR_Broken_ref_in_HC;
 extern LAVABASE_DLL QString ERR_NoHandlerIO;
+extern LAVABASE_DLL QString ERR_IgnoreMustBeFirst;
 extern LAVABASE_DLL QString ERR_IgnoreInputsOnly;
 extern LAVABASE_DLL QString ERR_IgnoreMandatoryOnly;
 extern LAVABASE_DLL QString ERR_RefToIgnored;

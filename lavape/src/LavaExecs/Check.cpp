@@ -207,6 +207,9 @@ void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
   QString cFileName, cExecName;
   QString msg, msgText;
 
+  if (ckd.suppressError)
+    return;
+
   if (IsFuncInvocation())
     synObj = (SynObject*)((FuncExpression*)synObj)->function.ptr;
   else if (synObj->primaryToken == parameter_T) {
@@ -961,6 +964,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
     tdod->oldError = (CHE*)((TDOD*)che->data)->errorChain.first;
     tdod->errorChain.Destroy();
     tdod->lastError = 0;
+    tdod->fieldDecl = 0;
     objRef->myFinalVType = 0;
     dw = ckd.document->IDTable.GetVar(tdodID,idtype);
     if (!dw) {
@@ -5868,19 +5872,40 @@ bool IgnoreStatement::Check (CheckData &ckd)
   ObjReference *obj, *prevObj;
 
   ENTRY
+
+  if (ckd.myDECL->ParentDECL->DeclType != Function
+  || ckd.myDECL->DeclType == Require
+  || ckd.myDECL->DeclType == Ensure) {
+    SetError(ckd,&ERR_IgnoreMustBeFirst);
+    ERROREXIT
+  }
+  if (parentObject->primaryToken == Semicolon_T
+  && ((SemicolonOp*)parentObject)->operands.first != whereInParent) {
+    SetError(ckd,&ERR_IgnoreMustBeFirst);
+    ERROREXIT
+  }
+  if (parentObject->parentObject && parentObject->parentObject->parentObject) {
+    SetError(ckd,&ERR_IgnoreMustBeFirst);
+    ERROREXIT
+  }
+
   for (chp = (CHE*)igVars.first;
        chp;
        chp = (CHE*)chp->successor) {
     opd = (SynObject*)chp->data;
+    ckd.suppressError = true;
     ok &= opd->Check(ckd);
+    ckd.suppressError = false;
     if (opd->primaryToken == ObjRef_T) {
       obj = (ObjReference*)opd;
-      if (obj->refIDs.first != obj->refIDs.last) {
+      if (obj->refIDs.first != obj->refIDs.last
+      || !((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl
+      || ((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl->DeclType != IAttr) {
         obj->SetError(ckd,&ERR_IgnoreInputsOnly);
         ok = false;
         continue;
       }
-      if (((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl->TypeFlags.Contains(isOptional)) {
+      if (((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl && ((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl->TypeFlags.Contains(isOptional)) {
         obj->SetError(ckd,&ERR_IgnoreMandatoryOnly);
         ok = false;
         continue;
@@ -5900,7 +5925,8 @@ bool IgnoreStatement::Check (CheckData &ckd)
         }
       }
 
-      ((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl->WorkFlags.INCL(isIgnored);
+      if (((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl)
+        ((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl->WorkFlags.INCL(isIgnored);
     }
   }
   EXIT

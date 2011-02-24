@@ -6397,7 +6397,9 @@ void CExecView::OnUpdateIgnoreButton(QAction *pb)
   bool hasMandInput=false;
 
   chp = GetFirstInput(myDECL->ParentDECL);
-  if (!chp) {
+  if (myDECL->DeclType == Require
+  || myDECL->DeclType == Ensure
+  || !chp) {
     pb->setEnabled(false);
     return;
   }
