@@ -76,7 +76,7 @@ int main( int argc, char ** argv ) {
   CLavaApp app(argc,argv);
 
   //QTest::qSleep(20000);
-  Sleep(20000);
+  //Sleep(20000);
 
   ExeDir = app.applicationDirPath();
 #ifdef WIN32
