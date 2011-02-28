@@ -271,6 +271,8 @@ void CLavaDebugger::send() {
       addCalleeParams();
       mSend.SetSendData(Dbg_StopData, dbgStopData);
     }
+    else if (dbgStopData->SynErrData.ptr)
+      mSend.SetSendData(Dbg_StopData, dbgStopData);
     else  {
       stop(otherError);
       return;

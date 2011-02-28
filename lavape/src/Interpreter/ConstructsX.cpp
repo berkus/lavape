@@ -714,16 +714,18 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
     else
       rc = QMessageBox::Yes;
     if (rc == QMessageBox::Yes) {
-      if (!LBaseData->debugger->isConnected) 
+      if (!LBaseData->debugger->isConnected) {
         if (((CLavaProgram*)ckd.document)->corruptSyntax)
           QApplication::sendEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
         else
           QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
+        if (((CLavaDebugger*)LBaseData->debugger)->m_execThread)
+          ((CLavaThread*)QThread::currentThread())->suspend();   //execution thread wait
+      }
+      if (((CLavaProgram*)ckd.document)->corruptSyntax)
+        QApplication::sendEvent(LBaseData->debugger, new CustomEvent(UEV_Send,0));
       else
-        if (((CLavaProgram*)ckd.document)->corruptSyntax)
-          QApplication::sendEvent(LBaseData->debugger, new CustomEvent(UEV_Send,0));
-        else
-          QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Send,0));
+        QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Send,0));
       if (((CLavaDebugger*)LBaseData->debugger)->m_execThread)
         ((CLavaThread*)QThread::currentThread())->suspend();   //execution thread wait
     }
