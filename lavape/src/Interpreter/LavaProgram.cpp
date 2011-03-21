@@ -2448,7 +2448,7 @@ unsigned CLavaExecThread::ExecuteLava()
         newStackFrame[pos] = 0;
     }//!isObject
     if (myDoc->debugOn) {
-      if (!myDoc->openForDebugging) {
+      if (!myDoc->openLavaPEforDebugging) {
        ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
         QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
         //debugger start, now initialisation is finished
@@ -2539,21 +2539,34 @@ unsigned CLavaExecThread::ExecuteLava()
     return 0;
   }
   catch(CUserException) {
-    if (ckd.lastException) {
-      DebugStop(ckd,0,0,QString("Syntax error detected before execution started"),Stop_Exception,0,0);
-      if (!wxTheApp->appExit)
-        ((CLavaProgram*)ckd.document)->HCatch(ckd);
+    try {
+      if (ckd.lastException) {
+        DebugStop(ckd,0,0,QString("Syntax error detected before execution started"),Stop_Exception,0,0);
+        if (!wxTheApp->appExit)
+          ((CLavaProgram*)ckd.document)->HCatch(ckd);
+      }
+      ckd.document->throwError = false;
+      LavaEnd(ckd.document, true);
+      if (myDoc->debugOn)
+        ((CLavaDebugger*)LBaseData->debugger)->m_execThread = 0;
+      return 0;
     }
-    ckd.document->throwError = false;
-    LavaEnd(ckd.document, true);
-    if (myDoc->debugOn)
-      ((CLavaDebugger*)LBaseData->debugger)->m_execThread = 0;
-    return 0;
+    catch(CExecAbort) {
+      if (!myDoc->deleting) {
+        // For other exception types, notify user here.
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Execution of Lava program has been aborted due to LavaPE termination"));
+        CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
+		    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+      }
+      if (myDoc->debugOn)
+        ((CLavaDebugger*)LBaseData->debugger)->m_execThread = 0;
+      return 0;
+    }
   }
   catch(CExecAbort) {
     if (!myDoc->deleting) {
       // For other exception types, notify user here.
-      critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Lava program has been aborted due to LavaPE termination"));
+      critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Execution of Lava program has been aborted due to LavaPE termination"));
       CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
 		  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
     }

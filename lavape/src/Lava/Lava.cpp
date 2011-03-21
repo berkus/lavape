@@ -143,7 +143,7 @@ CLavaApp::CLavaApp(int &argc, char ** argv )
 //  settings.beginGroup(GetSettingsPath());
   LBaseData.theApp = this;
   LBaseData.inRuntime = true;
-  LBaseData.openForDebugging = false;
+  LBaseData.openLavaPEforDebugging = false;
   //clipboard()->clear();
   LBaseData.actHint = 0;
   LBaseData.Init(0, 0);
@@ -440,7 +440,7 @@ void CLavaApp::OnFileDebug()
   QString fileName = wxGetOpenFileName(m_appWindow, GetLastFileOpen(), "Select a file to open for debugging",  "Lava file (*.lava)", "Lava object file (*.ldoc)");
   if (fileName.isEmpty())
     return;
-  LBaseData.openForDebugging = true;
+  LBaseData.openLavaPEforDebugging = true;
 #ifdef WIN32
   QString driveLetter = QString(fileName[0].toUpper());
   fileName.replace(0,1,driveLetter);

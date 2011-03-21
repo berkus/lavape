@@ -5899,7 +5899,8 @@ void CExecView::UpdateUI()
   OnUpdatePlus(LBaseData->additionActionPtr);
   OnUpdateOrd(LBaseData->ordActionPtr);
 
-//  OnUpdateDbgStart(LBaseData->DbgActionPtr);
+  //OnUpdateDbgStart(LBaseData->DbgActionPtr);
+  //OnUpdateDbgStop(LBaseData->DbgStopActionPtr);
   OnUpdateDbgStepNext(LBaseData->DbgStepNextActPtr);
   OnUpdateDbgStepNextFunction(LBaseData->DbgStepNextFunctionActPtr);
   OnUpdateDbgStepinto(LBaseData->DbgStepintoActPtr);
@@ -5907,7 +5908,6 @@ void CExecView::UpdateUI()
   OnUpdateDbgRunToSel(LBaseData->DbgRunToSelActPtr);
   OnUpdateDbgBreakpoint(LBaseData->DbgBreakpointActPtr);
   OnUpdateDbgClearBreakpoints(LBaseData->DbgClearBreakpointsActPtr);
-  OnUpdateDbgStop(LBaseData->DbgStopActionPtr);
 
   OnUpdateDeclare(LBaseData->actionDeclare);
   OnUpdateExists(LBaseData->actionExists);
@@ -6006,7 +6006,8 @@ void CExecView::DisableActions()
   LBaseData->additionActionPtr->setEnabled(false);
   LBaseData->ordActionPtr->setEnabled(false);
 
-  LBaseData->DbgActionPtr->setEnabled(false);
+  //LBaseData->DbgActionPtr->setEnabled(false);
+  //LBaseData->DbgStopActionPtr->setEnabled(false);
   LBaseData->DbgStepNextActPtr->setEnabled(false);
   LBaseData->DbgStepNextFunctionActPtr->setEnabled(false);
   LBaseData->DbgStepintoActPtr->setEnabled(false);
@@ -6014,7 +6015,6 @@ void CExecView::DisableActions()
   LBaseData->DbgRunToSelActPtr->setEnabled(false);
   LBaseData->DbgBreakpointActPtr->setEnabled(false);
   LBaseData->DbgClearBreakpointsActPtr->setEnabled(false);
-  LBaseData->DbgStopActionPtr->setEnabled(false);
 
   CExecView::DisableKwdButtons();
 }
@@ -7362,12 +7362,19 @@ void CExecView::on_DbgRunToSelAct_triggered() {
 //void CExecView::OnUpdateDbgStart(QAction* action) {
 //  if (!myDoc->mySynDef)
 //    return;
-//  action->setEnabled(LBaseData->debugger->sendPending);
+//  action->setEnabled(LBaseData->debugger->sendPending
+//    && !LBaseData->debugger->synErrReported);
+//}
+
+//void CExecView::OnUpdateDbgStop(QAction* action) {
+//  action->setEnabled(LBaseData->debugger->isConnected
+//   /* && myDoc == LBaseData->debugger->myDoc*/);
 //}
 
 void CExecView::OnUpdateDbgStepNext(QAction* action) {
   action->setEnabled(LBaseData->debugger->isConnected
     && LBaseData->debugger->sendPending
+    && !LBaseData->debugger->synErrReported
 //    && myDoc == LBaseData->debugger->myDoc
     );
 }
@@ -7375,6 +7382,7 @@ void CExecView::OnUpdateDbgStepNext(QAction* action) {
 void CExecView::OnUpdateDbgStepNextFunction(QAction* action) {
   action->setEnabled(LBaseData->debugger->isConnected
     && LBaseData->debugger->sendPending
+    && !LBaseData->debugger->synErrReported
 //    && myDoc == LBaseData->debugger->myDoc
     );
 }
@@ -7382,6 +7390,7 @@ void CExecView::OnUpdateDbgStepNextFunction(QAction* action) {
 void CExecView::OnUpdateDbgStepinto(QAction* action) {
   action->setEnabled(LBaseData->debugger->isConnected
     && LBaseData->debugger->sendPending
+    && !LBaseData->debugger->synErrReported
 //    && myDoc == LBaseData->debugger->myDoc
     );
 }
@@ -7389,6 +7398,7 @@ void CExecView::OnUpdateDbgStepinto(QAction* action) {
 void CExecView::OnUpdateDbgStepout(QAction* action) {
   action->setEnabled(LBaseData->debugger->isConnected
     && LBaseData->debugger->sendPending
+    && !LBaseData->debugger->synErrReported
 //    && myDoc == LBaseData->debugger->myDoc
     );
 }
@@ -7399,6 +7409,7 @@ void CExecView::OnUpdateDbgRunToSel(QAction* action)
 //    && myDoc == LBaseData->debugger->myDoc
     && text->currentSynObj->IsExecutable()
     && LBaseData->debugger->isConnected 
+    && !LBaseData->debugger->synErrReported
     && LBaseData->debugger->sendPending);
 }
 
@@ -7416,11 +7427,6 @@ void CExecView::OnUpdateDbgBreakpoint(QAction* action)
 
 void CExecView::OnUpdateDbgClearBreakpoints(QAction* action) {
   action->setEnabled(LBaseData->debugger->isConnected/*!LBaseData->debugger->isConnected || myDoc == LBaseData->debugger->myDoc*/);
-}
-
-void CExecView::OnUpdateDbgStop(QAction* action) {
-  action->setEnabled(LBaseData->debugger->isConnected
-   /* && myDoc == LBaseData->debugger->myDoc*/);
 }
 
 void CComment::on_okButton_clicked()

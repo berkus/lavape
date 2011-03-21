@@ -376,8 +376,10 @@ void CLavaMainFrame::UpdateUI()
   findByNameAction->setEnabled(enable);
   checkAction->setEnabled(enable);
   checkAllAction->setEnabled(enable);
-  if (doc)
+  if (doc) {
     doc->OnUpdateDbgStart(DbgAction);
+    doc->OnUpdateDbgStop(DbgAction);
+  }
   else
     DbgAction->setEnabled(false);
 }

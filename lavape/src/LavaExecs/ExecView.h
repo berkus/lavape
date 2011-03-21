@@ -303,7 +303,8 @@ public:
   void OnUpdateRshift(QAction* action);
   void OnUpdateTrue(QAction* action);
 
-//  void OnUpdateDbgStart(QAction* action);
+  //void OnUpdateDbgStart(QAction* action);
+  //void OnUpdateDbgStop(QAction* action);
   void OnUpdateDbgStepNext(QAction* action);
   void OnUpdateDbgStepNextFunction(QAction* action);
   void OnUpdateDbgStepinto(QAction* action);
@@ -311,7 +312,6 @@ public:
   void OnUpdateDbgRunToSel(QAction* action);
   void OnUpdateDbgBreakpoint(QAction* action);
   void OnUpdateDbgClearBreakpoints(QAction* action);
-  void OnUpdateDbgStop(QAction* action);
 
   void OnUpdateTry(QAction *pb);
   void OnUpdateFail(QAction *pb);

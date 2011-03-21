@@ -70,6 +70,7 @@ public:
   void OnDebugLava();
   void OnTotalCheck();
   void OnUpdateDbgStart(QAction* action);
+  void OnUpdateDbgStop(QAction* action);
   bool OpenGUIView(LavaDECL** pdecl);
   bool OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate);
   CLavaBaseView* ExecHasView (LavaDECL* execDecl);

@@ -226,8 +226,8 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
   QFileInfo qf = QFileInfo(fname);
   filename = qf.absoluteFilePath();
   wxDocManager::GetDocumentManager()->AddFileToHistory(filename);
-  openForDebugging = LBaseData->openForDebugging;
-  LBaseData->openForDebugging = false;
+  openLavaPEforDebugging = LBaseData->openLavaPEforDebugging;
+  LBaseData->openLavaPEforDebugging = false;
  if (((CLavaApp*)wxTheApp)->pLavaLdocTemplate == GetDocumentTemplate()) {
     QFile fn(filename); 
     ObjectPathName = DString(qPrintable(filename));
@@ -271,9 +271,9 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
     PathName = qPrintable(filename);
     ok = OnOpenProgram(filename, true, false, true);
   }
-  if (ok && openForDebugging) {
+  if (ok && openLavaPEforDebugging) {
     debugOn = true;
-    LBaseData->openForDebugging = false;
+    LBaseData->openLavaPEforDebugging = false;
     ((CLavaDebugger*)LBaseData->debugger)->initData(this, &m_execThread);
     ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->stopReason = Stop_Start;
     QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));

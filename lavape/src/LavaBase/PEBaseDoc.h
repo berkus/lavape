@@ -103,6 +103,8 @@ public:
   virtual void IncludeHint(const QString& fullfn, CHESimpleSyntax* cheSyn);
   virtual void OnDebugLava() {}
   virtual void OnUpdateDbgStart(QAction *action) {}
+  virtual void OnUpdateDbgStop(QAction* action) {}
+
 private:
     Q_OBJECT
 

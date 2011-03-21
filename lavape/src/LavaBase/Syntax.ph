@@ -911,7 +911,8 @@ enum DbgCommand {  Dbg_Nothing,
                    Dbg_Exit          //LavaPE to Lava
                    };
 
-enum StopReason {  Stop_BreakPoint,
+enum StopReason {  Stop_SynError,
+                   Stop_BreakPoint,
                    Stop_NextStm,
                    Stop_NextFunc,
                    Stop_NextOp,

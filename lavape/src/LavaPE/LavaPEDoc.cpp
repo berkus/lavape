@@ -3534,7 +3534,14 @@ void CLavaPEDoc::OnUpdateDbgStart (QAction* action)
 	for (che = (CHE*) topDECL->NestedDecls.first;
 	        che && (((LavaDECL*) che->data)->DeclType == VirtualType);
 	        che = (CHE*) che->successor);
-	action->setEnabled (che && (((LavaDECL*) che->data)->DeclType == Initiator));
+	action->setEnabled (che 
+    && (((LavaDECL*) che->data)->DeclType == Initiator
+    && !LBaseData->debugger->synErrReported));
+}
+
+void CLavaPEDoc::OnUpdateDbgStop (QAction* action)
+{
+	action->setEnabled (LBaseData->debugger->synErrReported);
 }
 
 CLavaBaseView* CLavaPEDoc::ExecHasView (LavaDECL* execDecl)

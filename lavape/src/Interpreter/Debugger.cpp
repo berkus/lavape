@@ -162,7 +162,7 @@ void CLavaDebugger::start() {
 		  return;
 	  }
     //if (!((CLavaProgram*)myDoc)->corruptSyntax) 
-      myDoc->openForDebugging = true;
+      myDoc->openLavaPEforDebugging = true;
   }
   //if (!((CLavaProgram*)myDoc)->corruptSyntax) 
     myDoc->debugOn = true;
@@ -322,9 +322,13 @@ void CLavaDebugger::stop(DbgExitReason reason) {
   if (reason != disconnected)
     workSocket->disconnectFromHost();
   workSocket = 0;
-  if (myDoc && (reason == disconnected) && myDoc->openForDebugging && !((CLavaProgram*)myDoc)->corruptSyntax) {
+  if ((reason != normalEnd) && m_execThread) {
+    m_execThread->abort = true;
+    m_execThread->resume();
+  }
+  if (myDoc && (reason == disconnected) && myDoc->openLavaPEforDebugging && !((CLavaProgram*)myDoc)->corruptSyntax) {
     myDoc->debugOn = false;
-    myDoc->openForDebugging = false;
+    myDoc->openLavaPEforDebugging = false;
     myDoc = 0;
     if (m_execThread)
       m_execThread->resume();    //continue ExecuteLava
@@ -338,11 +342,7 @@ void CLavaDebugger::stop(DbgExitReason reason) {
       //((CLavaProgram*)myDoc)->CreateFailed();
       myDoc = 0;
     }
-  if ((reason != normalEnd) && m_execThread) {
-    m_execThread->abort = true;
-    m_execThread->resume();
-  }
-  else if (startedFromLavaPE) {
+  if (startedFromLavaPE) {
     if (reason == normalEnd)
       qApp->exit(0);
     else
