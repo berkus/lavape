@@ -130,12 +130,18 @@ void CLavaDebugger::start() {
   if (startedFromLavaPE) {
     workSocket = new QTcpSocket(this);
     connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
-    connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
+    connect(workSocket,SIGNAL(connected()),SLOT(connected()));
     workSocket->connectToHost(remoteIPAddress,remotePort);
-    connected();
+    //connected();
   }
 
   else { //PMDump
+    if (!listenSocket) {
+      listenSocket = new QTcpServer(this);
+      connect(listenSocket,SIGNAL(newConnection()),SLOT(connectToClient()));
+      listenSocket->listen();
+    }
+
 #ifdef WIN32
     lavapePath = ExeDir + "/LavaPE.exe";
 #elif __Darwin
@@ -143,13 +149,6 @@ void CLavaDebugger::start() {
 #else
     lavapePath = ExeDir + "/LavaPE";
 #endif
-
-    if (!listenSocket) {
-      listenSocket = new QTcpServer(this);
-      connect(listenSocket,SIGNAL(newConnection()),SLOT(connectToClient()));
-      listenSocket->listen();
-    }
-
     locPort = listenSocket->serverPort();
     QString host_addr = "127.0.0.1";
 	  QStringList args;
@@ -190,7 +189,7 @@ void CLavaDebugger::connected() {
     return;
   }
 
-  if (!startedFromLavaPE) {
+  if (!startedFromLavaPE || dbgStopData->stopReason == Stop_SynError) {
     if ((dbgStopData->stopReason != Stop_Start) && dbgStopData->StackChain.first) {
       varAction->run();
       addCalleeParams();

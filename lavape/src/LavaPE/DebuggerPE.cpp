@@ -190,6 +190,7 @@ void CLavaPEDebugger::stop(DbgExitReason reason) {
     return;
   isConnected = false;
   sendPending = true;
+  synErrReported = false;
 
   if (dbgReceived.newReceived) {
     delete dbgReceived.newReceived;
@@ -214,8 +215,8 @@ void CLavaPEDebugger::stop(DbgExitReason reason) {
     myDoc->debugOn = false;
     ((CPEBaseDoc*)myDoc)->changeNothing = false;
   }
-
-  if (startedFromLava || errBeforeStarted)
+  wxTheApp->selectionChanged = true; // to enforce button updates
+  if (startedFromLava/* || errBeforeStarted*/)
     ((CLavaMainFrame*)wxTheApp->m_appWindow)->OnFileExit();//qApp->exit(0);
   else
     QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)0));
