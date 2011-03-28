@@ -132,7 +132,6 @@ void CLavaDebugger::start() {
     connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
     connect(workSocket,SIGNAL(connected()),SLOT(connected()));
     workSocket->connectToHost(remoteIPAddress,remotePort);
-    //connected();
   }
 
   else { //PMDump
@@ -160,17 +159,14 @@ void CLavaDebugger::start() {
       QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaPEStartFailed);
 		  return;
 	  }
-    //if (!((CLavaProgram*)myDoc)->corruptSyntax) 
       myDoc->openLavaPEforDebugging = true;
   }
-  //if (!((CLavaProgram*)myDoc)->corruptSyntax) 
-    myDoc->debugOn = true;
+  myDoc->debugOn = true;
 }
 
 void CLavaDebugger::connectToClient() {
   workSocket = listenSocket->nextPendingConnection();
   connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
-  connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
   connected();
 }
 
@@ -202,6 +198,7 @@ void CLavaDebugger::connected() {
       return;
     }
   }
+  connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
 }
 
 void CLavaDebugger::receive() {

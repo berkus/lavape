@@ -148,7 +148,7 @@ void CLavaPEDebugger::receive() {
   dbgReceived.newReceived = new DbgMessage;
   CDPDbgMessage(GET, get_cid, dbgReceived.newReceived,false);
   if (get_cid->Done) {
-    errBeforeStarted = dbgReceived.newReceived->DbgData.ptr && !((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->StackChain.first;
+    //errBeforeStarted = dbgReceived.newReceived->DbgData.ptr && !((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->StackChain.first;
     if (((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->stopReason == Stop_SynError)
       synErrReported = true;
     if (!dbgReceived.newReceived->DbgData.ptr || ((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->stopReason != Stop_Start)

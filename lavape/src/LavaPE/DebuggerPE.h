@@ -33,7 +33,7 @@ public:
     myDoc=0;
     listenSocket = 0;
     workSocket = 0;
-    errBeforeStarted = false;
+    //errBeforeStarted = false;
   }
   QString remoteIPAddress;
   quint16 remotePort;
@@ -45,7 +45,7 @@ public:
   DbgMessages dbgReceived;
   CHAINANY brkPnts;
   bool startedFromLava;
-  bool errBeforeStarted;
+  //bool errBeforeStarted;
  
   void clearBrkPnts();
   void adjustBrkPnts();
