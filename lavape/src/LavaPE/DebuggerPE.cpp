@@ -75,15 +75,13 @@ void CLavaPEDebugger::start() {
   else {
     workSocket = new QTcpSocket(this);
     connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
-    connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
+    connect(workSocket,SIGNAL(connected()),SLOT(connected()));
     workSocket->connectToHost(remoteIPAddress,remotePort);
-    connected();
   }
 }
 
 void CLavaPEDebugger::connectToClient() {
   workSocket = listenSocket->nextPendingConnection();
-  connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
   connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
   connected();
 }
@@ -134,6 +132,7 @@ void CLavaPEDebugger::connected() {
     myDoc->debugOn = true;
     ((CPEBaseDoc*)myDoc)->changeNothing = true;
   }
+  connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
 }
 
 void CLavaPEDebugger::receive() {

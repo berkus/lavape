@@ -3541,7 +3541,7 @@ void CLavaPEDoc::OnUpdateDbgStart (QAction* action)
 
 void CLavaPEDoc::OnUpdateDbgStop (QAction* action)
 {
-	action->setEnabled (LBaseData->debugger->synErrReported);
+	action->setEnabled (debugOn);
 }
 
 CLavaBaseView* CLavaPEDoc::ExecHasView (LavaDECL* execDecl)
