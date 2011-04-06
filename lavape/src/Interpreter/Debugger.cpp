@@ -342,7 +342,7 @@ void CLavaDebugger::stop(DbgExitReason reason) {
     if (reason == normalEnd)
       qApp->exit(0);
     else
-      qApp->exit(1);
+      /*qApp->exit(1)*/;
   }
 }
 
