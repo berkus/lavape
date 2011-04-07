@@ -118,8 +118,6 @@ void CLavaPEDebugger::connected() {
     if (put_cid->Done) {
       ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = 0;
       ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = 0;
-      sendPending = false;
-
     }
     else {
       stop(otherError);
@@ -149,7 +147,7 @@ void CLavaPEDebugger::receive() {
   dbgReceived.newReceived = new DbgMessage;
   CDPDbgMessage(GET, get_cid, dbgReceived.newReceived,false);
   if (get_cid->Done) {
-    //errBeforeStarted = dbgReceived.newReceived->DbgData.ptr && !((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->StackChain.first;
+    wxTheApp->selectionChanged = true;
     if (((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->stopReason == Stop_SynError)
       synErrReported = true;
     if (!dbgReceived.newReceived->DbgData.ptr || ((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->stopReason != Stop_Start)
@@ -188,10 +186,10 @@ void CLavaPEDebugger::error(QAbstractSocket::SocketError socketError) {
 }
 
 void CLavaPEDebugger::stop(DbgExitReason reason) {
+  sendPending = true;
   if (!isConnected)
     return;
   isConnected = false;
-  sendPending = true;
   synErrReported = false;
 
   if (dbgReceived.newReceived) {
