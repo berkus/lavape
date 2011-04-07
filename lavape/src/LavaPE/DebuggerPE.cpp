@@ -57,7 +57,6 @@ void CLavaPEDebugger::start() {
 #endif
 
   if (myDoc->debugOn) {
-    //sendPending = true;
     if (!listenSocket) {
       listenSocket = new QTcpServer(this);
       connect(listenSocket,SIGNAL(newConnection()),SLOT(connectToClient()));
@@ -88,6 +87,7 @@ void CLavaPEDebugger::connectToClient() {
 
 void CLavaPEDebugger::connected() {
   isConnected = true;
+  sendPending = false;
 
   put_cid = new ASN1OutSock (workSocket);
   if (!put_cid->Done) {
@@ -133,6 +133,8 @@ void CLavaPEDebugger::connected() {
     ((CPEBaseDoc*)myDoc)->changeNothing = true;
   }
   connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
+  wxTheApp->selectionChanged = true;
+
 }
 
 void CLavaPEDebugger::receive() {
@@ -173,6 +175,7 @@ void CLavaPEDebugger::send() {
     if (dbgReceived.newReceived)
 		  ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)dbgReceived.newReceived->DbgData.ptr, myDoc);
   }
+  wxTheApp->selectionChanged = true;
 }
 
 void CLavaPEDebugger::error(QAbstractSocket::SocketError socketError) {

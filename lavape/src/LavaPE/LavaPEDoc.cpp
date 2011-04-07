@@ -3536,6 +3536,7 @@ void CLavaPEDoc::OnUpdateDbgStart (QAction* action)
 	        che = (CHE*) che->successor);
 	action->setEnabled (che 
     && (((LavaDECL*) che->data)->DeclType == Initiator
+    && LBaseData->debugger->sendPending
     && !LBaseData->debugger->synErrReported));
 }
 

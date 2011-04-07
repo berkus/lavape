@@ -7332,6 +7332,7 @@ void CExecView::on_DbgBreakpointAct_triggered() {
     cheBreak->data.Activate = stopObj->workFlags.Contains(isBrkPnt);
     LBaseData->ContData->BrkPnts.Append(cheBreak);
   }
+  wxTheApp->selectionChanged = true;
   redCtl->update();
 }
 
@@ -7416,8 +7417,6 @@ void CExecView::OnUpdateDbgRunToSel(QAction* action)
 void CExecView::OnUpdateDbgBreakpoint(QAction* action)
 {
   action->setEnabled(!Taboo(true)
-    //&& LBaseData->debugger->isConnected
-    //&& (!LBaseData->debugger->isConnected || myDoc == LBaseData->debugger->myDoc)
     && text->currentSynObj->IsExecutable()
     && !text->currentSynObj->IsPlaceHolder()
     && !text->currentSynObj->IsConstant()
@@ -7426,7 +7425,7 @@ void CExecView::OnUpdateDbgBreakpoint(QAction* action)
 }
 
 void CExecView::OnUpdateDbgClearBreakpoints(QAction* action) {
-  action->setEnabled(LBaseData->debugger->isConnected/*!LBaseData->debugger->isConnected || myDoc == LBaseData->debugger->myDoc*/);
+  action->setEnabled(true/*LBaseData->ContData && LBaseData->ContData->BrkPnts.first*/);
 }
 
 void CComment::on_okButton_clicked()
