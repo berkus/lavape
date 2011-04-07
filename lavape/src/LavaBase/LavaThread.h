@@ -75,7 +75,7 @@ enum DbgExitReason {
 
 class LAVABASE_DLL CLavaDbgBase : public QObject {
 public:
-  CLavaDbgBase(){ isConnected = false; sendPending = false; myDoc = 0; synErrReported = false;};
+  CLavaDbgBase(){ isConnected = false; sendPending = true; myDoc = 0; synErrReported = false;};
   CLavaDbgBase(CLavaBaseDoc *d);
 
 	CLavaBaseDoc *myDoc;

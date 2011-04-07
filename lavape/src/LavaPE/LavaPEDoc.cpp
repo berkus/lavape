@@ -3525,7 +3525,7 @@ void CLavaPEDoc::OnTotalCheck()
 
 void CLavaPEDoc::OnUpdateDbgStart (QAction* action)
 {
-  if (!mySynDef || (LBaseData->debugger->isConnected && LBaseData->debugger->myDoc != this)) {
+  if (!mySynDef /*|| (LBaseData->debugger->isConnected && LBaseData->debugger->myDoc != this)*/) {
     action->setEnabled(false);
 		return;
   }
@@ -3535,14 +3535,14 @@ void CLavaPEDoc::OnUpdateDbgStart (QAction* action)
 	        che && (((LavaDECL*) che->data)->DeclType == VirtualType);
 	        che = (CHE*) che->successor);
 	action->setEnabled (che 
-    && (((LavaDECL*) che->data)->DeclType == Initiator
+    && (LBaseData->debugger->isConnected || ((LavaDECL*) che->data)->DeclType == Initiator
     && LBaseData->debugger->sendPending
     && !LBaseData->debugger->synErrReported));
 }
 
 void CLavaPEDoc::OnUpdateDbgStop (QAction* action)
 {
-	action->setEnabled (debugOn);
+	action->setEnabled (LBaseData->debugger->isConnected/*debugOn*/);
 }
 
 CLavaBaseView* CLavaPEDoc::ExecHasView (LavaDECL* execDecl)
