@@ -498,7 +498,7 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
       ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
     else
       ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,0);
-  if (debug) {
+  if (ckd.synError) {
     ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->SynErrData.ptr = ckd.synError;
     ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->stopReason = Stop_SynError;
   }
