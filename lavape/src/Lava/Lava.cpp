@@ -46,7 +46,7 @@
 #include "qprocess.h"
 #include <stdlib.h>
 #include <QTextStream>
-#include <QtTest/QtTest>
+//#include <QtTest/QtTest>
 
 #ifndef WIN32
 #include <locale.h>
@@ -75,7 +75,7 @@ static const char slash='/';
 int main( int argc, char ** argv ) {
   CLavaApp app(argc,argv);
 
-  QTest::qSleep(20000);
+//  QTest::qSleep(20000);
   //Sleep(20000);
 
   ExeDir = app.applicationDirPath();
