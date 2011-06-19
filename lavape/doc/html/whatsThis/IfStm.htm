@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>IfStatement</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  em.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  strong.c1 {color:Blue}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+      }
+      .style2
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style3
+      {
+          color: #CC00CC;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">If-then-elsif-else statement</h2>
+
+  <p>The <em class="c2">Lava</em> <strong>i<span class="style1">f</span></strong><span 
+          class="style1">-<strong>then</strong>-<strong>elsif</strong>-<strong>else</strong></span> branching statement is different from corresponding statements in other languages in so far as its 
+      <span class="style2">if</span>- and <span class="style3">elsif</span>-conditions aren&#39;t <strong>expressions</strong> but <strong>statements</strong> and as such may be 
+      <span class="style2">true</span> or <span class="style2">false</span>. This is a consequence of the <a href="../SingleAssigLogSem.htm">logical semantics</a> of <em class="c2">Lava</em>.</p>
+
+  <p>The <span class="style3">elsif</span> and <span class="style3">else</span> branches are optional and may be omitted (by deleting them using the 
+      <strong>DEL</strong> key or the scissors button).</p>
+
+  <p><strong>Please note</strong> that <em class="c2">Lava</em> performs <a href="../IniChecks.htm">comprehensive initialization checks</a> for all kinds of variables. This may particularly involve a check whether a value is assigned to a certain variable <strong>in all branches</strong> of a <em class="c2">Lava</em> <a href="../EditExec.htm#exec">exec</a>, or <strong>in all preceding branches</strong> before a read reference to that variable. These checks will succeed only if you don&#39;t distribute these assignments over separate 
+      <span class="style2">if</span> statements as in the following example:</p>
+
+<pre xml:space="preserve">
+<span class="style2">if</span>
+  A
+<strong class="c1">then</strong>
+  <strong class="c1">set</strong> var1 <strong class="c1">&lt;==</strong> x
+<strong class="c1">#if</strong>;
+<strong class="c1">if</strong>
+  <strong class="c1">not</strong> A
+<strong class="c1">then</strong>
+  <strong class="c1">set</strong> var1 <strong class="c1">&lt;==</strong> y
+<strong class="c1">#if</strong>
+</pre>
+
+  <p><em class="c2">Lava</em> won&#39;t be able to recognize that these two 
+      <span class="style2">if</span> statements constitute a complete disjunction, but you should use a single 
+      <span class="style2">if-then-else</span> statement as follows:</p>
+
+<pre xml:space="preserve">
+<strong class="c1">if</strong>
+  A
+<strong class="c1">then</strong>
+  <strong class="c1">set</strong> var1 <strong class="c1">&lt;==</strong> x
+<strong class="c1">else</strong>
+  <strong class="c1">set</strong> var1 <strong class="c1">&lt;==</strong> y
+<strong class="c1">#if</strong>
+</pre>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Object-oriented problem separation</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link href="LavaStyles.css" rel="stylesheet" type="text/css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  div.c9 {text-align: center}
+  table.c8 {background-color: #FFFF99}
+  p.c7 {font-weight: bold}
+  em.c6 {font-weight: bold; color: Red}
+  strong.c5 {font-style: italic; color: Red}
+  p.c4 {font-weight: bold; text-align: left}
+  p.c3 {text-align: left}
+  p.c2 {text-align: center}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Object-Oriented Problem Separation (OOPS)<br /><br />
+
+  and how to achieve it through decomposition into<br /><br />
+
+  Many Irreducible Mini-Methods (MIMM)</h2>
+
+  <p>Computer programming is a particular kind of <strong>problem solving</strong>.</p>
+
+  <p>Speaking generally, the essence of a problem is that we want to</p>
+
+  <ul>
+    <li>transform given objects or situations into new or modified objects or situations,</li>
+
+    <li>or to find out whether or not a given situation or object has a certain property.</li>
+  </ul>
+
+  <p>OO programming describes <em>situations</em> by <em>objects</em>; so in the OO context it suffices to talk about objects.</p>
+
+  <p>OO programming describes <em>problem solutions</em> by <em>methods</em>. From the problem-solving perspective the purpose of a method is to produce new objects from existing ones or to query or modify existing objects.</p>
+
+  <p>We solve problems in steps, i.e., by solving a number of <strong>lower-level sub-problems</strong> in a certain order.</p>
+
+  <p>A method of a class in an OO program describes such a succession of sub-problem solutions.</p>
+
+  <p>Inspection of existing real-world programs shows us that methods are very often a conglomeration of problem solutions on several levels of detail. They do not just describe the solution of the actual, primary problem, but also the solutions of lower-level sub-problems in a way which makes it hard to understand all these and to modify and maintain or to completely replace particular of these partial solutions.</p>
+
+  <p>We conclude that</p>
+
+  <ul>
+    <li>ease of program comprehension,</li>
+
+    <li>ease of maintenance,</li>
+
+    <li>ease of adaptability to new requirements,</li>
+
+    <li>and long-term reusability of problem solutions (cf. Dan Bricklin&#39;s article on &quot;<a target="_blank" href="http://www.bricklin.com/200yearsoftware.htm">Software That Lasts 200 Years</a>&quot;)</li>
+  </ul>
+
+  <p>can be achieved only if we avoid this conglomeration of problem solutions belonging to several levels of detail. This is what we call</p>
+
+  <p class="c2"><strong>Object-Oriented Problem Separation (OOPS)</strong>.</p>
+
+  <p class="c3">It centers around the idea that</p>
+
+  <ul>
+    <li>
+      <p class="c3">in OO programming, every method should solve only one problem,</p>
+    </li>
+
+    <li>
+      <p class="c3">every problem solution should be described in a separate method of its own,</p>
+    </li>
+
+    <li>
+      <p class="c3">and in particular: clearly identifiable sub-problems should be described in separate methods.</p>
+    </li>
+  </ul>
+
+  <p class="c3">Individual methods will become much smaller this way and (hopefully) easier to understand and to modify. Our object classes will consist of</p>
+
+  <p class="c2"><strong>Many Irreducible Mini-Methods (MIMM)</strong>.</p>
+  <hr />
+
+  <p><br /></p>
+
+  <p class="c3">Decomposition of programs into many small methods is a common programming idiom in object-oriented languages. The above considerations show how this decomposition can be motivated in terms of &quot;object-oriented problem separation&quot;. But <strong>OOPS:MIMM</strong> raises a number of obvious questions:</p>
+
+  <p><br /></p>
+
+  <p class="c4">A) Doesn&#39;t OOPS:MIMM just transform the problem of bloated and conglomerated methods into a problem of bloated and conglomerated classes?</p>
+
+  <p class="c3">In <strong class="c5">Lava</strong> we have several ways to avoid this, fortunately:</p>
+
+  <ol>
+    <li>
+      <p class="c3">In many cases it will suffice to hide those &quot;lower-level detail methods&quot; <em>in the implementation</em> of the respective class. Since <em class="c6">Lava</em> provides complete <strong>separation of class interfaces and class implementations,</strong> they are concealed then from the eyes of the interface users and cannot confuse them any longer.</p>
+    </li>
+
+    <li>
+      <p class="c3">In other cases it may be justified to associate sub-problem solutions with completely separate object classes in order to adequately deal with these sub-problems. In some of these cases it may be natural to utilize <em class="c6">Lava</em><strong>&#39;s support of nested declarations</strong> and to nest the corresponding class declarations within the primary class (interface) declaration.</p>
+    </li>
+
+    <li>
+      <p class="c3">In a third group of cases it may be more natural to utilize <em class="c6">Lava</em><strong>&#39;s support of multiple inheritance</strong> and to provide specific base classes of the primary class for dealing with lower-level sub-problems. These base classes would be viewed as &quot;mix ins&quot; or &quot;ingredients&quot; of the primary class.</p>
+    </li>
+  </ol>
+
+  <p><br /></p>
+
+  <p class="c7">B) Isn&#39;t it too cumbersome to create and manage many mini-methods?</p>
+
+  <p class="c3">In cases 2 and 3 above, where it is justified to provide separate classes associated with lower-level sub-problems, the programmer will accept the additional effort, since he/she is rewarded by an obviously improved since more transparent program structure.</p>
+
+  <p class="c3">The crucial issue with case 1 is that you have to jump from your executable code to a different place in order to declare a new method, and then back to the place in your executable code where you wanted to insert a reference to the new method. In <em class="c6">LavaPE</em> this nuisance is largely mitigated</p>
+
+  <ul>
+    <li>
+      <p class="c3">by <em class="c6">LavaPE</em>&#39;s consequent support of <strong>one-click navigation</strong> between declarations, implementations and references,</p>
+    </li>
+
+    <li>
+      <p class="c3">by <strong>two special shortcut buttons</strong> on the toolbar at the top of <a href="EditExec.htm">exec</a> windows. They are visible if you select the &lt;func&gt; placeholder of a method invocation and allow you to create a new private or exported method (in the implementation or in the interface, respectively) of the call objects (static) class and to insert a reference to the new function for &lt;func&gt;, without the necessity to first find and jump to the declaration or implementation of that class.<br />
+      <br />
+      If you then want to declare also some input or output parameters for the new method, a single click on <em class="c6">LavaPE</em>&#39;s &quot;Go to declaration&quot; button brings you to the method&#39;s declaration where you will add the desired parameters, and another click on the &quot;Return to reference&quot; button will bring you back to the method reference in your executable code.</p>
+    </li>
+  </ul>
+
+  <p><br /></p>
+
+  <p class="c4">C) What are &quot;clearly identifiable sub-problems&quot;?</p>
+
+  <p class="c3">This is largely a matter of taste and context. Sub-problems will always be &quot;smaller&quot; in some sense or other. There are some general considerations, nevertheless, that may suggest to factor out certain aspects of a program explicitly as sub-problems and to solve them in separate methods:</p>
+
+  <ul>
+    <li>
+      <p class="c3"><strong>Object classes are problem classes</strong>: If a code passage within a method of a class C isn&#39;t actually related to objects of class C but to objects of some completely unrelated class or to objects of a sub- or super-class of C then you should consider to transform the code passage into a method of that other class.</p>
+    </li>
+
+    <li>
+      <p class="c3"><strong>Sub-objects raise sub-problems</strong>: Construction of sub-objects (= initialization of member variables) should, as a rule, be factored out. It will mostly be better to initialize member variables on a separate, lower level of detail. This is even <strong>enforced</strong> in <em class="c6">Lava</em>: Within an <a href="ObjectLifeCycle.htm#initializer">initializer</a> of a <em class="c6">Lava</em> class, a value must be assigned to <em>every</em> non-optional member variable, and you cannot pass an object as a method parameter or call a method of the object before the object has been completely initialized.<br />
+      <br />
+      This &quot;single-shot&quot; initialization within the initializers of a class is surely one of the most restrictive (and experimental) features of <em class="c6">Lava</em> which forces the programmer to construct complex objects (for instance tree structures) in a much more disciplined way in a single pass, but, together with <em class="c6">LavaPE</em>&#39;s rigorous initialization checks for local variables, it promises to prevent most of the very frequent &quot;missing initialization&quot; errors that would cause hard to analyze crashes in other programming languages. (In some cases you need a way to <a href="MultiPhaseRecIni.htm">collectively or recursively initialize</a> several objects that point to each other. This is accomplished by the <a href="MultiPhaseRecIni.htm">initialize</a> clause of the declare construct.<br />
+      <br />
+      Note the <a href="TwoObjectCategories.htm">distinction</a> between variable &quot;state objects&quot; in <em class="c6">Lava</em> that can be modified at any time, and immutable &quot;value objects&quot; that cannot be changed any more after they have left the 
+          <span class="style1">new</span> expression. Single-shot initialization applies also to state objects, and it wouldn&#39;t comply with the spirit of <em class="c6">Lava</em> if you would abuse state objects only to circumvent the single-shot initialization discipline.</p>
+    </li>
+
+    <li>
+      <p class="c3"><strong>Case distinctions may induce sub-problem distinctions</strong>: Deeply nested case distinctions as well as long and complex branches will often impede program comprehension to an unacceptable degree. Both should be avoided by shifting long branches and nested distinctions into separate methods.</p>
+    </li>
+
+    <li>
+      <p class="c3"><strong>Big tasks may call for a subdivision into major &quot;milestones&quot;</strong>: The subdivision may be desirable for various reasons and will often be somewhat arbitrary. It may, e.g., be motivated by the assignment of distinct work items to different people, and/or by arguments concerning the relative stability of certain desirable intermediate goals, or just by clarity/transparency/comprehensibility arguments.<br />
+      <br />
+      The milestones correspond to input and output parameters of specific methods which describe how we can get from the initial state or from one or several milestones to one or several dependent milestones.</p>
+    </li>
+  </ul>
+
+  <p class="c3">If you exploit all these possibilities of method / sub-problem factoring you will arrive at a class structure with <strong>mini-methods</strong> that are in this sense <strong>irreducible</strong>:</p>
+
+  <p class="c2"><strong>MIMM</strong> = <strong>M</strong>any <strong>I</strong>rreducible <strong>M</strong>ini-<strong>M</strong>ethods.</p>
+
+  <div class="c9">
+    <table class="c8" id="AutoNumber1" border="1" cellpadding="0" cellspacing="0" width="90%">
+      <tbody>
+        <tr>
+          <td>
+            <p class="c2">The MIMM notion doesn&#39;t have a strictly formal definition but shall encourage the programmers to exploit all above-mentioned reduction possibilities to remove all lower-level details from all methods until each of them deals only with a single level of detail and is of minimum complexity.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="c3">Some more general recommendations may help to further improve the comprehensibility of programs:</p>
+
+  <ul>
+    <li>
+      <p class="c3">In any case, you should create a separate new method for some code passage only if you can find a succinct, suggestive, unmistakable name for it, or else it will be of limited value only.</p>
+    </li>
+
+    <li>
+      <p class="c3">Don&#39;t hesitate to use long, composite names, if necessary to achieve this goal.</p>
+    </li>
+
+    <li>
+      <p class="c3">Use comments in method declarations to explain the essence of the methods.</p>
+    </li>
+
+    <li>
+      <p class="c3">Use <em class="c6">Lava</em> preconditions, postconditions and invariants (&quot;<a href="DBC.htm">Design By Contract</a>&quot;) to characterize the semantics and the implementation restrictions of methods more formally.</p>
+    </li>
+  </ul>
+
+  <p class="c4">D) Isn&#39;t it too inefficient to invoke many mini-methods instead of using inline code?</p>
+
+  <p class="c3"><em class="c6">Lava</em> is an interpreted programming language and optimization isn&#39;t one of our primary concerns at present. But principally we think that the overhead of mini-method invocations could be avoided in most cases by automatic inlining and automatic recognition of <strong>tail recursion</strong> by the <em class="c6">Lava</em> interpreter (or a future <em class="c6">Lava</em> compiler) which would then be replaced by an internal loop execution automatically.</p>
+
+  <p class="c3"><strong>Speaking of loops:</strong> The semantics of traditional loops in programming languages is heterogeneous: Partly they are an optimized way to express tail recursion, partly their semantics would be expressed in mathematical terms by quantifiers ranging over finite sets. In contrast to this, <em class="c6">Lava</em> prefers to <a href="RepetComputSamples.htm">abandon traditional loops</a>, to explicitly provide quantifiers ranging over finite sets, and to use recursive functions where appropriate. This is another &quot;built-in&quot; measure in <em class="c6">Lava</em>, beyond the above-mentioned features, to promote the <strong>OOPS:MIMM</strong> programming discipline.</p>
+  <hr />
+
+  <p class="c4">See also:</p>
+
+  <p class="c3"><a href="FAQfromSpaghettiToFractals.htm">Spaghetti-like, tortellini-like and fractal program structures</a>.</p>
+
+  <p class="c3"><a target="_blank" href="http://www.cs.brandeis.edu/%7Edkw/C-humor/pasta.txt">http://www.cs.brandeis.edu/~dkw/C-humor/pasta.txt</a></p>
+</body>
+</html>

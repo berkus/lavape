@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Execution environment of Lava applications</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  h2.c2 {text-align: center}
+  strong.c1 {font-style: italic; color: Red}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c2">Execution environments of <strong class="c1">Lava</strong> applications</h2>
+
+  <p>A <strong class="c1">Lava</strong> file represents an executable program if the first <strong class="c1">Lava</strong> entity in its top-level package is an <a href="Packages.htm#initiator">initiator</a>. You can execute such a <strong class="c1">Lava</strong> program, i.e., its first initiator, from <strong class="c1">LavaPE</strong> by clicking the &quot;Run&quot; button. Alternatively you could start the <strong class="c1">Lava</strong> interpreter (Lava.exe) and pass the name of an executable <strong class="c1">Lava</strong> program as a command line parameter to it.</p>
+
+  <p>This way of starting a <strong class="c1">Lava</strong> program by starting a top-level initiator is appropriate for <strong>stand-alone 
+      <span class="style1">Lava</span> applications</strong> or for programs with a <strong>
+      <span class="style1">Lava</span> main program</strong> that perhaps make use of <strong>&quot;foreign-language&quot; <a href="Components.htm">components</a></strong> additionally.</p>
+
+  <p>Conversely a <strong class="c1">Lava</strong> program could be invoked <strong>as a component</strong> from another <strong class="c1">Lava</strong> or foreign-language main program or component.</p>
+
+  <p>In any case we have to envisage several ways how such a <strong class="c1">Lava</strong> program or <strong class="c1">Lava</strong> component may interact with its environment, and that is what the term &quot;execution environments&quot; is intended to express. The pertinent support available from the underlying operating system will largely decide upon the variety of reasonable execution environments:</p>
+
+  <ol>
+    <li>A <strong>&quot;<span class="style1">Lava</span> console application&quot;</strong> might be started from a command line environment and consume/produce nothing else than line mode input/output.</li>
+
+    <li>A <strong>&quot;<span class="style1">Lava</span> tabbed window application&quot;</strong> may present a Multiple-Document Interface to the user. Several <strong class="c1">Lava</strong> programs may run concurrently in such an execution environment and open any number of 
+        tabs. <strong>This is what the current 
+        <span class="style1">Lava</span> development aims at as a first step.</strong></li>
+
+    <li><strong>&quot;<em>Lava</em> SDI applications&quot;</strong> presenting a single-program/Single-Document Interface are imaginable as a special case.</li>
+
+    <li><strong>Component-based applications</strong> with <strong class="c1">Lava</strong> programs on the client/container or on the component/server side could support various features, for instance, in <strong class="c1">Microsoft COM</strong> terms: Linking/embedding of user interfaces, compound documents, <strong class="c1">ActiveX Documents</strong>, <strong class="c1">ActiveX Controls</strong>, particularly embedding of <strong class="c1">Lava</strong> objects in WEB pages similar to <strong class="c1">Java</strong> applets or <strong class="c1">ActiveX Controls/Documents</strong>, <strong class="c1">Automation</strong> client or server, drag-and-drop between components, communication through the clipboard, database access through <strong class="c1">OLE-DB</strong>.</li>
+
+    <li><strong class="c1">Lava</strong> programs as <strong class="c1">CORBA</strong> objects/components.</li>
+  </ol>
+</body>
+</html>

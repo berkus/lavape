@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>FAQ design patterns</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  em.c3 {font-weight: bold}
+  strong.c2 {font-style: italic; color: Red}
+  h2.c1 {font-weight: bold; text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+      .style2
+      {
+          color: #FF0000;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Does <span class="style1">Lava</span> support design patterns?</h2>
+
+  <p>The answer is <strong class="c2">yes</strong>, and this is one of the most important and advanced features of <strong class="c2">Lava.</strong></p>
+
+  <p><strong class="c2">Lava</strong> provides particular support for groups (&quot;packages&quot;) of interrelated classes that refer indirectly to one another through type parameters (&quot;virtual types&quot;). The 
+      <span class="style2"> <em class="c3">Lava</em></span> derivation notion applies not only to classes, but also to such parameterized packages. In a derived package more derived classes will be assigned to the virtual types / type parameters of the package.</p>
+
+  <p>It is well known that such a <em>virtual type</em> approach is more appropriate than the traditional <em>template</em> / <em>parametric types</em> approach for describing <em>groups of interrelated classes with common type parameters</em>. Many design patterns are based on such groups of interrelated classes.</p>
+
+  <p>Nevertheless the recent proposals concerning genericity enhancements for the <strong class="c2">Java</strong> language are based on the older <em>parametric types</em> approach, presumably because it is easier to incorporate it in the existing <strong class="c2">Java</strong> language without or with only minor changes to the <strong class="c2">Java</strong> Virtual Machine.</p>
+
+  <p>We believe that in a new experimental language like <strong class="c2">Lava</strong> the <em>virtual type</em> approach should get a real chance to show its apparent advantages.</p>
+
+  <p>See our section on <a href="PatternsFrameworks.htm">patterns/frameworks</a> and our <a href="PatternSamples.htm">pattern samples</a> for more details.</p>
+</body>
+</html>

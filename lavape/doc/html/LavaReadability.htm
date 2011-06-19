@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Comprehensibility of Lava programs</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  a.c4 {font-weight: bold}
+  strong.c3 {font-style: italic; color: Red}
+  em.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #CC00CC;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1"><strong>Improved comprehensibility of <em>Lava</em></strong> programs</h2>
+
+  <p>Particularly the following features promise to improve the readability and comprehensibility of <em class="c2">Lava</em> programs:</p>
+
+  <ol>
+    <li><strong class="c3">Lava</strong> is a <strong>small language</strong> all of whose constructs can be represented by a limited number of tool buttons of the <strong class="c3">LavaPE</strong> programming environment.</li>
+
+    <li>The absence of <a href="Unsolved.htm#loops">conventional loop constructs</a> and the <a href="SingleAssigLogSem.htm">single-assignment</a> nature of <em class="c2">Lava</em> have the highly desirable consequence that loops have to be replaced with recursive functions. Therefore, <strong class="c3">Lava</strong> programs will typically consist of many <a id="smallFunctions"></a> <strong>small functions</strong> and will not contain large and obscure nested loop constructs.</li>
+
+    <li>The <strong>single-assignment</strong> nature of <em class="c2">Lava</em>, in combination with the <strong>absence of global variables</strong> and &quot;static&quot; member variables and functions, <a href="Unsolved.htm#singleAssign">clarifies the data flow</a> of <em class="c2">Lava</em> programs in a similar way as abandoning &quot;go to&quot; has clarified the control flow of programs.</li>
+
+    <li><a id="declNesting"></a><strong>Declarations</strong> are separated from executable code; they <strong>can be</strong> <strong>nested to any depth</strong> and grouped into <a href="Packages.htm#packages">packages</a>. The top layer of the <strong class="c3">Lava</strong> <a class="c4" href="EditTree.htm">declaration tree</a> is reserved for the really basic primary declarations; subordinate auxiliary notions are hidden on lower tree levels, which the programmer will open in the <strong class="c3">Lava</strong> <a href="EditTree.htm">declaration tree view</a> only if required. To keep the semantics of nested declarations as simple and their arrangement as flexible as possible, nesting of declarations is used in <strong class="c3">Lava</strong> <a href="EditTree.htm">declaration trees</a> <em>only</em> as a means to reflect the primary and subordinate nature of declarations; it does <em>not</em> imply any special semantic relationship between layers of nesting (unlike, e.g., the &quot;inner classes&quot; of <strong class="c3">Java)</strong>.<br />
+    <br />
+    Note, however, the &quot;sealed&quot; nature of implementations and <a href="ProtectedFriend.htm">opaque</a> packages, as well as the role of <strong class="c3">Lava</strong> <a href="PatternsFrameworks.htm">patterns</a> as a closed scope or domain of <a href="PatternsFrameworks.htm#VTvisibility">visibility</a> for the contained virtual types.</li>
+
+    <li>The distinction between <a class="c4" href="TwoObjectCategories.htm">immutable value and variable state objects</a> has been introduced primarily as a means to emphasize the quite different role of these objects in the context of the respective application. Following the traditional languages, you could, of course, declare all objects as state objects in a <em class="c2">Lava</em> program, but you would definitely sacrifice a great deal of readability this way.</li>
+
+    <li><em class="c2">Lava</em> enforces a <a class="c4" href="ObjectLifeCycle.htm">strict initialization discipline</a> on object creation. All mandatory member variables of an object must be initialized within a proper initializer function of the respective (creatable) class. They can be further customized within the 
+        <span class="style1">but</span>-clause of the <span class="style2">new</span> construct. Member variables of value objects cannot be changed any more after leaving the 
+        <span class="style2">new</span> construct.</li>
+
+    <li><a id="inOutParams"></a> Formal parameters of functions are clearly separated into <strong>&quot;input&quot; and &quot;output&quot; parameters</strong>. This allows additional consistency checks: A function <em>must not</em> assign a value to one of its input parameters, whereas a value <em>must</em> be assigned to every non-optional output parameter in every branch of the function. (Formal parameters and member variables may be declared &quot;optional&quot;. In this case they may assume the special default value 
+        <span class="style2">&#216;</span>, which means &quot;undefined&quot;.)</li>
+
+    <li>The <a href="PatternsFrameworks.htm">overridable type parameters</a> of <em class="c2">Lava</em> packages and classes facilitate the composition of large applications and components from rather small <strong>reusable design patterns</strong>. They render explicit type casts superfluous and elevate <em class="c2">Lava</em> programs to a new level of static type-safety in this way.</li>
+
+    <li><em class="c2"><a id="codeGeneration"></a>Lava</em> support for <strong>multiple inheritance</strong> is restricted to the semantically less problematic case of <a href="SepItfImpl.htm#virtualBaseClasses">&quot;shared base classes&quot;</a>. Multiple inheritance is important since it allows us to equip complex objects with <em>separately implemented</em> capabilities. This is particularly useful on the top level of entire applications or components. Here multiple inheritance is highly welcome as a more appropriate substitute for <strong>&quot;code generation wizards&quot;</strong>, since it is much simpler to modify the list of base classes of a class than to edit the generated program text in order to revise the set of capabilities to be supported by the application or component.</li>
+
+    <li>Furthermore, multiple inheritance allows us to <strong><a id="smallInterfaces"></a> decompose a large class into many small ones</strong>, whose implementations may then be provided separately, even in separate files. (By comparison, recall: If a <strong class="c3">Java</strong> class implements many interfaces then the implementations of all member functions of all those interfaces are contained in this same class declaration/definition within one single file.)</li>
+  </ol>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Iterator / cursor / visitor samples</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link href="LavaStyles.css" type="text/css" rel="STYLESHEET" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  strong.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Iterator / cursor / visitor samples</h2>
+
+  <h3>Sample files</h3>
+
+  <p>Please open <strong>CursorDemo.lava</strong> in <strong class="c2">LavaPE</strong>.</p>
+
+  <p>Please open <strong>Visitor.lava</strong> in <strong class="c2">LavaPE</strong>.</p>
+
+  <h3>Topics</h3>
+
+  <p>Iterators / cursors / visitors provide ways to hide and separate aggregate/container objects from sequential algorithms that run through the individual members of those containers. See also the <a href="RepetComputSamples.htm">introduction</a> to our repetitive computation samples.</p>
+
+  <h3>Overview</h3>
+
+  <p>See <a href="TypeSafety.htm#GOF">[8]</a> for an extensive discussion of the iterator/cursor and visitor <a href="PatternsFrameworks.htm">design patterns</a>. The C++ Standard Template Library STL (see <a target="_blank" href="http://www.sgi.com/tech/stl/">http://www.sgi.com/tech/stl/</a>) provides further examples of various kinds of iterators/cursors.</p>
+
+  <p>An <strong>Iterator</strong> (also called <strong>cursor)</strong> allows you to walk sequentially through a <em>collection</em> of objects of the same type in some order that is specific for the respective cursor/iterator. After each step (performed by a &quot;next&quot; operation) you may fetch and process the &quot;current&quot; element object of the collection. A &quot;done&quot; member function or variable tells you when you are finished.</p>
+
+  <p><strong>&quot;Visitor&quot;</strong> is another design pattern that serves for walking through the elements (or &quot;nodes&quot;) of a <em>composite</em> object in some order which will not be sequential generally. The elements of a composite object may have different types. In the typical case the composite object is a tree structure, and the visitor walks recursively through this tree and performs operations on the tree nodes. You can have several categories of operations on the tree nodes. Each of these is expressed by a specific derived class of a common &quot;Visitor&quot; base class. You can easily add further operation categories by defining corresponding Visitor sub-classes, without changing the basic tree structure. This is achieved by putting these operations into the Visitor sub-classes rather than the tree node sub-classes.</p>
+
+  <h3>Where to look and what to do</h3>
+
+  <p><strong>Cursor/iterator:<br /></strong><br />
+  The Cursor/iterator sample and the Visitor sample use the same tree structure from include file Tree.lava. The tree nodes (class <em>TreeNode</em>) inherit two attributes, a string <em>str</em> and an integer <em>n</em>, from class <em>TreeData</em>. The <em>TreeCursor</em> class walks in preorder through the tree and displays the contents of <em>str</em> and <em>n</em>.</p>
+
+  <p>Look at the implementation of the Cursor operation <em>next</em> in class <em>TreeCursor</em> and note that it is rather tedious, error-prone and unnatural to sequentialize the tree traversal using a cursor/iterator. Recursive traversal is much simpler and much more elegant, as the visitor sample shows. The cursor/iterator traversal would be acceptable only if it would allow you to easily inherit/reuse an existing cursor-based algorithm.</p>
+
+  <p>Run the sample program.</p>
+
+  <p><strong>Visitor:<br /></strong><br />
+  The visitor sample uses the same tree structure as the cursor/iterator sample. The basic <em>Visitor</em> class has an abstract virtual type <em>R</em> for the result parameter of its (abstract) <em>evaluate</em> function. The concrete Visitors <em>StringVisitor</em> and <em>IntVisitor</em> assign the concrete Types <em>String</em> and <em>Integer</em> to <em>R</em>, respectively, and implement <em>evaluate</em> in quite different ways.</p>
+
+  <p>Note how the initiator <em>VisitorDemo</em> creates the two kinds of visitors and applies them to the same tree structure. Look at the implementations of <em>StringVisitor::evaluate</em> and <em>IntVisitor::evaluate</em> and note how the tree traversal is expressed by recursive invocations of <em>evaluate</em>.</p>
+
+  <p>Run the sample program.</p>
+</body>
+</html>

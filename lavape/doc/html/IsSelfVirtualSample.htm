@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>A type is either virtual or non-virtual</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  em.c3 {font-weight: bold; color: Red}
+  strong.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+      }
+      .style2
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">If class <span class="style2">C</span> is the value of a virtual type
+      <span class="style2">V </span>then the <span class="style2">self</span> variables<br />
+      of all methods of <span class="style2">C</span> are considered to have type <span class="style2">V</span></h2>
+
+  <h3>Sample file</h3>
+
+  <p>Please open <strong>IsSelfVirtual.lava</strong> in <strong class="c2">LavaPE</strong>.</p>
+
+  <h3>Topic</h3>
+
+  <p>Motivation of <a href="PatternsFrameworks.htm#VTandNonVT">rule 9</a> in our section on <em class="c3">Lava</em> support for <a href="PatternsFrameworks.htm">genericity, design patterns, and frameworks</a>, which reads:</p>
+
+  <ul>
+    <li><a id="VTandNonVT"></a>If a class <em>A</em> is the value of a virtual type
+    <em>V</em> then <em>A</em> then A cannot also be the value of another virtual type. </li>
+  </ul>
+
+  <h3>Overview</h3>
+
+  <p>In object-oriented programming languages the special <i>self</i> or <i>this</i> 
+      variable wouldn&#39;t be declared explicitly. The class <i>C</i> to which the respective 
+      member function <i>f</i> belongs is considered to be also the class of <i>self</i>. 
+      But how should we proceed if <i>C</i> occurs also as the value of some virtual 
+      type <i>VT</i>? Should we consider <i>self </i>as being of type C or of type <i>
+      VT</i>?</p>
+
+  <p>Assume that a member function <em>f</em> of a <strong class="c2">Lava</strong> class <em>A</em> is called with a &quot;call variable&quot; <em>c</em>:</p>
+
+  <blockquote>
+    <pre xml:space="preserve">
+<span class="style1">call</span> c.f(...)
+</pre>
+  </blockquote>
+
+  <p>and that <em>A</em> is the value of some virtual type <em>vt</em>:</p>
+
+  <blockquote>
+    <pre xml:space="preserve">
+&lt;vt&gt; = A
+</pre>
+  </blockquote>
+
+  <p>Now if <em>self</em> is assigned to some variable within <em>f</em> then we ought to know whether the type of <em>self</em> is virtual or not, in order to apply the <a href="TypeSafety.htm#compatibility">type compatibility rules</a> in our section on &quot;<a href="TypeSafety.htm">Static type-safety of <em class="c3">Lava</em></a> &quot;.</p>
+
+  <p>The type of <em>self</em> apparently will comply with the type of <em>c</em>. The latter isn&#39;t known, however, when the body of <em>f</em> is checked, rather it is known only at run time. If we could choose to declare <em>c</em> as being of the virtual type <em>&lt;vt&gt;</em>:</p>
+
+  <blockquote>
+    <pre xml:space="preserve">
+&lt;vt&gt; c;
+</pre>
+  </blockquote>
+
+  <p>or also as being of the concrete type <em>A</em>:</p>
+
+  <blockquote>
+    <pre xml:space="preserve">
+A c;
+</pre>
+  </blockquote>
+
+  <p>then we couldn&#39;t decide at check time whether the type of <em>self</em> is virtual or not. Rule 9 excludes the second case and this way enables a static type check by removing this ambiguity.</p>
+
+  <h3>Where to look and what to do</h3>
+
+  <p>Look into the implementation of function <em>A::fa</em>.</p>
+</body>
+</html>

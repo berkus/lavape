@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Function parameter property sheet</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  a.c3 {font-weight: bold}
+  em.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Function parameter property sheet</h2>
+
+  <h3>Name</h3>
+
+  <p>TThe name of a function parameter may contain only letters, digits, and &quot;_&quot;. The first character must not be a digit.</p>
+
+  <h3>Select type of input/output</h3>
+
+  <p>The type of the current function parameter may be selected from the combo-boxes &quot;Basic types&quot; and &quot;Other types&quot;. &quot;Basic types&quot; lists all classes whose declaration is contained in the basic include file <em>std.lava</em>. If you don&#39;t explicitly select a type for a new function parameter then its type will be <em>String</em>.</p>
+
+  <h3>Mode</h3>
+
+  <p>The mode of a function parameter may be <a id="mandatory" /><strong>mandatory</strong> (default) or <strong>optional</strong>. If optional, the parameter may assume the special <em>null value</em> <strong>&#216;</strong> (&quot;undefined&quot;). Note that all combinations of mandatory/optional and <a href="../UnfinishedObjects.htm">closed/non-closed</a> are possible</p>
+
+  <h3><a href="../TwoObjectCategories.htm">Category</a> of the formal parameter</h3>
+
+  <p>The <a href="../TwoObjectCategories.htm">object category</a> of a formal function parameter may be <em>value object</em> (default) or <em>state object</em>. If the function is a member function of a collection class (derived from one of the built-in classes Set/Chain/Array) then you may want to express that the formal parameter category should be the same as that of the elements of the underlying collection class. Check the check box in this case.</p>
+
+  <a id="closed" /><h3>&quot;Closed&quot; object</h3>
+
+  <p>If checked, then this means that the actual parameter may be in a not yet fully initialized state. Although an object may be passed as an input or output parameter only if non-null values have been assigned to all its non-optional member variables, these values might in turn contain non-fully initialized nested members. <em class="c2">LavaPE</em> enforces already at programming time(!) that such <a href="../UnfinishedObjects.htm">unfinished objects</a> are in a sense &quot;closed&quot; or &quot;opaque&quot;: Read access to their members is forbidden, and you cannot use their members as &quot;self&quot; objects of method invocations. A &quot;closed&quot; object may only be passed, assigned and referenced &quot;as a whole&quot;. Read and method call access to its member objects is prohibited (and prevented by <em class="c2">LavaPE</em> at programming time).</p>
+
+  <h3>Substitutable type</h3>
+
+  <p>Indicates whether the type of this formal parameter shall be <a href="../TypeSafety.htm#substitutableType">substitutable</a>, i.e., whether the type of a corresponding actual parameter may also be <a href="../TypeSafety.htm#p-derived">p-derived</a> (rather than <a href="../TypeSafety.htm#c-derived">c-derived</a>) from this formal parameter type. (Cf. the <em><a href="../PatternSamples.htm">ModelManyViews</a></em> and <em><a href="../PatternSamples.htm">CarMeeting</a></em> samples.)</p>
+  <hr />
+
+  <h3>Notes:</h3>
+
+  <p><strong><em>Lava</em> doesn&#39;t support parameter passing &quot;by reference&quot;:</strong> In <em class="c2">Lava</em><strong>,</strong> function parameters are either input or output parameters. For reference parameters it wouldn&#39;t be clear whether or not the function assigns a value to them, whereas a <em class="c2">Lava</em> function <strong>must</strong> assign a value to <strong>every</strong> non-optional output parameter, and <a href="../IniChecks.htm">this is checked</a> already at programming time (= statically).</p>
+
+  <p>This is an essential prerequisite for all kinds of <em class="c2">Lava</em> initialization checks since only then you can also cover those cases where a variable is initialized by being an actual output parameter of a function call.</p>
+
+  <p>Though function parameters aren&#39;t passed <strong>&quot;by reference&quot;</strong> in <em class="c2">Lava</em>, they are yet passed <strong>&quot;by address&quot;</strong> and never <strong>&quot;by value&quot;</strong> (= copied).</p>
+
+  <p>Like the member initialization checks (see above), the initialization checks for output parameters are performed at all return points of the function body.</p>
+
+  <p>An exception-throwing <a class="c3" href="../whatsThis/FailSucceed.htm">throw</a> statement is the <em>only</em> way to exit from a function if you cannot assign a value to every non-optional output parameter. (Checked at programming time.)</p>
+
+  <p>In this way <em class="c2">Lava</em> makes sure that undefined outputs cannot be used <em>inadvertently</em> by the caller of a failing function but only if the resulting exception is caught and the respective output parameters are used nevertheless thereafter.</p>
+
+  <p>The worst thing that may happen then is that such an output</p>
+
+  <ul>
+    <li>either is <span class="style1">&#216;</span> and you use it nevertheless subsequently: then a null-pointer-exception will be thrown in turn,</li>
+
+    <li>or you use the output although its value may be meaningless in this case: that&#39;s your own risk and should be avoided without reliable knowledge about the function&#39;s implementation.</li>
+  </ul>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Select</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c3 {font-weight: bold}
+  em.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #FF0000;
+      }
+      .style3
+      {
+          color: #CC00CC;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Select</h2>
+
+  <p>Use the <span class="style1">select</span> expression</p>
+<pre xml:space="preserve">
+<span class="style1">select</span>
+  <span class="style3">[type]</span><span class="style2">&lt;varName&gt;</span> <span class="style1">from</span> <span 
+        class="style2">&lt;set&gt;</span>
+<span class="style1">where</span>
+  <span class="style2">&lt;stm&gt;</span>
+<span class="style1">add</span>
+  <span class="style2">&lt;expr&gt;</span>
+<span class="style1">to</span>
+  <span class="style2">&lt;expr&gt;</span>
+<span class="style1">#select</span>
+</pre>
+
+  <p>to search a finite set of <em class="c2">Lava</em> objects for objects that fulfill a certain condition (expressed by the optional [type] specification and the 
+      <span class="style1">where</span> clause), evaluate the first expression and add its result object to the set that is represented by the value of the second expression.</p>
+
+  <p class="c3">See also:</p>
+
+  <p><a href="../DatabaseIntegration.htm">Database integration</a></p>
+
+  <p><a href="../QuantifierSamples.htm">Quantifier and select samples</a></p>
+</body>
+</html>

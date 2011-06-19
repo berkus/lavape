@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Editing GUI specifications</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  h3.c4 {font-weight: bold}
+  em.c3 {font-weight: bold; color: Red}
+  strong.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #FF0000;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Editing GUI specifications</h2>
+
+  <p>The point-and-click philosophy of <strong class="c2">LavaPE</strong> implies in particular that a few mouse-clicks suffice to produce a default form representation from a given class declaration. This automatic mapping is governed by the following simple principles some of which have not yet been implemented (NYI) so far, however:</p>
+
+  <ul>
+    <li><strong>Member variables</strong> of the class are mapped to the <strong>data fields</strong> of the form.</li>
+
+    <li>The <strong>identifiers</strong> of variables are used as <strong>explanatory text to the left of the data field</strong> unless you specify alternative texts/positions.</li>
+
+    <li>If the type of a member variable is again a user-defined class then this member variable is represented by a nested form (<strong>&quot;group box&quot;</strong>) or possibly also by a <strong>pop-up form</strong>, provided you have generated a form representation for this member type previously.</li>
+
+    <li><strong>Member functions</strong> are represented by <strong>tool buttons</strong> or <strong>menu items</strong> that trigger the member functions if they are clicked/selected from the menu (NYI).</li>
+
+    <li>The member functions of <strong>inherited classes</strong> (<strong class="c2">Lava</strong> supports multiple inheritance!) are placed in separate <strong>toolbars</strong> or <strong>menus</strong> of their own (NYI).</li>
+  </ul>
+
+  <p>The representation of an elementary data field depends on the type of the corresponding member variable:</p>
+
+  <ul>
+    <li><strong>Integer</strong>, <strong>Float</strong>, <strong>Double</strong>, and <strong>String</strong> are represented by small single-line <strong>text edit windows</strong>. For <strong>String</strong> multi-line text edit windows may be used alternatively.</li>
+
+    <li><strong>Boolean</strong> variables are represented by <strong>check-boxes</strong>.</li>
+
+    <li><strong>Enumerated types</strong> may be represented by <strong>combo-boxes</strong>, <strong>pop-up menus</strong>, <strong>groups of radio-buttons</strong>, or groups of normal <strong>push buttons</strong>.</li>
+
+    <li><strong>Chains</strong> (= doubly-linked lists) of some element type are represented by horizontal or vertical <strong>lists</strong>, usually of variable length.</li>
+
+    <li>Constant <strong>default values</strong> may be specified for elementary fields.</li>
+
+    <li><strong><a id="sub-form"></a>Non-elementary</strong> field types that are defined by another <strong class="c2">Lava</strong> type are put into a nested rectangular box. The fields of the corresponding sub-form are positioned relative to this containing <strong>sub-form box</strong>.</li>
+  </ul>
+
+  <h3><a id="GUI"></a>GUI service classes / implementations: How to generate and edit forms</h3>
+
+  <p>You can generate a default form representation <em>GUI_of_XY</em> of an existing class <em>XY</em> with a single mouse-click:</p>
+
+  <ol>
+    <li>After you have selected class XY in the declaration tree, you simply click on the tool button <img src="../images/MakeGUI.png" height="21" width="23" alt="img" /> (&quot;Make GUI service for selected class&quot;).</li>
+
+    <li>This generates a new GUI service class <em>GUI_of_XY</em> (icon: <img src="../images/formint.png" height="15" width="21" alt="img" />) as well as its implementation (icon: <img src="../images/Formimpl.png" height="21" width="23" alt="img" />). You may open its properties dialog by clicking the scissors tool button <strong><img alt="Open property sheet" src="../images/Spectacles.png" height="20" width="22" /></strong> and, for instance, change its name then.</li>
+
+    <li>Select the GUI service implementation node and click the <strong>&quot;Open form view&quot;</strong> tool button on the <a href="EditTree.htm#declBar">declaration toolbar</a>, which has the same icon <img src="../images/Formimpl.png" alt="Open form view" height="21" width="23" /> as the GUI implementation node. The form view is opened, consisting of two panes: the actual <strong>form view</strong> (WYSIWYG, read-only) on the left, and the <strong>properties pane</strong> on the right. The latter consists of a <strong>form structure tree</strong> in the upper half, and the actual <strong>field properties pane</strong> in the lower half.</li>
+
+    <li>Now you can select a form field, either in the form view, or in the form structure tree, and edit its properties in the field properties pane.</li>
+
+    <li>You can intersperse &quot;intermediary text&quot; after any field of the form by selecting this field in the form structure tree and pressing the return key. (Alternatively you can click the &quot;intermediary text&quot; button <img src="../images/TextButton.png" height="19" width="20" alt="img" />.)</li>
+
+    <li>You can control the horizontal and vertical positioning of fields.</li>
+
+    <li>You can specify initial default values for individual fields. They override the values provided by <em>XY</em>&#39;s default initializer.</li>
+  </ol>
+
+  <p>Note: If class <em>XY</em> has a member of some class <em>Z</em> then a GUI service class and implementation is generated also for class <em>Z</em> if none existed so far (or one is selected if Z has a GUI service already). Or more generally: GUI service classes are generated recursively where required, or selected from the existing ones. (This selection can be modified afterwards.)</p>
+
+  <h3><a id="handlers"></a>Adding handlers (callbacks) to individual fields of forms</h3>
+
+  <p>The context menu, either on an input field in the form view (left pane), or in the form structure tree (upper half of right pane) allows you to add a new handler to the field or to attach an appropriate existing handler to it. (On text edit fields you must proceed to the &quot;Lava&quot; sub-menu of the context menu.)</p>
+
+  <p>The handler function is created as a member function of the respective GUI service implementation. The function property dialog expects you to select a GUI event type to be handled. For input fields, <strong class="c2">Lava</strong> provides presently only one GUI event type &quot;New value&quot;, which is signaled when a new value has been entered in an input field. <em class="c3">Lava</em> passes the original value and the newly entered value as input parameters to the handler. The handler may pass a modified value to its (optional) output parameter.</p>
+
+  <p>If a <em class="c3">Lava</em> class <em>XY</em> contains an optional member variable <em>optvar</em> then it ill be represented by a push button in the corresponding form representation of <em>XY</em>. It can be pushed to insert the form representation of <em>optvar</em> in place of the button. On the push button, as well as on the form representation, you can invoke the context menu to assign a handler to the &quot;Insert/delete optional&quot; event, which is signaled when you attempt to insert or delete an optional item.</p>
+
+  <p>Likewise, <em class="c3">Lava</em> classes that are derived from the <em class="c3">Lava</em> <em>Chain</em> class provide &quot;Insert/delete chain element&quot; events, which are signaled when you attempt to insert or delete a chain element. Again you may control by corresponding handlers whether the insert/delete operation is accepted, and in the insert case you may optionally return the element to be inserted to the <em class="c3">Lava</em> run time system (or else default initialization, see above, will be applied to the element).</p>
+
+  <p>More than one GUI event handler may be attached to the same input field, optional or chain element. Typically this is used to provide specialized behaviour in specialized contexts:</p>
+
+  <p>For instance, assume <em>fld</em> is an input field in GUI service <em>F_XY</em> and <em>F_XY</em> is in turn used as a sub-form in GUI service <em>F_Z</em>. Then you may attach a &quot;New value&quot; handler to fld in <em>F_XY</em> and another one in <em>F_Z</em>. The latter will be used whenever <em>fld</em> is used in the <em>F_Z</em> context, the former whenever F_XY is the top level GUI service or the &quot;parent&quot; GUI service doesn&#39;t have a &quot;New value&quot; handler for fld. The <em class="c3">Lava</em> run time system will always invoke the uppermost handler in the form/sub-form hierarchy if several handlers exist for an input field, optional or chain element, i.e., the handler belonging to the most special usage context.</p>
+
+  <h3>How to present/fill out a form</h3>
+
+  <p>Every GUI class contains two member functions <strong>FillOut</strong> and <strong>Edit</strong> that can be called in order to present the form representation <em>F_XY</em> of an object <em>xy</em> of type <em>XY</em>. Before you can call <strong>FillOut</strong> and<strong> Edit</strong> you must create an object <em>f_xy</em> of type <em>F_XY</em>. The object <em>xy</em> serves as input parameter to <strong>FillOut</strong> and <strong>Edit</strong>.</p>
+
+  <p><strong>FillOut</strong> first generates a copy of <em>xy</em>. this copy is presented to the user. The copy may be modified by the user then. Clicking the OK button terminates the editing process and <strong>FillOut</strong> passes the modified copy through its output parameter to the caller.</p>
+
+  <p>You can use <strong>FillOut</strong> also to present and fill out an <strong>empty form</strong>: Simply pass the input parameter &quot;<span 
+          class="style1">&#216;</span>&quot; (the &quot;null&quot; object&quot;) to <strong>FillOut</strong> (&quot;empty input form&quot;).</p>
+
+  <p><strong>Edit</strong> presents its input object <em>xy</em> directly to the user (rather than a copy of it) and allows the user to edit it &quot;in place&quot;, provided xy is a state object.</p>
+
+  <p><strong>Summary:</strong> <strong>FillOut</strong> uses its input parameter, which is a value object, as a template for the initialization of a separate output object which may be modified by the user after initialization and which is returned finally as an output parameter. <strong>Edit</strong> accepts a state object as input parameter and enables you to modify it &quot;in place&quot;. Both <strong>FillOut</strong> and <strong>Edit</strong> are terminated by clicking the OK button.</p>
+
+  <p>In contrast to this <strong>FillOut</strong> and<strong>Edit</strong> mechanism, persistent <em class="c3"><a href="ComponentSamples.htm">
+      <span class="style2">Lava</span></a></em> <a href="ComponentSamples.htm">component objects</a> may be edited &quot;directly&quot; without explicit invocation of a forms editing method (but using the same kind of <strong class="c2">Lava</strong> GUI services as <strong>FillOut</strong> and <strong>Edit</strong>).</p>
+
+  <h3 class="c4">See also</h3>
+
+  <p>our <a href="FormSample.htm">form sample</a> and the<em class="c3"> <a href="ComponentSamples.htm">
+      <span class="style2">Lava</span></a></em> <a href="ComponentSamples.htm">component object</a> samples.</p>
+</body>
+</html>

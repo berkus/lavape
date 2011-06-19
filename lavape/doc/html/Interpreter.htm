@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>The Lava interpreter</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  h2.c2 {text-align: center}
+  strong.c1 {font-style: italic; color: Red}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c2">The object-oriented <strong class="c1">Lava</strong> interpreter</h2>
+
+  <p>The point-and-click operations of the <strong class="c1">Lava</strong> programmer (using <strong class="c1">LavaPE</strong>) operate directly on an internal tree-representation of the lava program (a kind of &quot;abstract syntax tree&quot;). Particularly the executable <strong class="c1">Lava</strong> constructs correspond to specific <strong class="c1">C++</strong> classes. The <strong class="c1">C++</strong> class of a <strong class="c1">Lava</strong> statement or expression construct comprises an &quot;Execute&quot; or &quot;Evaluate&quot; member function, respectively. These essentially make up the <strong class="c1">Lava</strong> interpreter (together with various functions of the <strong class="c1">Lava</strong> run time system, of course). Note that also the logical conjunctions (like &quot;;&quot; = &quot;and&quot;, &quot;or&quot;, &quot;not&quot;, &quot;if-then-else&quot;, &quot;switch&quot;, ...) and the quantifiers (&quot;declare&quot;, &quot;foreach&quot;, &quot;exists&quot;, &quot;select&quot;) are represented in this way and have specific &quot;Execute&quot; functions (or &quot;Evaluate&quot; for the &quot;select&quot; expression).</p>
+
+  <p>So the <strong class="c1">Lava</strong> interpreter is not a separate piece of program of its own but is, in a sense, spread over the <strong class="c1">C++</strong> classes representing the various executable <strong class="c1">Lava</strong> constructs.</p>
+
+  <p>The internal tree-representation of a <strong class="c1">Lava</strong> program is transformed into an ASN.1 encoding when the program is stored in a file. The interpreter reads this ASN.1 representation into main memory before execution, transforms it back into the original tree-representation and recursively checks the entire program for correctness and completeness. The check functions for the executable constructs are again member functions of the <strong class="c1">C++</strong> classes corresponding to the respective constructs. They are essentially the same check functions that are also applied after each point-and-click editing operation of the <strong class="c1">Lava</strong> programmer at programming time, but would typically compute additional information that is needed at execution time, for instance &quot;virtual function tables&quot; (VFT&#39;s), relative positions of functions within these VFT&#39;s, relative positions of local variables on the run time stack and of member objects within the containing object.</p>
+
+  <h3>Advantages of the object-oriented <strong class="c1">Lava</strong> interpreter as compared with a VM or &quot;byte code&quot; interpreter:</h3>
+
+  <ol>
+    <li>The object-oriented interpreter of <strong class="c1">Lava</strong> operates on <em>whole 
+        <span class="style1">Lava</span> constructs</em> whose interpretation is performed by small and efficient <strong class="c1">C++</strong> functions, whereas a byte code interpreter operates on the very low level of tiny, individual bytes. Hence an object-oriented interpreter can be expected to run significantly faster than a byte code interpreter.</li>
+
+    <li>The development of an object-oriented interpreter is much easier than the development of a virtual machine.</li>
+
+    <li>In particular, by <em>reinterpreting</em> a <strong class="c1">Lava</strong> program as a <strong class="c1">C++</strong> program in this way we can utilize many features of the <strong class="c1">C++</strong> run time system <em>directly</em> for <strong class="c1">Lava</strong>; for instance, <strong class="c1">C++</strong> exception handling to handle non-catchable <strong class="c1">Lava</strong> exceptions (&quot;fatal errors&quot;), <strong class="c1">C++</strong> threads (or rather the QThread class of Qt) to implement concurrent execution in <strong class="c1">Lava</strong>; even the <strong class="c1">C++</strong> run time stack can be used <em>directly</em> as <strong class="c1">Lava</strong> run time stack with the help of very few inline assembler statements. We need not reconstruct all these features from scratch on a byte code / virtual machine level.</li>
+
+    <li>It is much easier to <em>adapt</em> an object-oriented interpreter to new or modified language constructs.</li>
+
+    <li><em>Compilation</em> into byte code is not required.</li>
+
+    <li>Delicate and error-prone <em>byte code verification</em> before execution is not required.</li>
+  </ol>
+</body>
+</html>

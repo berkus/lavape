@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1" />
+  <title>Callbacks</title>
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <meta name="CREATED" content="0;0" />
+  <meta name="CHANGEDBY" content="Klaus D. Günther" />
+  <meta name="CHANGED" content="20080718;12024800" />
+  <meta name="ProgId" content="FrontPage.Editor.Document" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <style type="text/css" xml:space="preserve">
+  </style>
+  <style type="text/css" xml:space="preserve">
+  p.c8 {font-weight: bold}
+  div.c7 {text-align: center}
+  table.c6 {background-color: #FFFFFF}
+  p.c5 {font-family: Courier New; text-align: center}
+  span.c4 {color: #0000FF; font-weight: bold}
+  em.c3 {font-weight: bold}
+  h2.c2 {text-align: center}
+  span.c1 {color: #FF0000; font-style: italic; font-weight: bold}
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body xml:lang="en-US" lang="en-US" dir="ltr">
+<h2 class="c2">The <span class="c1">Lava</span> callback concept</h2>
+
+<p>Presently there does not exist a common understanding on how to support
+<strong>event/signal notification</strong> <strong>(<a 
+        href="http://en.wikipedia.org/wiki/Callback_(computer_science)" target="_blank">callbacks</a>)</strong> in
+modern object-oriented programming languages.</p>
+
+<p>In the course of the <span class="c1">Java</span> development <span
+class="c1">Sun Microsystems</span> has replaced the original event handling
+concept by a new philosophy based on <strong>event listeners, adapter
+classes</strong>, and <span class="c1">Java</span> language extensions
+introducing <strong>anonymous and inner classes</strong>.</p>
+
+<p><span class="c1">Microsoft</span> has made (and withdrawn) a proposal for an
+own callback-specific <span class="c1">Java</span> language extension
+("delegates"), and has then provided a more comprehensive
+<strong>delegate</strong> or <em class="c3">callable entity</em> notion in
+<span class="c1">C#</span>.</p>
+
+<p>The problem is primarily to find a truly object-oriented and type-safe way
+to associate arbitrary <strong>"client data"</strong>, provided by the
+envisaged callback receiver, with the event/signal sender object ("server")
+without requiring the signal sender to "know" the type and structure of the
+client data.</p>
+
+<p>We felt that the present <span class="c1">Java</span> and <span
+class="c1">C#</span> solutions are too complex and indirect and lack the
+desirable intuitive simplicity and clarity. In contrast to the former,
+<strong>the</strong> <span class="c1">Lava</span> <strong>solution doesn't
+require the introduction of additional types of entities</strong> (like
+<em>delegates, closures,</em> or <em>inner classes</em>) but is solely based on three
+specific executable statements: <span class="c4">connect</span>, <span
+class="c4">disconnect</span> and <span class="c4">signal</span>.</p>
+
+<p>The principal idea has been taken over from the <a
+href="http://doc.trolltech.com/4.0/signalsandslots.html"
+target="_blank">signal/slot concept</a> in <em class="c3"><a
+href="http://www.qtsoftware.com/" target="_blank">Nokia's</a> <a
+href="http://www.qtsoftware.com/products" target="_blank">Qt toolkit</a></em>,
+and has been modified and adapted to the conceptual setting of the <span
+class="c1">Lava</span> language:</p>
+
+<p>In the signal sender class a signal (that can be emitted by an object of
+this class) is declared as a member function without output parameters, having
+the special "signal" attribute. A <strong>signal function</strong> doesn't have
+an implementation. An object of a class having signals may explicitly emit a
+signal using the <span class="c4">signal</span> statement (instead of a normal
+function <span class="c4">call</span> statement), with actual parameters, say
+<em>parm1</em>, <em>parm2</em>, ... :</p>
+
+<p><a id="AutoNumber3"></a></p>
+
+<div class="c7">
+
+<table align="center" class="c6" border="1" cellpadding="5" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><p class="c5"><span class="c4">signal</span>
+        self.<strong>sigFunc</strong> (parm1,parm2,...)</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Note that an object (<em>self</em> in the example) can only <em>itself</em>
+emit a signal; it cannot force <em>another</em> object to emit a signal,
+except, of course, if the class of the other object exports a method having
+this effect (like the <em>sendSignal</em> function in our <a
+href="CallbackSample.htm">callback sample</a>).</p>
+
+<p>You can use the <span class="c4">connect</span> statement to specify to
+which handler objects and handler methods a signal is to be transmitted:</p>
+
+<p><a id="AutoNumber31"></a></p>
+
+<div class="c7">
+
+<table align="center" class="c6" border="1" cellpadding="5" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><p class="c5"><span class="c4">connect</span>
+        sigSender.<strong>sigFunc</strong> to
+        handlerObj.<strong>hdlFunc</strong></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>You may connect the same signal sender / signal function to several handler
+objects / handler functions. When the sender emits this signal, then all
+handlers will be invoked in the order of the corresponding <span
+class="c4">connect</span>s</p>
+
+<p>Transmitting a signal to a handler object <em>handlerObj</em> having a
+handler method <em>hdlFunc</em> means that the handler function is invoked with
+that handler object as call object, and the actual parameters are taken from
+the signal statement, just as if the following function call would be performed
+in place of the signal function call:</p>
+
+<p><a id="AutoNumber2"></a></p>
+
+<div class="c7">
+
+<table align="center" class="c6" border="1" cellpadding="5" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><p class="c5"><span class="c4">call</span>
+        handlerObj.<strong>hdlFunc</strong>(parm1,parm2,...)</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>This requires that the handler function must have the same number of input
+(and no output) parameters, and the formal parameters of the signal function
+must be assignment compatible to the corresponding formal parameters of the
+handler function.</p>
+
+<p>Moreover, if the call objects or the formal parameters of the functions
+occurring in the <span class="c4">connect</span> statement depend on <a
+href="PatternsFrameworks.htm#VT">virtual types</a>, then <span
+class="c1">LavaPE</span> will reject the <span class="c4">connect</span> if
+<em>sigSender</em> and <em>handlerObj</em> don't belong to the same <a
+href="PatternsFrameworks.htm#patternContext">pattern context</a> and thus don't
+apply the same interpretation to the involved virtual types.</p>
+
+<p>The envisaged extension of the <span class="c1">Lava</span> GUI support
+requires that you can also specify a signal sender class only in the <span
+class="c4">connect</span> statement, rather than a concrete signal sender
+object (to be explained after the GUI support extension.)</p>
+    <p>&nbsp;</p>
+    <p><b>Alternative approaches:</b> </p>
+    <p>The &quot;X Toolkit&quot; of the &quot;X Window System&quot; has provided an
+        <a href="http://lesstif.sourceforge.net/doc/super-ux/g1ae03e/part1/chap8.html#Callbacks" 
+            target="_blank">early approach to callback programming</a>. Its <i>
+        XtAddCallback</i> function can be viewed as an 
+        ancestor of our <span class="style2">connect</span> construct used for 
+        registering a new callback.</p>
+    <p>The traditional <span class="style1">Java</span> approach uses
+        <a href="http://blogs.sun.com/CoreJavaTechTips/entry/listeners_vs_adapters" 
+            target="_blank">event listener interfaces and associated adapter classes</a>.
+        <span class="style1">Lava</span>'s <span class="style2">signal</span>/<span 
+            class="style2">connect</span> approach doesn't need such 
+        additional auxiliary classes.</p>
+    <p>From a more abstract point of view, speaking in terms of
+        <a href="http://www.free-ebooks-download.org/free-ebook/dotnet/OOPS/Design_Patterns_Elements_of_Reusable_Object-Oriented_Software.php" 
+            target="_blank">design patterns</a> (cf. also the
+        <a href="PatternsFrameworks.htm">pattern support</a> in <span class="style1">
+        Lava</span>), callbacks can be viewed as examples of the
+        <a href="http://en.wikipedia.org/wiki/Observer_pattern%20" target="_blank">
+        observer pattern</a>.</p>
+    <p>In recent years <a href="http://en.wikipedia.org/wiki/Closure_(computer_science)" 
+            target="_blank">closures</a> have become more and more popular as a means to 
+        cope with <a href="http://en.wikipedia.org/wiki/Callback_(computer_science)" 
+            target="_blank">callbacks</a>, and several programming languages provide 
+        closures now or are planning closure enhancements. See for instance
+        <a href="http://javac.info/" target="_blank">this</a> proposal for <span class="style1">Java</span> 
+        closures, and
+        <a href="http://www.javaworld.com/javaworld/jw-06-2008/jw-06-closures.html" 
+            target="_blank">this</a> article, which compares three proposals for closures 
+        in <span class="style1">Java</span>.
+        <a href="http://blogs.sun.com/mr/entry/closures" target="_blank">Mark Reinhold&#39;s 
+        Blog</a> on the <span class="style1">Java</span> closure debate puts more 
+        emphasis on the relevance of closures for parallel programming and assesses the 
+        previous proposals as not &quot;entirely appropriate&quot;.</p>
+    <p>In contrast to the present closure enthusiasm, we feel that the closure notion is quite contrary to our
+        <span class="style1">Lava</span> philosophy. In our opinion closures tend to 
+        obscure the data flow as well as the control flow of programs by <i>implicitly</i> 
+        passing data around and by involving one or another kind of <i>function pointers</i>. 
+        In contrast to this, <span class="style1">Lava</span> prefers explicit data flow 
+        and explicit control flow, both running strictly &quot;from top to bottom&quot; and being 
+        amenable to static analysis algorithms (&quot;at programming time&quot;). 
+        Although the <i>implementation</i> of the <span class="style2">signal</span>/<span 
+            class="style2">connect</span> constructs of <span class="style1">Lava</span> 
+        involves some kind of <i>internal</i> function pointers, these aren&#39;t exposed to 
+        the programmer, however, and the data flow between the callback requester, 
+        signal emitter and signal handler objects is expressed quite explicitly by 
+        specifying these objects and by using the parameters of the signal/handler 
+        functions.</p>
+    <p>&nbsp;</p>
+    <p><b>See also</b> our <a href="CallbackSample.htm">callback sample program</a>.</p>
+</body>
+</html>

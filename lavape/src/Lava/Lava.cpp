@@ -75,7 +75,7 @@ static const char slash='/';
 int main( int argc, char ** argv ) {
   CLavaApp app(argc,argv);
 
-  //QTest::qSleep(20000);
+//  QTest::qSleep(20000);
   //Sleep(20000);
 
   ExeDir = app.applicationDirPath();

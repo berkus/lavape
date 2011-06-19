@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Unsolved problems</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  h3.c8 {font-weight: bold}
+  p.c7 {font-weight: bold}
+  strong.c6 {font-style: italic; color: Red}
+  strong.c5 {font-style: italic; color: Red}
+  a.c4 {font-weight: bold}
+  strong.c3 {font-weight: bold}
+  h2.c2 {text-align: center}
+  p.c1 {text-align: right}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+      }
+      .style2
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+  </style>
+</head>
+
+<body>
+  <p class="c1"><em style="font-size: small">All life is problem solving<br />
+      (<a href="http://en.wikipedia.org/wiki/Karl_Popper" target="_blank">Karl Popper</a>)<br />
+      <br />
+      Have patience. All things are difficult before they become easy<br />
+  (<a href="http://www.brainyquote.com/quotes/authors/s/saadi.html" 
+          target="_blank">Moslik Saadi</a>)</em></p>
+
+  <h2 class="c2"><img src="../images/catThinks.gif" alt="Rethinking pussy" width="230" height="100" /></h2>
+
+  <h2 class="c2">Urgent problems in current programming languages call for much rethinking<br /></h2>
+
+  <h3>1. Programs should no longer be &quot;written&quot;</h3>
+
+  <p>It&#39;s time to finally overcome the antediluvian technology of software production using text editors. Programs should no longer be &quot;written&quot; but constructed/composed in Lego-like fashion from basic constructs, using <strong>structure editors</strong> rather than text editors. Particularly the executable portions of programs are the last bastions of textual programming that remain to be captured by <strong class="c3">&quot;point-and-click&quot; technology</strong>.</p>
+
+  <p>Structure editors are also a valuable and almost indispensable basis for the realization of powerful <strong><a href="Refactoring.htm">restructuring / refactoring</a></strong> operations, which should be supported by every modern IDE (Integrated Development Environment).</p>
+
+  <p><a class="c4" href="PointAndClick.htm"><span class="style2">Lava</span> solution</a></p>
+
+  <h3><a id="sepItfImpl"></a>2. &quot;Interfaces&quot; and &quot;implementations&quot; should be strictly separated</h3>
+
+  <p>Older, non-object-oriented languages like <strong class="c5">Modula-2</strong> and <strong class="c5">Ada</strong>, that were based on &quot;abstract data types&quot;, had already achieved a clean syntactic and semantic <strong>separation of &quot;interfaces&quot; and &quot;implementations&quot;</strong>. It&#39;s high time to regain this very important achievement in object-oriented languages in a comparably clean way. The distinction made by <strong class="c5">Java</strong> between <strong>interfaces</strong> and (abstract or concrete) <strong>classes</strong> does not yet fully achieve this strict separation, since the type of an object may be both an interface or a class in <strong class="c6">Java</strong>. Moreover, <strong class="c6">Java</strong> interfaces are groups of public <em>functions</em> only. They are unable to expose public <em>data members</em>.</p>
+
+  <p>You can, of course, provide <a id="setGetFunctions"></a>GET and SET access functions as a substitute. But even then we should prefer 1. to hide these access functions in the <em>implementation</em> of the respective interface, 2. to expose the respective property (for instance the &quot;account balance&quot;) in the <em>interface</em> (perhaps protected by a &quot;read-only&quot; attribute), and 3. to allow the programmer to directly refer to this member object in assignments or read-references, rather than to explicitly call access functions.</p>
+
+  <p class="c7"><a href="SepItfImpl.htm"><span class="style2">Lava</span> solution</a></p>
+
+  <h3>3. <a id="stateValue"></a>Two very different categories of objects should be distinguished</h3>
+
+  <p>It&#39;s time to <strong>overhaul the object notion itself</strong> which would presently be used to describe two <em>conceptually very different</em> categories of things, for instance bank accounts as well as money transfer orders:</p>
+
+  <ul>
+    <li>A bank account is a variable <strong>state</strong> or <strong>service object</strong>. It doesn&#39;t make much sense to <em>copy</em> such an object or to pass it <em>by value</em>, since the state histories of the resulting two objects would from this moment on proceed independently. <em>Cloning</em> would basically contradict the semantics and purpose of a state object like a bank account: You cannot multiply your money by duplicating your bank account. Moreover, a state object would in most cases have exclusive command over its internal state, which may be changed again and again, but only by calling the object&#39;s methods, and this state change has the nature of a <strong>transaction</strong> typically. State objects would provide various services grouped into one or several function call interfaces. In particular, <strong class="c5">CORBA</strong> objects and component objects in <strong class="c5">COM</strong> are state/service objects. State/service objects are typically used as <em>shared memory</em> between concurrent applications/processes/threads.<br /></li>
+
+    <li>A money transfer order is a <strong>value object</strong> or <strong>structure</strong> that becomes <strong>&quot;immutable&quot;</strong> after <strong>&quot;completion&quot;</strong>: A (completed) value object represents an immutable complex value. Since it is immutable it doesn&#39;t matter to pass it <em>by reference</em> for efficiency reasons. Since it is just a complex value it may also be passed <em>by value</em> without contradicting its purpose and semantics. Value objects <em>will</em> typically be passed <em>by value</em> whenever they are passed to another <em>component</em> (see below), thereby entering a separate address space and possibly also the realm of another programming language. A value object is typically <em>filled in</em> by directly assigning values to its individual &quot;fields&quot; (preferably without explicitly calling &quot;access methods&quot; to this end). In addition, a money transfer order form is &quot;signed&quot; after <em>completion</em>, and it must not be changed any more thereafter: it is <strong>&quot;frozen&quot;</strong>. State/service objects are never <em>&quot;frozen&quot;</em> but open for ever new modifications, but their member variables will typically be value objects which are replaced by such modifications. Ana Lava object, no matter whether state or value object, can be assigned to a variable or passed as a parameter to a function only <em>after</em> it has been <em>&quot;</em><strong>completed&quot;</strong> by assigning a value to each of its non-optional) fields (= member objects).</li>
+  </ul>
+
+  <p class="c7"><a href="TwoObjectCategories.htm"><span class="style2">Lava</span> solution</a></p>
+
+  <h3><a id="components"></a>4. Future languages should provide a unified view of object- and component-orientation</h3>
+
+  <p>A new object-oriented and component-aware language should clarify the relationship between program-<em>internal</em> objects and <em>external</em> component objects that &quot;live&quot; in address spaces of their own and that are possibly implemented in other languages. It should provide unified language constructs for describing and using the interfaces and implementations of internal as well as component objects. Based on these constructs, it should be easy to incorporate in particular <strong class="c5">COM</strong>, <strong class="c5">CORBA</strong>, and <strong class="c5">JavaBeans</strong> objects. <strong>&quot;Intelligent&quot; interaction of components</strong> (compound documents, embedding and linking of user interfaces, drag-and-drop, clipboard,...) should also be supported. <strong>Databases</strong> and <strong>files</strong> should appear as special (<em>persistent</em>) component objects having specific interfaces.</p>
+
+  <p>A basic requirement of a properly integrated component notion is that your programming language should clearly exhibit the difference between state objects (that can only be passed by reference to the methods of components or &quot;external/remote objects&quot;) and value objects (that may or even must be passed by value, without corrupting their semantics).</p>
+
+  <p>Another requirement, in this same context of parameter passing, is that your language should allow you to clearly delineate the &quot;borders&quot; of objects that are to be passed by value. This amounts to a proper distinction between &quot;constituents&quot; and &quot;acquaintances&quot; of objects (see below).</p>
+
+  <p class="c7"><a href="Components.htm"><span class="style2">Lava</span> solution</a></p>
+
+  <h3><a id="patterns"></a>5. Reusable design patterns / frameworks call for proper language support</h3>
+
+  <p>A modern object-oriented language should properly support <strong>design-patterns / frameworks</strong> since they provide new, additional ways of software reuse. We need a way to 
+      <strong>collectively</strong> specialize <strong>groups</strong> of parameterized classes. <strong>Single-class macro constructs</strong>, like &quot;templates&quot; in <strong class="c5">C++</strong> or &quot;generic types&quot; in <strong class="c6"><a id="Eiffel1"></a></strong><strong class="c5">Eiffel</strong> won&#39;t do.</p>
+
+  <p>We generally believe that templates / generic classes and their conformance rules in <strong class="c6">C++</strong> and<strong class="c6">Eiffel</strong> are too hard to manage and to comprehend. They tend to produce almost incomprehensible &quot;template libraries&quot; which are very powerful in principle but far away from providing easily and readily reusable designs.</p>
+
+  <p>The conventional perspective on &quot;templates&quot; or &quot;generic classes&quot; is that they are a kind of <strong>macros</strong> that have to be <strong>&quot;instantiated&quot; (meaning text substitution)</strong> in order to become concrete classes that can be used to specify the types of objects. In order to overcome the apparent problems inherent in this view (complex nested instantiation expressions, complex type conformance rules, code replication with huge storage requirements) our <strong class="c6">Lava</strong> design proposes a transition from this <strong>&quot;macro instantiation view&quot;</strong> to more unified and universal class and package notions including parameterized classes and packages (roughly = groups of classes) and an equally unified <strong>derivation notion</strong> that covers also to <strong>the [collective] specialization of parameterized [groups of] classes</strong>.</p>
+
+  <p class="c7"><a href="PatternsFrameworks.htm"><span class="style2">Lava</span> solution</a></p>
+
+  <h3><a id="typeCasts"></a>6. Strongly typed object-oriented programming languages should not need &quot;type casts&quot;</h3>
+
+  <p>Type casts would be used primarily as <strong>repair measures</strong> in cases where the programmer knows that the run time type of an object is actually more derived than the static type of the containing variable, and he/she needs to use features of the more derived &quot;dynamic&quot; type. Type casts are not only ugly, nasty, and annoying but much worse: their justification can only be assessed on the basis of a more comprehensive understanding of the dynamic program behavior in general. <strong>Possible reasons why type casts are used</strong> nevertheless or may even be inevitable in contemporary statically typed object-oriented programming languages:</p>
+
+  <ul>
+    <li><strong>Non-object-oriented programming style:</strong> The program branches over explicit &quot;type indicators&quot; contained in the objects rather than calling polymorphic (&quot;virtual&quot;) functions. This should be avoided wherever possible but may be justified in rare cases. We should prefer to provide a special <strong><a id="typeSwitch"></a> &quot;<span 
+            class="style1">type switch</span>&quot;</strong> statement rather than type casts for these cases in order to restrict its usage to just this situation and to discourage and impede bad programming style. (The latter can be hidden much easier behind type casts than behind a rather big and conspicuous type switch statement, particularly if it has only one type branch that is abused as a substitute for the desired type cast.)<br /></li>
+
+    <li><strong>A notion of class derivation and specialization that is too rigid and restricted :</strong></li>
+  </ul>
+
+  <blockquote>
+    <ol>
+      <li>You cannot specialize parameters of methods on class derivation.<br /></li>
+
+      <li>You cannot specialize data members of a class when defining a derived class.<br /></li>
+
+      <li>You cannot express collective specialization of several classes that refer to each other.</li>
+    </ol>
+  </blockquote>
+
+  <p>In all these cases you know at programming time that in the derived classes (or group of related derived classes) certain member variables or function parameters will actually be of a more derived type than in the corresponding base class(es) but the derivation mechanism of your programming language does not allow you to express this. So you retain the original types assigned to these variables in the base class(es) and resort to type casts in the derived class(es).</p>
+
+  <p class="c7"><a href="TypeCasts.htm"><span class="style2">Lava</span> solution</a></p>
+
+  <h3>7. <a id="singleAssign"></a>Abandoning &quot;go to&quot; has clarified the control flow of programs,<br />
+  &quot;single-assignment&quot; will clarify the data flow</h3>
+
+  <p>The &quot;variable&quot; notion of present programming languages would view a <strong>variable as a &quot;data container&quot;</strong> to which you can again and again assign a new content/value (&quot;multiple assignment&quot;), and to reference a variable means to reference its &quot;current content&quot;. But in order to correctly locate the origin of its &quot;current content&quot; you must exactly understand the dynamic control flow of the program. If you admit &quot;global variables&quot; that can be accessed from anywhere in the program then this will mostly become even more difficult and error-prone .</p>
+
+  <p>We expect that <strong>abandoning &quot;multiple assignment&quot;</strong>, the conventional &quot;variable = data container&quot; view, and particularly &quot;global variables&quot; <strong>will greatly clarify the data flow</strong> of programs. It will be much easier then to locate the origin of values. The &quot;<a href="SingleAssigLogSem.htm">single-assignment</a>&quot; rule reads:</p>
+
+  <ul>
+    <li>At run time, a value may be assigned to a variable only once in every program branch within the scope of the variable.</li>
+  </ul>
+
+  <p>You just need to follow the current program branch statically in upward direction to find out whether and where a value has been assigned to a variable that you are about to reference. This analysis can be performed automatically at programming time.</p>
+
+  <p><a id="loops"></a>A particular consequence of &quot;single-assignment&quot; is that conventional <strong>sequential loops</strong> that forward information via some variables from one pass of the loop to the next are excluded and <strong>have to be replaced by recursive function calls</strong>. In our opinion this is a desirable step towards a more mathematical semantics and understanding of programs and contributes to the clarification of data flow.</p>
+
+  <p><strong>&quot;Non-recursive&quot; loops</strong>, however, (whose passes could in principle be executed concurrently,) may be expressed by <strong>&quot;foreach&quot;</strong> and <strong>&quot;exists&quot; quantifiers</strong> running through finite sets of objects.</p>
+
+  <p class="c7"><a href="LavaOverview.htm#dataFlow"><span class="style2">Lava</span> solution</a></p>
+
+  <h3><a id="pointers"></a>8. We need an application-level pointer notion to distinguish &quot;constituents&quot; and &quot;acquaintances&quot; of objects</h3>
+
+  <p>If you would like to retain a <strong class="c6">copy</strong> of a complex object that might be subject to further changes in the future, or if an object shall be <em>&quot;<strong>passed by value&quot;</strong></em> to some function, or if yu want to <strong class="c6">compare</strong> complex objects (member by member) then you would like to know which of its members/attributes represent real <strong>&quot;constituents&quot;</strong> of this object and which are just <strong>references/pointers</strong> to other, independent objects. In other words: you would like to specify the &quot;borders&quot; of complex objects, or to express what <strong>&quot;belongs&quot;</strong> to an object and what are just <strong>&quot;acquaintances&quot;</strong>. Particularly when crossing component borders you have to make such a distinction, as is well known from <strong class="c6">DCOM</strong> and <strong class="c6">CORBA</strong>. A component-oriented language should take this into account.</p>
+
+  <p>You must not confuse this <em>logical, application-level</em> distinction with the <em>implementation</em> issue whether an object and its constituents are all allocated within the same contiguous block of storage (&quot;embedded constituents&quot;, as in <strong class="c6">C++</strong> objects and the &quot;expanded classes&quot; of <strong class="c6"><a id="Eiffel2"></a>Eiffel</strong>), or whether constituents are linked by <em>address pointers</em> in a low-level sense to their &quot;owners&quot;. A programming language may very well support both &quot;linked&quot; and &quot;embedded&quot; constituents, while &quot;embedded acquaintances&quot; would be a rather contradictory notion and would not make much sense.</p>
+
+  <p><em>Summary</em>: Neither the low-level address semantics of <strong class="c6">C++</strong> pointers nor the complete absence of an explicit pointer notion in <strong class="c6">Java</strong> are satisfactory solutions but we need a proper distinction between &quot;constituents&quot; and &quot;acquaintances&quot; of complex objects, irrespective of the question whether constituents are implemented as <em>embedded</em> or as <em>linked</em> constituents.</p>
+
+  <p class="c7"><a href="PointersRefCounts.htm"><span class="style2">Lava</span> solution</a></p>
+
+  <h3 class="c8"><a id="iniChecks"></a>9. Inadvertent use of uninitialized data should be prevented already at programming time</h3>
+
+  <p>Inadvertent use of uninitialized data frequently causes programs to crash in a way that is hard and time-consuming to disentangle, which in turn gives rise to immense costs. So it&#39;s time to undertake really serious efforts to prevent such situations wherever possible by static and run-time checks. Static initialization checks are preferable, of course, but will require a fundamental revision of expressive means for executable code in order to make these checks as complete/comprehensive/effective as possible.</p>
+
+  <p class="c7"><a href="IniChecks.htm"><span class="style2">Lava</span> solution</a></p>
+
+  <h3><a id="SQL"></a>10. &quot;Embedded SQL&quot; should finally be overcome</h3>
+
+  <p>It&#39;s time to overcome the painful dissociation between programming languages and database languages (&quot;embedded SQL&quot;). Many people have got accustomed to this schism to a degree that they deem it to be a law of nature. But in practice <strong>it is highly unproductive to learn two languages and to bridge the syntactic and semantic gap between them again and again</strong>. The increasing importance of object-oriented databases is a strong motivation to look for more unified expressive means for data definition, data manipulation and query, particularly for searching and accessing complex container objects, no matter whether they are <em>persistent</em> database objects or <em>transient</em> program-internal objects.</p>
+
+  <p class="c7"><a href="DatabaseIntegration.htm"><span class="style2">Lava</span> solution</a></p>
+
+  <h3><a id="GUI"></a>11. Low-level user interface builders should be overcome</h3>
+
+  <p>The purpose of graphical user interfaces is to present a graphical representation of selected internal application data structures to the user and to allow her/him to manipulate these data structures by point-and-click and key-press operations. Present UI builders work on a very low level and require a great lot of manual work to establish this mapping between internal data structures and external visible representation and to add user interaction handlers to this representation. UI builders are big and complicated tools and they have little or no knowledge of the actual, complex application data structures. The programmer would have to construct intermediate auxiliary data structures that are required by the UI programming interface.</p>
+
+  <p>Presently this entire UI construction process is very costly and very cumbersome. Our idea is to replace this process by a more direct, semi-automatic and annotation-controlled mapping from complex application data structures to complex visual representations: Annotations to the components and elements of an application data structure would specify the details of the associated visual representation, and a kind of &quot;user interface interpreter&quot; would read these annotations at run time and constructs the visual representations.</p>
+
+  <p><strong><span class="style2">Lava</span> solution</strong>: Under development.</p>
+
+  <h3><a id="synch"></a>12. Multi-threading, transactions, and synchronization should be treated in a purely declarative way</h3>
+
+  <p>Transaction programming, multi-threading, inter-process communication / synchronization, distributed processing are inexhaustible sources of errors, frustration, and intricateness that should be drained finally. It would in particular be an invaluable advantage if you could handle all these problems in a <strong>purely declarative high-level style</strong>, i.e., without needing any delicate low-level executable transaction, communication, and synchronization primitives like start_transaction / commit / abort, or semaphores / monitors / mutexes / conditions / events / send / receive / wait. Transaction abort should appear as a quite normal case of throwing an exception.</p>
+
+  <p class="c7"><a href="Transactions.htm"><span class="style2">Lava</span> solution</a></p>
+
+  <h3><a id="organization"></a>13. Programming languages should become &quot;organization-aware&quot;</h3>
+
+  <p>A language with all these characteristics should also be <strong>organization-aware</strong>: If you can talk about interfaces to persistent component objects then you should also be able to talk about object ownership in terms of persons, or more generally: organizational units (OU&#39;s), of the application environment. Likewise, it should be possible to specify OU&#39;s that are to be contacted via some display by interactive components of an application. Data ownership and contact addresses for personal interaction need not be specified in terms of one single organizational name space. The various types of conventional addressing schemes currently in use should be supported equally well, like file and computer names, ftp, http, e-mail addresses.</p>
+
+  <p><strong><span class="style2">Lava</span> solution</strong>: For future research.</p>
+
+  <h3><a id="security"></a>14. Programming languages should become &quot;security-aware&quot;</h3>
+
+  <p>Once you can talk about data ownership and interactive responsibilities of OU&#39;s it is obvious that you would also like to talk about security rules and policies. You would like to restrict the access to persistent data and the invocation of services, and in addition to these <em>&quot;preventive&quot;</em> security measures, it should be easy to integrate <em>&quot;defensive&quot;</em> measures (using digital signatures and encryption) into applications.</p>
+
+  <p>Preventive and defensive security is not just a matter of providing proper library functions but should be supported directly on the language level:</p>
+
+  <ul>
+    <li><strong>Preventive security</strong> means essentially that service interfaces or individual functions of such interfaces possibly may be invoked only if proper privileges have been acquired before by the invoking person, OU, or other state object. So it would be most natural to specify such privileges as part of the respective service interface specification.<br /></li>
+
+    <li><strong>Defensive security</strong> means to protect entire documents or selected individual parts of structured data objects by encryption or by adding digital signatures to these objects. This requires proper ways of specifying, which parts of an object should be encrypted or signed (by which signature). So it would be most natural again to make this specification a part of the respective data object&#39;s type definition.</li>
+  </ul>
+
+  <p><strong><span class="style2">Lava</span> solution</strong>: For future research.</p>
+  <hr />
+
+  <p>After all, the <strong class="c5">Lava</strong> development can be viewed partly as an attempt to <a href="PicketFence.htm">capitalize on the gaps</a> and omissions inherent in <strong class="c5">Java</strong>, <strong class="c5">Visual Basic</strong> and other popular contemporary programming languages.</p>
+</body>
+</html>

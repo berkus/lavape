@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Check and run Lava programs</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c5 {font-weight: bold}
+  em.c4 {font-weight: bold; color: Red}
+  p.c3 {text-align: left}
+  h2.c2 {text-align: center}
+  strong.c1 {font-style: italic; color: Red}
+  /*]]>*/
+  </style>
+</head>
+
+<body>
+  <h2 class="c2">How to check and run <strong class="c1">Lava</strong> programs</h2>
+
+  <p class="c3">A <strong class="c1">Lava</strong> file xy.lava that is to be executed must contain an <a href="../Packages.htm#initiator">initiator</a>, whose declaration must be the first declaration in the (usually unnamed) top-level package of xy.lava.</p>
+
+  <p class="c3">Before you can start a <strong class="c1">Lava</strong> program you should make sure that it is</p>
+
+  <ul>
+    <li>free of errors and</li>
+
+    <li>free of incomplete statements that still contain placeholders.</li>
+  </ul>
+
+  <p>If you open a <strong class="c1">Lava</strong> file in <strong class="c1">LavaPE</strong> then a complete check of its contents is performed automatically, including all declarations and all execs and invariants. This same type of complete check can be carried out at any time during editing a <strong class="c1">Lava</strong> program by clicking the &quot;Check&quot; button <img src="Check.png" alt="Check" width="24" height="22" />. Use the &quot;Check all&quot; button <img src="CheckIncludes.png" width="22" height="24" alt="img" /> to check also every directly or indirectly included file.</p>
+
+  <p>If a <strong class="c1">Lava</strong> program contains errors or placeholders then it can be started nevertheless. The <strong class="c1">Lava</strong> interpreter reads and checks <strong class="c1">Lava</strong> files only at the moment when they are really required for execution. The interpreter checks only the <em>initiator to be started</em> in a first step. If it then turns out at run time that another initiator is to be started or a new class <a href="NewImplementation.htm">implementation</a> is to be instantiated then this single initiator or implementation is checked before it is used.</p>
+
+  <p>Click the &quot;Run&quot; button <img src="../../images/Run.png" alt="Run" 
+          width="22" height="22" /> of <em class="c4">LavaPE</em> to save the current <strong class="c1">Lava</strong> file and to pass it to the <strong class="c1">Lava</strong> interpreter for execution.</p>
+
+  <p>You can launch a <em class="c4">Lava</em> program also in the usual way by double-clicking its name or icon in the Windows Explorer. You may open a *.lava program in <strong class="c1">LavaPE</strong> by selecting the menu item &quot;Edit with LavaPE&quot; from the Explorer&#39;s context menu on that *.lava file.</p>
+
+  <p>You may also double-click a *.lcom or *.ldoc file in Explorer to open the corresponding blank form or <strong class="c1">Lava</strong> document.</p>
+
+  <p>Finally it&#39;s also possible to launch <em class="c4">LavaPE</em> or the <em class="c4">Lava</em> interpreter from the command line (DOS window) by a command</p>
+
+  <blockquote>
+    <p>Lava[PE].exe [name of a *.lava or *.lcom file] .</p>
+  </blockquote>
+
+  <h3>See also</h3>
+
+  <p class="c5"><a href="../ExecEnvironment.htm">Execution environments</a></p>
+
+  <p class="c5"><em><a href="../Packages.htm">Lava</a></em> <a href="../Packages.htm">projects, programming in the large</a></p>
+</body>
+</html>

@@ -1,0 +1,9 @@
+body { color: #000000; background: #D8DDDD }
+#li { margin-top: 10pt }
+a:hover { color: red }
+#p, ul, ol, li { font-family: "Arial"; margin-top: 5pt }
+p.tiny {font-family: "Arial" }
+p.fat { font-weight: bold; font-family: "Arial" }
+h1 { font-style: italic; font-size: 36pt; font-family: "Arial" }
+h2 { font-size: 24pt; font-family: "Arial" }
+h3 { font-size: 16pt; font-family: "Arial"; margin-top: 15pt }

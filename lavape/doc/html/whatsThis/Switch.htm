@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Switch statement</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  strong.c4 {font-style: italic; color: Red}
+  p.c3 {font-weight: bold}
+  em.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #CC00CC;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Switch statement</h2>
+
+  <p>The <em class="c2">Lava</em> <span class="style1">switch</span> statement largely corresponds to the switch statement in <em class="c2">C</em> and <em class="c2">C++</em>.</p>
+
+  <p class="c3">Differences:</p>
+
+  <ul>
+    <li>It doesn&#39;t provide a &quot;break&quot; statement to terminate a branch, and therefore it isn&#39;t possible to run from one branch into the next branch as in <em class="c2">C/C++</em> if the &quot;break&quot; is missing.</li>
+
+    <li>If multiple cases are handled by the same branch, then you don&#39;t provide multiple case clauses in <strong class="c4">Lava</strong> but you provide a comma-separated enumeration of alternative expressions in one case clause.</li>
+  </ul>
+
+  <p>The <span class="style2">else</span> branch is optional and may be deleted using the 
+      <strong>DEL</strong> key or the scissors button.</p>
+
+  <p>At least one <span class="style1">case</span> branch must be present.</p>
+
+  <p>W.r.t. variable initialization checks, the same remarks apply as for the <strong><a href="IfStm.htm">if</a></strong> statement.</p>
+</body>
+</html>

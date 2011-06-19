@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Next steps, future plans, desirable contributions</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c6 {font-weight: bold}
+  em.c5 {font-weight: bold; color: Red}
+  h3.c4 {text-align: left}
+  p.c3 {text-align: left}
+  strong.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+      .style2
+      {
+          color: #FF0000;
+      }
+      .style3
+      {
+          color: #FF0000;
+          font-style: italic;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Next steps, future plans, desirable contributions</h2>
+
+  <p class="c3">We are two full-time developers presently. The development of an entirely new programming language and of a fully fledged programming environment is a big effort, however. So we shall depend on contributions by volunteers who share our opinion that <strong class="c2">Lava</strong> provides quite a number of promising features and improvements which should be further explored, enhanced, and made accessible to a broad community of people who, like us, are discontented with the presently prevailing classical textual programming languages and loosely integrated tools.</p>
+
+  <h3 class="c4">Next steps</h3>
+
+  <p class="c3">Clearly it must be our primary goal to reach a state of <em class="c5">Lava</em>/<em class="c5">LavaPE</em> where it is sufficiently complete and attractive for sufficiently many <em>users</em> in order to cause further <em>developers</em> to contribute to the <strong class="c2">Lava</strong> open source project. To this end we have</p>
+
+  <ol>
+    <li>
+      <p class="c3">to provide proper access to sufficiently many useful class libraries,</p>
+    </li>
+
+    <li>
+      <p class="c3">to generalize the <strong class="c2">Lava</strong> GUI builder so as to support the construction of dialogs as well as of application main windows.</p>
+    </li>
+  </ol>
+
+  <p class="c3">As to the second issue, we cannot afford presently to write such class libraries from scratch ourselves. On the other hand, it would anyway be preferable to make the great variety of existing class libraries accessible through uniform, language-independent component interfaces, and in our present opinion this appears to be the <a href="FAQClassLibraries.htm">most attractive approach</a>.</p>
+
+  <p class="c3">The third issue is a typical example of a &quot;desirable contribution&quot;, since we shall not be able to realize it ourselves in the near future.</p>
+
+  <h3 class="c4">Desirable extensions</h3>
+
+  <ol>
+    <li><a id="debugging"></a><strong>Remote debugging of <em>Lava</em> programs<br /></strong><br />
+    for instance via OLE automation. It should be possible to start and debug any <strong class="c2">Lava</strong> program from within <strong class="c2">LavaPE</strong> (even remotely, on another computer). It should also be possible for a <strong class="c2">Lava</strong> program do enter this debug mode afterwards (e.g., after an exception has occurred).<br />
+    <br /></li>
+
+    <li><a id="SQL" /><strong>Integration of existing <span class="style1">SQL</span> or object-oriented databases into <em>
+        <span class="style2">Lava</span><br /></em></strong><br />
+    for instance via OLE-DB / ODBC.</li>
+
+    <li><strong>Experimental support of Generative and Aspect-Oriented Programming and of incremental specialization of methods<br />
+    <br /></strong> (To be outlined in a forthcoming paper.)<br /></li>
+
+    <li><strong>(Semi-)automatic generation of various kinds of <a href="FAQUML.htm">UML diagrams</a> from 
+        <span class="style1">Lava</span> programs<br /></strong><br /></li>
+
+    <li><strong><em><a id="utilities"></a></em> Various <span class="style1">LavaPE</span> utility functions<br /></strong><br />
+    For example: Walking through all references to some <strong class="c2">Lava</strong> entity, searching implementations of a given class, analysis and representation of dependencies (inheritance trees, include files, function calls, ...)<br />
+    <br /></li>
+
+    <li><a id="organization"></a> <strong>Web-based support of synchronous and asynchronous distributed applications<br /></strong><br />
+    Before we started the <strong class="c2">Lava</strong> development we had designed and implemented a programming environment <strong class="c2">DISCO</strong> (<strong>DIS</strong>tributed <strong>C</strong>ooperative <strong>O</strong>ffice applications). Applications programming in <strong class="c2">DISCO</strong> was based on <strong class="c2">C++</strong> with precompiler enhancements. The major <strong class="c2">DISCO</strong> highlights were: Support of synchronous as well as asynchronous form-based distributed applications, support of restart after interruptions without loss of data, automatic generation of form representations for (annotated) <strong class="c2">C++</strong> type declarations, support of multiple digital signatures within forms and of data encryption, provision of a hierarchical name space of &quot;organizational units&quot; (OUs) and users, &quot;agendas&quot; of OUs from where you can activate &quot;tasks&quot; belonging to some distributed application (or &quot;business process&quot;), management of &quot;transition or proxy rights&quot; between OUs. Central components of <strong class="c2">DISCO</strong> were: a distributed communication service based on stored messages (having unique identifiers) and a distributed &quot;application manager&quot; (AM) for managing all those above-mentioned static and dynamic <strong class="c2">DISCO</strong> entities.<br />
+    <br />
+    We should like to reconstruct these advantageous features of <strong class="c2">DISCO</strong> on the basis of <strong class="c2">Lava</strong> component facilities. This would mean in particular to integrate the &quot;application manager&quot; AM into a Web server and to replace the <strong class="c2">DISCO</strong> communication service by a combination of &quot;asynchronous component interface function calls&quot; and a closely related mechanism of activation/deactivation of component objects by the AM.<br />
+    <br /></li>
+
+    <li><strong><em><a id="XML"></a><span class="style2">Lava XML</span></em> support<br /></strong><br />
+    Translation of <strong class="c2">Lava</strong> objects into <span class="style3">XML</span> representation and vice versa.<br />
+    <br /></li>
+
+    <li><strong>Implementation of a version migration concept<br /></strong><br />
+    for automatic upgrading of &quot;old&quot; <strong class="c2">Lava</strong> programs after modifications/extensions of the <strong class="c2">Lava</strong> program storage format.<br />
+    <br /></li>
+
+    <li><strong>Completion of the <span class="style1">Lava</span> online documentation<br /></strong><br />
+    (Command of the English language and sufficient understanding of <strong class="c2">Lava</strong> required.)<br />
+    <br /></li>
+
+    <li><strong><a id="samples"></a>Development of <span class="style1">Lava</span> sample programs for various application areas<br /></strong><br />
+    (Theoretical and practical understanding of <strong class="c2">Lava</strong> and sufficient command of the English language required.)<br />
+    <br /></li>
+
+    <li><strong><a id="security"></a> Design and implementation of a 
+        <span class="style1">Lava</span> service security concept<br /></strong><br />
+    This should make sure that <strong class="c2">Lava</strong> component interfaces (or individual functions thereof) can be used only in specific ways and/or by specific organizational units. It concept should be sufficiently general, simple, and clear to guarantee that a dedicated <strong class="c2">Lava</strong> computer would be &quot;burglarproof&quot;. The basic idea of such a concept will probably be that of &quot;programmable interception of function calls&quot;.<br />
+    <br /></li>
+
+    <li><strong>Design and implementation of a <em><span class="style2">Lava</span> encryption and digital signature</em> support</strong><br />
+    Based on our former DISCO mechanisms (cf. 4 above) for embedding digital signatures and for using data encryption in structured forms, corresponding expressive means and run time functions should be integrated into <strong class="c2">Lava</strong>.<br />
+    <br /></li>
+
+    <li><strong>Formal semantics of <span class="style1">Lava</span> programs, proof of Turing equivalence</strong></li>
+  </ol>
+
+  <h3>See also</h3>
+
+  <p class="c6"><a href="FAQContributions.htm">How can I contribute to the 
+      <span class="style1">Lava</span> development?</a></p>
+</body>
+</html>

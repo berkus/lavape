@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Member functions</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c3 {font-weight: bold}
+  em.c2 {font-weight: bold; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Member functions of <span class="style1">Lava</span> classes</h2>
+
+  <p>Every function is either a static or a virtual member function of a <em class="c2">Lava</em> class. There are no global, &quot;classless&quot; functions in <em class="c2">Lava</em>.</p>
+
+  <p>If a member function is declared only in the <a href="../SepItfImpl.htm">implementation</a> of the class then it can be referenced only from within this class implementation.</p>
+
+  <p>If it is declared in the <a href="../SepItfImpl.htm">class interface</a> (= public part) of the class then it can be referenced from everywhere, except if it is declared &quot;<a href="../ProtectedFriend.htm#protected">protected</a>&quot;. In the latter case it can be referenced only from within the class implementation or the implementations of derived classes, and it can only be called with the &quot;self&quot; object.</p>
+
+  <p class="c3">See also:</p>
+
+  <p><a href="../dialogs/FunctionBox.htm">Function specification dialog box</a></p>
+</body>
+</html>

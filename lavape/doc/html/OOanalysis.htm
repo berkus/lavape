@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Object-oriented analysis and design</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  em.c4 {font-weight: bold; color: Red}
+  a.c3 {font-weight: bold}
+  strong.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">Using <span class="style1">Lava</span> for object-oriented analysis and design</h2>
+
+  <p><strong class="c2">Lava</strong> supports a <strong>highly incremental programming style</strong> with successive completion and modification of initially very coarse and preliminary declarations that may require major revisions and restructuring later:</p>
+
+  <ul>
+    <li>You can start by defining just a few object classes (= <strong class="c2">Lava</strong> classes) having a few primary methods.</li>
+
+    <li>You need not yet assign attributes (= member variables) to the object classes,</li>
+
+    <li>and you need not (but may) declare formal parameters for the methods.</li>
+  </ul>
+
+  <p>For instance, the object-oriented essence of a <strong class="c2">UML</strong> &quot;use case&quot; like &quot;bank customer opens new account&quot;, which would typically be established in the requirements analysis phase of a new project, can be imitated quite easily and naturally in <strong class="c2">Lava</strong> by declaring three classes &quot;Bank&quot;, &quot;Customer&quot; and &quot;Account&quot; and a &quot;CreateAccount&quot; method of &quot;Bank&quot;.</p>
+
+  <p>You can successively add details (member variables, formal parameters, further classes, partial implementations of functions) just as they come into your head.</p>
+
+  <p>You need not interrupt your flow of thoughts and switch to a completely different representation (from &quot;use cases&quot; to &quot;class diagrams&quot;, say) just because you want to keep your idea that the CreateAccount method should have an input parameter of type &quot;Customer&quot; and an output parameter of type &quot;Account&quot;. You may stay within the same language all the time and add, remove, and change details just as they cross your mind.</p>
+
+  <p><strong class="c2">Lava</strong> provides <strong>automatic updates of all existing references</strong> if you change the arrangement of declarations in the <strong class="c2">Lava</strong> declaration tree, if you assign a new name to any <strong class="c2">Lava</strong> entity, or if you change the order or number of formal parameters of a function. Therefore it is very inexpensive to make such changes, and this makes it very attractive to use <strong class="c2">Lava</strong> already in the still very instable analysis and design phases of software projects.</p>
+
+  <p>It <em>is</em> expensive, however, to move <em>member variables or functions</em> from one class to another one, since they must then be referenced through other (containing) variables, and the parameters of the functions will have to be adapted to the new environment. This cannot easily be performed by an <em>automatic</em> update of references but will require <em>manual</em> changes at all affected places.</p>
+
+  <p>Therefore it is very important to arrive at a stable assignment of member variables and functions to containing classes <em>as early as possible</em>. In our opinion this is a strong argument in favor of using an <strong>incremental single-language approach like <em>Lava</em> in OO analysis, design and implementation</strong>.</p>
+
+  <p><strong class="c2">Lava</strong> provides particular support for the design phase by providing a specialization/override notion for <em>families</em> of related classes that refer to each other and that have overridable type parameters (<a href="PatternsFrameworks.htm">patterns / virtual types</a> ). They are particularly suited to represent reusable and adaptable <a class="c3" target="_blank" href="http://hillside.net/patterns/">design patterns</a> and frameworks on which you may want to build during the design phase.</p>
+
+  <p><a id="patternLanguage"></a>Additionally we could imagine that the nested tree structure of <em class="c4">Lava</em> declarations may be well suited for specifying entire <strong>&quot;<a target="_blank" href="http://www.designmatrix.com/pl/anatomy.html">pattern languages</a>&quot;</strong> as tree structures consisting of primary and subordinate (&quot;auxiliary&quot; / &quot;successor&quot;) patterns.</p>
+</body>
+</html>

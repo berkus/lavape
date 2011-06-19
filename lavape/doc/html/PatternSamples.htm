@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <title>Pattern samples</title>
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  a.c6 {font-weight: bold}
+  p.c5 {font-weight: bold; text-align: left}
+  p.c4 {text-align: left}
+  em.c3 {font-weight: bold; color: Red}
+  strong.c2 {font-style: italic; color: Red}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #FF0000;
+          font-style: italic;
+          font-weight: bold;
+      }
+  </style>
+</head>
+
+<body>
+<h2 class="c1">Pattern samples</h2>
+
+<p class="c4"><strong class="c2">Lava</strong> <a
+href="PatternsFrameworks.htm">patterns</a> provide a modern alternative to <em
+class="c3">C++</em> "templates" and <em class="c3">Eiffel</em> "generic types".</p>
+
+<p class="c4"><strong class="c2">Lava</strong> patterns are classes or packages with type
+parameters ("<a href="PatternsFrameworks.htm#VT">virtual types</a>", VTs) whose
+values may be concrete classes or other VTs. These parameter types may be
+overridden by more derived types in a derived pattern.</p>
+
+<p class="c4">Since several years there is a continuing discussion about "<a
+target="_blank" href="http://hillside.net/patterns/">reusable design
+patterns</a>", which describe solutions to frequently recurring software
+structuring problems in general terms and more or less independent of concrete
+programming languages. In spite of their language independence it is highly
+desirable to provide appropriate means for constructing individual design
+patterns and entire pattern libraries and "<a target="_blank"
+href="http://www.designmatrix.com/pl/anatomy.html">pattern languages</a>" in
+concrete programming languages.</p>
+
+<p class="c4">Design patterns are frequently described by families of classes
+that reference each other: Member variables or function parameters occurring in
+one class may be of a type that is specified by another class belonging to this
+same family. "Applying" such a design pattern will typically mean that some or
+all of its classes have to be specialized: You would like to replace them
+"collectively" by more derived classes, and this replacement should be applied
+also at the places where they are referenced in the original pattern as member
+or function parameter types. This "covariant specialization" of virtual types
+frees us, at the same time, from the necessity to use "type casts", as in <span
+class="style1">C++</span> or <span class="style1">Java</span>, in order to make
+use of our knowledge that in the specialized context the run time type of many
+objects is actually the specialized rather than the original base type. (So
+type casts can be justified only on the basis of a precise understanding of the
+dynamic behavior of programs and can be made safe only by run time type checks,
+as a consequence).</p>
+
+<p class="c5">Summary:</p>
+<ul>
+  <li><p class="c4"><strong class="c2">Lava</strong> patterns and virtual types allow us
+    to construct families of interrelated types with type parameters that can
+    be specialized collectively.</p>
+  </li>
+  <li><p class="c4">This <span class="bold">"covariant specialization"</span>
+    enables us to <a href="Unsolved.htm#typeCasts">avoid type casts</a> and <a
+    href="TypeSafety.htm">run time type checking</a>.</p>
+  </li>
+</ul>
+
+<p class="c4">Our <strong><a href="VTSamples.htm">Basic virtual type samples</a></strong>
+just demonstrate this primary purpose of patterns with virtual types.</p>
+
+<p class="c4"><strong><a href="VirtualBaseSamples.htm">Virtual base types</a></strong>
+provide a <strong>new kind of abstraction</strong> that enables us to specify and
+implement extension classes (in a generic way, "once for all") without knowing
+the precise concrete type(s) of the base class(es). Typical application: The
+well-known "decorator" design pattern. They can also be viewed as a special
+case of <strong>mix-in's</strong>, cf.<br />
+<a
+href="http://en.wikipedia.org/wiki/Mixin">http://en.wikipedia.org/wiki/Mixin</a>,<br
+/>
+<a target="_blank"
+href="http://apl.jhu.edu/~hall/java/mixins.text">http://apl.jhu.edu/~hall/java/mixins.text</a>,<br
+/>
+<a target="_blank"
+href="http://csis.pace.edu/~bergin/patterns/multipleinheritance.html">http://csis.pace.edu/~bergin/patterns/multipleinheritance.html</a>,<br
+/>
+<a target="_blank"
+href="http://www.wikiservice.at/dse/wiki.cgi?MixIn">http://www.wikiservice.at/dse/wiki.cgi?MixIn</a>
+(in German).</p>
+
+<p class="c4"><a class="c6" href="SubstitutableSamples.htm">Substitutable
+types</a> enable us to deal in a (somewhat restricted but) uniform and
+type-safe way with objects that are incompatible in the narrow, traditional
+sense of class derivation with the static type T of the containing variable but
+whose type is derived from T in the context of some <a
+href="PatternsFrameworks.htm#derivedPattern">pattern derivation</a>.</p>
+</body>
+</html>

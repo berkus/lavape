@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Design by contract</title>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css" />
+  <style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+  p.c8 {text-align: center}
+  h3.c7 {font-weight: bold; text-align: left}
+  strong.c6 {font-style: italic; color: Red}
+  p.c5 {text-align: left}
+  em.c4 {font-weight: bold; color: Red}
+  h3.c3 {text-align: left}
+  p.c2 {font-weight: bold; text-align: center}
+  h2.c1 {text-align: center}
+  /*]]>*/
+      .style1
+      {
+          color: #0000FF;
+          font-weight: bold;
+      }
+      .style2
+      {
+          color: #FF0000;
+          font-style: italic;
+      }
+      .style3
+      {
+          color: #0000FF;
+      }
+  </style>
+</head>
+
+<body>
+  <h2 class="c1">&quot;Design By Contract(TM)&quot; (DBC)</h2>
+
+  <p class="c2">or preferably: &quot;attached assertions&quot;</p>
+
+  <h3 class="c3">Introduction</h3>
+
+  <p class="c5">&quot;Design By Contract&quot; is a trademark of <a target="_blank" href="http://www.eiffel.com">Interactive Software Engineering</a> referring to special expressive means of the <em class="c4">Eiffel</em> language. See, e.g., the equally named section in the <a href="http://archive.eiffel.com/doc/online/eiffel50/intro/language/tutorial.pdf">Eiffel Tutorial of ISE</a>: In Eiffel you can specify pre- and postconditions for methods and invariants for classes, and also some other kinds of assertions.</p>
+
+  <p class="c5"><em class="c4">Lava</em> provides preconditions, postconditions, invariants, and 
+      <span class="style1">assert</span> statements, too, with a number of differences, as compared with <em class="c4">Eiffel</em>, that should be noted (see below).</p>
+
+  <p class="c5">We have used the term &quot;design by contract&quot; in the title because it is well-known in professional circles and because of some basic similarities of the <em class="c4">Lava</em> approach with that of <em class="c4">Eiffel</em>. Actually we don&#39;t like the term since &quot;design by contract&quot; suggests the idea of a precise contract between customer and programmer, in the sense of comprehensive necessary and sufficient conditions for the correctness of method implementations which <strong>completely</strong> specify</p>
+
+  <ul>
+    <li>
+      <p class="c5">what the caller of a method should make sure on entry to the method (<strong>precondition</strong>) and</p>
+    </li>
+
+    <li>
+      <p class="c5">what the programmer of the method should guarantee on exit from the method (<strong>postcondition</strong>),</p>
+    </li>
+
+    <li>
+      <p class="c5">while a class <strong>invariant</strong> is a condition that should be true on every entry to and exit from a (public) method of the class.</p>
+    </li>
+  </ul>
+
+  <p class="c5">Such a comprehensive, complete, formal contract would require the expressive means of a specialized specification language, however, and such expressive means are neither provided by <strong class="c6">Eiffel</strong>, nor by <strong class="c6">Lava</strong>:</p>
+
+  <p class="c5">In place of &quot;design by contract&quot; we prefer to speak of <strong>attached assertions</strong> (pre- and postconditions are attached to methods, invariants to classes) and of <strong>assertion checking</strong>. The term &quot;attached assertions&quot; emphasizes that such an assertion isn&#39;t embedded within normal executable code but attached to the declarations/implementations of methods and classes; their execution is triggered by the run time system on specific occasions (entry/exit to/from methods). Checking of attached assertions may also be switched off on demand.</p>
+
+  <p class="c5">The purpose of such assertions is</p>
+
+  <ol>
+    <li>
+      <p class="c5">to provide additional <strong>documentation</strong> and explanations</p>
+
+      <ul>
+        <li>
+          <p class="c5">on the <strong>semantics</strong> of methods and classes and</p>
+        </li>
+
+        <li>
+          <p class="c5">on <strong>implementation restrictions and limitations</strong> that the user of these classes and methods has to observe.</p>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <p class="c5">to serve as a <strong>debugging aid</strong>: the assertions provide additional redundant information on methods and classes that (hopefully) will enable early detection of programming errors before they end up in obscure crashes.</p>
+    </li>
+  </ol>
+
+  <p class="c5"><em class="c4"><a id="LavaAA"></a>Lava</em> <strong>pre/postconditions and invariants</strong> are checked at run time according to the following rules:</p>
+
+  <ul>
+    <li>
+      <p class="c5"><strong>Preconditions</strong> are checked immediately before entry to the corresponding method to which they are attached. The method body is skipped if an exception occurs in the precondition.</p>
+    </li>
+
+    <li>
+      <p class="c5"><strong>Postconditions</strong> are checked immediately after the body of the method has been left (if no exception has been thrown by the method body.</p>
+    </li>
+
+    <li>
+      <p class="c5"><strong>Invariants</strong> (including all invariants &quot;inherited&quot; by a class from its direct and indirect base classes) are checked on object creation when the new object leaves the 
+          <span class="style1">new</span> expression, and on entry/exit to/from every public non-read-only method; for read-only methods only on entry (cf. subsection D) of the next section).</p>
+    </li>
+
+    <li>
+      <p class="c5">Assertion checking is turned off within assertions to avoid infinite recursions which otherwise could easily occur. (E.g., assertions attached to a method m1 of some class would frequently make use of a method m2 of that class, while the assertions attached to m2 may refer to m1 again, or similarly.)</p>
+    </li>
+  </ul>
+
+  <p class="c5">In addition to the actual checking of pre/postconditions <em class="c4">Lava</em> checks also the consistency of these assertions with those of overridden methods: See subsection C) of the next section.</p>
+
+  <h3 class="c3">Differences between <span class="style2">Lava</span> and 
+      <span class="style2">Eiffel</span> attached assertions</h3>
+
+  <h3 class="c7">A) Comprehensiveness of the expressive means</h3>
+
+  <ul>
+    <li>
+      <p class="c5">In <em class="c4">Eiffel</em>, assertions are expressed by <strong>Boolean expressions</strong>, while</p>
+    </li>
+
+    <li>
+      <p class="c5"><em class="c4">Lava</em> has considerably more general expressive means, including all kinds of statements, like assignment, branching, and function call statements (with more than one output), comparison statements, and quantifiers.</p>
+    </li>
+  </ul>
+
+  <p class="c5">The only restriction is that a <em class="c4">Lava</em> assertion must have the <strong><a href="ReadOnly.htm">read-only</a></strong> property, i.e, it must not modify pre-existing objects (= objects that existed already before starting the evaluation of the assertion). The <em class="c4">Lava</em> programming environment <em class="c4">LavaPE</em> makes this sure already at programming time.</p>
+
+  <p class="c5">You should not in this context that executable <em class="c4">Lava</em> statements can be viewed as <strong><a href="SingleAssigLogSem.htm">logical statements</a></strong>. Execution of a statement means <strong>verification</strong> and yields the result 
+      <span class="style1">true</span> or <span class="style1">false</span> (if no exception is thrown). As a consequence, where other programming languages would use Boolean expressions, for instance in if-conditions, <em class="c4">Lava</em> uses quite normal (&quot;read-only&quot; or, as in if-conditions, even &quot;assignment-free&quot;) statements.</p>
+
+  <p class="c5">Note also that comparisons</p>
+
+  <p class="c8">&lt;expression&gt; &lt;comparison-operator&gt; &lt;expression&gt;</p>
+
+  <p class="c5">are <em>statements</em> in <em class="c4">Lava</em>, not <em>Boolean expressions</em>.</p>
+
+  <p class="c5">Like <em class="c4">Eiffel</em>, <em class="c4">Lava</em> provides an &quot;<span 
+          class="style1">old</span> &lt;expression&gt;&quot; which allows you to refer to the original value of an expression (on method entry) within postconditions and method bodies. The <em class="c4">Lava</em> &quot;<span 
+          class="style1">old</span>&quot; expression has a more satisfactory semantics, however (see below).</p>
+
+  <h3 class="c7">B) <span class="style2">Lava</span> distinguishes semantic and implementation-related assertions</h3>
+
+  <p class="c5">In <em class="c4">Lava</em>, declaration and implementation of methods and classes are strictly separated; as an obvious consequence, assertions can be attached to <em>both</em>.</p>
+
+  <p class="c5">This is in fact highly desirable, since it allows us to adequately express not only &quot;logical&quot; assertions which characterize the actual logic and semantics of classes and methods, but also purely implementation-related assertions which describe restrictions and limitations of the respective implementation.</p>
+
+  <p class="c5">For instance, if you implement a &quot;table&quot; class on the basis of an array of fixed length then you have an implementation restriction concerning the capacity of the table. This may be perfectly acceptable for the intended application, but it is by no means an inherent semantic restriction of a &quot;table&quot; class. In this case you could attach a quite natural &quot;capacity check&quot; precondition to the implementations of all &quot;table&quot; methods that add a new element to the table.</p>
+
+  <p class="c5">Moreover, it is desirable to distinguish this kind of &quot;implementation-related&quot; assertions from &quot;semantical assertions&quot; since the &quot;hierarchy correctness checks&quot; of the next section are justified only for the latter and don&#39;t make sense for the former.</p>
+
+  <h3 class="c7">C) Inheritance: <span class="style2">Lava</span> performs assertion consistency checks at run time</h3>
+
+  <p class="c5">These are also known as &quot;hierarchy correctness checks&quot; in the context of &quot;Behavioral Subtyping&quot;; cf., e.g., <a href="#biblio">[1]</a> and <a href="#biblio">[2]</a> below. They make sure that the behavior of derived classes, taking pre- and postconditions into account, should comply with the behavior of base classes. Here are the two basic principles that govern these consistency checks:</p>
+
+  <ol>
+    <li>
+      <p class="c5">If we have a class C1, and a class C2 derived from C1, and a (public) method m in C1 which is overridden in C2, and if m has a precondition pr1 in C1and pr2 in C2, and if a concrete invocation of the method (with a call object of class C2) would be admissible according to pr1 then it should also be admissible according to pr2. In other words: If pr1 evaluates to 
+          <span class="style1">true</span> in the concrete case then pr2 should also evaluate to 
+          <span class="style1">true</span>. This applies also if pr1 is absent (= always 
+          <span class="style1">true</span>): pr2 must also be always <span class="style1">true</span> (for instance absent). (If pr2 is absent then pr1 trivially implies pr2.) Roughly spoken:<br />
+      <br />
+      <strong>The precondition of an overriding method should be equivalent to or at most weaker than that of a corresponding overridden method.</strong></p>
+    </li>
+
+    <li>
+      <p class="c5">And for postconditions po1 and po2: If a concrete invocation of the method (with a call object of class C2) is admissible according to preconditions pr1 (and therefore, because of 1. above also pr2) and consequently ensures the validity of postcondition po2 then it should also ensure the validity of postcondition po1. In other words: If pr1, pr2 and po2 evaluate to <strong>true</strong> in the concrete case then po1 should also evaluate to 
+          <span class="style1">true</span>. Roughly spoken:<br />
+      <br />
+      <strong>The postcondition of an overriding method should be equivalent to or at most stronger than that of a corresponding overridden method.</strong></p>
+    </li>
+  </ol>
+
+  <p class="c5"><strong>Note 1</strong>: Since <em class="c4">Lava</em> supports <a href="SepItfImpl.htm">multiple inheritance</a> a method may override several methods (of several base classes). Then the two consistency rules apply to all these overridden methods.</p>
+
+  <p class="c5"><strong>Note 2:</strong> <em class="c4">Lava</em> supports <a href="PatternsFrameworks.htm">virtual types</a> (= parameter types of classes and packages) and <a href="TypeSafety.htm#substitutableType">substitutable types</a>. If a class derivation is induced by the specialization of a virtual type then it may happen that an overridden method cannot be invoked with an object of the derived class. In this case the assertion consistency rules do not apply, since the pre/postconditions of the overridden method generally cannot be evaluated, too.</p>
+
+  <p class="c5">In contrast to <em class="c4">Lava</em>, <em class="c4">Eiffel</em> <strong>does not check the consistency of preconditions</strong> of overridden and overriding methods <strong>but enforces consistency</strong> by automatically connecting all these preconditions by a logical OR conjunction. Newer research articles (like <a href="#biblio">[1]</a> and <a href="#biblio">[2]</a> below) call this approach into question and recommend a consistency checking approach since automatic ORing may mask a real inconsistency and fail to report it. It may then falsely come to the surface as a postcondition violation which is caused by the fact that the ORed preconditions are too weak to actually ensure the intended postcondition.</p>
+
+  <h3 class="c7">D) <span class="style2">Lava</span> guarantees the read-only property of assertions</h3>
+
+  <p class="c5">The evaluation of an assertion should not change the referenced objects or any other &quot;pre-existing&quot; objects, i.e., objects that existed already before the evaluation started. In <em class="c4">Lava</em> this is guaranteed owing to the <a href="ReadOnly.htm">read-only</a> property of assertions, which can be checked already at programming time in <em class="c4">Lava</em>.</p>
+
+  <p class="c5">Another nice side effect of the fact that <em class="c4">Lava</em> can <em>guarantee</em> the <a href="ReadOnly.htm">read-only</a> property of methods: <em class="c4">Lava</em> does not have to to check <em>invariants</em> after read-only methods since the latter cannot change any objects that existed already on entry to the method.</p>
+
+  <h3 class="c7">E) The &quot;<span class="style3">old</span>&quot; expression has a more satisfactory semantics in
+      <span class="style2">Lava</span></h3>
+
+  <p class="c5">Like <em class="c4">Eiffel</em>, <em class="c4">Lava</em> provides an &quot;<strong>old</strong> &lt;expression&gt;&quot; which allows you to refer to the original value of an expression (on method entry) within postconditions and method bodies. The implementation of <strong>old</strong> requires to evaluate the &lt;expression&gt; on method entry and to store a <strong>copy</strong> of the resulting object for later reference. (The original result object might be modified before it is actually referenced by the respective &quot;<strong>old</strong> &lt;expression&gt;&quot;.)</p>
+
+  <p class="c5">Naturally this raises the question: What is a <strong>copy</strong> of an object? The <em>copy</em> notion calls for a precise answer to the question: <strong>What belongs to the object?</strong> Fortunately, concerning the attributes (or <em>member objects</em>) of an object, <em class="c4">Lava</em> <a href="Unsolved.htm#pointers">provides a clear distinction</a> between <strong>constituents</strong> and <strong>acquaintances</strong>. The former (and also constituents of constituents, etc.) <strong>belong</strong> to the object, while acquaintances (also of nested constituents) just <strong>point</strong> to independent objects.</p>
+
+  <p class="c5">Without such a distinction you can provide only a more or less undifferentiated and arbitrary semantics of &quot;<span 
+          class="style1">old</span> &lt;expression&gt;&quot; which won&#39;t reflect the application needs in many cases.</p>
+
+  <h3 class="c7">F) Visibility of class attributes to clients of methods doesn&#39;t require special rules in 
+      <span class="style2">Lava</span></h3>
+
+  <p class="c5">The <a target="_blank" href="http://archive.eiffel.com/doc/online/eiffel50/intro/language/tutorial.pdf">ISE Eiffel Tutorial</a> states on page 41:</p>
+
+  <blockquote>
+    <p class="c5">&quot;A requirement on meaningful contracts is that they should be in good faith: satisfiable by an honest partner. This implies a consistency rule: if a routine is exported to a client (either generally or selectively), any feature appearing in its precondition must also be available to that client. Otherwise - for example if the precondition included <strong>require</strong> n&gt; 0, where n is a secret attribute-the supplier would be making demands that a good-faith client cannot possibly check for.&quot;</p>
+  </blockquote>
+
+  <p class="c5">In <em class="c4">Lava</em> we don&#39;t need such special rules since attached assertions in class interfaces can only reference class features that are declared in that class interface. (&quot;Private&quot; features, declared in class implementations, can be referenced only from within that implementation and are invisible to the &quot;outside world&quot;, including to the assertions in the corresponding interface.)</p>
+
+  <h3>See also</h3>
+
+  <p><a href="whatsThis/Assert.htm">Embedded assertions</a><br /></p>
+  <hr />
+
+  <p class="c5"><a id="biblio" target="_blank" href="http://www.ccs.neu.edu/scheme/pubs/oopsla01-ff.pdf">[1]</a> R.B. Findler, M. Felleisen: Contract Soundness for Object-Oriented Languages, OOPSLA 2001.</p>
+
+  <p class="c5"><a target="_blank" href="http://www.ccs.neu.edu/scheme/pubs/fse01-flf.pdf">[2]</a> R.B. Findler, M. Latendresse, M. Felleisen: Behavioral Contracts and Behavioral Subtyping, FSE 2001.</p>
+</body>
+</html>
