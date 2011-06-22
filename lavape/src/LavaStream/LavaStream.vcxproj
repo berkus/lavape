@@ -161,6 +161,19 @@
       <Project>{b8af386c-b421-4024-b8f0-9a926b6b11b2}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\samples\LavaStream.lava">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy ..\..\samples\$(InputFileName) ..\..\bin\Components
+if not exist ..\..\data mkdir ..\..\data</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LavaStream.lava nach bin\Components kopieren</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\Components\$(InputFileName);%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy ..\..\samples\$(InputFileName) ..\..\bin\Components
+if not exist ..\..\data mkdir ..\..\data</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">LavaStream.lava nach bin\Components kopieren</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\Components\$(InputFileName);%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

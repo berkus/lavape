@@ -4,6 +4,7 @@
 	Version="9,00"
 	Name="LavaStream"
 	ProjectGUID="{FA41A2C9-8020-4E9B-83E8-5BA2B740BA92}"
+	RootNamespace="LavaStream"
 	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
@@ -240,6 +241,30 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\..\samples\LavaStream.lava"
+			>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="LavaStream.lava nach bin\Components kopieren"
+					CommandLine="copy ..\..\samples\$(InputFileName) ..\..\bin\Components&#x0D;&#x0A;if not exist ..\..\data mkdir ..\..\data"
+					Outputs="..\..\bin\Components\$(InputFileName)"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="LavaStream.lava nach bin\Components kopieren"
+					CommandLine="copy ..\..\samples\$(InputFileName) ..\..\bin\Components&#x0D;&#x0A;if not exist ..\..\data mkdir ..\..\data"
+					Outputs="..\..\bin\Components\$(InputFileName)"
+				/>
+			</FileConfiguration>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
