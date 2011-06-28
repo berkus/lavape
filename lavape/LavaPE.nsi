@@ -3,7 +3,7 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "LavaPE"
 !define PRODUCT_VERSION "0.9.2"
-!define QTREL "Qt470-beta1"
+!define QTREL "Qt473"
 !define PRODUCT_PUBLISHER "The lavape project "
 !define PRODUCT_WEB_SITE "http://lavape.sourceforge.net/index.htm"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\LavaPE.exe"
@@ -131,16 +131,16 @@ Section "LavaPE (required)" SEC01
   File "C:\Qt\${QTREL}\bin\QtGui4.dll"
   File "C:\Qt\${QTREL}\bin\QtNetwork4.dll"
   File "C:\Qt\${QTREL}\bin\QtXml4.dll"
-  File "C:\Qt\${QTREL}\bin\QtSvg4.dll"
+;  File "C:\Qt\${QTREL}\bin\QtSvg4.dll"
   File "C:\Qt\${QTREL}\bin\QtHelp4.dll"
   File "C:\Qt\${QTREL}\bin\QtCLucene4.dll"
   File "C:\Qt\${QTREL}\bin\QtSql4.dll"
   File "C:\Qt\${QTREL}\bin\phonon4.dll"
   File "C:\Qt\${QTREL}\bin\QtWebKit4.dll"
-  File "C:\Qt\${QTREL}\bin\QTMEDIASERVICES4.DLL"
-  File "C:\Qt\${QTREL}\bin\QTMULTIMEDIA4.DLL"
-  File "C:\Qt\${QTREL}\bin\QTOPENGL4.DLL"
-  File "C:\Qt\${QTREL}\bin\QTXMLPATTERNS4.DLL"
+;  File "C:\Qt\${QTREL}\bin\QTMEDIASERVICES4.DLL"
+;  File "C:\Qt\${QTREL}\bin\QTMULTIMEDIA4.DLL"
+;  File "C:\Qt\${QTREL}\bin\QTOPENGL4.DLL"
+;  File "C:\Qt\${QTREL}\bin\QTXMLPATTERNS4.DLL"
   
   CreateDirectory $INSTDIR\data
   AccessControl::GrantOnFile \
