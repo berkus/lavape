@@ -1202,7 +1202,7 @@ CHWException::CHWException(int sig_num, siginfo_t *info)
       message = QString("Hardware exception: Invalid operation");
       lavaCode = float_invalid_op_ex;
       break;
-#ifndef __Darwin
+//#ifndef __Darwin
     case FPE_FLTSUB:
       message = QString("Hardware exception: Subscript out of range");
       lavaCode = float_subscript_out_of_range_ex;
@@ -1215,7 +1215,7 @@ CHWException::CHWException(int sig_num, siginfo_t *info)
       message = QString("Hardware exception: Integer overflow");
       lavaCode = integer_overflow_ex;
       break;
-#endif
+//#endif
     default:
       lavaCode = other_hardware_ex;
       message = QString(STRSIGNAL);

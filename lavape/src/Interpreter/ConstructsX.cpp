@@ -405,7 +405,7 @@
   }\
   catch (SafeIntException ex) {\
     siginfo_t si;\
-    si.si_code = ex.m_code == ERROR_ARITHMETIC_OVERFLOW?FPE_INTOVF:FPE_INTDIV;\
+    si.si_code = (ex.m_code == ERROR_ARITHMETIC_OVERFLOW)?FPE_INTOVF:FPE_INTDIV;\
     CHWException exHW(SIGFPE,&si); \
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
