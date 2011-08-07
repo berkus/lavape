@@ -5503,8 +5503,7 @@ QString CLavaPEView::text(const QPoint &point) {
       return QString(QObject::tr("<p>This is a <a href=\"../Packages.htm#packages\">package</a>"
         " (= group of declarations/implementations that belong closely together</p>"));
     case Initiator:
-      return QString(QObject::tr("<p>This is a <a href=\"../Packages.htm#initiator\">main program</a>"
-        " (= <font color=\"red\"><b><i>Lava</i></b></font> main program)</p>"));
+      return QString(QObject::tr("<p>This is a <font color=\"red\"><b><i>Lava</i></b></font> <a href=\"../Packages.htm#initiator\">main program</a>"));
     case Interface:
       if (itemDECL->SecondTFlags.Contains(isGUI))
         return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> class "
