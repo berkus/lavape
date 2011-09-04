@@ -224,9 +224,9 @@ MYSTYLE(WindowsXP)
 #ifdef Q_WS_MAC
 MYSTYLE(Mac)
 #endif
-#ifdef __Linux
-MYSTYLE(Gtk)
-#endif
+//#ifdef __Linux
+//MYSTYLE(Gtk)
+//#endif
 MYSTYLE(Windows)
 MYSTYLE(Plastique)
 MYSTYLE(Motif)
