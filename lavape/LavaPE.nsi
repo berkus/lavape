@@ -3,7 +3,7 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "LavaPE"
 !define PRODUCT_VERSION "0.9.2"
-!define QTREL "Qt473"
+!define QTREL "Qt474"
 !define PRODUCT_PUBLISHER "The lavape project "
 !define PRODUCT_WEB_SITE "http://lavape.sourceforge.net/index.htm"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\LavaPE.exe"
