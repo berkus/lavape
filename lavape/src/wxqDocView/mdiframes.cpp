@@ -616,17 +616,38 @@ void wxTabWidget::closePage(wxChildFrame *p) {
   return px;\
 }
 
-#ifdef Q_WS_WIN
+#if !defined(QT_NO_STYLE_CDE)
+MYSTYLEIMP(CDE)
+#endif
+
+#if !defined(QT_NO_STYLE_WINDOWS)
+MYSTYLEIMP(Windows)
+#endif
+
+#if !defined(QT_NO_STYLE_WINDOWSXP)
 MYSTYLEIMP(WindowsXP)
 #endif
-#ifdef Q_WS_MAC
+
+#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+MYSTYLEIMP(WindowsVista)
+#endif
+
+#if !defined(QT_NO_STYLE_CLEANLOOKS)
+MYSTYLEIMP(Cleanlooks)
+#endif
+
+#if !defined(QT_NO_STYLE_PLASTIQUE)
+MYSTYLEIMP(Plastique)
+#endif
+
+#if defined(Q_WS_MAC) && !defined(QT_NO_STYLE_MAC)
 MYSTYLEIMP(Mac)
 #endif
-//#ifdef __Linux
-//MYSTYLEIMP(Gtk)
-//#endif
-MYSTYLEIMP(Windows)
-MYSTYLEIMP(Plastique)
-MYSTYLEIMP(CDE)
+
+#if !defined(QT_NO_STYLE_GTK)
+MYSTYLEIMP(Gtk)
+#endif
+
+#if !defined(QT_NO_STYLE_MOTIF)
 MYSTYLEIMP(Motif)
-MYSTYLEIMP(Cleanlooks)
+#endif

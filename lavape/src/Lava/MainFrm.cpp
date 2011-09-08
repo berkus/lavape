@@ -109,45 +109,58 @@ bool CLavaMainFrame::OnCreate() {
 
 void CLavaMainFrame::makeStyle(const QString &style)
 {
-  LBaseData->m_style = style;
-  wxTheApp->saveSettings();
   if (!style.isEmpty()) {
+    LBaseData->m_style = style;
+    wxTheApp->saveSettings();
+
+#if !defined(QT_NO_STYLE_CDE)
+    if (style == "CDE")
+      QApplication::setStyle(new MyCDEStyle);
+    else
+#endif
+#if !defined(QT_NO_STYLE_WINDOWS)
     if (style == "Windows")
       QApplication::setStyle(new MyWindowsStyle);
-#ifdef Q_WS_WIN
-    else if (style == "WindowsXP")
+    else
+#endif
+#if !defined(QT_NO_STYLE_WINDOWSXP)
+    if (style == "WindowsXP")
       QApplication::setStyle(new MyWindowsXPStyle);
+    else
 #endif
-#ifdef Q_WS_MAC
-    else if (style == "Mac")
-      QApplication::setStyle(new MyMacStyle);
+#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+    if (style == "WindowsVista")
+      QApplication::setStyle(new MyWindowsVistaStyle);
+    else
 #endif
-//#ifdef __Linux
-//    else if (style == "GTK+")
-//      QApplication::setStyle(new MyGtkStyle);
-//#endif
-    else if (style == "CDE")
-      QApplication::setStyle(new MyCDEStyle);
-    else if (style == "Motif")
-      QApplication::setStyle(new MyMotifStyle);
-    else if (style == "Plastique")
-      QApplication::setStyle(new MyPlastiqueStyle);
-    else if (style == "Cleanlooks")
+#if !defined(QT_NO_STYLE_CLEANLOOKS)
+    if (style == "Cleanlooks")
       QApplication::setStyle(new MyCleanlooksStyle);
     else
-	    QApplication::setStyle(style);
-  }
-  else {
-#ifdef Q_WS_MAC
-    LBaseData->m_style = "Mac";
-    wxTheApp->saveSettings();
-    QApplication::setStyle(new MyMacStyle);
-#else
-    LBaseData->m_style = "Windows";
-    wxTheApp->saveSettings();
-    QApplication::setStyle(new MyWindowsStyle);
 #endif
+#if !defined(QT_NO_STYLE_PLASTIQUE)
+    if (style == "Plastique")
+      QApplication::setStyle(new MyPlastiqueStyle);
+    else
+#endif
+#if defined(Q_WS_MAC) && !defined(QT_NO_STYLE_MAC)
+    if (style.startsWith(QLatin1String("macintosh")))
+      QApplication::setStyle(new MyMacStyle);
+    else
+#endif
+#if !defined(QT_NO_STYLE_GTK)
+    if (style == "GTK+")
+      QApplication::setStyle(new MyGtkStyle);
+    else
+#endif
+#if !defined(QT_NO_STYLE_MOTIF)
+    if (style == "Motif")
+      QApplication::setStyle(new MyMotifStyle);
+    else
+#endif
+    {}
   }
+
   if (completelyCreated)
 	  repaint();
 }

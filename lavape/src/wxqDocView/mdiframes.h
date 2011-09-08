@@ -29,6 +29,7 @@
 #include <QTextEdit>
 #include <QWindowsStyle>
 #include <QWindowsXPStyle>
+#include <QWindowsVistaStyle>
 #include <QGtkStyle>
 #include <QMotifStyle>
 #include <QCDEStyle>
@@ -218,19 +219,40 @@ public:\
   int pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const;\
 };
 
-#ifdef Q_WS_WIN
+#if !defined(QT_NO_STYLE_CDE)
+MYSTYLE(CDE)
+#endif
+
+#if !defined(QT_NO_STYLE_WINDOWS)
+MYSTYLE(Windows)
+#endif
+
+#if !defined(QT_NO_STYLE_WINDOWSXP)
 MYSTYLE(WindowsXP)
 #endif
-#ifdef Q_WS_MAC
+
+#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+MYSTYLE(WindowsVista)
+#endif
+
+#if !defined(QT_NO_STYLE_CLEANLOOKS)
+MYSTYLE(Cleanlooks)
+#endif
+
+#if !defined(QT_NO_STYLE_PLASTIQUE)
+MYSTYLE(Plastique)
+#endif
+
+#if defined(Q_WS_MAC) && !defined(QT_NO_STYLE_MAC)
 MYSTYLE(Mac)
 #endif
-//#ifdef __Linux
-//MYSTYLE(Gtk)
-//#endif
-MYSTYLE(Windows)
-MYSTYLE(Plastique)
+
+#if !defined(QT_NO_STYLE_GTK)
+MYSTYLE(Gtk)
+#endif
+
+#if !defined(QT_NO_STYLE_MOTIF)
 MYSTYLE(Motif)
-MYSTYLE(Cleanlooks)
-MYSTYLE(CDE)
+#endif
 
 #endif
