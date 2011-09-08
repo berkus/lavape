@@ -624,13 +624,13 @@ MYSTYLEIMP(CDE)
 MYSTYLEIMP(Windows)
 #endif
 
-#if !defined(QT_NO_STYLE_WINDOWSXP)
-MYSTYLEIMP(WindowsXP)
-#endif
+//#if !defined(QT_NO_STYLE_WINDOWSXP)
+//MYSTYLEIMP(WindowsXP)
+//#endif
 
-#if !defined(QT_NO_STYLE_WINDOWSVISTA)
-MYSTYLEIMP(WindowsVista)
-#endif
+//#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+//MYSTYLEIMP(WindowsVista)
+//#endif
 
 #if !defined(QT_NO_STYLE_CLEANLOOKS)
 MYSTYLEIMP(Cleanlooks)

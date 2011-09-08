@@ -276,16 +276,16 @@ void CLavaMainFrame::makeStyle(const QString &style)
       QApplication::setStyle(new MyWindowsStyle);
     else
 #endif
-#if !defined(QT_NO_STYLE_WINDOWSXP)
-    if (style == "WindowsXP")
-      QApplication::setStyle(new MyWindowsXPStyle);
-    else
-#endif
-#if !defined(QT_NO_STYLE_WINDOWSVISTA)
-    if (style == "WindowsVista")
-      QApplication::setStyle(new MyWindowsVistaStyle);
-    else
-#endif
+//#if !defined(QT_NO_STYLE_WINDOWSXP)
+//    if (style == "WindowsXP")
+//      QApplication::setStyle(new MyWindowsXPStyle);
+//    else
+//#endif
+//#if !defined(QT_NO_STYLE_WINDOWSVISTA)
+//    if (style == "WindowsVista")
+//      QApplication::setStyle(new MyWindowsVistaStyle);
+//    else
+//#endif
 #if !defined(QT_NO_STYLE_CLEANLOOKS)
     if (style == "Cleanlooks")
       QApplication::setStyle(new MyCleanlooksStyle);
