@@ -610,6 +610,7 @@ void wxTabWidget::closePage(wxChildFrame *p) {
   {\
     case PM_ToolBarItemMargin:\
     case PM_ToolBarItemSpacing:\
+    case PM_ToolBarFrameWidth:\
       px = 0; break;\
     default: break;\
   }\
@@ -624,13 +625,13 @@ MYSTYLEIMP(CDE)
 MYSTYLEIMP(Windows)
 #endif
 
-//#if !defined(QT_NO_STYLE_WINDOWSXP)
-//MYSTYLEIMP(WindowsXP)
-//#endif
+#if defined(WIN32) && !defined(QT_NO_STYLE_WINDOWSXP)
+MYSTYLEIMP(WindowsXP)
+#endif
 
-//#if !defined(QT_NO_STYLE_WINDOWSVISTA)
-//MYSTYLEIMP(WindowsVista)
-//#endif
+#if defined(WIN32) && !defined(QT_NO_STYLE_WINDOWSVISTA)
+MYSTYLEIMP(WindowsVista)
+#endif
 
 #if !defined(QT_NO_STYLE_CLEANLOOKS)
 MYSTYLEIMP(Cleanlooks)
