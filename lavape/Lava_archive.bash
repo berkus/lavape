@@ -2,6 +2,9 @@
 #cd /opt
 tar -c -j \
 --exclude=bin/*.app \
+--exclude=bin/Lava\
+--exclude=bin/LavaPE \
+--exclude=bin/LPC \
 --exclude=bin/assistant \
 --exclude lib \
 --exclude doc/LavaPE.qch \
