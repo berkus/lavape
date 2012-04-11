@@ -258,7 +258,6 @@ void DParserCLASS::declaration ()
   IntCode.attributes = SET();
   
   IntCode.Push(STdeclaration);
-  
   declSpecifiers(IntCode.attributes,isFunctionDef);
   if (PCerrors.Recovery) return;
   
@@ -279,12 +278,11 @@ void DParserCLASS::declaration ()
         IntCode.typeInd = ++typeIndex;
       else
         IntCode.typeInd = 0;
-     IntCode.TypeDef();
+      IntCode.TypeDef();
     }
     
     Check(Semicolon);
   }
-  
   IntCode.Pop();
   if (PCerrors.Recovery) return;
   IntCode.TopOfStack()->Flags = IntCode.attributes;

@@ -383,7 +383,6 @@ void IntCodeCLASS::TypeDef ()
   if (SIGfromEntry)
     for (;SIGfromEntry->SIGfrom;
           SIGfromEntry = SIGfromEntry->SIGfrom);
-
   LookUpType(CurrentDefType->StringBufferPos,entryFound);
   if (!entryFound) {
     appendType(newEntry);
@@ -466,8 +465,7 @@ void IntCodeCLASS::TypeDef ()
     GlobalProperties.Flags.INCL(SIGNgen);
     GlobalProperties.Flags.INCL(CDPgen);
   }
-
-  if ((GlobalProperties.Flags * SET(CDPgen,FIOgen,SIGNgen) != SET())
+  if ((GlobalProperties.Flags * SET(CDPgen,FIOgen,SIGNgen,-1) != SET())
       && !IncludeLevel)
     FunctionsAreToBeGenerated = true;
 }
@@ -644,11 +642,11 @@ void IntCodeCLASS::PrepareProcDcls ()
   if (PCerrors.Recovery) return;
   if ((CurrentTypeEntry->attributes
        * CurrentTypeEntry->procGenAttributes )
-      == SET(-1)
+      == SET()
       &&
       (CurrentTypeEntry->refModes
        * SET(ChainAnyRef,NestedAnyRef,Nested0Ref,NestedRef)
-       == SET(-1)))
+       == SET()))
     return;
 
   chp = new CHETypeTablePtr;

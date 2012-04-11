@@ -32,9 +32,7 @@ void ParserCLASS::Parser ()
 
 {
   DParser.ImportStatements();
-
   DParser.TypeAndFormStatements();
-
   if (IntCode.IncludeLevel) return;
   
   while (Atom != Eof) {

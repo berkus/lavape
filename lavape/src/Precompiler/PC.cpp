@@ -41,7 +41,6 @@ int main (int argc, char **argv)
   Parser.INIT();
   Coder.INIT();
   PCerrors.INIT();
-
   Parser.Parser();
   Coder.Coder();
   if (PCerrors.ErrorCount > 0) exit(1);
