@@ -862,7 +862,7 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
   if (!nowField) {
     if ((FormDecl->DeclType != Attr) && (FormDecl->DeclType != FormText)
         && (FormDecl->DeclType != VirtualType) 
-        /*hinzugefügt 11.09.01:*/ && (FormDecl->DeclType != PatternDef)) {
+        /*hinzugefŸgt 11.09.01:*/ && (FormDecl->DeclType != PatternDef)) {
       level--;
       return;
     }
@@ -1139,7 +1139,7 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
               return false;
             elemObj = newStackFrame[SFH+2];
             if (elemObj)
-              DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,elemObj); //nicht nochmal zählen
+              DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,elemObj); //nicht nochmal zŠhlen
           }
           else {
             elemObj = HArrayGetEl(multiObj, ii);
@@ -1150,7 +1150,7 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
                 ((SynFlags*)(elemObj+1))->INCL(useDefaults);
   //              CallDefaultInit(((CGUIProg*)GUIProg)->ckd, elemObj);
                 HArraySetEl(((CGUIProg*)GUIProg)->ckd, multiObj, elemObj, ii);
-                DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,elemObj); //nicht nochmal zählen
+                DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,elemObj); //nicht nochmal zŠhlen
               }
               else {
                 if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)

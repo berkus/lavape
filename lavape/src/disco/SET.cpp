@@ -27,11 +27,9 @@ SET::SET (int arg1 ...)
 {
   va_list ap;
   int member;
-  
   bits = 0;
   if (arg1 < 0) return;
   else INCL(arg1);
-  
   va_start(ap,arg1);
   for (;;) {
     member = va_arg(ap,int);
