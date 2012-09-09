@@ -452,9 +452,11 @@
     <ClInclude Include="ConstructsV.h" />
     <CustomBuild Include="ExecFrame.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">moc%27ing %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe %(FullPath) -o Generated\moc_%(Filename).cpp
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe %(FullPath) -o Generated\moc_%(Filename).cpp</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\moc_%(Filename).cpp;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe %(FullPath) -o Generated\moc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">moc%27ing %(Filename)%(Extension)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\moc_%(Filename).cpp;%(Outputs)</Outputs>
     </CustomBuild>
     <ClInclude Include="ExecUpdate.h" />
     <CustomBuild Include="ExecView.h">
