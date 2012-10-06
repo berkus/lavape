@@ -164,10 +164,10 @@
   <ItemGroup>
     <CustomBuild Include="..\..\samples\LavaStream.lava">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy ..\..\samples\$(InputFileName) ..\..\bin\Components
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy ..\..\samples\LavaStream.lava ..\..\bin\Components
 if not exist ..\..\data mkdir ..\..\data</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LavaStream.lava nach bin\Components kopieren</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\Components\$(InputFileName);%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\Components\LavaStream.lava</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy ..\..\samples\$(InputFileName) ..\..\bin\Components
 if not exist ..\..\data mkdir ..\..\data</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">LavaStream.lava nach bin\Components kopieren</Message>

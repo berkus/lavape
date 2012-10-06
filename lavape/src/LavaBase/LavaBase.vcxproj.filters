@@ -122,7 +122,6 @@
     <None Include="res\LavaDoc.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="AboutBox.h">
