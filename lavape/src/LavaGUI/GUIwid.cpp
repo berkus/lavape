@@ -375,7 +375,7 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
       view->resize(rect.left()+wsz.width()+2*bord, rect.top()+wsz.height()+2*bord);
     }
     rect = *pMaxBottomRight;
-    *pMaxBottomRight = rect.unite(newParentRect);
+    *pMaxBottomRight = rect.united(newParentRect);
   }
 }
 

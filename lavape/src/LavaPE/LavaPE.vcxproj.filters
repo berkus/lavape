@@ -632,7 +632,6 @@
     <CustomBuild Include="VTView.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\..\doc\LavaPE.qhcp" />
     <CustomBuild Include="..\LavaPE_res.qrc" />
   </ItemGroup>
 </Project>

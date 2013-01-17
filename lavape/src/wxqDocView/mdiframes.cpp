@@ -46,6 +46,9 @@
 #include <QList>
 #include <QEvent>
 #include <QtDebug>
+#include <QDrag>
+#include <QMimeData>
+#include <QDragEnterEvent>
 
 #pragma hdrstop
 
@@ -488,8 +491,9 @@ void wxTabBar::mouseMoveEvent(QMouseEvent *evt)
 
 void wxTabBar::dragEnterEvent(QDragEnterEvent *evt)
 {
-  if (evt->provides(wxDragFormat)) {
-    QByteArray ba = evt->encodedData(wxDragFormat);
+//  if (evt->provides(wxDragFormat)) {
+  if (evt->mimeData()->hasFormat(wxDragFormat)) {
+    QByteArray ba = evt->mimeData()->data(wxDragFormat);
     wxTabChangeData* dragData = (wxTabChangeData*)ba.data();
     evt->setDropAction(Qt::MoveAction);
     evt->accept();
@@ -500,10 +504,11 @@ void wxTabBar::dragEnterEvent(QDragEnterEvent *evt)
 
 void wxTabBar::dropEvent(QDropEvent *evt)
 {
-  if (evt->provides(wxDragFormat)) {
+//  if (evt->provides(wxDragFormat)) {
+  if (evt->mimeData()->hasFormat(wxDragFormat)) {
     QPoint pt=evt->pos();
     int index = tabAt(pt);
-    QByteArray ba = evt->encodedData(wxDragFormat);
+    QByteArray ba = evt->mimeData()->data(wxDragFormat);
     wxTabChangeData* dragData = (wxTabChangeData*)ba.data();
     if ((parentWidget() != dragData->source) || (index != dragData->sIndex)) {
       //wxDocManager::GetDocumentManager()->RememberActiveView(0,false);
@@ -602,6 +607,7 @@ void wxTabWidget::closePage(wxChildFrame *p) {
   }
 }
 
+/*
 #define MYSTYLEIMP(sty)\
   int My##sty##Style::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const\
 {\
@@ -617,13 +623,13 @@ void wxTabWidget::closePage(wxChildFrame *p) {
   return px;\
 }
 
-#if !defined(QT_NO_STYLE_CDE)
-MYSTYLEIMP(CDE)
-#endif
+//#if !defined(QT_NO_STYLE_CDE)
+//MYSTYLEIMP(CDE)
+//#endif
 
-#if !defined(QT_NO_STYLE_WINDOWS)
+//#if !defined(QT_NO_STYLE_WINDOWS)
 MYSTYLEIMP(Windows)
-#endif
+//#endif
 
 #if defined(WIN32) && !defined(QT_NO_STYLE_WINDOWSXP)
 MYSTYLEIMP(WindowsXP)
@@ -633,13 +639,13 @@ MYSTYLEIMP(WindowsXP)
 MYSTYLEIMP(WindowsVista)
 #endif
 
-#if !defined(QT_NO_STYLE_CLEANLOOKS)
-MYSTYLEIMP(Cleanlooks)
-#endif
+//#if !defined(QT_NO_STYLE_CLEANLOOKS)
+//MYSTYLEIMP(Cleanlooks)
+//#endif
 
-#if !defined(QT_NO_STYLE_PLASTIQUE)
-MYSTYLEIMP(Plastique)
-#endif
+//#if !defined(QT_NO_STYLE_PLASTIQUE)
+//MYSTYLEIMP(Plastique)
+//#endif
 
 #if defined(Q_WS_MAC) && !defined(QT_NO_STYLE_MAC)
 MYSTYLEIMP(Mac)
@@ -649,6 +655,7 @@ MYSTYLEIMP(Mac)
 MYSTYLEIMP(Gtk)
 #endif
 
-#if !defined(QT_NO_STYLE_MOTIF)
-MYSTYLEIMP(Motif)
-#endif
+//#if !defined(QT_NO_STYLE_MOTIF)
+//MYSTYLEIMP(Motif)
+//#endif
+*/

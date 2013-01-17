@@ -1247,7 +1247,7 @@ bool CHWException::SetLavaException(CheckData& ckd)
   }
   *(LavaVariablePtr)(ckd.lastException + LSH) = codeObj;
   *(LavaVariablePtr)(ckd.lastException + LSH + 1) = strObj;
-  NewQString((QString*)strObj+LSH, message.toAscii());
+  NewQString((QString*)strObj+LSH, message.toLatin1());
   ckd.exceptionThrown = true;
   if (HEnumSetVal(ckd, codeObj, lavaCode))
     return true;
@@ -1293,7 +1293,7 @@ bool CRuntimeException::SetLavaException(CheckData& ckd)
   }
   *(LavaVariablePtr)(ckd.lastException + LSH + 1) = strObj;
   *(LavaVariablePtr)(ckd.lastException + LSH) = codeObj;
-  NewQString((QString*)strObj+LSH, message.toAscii());
+  NewQString((QString*)strObj+LSH, message.toLatin1());
   ckd.exceptionThrown = true;
   if (HEnumSetVal(ckd, codeObj, code))
     return true;
@@ -1320,7 +1320,7 @@ bool SetLavaException(CheckData& ckd, int code, const QString& mess)
   ckd.lastException = ex;
   *(LavaVariablePtr)(ckd.lastException + LSH) = codeObj;
   *(LavaVariablePtr)(ckd.lastException + LSH + 1) = strObj;
-  NewQString((QString*)strObj+LSH, mess.toAscii());
+  NewQString((QString*)strObj+LSH, mess.toLatin1());
   if (HEnumSetVal(ckd, codeObj, code)) {
     ckd.exceptionMsg = mess;
     ckd.exceptionThrown = true;

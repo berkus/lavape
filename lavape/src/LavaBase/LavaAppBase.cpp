@@ -1080,7 +1080,7 @@ QString L_GetOpenFileName(const QString& startFileName,
 	filters << filter;
   if (filter2 != QString::null)
     filters << filter2;
-	fd->setFilters(filters);
+	fd->setNameFilters(filters);
   fd->setWindowTitle(caption);
   if (currentFilter.isEmpty())
     currentFilter = "lava";
@@ -1089,7 +1089,7 @@ QString L_GetOpenFileName(const QString& startFileName,
     currentFilter = filter2;
   else
     currentFilter = filter;
-  fd->selectFilter(currentFilter);
+  fd->selectNameFilter(currentFilter);
   fd->setFileMode( QFileDialog::ExistingFile );
   fd->setViewMode( QFileDialog::List );
   if (LBaseData->inRuntime) {
@@ -1137,7 +1137,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   currentFilter = qfresolved.suffix();
   initialDir = qf.path();
   fd->setDirectory(qf.absolutePath());
-	fd->setFilters(filters);
+	fd->setNameFilters(filters);
   fd->setWindowTitle(caption);
   if (currentFilter.isEmpty())
     currentFilter = "lava";
@@ -1146,7 +1146,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
     currentFilter = filter2;
   else
     currentFilter = filter;
-  fd->selectFilter(currentFilter);
+  fd->selectNameFilter(currentFilter);
   if (LBaseData->inRuntime) {
    if (!fileName.contains(".lcom"))
      fd->selectFile(fileName);

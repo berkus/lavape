@@ -59,7 +59,7 @@
 #include "qinputdialog.h"
 #include "qmenu.h"
 #include "qstatusbar.h"
-#include "qmenudata.h"
+//#include "qmenudata.h"
 #include "qdatastream.h"
 #include "qtimer.h"
 #include "qsettings.h"
@@ -99,7 +99,7 @@ static const QString s_MRUEntryFormat("%1 %2");
 #ifdef __Darwin
 const char* qs2str(const QString &qstr)
 {
-  return qstr.toAscii().constData();
+  return qstr.toLatin1().constData();
 }
 #endif
 
@@ -206,7 +206,7 @@ void wxApp::customEvent(QEvent *e)
 void wxApp::onUpdateUI()
 {
   wxView *focView;
-  char **argv=qApp->argv();
+//  char **argv=qApp->argv();
 
   if (appExit /*deletingMainFrame*/)
     return;
@@ -271,7 +271,7 @@ QString wxApp::wxGetOpenFileName(QWidget *parent, const QString& startFileName, 
 	filters << filter;
   if (filter2 != QString::null)
     filters << filter2;
-	fd->setFilters(filters);
+	fd->setNameFilters(filters);
   fd->setWindowTitle(caption);
   if (currentFilter.isEmpty())
     currentFilter = "lava";
@@ -280,7 +280,7 @@ QString wxApp::wxGetOpenFileName(QWidget *parent, const QString& startFileName, 
     currentFilter = filter2;
   else
     currentFilter = filter;
-  fd->selectFilter(currentFilter);
+  fd->selectNameFilter(currentFilter);
   fd->setViewMode( QFileDialog::List );
 
   fd->setResolveSymlinks(false);
@@ -354,7 +354,7 @@ QStringList wxApp::wxGetOpenFileNames(QWidget *parent, const QString& startFileN
   if (filter2 != QString::null)
     filters << filter2;
   currentFilter = qfresolved.suffix();
-	fd->setFilters(filters);
+	fd->setNameFilters(filters);
   if (currentFilter.isEmpty())
     currentFilter = "lava";
   currentFilter = "*." + currentFilter;
@@ -362,7 +362,7 @@ QStringList wxApp::wxGetOpenFileNames(QWidget *parent, const QString& startFileN
     currentFilter = filter2;
   else
     currentFilter = filter;
-  fd->selectFilter(currentFilter);
+  fd->selectNameFilter(currentFilter);
   fd->selectFile(fileName);
   fd->setFileMode( QFileDialog::ExistingFiles );
   fd->setViewMode( QFileDialog::List );
@@ -1578,7 +1578,7 @@ wxDocTemplate *wxDocManager::SelectDocumentPath(wxDocTemplate **templates,
         path = QString("");
     }
     QDir qdir;
-    qdir.convertSeparators(path);
+    qdir.toNativeSeparators(path);
     return theTemplate;
 
 #if 0

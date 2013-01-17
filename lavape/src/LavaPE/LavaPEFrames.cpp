@@ -50,7 +50,7 @@
 #include "qtreewidget.h"
 #include "qthread.h"
 #include "qwhatsthis.h"
-#include "qworkspace.h"
+//#include "qworkspace.h"
 #include "qstatusbar.h"
 #include "qaction.h"
 #include "qsplitter.h"
@@ -266,6 +266,8 @@ void CLavaMainFrame::makeStyle(const QString &style)
     LBaseData->m_style = style;
     wxTheApp->saveSettings();
 
+  QApplication::setStyle(style);
+/*
 #if !defined(QT_NO_STYLE_CDE)
     if (style == "CDE")
       QApplication::setStyle(new MyCDEStyle);
@@ -312,6 +314,7 @@ void CLavaMainFrame::makeStyle(const QString &style)
     else
 #endif
     {}
+*/
   }
 
   isVisible = Toolbar_7->isVisible();
@@ -1697,11 +1700,11 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   viewL = new CInclView(this, doc);
   viewM = new CLavaPEView(this, doc);
   viewR = new CVTView(this, doc);
-  ((CTreeView*)viewL)->Tree->header()->setResizeMode(QHeaderView::ResizeToContents);
+  ((CTreeView*)viewL)->Tree->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
   ((CTreeView*)viewL)->Tree->header()->setStretchLastSection(false);
-  ((CTreeView*)viewM)->Tree->header()->setResizeMode(QHeaderView::ResizeToContents);
+  ((CTreeView*)viewM)->Tree->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
   ((CTreeView*)viewM)->Tree->header()->setStretchLastSection(false);
-  ((CTreeView*)viewR)->Tree->header()->setResizeMode(QHeaderView::ResizeToContents);
+  ((CTreeView*)viewR)->Tree->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
   ((CTreeView*)viewR)->Tree->header()->setStretchLastSection(false);
   splitter->addWidget(viewL);
   splitter->addWidget(viewM);

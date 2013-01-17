@@ -18,7 +18,7 @@ win32:DEFINES += WIN32
 else:DEFINES += __UNIX__
 DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT DISCO_EXPORT
 
-QT += network
+QT += core widgets network
 DESTDIR = ../../lib
 macx:QMAKE_LFLAGS += -Wl,-install_name,@executable_path/../../../../lib/disco.framework/Versions/1/disco
 PRECOMPILED_HEADER = disco_all.h

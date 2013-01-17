@@ -392,7 +392,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
       code("<span class=\"blue\">"); // blue
       color = true;
     }
-    code(str.toAscii());
+    code(str.toLatin1());
   }
   else if (token == FuncRef_T
   || token == TypeRef_T
@@ -404,12 +404,12 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
       italic = true;
       code("<span class=\"green2\">"); // dark green
       color = true;
-      code(str.toAscii());
+      code(str.toLatin1());
     }
     else if (TOKENSTR[token][0] == '(') { //currentSynObj->errorCode == &ERR_Broken_ref) {
       code("<span class=\"red\">"); // red
       color = true;
-      code(str.toAscii());
+      code(str.toLatin1());
     }
     else if (token == enumConst_T)
       PutLink(&document->IDTable,((EnumConst*)currentSynObj)->refID,
@@ -462,7 +462,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     italic = true;
     code("<span class=\"green2\">"); // dark green
     color = true;
-    code(str.toAscii());
+    code(str.toLatin1());
   }
   else if (TOKENSTR[token][0].isLetter()
   || TOKENSTR[token][0]=='@'
@@ -485,7 +485,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
         code("<span class=\"blue\">"); // blue
       color = true;
     }
-    code(str.toAscii());
+    code(str.toLatin1());
   }
   else if (currentSynObj->IsPlaceHolder()
     && token != FuncDisabled_T
@@ -502,7 +502,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
       code("<span class=\"red\">"); // red
       color = true;
     }
-    code(str.toAscii());
+    code(str.toLatin1());
   }
   else {
     if (ignored) {
@@ -515,7 +515,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
       code("<span class=\"red\">"); // red
       color = true;
     }
-    code(str.toAscii());
+    code(str.toLatin1());
   }
 
   if (color)

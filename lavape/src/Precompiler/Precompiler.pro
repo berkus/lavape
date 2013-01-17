@@ -12,6 +12,6 @@ macx:QMAKE_LFLAGS += -F../../lib
 else:QMAKE_LFLAGS += -L../../lib -Wl,-rpath,../../lib
 macx:LIBS += -framework disco
 else:LIBS += -ldisco
-CONFIG += warn_off qt qtestlib
+CONFIG += warn_off qt testlib
 TARGET = LPC
 PRECOMPILED_HEADER = Precompiler_all.h

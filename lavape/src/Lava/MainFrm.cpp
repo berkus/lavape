@@ -43,7 +43,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
   setObjectName("LavaMainFrame");
   setupUi(this); // populate this main frame
 
-	makeStyle(LBaseData->m_style);
+  makeStyle(LBaseData->m_style);
 
   QMenu *styleMenu = viewMenu->addMenu("Set st&yle");
   QActionGroup *ag = new QActionGroup( this);
@@ -113,6 +113,8 @@ void CLavaMainFrame::makeStyle(const QString &style)
     LBaseData->m_style = style;
     wxTheApp->saveSettings();
 
+  QApplication::setStyle(style);
+/*
 #if !defined(QT_NO_STYLE_CDE)
     if (style == "CDE")
       QApplication::setStyle(new MyCDEStyle);
@@ -159,6 +161,7 @@ void CLavaMainFrame::makeStyle(const QString &style)
     else
 #endif
     {}
+*/  
   }
 
   if (completelyCreated)

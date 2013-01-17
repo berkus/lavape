@@ -4,7 +4,6 @@
 #include "qaction.h"
 #include "qapplication.h"
 #include "qhash.h"
-//#include "QtAssistant/qassistantclient.h"
 #include "qpushbutton.h"
 #include "qgroupbox.h"
 #include "qcheckbox.h"
@@ -35,7 +34,7 @@
 #include "qmainwindow.h"
 #include "qmap.h"
 #include "qmenubar.h"
-#include "qmenudata.h"
+//#include "qmenudata.h"
 #include "qmetaobject.h"
 #include "qmessagebox.h"
 #include "qnamespace.h"
@@ -74,7 +73,7 @@
 #include "qvalidator.h"
 #include "qwhatsthis.h"
 #include "qwidget.h"
-#include "qworkspace.h"
+//#include "qworkspace.h"
 
 #include <QByteArray>
 #include <QComboBox>
@@ -82,6 +81,7 @@
 #include <QFocusEvent>
 #include <QMenu>
 #include <QWhatsThis>
+#include <QMessageBox>
 #include <QMouseEvent>
 #include <QResizeEvent>
 #include <QCloseEvent>

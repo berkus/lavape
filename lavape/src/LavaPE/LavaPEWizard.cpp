@@ -1944,7 +1944,7 @@ void CLiteralsPage::GetProps()
         (*p_anno)->StringValue = STRING(qPrintable(v_Default));
         if ((*p_anno)->StringValue.l) {
           (*p_anno)->IoSigFlags.INCL(trueValue);
-          (*p_anno)->I = strtol(v_Default.toAscii(), &endptr, 10);
+          (*p_anno)->I = strtol(v_Default.toLatin1(), &endptr, 10);
         }
         else
           (*p_anno)->IoSigFlags.EXCL(trueValue);

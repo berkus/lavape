@@ -1690,12 +1690,12 @@ QString ASN1::toHex (QString sIn)
   QString sOut;
 
   for (unsigned i = 0; (int)i < sIn.length(); i++) {
-	uch = QChar(sIn.at(i)).toAscii();
+	uch = QChar(sIn.at(i)).toLatin1();
     uch = uch>>4;
     uch = (uch < 10 ? '0'+uch : 'A'+(uch-10));
     sOut += uch;
     
-    uch = QChar(sIn.at(i)).toAscii();
+    uch = QChar(sIn.at(i)).toLatin1();
     uch = uch & '\x0f';
     uch = (uch < 10 ? '0'+uch : 'A'+(uch-10));
     sOut += uch;

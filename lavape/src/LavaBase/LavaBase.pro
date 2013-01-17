@@ -22,7 +22,7 @@ win32:DEFINES += WIN32
 else:DEFINES += __UNIX__
 DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT LAVABASE_EXPORT
 
-QT += network
+QT += network widgets
 DESTDIR = ../../lib
 macx:QMAKE_LFLAGS += -F../../lib -Wl,-install_name,@executable_path/../../../../lib/LavaBase.framework/Versions/1/LavaBase
 else:QMAKE_LFLAGS += -L../../lib

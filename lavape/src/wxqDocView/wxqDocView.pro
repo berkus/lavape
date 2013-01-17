@@ -12,7 +12,7 @@ SOURCES *= docview.cpp mdiframes.cpp
 HEADERS *= defs.h docview.h mdiframes.h setup.h wxExport.h
 
 INCLUDEPATH = ../disco
-QT += network
+QT += network widgets
 
 win32:DEFINES += WIN32
 else:DEFINES += __UNIX__

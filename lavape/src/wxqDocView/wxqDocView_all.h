@@ -11,10 +11,14 @@
 #include <QList>
 #include <QEvent>
 #include <QSplitter>
+#include <QStyle>
 #include <QTabBar>
 #include <QToolButton>
 #include <QTimer>
 #include <QAbstractEventDispatcher>
+#include <QDrag>
+#include <QMimeData>
+#include <QDragEnterEvent>
 #ifdef WIN32
 #include <QProcessEnvironment>
 #endif
@@ -23,5 +27,12 @@
 #include <windows.h>
 #include <winbase.h>
 #endif
-
+/*
+#include "qgtkstyle_p.h"
+#include "qfusionstyle_p.h"
+#include "qmacstyle_mac_p.h"
+#include "qwindowsstyle_p.h"
+#include "qwindowsvistastyle_p.h"
+#include "qwindowsxpstyle_p.h"
+*/
 #endif

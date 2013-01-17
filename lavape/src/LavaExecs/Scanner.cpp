@@ -113,7 +113,7 @@ bool IsOK (QString &txt,TToken &token,int &pos,QString *&msg, CComboBar *comboBa
       *msgp = &ERR_Var_expected;
       return false;
     }
-    switch (currentChar.toAscii()) {
+    switch (currentChar.toLatin1()) {
     case '.':
       return number();
 
@@ -140,7 +140,7 @@ static bool specialChar ()
 
 {
   nextChar();
-  switch (currentChar.toAscii()) {
+  switch (currentChar.toLatin1()) {
   case 'n':
   case 't':
   case 'v':
@@ -156,11 +156,11 @@ static bool specialChar ()
     
   case 'x':
     nextChar();
-    if (!isxdigit(currentChar.toAscii())) {
+    if (!isxdigit(currentChar.toLatin1())) {
       *msgp = &ERR_Wrong_spcl_char;
       return false;
     }
-    while (isxdigit(currentChar.toAscii())) nextChar();
+    while (isxdigit(currentChar.toLatin1())) nextChar();
     break;
   
   default:
@@ -180,7 +180,7 @@ static bool charConst ()
   char oldCh;
 
   *tokenp = CharConst_T;
-  oldCh = currentChar.toAscii();
+  oldCh = currentChar.toLatin1();
   nextChar();
   if (currentChar == '\\' && !specialChar())
     return false;
@@ -204,10 +204,10 @@ static bool strConst ()
   char oldCh;
 
   *tokenp = StringConst_T;
-  oldCh = currentChar.toAscii();
+  oldCh = currentChar.toLatin1();
   nextChar();
   for (; currentChar != '\0';) {
-    switch (currentChar.toAscii()) {
+    switch (currentChar.toLatin1()) {
     case '\\':
       if (!specialChar())
         return false;
@@ -239,18 +239,18 @@ static bool number ()
   float f;
   double d;
 
-  switch (currentChar.toAscii()) {
+  switch (currentChar.toLatin1()) {
   case '0':
     nextChar();
     if ((currentChar == 'x')
     || (currentChar == 'X')) {
       *tokenp = HexConst_T;
       nextChar();
-      if (!isxdigit(currentChar.toAscii())) {
+      if (!isxdigit(currentChar.toLatin1())) {
         *msgp = &ERR_Wrong_hex;
         return false;
       }
-      while (isxdigit(currentChar.toAscii())) nextChar();
+      while (isxdigit(currentChar.toLatin1())) nextChar();
       if (strp->length()-2 > 2*sizeof(unsigned)) {
         *msgp = &ERR_HexTooLong;
         return false;
@@ -260,11 +260,11 @@ static bool number ()
     || (currentChar == 'Y')) {
       *tokenp = BitConst_T;
       nextChar();
-      if (!isxdigit(currentChar.toAscii())) {
+      if (!isxdigit(currentChar.toLatin1())) {
         *msgp = &ERR_Wrong_hex;
         return false;
       }
-      while (isxdigit(currentChar.toAscii())) nextChar();
+      while (isxdigit(currentChar.toLatin1())) nextChar();
       if (currentChar != '\0') {
         *msgp = &ERR_Odd_char;
         return false;
@@ -326,7 +326,7 @@ static bool number ()
   default:
     while (currentChar != '\0' && currentChar.isDigit())
       nextChar();
-    switch (currentChar.toAscii()) {
+    switch (currentChar.toLatin1()) {
     case '.':
       if (!fractionPart())
         return false;
@@ -396,7 +396,7 @@ static bool fractionPart ()
   }
   if (currentChar == '\0')
     return true;
-  switch (currentChar.toAscii()) {
+  switch (currentChar.toLatin1()) {
 //  case 'l':
 //  case 'L': LongDouble_T
   case 'f':

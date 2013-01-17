@@ -705,7 +705,7 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
     if (isEx)
       if (!ckd.document->debugOn && !ckd.document->openLavaPEforDebugging) {
         pmMsg = excMsg + "\n\n" + msg + "\n\nDebug this exception?\n\nClick \"No to all\" to disable debugging perpetually";
-        rc = information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(pmMsg.toAscii()),QMessageBox::Yes|QMessageBox::No|QMessageBox::NoToAll,QMessageBox::Yes);
+        rc = information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(pmMsg.toLatin1()),QMessageBox::Yes|QMessageBox::No|QMessageBox::NoToAll,QMessageBox::Yes);
 
       }
       else {

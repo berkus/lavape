@@ -11,7 +11,7 @@ SOURCES *= LavaStream.cpp
 HEADERS *= LavaStream.h
 
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase
-QT += network gui
+QT += network gui widgets
 
 win32:DEFINES += WIN32
 else:DEFINES += __UNIX__

@@ -95,7 +95,7 @@ void CLavaPEView::OnGenHtmlI()
 #ifdef WIN32
   copyCommand.replace('/',"\\");
 #endif
-  system(copyCommand.toAscii());
+  system(copyCommand.toLatin1());
 
   if (singleFile)
     dclFile = baseFile + "_1.htm";
@@ -105,7 +105,7 @@ void CLavaPEView::OnGenHtmlI()
   }
 
 
-  IO.FOpenOutput(&dclFileRef,dclFile.toAscii());
+  IO.FOpenOutput(&dclFileRef,dclFile.toLatin1());
 
 	QFileInfo sf(dclFile);
   shortFile = sf.baseName();
@@ -119,7 +119,7 @@ void CLavaPEView::OnGenHtmlI()
   codeNl("<meta http-equiv=\"Content-Style-Type\" content=\"text/css\"/>");
   codeNl("<meta name=\"GENERATOR\" content=\"Lava HTML Generator\"/>");
   code("<title>");
-  code(shortFile.toAscii());
+  code(shortFile.toLatin1());
   codeNl("</title>");
   codeNl("<link rel=\"STYLESHEET\" type=\"text/css\" href=\"LavaIcons/LavaStyles.css\"/>");
   codeNl("<style type=\"text/css\" xml:space=\"preserve\">");
@@ -134,9 +134,9 @@ void CLavaPEView::OnGenHtmlI()
   codeNl("<body>");
   code("<div class=\"center\"><h1>");
   if (baseName == "std")
-    code(shortFile.toAscii());
+    code(shortFile.toLatin1());
   else
-    code(dclFile.toAscii());
+    code(dclFile.toLatin1());
   codeNl("</h1>");
   if (!singleFile) {
     code("<a href=\"#index\">");
@@ -245,7 +245,7 @@ typedef /*QValueList*/list<SymEntry> SYMLIST;
 static void GenFramesHTML() {
   QString file = baseFile + ".htm";
 
-  IO.OpenOutput(file.toAscii());
+  IO.OpenOutput(file.toLatin1());
   codeNl("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Frameset//EN\"");
   codeNl("   \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd\">");
   codeNl("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
@@ -256,7 +256,7 @@ static void GenFramesHTML() {
   codeNl("<meta http-equiv=\"Content-Style-Type\" content=\"text/css\"/>");
   codeNl("<meta name=\"GENERATOR\" content=\"Lava HTML Generator\"/>");
   code("<title>");
-  code(file.toAscii());
+  code(file.toLatin1());
   codeNl("</title>");
   codeNl("<link rel=\"stylesheet\" type=\"text/css\" href=\"LavaIcons/LavaStyles.css\"/>");
   codeNl("</head>");
@@ -264,7 +264,7 @@ static void GenFramesHTML() {
   codeNl("<frameset cols=\"50%,*\">");
   code("<frame src=\"");
   file = baseName + "_m.htm";
-  code(file.toAscii());
+  code(file.toLatin1());
   codeNl("\" name=\"frmLeft\" title=\"frmLeft\"/>");
   codeNl("<frame src=\"LavaIcons/EmptyExec.htm\" name=\"frmRight\" title=\"frmRight\"/>");
   codeNl("<noframes><body>");
@@ -425,19 +425,19 @@ static void PutLink(TIDTable *IDTable,TID &refID,bool singleFile)
 		code("<a href=\"");
 		if (link[0] == '#') {
 			code("javascript:gotoTarget('");
-			code(link.toAscii());
+			code(link.toLatin1());
 			code("','");
-			code(QString("S%1").arg(refID.nID).toAscii());
+			code(QString("S%1").arg(refID.nID).toLatin1());
 			code("')\">");
 		}
 		else {
-			code(link.toAscii());
+			code(link.toLatin1());
 			code("\">");
 		}
 		code("<span class=\"black\">");
 		if (pnode->DeclType == VirtualType) {
 			link = QString("&lt;") + QString(pnode->FullName.c) + QString("&gt;");
-			code((QString("&lt;") + QString(pnode->FullName.c) + QString("&gt;")).toAscii());
+			code((QString("&lt;") + QString(pnode->FullName.c) + QString("&gt;")).toLatin1());
 		}
 		else {
 				symName = pnode->FullName.c;
@@ -450,13 +450,13 @@ static void PutLink(TIDTable *IDTable,TID &refID,bool singleFile)
 				symName.replace('<',"&lt;");
 				symName.replace('>',"&gt;");
 				symName.replace('&',"&amp;");
-				code(symName.toAscii());
+				code(symName.toLatin1());
 		}
 		code("</span></a>");
 	}
 	else {
 		code("<span class=\"red\">");
-		code(QString("(%1,%2)").arg(nINCLstring).arg(nIDstring).toAscii());
+		code(QString("(%1,%2)").arg(nINCLstring).arg(nIDstring).toLatin1());
 		code("</span>");
 	}
 }
@@ -511,9 +511,9 @@ static void PutFileLink(QString fileName)
   }
 
   code("<a href=\"");
-  code(fileName.toAscii());
+  code(fileName.toLatin1());
   code("\">");
-  code(linkText.toAscii());
+  code(linkText.toLatin1());
   code("</a>");
 }
 
@@ -1275,7 +1275,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
 				bool rc = dir.mkdir(baseFile);
 				if (!rc) break;
 			}
-      IO.OpenOutput(execFile.toAscii());
+      IO.OpenOutput(execFile.toLatin1());
       if (!IO.Done) break;
     }
 

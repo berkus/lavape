@@ -112,7 +112,7 @@ void ASN1tofromAr::PUTCString (QString* s)
   PutHeader(header);
   if (header.Len > 0)
     for (i = 0; i <= header.Len-1; i++) {
-      outChar = MachDep.ToASCII[s->at(i).toAscii()];
+      outChar = MachDep.ToASCII[s->at(i).toLatin1()];
       putChar(outChar);
     }
     

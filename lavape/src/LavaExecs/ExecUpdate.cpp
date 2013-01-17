@@ -740,7 +740,7 @@ void CExecUpdate::MakeExec(LavaDECL *myDECL) {
   selfVar->body.ptr = body;
 
   funcName = declName->LocalName.c;
-  execName = new ReferenceV(FuncPH_T,TID(-1,0),funcName.toAscii());
+  execName = new ReferenceV(FuncPH_T,TID(-1,0),funcName.toLatin1());
     // the final nID is determined later on MakeTable
   execName->containingChain = 0;
   execName->parentObject = selfVar;
@@ -783,7 +783,7 @@ void CExecUpdate::MakeSetGet(CPEBaseDoc *myDoc, LavaDECL *myDECL, TID &prop, TID
   decl = myDECL->ParentDECL;
   isSetCase = decl->TypeFlags.Contains(isPropSet);
   funcName = decl->FullName.c;
-  synObj = new ReferenceV(FuncPH_T,TID(decl->OwnID,0),funcName.toAscii());
+  synObj = new ReferenceV(FuncPH_T,TID(decl->OwnID,0),funcName.toLatin1());
   synObj->containingChain = 0;
   synObj->parentObject = selfVar;
   synObj->whereInParent = (address)&selfVar->execName.ptr;
@@ -830,8 +830,8 @@ void CExecUpdate::MakeSetGet(CPEBaseDoc *myDoc, LavaDECL *myDECL, TID &prop, TID
     newChe = new CHE(tdod);
     from.Append(newChe);
   }
-  assigStm->exprValue.ptr = new ObjReferenceV(from,refName.toAscii());
-  assigStm->targetObj.ptr = new ObjReferenceV(to,refName.toAscii());
+  assigStm->exprValue.ptr = new ObjReferenceV(from,refName.toLatin1());
+  assigStm->targetObj.ptr = new ObjReferenceV(to,refName.toLatin1());
 
   objRef = (ObjReference*)assigStm->exprValue.ptr;
   objRef->parentObject = assigStm;

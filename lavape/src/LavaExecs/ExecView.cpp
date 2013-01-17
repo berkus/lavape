@@ -4432,7 +4432,7 @@ bool CExecView::EditOK()
       editCtl->setModified(false);
       str = editCtl->text();
       if (editToken == VarName_T) {
-        varName = new VarNameV(str.toAscii());
+        varName = new VarNameV(str.toLatin1());
         if (text->currentSynObj->primaryToken == VarName_T) {
           varName->varID = ((VarName*)text->currentSynObj)->varID;
           varName->flags = text->currentSynObj->flags;
@@ -4450,7 +4450,7 @@ bool CExecView::EditOK()
           PutInsHint(varName);
       }
       else {
-        synObj = new ConstantV(str.toAscii());
+        synObj = new ConstantV(str.toLatin1());
 
 
 //        B_Bool,Char,Integer,Float,Double,VLString,Any,ComponentObj,
@@ -4748,7 +4748,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
     if (text->currentSynObj->parentObject->primaryToken == assignFX_T) {
       text->currentSynObj = text->currentSynObj->parentObject;
       oldFuncExpr = (FuncExpression*)text->currentSynObj;
-      funcExpr = new FuncExpressionV(new ReferenceV(FuncPH_T,refID,refName.toAscii()));
+      funcExpr = new FuncExpressionV(new ReferenceV(FuncPH_T,refID,refName.toLatin1()));
       if (isStaticCall) {
         funcExpr->flags.INCL(staticCall);
         if (vtypeID)
@@ -4789,7 +4789,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
     else if (text->currentSynObj->parentObject->primaryToken == assignFS_T) {
       text->currentSynObj = text->currentSynObj->parentObject;
       oldFuncStm = (FuncStatement*)text->currentSynObj;
-      funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName.toAscii()));
+      funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName.toLatin1()));
       if (isStaticCall || ((FuncStatement*)text->currentSynObj)->flags.Contains(isIniCallOrHandle)) {
         funcStm->flags.INCL(staticCall);
         funcStm->varName = oldFuncStm->varName;
@@ -4847,7 +4847,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
     else if (text->currentSynObj->parentObject->primaryToken == connect_T
     || text->currentSynObj->parentObject->primaryToken == disconnect_T
     || text->currentSynObj->parentObject->primaryToken == signal_T) {
-      PutInsHint(new ReferenceV(FuncPH_T,refID,refName.toAscii()));
+      PutInsHint(new ReferenceV(FuncPH_T,refID,refName.toLatin1()));
     }
     else if (text->currentSynObj->parentObject->primaryToken == disconnect_T) {
     }
@@ -4862,7 +4862,7 @@ crtbl:
       oldRunStm = (Run*)text->currentSynObj;
       switch (decl->DeclType) {
       case Initiator:
-        runStm = new RunV(new ReferenceV(CrtblPH_T,refID,refName.toAscii()));
+        runStm = new RunV(new ReferenceV(CrtblPH_T,refID,refName.toLatin1()));
         chpFormParm = (CHE*)decl->NestedDecls.first;
         chpParam = (CHE*)oldRunStm->inputs.first;
         while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr) {
@@ -4889,7 +4889,7 @@ crtbl:
       decl = myDoc->IDTable.GetDECL(refID);
       switch (decl->DeclType) {
       case CompObjSpec:
-        ref = new ReferenceV(CrtblPH_T,refID,refName.toAscii());
+        ref = new ReferenceV(CrtblPH_T,refID,refName.toLatin1());
         newExp = new NewExpressionV(
           ref,
           true,
@@ -4903,7 +4903,7 @@ crtbl:
         break;
       case Interface:
         newExp = new NewExpressionV(
-          new ReferenceV(CrtblPH_T,refID,refName.toAscii()),
+          new ReferenceV(CrtblPH_T,refID,refName.toLatin1()),
           false,
           false);
         varNamePtr = (VarName*)newExp->varName.ptr;
@@ -4916,7 +4916,7 @@ crtbl:
       case Function:
         newExp = (NewExpressionV*)text->currentSynObj;
         oldFuncStm = (FuncStatement*)newExp->initializerCall.ptr;
-        ref = new ReferenceV(FuncPH_T,refID,refName.toAscii());
+        ref = new ReferenceV(FuncPH_T,refID,refName.toLatin1());
         funcStm = new FuncStatementV(ref);
         funcStm->flags.INCL(staticCall);
         funcStm->replacedType = CrtblPH_T;
@@ -4964,7 +4964,7 @@ crtbl:
         str = decl2->LocalName.c;
         if (newExp->initializerCall.ptr) {
           text->currentSynObj = (SynObject*)newExp->objType.ptr;
-          ref = new ReferenceV(CrtblPH_T,tid,str.toAscii());
+          ref = new ReferenceV(CrtblPH_T,tid,str.toLatin1());
           PutInsHint(ref,SET(firstHint,-1));
           funcStm->handle.ptr
             = ((FuncStatement*)newExp->initializerCall.ptr)->handle.ptr->Clone();
@@ -4984,7 +4984,7 @@ crtbl:
           if (tempNo > 1) {
             varNamePtr->varName += qPrintable(QString::number(tempNo));
                                         }
-          newExp->objType.ptr = new ReferenceV(CrtblPH_T,tid,str.toAscii());
+          newExp->objType.ptr = new ReferenceV(CrtblPH_T,tid,str.toLatin1());
           if (targetCat == stateObjectCat)
             ((Reference*)newExp->objType.ptr)->flags.INCL(isStateObjectX);
           tdod = new TDODV(true);
@@ -5011,12 +5011,12 @@ crtbl:
     else if (text->currentSynObj->primaryToken == attach_T) {
       oldAttachExp = (AttachObject*)text->currentSynObj;
       text->currentSynObj = (SynObject*)oldAttachExp->objType.ptr;
-      ref = new ReferenceV(CrtblPH_T,refID,refName.toAscii());
+      ref = new ReferenceV(CrtblPH_T,refID,refName.toLatin1());
       PutInsHint(ref);
     }
     break;
   default: // TypeRef
-    ref = new ReferenceV(text->currentSynObj->type,refID,refName.toAscii());
+    ref = new ReferenceV(text->currentSynObj->type,refID,refName.toLatin1());
     decl = myDoc->IDTable.GetDECL(refID);
     if (((Expression*)text->currentSynObj->parentObject)->targetCat == stateObjectCat)
       ref->flags.INCL(isStateObjectX);

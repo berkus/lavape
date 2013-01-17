@@ -736,11 +736,11 @@ bool StringPlus(CheckData& ckd, LavaVariablePtr stack)
 {
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[VLString], ((SynFlags*)(stack[SFH]+1))->Contains(stateObjFlag))
   if ((QString*)(stack[SFH]+LSH) && (QString*)(stack[SFH+1]+LSH))
-    NewQString((QString*)stack[SFH+2]+LSH, (*(QString*)(stack[SFH]+LSH) + *(QString*)(stack[SFH+1]+LSH)).toAscii());
+    NewQString((QString*)stack[SFH+2]+LSH, (*(QString*)(stack[SFH]+LSH) + *(QString*)(stack[SFH+1]+LSH)).toLatin1());
   else if ((QString*)(stack[SFH+1]+LSH))
-    NewQString((QString*)stack[SFH+2]+LSH, ((QString*)(stack[SFH+1]+LSH))->toAscii());
+    NewQString((QString*)stack[SFH+2]+LSH, ((QString*)(stack[SFH+1]+LSH))->toLatin1());
   else if ((QString*)(stack[SFH]+LSH))
-    NewQString((QString*)stack[SFH+2]+LSH, ((QString*)(stack[SFH]+LSH))->toAscii());
+    NewQString((QString*)stack[SFH+2]+LSH, ((QString*)(stack[SFH]+LSH))->toLatin1());
   return true;
 }
 
@@ -1749,7 +1749,7 @@ bool ExceptionCallStack(CheckData& ckd, LavaVariablePtr stack)
 
   if (ckd.lastException) {
     OBJALLOC(strObj, ckd, ckd.document->DECLTab[VLString], false)
-    NewQString((QString*)strObj+LSH, ckd.callStack.toAscii());
+    NewQString((QString*)strObj+LSH, ckd.callStack.toLatin1());
     stack[SFH+1] = strObj;
   }
   return true;

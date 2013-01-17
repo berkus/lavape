@@ -22,12 +22,12 @@
 #include "qobject.h"
 #include "qevent.h"
 #include "docview.h"
-#include "mdiframes.h"
+//#include "mdiframes.h"
 #include "defs.h"
 #include "qmainwindow.h"
 #include <QVBoxLayout>
 #include <QTextEdit>
-#include <QWindowsStyle>
+/*#include <QWindowsStyle>
 #include <QWindowsXPStyle>
 #include <QWindowsVistaStyle>
 #include <QGtkStyle>
@@ -35,16 +35,28 @@
 #include <QCDEStyle>
 #include <QPlastiqueStyle>
 #include <QCleanlooksStyle>
+
+#include "qgtkstyle_p.h"
+#include "qfusionstyle_p.h"
+#include "qmacstyle_mac_p.h"
+#include "qwindowsstyle_p.h"
+#include "qwindowsvistastyle_p.h"
+#include "qwindowsxpstyle_p.h"*/
+/*#include <QCDEStyle>
+#include <QPlastiqueStyle>
+#include <QCleanlooksStyle>*/
+
 #include <QSplitter>
 #include <QTabBar>
 #include <QTabWidget>
 #include <QToolButton>
-
+/*
 #ifdef __Darwin
 #include <QMacStyle>
 #endif
 #include "qlist.h"
-#include "qworkspace.h"
+*/
+//#include "qworkspace.h"
 
 
 class WXDLLEXPORT HistWindow : public DString
@@ -212,16 +224,17 @@ private:
   Q_OBJECT
 };
 
-
+/*
 #define MYSTYLE(sty) \
 class WXDLLEXPORT My##sty##Style : public Q##sty##Style {\
 public:\
   int pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const;\
 };
 
-#if !defined(QT_NO_STYLE_CDE)
-MYSTYLE(CDE)
-#endif
+
+//#if !defined(QT_NO_STYLE_CDE)
+//MYSTYLE(CDE)
+//#endif
 
 #if !defined(QT_NO_STYLE_WINDOWS)
 MYSTYLE(Windows)
@@ -235,13 +248,13 @@ MYSTYLE(WindowsXP)
 MYSTYLE(WindowsVista)
 #endif
 
-#if !defined(QT_NO_STYLE_CLEANLOOKS)
-MYSTYLE(Cleanlooks)
-#endif
+//#if !defined(QT_NO_STYLE_CLEANLOOKS)
+//MYSTYLE(Cleanlooks)
+//#endif
 
-#if !defined(QT_NO_STYLE_PLASTIQUE)
-MYSTYLE(Plastique)
-#endif
+//#if !defined(QT_NO_STYLE_PLASTIQUE)
+//MYSTYLE(Plastique)
+//#endif
 
 #if defined(Q_WS_MAC) && !defined(QT_NO_STYLE_MAC)
 MYSTYLE(Mac)
@@ -251,8 +264,9 @@ MYSTYLE(Mac)
 MYSTYLE(Gtk)
 #endif
 
-#if !defined(QT_NO_STYLE_MOTIF)
-MYSTYLE(Motif)
-#endif
+//#if !defined(QT_NO_STYLE_MOTIF)
+//MYSTYLE(Motif)
+//#endif
+*/
 
 #endif

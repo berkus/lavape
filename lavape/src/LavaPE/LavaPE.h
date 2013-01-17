@@ -56,12 +56,9 @@ public:
   CLavaPEBrowse Browser;
   CExecUpdate ExecUpdate;
   CLavaBaseData LBaseData;
-//  QString CMDLine;
   QProcess interpreter;
   CLavaPEDebugger debugger;
-  //CLavaPEPMdumpThread pmDumpThread;
 
-  //bool DoSaveAll();
   bool inTotalCheck;
   ChainOfString FindList;
   QIcon* LavaIcons[50];

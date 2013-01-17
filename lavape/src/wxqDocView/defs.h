@@ -244,7 +244,7 @@
 // wxWidgets options
 // ----------------------------------------------------------------------------
 
-//#include <stddef.h>
+#include <stddef.h>
 
 #include "setup.h"
 
