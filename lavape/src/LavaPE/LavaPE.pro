@@ -27,3 +27,4 @@ CONFIG += warn_off qt testlib precompile_header
 PRECOMPILED_HEADER = LavaPE_all.h
 RESOURCES = ../LavaPE_res.qrc
 macx:ICON = res/LavaPE.icns
+DEFINES += QT_MAJOR_VERSION
