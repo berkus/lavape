@@ -16,7 +16,7 @@ win32:DEFINES += WIN32
 macx:DEFINES += __Darwin __UNIX__
 linux-g++:DEFINES += __LINUX __UNIX__
 else:DEFINES += __UNIX__
-DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT EXECVIEW
+DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT EXECVIEW QTMV=$$QT_MAJOR_VERSION
 
 DESTDIR = ../../bin
 macx:QMAKE_LFLAGS += -F../../lib
@@ -27,4 +27,3 @@ CONFIG += warn_off qt testlib precompile_header
 PRECOMPILED_HEADER = LavaPE_all.h
 RESOURCES = ../LavaPE_res.qrc
 macx:ICON = res/LavaPE.icns
-DEFINES += QT_MAJOR_VERSION

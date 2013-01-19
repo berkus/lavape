@@ -1700,19 +1700,19 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   viewL = new CInclView(this, doc);
   viewM = new CLavaPEView(this, doc);
   viewR = new CVTView(this, doc);
-#if (QT_MAJOR_VERSION == 5)
+#if (QTMV == 5)
   ((CTreeView*)viewL)->Tree->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 #else
   ((CTreeView*)viewL)->Tree->header()->setResizeMode(QHeaderView::ResizeToContents);
 #endif
   ((CTreeView*)viewL)->Tree->header()->setStretchLastSection(false);
-#if (QT_MAJOR_VERSION == 5)
+#if (QTMV == 5)
   ((CTreeView*)viewM)->Tree->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 #else
   ((CTreeView*)viewM)->Tree->header()->setResizeMode(QHeaderView::ResizeToContents);
 #endif
   ((CTreeView*)viewM)->Tree->header()->setStretchLastSection(false);
-#if (QT_MAJOR_VERSION == 5)
+#if (QTMV == 5)
   ((CTreeView*)viewR)->Tree->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 #else
   ((CTreeView*)viewR)->Tree->header()->setResizeMode(QHeaderView::ResizeToContents);
