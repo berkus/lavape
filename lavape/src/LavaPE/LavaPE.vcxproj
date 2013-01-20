@@ -62,7 +62,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>.;.\Generated;..\wxqDocView;..\disco;..\LavaBase;..\LavaBase\Generated;..\LavaGUI;..\LavaExecs;..\LavaExecs\Generated;..\LavaExecs\res\ToolButtons;res;res\ToolButtons;res\TreeIcons;..\LavaPE_UI;..\LavaPE_UI\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;EXECVIEW;QASSISTANT="$(QTDIR)/bin/assistant_adp.exe";_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;EXECVIEW;QTMV=5;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -116,7 +116,7 @@
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <AdditionalIncludeDirectories>.;.\Generated;..\wxqDocView;..\disco;..\LavaBase;..\LavaBase\Generated;..\LavaGUI;..\LavaExecs;..\LavaExecs\Generated;..\LavaExecs\res\ToolButtons;res;res\ToolButtons;res\TreeIcons;..\LavaPE_UI;..\LavaPE_UI\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;EXECVIEW;QASSISTANT="$(QTDIR)/bin/assistant_adp.exe";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;EXECVIEW;QTMV=5;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>
@@ -135,7 +135,7 @@
       <AdditionalIncludeDirectories>../LavaBase;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>..\..\bin\disco.lib;..\..\bin\wxqDocView.lib;..\..\bin\LavaExecs.lib;..\..\bin\LavaBase.lib;..\..\bin\LavaGUI.lib;..\..\bin\LavaPE_UI.lib;$(QTDIR)\lib\QtCore4.lib;$(QTDIR)\lib\QtGui4.lib;$(QTDIR)\lib\qtmain.lib;$(QTDIR)\lib\QtNetwork4.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\bin\disco.lib;..\..\bin\wxqDocView.lib;..\..\bin\LavaExecs.lib;..\..\bin\LavaBase.lib;..\..\bin\LavaGUI.lib;..\..\bin\LavaPE_UI.lib;$(QTDIR)\lib\Qt5Core.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\qtmain.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)..\bin\LavaPE.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

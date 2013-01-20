@@ -79,7 +79,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>..\..\bin\disco.lib;..\..\bin\LavaBase.lib;$(QTDIR)\lib\QtCore4.lib;$(QTDIR)\lib\QtGUI4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\bin\disco.lib;..\..\bin\LavaBase.lib;$(QTDIR)\lib\Qt5Core.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Widgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\..\bin\LavaGUI.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDatabaseFile>.\Debug/LavaGUI.pdb</ProgramDatabaseFile>
