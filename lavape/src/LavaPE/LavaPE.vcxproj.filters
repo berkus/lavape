@@ -587,7 +587,6 @@
     <None Include="res\TreeIcons\PX_xerrmask.xpm">
       <Filter>Resource Files\TreeIcons</Filter>
     </None>
-    <None Include="..\..\doc\LavaPE.qhp" />
     <None Include="LavaPE.reg" />
   </ItemGroup>
   <ItemGroup>
@@ -633,5 +632,6 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="..\LavaPE_res.qrc" />
+    <CustomBuild Include="..\..\doc\LavaPE.qhp" />
   </ItemGroup>
 </Project>

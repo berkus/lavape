@@ -1,13 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup
-    Condition="'$(qhcp_regelBeforeTargets)' == '' and '$(qhcp_regelAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+  <PropertyGroup Condition="'$(qhcp_regelBeforeTargets)' == '' and '$(qhcp_regelAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
     <qhcp_regelBeforeTargets>Midl</qhcp_regelBeforeTargets>
     <qhcp_regelAfterTargets>CustomBuild</qhcp_regelAfterTargets>
   </PropertyGroup>
   <PropertyGroup>
-    <qhcp_regelDependsOn
-      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(qhcp_regelDependsOn)</qhcp_regelDependsOn>
+    <qhcp_regelDependsOn Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(qhcp_regelDependsOn)</qhcp_regelDependsOn>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <qhcp_regel>
@@ -15,5 +13,8 @@
       <Outputs>LavaPE.qhc LavaPE.qch</Outputs>
       <ExecutionDescription>Generate Help Collection</ExecutionDescription>
     </qhcp_regel>
+    <CustomBuildStep>
+      <Command>$(QTDIR)\bin\qcollectiongenerator LavaPE.qhp -o LavaPE.qhc</Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
 </Project>
