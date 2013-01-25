@@ -91,7 +91,7 @@
                 <section title="Property sheets and command help" ref="html/DialogAndCmdHelp.htm">
                     <section title="Property sheets of Lava entities" ref="html/PropertySheets.htm">
                         <section title="Chain type in forms" ref="html/dialogs/ChainFormBox.htm"/>
-                        <section title="Component object specification" ref="html/dialogs/CoSpecBox.htm"/>
+                        <section title="Component object specification" ref="html/dialogs/COSpecBox.htm"/>
                         <section title="Enumeration" ref="html/dialogs/EnumBox.htm"/>
                         <section title="Enumeration item" ref="html/dialogs/EnumItemBox.htm"/>
                         <section title="Explan. texts / defaults in forms" ref="html/dialogs/ContentBox.htm"/>

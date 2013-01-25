@@ -5538,11 +5538,11 @@ QString CLavaPEView::text(const QPoint &point) {
       else
         return QString(QObject::tr("<p>This is a <a href=\"MemberFunctions.htm\">member function</a> of the above <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
     case Attr:
-      return QString(QObject::tr("<p>This is a <a href=\"..//dialogs/MemVarBox.htm\">member variable</a> of a <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
+      return QString(QObject::tr("<p>This is a <a href=\"../dialogs/MemVarBox.htm\">member variable</a> of a <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
     case IAttr:
-      return QString(QObject::tr("<p>This is an <a href=\"..//dialogs/FuncParmBox.htm\">input parameter</a> of the above function</p>"));
+      return QString(QObject::tr("<p>This is an <a href=\"../dialogs/FuncParmBox.htm\">input parameter</a> of the above function</p>"));
     case OAttr:
-      return QString(QObject::tr("<p>This is an <a href=\"..//dialogs/FuncParmBox.htm\">output parameter</a> of the above function</p>"));
+      return QString(QObject::tr("<p>This is an <a href=\"../dialogs/FuncParmBox.htm\">output parameter</a> of the above function</p>"));
     }
     break;
   case TIType_CHEEnumSel:
