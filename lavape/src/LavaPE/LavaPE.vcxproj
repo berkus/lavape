@@ -40,9 +40,6 @@
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-    <Import Project="..\..\doc\qhcp-regel.props" />
-  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
@@ -982,22 +979,6 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\doc\LavaPE.qhcp">
-      <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating LavaPE.qhc</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\doc\LavaPE.qhc</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generating LavaPE.qhc</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">..\..\doc\LavaPE.qhc</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generating LavaPE.qhc</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">..\..\doc\LavaPE.qhc</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating LavaPE.qhc</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\doc\LavaPE.qhc</Outputs>
-      <SubType>Designer</SubType>
-    </CustomBuild>
     <None Include="..\common.mk" />
     <None Include="res\execfram.ico" />
     <None Include="res\formfram.ico" />
@@ -1207,7 +1188,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\..\doc\qhcp-regel.targets" />
-  </ImportGroup>
+
 </Project>
