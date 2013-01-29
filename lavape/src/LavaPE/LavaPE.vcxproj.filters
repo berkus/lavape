@@ -632,6 +632,6 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="..\LavaPE_res.qrc" />
-    <CustomBuild Include="..\..\doc\LavaPE.qhp" />
+    <CustomBuild Include="..\..\doc\LavaPE.qhcp" />
   </ItemGroup>
 </Project>

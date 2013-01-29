@@ -40,9 +40,6 @@
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-    <Import Project="..\ui-rule.props" />
-  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
@@ -132,6 +129,10 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Release/Lava_UI.bsc</OutputFile>
     </Bscmake>
+    <CustomBuildStep>
+      <Outputs>
+      </Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">
     <Midl>
@@ -180,6 +181,10 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Release/Lava_UI.bsc</OutputFile>
     </Bscmake>
+    <CustomBuildStep>
+      <Outputs>
+      </Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CustomBuildStep>
@@ -187,7 +192,8 @@
       </Message>
       <Command>
       </Command>
-      <Outputs>%(Outputs)</Outputs>
+      <Outputs>
+      </Outputs>
     </CustomBuildStep>
     <Midl>
       <MkTypLibCompatible>true</MkTypLibCompatible>
@@ -248,7 +254,8 @@
       </Message>
       <Command>
       </Command>
-      <Outputs>%(Outputs)</Outputs>
+      <Outputs>
+      </Outputs>
     </CustomBuildStep>
     <Midl>
       <MkTypLibCompatible>true</MkTypLibCompatible>
@@ -335,16 +342,16 @@
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -393,7 +400,4 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\ui-rule.targets" />
-  </ImportGroup>
 </Project>

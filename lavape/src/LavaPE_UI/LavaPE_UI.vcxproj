@@ -306,538 +306,423 @@
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <SubType>Designer</SubType>
     </CustomBuild>
     <CustomBuild Include="idd_attachhandler.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_attrbox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_chainformpage.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_compspecbox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_corroverbox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_enumbox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_enumitem.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_findbynamebox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_findrefsbox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_fontcolorpage.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_formbox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_ftextpage.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_funcbox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_generalpage.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_gotodeclsel.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_implbox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_includebox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_initbox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_interfacebox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_iobox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_iopage.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_literalitem.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_literalspage.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_menuitem.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_menupage.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_packagebox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_setbox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_supportpage.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
     <CustomBuild Include="idd_vtypebox.ui">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Applying uic to %(Filename)%(Extension)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Applying uic to %(Filename)%(Extension)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\uic.exe -o Generated\ui_%(Filename).h %(FullPath)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generated\ui_%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generated\ui_%(Filename).h</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

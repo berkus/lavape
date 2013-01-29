@@ -982,6 +982,22 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\..\doc\LavaPE.qhcp">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating LavaPE.qhc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\doc\LavaPE.qhc</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generating LavaPE.qhc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">..\..\doc\LavaPE.qhc</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generating LavaPE.qhc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">..\..\doc\LavaPE.qhc</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating LavaPE.qhc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\doc\LavaPE.qhc</Outputs>
+      <SubType>Designer</SubType>
+    </CustomBuild>
     <None Include="..\common.mk" />
     <None Include="res\execfram.ico" />
     <None Include="res\formfram.ico" />
@@ -1137,22 +1153,6 @@
     <None Include="res\TreeIcons\PX_xcommask.xpm" />
     <None Include="res\TreeIcons\PX_xerrcommask.xpm" />
     <None Include="res\TreeIcons\PX_xerrmask.xpm" />
-    <CustomBuild Include="..\..\doc\LavaPE.qhp">
-      <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating LavaPE.qhc</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Generating LavaPE.qhc</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\doc\LavaPE.qhc</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">..\..\doc\LavaPE.qhc</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">$(QTDIR)\bin\qcollectiongenerator ..\..\doc\LavaPE.qhcp -o ..\..\doc\LavaPE.qhc</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating LavaPE.qhc</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Generating LavaPE.qhc</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\doc\LavaPE.qhc</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">..\..\doc\LavaPE.qhc</Outputs>
-      <SubType>Designer</SubType>
-    </CustomBuild>
     <None Include="LavaPE.reg" />
     <CustomBuild Include="..\LavaPE_res.qrc">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Applying rcc to %(FullPath)</Message>
