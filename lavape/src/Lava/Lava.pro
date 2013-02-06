@@ -5,7 +5,9 @@ include(../../lpc.prf)
 SOURCES *= Lava.cpp LavaDoc.cpp MainFrm.cpp
 HEADERS *= Lava.h LavaDoc.h MainFrm.h
 
-QT += network gui widgets
+QT += core network gui
+contains(QT_MAJOR_VERSION,5):QT += widgets
+
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase ../LavaExecs ../LavaGUI ../Lava_UI res/TOOLBUTTONS res ../Interpreter
 
 win32:DEFINES += WIN32

@@ -20,7 +20,9 @@ win32:DEFINES += WIN32
 else:DEFINES += __UNIX__
 DEFINES += __$$OPSYS NEEDS_INT_DEFINED QT_THREAD_SUPPORT INTERPRETER_EXPORT INTERPRETER
 
-QT += network widgets
+QT += core network
+contains(QT_MAJOR_VERSION,5):QT += widgets
+
 DESTDIR = ../../lib
 
 macx:QMAKE_LFLAGS += -F../../lib -Wl,-install_name,@executable_path/../../../../lib/Interpreter.framework/Versions/1/Interpreter

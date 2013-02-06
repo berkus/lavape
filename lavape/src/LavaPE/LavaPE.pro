@@ -9,7 +9,9 @@ HEADERS *= Bars.h Boxes.h DebuggerPE.h ExecTree.h FindRefsBox.h InclView.h \
     LavaPE.h LavaPEDoc.h LavaPEFrames.h LavaPEStringInit.h LavaPEView.h LavaPEWizard.h \
     Resource.h TreeView.h VTView.h
 
-QT += network gui widgets
+QT += core network gui
+contains(QT_MAJOR_VERSION,5):QT += widgets
+
 INCLUDEPATH = ../disco ../wxqDocView ../LavaBase ../LavaExecs ../LavaGUI ../LavaPE_UI ../LavaPE_UI/res/TOOLBUTTONS res res/TOOLBUTTONS res/TreeIcons
 
 win32:DEFINES += WIN32
