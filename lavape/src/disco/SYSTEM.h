@@ -171,17 +171,31 @@ extern "C" DISCO_DLL void bcopy (const unsigned char* const,unsigned char*,unsig
 #define UEV_ClosePage (QEvent::Type)(QEvent::User+31)
 #define UEV_ResetBeingChecked (QEvent::Type)(QEvent::User+32)
 
+//class DISCO_DLL CustomEvent : public  QEvent {
+//public:
+//  CustomEvent(int type, void *data = 0):QEvent(static_cast<QEvent::Type>(type)) {
+//    d = reinterpret_cast<QEventPrivate *>(data);
+//  }
+//  void *data() const {
+//    return d;
+//  }
+//  void setData(void* data) {
+//    d = reinterpret_cast<QEventPrivate *>(data);
+//  }
+//};
 class DISCO_DLL CustomEvent : public  QEvent {
 public:
   CustomEvent(int type, void *data = 0):QEvent(static_cast<QEvent::Type>(type)) {
-    d = reinterpret_cast<QEventPrivate *>(data);
+    dd = data;
   }
   void *data() const {
-    return d;
+    return dd;
   }
   void setData(void* data) {
-    d = reinterpret_cast<QEventPrivate *>(data);
+    dd = data;
   }
+private:
+  void *dd;
 };
 
 #endif
