@@ -18,6 +18,7 @@ tar -c -j \
 --exclude=Generated \
 --exclude=Makefile \
 --exclude=moc_* \
+--exclude=ui_*.h \
 --exclude=*.xcodeproj \
 --exclude=*.cur \
 --exclude=*.qhc \
@@ -32,6 +33,8 @@ tar -c -j \
 --exclude=*.bz2 \
 --exclude=*.gz \
 --exclude=*.proj \
+--exclude=ui-rule.* \
+--exclude=lavape.pro.* \
 --exclude='*~' \
 --exclude='*.o' \
 --exclude='*.so' \
