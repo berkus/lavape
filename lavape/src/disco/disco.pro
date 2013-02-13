@@ -43,8 +43,8 @@ data.commands = mkdir ../../data; chmod a+rwx ../../data
 QMAKE_EXTRA_TARGETS += data
 PRE_TARGETDEPS += ../../data
 
-win32:qtass.target = ..\..\bin\assistant.exe
-else:qtass.target = ../../bin/assistant
+win32:qtass.target = ..\..\bin\Lava-Help.exe
+else:qtass.target = ../../bin/Lava-Help
 
 macx:qtass.depends = $$[QT_INSTALL_BINS]/Assistant.app/Contents/MacOS/Assistant
 else:win32:qtass.depends = $$[QT_INSTALL_BINS]\assistant.exe
@@ -55,5 +55,5 @@ else:win32:qtass.commands = copy  $$[QT_INSTALL_BINS]\assistant.exe $$qtass.targ
 else:qtass.commands = ln -s -f $$[QT_INSTALL_BINS]/assistant $$qtass.target
 
 QMAKE_EXTRA_TARGETS += qtass
-win32:PRE_TARGETDEPS += ..\..\bin\assistant.exe
-else:PRE_TARGETDEPS += ../../bin/assistant
+win32:PRE_TARGETDEPS += ..\..\bin\Lava-Help.exe
+else:PRE_TARGETDEPS += ../../bin/Lava-Help
