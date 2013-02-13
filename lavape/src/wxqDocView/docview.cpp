@@ -59,7 +59,7 @@
 #include "qinputdialog.h"
 #include "qmenu.h"
 #include "qstatusbar.h"
-//#include "qmenudata.h"
+#include "qmenudata.h"
 #include "qdatastream.h"
 #include "qtimer.h"
 #include "qsettings.h"
@@ -99,7 +99,7 @@ static const QString s_MRUEntryFormat("%1 %2");
 #ifdef __Darwin
 const char* qs2str(const QString &qstr)
 {
-  return qstr.toLatin1().constData();
+  return qstr.toAscii().constData();
 }
 #endif
 
@@ -206,7 +206,7 @@ void wxApp::customEvent(QEvent *e)
 void wxApp::onUpdateUI()
 {
   wxView *focView;
-//  char **argv=qApp->argv();
+  char **argv=qApp->argv();
 
   if (appExit /*deletingMainFrame*/)
     return;
@@ -271,7 +271,7 @@ QString wxApp::wxGetOpenFileName(QWidget *parent, const QString& startFileName, 
 	filters << filter;
   if (filter2 != QString::null)
     filters << filter2;
-	fd->setNameFilters(filters);
+	fd->setFilters(filters);
   fd->setWindowTitle(caption);
   if (currentFilter.isEmpty())
     currentFilter = "lava";
@@ -280,7 +280,7 @@ QString wxApp::wxGetOpenFileName(QWidget *parent, const QString& startFileName, 
     currentFilter = filter2;
   else
     currentFilter = filter;
-  fd->selectNameFilter(currentFilter);
+  fd->selectFilter(currentFilter);
   fd->setViewMode( QFileDialog::List );
 
   fd->setResolveSymlinks(false);
@@ -354,7 +354,7 @@ QStringList wxApp::wxGetOpenFileNames(QWidget *parent, const QString& startFileN
   if (filter2 != QString::null)
     filters << filter2;
   currentFilter = qfresolved.suffix();
-	fd->setNameFilters(filters);
+	fd->setFilters(filters);
   if (currentFilter.isEmpty())
     currentFilter = "lava";
   currentFilter = "*." + currentFilter;
@@ -362,7 +362,7 @@ QStringList wxApp::wxGetOpenFileNames(QWidget *parent, const QString& startFileN
     currentFilter = filter2;
   else
     currentFilter = filter;
-  fd->selectNameFilter(currentFilter);
+  fd->selectFilter(currentFilter);
   fd->selectFile(fileName);
   fd->setFileMode( QFileDialog::ExistingFiles );
   fd->setViewMode( QFileDialog::List );
@@ -1578,7 +1578,7 @@ wxDocTemplate *wxDocManager::SelectDocumentPath(wxDocTemplate **templates,
         path = QString("");
     }
     QDir qdir;
-    qdir.toNativeSeparators(path);
+    qdir.convertSeparators(path);
     return theTemplate;
 
 #if 0
@@ -2150,13 +2150,13 @@ Assistant::Assistant()
      QProcessEnvironment env = QProcessEnvironment::systemEnvironment ();
      QString qtdir = env.value(QString("QTDIR"));
      QString assPath;
-     if (qtdir.isEmpty())
-      assPath = "assistant.exe";
-     else
-       assPath = qtdir + "\\bin\\assistant.exe";
+//     if (qtdir.isEmpty())
+      assPath = "Lava-Help.exe";
+//     else
+//       assPath = qtdir + "\\bin\\Lava-Help.exe";
 	   app = QLatin1String(qPrintable(assPath));
 #else
-	   app = QLatin1String("./assistant");
+       app = QLatin1String("./Lava-Help");
 #endif
      args << QLatin1String("-collectionFile")
 	        << QLatin1String("../doc/LavaPE.qhc")
@@ -2166,7 +2166,7 @@ Assistant::Assistant()
 
 	     if (!proc->waitForStarted()) {
 	         QMessageBox::critical(0, QObject::tr("LavaPE: "),
-	             QObject::tr("Unable to launch Qt Assistant (%1)").arg(app));
+                 QObject::tr("Unable to launch Lava-Help (%1)").arg(app));
 	         return false;
 	     }
 	 }
