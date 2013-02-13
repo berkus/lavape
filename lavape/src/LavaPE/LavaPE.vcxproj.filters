@@ -633,5 +633,6 @@
     </CustomBuild>
     <CustomBuild Include="..\LavaPE_res.qrc" />
     <CustomBuild Include="..\..\doc\LavaPE.qhcp" />
+    <CustomBuild Include="..\..\bin\Lava-Help.exe" />
   </ItemGroup>
 </Project>

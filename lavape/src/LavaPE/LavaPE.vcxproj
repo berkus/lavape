@@ -994,6 +994,21 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating LavaPE.qhc</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\doc\LavaPE.qhc</Outputs>
     </CustomBuild>
+    <CustomBuild Include="..\..\bin\Lava-Help.exe">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">copy %QTDIR%\bin\assistant.exe ..\..\bin\Lava-Help.exe</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">Copying Qt Assistant to lavape\bin</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_Qt4|Win32'">..\..\bin\Lava_Help.exe</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy %QTDIR%\bin\assistant.exe ..\..\bin\Lava-Help.exe</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Copying Qt Assistant to lavape\bin</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\Lava_Help.exe</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">copy %QTDIR%\bin\assistant.exe ..\..\bin\Lava-Help.exe</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">Copying Qt Assistant to lavape\bin</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_Qt4|Win32'">..\..\bin\Lava_Help.exe</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy %QTDIR%\bin\assistant.exe ..\..\bin\Lava-Help.exe</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Copying Qt Assistant to lavape\bin</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\Lava_Help.exe</Outputs>
+    </CustomBuild>
     <None Include="..\common.mk" />
     <None Include="res\execfram.ico" />
     <None Include="res\formfram.ico" />
