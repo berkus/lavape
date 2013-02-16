@@ -344,6 +344,10 @@ void CLavaPEApp::OnAppCreate() { // pixmaps may be created only after the app ob
   LavaIcons[38] = new QIcon(*LavaPixmaps[38]);
   LavaIcons[39] = new QIcon(*LavaPixmaps[39]);
   LavaIcons[40] = 0;
+
+  QPalette pal = QToolTip::palette();
+  pal.setColor(QPalette::Inactive,QPalette::ToolTipText,Qt::black);
+  QToolTip::setPalette(pal);
 }
 
 void CLavaPEApp::onFocusChanged(QWidget *old, QWidget *now) {
