@@ -103,6 +103,11 @@ int main( int argc, char ** argv ) {
 
   //QTest::qSleep(20000);
 
+  QPalette pal = QApplication::palette();
+  pal.setColor(QPalette::Inactive,QPalette::ToolTipText,Qt::black);
+  pal.setColor(QPalette::Active,QPalette::ToolTipText,Qt::black);
+  QApplication::setPalette(pal);
+
   app.m_appWindow = new CLavaMainFrame;
 
   if (app.m_appWindow->OnCreate()) {
