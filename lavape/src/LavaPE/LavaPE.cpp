@@ -345,10 +345,12 @@ void CLavaPEApp::OnAppCreate() { // pixmaps may be created only after the app ob
   LavaIcons[39] = new QIcon(*LavaPixmaps[39]);
   LavaIcons[40] = 0;
 
+#ifndef __Darwin
   QPalette pal = QApplication::palette();
   pal.setColor(QPalette::Inactive,QPalette::ToolTipText,Qt::black);
   pal.setColor(QPalette::Active,QPalette::ToolTipText,Qt::black);
   QApplication::setPalette(pal);
+#endif
 }
 
 void CLavaPEApp::onFocusChanged(QWidget *old, QWidget *now) {
@@ -588,6 +590,7 @@ void CLavaPEApp::OnChooseExecFont()
         view = doc->m_documentViews[posV];
         if (view->inherits("CExecView"))
           ((CExecView*)view)->sv->setFont(LBaseData.m_ExecFont);
+        ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->setFont(LBaseData.m_ExecFont);
       }
     }
     saveSettings();

@@ -3573,22 +3573,23 @@ bool CLavaPEDoc::OpenExecView (LavaDECL* eDECL)
 	//	if (active)
 	//		pos = m_documentViews.size();
 	//}
-  view = ExecHasView(eDECL);
-	if (view) {
-		execChild = view->GetParentFrame();
-    execChild->Activate(true);
-  }
+    view = ExecHasView(eDECL);
+    if (view) {
+      execChild = view->GetParentFrame();
+      execChild->Activate(true);
+    }
 	else
 	{
-		((CLavaPEApp*) wxTheApp)->LBaseData.actHint = new CLavaPEHint (CPECommand_OpenExecView, this, (const unsigned long) 3,  eDECL, MainView, wxTheApp->m_appWindow->statusBar(), ((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView, 0); //  pdecl);
-		execChild = ((CLavaPEApp*) wxTheApp)->pExecTemplate->CreateChildFrame (this);
-		active = (execChild !=0);
-    if (eDECL->Exec.ptr)
-      ((SelfVar*)eDECL->Exec.ptr)->execView = ((CExecFrame*)execChild)->m_ExecView;
+      ((CLavaPEApp*) wxTheApp)->LBaseData.actHint = new CLavaPEHint (CPECommand_OpenExecView, this, (const unsigned long) 3,  eDECL, MainView, wxTheApp->m_appWindow->statusBar(), ((CLavaMainFrame*) wxTheApp->m_appWindow)->m_UtilityView, 0); //  pdecl);
+      execChild = ((CLavaPEApp*) wxTheApp)->pExecTemplate->CreateChildFrame (this);
+      active = (execChild !=0);
+      if (eDECL->Exec.ptr)
+        ((SelfVar*)eDECL->Exec.ptr)->execView = ((CExecFrame*)execChild)->m_ExecView;
 		execChild->InitialUpdate();
-		((CLavaMainFrame*) wxTheApp->m_appWindow)->Toolbar_5->show();
-		((CLavaMainFrame*) wxTheApp->m_appWindow)->Toolbar_6->show();
-		((CLavaMainFrame*) wxTheApp->m_appWindow)->Toolbar_7->show();
+        ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->show();
+        ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->show();
+        ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->setFont(LBaseData->m_ExecFont);
+        ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->show();
 
 		if (!eDECL->Exec.ptr)
 			SetExecItemImage (eDECL, false, false);
