@@ -1636,10 +1636,8 @@ void CLavaMainFrame::on_viewTB7Action_triggered()
 {
   if (Toolbar_7->isVisible())
     Toolbar_7->hide();
-  else {
-    Toolbar_7->update();
+  else
     Toolbar_7->show();
-  }
 }
 
 void CLavaMainFrame::on_whatNextAction_triggered()
