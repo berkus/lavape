@@ -96,15 +96,36 @@ href="RepetComputSamples.htm">indirect tree recursion</a>.</p>
 
 <p><strong>FinalVirtualType and FactoryForceOverride:</strong></p>
 
-<p>Since release 0.9.1 a virtual type (= type parameter) may be declared
-"final". This means that it cannot be derived/specialized any further in a
-derived class or package. Two new little sample programs (FinalVirtualType.lava
-and FactoryForceOverride.lava) explain the motivation behind this and the related
-"force override on class derivation" attribute of member functions. </p>
+<p>There are situations where you want to assign an object of a concrete
+    <span class="red"><em><strong>Lava</strong></em></span> class to a variable 
+    whose type is virtual, particularly if you create the object from scratch using 
+    the <span class="blue"><strong>new</strong></span> expression of <span class="red"><em><strong>Lava</strong></em></span>. 
+    In the <span class="blue"><strong>new</strong></span> expression you have to 
+    select one of the initializers of the respective <span class="red"><em><strong>
+    Lava</strong></em></span>&nbsp; class generally. But only concrete
+    <span class="red"><em><strong>Lava</strong></em></span>&nbsp; classes have 
+    initializers, virtual type parameters don&#39;t. Therfore you are not allowed to 
+    specify a virtual type as the type of the new object in the <span class="blue">
+    <strong>new</strong></span> expression, but only a concrete <span class="red">
+    <em><strong>Lava</strong></em></span>&nbsp; class.</p>
+    <p>The assignment &quot;concrete to virtual type&quot; can be made compatible in two ways in
+        <span class="red"><em><strong>Lava</strong></em></sp:</p>
+    <ol>
+        <li>Either you can assign the &quot;force&nbsp; override on derivation&quot; attribute to a 
+            virtual function within whose body the &quot;concrete to virtual type&quot; assignment 
+            occurs and ensure in this way that this function is overriden in the derived 
+            class or pattern. This prevents the critical assignment from being taken over to 
+            the more derived context. The <strong>FactoryForceOverride</strong> sample 
+            presents a simplistic example of this kind.</li>
+        <li>Or (since <span class="red"><em><strong>Lava</strong></em></span>&nbsp; release 
+            0.9.1) you can assign the &quot;final&quot; attribute to the virtual type in question and 
+            prevent it from being derived at all. The <strong>FinalVirtualType </strong>
+            sample makes use of this method, based on the &quot;final&quot; attribute.</li>
+    </ol>
 
 <h3>Where to look and what to do</h3>
 
-<p><strong>ModelView:<br />
+<p><strong>ModelView:ew:<br />
 </strong><br />
 Note in particular the "<a href="PatternsFrameworks.htm#covariant">covariant
 specialization</a>" of the only input parameter of function <em>registerView</em>
@@ -166,11 +187,23 @@ nodes depends on <em>R</em> and is implemented by the overridden methods
 <em>evalLeaf</em> and <em>evalNode</em> of <em>StringVisitor</em> and
 <em>IntVisitor</em>. The initiator <em>VisitorDemo</em> shows how a sample tree is
 constructed and how this same tree is evaluated twice: once by the
-<em>StringVisitor</em> and once by the <em>IntVisitor</em>.</p>
+<em>StringVisitor</em> and once by the <em>IntVisitor</.</p>
 
-<p>Please notice the comments in the VisitorDemo initiator.</p>
+<p>Please note the comments in the VisitorDemo initiator.</p>
+    <p><strong>FinalVirtualType:<br />
+        <br />
+        </strong>Look into the property sheet of virtual type ELEMTYPE and into the 
+        implementation of the initializer StringSet::ini, and also into the main program 
+        FinalVT.</p>
+    <p><strong>FactoryForceOverride:<br />
+        <br />
+        </strong>Look into the property sheets and the implementations of the factory 
+        functions Framework::Application::CreateDoc and 
+        MyFramework::Application::CreateDoc, and also into the main program 
+        FactoryOverrideDemo.</p>
 
-<p><strong>See also</strong> our <a class="c5"
+<p>&nbsp;</p>
+    <p><strong>See also</strong> our <a class="c5"
 href="CallbackSample.htm">CallbackSample</a></p>
 </body>
 </html>
