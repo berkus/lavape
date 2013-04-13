@@ -28,7 +28,7 @@ A double-click on LavaPE.app or Lava.app will launch the **Lava Programming Envi
 
 A number of sample programs can be opened in LavaPE.app or Lava.app from the "samples" subdirectory of the installation directory "lavape".
 
-##C) How to install LavaPE from the source distribution on LINUX platforms
+##C) How to build LavaPE from the source distribution on LINUX and Mac OS
 
 Download the compressed tar file lavape-0.9.2-src.tar.bz2 of the **LavaPE** source distribution and store it in the parent directory of the envisaged lavape installation directory.
 
@@ -49,7 +49,7 @@ Current Linux distributions would offer a software package comprising a rather c
 Then build the **LavaPE** executables as follows:
 
     cd lavape
-    qmake lavape.pro
+    qmake lavape.pro   ## "qmake -spec macx-g++ lavape.pro" on Mac OS X
     make
 
 On some platforms the Qt4 version of qmake has a more specific name, like "qmake-qt4".

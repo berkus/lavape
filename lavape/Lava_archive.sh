@@ -5,7 +5,7 @@ tar -c -j \
 --exclude=bin/Lava\
 --exclude=bin/LavaPE \
 --exclude=bin/LPC \
---exclude=bin/assistant \
+--exclude=bin/Lava-Help \
 --exclude lib \
 --exclude doc/LavaPE.qch \
 --exclude doc/LavaPE.qhc \
