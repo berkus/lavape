@@ -1,16 +1,16 @@
-#Release notes for release 0.9.2
+#Release notes for release 0.9.3
 
-##Change Log for Release 0.9.2
+##Change Log for Release 0.9.3
 
-Apart from a few minor modifications this is essentially a long overdue bug fix release.
+Provides quite a number of minor bug fixes (wrong font sizes, broken links in documentation).
 
 ##Installation of Lava/LavaPE 
 
 ##A) How to install the Windows binary release of LavaPE
 
-Simply launch the downloaded lavape-0.9.2-win32-bin.exe file and follow the instructions of the installer.
+Simply launch the downloaded lavape-0.9.3-win32-bin.exe file and follow the instructions of the installer.
 
-Windows 8: If the "Windows SmartScreen Filter" has been activated in the system settings (that's the default) and prevents execution of the LavaPE installer, then you can click the "More information" link in the pop-up message of the SmartScreen Filter and then the "execute nevertheless" button to enforce the installation.
+**Windows 8**: If the "Windows SmartScreen Filter" has been activated in the system settings (that's the default) and prevents execution of the LavaPE installer, then you can click the "More information" link in the pop-up message of the SmartScreen Filter and then the "execute nevertheless" button to enforce the installation.
 
 But this works only if you have administrator privileges. If not, then the "Windows SmartScreen Filter" has to be completely deactivated in the system settings first.
 
@@ -22,7 +22,7 @@ Download the Mac OS version of the Qt libraries from
 
 and install them in the default location.
 
-Download the lavape-0.9.2-macos.zip archive and uncompress it by double-clicking.
+Download the lavape-0.9.3-macos.zip archive and uncompress it by double-clicking.
 
 A double-click on LavaPE.app or Lava.app will launch the **Lava Programming Environment** or the **Lava** Interpreter, respectively.
 
@@ -30,11 +30,11 @@ A number of sample programs can be opened in LavaPE.app or Lava.app from the "sa
 
 ##C) How to build LavaPE from the source distribution on LINUX and Mac OS
 
-Download the compressed tar file lavape-0.9.2-src.tar.bz2 of the **LavaPE** source distribution and store it in the parent directory of the envisaged lavape installation directory.
+Download the compressed tar file lavape-0.9.3-src.tar.bz2 of the **LavaPE** source distribution and store it in the parent directory of the envisaged lavape installation directory.
 
 Uncompress it using the command
 
-    tar xjvf lavape-0.9.2-src.tar.bz2
+    tar xjvf lavape-0.9.3**-src.tar.bz2
 
 Or download a snapshot of the most recent developer version of **LavaPE** from our GIT repository at 
 

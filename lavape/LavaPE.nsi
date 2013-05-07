@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "LavaPE"
-!define PRODUCT_VERSION "0.9.2"
+!define PRODUCT_VERSION "0.9.3"
 !define QTREL "4.8.4"
 !define PRODUCT_PUBLISHER "The lavape project "
 !define PRODUCT_WEB_SITE "http://lavape.sourceforge.net/index.htm"
@@ -18,7 +18,7 @@ SetCompressor lzma
 !include "MUI.nsh"
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "lavape-0.9.2-win32-bin.exe"
+OutFile "lavape-${PRODUCT_VERSION}-win32-bin.exe"
 Var instForAll
 Var userName
 Var unInstString

@@ -302,7 +302,7 @@
             <keyword name="abort transaction" id="abort transaction" ref="html/Transactions.htm#exception"/>
             <keyword name="transaction" id="transaction" ref="html/Transactions.htm"/>
             <keyword name="transaction abort" id="transaction abort" ref="html/Transactions.htm#exception"/>
-            <keyword name="try block" id="try block" ref="html/Transactions.htm#exception"/>
+            <keyword name="try block" id="try block" ref="html/ExceptionSamples.htm#try_block"/>
             <keyword name="synchronization" id="synchronization" ref="html/Transactions.htm"/>
             <keyword name="threads" id="threads" ref="html/Transactions.htm"/>
             <keyword name="multi-threading" id="multi-threading" ref="html/Transactions.htm"/>
