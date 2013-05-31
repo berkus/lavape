@@ -153,11 +153,11 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
   SetAppName("LavaPE");
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
-#ifdef WIN32
-  QApplication::setFont(QFont("Helvetica", 10));
-#else
-  QApplication::setFont(QFont("Adobe Helvetica", 12));
-#endif
+//#ifdef WIN32
+//  QApplication::setFont(QFont("Helvetica", 10));
+//#else
+//  QApplication::setFont(QFont("Adobe Helvetica", 12));
+//#endif
 
   Browser.LastBrowseContext = 0;
   LBaseData.Init(&Browser, &ExecUpdate);

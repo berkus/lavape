@@ -206,7 +206,7 @@ CLavaApp::CLavaApp(int &argc, char ** argv )
     LBaseData.m_GlobalFont = QApplication::font();
     LBaseData.m_lfDefGlobalFont = LBaseData.m_GlobalFont.toString();
   }
-  setFont(LBaseData.m_GlobalFont,false);
+  setFont(LBaseData.m_GlobalFont);
 
   settings.endGroup();
 
