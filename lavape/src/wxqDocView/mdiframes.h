@@ -149,8 +149,9 @@ class WXDLLEXPORT wxTabWidget : public QTabWidget {
 public:
   wxTabWidget(QWidget *parent) : QTabWidget(parent) {
     m_tabBar = new wxTabBar(this);
+    m_tabBar->setFont(QApplication::font());
     setTabBar(m_tabBar);
-      deleting = false;
+    deleting = false;
   }
 
   ~wxTabWidget() {
