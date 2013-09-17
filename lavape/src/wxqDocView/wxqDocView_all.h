@@ -9,7 +9,7 @@
 #include "wxExport.h"
 #include "defs.h"
 #include "setup.h"
-#include "qmenudata.h"
+//#include "qmenudata.h"
 #include <QList>
 #include <QEvent>
 #include <QSplitter>

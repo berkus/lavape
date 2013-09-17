@@ -2202,8 +2202,8 @@ void CLavaPEView::OnDragEnter(QDragEnterEvent* ev)
   SynFlags treeflags, secondtflags;
   DString  dropAbsName;
 
-  if (ev->provides(((CLavaPEApp*)wxTheApp)->TreeClipFormatID)) {
-    QByteArray ba = ev->encodedData(((CLavaPEApp*)wxTheApp)->TreeClipFormatID);
+  if (ev->mimeData()->hasFormat(((CLavaPEApp*)wxTheApp)->TreeClipFormatID)) {
+    QByteArray ba = ev->mimeData()->data(((CLavaPEApp*)wxTheApp)->TreeClipFormatID);
 		QDataStream ar(ba);
     if (Clipdata) {
       Clipdata->Destroy();
@@ -2277,7 +2277,7 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
   TIType tiType;
   CTreeItem* item;
 
-  if (ev->provides(((CLavaPEApp*)wxTheApp)->TreeClipFormatID) && (!GetDocument()->changeNothing)) {
+  if (ev->mimeData()->hasFormat(((CLavaPEApp*)wxTheApp)->TreeClipFormatID) && (!GetDocument()->changeNothing)) {
     item = (CTreeItem*)Tree->itemAt(ev->pos());//(Tree->contentsToViewport(ev->pos()));
     if (m_hitemDrop && (item != m_hitemDrop))
       m_hitemDrop->setSelected(false);
@@ -2396,7 +2396,7 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
 
 void CLavaPEView::OnDrop(QDropEvent* ev)
 {
-  if (ev->provides(((CLavaPEApp*)wxTheApp)->TreeClipFormatID)) {
+  if (ev->mimeData()->hasFormat(((CLavaPEApp*)wxTheApp)->TreeClipFormatID)) {
     m_hitemDrop = (CTreeItem*)Tree->itemAt(ev->pos());//(Tree->contentsToViewport(ev->pos()));
     if (m_hitemDrop) {
       lastDropped = m_hitemDrop;
