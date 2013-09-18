@@ -99,7 +99,7 @@ static const QString s_MRUEntryFormat("%1 %2");
 #ifdef __Darwin
 const char* qs2str(const QString &qstr)
 {
-  return qstr.toAscii().constData();
+  return qstr.toLatin1().constData();
 }
 #endif
 
@@ -2133,7 +2133,8 @@ Assistant::Assistant()
      QByteArray ba("setSource ");
      ba.append("qthelp://lavape.com/lavadoc/");
 
-     proc->write(ba + page.toLocal8Bit());
+//     proc->write(ba + page.toLocal8Bit());
+     proc->write(ba + page.toLatin1());
  }
 
  bool Assistant::startAssistant()
@@ -2147,24 +2148,17 @@ Assistant::Assistant()
 	   QStringList args;
 
 #ifdef WIN32
-     QProcessEnvironment env = QProcessEnvironment::systemEnvironment ();
-     QString qtdir = env.value(QString("QTDIR"));
-     QString assPath;
-//     if (qtdir.isEmpty())
-      assPath = "Lava-Help.exe";
-//     else
-//       assPath = qtdir + "\\bin\\Lava-Help.exe";
-	   app = QLatin1String(qPrintable(assPath));
+       app = "Lava-Help.exe";
 #else
-       app = QLatin1String("./Lava-Help");
+       app = "./Lava-Help";
 #endif
-     args << QLatin1String("-collectionFile")
+       args << QLatin1String("-collectionFile")
 	        << QLatin1String("../doc/LavaPE.qhc")
 	        << QLatin1String("-enableRemoteControl");
 
 	     proc->start(app, args);
 
-	     if (!proc->waitForStarted()) {
+         if (!proc->waitForStarted()) {
 	         QMessageBox::critical(0, QObject::tr("LavaPE: "),
                  QObject::tr("Unable to launch Lava-Help (%1)").arg(app));
 	         return false;

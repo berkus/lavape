@@ -1,3 +1,4 @@
+cache()
 TEMPLATE = subdirs
 SUBDIRS = src/disco \
     src/wxqDocView \
