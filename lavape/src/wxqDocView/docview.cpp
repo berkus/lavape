@@ -2134,7 +2134,7 @@ Assistant::Assistant()
      ba.append("qthelp://lavape.com/lavadoc/");
 
 //     proc->write(ba + page.toLocal8Bit());
-     proc->write(ba + page.toLatin1());
+     proc->write(ba + page.toLatin1() + "\n");
  }
 
  bool Assistant::startAssistant()
