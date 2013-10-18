@@ -3,7 +3,7 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "LavaPE"
 !define PRODUCT_VERSION "0.9.4"
-!define QTREL "5.1.1"
+!define QTREL "5.1.1\5.1.1\msvc2012"
 !define PRODUCT_PUBLISHER "The lavape project "
 !define PRODUCT_WEB_SITE "http://lavape.sourceforge.net/index.htm"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\LavaPE.exe"
@@ -126,37 +126,36 @@ Section "LavaPE (required)" SEC01
   SetFileAttributes $OUTDIR\std.lava READONLY|ARCHIVE
   File "bin\*.htm"
   File "bin\*.bat"
-  File C:\Qt\${QTREL}\bin\assistant.exe
-  File "C:\Qt\${QTREL}\bin\QtCore4.dll"
-  File "C:\Qt\${QTREL}\bin\QtGui4.dll"
-  File "C:\Qt\${QTREL}\bin\QtNetwork4.dll"
-  File "C:\Qt\${QTREL}\bin\QtXml4.dll"
-;  File "C:\Qt\${QTREL}\bin\QtSvg4.dll"
-  File "C:\Qt\${QTREL}\bin\QtHelp4.dll"
-  File "C:\Qt\${QTREL}\bin\QtCLucene4.dll"
-  File "C:\Qt\${QTREL}\bin\QtSql4.dll"
-  File "C:\Qt\${QTREL}\bin\phonon4.dll"
-  File "C:\Qt\${QTREL}\bin\QtWebKit4.dll"
-;  File "C:\Qt\${QTREL}\bin\QTMEDIASERVICES4.DLL"
-;  File "C:\Qt\${QTREL}\bin\QTMULTIMEDIA4.DLL"
-;  File "C:\Qt\${QTREL}\bin\QTOPENGL4.DLL"
-;  File "C:\Qt\${QTREL}\bin\QTXMLPATTERNS4.DLL"
-  File "C:\Windows\System32\msvcp100.dll"
-  File "C:\Windows\System32\msvcr100.dll"
+  File "C:\Qt\${QTREL}\bin\assistant.exe"
+  File "C:\Qt\${QTREL}\bin\Qt5Core.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5Gui.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5Network.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5Widgets.dll"
+;  File "C:\Qt\${QTREL}\bin\Qt5Svg.dll"
+;  File "C:\Qt\${QTREL}\bin\Qt5Help.dll"
+;  File "C:\Qt\${QTREL}\bin\Qt5CLucene.dll"
+;  File "C:\Qt\${QTREL}\bin\Qt5Sql.dll"
+;  File "C:\Qt\${QTREL}\bin\phonon5.dll"
+;  File "C:\Qt\${QTREL}\bin\Qt5WebKit.dll"
+  File "C:\Qt\${QTREL}\bin\ICUDT51.DLL"
+  File "C:\Qt\${QTREL}\bin\ICUIN51.DLL"
+  File "C:\Qt\${QTREL}\bin\LIBGLESV2.DLL"
+  File "C:\Windows\System32\msvcp110.dll"
+  File "C:\Windows\System32\msvcr110.dll"
 ;   Exec '"$INSTDIR\bin\vcredist_x86.exe"'
 
   CreateDirectory $INSTDIR\data
   AccessControl::GrantOnFile \
     "$INSTDIR\data" "(BU)" "GenericRead + GenericWrite"
 
-  SetOutPath $INSTDIR\bin\plugins\sqldrivers
-  File "C:\Qt\${QTREL}\plugins\sqldrivers\qsqlite4.dll"
+;  SetOutPath $INSTDIR\bin\plugins\sqldrivers
+;  File "C:\Qt\${QTREL}\plugins\sqldrivers\qsqlite5.dll"
 
-  SetOutPath $INSTDIR\bin\plugins\imageformats
-  File "C:\Qt\${QTREL}\plugins\imageformats\qgif4.dll";
+;  SetOutPath $INSTDIR\bin\plugins\imageformats
+;  File "C:\Qt\${QTREL}\plugins\imageformats\qgif5.dll";
 ;  File "C:\Qt\${QTREL}\plugins\imageformats\qtiff4.dll"
 ;  File "C:\Qt\${QTREL}\plugins\imageformats\qico4.dll"
-  File "C:\Qt\${QTREL}\plugins\imageformats\qjpeg4.dll"
+;  File "C:\Qt\${QTREL}\plugins\imageformats\qjpeg5.dll"
 ;  File "C:\Qt\${QTREL}\plugins\imageformats\qmng4.dll"
 ;  File "C:\Qt\${QTREL}\plugins\imageformats\qsvg4.dll"
 
