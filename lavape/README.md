@@ -2,7 +2,7 @@
 
 ##Change Log for Release 0.9.4
 
-Migration to Qt 5.1.
+Migration to Qt 5.1.1 and (on Windows) to Visual Studio 2012. Qt 4 isn't supported any longer now since the differences are to big.
 
 ##Installation of Lava/LavaPE 
 
