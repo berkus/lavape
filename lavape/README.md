@@ -1,8 +1,8 @@
-#Release notes for release 0.9.4
-
 ##Change Log for Release 0.9.4
 
 Migration to Qt 5.1.1 and (on Windows) to Visual Studio 2012. Qt 4 isn't supported any longer now since the differences are to big.
+
+##Release notes for release 0.9.4
 
 ##Installation of Lava/LavaPE 
 
@@ -60,7 +60,9 @@ will display the Qt version used by qmake.
 
 The build process will take quite a while. You will find the executables of the **Lava** Programming Environment in lavape/bin thereafter: **LavaPE**, **Lava**, and **LPC** (= **Lava** Precompiler, needed only during the build process.)
 
-Go to the lavape/bin directory, launch "./LavaPE", consult the Online Help, open some sample programs from the lavape/samples directory and enjoy the unique structure editing features of **LavaPE**.
+On Mac OS X you may just double-click LavaPE.app or Lava.app in the lavape/bin directory to launch LavaPE/Lava; or you may use the "open LavaPE.app" or "open Lava.app" command on the command line instead.
+
+On other UNIX-like platforms go to the lavape/bin directory, launch "./LavaPE", consult the Online Help, open some sample programs from the lavape/samples directory and enjoy the unique structure editing features of **LavaPE**.
 
 You can run the **Lava** interpreter "Lava"
 

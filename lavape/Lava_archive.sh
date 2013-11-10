@@ -44,5 +44,5 @@ tar -c -j \
 --exclude='*.class' \
 --exclude='*.iss' \
 --exclude='.[#,a-z,A-Z]*' \
--f lavape-0.9.3-src.tar.bz2 lavape
-ls -l lavape-0.9.3-src.tar.bz2
+-f lavape-0.9.4-src.tar.bz2 lavape
+ls -l lavape-0.9.4-src.tar.bz2
