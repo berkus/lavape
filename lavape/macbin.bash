@@ -9,7 +9,7 @@ cp -R $LAVADIR/lib/*.framework lib;
 mkdir samples; cp $LAVADIR/samples/*.l* samples; chmod -R a+rw samples;
 cd bin; mkdir LavaIcons; mkdir std;
 cd $LAVADIR/bin; cp -R LavaPE.app Lava.app $HOME/lavape/bin;
-ln -s /Developer/Applications/Qt/Assistant.app/Contents/MacOS/Assistant $HOME/lavape/bin/Lava-Help;
+ln -s /Developer/Applications/Qt5.1.1/5.1.1/clang_64/bin/Assistant.app/Contents/MacOS/Assistant $HOME/lavape/bin/Lava-Help;
 cd $LAVADIR/bin; cp LavaIcons/* $HOME/lavape/bin/LavaIcons; cp std/* $HOME/lavape/bin/std;
 cp *.htm *.lava cp_icons_std $HOME/lavape/bin;
 cd $LAVADIR/doc; cp LavaPE.qch LavaPE.qhc $HOME/lavape/doc;
