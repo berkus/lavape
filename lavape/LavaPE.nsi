@@ -131,17 +131,34 @@ Section "LavaPE (required)" SEC01
   File "C:\Qt\${QTREL}\bin\Qt5Gui.dll"
   File "C:\Qt\${QTREL}\bin\Qt5Network.dll"
   File "C:\Qt\${QTREL}\bin\Qt5Widgets.dll"
-;  File "C:\Qt\${QTREL}\bin\Qt5Svg.dll"
-;  File "C:\Qt\${QTREL}\bin\Qt5Help.dll"
-;  File "C:\Qt\${QTREL}\bin\Qt5CLucene.dll"
-;  File "C:\Qt\${QTREL}\bin\Qt5Sql.dll"
-;  File "C:\Qt\${QTREL}\bin\phonon5.dll"
-;  File "C:\Qt\${QTREL}\bin\Qt5WebKit.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5Help.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5CLucene.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5Multimedia.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5MultimediaWidgets.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5OpenGL.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5PrintSupport.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5QML.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5Quick.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5Sensors.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5QML.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5SQL.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5V8.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5WebKit.dll"
+  File "C:\Qt\${QTREL}\bin\Qt5WebKitWidgets.dll"
   File "C:\Qt\${QTREL}\bin\ICUDT51.DLL"
   File "C:\Qt\${QTREL}\bin\ICUIN51.DLL"
+  File "C:\Qt\${QTREL}\bin\ICUUC51.DLL"
   File "C:\Qt\${QTREL}\bin\LIBGLESV2.DLL"
+  File "C:\Qt\${QTREL}\bin\LIBEGL.DLL"
   File "C:\Windows\System32\msvcp110.dll"
   File "C:\Windows\System32\msvcr110.dll"
+
+  SetOutPath $INSTDIR\bin\platforms
+  File "C:\Qt\${QTREL}\plugins\platforms\qwindows.dll"
+
+  SetOutPath $INSTDIR\bin\plugins\sqldrivers
+  File "C:\Qt\${QTREL}\plugins\sqldrivers\qsqlite.dll"
+
 ;   Exec '"$INSTDIR\bin\vcredist_x86.exe"'
 
   CreateDirectory $INSTDIR\data
