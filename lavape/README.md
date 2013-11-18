@@ -24,7 +24,7 @@ and install them in the default location.
 
 Download the lavape-0.9.4-macos.zip archive and uncompress it by double-clicking.
 
-A double-click on LavaPE.app or Lava.app will launch the **Lava Programming Environment** or the **Lava** Interpreter, respectively.
+A double-click on LavaPE.app or Lava.app (in the lavape/bin folder) will launch the **Lava Programming Environment** or the **Lava** Interpreter, respectively.
 
 A number of sample programs can be opened in LavaPE.app or Lava.app from the "samples" subdirectory of the installation directory "lavape".
 
