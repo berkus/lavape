@@ -143,8 +143,7 @@
                         <section title="Window menu commands" ref="html/commands/WindowMenuCommands.htm"/>
                     </section>
                 </section>
-                <section title="Release notes, planned enhancements, desirable contributions" ref="html/ProjectState.htm">
-                    <section title="Release notes" ref="html/ReleaseNotes.htm"/>
+                <section title="Planned enhancements, desirable contributions" ref="html/ProjectState.htm">
                     <section title="Next steps, future plans, desirable contributions" ref="html/FAQLavaFuture.htm"/>
                 </section>
                 <section title="Appendix: The cited Morgenstern poems" ref="html/Poems.htm">
@@ -440,7 +439,6 @@
             <file>html/ReadOnly.htm</file>
             <file>html/RecursionSamples.htm</file>
             <file>html/Refactoring.htm</file>
-            <file>html/ReleaseNotes.htm</file>
             <file>html/RepetComputSamples.htm</file>
             <file>html/Security.htm</file>
             <file>html/SepItfImpl.htm</file>
