@@ -17,11 +17,12 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
+#include "disco_all.h"
 #include "ASN1.h"
 #include "MachDep.h"
 #include "Halt.h"
 
-#include <qglobal.h>
+//#include <qglobal.h>
 #include <qapplication.h>
 #include <qmessagebox.h>
 #pragma hdrstop

@@ -18,9 +18,10 @@
 
 
 #include "Atoms.h"
+#include "Atoms.h"
 #include <string.h>
-#include "qbytearray.h"
-#include "DString.h"
+//#include "qbytearray.h"
+//#include "DString.h"
 
 #pragma hdrstop
 

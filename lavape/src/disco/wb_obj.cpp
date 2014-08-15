@@ -39,9 +39,9 @@
 
 #include "wx_obj.h"
 #include "string.h"
-#include "qstring.h"
+//#include "qstring.h"
 #include "qapplication.h"
-#include "qhash.h"
+//#include "qhash.h"
 #pragma hdrstop
 
 
