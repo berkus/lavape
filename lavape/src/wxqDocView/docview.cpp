@@ -83,7 +83,7 @@
 #include <string.h>
 #include <signal.h>
 
-#pragma hdrstop
+//#pragma hdrstop
 
 #ifdef MINGW32
 #include <shlobj.h>
