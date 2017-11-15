@@ -15,6 +15,7 @@
 #include <QDropEvent>
 #include <QResizeEvent>
 #include <QDragEnterEvent>
+#include <QMimeData>
 #include "docview.h"
 #include "qobject.h"
 #include "qevent.h"
