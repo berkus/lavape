@@ -52,10 +52,10 @@
 #define CHLV_fit           15
 
 
-#define IFC(OBJ) {if (!INC_FWD_CNT(ckd,OBJ)) return false;}
-#define IRC(OBJ) {if (!INC_REV_CNT(ckd,OBJ)) return false;}
-#define DFC(OBJ) {if (!DEC_FWD_CNT(ckd,OBJ)) return false;}
-#define DRC(OBJ) {if (!DEC_REV_CNT(ckd,OBJ)) return false;}
+#define IFC(OBJ) {if (!INC_FWD_CNT(ckd,OBJ)) return nullptr;}
+#define IRC(OBJ) {if (!INC_REV_CNT(ckd,OBJ)) return nullptr;}
+#define DFC(OBJ) {if (!DEC_FWD_CNT(ckd,OBJ)) return nullptr;}
+#define DRC(OBJ) {if (!DEC_REV_CNT(ckd,OBJ)) return nullptr;}
 
 
 #endif

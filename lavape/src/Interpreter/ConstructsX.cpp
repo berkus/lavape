@@ -3383,7 +3383,7 @@ LavaObjectPtr AttachObjectX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
   cosDecl = ((Reference*)objType.ptr)->refDecl;
   urlObj = ((Expression*)url.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown)
-    return false;
+    return nullptr;
   if ((cosDecl->nOutput == PROT_LAVA) || (cosDecl->nOutput == PROT_NATIVE)) {
     rtObj = AttachLavaObject(ckd,urlObj,cosDecl,typeDECL,attachCat == stateObjectCat);
     if (!rtObj && !ckd.exceptionThrown) {
