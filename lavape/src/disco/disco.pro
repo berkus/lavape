@@ -45,11 +45,11 @@ PRE_TARGETDEPS += ../../data
 win32:qtass.target = ..\..\bin\Lava-Help.exe
 else:qtass.target = ../../bin/Lava-Help
 
-macx:qtass.depends = $$[QT_INSTALL_BINS]/Assistant.app/Contents/MacOS/Assistant
+macx:qtass.depends = $$[QT_INSTALL_LIBEXECS]/Assistant.app/Contents/MacOS/Assistant
 else:win32:qtass.depends = $$[QT_INSTALL_BINS]\assistant.exe
 else:qtass.depends = $$[QT_INSTALL_BINS]/assistant
 
-macx:qtass.commands = ln -s -f $$[QT_INSTALL_BINS]/Assistant.app/Contents/MacOS/Assistant $$qtass.target
+macx:qtass.commands = ln -s -f $$[QT_INSTALL_LIBEXECS]/Assistant.app/Contents/MacOS/Assistant $$qtass.target
 else:win32:qtass.commands = copy  $$[QT_INSTALL_BINS]\assistant.exe $$qtass.target
 else:qtass.commands = ln -s -f $$[QT_INSTALL_BINS]/assistant $$qtass.target
 
