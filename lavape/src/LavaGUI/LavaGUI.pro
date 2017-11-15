@@ -5,8 +5,7 @@ QMAKE_OBJCXXFLAGS_PRECOMPILE =
 
 CONFIG += warn_off \
     qt \
-    lib_bundle \
-    precompile_header
+    lib_bundle
 
 SOURCES *= CmdExec.cpp Conv.cpp FormWid.cpp GUIProg.cpp GUIProgBase.cpp GUIWid.cpp LavaForm.cpp \
     LavaGUIFrame.cpp LavaGUIPopup.cpp LavaGUIView.cpp LavaMenu.cpp MakeGUI.cpp \

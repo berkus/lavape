@@ -12,8 +12,7 @@ SOURCES *= SyntaxG.cpp
 HEADERS *= AboutBox.h BAdapter.h BASEMACROS.h DumpView.h LavaAppBase.h LavaBaseDoc.h LavaBaseStringInit.h LavaThread.h PEBaseDoc.h SafeInt.h SylTraversal.h SynIDTable.h SynIO.h Syntax.h
 CONFIG += warn_off \
     qt \
-    lib_bundle \
-    precompile_header
+    lib_bundle
 win32:FORMS = $$system(ls *.ui)
 else:FORMS = $$system(ls *.ui)
 INCLUDEPATH = ../disco ../wxqDocView

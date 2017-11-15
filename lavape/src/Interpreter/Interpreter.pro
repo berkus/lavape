@@ -5,8 +5,7 @@ QMAKE_OBJCXXFLAGS_PRECOMPILE =
 
 CONFIG += warn_off \
     qt \
-    lib_bundle \
-    precompile_header
+    lib_bundle
 
 HEADERS *= ConstructsX.h Debugger.h LavaProgram.h \
 ../LavaExecs/Check.h ../LavaExecs/Tokens.h ../LavaExecs/Constructs.h

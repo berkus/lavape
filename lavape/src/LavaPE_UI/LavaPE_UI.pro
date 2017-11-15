@@ -5,8 +5,7 @@ QMAKE_OBJCXXFLAGS_PRECOMPILE =
 
 CONFIG += warn_off \
     qt \
-    lib_bundle \
-    precompile_header
+    lib_bundle
 
 SOURCES *= LavaPEMainFrameBase.cpp
 HEADERS *= LavaPE_UI_export.h LavaPEMainFrameBase.h redefines.h

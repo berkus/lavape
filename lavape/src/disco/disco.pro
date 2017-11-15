@@ -4,8 +4,7 @@ QMAKE_OBJCXXFLAGS_PRECOMPILE =
 
 CONFIG += warn_off \
     qt \
-    lib_bundle \
-    precompile_header
+    lib_bundle
 
 win32:SOURCES *= $$system(dir /b *.cpp)
 else:SOURCES *= $$system(ls *.cpp)
