@@ -29,7 +29,7 @@ struct DISCO_DLL DATE_ {
   DATE_& operator= (const DATE_& date);
 
   friend void CDPDATE_ (PutGetFlag pgf, ASN1* cid, address varAddr,
-                        bool baseCDP=false);
+                        bool baseCDP);
 /*
   friend void FIODATE_ (PutGetFlag pgf, ASN1* cid, address varAddr,
                         bool baseFIO=false);*/
@@ -53,7 +53,7 @@ struct DISCO_DLL YEAR_ {
   YEAR_& operator= (const YEAR_& year);
 
   friend void CDPYEAR_ (PutGetFlag pgf, ASN1* cid, address varAddr,
-                        bool baseCDP=false);
+                        bool baseCDP);
 /*
   friend void FIOYEAR_ (PutGetFlag pgf, ASN1* cid, address varAddr,
                         bool baseFIO=false);*/
@@ -73,7 +73,7 @@ struct DISCO_DLL TIME_ {
   TIME_& operator= (const TIME_& time);
 
   friend void CDPTIME_ (PutGetFlag pgf, ASN1* cid, address varAddr,
-                        bool baseCDP=false);
+                        bool baseCDP);
 /*
   friend void FIOTIME_ (PutGetFlag pgf, ASN1* cid, address varAddr,
                         bool baseFIO=false);*/
