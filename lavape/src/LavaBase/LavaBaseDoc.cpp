@@ -88,7 +88,7 @@ void ASN1tofromAr::GETCString (QString* s)
       //s->SetAt(i, (char)MachDep.FromASCII[(unsigned char)ds[i]]);
   }
   else
-    NewQString(s, '\0');
+    NewQString(s, "");
 }
 
 
