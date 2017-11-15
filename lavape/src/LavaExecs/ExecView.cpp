@@ -2613,7 +2613,7 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
       3UL,
       myDECL,
       text->currentSynObj->parentObject,
-      (DWORD)InsNested,
+      (void*)InsNested,
       placeHdr,
       text->currentSynObj->containingChain,
       text->currentSynObj->whereInParent);
